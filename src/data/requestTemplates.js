@@ -2,10 +2,10 @@ export const REQUEST_TEMPLATES = [
   {
     id: "color",
     templates: [
-      "{color}いものが欲しいな。",
-      "{color}色のアイテムを探しているんだ。",
-      "{color}い品を頼むよ。",
-      "何か{color}いものはあるかな？"
+      "{color}のものが欲しいな。",
+      "{color}のアイテムを探しているんだ。",
+      "{color}の品を頼むよ。",
+      "何か{color}のものはないかな？"
     ]
   },
   {
@@ -29,10 +29,10 @@ export const REQUEST_TEMPLATES = [
   {
     id: "colorAndItemType",
     templates: [
-      "{color}い{type}が欲しいな。",
-      "{color}色の{type}を探しているんだ。",
-      "{color}い{type}を頼むよ。",
-      "何か{color}い{type}はあるかな？"
+      "{color}の{type}が欲しいな。",
+      "{color}の{type}を探しているんだ。",
+      "{color}の{type}を頼むよ。",
+      "何か{color}の{type}はないかな？"
     ]
   }
 ];

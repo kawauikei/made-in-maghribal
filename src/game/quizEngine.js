@@ -92,11 +92,60 @@ function generateRandomQuestion(id) {
 
   // Find valid correct items
   const correctItems = ITEMS_TO_USE.filter(item => isItemMatchingCriteria(item, criteria));
-  // Find valid incorrect items
-  const incorrectItems = ITEMS_TO_USE.filter(item => !isItemMatchingCriteria(item, criteria));
+  
+  // Strategy-based dummy selection
+  let incorrectItems = [];
+  
+  if (requestTemplate.id === "color") {
+    // Strategy: Same genre, different color
+    const correctSample = correctItems[0];
+    const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
+    incorrectItems = ITEMS_TO_USE.filter(item => 
+      !isItemMatchingCriteria(item, criteria) && 
+      ITEM_TYPE_BY_ID[item.typeId].genre === genreId
+    );
+  } else if (requestTemplate.id === "genre") {
+    // Strategy: Different genre, but prefer similar group
+    // Groups: Gear (ARM, CLT, ADN, RIT), Consumable (FOD, MED, WRK), Utility (DAY, TRV, TRD)
+    const groups = {
+      ARM: "gear", CLT: "gear", ADN: "gear", RIT: "gear",
+      FOD: "cons", MED: "cons", WRK: "cons",
+      DAY: "util", TRV: "util", TRD: "util"
+    };
+    const targetGroup = groups[criteria.genre];
+    incorrectItems = ITEMS_TO_USE.filter(item => {
+      if (isItemMatchingCriteria(item, criteria)) return false;
+      const itemGenre = ITEM_TYPE_BY_ID[item.typeId].genre;
+      return groups[itemGenre] === targetGroup;
+    });
+  } else if (requestTemplate.id === "itemType") {
+    // Strategy: Same genre, different type
+    const targetGenre = criteria.itemTypeId.split("_")[0];
+    incorrectItems = ITEMS_TO_USE.filter(item => 
+      !isItemMatchingCriteria(item, criteria) && 
+      item.typeId.startsWith(targetGenre)
+    );
+  } else if (requestTemplate.id === "colorAndItemType") {
+    // Strategy: Same type different color, or same genre different type
+    incorrectItems = ITEMS_TO_USE.filter(item => 
+      !isItemMatchingCriteria(item, criteria) && 
+      item.typeId === criteria.itemTypeId
+    );
+    if (incorrectItems.length === 0) {
+      const targetGenre = criteria.itemTypeId.split("_")[0];
+      incorrectItems = ITEMS_TO_USE.filter(item => 
+        !isItemMatchingCriteria(item, criteria) && 
+        item.typeId.startsWith(targetGenre)
+      );
+    }
+  }
+
+  // Final fallback if strategy failed
+  if (incorrectItems.length === 0) {
+    incorrectItems = ITEMS_TO_USE.filter(item => !isItemMatchingCriteria(item, criteria));
+  }
 
   if (correctItems.length === 0 || incorrectItems.length === 0) {
-    // If we can't find a pair, retry once with a different random selection (simplified for MVP)
     return generateRandomQuestion(id); 
   }
 
