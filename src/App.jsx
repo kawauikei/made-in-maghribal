@@ -4,11 +4,18 @@ import { getRankInfo } from './game/scoring';
 
 export default function App() {
   const [session, setSession] = useState(null);
+  const [screen, setScreen] = useState('START');
 
-  // Start a new game
-  const startGame = () => {
+  // Go to INTRO
+  const handleStartGame = () => {
+    setScreen('INTRO');
+  };
+
+  // Generate quiz and start service
+  const handleBeginService = () => {
     const newSession = createQuizSession({ questionCount: 5 });
     setSession(newSession);
+    setScreen('QUIZ');
   };
 
   // Handle answer selection
@@ -16,20 +23,45 @@ export default function App() {
     if (!session || session.isFinished) return;
     const nextSession = answerQuestion(session, itemId);
     setSession(nextSession);
+    if (nextSession.isFinished) {
+      setScreen('RESULT');
+    }
   };
 
-  // Current state views
-  if (!session) {
+  // --- RENDER HELPERS ---
+
+  if (screen === 'START') {
     return (
       <div style={containerStyle}>
         <h1 style={titleStyle}>Made in Maghribal</h1>
-        <p>接客クイズへようこそ。5問の連続クイズに挑戦しましょう。</p>
-        <button onClick={startGame} style={buttonStyle}>店を開く</button>
+        <div style={cardStyle}>
+          <p style={{ fontSize: '1.1em', marginBottom: '30px' }}>
+            接客クイズへようこそ。5問の連続クイズに挑戦しましょう。
+          </p>
+          <button onClick={handleStartGame} style={buttonStyle}>店を開く</button>
+        </div>
       </div>
     );
   }
 
-  if (session.isFinished) {
+  if (screen === 'INTRO') {
+    return (
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>工房の朝</h1>
+        <div style={cardStyle}>
+          <div style={narrativeBoxStyle}>
+            <p>ここは砂漠の王国マグリバル。</p>
+            <p>あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。</p>
+            <p>今日も工房には、少し困ったお客がやってくる。</p>
+            <p>相手の願いを読み取り、ぴったりの品を選ぼう。</p>
+          </div>
+          <button onClick={handleBeginService} style={buttonStyle}>接客を始める</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'RESULT' && session) {
     const correctCount = session.answers.filter(a => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
     
@@ -47,7 +79,7 @@ export default function App() {
           <div style={{ background: '#333', padding: '15px', borderRadius: '8px', marginBottom: '30px', fontStyle: 'italic', color: '#ccc' }}>
             「{rank.message}」
           </div>
-          <button onClick={startGame} style={buttonStyle}>もう一度挑戦</button>
+          <button onClick={handleStartGame} style={buttonStyle}>もう一度挑戦</button>
         </div>
       </div>
     );
@@ -205,6 +237,18 @@ const imageStyle = {
 const itemNameStyle = {
   fontSize: '0.9em',
   color: '#ccc'
+};
+
+const narrativeBoxStyle = {
+  background: '#111',
+  padding: '20px',
+  borderRadius: '12px',
+  marginBottom: '30px',
+  textAlign: 'left',
+  lineHeight: '1.8',
+  fontSize: '0.95em',
+  color: '#ddd',
+  borderLeft: '4px solid #ffcc00'
 };
 
 const buttonStyle = {
