@@ -5535,7 +5535,7 @@ function App() {
     /* @__PURE__ */ React.createElement(
       "img",
       {
-        src: item.image.startsWith("/") ? item.image : `/${item.image}`,
+        src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
         alt: item.name,
         style: imageStyle
       }
