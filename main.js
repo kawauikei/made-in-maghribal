@@ -5392,13 +5392,15 @@ function isItemMatchingCriteria(item, criteria) {
 function createQuizSession({ questionCount = 20 } = {}) {
   const questions = [];
   const typePlan = buildRequestTypePlan(questionCount);
+  const usedCorrectItemIds = /* @__PURE__ */ new Set();
   for (let i = 0; i < questionCount; i++) {
     const forcedType = typePlan ? typePlan[i] : null;
-    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType);
+    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType, usedCorrectItemIds);
     if (!question) {
       throw new Error(`Failed to generate enough unique questions. Generated: ${i}`);
     }
     questions.push(question);
+    usedCorrectItemIds.add(question.correctItemId);
   }
   return {
     questions,
@@ -5408,7 +5410,7 @@ function createQuizSession({ questionCount = 20 } = {}) {
     isFinished: questions.length === 0
   };
 }
-function generateRandomQuestion(id, forcedType = null) {
+function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PURE__ */ new Set()) {
   const requestTemplate = forcedType ? REQUEST_TEMPLATES.find((t) => t.id === forcedType) : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   const criteria = {};
   let text = "";
@@ -5431,7 +5433,11 @@ function generateRandomQuestion(id, forcedType = null) {
     criteria.itemTypeId = type.id;
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{color}", color.name).replace("{type}", type.name);
   }
-  const correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
+  let correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
+  const nonDuplicateItems = correctItems.filter((item) => !excludeItemIds.has(item.id));
+  if (nonDuplicateItems.length > 0) {
+    correctItems = nonDuplicateItems;
+  }
   let incorrectItems = [];
   if (requestTemplate.id === "color") {
     const correctSample = correctItems[0];
@@ -5482,7 +5488,7 @@ function generateRandomQuestion(id, forcedType = null) {
     incorrectItems = ITEMS_TO_USE.filter((item) => !isItemMatchingCriteria(item, criteria));
   }
   if (correctItems.length === 0 || incorrectItems.length === 0) {
-    return generateRandomQuestion(id);
+    return generateRandomQuestion(id, null, excludeItemIds);
   }
   const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   const incorrectItem = incorrectItems[Math.floor(Math.random() * incorrectItems.length)];
