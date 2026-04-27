@@ -5391,8 +5391,10 @@ function isItemMatchingCriteria(item, criteria) {
 }
 function createQuizSession({ questionCount = 20 } = {}) {
   const questions = [];
+  const typePlan = buildRequestTypePlan(questionCount);
   for (let i = 0; i < questionCount; i++) {
-    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`);
+    const forcedType = typePlan ? typePlan[i] : null;
+    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType);
     if (!question) {
       throw new Error(`Failed to generate enough unique questions. Generated: ${i}`);
     }
@@ -5406,8 +5408,8 @@ function createQuizSession({ questionCount = 20 } = {}) {
     isFinished: questions.length === 0
   };
 }
-function generateRandomQuestion(id) {
-  const requestTemplate = REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
+function generateRandomQuestion(id, forcedType = null) {
+  const requestTemplate = forcedType ? REQUEST_TEMPLATES.find((t) => t.id === forcedType) : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   const criteria = {};
   let text = "";
   if (requestTemplate.id === "color") {
@@ -5433,10 +5435,12 @@ function generateRandomQuestion(id) {
   let incorrectItems = [];
   if (requestTemplate.id === "color") {
     const correctSample = correctItems[0];
-    const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
-    incorrectItems = ITEMS_TO_USE.filter(
-      (item) => !isItemMatchingCriteria(item, criteria) && ITEM_TYPE_BY_ID[item.typeId].genre === genreId
-    );
+    if (correctSample) {
+      const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
+      incorrectItems = ITEMS_TO_USE.filter(
+        (item) => !isItemMatchingCriteria(item, criteria) && ITEM_TYPE_BY_ID[item.typeId].genre === genreId
+      );
+    }
   } else if (requestTemplate.id === "genre") {
     const groups = {
       ARM: "gear",
@@ -5457,7 +5461,8 @@ function generateRandomQuestion(id) {
       return groups[itemGenre] === targetGroup;
     });
   } else if (requestTemplate.id === "itemType") {
-    const targetGenre = criteria.itemTypeId.split("_")[0];
+    const typeId = criteria.itemTypeId || "";
+    const targetGenre = typeId.includes("_") ? typeId.split("_")[0] : typeId;
     incorrectItems = ITEMS_TO_USE.filter(
       (item) => !isItemMatchingCriteria(item, criteria) && item.typeId.startsWith(targetGenre)
     );
@@ -5466,7 +5471,8 @@ function generateRandomQuestion(id) {
       (item) => !isItemMatchingCriteria(item, criteria) && item.typeId === criteria.itemTypeId
     );
     if (incorrectItems.length === 0) {
-      const targetGenre = criteria.itemTypeId.split("_")[0];
+      const typeId = criteria.itemTypeId || "";
+      const targetGenre = typeId.includes("_") ? typeId.split("_")[0] : typeId;
       incorrectItems = ITEMS_TO_USE.filter(
         (item) => !isItemMatchingCriteria(item, criteria) && item.typeId.startsWith(targetGenre)
       );
@@ -5519,6 +5525,21 @@ function answerQuestion(session, selectedItemId) {
     answers: [...session.answers, result],
     isFinished
   };
+}
+function buildRequestTypePlan(count) {
+  if (count !== 5) return null;
+  const baseTypes = ["color", "genre", "itemType", "colorAndItemType"];
+  const randomExtra = baseTypes[Math.floor(Math.random() * baseTypes.length)];
+  const plan = [...baseTypes, randomExtra];
+  return shuffleArray(plan);
+}
+function shuffleArray(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
 function App() {
   const [session, setSession] = useState(null);
