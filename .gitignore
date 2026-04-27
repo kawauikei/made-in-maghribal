@@ -1,2 +1,5 @@
 /node_modules
 /dist
+.agent/session_start.txt
+.serena/
+scratch/
