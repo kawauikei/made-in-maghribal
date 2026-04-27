@@ -65,6 +65,20 @@ runTest('M7b-1: Variety guarantee for 5-question sessions (100 iterations)', () 
   console.log(`   (Variety stats: first question types seen: ${Array.from(firstTypes).join(', ')})`);
 });
 
+// M7b-2: Duplicate Prevention
+runTest('M7b-2: Correct item uniqueness in 5-question sessions (100 iterations)', () => {
+  const ITERATIONS = 100;
+  for (let i = 0; i < ITERATIONS; i++) {
+    const session = createQuizSession({ questionCount: 5 });
+    const correctIds = session.questions.map(q => q.correctItemId);
+    const uniqueIds = new Set(correctIds);
+    
+    // With 250 items, 5 questions should almost never need duplicates.
+    // If this fails, it might mean the data set for a specific criteria is too small.
+    assert.strictEqual(uniqueIds.size, 5, `Iteration ${i}: Found duplicate correct items: ${correctIds.join(', ')}`);
+  }
+});
+
 // 3. Backward Compatibility / Boundaries
 runTest('Boundary: count = 1', () => {
   const session = createQuizSession({ questionCount: 1 });

@@ -39,13 +39,15 @@ export function createQuizSession({ questionCount = 20 } = {}) {
   const questions = [];
   const typePlan = buildRequestTypePlan(questionCount);
 
+  const usedCorrectItemIds = new Set();
   for (let i = 0; i < questionCount; i++) {
     const forcedType = typePlan ? typePlan[i] : null;
-    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType);
+    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType, usedCorrectItemIds);
     if (!question) {
       throw new Error(`Failed to generate enough unique questions. Generated: ${i}`);
     }
     questions.push(question);
+    usedCorrectItemIds.add(question.correctItemId);
   }
 
   return {
@@ -61,8 +63,9 @@ export function createQuizSession({ questionCount = 20 } = {}) {
  * Generates a single random question.
  * @param {string} id - Question ID.
  * @param {string} [forcedType=null] - Optional forced request type ID.
+ * @param {Set<string>} [excludeItemIds=new Set()] - Set of item IDs to avoid for correct answer.
  */
-function generateRandomQuestion(id, forcedType = null) {
+function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set()) {
   // Select request type
   const requestTemplate = forcedType 
     ? REQUEST_TEMPLATES.find(t => t.id === forcedType)
@@ -97,7 +100,14 @@ function generateRandomQuestion(id, forcedType = null) {
   }
 
   // Find valid correct items
-  const correctItems = ITEMS_TO_USE.filter(item => isItemMatchingCriteria(item, criteria));
+  let correctItems = ITEMS_TO_USE.filter(item => isItemMatchingCriteria(item, criteria));
+  
+  // M7b-2: Duplicate prevention - try to find items not used yet
+  const nonDuplicateItems = correctItems.filter(item => !excludeItemIds.has(item.id));
+  if (nonDuplicateItems.length > 0) {
+    correctItems = nonDuplicateItems;
+  }
+  // Fallback: if all matching items were already used, we use the original list (accept duplicates)
   
   // Strategy-based dummy selection
   let incorrectItems = [];
@@ -156,7 +166,9 @@ function generateRandomQuestion(id, forcedType = null) {
   }
 
   if (correctItems.length === 0 || incorrectItems.length === 0) {
-    return generateRandomQuestion(id); 
+    // If we truly have no items matching the criteria at all (not even duplicates), 
+    // retry with random type to avoid crash
+    return generateRandomQuestion(id, null, excludeItemIds); 
   }
 
   const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
