@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
+import { getRankInfo } from './game/scoring';
 
 export default function App() {
   const [session, setSession] = useState(null);
 
   // Start a new game
   const startGame = () => {
-    const newSession = createQuizSession({ questionCount: 20 });
+    const newSession = createQuizSession({ questionCount: 5 });
     setSession(newSession);
   };
 
@@ -22,19 +23,30 @@ export default function App() {
     return (
       <div style={containerStyle}>
         <h1 style={titleStyle}>Made in Maghribal</h1>
-        <p>接客クイズへようこそ。20問の連続クイズに挑戦しましょう。</p>
+        <p>接客クイズへようこそ。5問の連続クイズに挑戦しましょう。</p>
         <button onClick={startGame} style={buttonStyle}>店を開く</button>
       </div>
     );
   }
 
   if (session.isFinished) {
+    const correctCount = session.answers.filter(a => a.isCorrect).length;
+    const rank = getRankInfo(correctCount);
+    
     return (
       <div style={containerStyle}>
         <h1 style={titleStyle}>業務終了</h1>
         <div style={cardStyle}>
-          <h2>最終スコア: {session.score} 点</h2>
-          <p>{session.questions.length} 問中 {session.answers.filter(a => a.isCorrect).length} 問正解</p>
+          <div style={{ fontSize: '1.2em', color: '#ffcc00', marginBottom: '10px', fontWeight: 'bold' }}>
+            称号：{rank.title}
+          </div>
+          <h2 style={{ margin: '10px 0' }}>最終スコア: {session.score} 点</h2>
+          <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
+            {session.questions.length} 問中 {correctCount} 問正解
+          </p>
+          <div style={{ background: '#333', padding: '15px', borderRadius: '8px', marginBottom: '30px', fontStyle: 'italic', color: '#ccc' }}>
+            「{rank.message}」
+          </div>
           <button onClick={startGame} style={buttonStyle}>もう一度挑戦</button>
         </div>
       </div>
@@ -45,6 +57,40 @@ export default function App() {
 
   return (
     <div style={containerStyle}>
+      <style>{`
+        .item-card {
+          background: #333;
+          padding: 15px;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: transform 0.1s, background 0.1s, border-color 0.1s;
+          border: 2px solid #555;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          -webkit-tap-highlight-color: transparent;
+        }
+        .item-card:active {
+          background: #444;
+          transform: scale(0.97);
+          border-color: #ffcc00;
+        }
+        .choice-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+          width: 100%;
+        }
+        @media (max-width: 480px) {
+          .choice-container {
+            grid-template-columns: 1fr;
+            gap: 15px;
+          }
+          .item-card {
+            padding: 12px;
+          }
+        }
+      `}</style>
+
       <header style={headerStyle}>
         <span>問題 {session.currentIndex + 1} / {session.questions.length}</span>
         <span style={{ fontWeight: 'bold' }}>スコア: {session.score}</span>
@@ -57,17 +103,21 @@ export default function App() {
           </div>
         </div>
 
-        <div style={choiceContainerStyle}>
+        <div className="choice-container">
           {currentQuestion.choices.map((item) => (
             <div 
               key={item.id} 
               onClick={() => handleSelect(item.id)}
-              style={itemCardStyle}
+              className="item-card"
             >
               <img 
                 src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
                 alt={item.name} 
                 style={imageStyle}
+                onError={(e) => {
+                  e.target.onerror = null; 
+                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+                }}
               />
               <div style={itemNameStyle}>{item.name}</div>
             </div>
@@ -143,9 +193,6 @@ const itemCardStyle = {
   transition: 'transform 0.2s, background 0.2s',
   border: '2px solid transparent'
 };
-
-// Hover effects are difficult with inline styles, but let's stick to basics
-itemCardStyle[':hover'] = { background: '#444' }; 
 
 const imageStyle = {
   width: '100%',
