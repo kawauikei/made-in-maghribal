@@ -3,3 +3,5 @@
 .agent/session_start.txt
 .serena/
 scratch/
+/artifacts/
+debug_log.txt
