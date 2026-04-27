@@ -1,12 +1,41 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Made in Maghribal</title>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; background: #1a1a1a; color: #eee; font-family: sans-serif; }
+    #root { height: 100%; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18",
+        "react-dom/client": "https://esm.sh/react-dom@18/client"
+      }
+    }
+  </script>
 </head>
 <body>
-  <h1>Made in Maghribal</h1>
-  <p>Public repository initialized.</p>
+  <div id="root"></div>
+  <script type="module">
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    
+    async function init() {
+      try {
+        const module = await import('./main.js');
+        const App = module.default;
+        const root = createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+      } catch (err) {
+        console.error("Failed to load app:", err);
+        document.getElementById('root').innerHTML = '<div style="padding: 20px; color: #ff5555;">[ERROR] Failed to load game. See console for details.</div>';
+      }
+    }
+    
+    init();
+  </script>
 </body>
 </html>
