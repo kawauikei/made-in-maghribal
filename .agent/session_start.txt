@@ -1,0 +1,2 @@
+﻿Start session. Read .clinerules first.
+ruleにしたがってserenaアクティベートとexportして

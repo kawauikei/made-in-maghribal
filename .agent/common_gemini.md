@@ -1,0 +1,1 @@
+C:/AI/mcp_manager/shared_configs/.agent/common_gemini.md
