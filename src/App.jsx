@@ -64,12 +64,27 @@ export default function App() {
   if (screen === 'RESULT' && session) {
     const correctCount = session.answers.filter(a => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
+
+    const resultNarrations = {
+      5: "お客は品を受け取ると、ぱっと顔を輝かせた。\n「これだよ、これ！　まさかこんなにぴったりの品があるなんて」\n今日の工房には、少し誇らしい空気が流れている。",
+      4: "お客は満足そうに品を抱えた。\n「助かったよ。次に困った時も、ここに来ればよさそうだ」\n手応えのある接客だった。",
+      3: "お客は少し迷いながらも、品を受け取った。\n「うん、悪くない。たぶんこれで何とかなると思う」\nもう少し相手の願いを読み取れれば、さらに良くなりそうだ。",
+      2: "お客は首をかしげながら品を見つめた。\n「うーん……今回はこれで試してみるよ」\n工房の棚には、まだ学ぶべきことが多く残っている。",
+      1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
+      0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
+    };
     
     return (
       <div style={containerStyle}>
         <h1 style={titleStyle}>業務終了</h1>
         <div style={cardStyle}>
-          <div style={{ fontSize: '1.2em', color: '#ffcc00', marginBottom: '10px', fontWeight: 'bold' }}>
+          <div style={narrativeBoxStyle}>
+            {resultNarrations[correctCount].split('\n').map((line, i) => (
+              <p key={i} style={{ margin: '0 0 8px 0' }}>{line}</p>
+            ))}
+          </div>
+
+          <div style={{ fontSize: '1.2em', color: '#ffcc00', marginBottom: '10px', fontWeight: 'bold', marginTop: '20px' }}>
             称号：{rank.title}
           </div>
           <h2 style={{ margin: '10px 0' }}>最終スコア: {session.score} 点</h2>
