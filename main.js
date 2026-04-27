@@ -1,5 +1,5 @@
 // src/index.js
-import React, { useEffect } from "react";
+import React, { useEffect } from "https://esm.sh/react@18";
 function BackgroundPreview({ apiKey }) {
   useEffect(() => {
     const testConnection = async () => {
