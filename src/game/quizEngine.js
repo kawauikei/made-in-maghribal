@@ -37,9 +37,11 @@ export function isItemMatchingCriteria(item, criteria) {
  */
 export function createQuizSession({ questionCount = 20 } = {}) {
   const questions = [];
+  const typePlan = buildRequestTypePlan(questionCount);
 
   for (let i = 0; i < questionCount; i++) {
-    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`);
+    const forcedType = typePlan ? typePlan[i] : null;
+    const question = generateRandomQuestion(`q_${(i + 1).toString().padStart(3, "0")}`, forcedType);
     if (!question) {
       throw new Error(`Failed to generate enough unique questions. Generated: ${i}`);
     }
@@ -57,10 +59,14 @@ export function createQuizSession({ questionCount = 20 } = {}) {
 
 /**
  * Generates a single random question.
+ * @param {string} id - Question ID.
+ * @param {string} [forcedType=null] - Optional forced request type ID.
  */
-function generateRandomQuestion(id) {
-  // Randomly select a request type
-  const requestTemplate = REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
+function generateRandomQuestion(id, forcedType = null) {
+  // Select request type
+  const requestTemplate = forcedType 
+    ? REQUEST_TEMPLATES.find(t => t.id === forcedType)
+    : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   const criteria = {};
   let text = "";
 
@@ -99,11 +105,13 @@ function generateRandomQuestion(id) {
   if (requestTemplate.id === "color") {
     // Strategy: Same genre, different color
     const correctSample = correctItems[0];
-    const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
-    incorrectItems = ITEMS_TO_USE.filter(item => 
-      !isItemMatchingCriteria(item, criteria) && 
-      ITEM_TYPE_BY_ID[item.typeId].genre === genreId
-    );
+    if (correctSample) {
+      const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
+      incorrectItems = ITEMS_TO_USE.filter(item => 
+        !isItemMatchingCriteria(item, criteria) && 
+        ITEM_TYPE_BY_ID[item.typeId].genre === genreId
+      );
+    }
   } else if (requestTemplate.id === "genre") {
     // Strategy: Different genre, but prefer similar group
     // Groups: Gear (ARM, CLT, ADN, RIT), Consumable (FOD, MED, WRK), Utility (DAY, TRV, TRD)
@@ -120,7 +128,8 @@ function generateRandomQuestion(id) {
     });
   } else if (requestTemplate.id === "itemType") {
     // Strategy: Same genre, different type
-    const targetGenre = criteria.itemTypeId.split("_")[0];
+    const typeId = criteria.itemTypeId || "";
+    const targetGenre = typeId.includes("_") ? typeId.split("_")[0] : typeId;
     incorrectItems = ITEMS_TO_USE.filter(item => 
       !isItemMatchingCriteria(item, criteria) && 
       item.typeId.startsWith(targetGenre)
@@ -132,7 +141,8 @@ function generateRandomQuestion(id) {
       item.typeId === criteria.itemTypeId
     );
     if (incorrectItems.length === 0) {
-      const targetGenre = criteria.itemTypeId.split("_")[0];
+      const typeId = criteria.itemTypeId || "";
+      const targetGenre = typeId.includes("_") ? typeId.split("_")[0] : typeId;
       incorrectItems = ITEMS_TO_USE.filter(item => 
         !isItemMatchingCriteria(item, criteria) && 
         item.typeId.startsWith(targetGenre)
@@ -204,4 +214,30 @@ export function answerQuestion(session, selectedItemId) {
     answers: [...session.answers, result],
     isFinished
   };
+}
+
+/**
+ * Builds a plan of request types to ensure variety.
+ * Currently only implements a fixed plan for 5 questions.
+ */
+function buildRequestTypePlan(count) {
+  if (count !== 5) return null;
+
+  const baseTypes = ["color", "genre", "itemType", "colorAndItemType"];
+  const randomExtra = baseTypes[Math.floor(Math.random() * baseTypes.length)];
+  const plan = [...baseTypes, randomExtra];
+  
+  return shuffleArray(plan);
+}
+
+/**
+ * Shuffles an array using Fisher-Yates algorithm.
+ */
+function shuffleArray(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
