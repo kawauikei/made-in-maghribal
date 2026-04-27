@@ -5555,22 +5555,33 @@ function shuffleArray(array) {
 }
 function App() {
   const [session, setSession] = useState(null);
-  const startGame = () => {
+  const [screen, setScreen] = useState("START");
+  const handleStartGame = () => {
+    setScreen("INTRO");
+  };
+  const handleBeginService = () => {
     const newSession = createQuizSession({ questionCount: 5 });
     setSession(newSession);
+    setScreen("QUIZ");
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
     const nextSession = answerQuestion(session, itemId);
     setSession(nextSession);
+    if (nextSession.isFinished) {
+      setScreen("RESULT");
+    }
   };
-  if (!session) {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Made in Maghribal"), /* @__PURE__ */ React.createElement("p", null, "接客クイズへようこそ。5問の連続クイズに挑戦しましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: startGame, style: buttonStyle }, "店を開く"));
+  if (screen === "START") {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Made in Maghribal"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "30px" } }, "接客クイズへようこそ。5問の連続クイズに挑戦しましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く")));
   }
-  if (session.isFinished) {
+  if (screen === "INTRO") {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, /* @__PURE__ */ React.createElement("p", null, "ここは砂漠の王国マグリバル。"), /* @__PURE__ */ React.createElement("p", null, "あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。"), /* @__PURE__ */ React.createElement("p", null, "今日も工房には、少し困ったお客がやってくる。"), /* @__PURE__ */ React.createElement("p", null, "相手の願いを読み取り、ぴったりの品を選ぼう。")), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
+  }
+  if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", marginBottom: "10px", fontWeight: "bold" } }, "称号：", rank.title), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: startGame, style: buttonStyle }, "もう一度挑戦")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", marginBottom: "10px", fontWeight: "bold" } }, "称号：", rank.title), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
   }
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("style", null, `
@@ -5681,6 +5692,17 @@ const imageStyle = {
 const itemNameStyle = {
   fontSize: "0.9em",
   color: "#ccc"
+};
+const narrativeBoxStyle = {
+  background: "#111",
+  padding: "20px",
+  borderRadius: "12px",
+  marginBottom: "30px",
+  textAlign: "left",
+  lineHeight: "1.8",
+  fontSize: "0.95em",
+  color: "#ddd",
+  borderLeft: "4px solid #ffcc00"
 };
 const buttonStyle = {
   padding: "12px 24px",
