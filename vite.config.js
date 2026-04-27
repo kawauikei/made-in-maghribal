@@ -3,12 +3,13 @@ import react from '@vitejs/plugin-react';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import path from 'path';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // 開発時(serve)などは 'public' を有効にし、ビルド時(build)は false にしてコピーを防ぐ
+  publicDir: command !== 'build' ? 'public' : false,
   // JSX Runtime を classic (React.createElement) に設定して、軽量化を図る
   plugins: [react({
     jsxRuntime: 'classic',
   }), cssInjectedByJsPlugin()],
-  publicDir: false,
   build: {
     lib: {
       // Entry point を .js に変更（中身は App の export のみ）
@@ -32,4 +33,4 @@ export default defineConfig({
     // ミニファイを無効化して中身を見やすくする（ユーザーが軽量化・可読性を重視しているため）
     minify: false,
   },
-});
+}));

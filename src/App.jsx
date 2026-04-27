@@ -65,7 +65,7 @@ export default function App() {
               style={itemCardStyle}
             >
               <img 
-                src={`/${item.image}`} 
+                src={item.image.startsWith('/') ? item.image : `/${item.image}`} 
                 alt={item.name} 
                 style={imageStyle}
               />
