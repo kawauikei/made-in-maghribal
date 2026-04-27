@@ -5410,7 +5410,8 @@ function createQuizSession({ questionCount = 20 } = {}) {
     isFinished: questions.length === 0
   };
 }
-function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PURE__ */ new Set()) {
+function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PURE__ */ new Set(), retryCount = 0) {
+  const MAX_RETRIES = 10;
   const requestTemplate = forcedType ? REQUEST_TEMPLATES.find((t) => t.id === forcedType) : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   const criteria = {};
   let text = "";
@@ -5435,6 +5436,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
   }
   let correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
   const nonDuplicateItems = correctItems.filter((item) => !excludeItemIds.has(item.id));
+  if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
+    return generateRandomQuestion(id, forcedType, excludeItemIds, retryCount + 1);
+  }
   if (nonDuplicateItems.length > 0) {
     correctItems = nonDuplicateItems;
   }
@@ -5488,7 +5492,10 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     incorrectItems = ITEMS_TO_USE.filter((item) => !isItemMatchingCriteria(item, criteria));
   }
   if (correctItems.length === 0 || incorrectItems.length === 0) {
-    return generateRandomQuestion(id, null, excludeItemIds);
+    if (retryCount < MAX_RETRIES) {
+      return generateRandomQuestion(id, null, excludeItemIds, retryCount + 1);
+    }
+    return null;
   }
   const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   const incorrectItem = incorrectItems[Math.floor(Math.random() * incorrectItems.length)];
@@ -5498,7 +5505,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     request: {
       id: requestTemplate.id,
       type: requestTemplate.id,
-      // Now directly matches the ID
       text,
       criteria: { ...criteria }
     },
