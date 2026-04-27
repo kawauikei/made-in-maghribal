@@ -65,7 +65,9 @@ export function createQuizSession({ questionCount = 20 } = {}) {
  * @param {string} [forcedType=null] - Optional forced request type ID.
  * @param {Set<string>} [excludeItemIds=new Set()] - Set of item IDs to avoid for correct answer.
  */
-function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set()) {
+function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(), retryCount = 0) {
+  const MAX_RETRIES = 10;
+
   // Select request type
   const requestTemplate = forcedType 
     ? REQUEST_TEMPLATES.find(t => t.id === forcedType)
@@ -104,10 +106,17 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
   
   // M7b-2: Duplicate prevention - try to find items not used yet
   const nonDuplicateItems = correctItems.filter(item => !excludeItemIds.has(item.id));
+
+  // If no unused items for this criteria, but total items matching criteria > 0, 
+  // and we haven't hit retry limit, retry with different random criteria.
+  if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
+    return generateRandomQuestion(id, forcedType, excludeItemIds, retryCount + 1);
+  }
+
   if (nonDuplicateItems.length > 0) {
     correctItems = nonDuplicateItems;
   }
-  // Fallback: if all matching items were already used, we use the original list (accept duplicates)
+  // Fallback: if all matching items were already used and retries exhausted, we accept duplicates.
   
   // Strategy-based dummy selection
   let incorrectItems = [];
@@ -124,7 +133,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     }
   } else if (requestTemplate.id === "genre") {
     // Strategy: Different genre, but prefer similar group
-    // Groups: Gear (ARM, CLT, ADN, RIT), Consumable (FOD, MED, WRK), Utility (DAY, TRV, TRD)
     const groups = {
       ARM: "gear", CLT: "gear", ADN: "gear", RIT: "gear",
       FOD: "cons", MED: "cons", WRK: "cons",
@@ -166,9 +174,10 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
   }
 
   if (correctItems.length === 0 || incorrectItems.length === 0) {
-    // If we truly have no items matching the criteria at all (not even duplicates), 
-    // retry with random type to avoid crash
-    return generateRandomQuestion(id, null, excludeItemIds); 
+    if (retryCount < MAX_RETRIES) {
+      return generateRandomQuestion(id, null, excludeItemIds, retryCount + 1); 
+    }
+    return null; // Should not happen with 250 items
   }
 
   const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
@@ -181,7 +190,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     id,
     request: {
       id: requestTemplate.id,
-      type: requestTemplate.id, // Now directly matches the ID
+      type: requestTemplate.id,
       text,
       criteria: { ...criteria }
     },

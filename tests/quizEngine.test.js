@@ -73,8 +73,6 @@ runTest('M7b-2: Correct item uniqueness in 5-question sessions (100 iterations)'
     const correctIds = session.questions.map(q => q.correctItemId);
     const uniqueIds = new Set(correctIds);
     
-    // With 250 items, 5 questions should almost never need duplicates.
-    // If this fails, it might mean the data set for a specific criteria is too small.
     assert.strictEqual(uniqueIds.size, 5, `Iteration ${i}: Found duplicate correct items: ${correctIds.join(', ')}`);
   }
 });
