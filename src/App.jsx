@@ -65,7 +65,7 @@ export default function App() {
               style={itemCardStyle}
             >
               <img 
-                src={item.image.startsWith('/') ? item.image : `/${item.image}`} 
+                src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
                 alt={item.name} 
                 style={imageStyle}
               />

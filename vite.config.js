@@ -6,6 +6,7 @@ import path from 'path';
 export default defineConfig(({ command }) => ({
   // 開発時(serve)などは 'public' を有効にし、ビルド時(build)は false にしてコピーを防ぐ
   publicDir: command !== 'build' ? 'public' : false,
+  base: command === 'build' ? 'https://kawauikei.github.io/made-in-maghribal/' : '/',
   // JSX Runtime を classic (React.createElement) に設定して、軽量化を図る
   plugins: [react({
     jsxRuntime: 'classic',
