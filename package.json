@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node tools/post-build.js"
+    "build": "vite build && node tools/post-build.js",
+    "test": "node tests/quizEngine.test.js"
   },
   "dependencies": {
     "react": "^18.3.1",
