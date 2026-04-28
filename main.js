@@ -5596,7 +5596,7 @@ const HEROINES = [
     personality: "負けず嫌いで家族思い。口は少し悪いが面倒見がいい。好きな相手ほど厳しく接する。",
     routeTheme: "置いていかれた幼馴染が、もう一度隣に立つ話",
     musicMood: "少し尖ったテンポ、跳ねるリズム、狐っぽい軽快さ、幼馴染の温かさと切なさ",
-    themeTrackId: "hakimaTheme",
+    themeTrackId: "HAKIMA-01",
     description: "狐耳と尻尾を持つ獣人少女。負けず嫌いだが面倒見がよく、公私ともにナーディルを支えてくれる。",
     assets: {
       standing: {
@@ -5632,7 +5632,7 @@ const HEROINES = [
     personality: "礼儀正しく賢いが、少しませている。素材工学と商用錬金術が得意。",
     routeTheme: "特別扱いされ続けた天才少女が、普通の恋を知る話",
     musicMood: "透明感と知性、細かく動く可愛いメロディ、ベル、ピチカート、軽い弦、木管",
-    themeTrackId: "miraTheme",
+    themeTrackId: "MIRA-01",
     description: "王国屈指の大商会の娘でありながら、普通の女の子として見てほしいと願う賢い少女。",
     assets: {
       standing: {
@@ -5668,7 +5668,7 @@ const HEROINES = [
     personality: "鬼族の女性。クールで気品があり、少し皮肉屋。内面は仕事でかなり疲れている。",
     routeTheme: "一番でなくなった先輩が、それでも自分の価値を取り戻す話",
     musicMood: "美しく重い、低弦、ピアノ、控えめな女声コーラス、金属的な響き、最後に救い",
-    themeTrackId: "dariyaTheme",
+    themeTrackId: "DARIYA-01",
     description: "普段はクールなエリートだが、星瓶堂ではふと気を抜いた素顔を見せる鬼族の先輩。",
     assets: {
       standing: {
@@ -5723,49 +5723,99 @@ const PROTAGONIST = {
   shortName: "ナーディル"
 };
 const TRACKS = {
-  // --- Common BGM ---
-  titleTheme: {
-    id: "titleTheme",
-    usage: "title_theme",
-    src: "audio/bgm/common/title_theme.mp3",
+  // --- Main BGM ---
+  "MAIN-01": {
+    id: "MAIN-01",
+    src: "audio/bgm/main/main01_title.mp3",
     loop: true,
-    title: "星瓶堂の幕開け"
+    title: "Alchemy Shop in the Desert"
   },
-  workshopTheme: {
-    id: "workshopTheme",
-    usage: "workshop_day",
-    src: "audio/bgm/common/workshop_theme.mp3",
+  "MAIN-02": {
+    id: "MAIN-02",
+    src: "audio/bgm/main/main02_shop.mp3",
     loop: true,
-    title: "工房の日常"
+    title: "Spice Market Breeze"
   },
-  quizBasic01: {
-    id: "quizBasic01",
-    usage: "quiz_basic",
-    src: "audio/bgm/common/quiz_basic_01.mp3",
+  "MAIN-03": {
+    id: "MAIN-03",
+    src: "audio/bgm/main/main03_puzzle.mp3",
     loop: true,
-    title: "目利きの時間"
+    title: "Measure The Mortar"
   },
-  // --- Heroine Themes (Placeholders) ---
-  hakimaTheme: {
-    id: "hakimaTheme",
-    usage: "heroine_theme",
-    src: "audio/bgm/hakima/hakima_theme.mp3",
+  // --- Hakima ---
+  "HAKIMA-01": {
+    id: "HAKIMA-01",
+    src: "audio/bgm/hakima/hakima01_theme.mp3",
     loop: true,
-    title: "ハキマのテーマ"
+    title: "Two Cups of Cardamom"
   },
-  miraTheme: {
-    id: "miraTheme",
-    usage: "heroine_theme",
-    src: "audio/bgm/mira/mira_theme.mp3",
+  "HAKIMA-02": {
+    id: "HAKIMA-02",
+    src: "audio/bgm/hakima/hakima02_game_a.mp3",
     loop: true,
-    title: "ミラのテーマ"
+    title: "Copper and Cumin"
   },
-  dariyaTheme: {
-    id: "dariyaTheme",
-    usage: "heroine_theme",
-    src: "audio/bgm/dariya/dariya_theme.mp3",
+  "HAKIMA-03": {
+    id: "HAKIMA-03",
+    src: "audio/bgm/hakima/hakima03_game_b.mp3",
     loop: true,
-    title: "ダリヤのテーマ"
+    title: "Copper and Sand"
+  },
+  "HAKIMA-04": {
+    id: "HAKIMA-04",
+    src: "audio/bgm/hakima/hakima04_ending.mp3",
+    loop: true,
+    title: "Morning Beside You"
+  },
+  // --- Mira ---
+  "MIRA-01": {
+    id: "MIRA-01",
+    src: "audio/bgm/mira/mira01_theme.mp3",
+    loop: true,
+    title: "The Glass Bottle Genius"
+  },
+  "MIRA-02": {
+    id: "MIRA-02",
+    src: "audio/bgm/mira/mira02_game_a.mp3",
+    loop: true,
+    title: "The Alchemist's Arithmetic"
+  },
+  "MIRA-03": {
+    id: "MIRA-03",
+    src: "audio/bgm/mira/mira03_game_b.mp3",
+    loop: true,
+    title: "Proof of the Prodigy"
+  },
+  "MIRA-04": {
+    id: "MIRA-04",
+    src: "audio/bgm/mira/mira04_ending.mp3",
+    loop: true,
+    title: "Finally Just Me"
+  },
+  // --- Dariya ---
+  "DARIYA-01": {
+    id: "DARIYA-01",
+    src: "audio/bgm/dariya/dariya01_theme.mp3",
+    loop: true,
+    title: "Tea and Copper Stills"
+  },
+  "DARIYA-02": {
+    id: "DARIYA-02",
+    src: "audio/bgm/dariya/dariya02_game_a.mp3",
+    loop: true,
+    title: "The Alchemist's Ledger"
+  },
+  "DARIYA-03": {
+    id: "DARIYA-03",
+    src: "audio/bgm/dariya/dariya03_game_b.mp3",
+    loop: true,
+    title: "Clockwork Gambit"
+  },
+  "DARIYA-04": {
+    id: "DARIYA-04",
+    src: "audio/bgm/dariya/dariya04_ending.mp3",
+    loop: true,
+    title: "Tea Under the Rising Sun"
   }
 };
 const SELECTED_SFX = {
@@ -6241,7 +6291,44 @@ const STILL_IMAGES = {
 };
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
-  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => audioEngine.playTrack(track),
+      disabled: !isAudioEnabled,
+      style: {
+        width: "100%",
+        padding: "8px",
+        background: isAudioEnabled ? "#3d5afe" : "#333",
+        color: isAudioEnabled ? "#fff" : "#666",
+        border: "none",
+        borderRadius: "4px",
+        cursor: isAudioEnabled ? "pointer" : "default",
+        fontSize: "0.8rem",
+        fontWeight: "bold"
+      }
+    },
+    "Play"
+  ))), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => audioEngine.stop(),
+      style: {
+        width: "100%",
+        padding: "12px",
+        background: "#555",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        fontSize: "0.85rem",
+        fontWeight: "bold",
+        gridColumn: "1 / -1",
+        marginTop: "10px"
+      }
+    },
+    "STOP MUSIC"
+  ))), /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "SFX (Sound Effects)"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
     const isSelected = Object.values(SELECTED_SFX).includes(c.id);
     return /* @__PURE__ */ React.createElement("div", { key: c.id, style: {
       background: "#2a2a2a",
@@ -6323,19 +6410,29 @@ function App() {
   }, [isAudioEnabled]);
   useEffect(() => {
     let trackId = null;
-    if (screen === "START" || screen === "HEROINE_SELECT") {
-      trackId = "titleTheme";
+    const day = workshopState.day || 1;
+    const hPrefix = (activeHeroineId || "hakima").toUpperCase();
+    if (screen === "START" || screen === "HEROINE_SELECT" || screen === "MEMORIES") {
+      trackId = "MAIN-01";
     } else if (screen === "QUIZ") {
-      trackId = "quizBasic01";
+      if (day <= 3) {
+        trackId = "MAIN-03";
+      } else if (day <= 6) {
+        trackId = `${hPrefix}-02`;
+      } else {
+        trackId = `${hPrefix}-03`;
+      }
     } else if (screen === "INTRO" || screen === "RESULT" || screen === "DAY_END") {
-      trackId = "workshopTheme";
+      trackId = "MAIN-02";
+    } else if (screen === "EVENT") {
+      trackId = `${hPrefix}-01`;
     }
-    if (trackId) {
+    if (trackId && TRACKS[trackId]) {
       audioEngine.playTrack(TRACKS[trackId]);
     } else {
       audioEngine.stop();
     }
-  }, [screen]);
+  }, [screen, workshopState.day, activeHeroineId]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const handleStartGame = () => {
     audioEngine.playSfx("uiTapBottle");
