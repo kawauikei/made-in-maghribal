@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -6341,6 +6341,67 @@ const ENDINGS = {
     }
   }
 };
+const SFX = {
+  // --- UI Interactions ---
+  uiTapBottle: {
+    id: "uiTapBottle",
+    usage: "ui_tap",
+    src: "audio/se/ui_tap_bottle_01.mp3",
+    volume: 0.45,
+    description: "Small glass bottle tap for general selection"
+  },
+  uiConfirmChime: {
+    id: "uiConfirmChime",
+    usage: "ui_confirm",
+    src: "audio/se/ui_confirm_chime_01.mp3",
+    volume: 0.5,
+    description: "Soft brass chime for confirmation"
+  },
+  uiBackCloth: {
+    id: "uiBackCloth",
+    usage: "ui_back",
+    src: "audio/se/ui_back_cloth_01.mp3",
+    volume: 0.4,
+    description: "Cloth rustle for backing out or closing menus"
+  },
+  // --- Quiz Interactions ---
+  quizChoicePick: {
+    id: "quizChoicePick",
+    usage: "quiz_choice",
+    src: "audio/se/quiz_choice_pick_01.mp3",
+    volume: 0.45,
+    description: "Ceramic click when picking an item"
+  },
+  quizCorrectStarChime: {
+    id: "quizCorrectStarChime",
+    usage: "quiz_correct",
+    src: "audio/se/quiz_correct_star_chime_01.mp3",
+    volume: 0.55,
+    description: "Tiny star-like crystalline chime for correct answers"
+  },
+  quizWrongSandTap: {
+    id: "quizWrongSandTap",
+    usage: "quiz_wrong",
+    src: "audio/se/quiz_wrong_sand_tap_01.mp3",
+    volume: 0.45,
+    description: "Muffled sand-like tap for wrong answers"
+  },
+  // --- Workshop Events ---
+  workshopCoinGain: {
+    id: "workshopCoinGain",
+    usage: "workshop_gain",
+    src: "audio/se/workshop_coin_gain_01.mp3",
+    volume: 0.5,
+    description: "Light coin jingle for earning sales"
+  },
+  workshopDayEnd: {
+    id: "workshopDayEnd",
+    usage: "workshop_day_end",
+    src: "audio/se/workshop_day_end_01.mp3",
+    volume: 0.5,
+    description: "Wooden door latch or shop bell for day end"
+  }
+};
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#222", borderRadius: "8px", border: "1px solid #444", color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", padding: "10px 12px", borderBottom: "1px solid #444", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 14px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" } }, "Close")), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "12px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
@@ -6442,20 +6503,23 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+  const outerWrapperRef = useRef(null);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
+  const MAX_LOGICAL_WIDTH = 560;
   const MIN_SCALE = 0.72;
   const MAX_SCALE = 1.25;
-  const [windowSize, setWindowSize] = useState({
+  const [viewportSize, setViewportSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 390,
     height: typeof window !== "undefined" ? ((_a = window.visualViewport) == null ? void 0 : _a.height) || window.innerHeight : 780
   });
+  const [hostSize, setHostSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
     var _a2, _b2;
     const handleResize = () => {
       const viewport = window.visualViewport;
       const doc = document.documentElement;
-      setWindowSize({
+      setViewportSize({
         width: Math.floor(Math.min((viewport == null ? void 0 : viewport.width) || window.innerWidth, (doc == null ? void 0 : doc.clientWidth) || window.innerWidth)),
         height: Math.floor(Math.min((viewport == null ? void 0 : viewport.height) || window.innerHeight, (doc == null ? void 0 : doc.clientHeight) || window.innerHeight))
       });
@@ -6471,30 +6535,55 @@ function App() {
       (_b3 = window.visualViewport) == null ? void 0 : _b3.removeEventListener("scroll", handleResize);
     };
   }, []);
+  useEffect(() => {
+    var _a2;
+    if (typeof ResizeObserver === "undefined") return;
+    const target = ((_a2 = outerWrapperRef.current) == null ? void 0 : _a2.parentElement) || document.documentElement;
+    const observer = new ResizeObserver((entries) => {
+      var _a3;
+      const rect = (_a3 = entries[0]) == null ? void 0 : _a3.contentRect;
+      if (!rect) return;
+      setHostSize({
+        width: Math.floor(rect.width),
+        height: Math.floor(rect.height)
+      });
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+  const measuredSize = {
+    width: hostSize.width || viewportSize.width,
+    height: hostSize.height || viewportSize.height
+  };
   const rawScale = Math.min(
-    windowSize.width / BASE_WIDTH,
-    windowSize.height / BASE_HEIGHT
+    measuredSize.width / BASE_WIDTH,
+    measuredSize.height / BASE_HEIGHT
   );
   const scale = Math.min(Math.max(rawScale, MIN_SCALE), MAX_SCALE);
+  const logicalWidth = Math.min(
+    MAX_LOGICAL_WIDTH,
+    Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
+  );
   const isClipped = rawScale < MIN_SCALE;
   const outerWrapperStyle = {
-    width: `${windowSize.width}px`,
-    height: `${windowSize.height}px`,
+    width: "100%",
+    height: "100%",
+    minHeight: `${measuredSize.height}px`,
     backgroundColor: "#000",
     display: "flex",
-    justifyContent: isClipped ? "flex-start" : "center",
+    justifyContent: "center",
     alignItems: isClipped ? "flex-start" : "center",
     overflow: isClipped ? "auto" : "hidden",
     position: "relative"
   };
   const canvasContainerStyle = {
-    width: `${BASE_WIDTH * scale}px`,
+    width: `${logicalWidth * scale}px`,
     height: `${BASE_HEIGHT * scale}px`,
     position: "relative",
     flexShrink: 0
   };
   const canvasStyle = {
-    width: `${BASE_WIDTH}px`,
+    width: `${logicalWidth}px`,
     height: `${BASE_HEIGHT}px`,
     transform: `scale(${scale})`,
     transformOrigin: "top left",
@@ -6602,14 +6691,19 @@ function App() {
     }
   };
   useEffect(() => {
+    const asset = (type, src) => ({ type, src: `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/") });
+    const expressions = ["normal", "joy", "fun", "sorrow", "anger", "surprise", "cry"];
     const essentialAssets = [
-      // BGM
-      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}audio/bgm/main/main01_title.mp3`.replace(/([^:])\/\//g, "$1/") },
-      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}audio/bgm/main/main02_shop.mp3`.replace(/([^:])\/\//g, "$1/") },
-      // UI Backgrounds
-      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}images/background/bg_shop_exterior_day.jpg`.replace(/([^:])\/\//g, "$1/") },
-      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}images/background/bg_shop_interior_service.jpg`.replace(/([^:])\/\//g, "$1/") }
-    ];
+      ...Object.values(TRACKS).map((track) => asset("audio", track.src)),
+      ...Object.values(SFX).map((sfx) => asset("audio", sfx.src)),
+      ...Object.values(BACKGROUND_IMAGES).map((bg) => asset("image", bg.src)),
+      ...Object.values(STILL_IMAGES).map((still) => asset("image", still.src)),
+      ...itemsData.items.map((item) => asset("image", item.image)),
+      ...HEROINES.flatMap((heroine) => expressions.flatMap((expression) => [
+        asset("image", `characters/${heroine.id}/face_proc/${expression}.png`),
+        asset("image", `characters/${heroine.id}/standing_proc/${expression}.png`)
+      ]))
+    ].filter((entry, index, list) => list.findIndex((item) => item.src === entry.src) === index);
     const loadAll = async () => {
       await preloadAssets(essentialAssets, setLoadingProgress);
       setIsInitialLoading(false);
@@ -7137,6 +7231,7 @@ function App() {
       width: "100%",
       maxWidth: "350px"
     } }, HEROINES.map((h) => {
+      var _a2;
       const isSelected = previewHeroineId === h.id;
       return /* @__PURE__ */ React.createElement(
         "div",
@@ -7150,18 +7245,46 @@ function App() {
             width: "70px",
             height: "70px",
             borderRadius: "50%",
-            border: `3px solid ${isSelected ? h.themeColor : "#ccc"}`,
-            background: isSelected ? h.themeColor + "22" : THEME.parchment,
-            padding: "2px",
+            border: `3px solid ${isSelected ? h.themeColor : "rgba(226,209,177,0.65)"}`,
+            background: "#111",
+            padding: 0,
             cursor: "pointer",
             transition: "all 0.2s",
-            transform: isSelected ? "scale(1.15)" : "scale(1.0)",
-            boxShadow: isSelected ? `0 0 15px ${h.themeColor}aa` : "none",
+            transform: isSelected ? "scale(1.12)" : "scale(1.0)",
+            boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : "0 2px 8px rgba(0,0,0,0.35)",
             overflow: "hidden",
-            zIndex: isSelected ? 2 : 1
+            zIndex: isSelected ? 2 : 1,
+            boxSizing: "border-box",
+            position: "relative"
           }
         },
-        /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: h, type: "face", size: "small" })
+        /* @__PURE__ */ React.createElement(
+          "img",
+          {
+            src: getFullPath(getHeroineAsset(h.id, "face", "normal")),
+            alt: h.name,
+            style: {
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: ((_a2 = h.visualConfig) == null ? void 0 : _a2.facePosition) || "center 20%",
+              display: "block",
+              borderRadius: "50%",
+              clipPath: "circle(50% at 50% 50%)"
+            }
+          }
+        ),
+        isSelected && /* @__PURE__ */ React.createElement("div", { style: {
+          position: "absolute",
+          top: "7px",
+          left: "-3px",
+          width: "18px",
+          height: "50px",
+          borderLeft: `3px solid ${THEME.starGold}`,
+          borderRadius: "50%",
+          filter: `drop-shadow(0 0 5px ${h.themeColor})`,
+          pointerEvents: "none"
+        } })
       );
     })), /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle,
@@ -7331,7 +7454,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
