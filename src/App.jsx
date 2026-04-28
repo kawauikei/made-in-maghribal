@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
+import { getWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 
 const ACTIVE_HEROINE_ID = 'hakima';
@@ -72,6 +73,7 @@ export default function App() {
   if (screen === 'RESULT' && session) {
     const correctCount = session.answers.filter(a => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
+    const mgmt = getWorkshopResult(correctCount);
 
     const resultNarrations = {
       5: "お客は品を受け取ると、ぱっと顔を輝かせた。\n「これだよ、これ！　まさかこんなにぴったりの品があるなんて」\n今日の工房には、少し誇らしい空気が流れている。",
@@ -96,6 +98,36 @@ export default function App() {
             <HeroineDisplay heroine={activeHeroine} type="face" size="small" />
             <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
               称号：{rank.title}
+            </div>
+          </div>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(3, 1fr)', 
+            gap: '10px', 
+            margin: '20px 0',
+            background: 'rgba(255,255,255,0.05)',
+            padding: '15px',
+            borderRadius: '12px',
+            border: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>評判</div>
+              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? '#4caf50' : '#f44336' }}>
+                {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>売上</div>
+              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: '#ffcc00' }}>
+                {mgmt.sales}G
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>満足度</div>
+              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? '#4caf50' : '#f44336' }}>
+                {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
+              </div>
             </div>
           </div>
 
