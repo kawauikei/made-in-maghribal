@@ -5727,21 +5727,21 @@ const TRACKS = {
   titleTheme: {
     id: "titleTheme",
     usage: "title_theme",
-    src: "audio/common/title_theme.mp3",
+    src: "audio/bgm/common/title_theme.mp3",
     loop: true,
     title: "星瓶堂の幕開け"
   },
   workshopTheme: {
     id: "workshopTheme",
     usage: "workshop_day",
-    src: "audio/common/workshop_theme.mp3",
+    src: "audio/bgm/common/workshop_theme.mp3",
     loop: true,
     title: "工房の日常"
   },
   quizBasic01: {
     id: "quizBasic01",
     usage: "quiz_basic",
-    src: "audio/common/quiz_basic_01.mp3",
+    src: "audio/bgm/common/quiz_basic_01.mp3",
     loop: true,
     title: "目利きの時間"
   },
@@ -5749,21 +5749,21 @@ const TRACKS = {
   hakimaTheme: {
     id: "hakimaTheme",
     usage: "heroine_theme",
-    src: "audio/hakima/theme.mp3",
+    src: "audio/bgm/hakima/hakima_theme.mp3",
     loop: true,
     title: "ハキマのテーマ"
   },
   miraTheme: {
     id: "miraTheme",
     usage: "heroine_theme",
-    src: "audio/mira/theme.mp3",
+    src: "audio/bgm/mira/mira_theme.mp3",
     loop: true,
     title: "ミラのテーマ"
   },
   dariyaTheme: {
     id: "dariyaTheme",
     usage: "heroine_theme",
-    src: "audio/dariya/theme.mp3",
+    src: "audio/bgm/dariya/dariya_theme.mp3",
     loop: true,
     title: "ダリヤのテーマ"
   }
