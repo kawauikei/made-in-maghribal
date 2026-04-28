@@ -1067,65 +1067,47 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
-
-  const isPortrait = type === 'standing';
-  const sizePx = size === 'large' ? 120 : size === 'medium' ? 80 : 60;
+  const isStanding = type === 'standing';
   
-  if (type === 'face') {
-    return (
-      <div style={{
-        width: `${sizePx}px`,
-        height: `${sizePx}px`,
-        borderRadius: '50%',
-        backgroundColor: heroine.themeColor + '33',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: heroine.themeColor,
-        fontWeight: 'bold',
-        fontSize: `${sizePx * 0.4}px`,
-        overflow: 'hidden',
-        border: `2px solid ${heroine.themeColor}`,
-        position: 'relative'
-      }}>
-        <img 
-          src={fullPath} 
-          alt={heroine.name}
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'cover',
-            objectPosition: heroine.visualConfig?.facePosition || 'center 20%',
-            display: imgError ? 'none' : 'block'
-          }}
-          onError={() => setImgError(true)}
-        />
-        {imgError && <span>{heroine.name[0]}</span>}
-      </div>
-    );
-  }
-
-  const displaySize = size === 'large' ? (isPortrait ? 180 : 100) : (isPortrait ? 80 : 50);
+  // Responsive sizing
+  const displaySize = size === 'large' 
+    ? (isStanding ? 320 : 120) 
+    : (size === 'medium' ? (isStanding ? 180 : 80) : (isStanding ? 120 : 60));
 
   const containerStyle = {
-    width: isPortrait ? `${displaySize * 0.7}px` : `${displaySize}px`,
+    width: isStanding ? `${displaySize * 0.75}px` : `${displaySize}px`,
     height: `${displaySize}px`,
-    borderRadius: isPortrait ? '12px' : '50%',
+    borderRadius: isStanding ? '16px' : '50%',
     overflow: 'hidden',
-    background: heroine.themeColor || '#444',
+    backgroundColor: (heroine.themeColor || '#444') + '33',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     border: `2px solid ${heroine.themeColor || '#ffcc00'}`,
-    boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-    flexShrink: 0
+    boxShadow: isStanding ? '0 12px 30px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.3)',
+    flexShrink: 0,
+    position: 'relative'
+  };
+
+  const imgStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    // Standing is now pre-cropped to bust-up, so top center is safe. 
+    // Face uses visualConfig.
+    objectPosition: isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%'),
+    display: imgError ? 'none' : 'block'
   };
 
   if (!fullPath || imgError) {
     return (
       <div style={containerStyle}>
-        <span style={{ fontSize: size === 'large' ? '2em' : '1.2em', fontWeight: 'bold', color: '#111' }}>
-          {heroine.name[0]}
+        <span style={{ 
+          fontSize: `${displaySize * 0.4}px`, 
+          fontWeight: 'bold', 
+          color: heroine.themeColor || '#111' 
+        }}>
+          {heroine.name ? heroine.name[0] : '?'}
         </span>
       </div>
     );
@@ -1136,7 +1118,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
       <img 
         src={fullPath} 
         alt={heroine.name} 
-        style={{ width: '100%', height: '100%', objectFit: isPortrait ? 'contain' : 'cover' }}
+        style={imgStyle}
         onError={() => setImgError(true)}
       />
     </div>

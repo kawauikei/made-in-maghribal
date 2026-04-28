@@ -122,7 +122,7 @@ export const HEROINES = [
     visualConfig: {
       facePosition: "center 17%"
     },
-    themeColor: "#cc00ff"
+    themeColor: "#9400d3"
   }
 ];
 
@@ -132,9 +132,12 @@ export function getHeroineAsset(heroineId, type, expression = "normal") {
   
   // Prioritize face_proc for "face" type
   if (type === 'face') {
-    // For nader (not in HEROINES list but we might call this), 
-    // or if we want to be safe, we check if the char is known.
     return `characters/${heroineId}/face_proc/${expression}.png`;
+  }
+
+  // Prioritize standing_proc for "standing" type
+  if (type === 'standing') {
+    return `characters/${heroineId}/standing_proc/${expression}.png`;
   }
   
   // Expression fallback: specified -> normal -> default
