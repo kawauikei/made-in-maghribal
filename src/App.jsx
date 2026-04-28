@@ -9,6 +9,7 @@ import { TRACKS, getTrackById } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
+import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -88,12 +89,34 @@ export default function App() {
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
+  const [hasSave, setHasSave] = useState(false);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
     createInitialAffection(HEROINES.map(h => h.id))
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
+
+  // Initial Load
+  useEffect(() => {
+    setHasSave(hasSaveData());
+  }, []);
+
+  // Auto-Save
+  useEffect(() => {
+    // Only save if we are not on the START screen OR if we just initialized audio etc.
+    // Actually, we want to save any progress.
+    if (screen !== 'START') {
+      saveGameData({
+        screen,
+        activeHeroineId,
+        workshopState,
+        affection,
+        isAudioEnabled
+      });
+      setHasSave(true);
+    }
+  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled]);
 
   // Sync mute state
   useEffect(() => {
@@ -120,10 +143,39 @@ export default function App() {
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
 
-  // Go to Heroine Select
+  // Go to Heroine Select (New Game)
   const handleStartGame = () => {
     audioEngine.playSfx('uiTapBottle');
+    clearSaveData();
+    setHasSave(false);
+    
+    // Reset states to default
+    setActiveHeroineId('hakima');
+    setWorkshopState(createInitialWorkshopState());
+    setAffection(createInitialAffection(HEROINES.map(h => h.id)));
+    setSession(null);
+    
     setScreen('HEROINE_SELECT');
+  };
+
+  // Continue from Save
+  const handleContinue = () => {
+    const data = loadSaveData();
+    if (data) {
+      audioEngine.playSfx('uiConfirmChime');
+      setScreen(data.screen);
+      setActiveHeroineId(data.activeHeroineId);
+      setWorkshopState(data.workshopState);
+      setAffection(data.affection);
+      setIsAudioEnabled(data.isAudioEnabled);
+    }
+  };
+
+  const handleResetSave = () => {
+    if (window.confirm("セーブデータを削除しますか？")) {
+      clearSaveData();
+      setHasSave(false);
+    }
   };
 
   // Select Heroine and start Intro
@@ -156,10 +208,13 @@ export default function App() {
   // Back to Title
   const handleBackToTitle = () => {
     audioEngine.playSfx('uiTapBottle');
-    setActiveHeroineId('hakima');
-    setWorkshopState(createInitialWorkshopState());
-    setSession(null);
+    // We don't reset everything here because we might want to stay in current progress
+    // But App.jsx currently resets everything on handleBackToTitle.
+    // If we want to support "Continue", we should NOT reset everything here if we want the save to persist.
+    // Actually, the auto-save will have saved the current state.
+    // When we go back to title, we just change the screen.
     setScreen('START');
+    setHasSave(hasSaveData());
   };
 
   // Handle answer selection
@@ -235,13 +290,42 @@ export default function App() {
           <p style={{ fontSize: '1em', marginBottom: '30px', color: '#ccc' }}>
             若き店主{PROTAGONIST.shortName}として、錬金術店を切り盛りしましょう。
           </p>
-          <button onClick={handleStartGame} style={buttonStyle}>店を開く</button>
-          <button 
-            onClick={() => setShowSoundTest(true)} 
-            style={{ ...buttonStyle, background: '#444', marginTop: '10px' }}
-          >
-            Sound Test
-          </button>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            {hasSave && (
+              <button onClick={handleContinue} style={{ ...buttonStyle, background: '#4caf50', marginTop: 0, width: '100%', maxWidth: '280px' }}>
+                つづきから
+              </button>
+            )}
+            
+            <button onClick={handleStartGame} style={{ ...buttonStyle, marginTop: 0, width: '100%', maxWidth: '280px' }}>
+              {hasSave ? 'はじめから' : '店を開く'}
+            </button>
+
+            <button 
+              onClick={() => setShowSoundTest(true)} 
+              style={{ ...buttonStyle, background: '#444', marginTop: '10px', width: '100%', maxWidth: '280px' }}
+            >
+              Sound Test
+            </button>
+
+            {hasSave && (
+              <button 
+                onClick={handleResetSave} 
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: '#844', 
+                  textDecoration: 'underline', 
+                  cursor: 'pointer',
+                  fontSize: '0.8em',
+                  marginTop: '10px'
+                }}
+              >
+                セーブデータを削除する
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
