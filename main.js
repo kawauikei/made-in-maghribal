@@ -5956,6 +5956,91 @@ function addAffection(affectionState, heroineId, amount) {
 function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
   return Math.max(0, correctCount);
 }
+const SAVE_DATA_VERSION = "1.0";
+const STORAGE_KEY = "made_in_maghribal_save";
+function createDefaultSaveData() {
+  return {
+    version: SAVE_DATA_VERSION,
+    screen: "START",
+    activeHeroineId: "hakima",
+    workshopState: createInitialWorkshopState(),
+    affection: createInitialAffection(HEROINES.map((h) => h.id)),
+    isAudioEnabled: false,
+    timestamp: Date.now()
+  };
+}
+function normalizeSaveData(raw) {
+  if (!raw || typeof raw !== "object") {
+    return createDefaultSaveData();
+  }
+  const base = createDefaultSaveData();
+  const normalized = { ...base, ...raw };
+  normalized.version = SAVE_DATA_VERSION;
+  if (normalized.screen === "QUIZ") {
+    normalized.screen = "INTRO";
+  }
+  const validHeroineIds = HEROINES.map((h) => h.id);
+  if (!validHeroineIds.includes(normalized.activeHeroineId)) {
+    normalized.activeHeroineId = base.activeHeroineId;
+  }
+  const validatedAffection = {};
+  validHeroineIds.forEach((id) => {
+    const rawVal = raw.affection && raw.affection[id] || 0;
+    validatedAffection[id] = clampAffection(Number(rawVal) || 0);
+  });
+  normalized.affection = validatedAffection;
+  if (!normalized.workshopState || typeof normalized.workshopState !== "object") {
+    normalized.workshopState = base.workshopState;
+  } else {
+    normalized.workshopState = {
+      ...base.workshopState,
+      ...normalized.workshopState
+    };
+  }
+  normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
+  return normalized;
+}
+function isStorageAvailable() {
+  try {
+    return typeof localStorage !== "undefined";
+  } catch (e) {
+    return false;
+  }
+}
+function saveGameData(data) {
+  if (!isStorageAvailable()) return false;
+  try {
+    const serialized = JSON.stringify({
+      ...data,
+      timestamp: Date.now()
+    });
+    localStorage.setItem(STORAGE_KEY, serialized);
+    return true;
+  } catch (e) {
+    console.error("Failed to save game data:", e);
+    return false;
+  }
+}
+function loadSaveData() {
+  if (!isStorageAvailable()) return null;
+  try {
+    const serialized = localStorage.getItem(STORAGE_KEY);
+    if (!serialized) return null;
+    const parsed = JSON.parse(serialized);
+    return normalizeSaveData(parsed);
+  } catch (e) {
+    console.error("Failed to load or parse save data:", e);
+    return null;
+  }
+}
+function hasSaveData() {
+  if (!isStorageAvailable()) return false;
+  return localStorage.getItem(STORAGE_KEY) !== null;
+}
+function clearSaveData() {
+  if (!isStorageAvailable()) return;
+  localStorage.removeItem(STORAGE_KEY);
+}
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
@@ -6004,10 +6089,26 @@ function App() {
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
+  const [hasSave, setHasSave] = useState(false);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
+  useEffect(() => {
+    setHasSave(hasSaveData());
+  }, []);
+  useEffect(() => {
+    if (screen !== "START") {
+      saveGameData({
+        screen,
+        activeHeroineId,
+        workshopState,
+        affection,
+        isAudioEnabled
+      });
+      setHasSave(true);
+    }
+  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled]);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6029,7 +6130,30 @@ function App() {
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const handleStartGame = () => {
     audioEngine.playSfx("uiTapBottle");
+    clearSaveData();
+    setHasSave(false);
+    setActiveHeroineId("hakima");
+    setWorkshopState(createInitialWorkshopState());
+    setAffection(createInitialAffection(HEROINES.map((h) => h.id)));
+    setSession(null);
     setScreen("HEROINE_SELECT");
+  };
+  const handleContinue = () => {
+    const data = loadSaveData();
+    if (data) {
+      audioEngine.playSfx("uiConfirmChime");
+      setScreen(data.screen);
+      setActiveHeroineId(data.activeHeroineId);
+      setWorkshopState(data.workshopState);
+      setAffection(data.affection);
+      setIsAudioEnabled(data.isAudioEnabled);
+    }
+  };
+  const handleResetSave = () => {
+    if (window.confirm("セーブデータを削除しますか？")) {
+      clearSaveData();
+      setHasSave(false);
+    }
   };
   const handleSelectHeroine = (id) => {
     audioEngine.playSfx("uiConfirmChime");
@@ -6052,10 +6176,8 @@ function App() {
   };
   const handleBackToTitle = () => {
     audioEngine.playSfx("uiTapBottle");
-    setActiveHeroineId("hakima");
-    setWorkshopState(createInitialWorkshopState());
-    setSession(null);
     setScreen("START");
+    setHasSave(hasSaveData());
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
@@ -6102,14 +6224,29 @@ function App() {
     /* @__PURE__ */ React.createElement("span", null, isAudioEnabled ? "🔊 BGM ON" : "🔇 BGM OFF")
   );
   if (screen === "START") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "10px", fontWeight: "bold" } }, "～ ", SHOP.localName, " ～"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "30px", color: "#ccc" } }, "若き店主", PROTAGONIST.shortName, "として、錬金術店を切り盛りしましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "10px", fontWeight: "bold" } }, "～ ", SHOP.localName, " ～"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "30px", color: "#ccc" } }, "若き店主", PROTAGONIST.shortName, "として、錬金術店を切り盛りしましょう。"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" } }, hasSave && /* @__PURE__ */ React.createElement("button", { onClick: handleContinue, style: { ...buttonStyle, background: "#4caf50", marginTop: 0, width: "100%", maxWidth: "280px" } }, "つづきから"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: { ...buttonStyle, marginTop: 0, width: "100%", maxWidth: "280px" } }, hasSave ? "はじめから" : "店を開く"), /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => setShowSoundTest(true),
-        style: { ...buttonStyle, background: "#444", marginTop: "10px" }
+        style: { ...buttonStyle, background: "#444", marginTop: "10px", width: "100%", maxWidth: "280px" }
       },
       "Sound Test"
-    )));
+    ), hasSave && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: handleResetSave,
+        style: {
+          background: "none",
+          border: "none",
+          color: "#844",
+          textDecoration: "underline",
+          cursor: "pointer",
+          fontSize: "0.8em",
+          marginTop: "10px"
+        }
+      },
+      "セーブデータを削除する"
+    ))));
   }
   if (screen === "INTRO") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, SHOP.localName), /* @__PURE__ */ React.createElement("p", null, "「おはよう、", PROTAGONIST.shortName, "。今日もお店を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
