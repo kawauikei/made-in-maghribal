@@ -8,6 +8,7 @@ import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS, getTrackById } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
+import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -87,6 +88,12 @@ export default function App() {
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
+  
+  // Affection / Intimacy State
+  const [affection, setAffection] = useState(() => 
+    createInitialAffection(HEROINES.map(h => h.id))
+  );
+  const [lastAffectionGain, setLastAffectionGain] = useState(0);
 
   // Sync mute state
   useEffect(() => {
@@ -177,6 +184,12 @@ export default function App() {
     // If quiz just finished, accumulate results immediately
     if (updatedSession.isFinished) {
       const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
+      
+      // Calculate and apply affection gain
+      const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
+      setAffection(prev => addAffection(prev, activeHeroineId, gain));
+      setLastAffectionGain(gain);
+
       const result = getWorkshopResult(correctCount);
       setWorkshopState(prev => applyWorkshopResult(prev, result));
       setScreen('RESULT');
@@ -288,6 +301,12 @@ export default function App() {
               expression={getResultExpression(correctCount)}
             />
             <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
+              {activeHeroine.name}との親密度 +{lastAffectionGain}
+            </div>
+          </div>
+
+          <div style={{ margin: '20px 0', border: '1px solid #444', borderRadius: '12px', padding: '15px' }}>
+            <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
               称号：{rank.title}
             </div>
           </div>
@@ -378,6 +397,7 @@ export default function App() {
                <div>総売上: <span style={{ color: '#ffcc00', fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
                <div>総評判: <span style={{ color: workshopState.reputation >= 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
                <div>満足度: <span style={{ color: workshopState.satisfaction >= 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
+               <div>親密度: <span style={{ color: '#ffcc00', fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
             </div>
           </div>
 
@@ -418,7 +438,8 @@ export default function App() {
                   <HeroineDisplay heroine={heroine} type="face" size="large" expression="normal" />
                 </div>
                 <h3 style={{ margin: '0 0 10px 0', fontSize: '1.2em' }}>{heroine.name}</h3>
-                <div style={{ fontSize: '0.8em', color: '#ffcc00', marginBottom: '10px' }}>{heroine.role}</div>
+                <div style={{ fontSize: '0.8em', color: '#ffcc00', marginBottom: '5px' }}>{heroine.role}</div>
+                <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '10px' }}>親密度: {affection[heroine.id]} / 100</div>
                 <p style={{ fontSize: '0.85em', color: '#ccc', textAlign: 'left', margin: 0, minHeight: '4.5em' }}>
                   {heroine.description}
                 </p>
