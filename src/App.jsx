@@ -649,19 +649,21 @@ export default function App() {
         <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {renderAudioToggle()}
           <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
-          <div style={cardStyle}>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0 }}>
+            <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginBottom: '20px' }}>
                <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
-               <div style={{ ...narrativeBoxStyle, flex: 1, minWidth: 0, marginBottom: 0 }}>
-                  <div style={{ fontSize: '0.8em', color: THEME.brass, marginBottom: '4px', fontWeight: 'bold' }}>{SHOP.localName}</div>
-                  <p style={{ margin: 0 }}>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
-               </div>
+               <VNBox 
+                 speaker={activeHeroine.name}
+                 text={`おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
+                 themeColor={activeHeroine.themeColor}
+                 onComplete={handleBeginService}
+               />
             </div>
-            <div style={{ ...narrativeBoxStyle, background: 'transparent', borderLeft: 'none', padding: 0 }}>
+            <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.4)', color: '#fff', borderLeft: `4px solid ${THEME.brass}` }}>
               <p style={{ margin: '0 0 8px 0' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
               <p style={{ margin: 0 }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
             </div>
-            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>接客を始める</button>
+            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px', marginTop: '20px' }}>接客を始める</button>
           </div>
         </div>
       </div>
@@ -688,9 +690,11 @@ export default function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>業務報告書</h1>
           <div style={{ ...cardStyle, borderRadius: '4px', border: `3px double ${THEME.brass}` }}>
-            <div style={narrativeBoxStyle}>
-              {resultNarrations[correctCount]}
-            </div>
+            <VNBox 
+              text={resultNarrations[correctCount]}
+              themeColor={THEME.brass}
+              onComplete={handleEndDay}
+            />
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
               <HeroineDisplay 
@@ -842,28 +846,39 @@ export default function App() {
             </div>
           )}
           
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'nowrap', justifyContent: 'center' }}>
             {!still && (
-              <HeroineDisplay 
-                heroine={activeHeroine} 
-                type="standing" 
-                size="large" 
-                expression={activeEvent.expression} 
-              />
-            )}
-            <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-              <div style={{ fontSize: '0.9em', color: activeHeroine.themeColor, fontWeight: 'bold', marginBottom: '10px' }}>
-                {activeEvent.speaker}
+              <div style={{ marginBottom: '20px' }}>
+                <HeroineDisplay 
+                  heroine={activeHeroine} 
+                  type="standing" 
+                  size="large" 
+                  expression={activeEvent.expression} 
+                />
               </div>
-              <p style={{ fontSize: '1.1em', lineHeight: '1.6' }}>「{activeEvent.text}」</p>
+            )}
+            <VNBox 
+              speaker={activeEvent.speaker}
+              text={activeEvent.text}
+              themeColor={activeHeroine.themeColor}
+              onComplete={handleCloseEvent}
+              skip={seenEventIds.includes(activeEvent.id)}
+            />
+            <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
+              <button 
+                onClick={handleCloseEvent} 
+                style={{ ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }}
+              >
+                次へ
+              </button>
+              {seenEventIds.includes(activeEvent.id) && (
+                <button 
+                  onClick={handleCloseEvent}
+                  style={{ ...buttonStyle, flex: 1, margin: 0, background: '#444', color: '#ccc', fontSize: '0.8em' }}
+                >
+                  SKIP
+                </button>
+              )}
             </div>
-          </div>
-          <button 
-            onClick={handleCloseEvent} 
-            style={{ ...buttonStyle, width: '100%', maxWidth: '240px', background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }}
-          >
-            記録を閉じる
-          </button>
         </div>
       </div>
     );
@@ -1330,6 +1345,101 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
         style={imgStyle}
         onError={() => setImgError(true)}
       />
+    </div>
+  );
+}
+
+function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false }) {
+  const [displayText, setDisplayText] = useState(skip ? text : "");
+  const [isComplete, setIsComplete] = useState(skip);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (skip) {
+      setDisplayText(text);
+      setIsComplete(true);
+      return;
+    }
+
+    setDisplayText("");
+    setIsComplete(false);
+    setCurrentIndex(0);
+  }, [text, skip]);
+
+  useEffect(() => {
+    if (isComplete || skip) return;
+
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    } else {
+      setIsComplete(true);
+    }
+  }, [currentIndex, text, isComplete, speed, skip]);
+
+  const handleClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isComplete) {
+      setDisplayText(text);
+      setIsComplete(true);
+    } else if (onComplete) {
+      onComplete();
+    }
+  };
+
+  return (
+    <div 
+      onClick={handleClick}
+      style={{
+        width: '100%',
+        minHeight: '80px',
+        background: 'rgba(26, 42, 58, 0.9)',
+        borderLeft: `4px solid ${themeColor || '#c5a059'}`,
+        padding: '15px 20px',
+        borderRadius: '0 8px 8px 0',
+        cursor: 'pointer',
+        color: '#f4e9d5',
+        textAlign: 'left',
+        position: 'relative',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+        fontFamily: "'Inter', sans-serif",
+        userSelect: 'none'
+      }}
+    >
+      {speaker && (
+        <div style={{ 
+          fontSize: '0.85em', 
+          color: themeColor || '#c5a059', 
+          fontWeight: 'bold', 
+          marginBottom: '8px',
+          letterSpacing: '0.05em'
+        }}>
+          {speaker}
+        </div>
+      )}
+      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '1.5em' }}>
+        {displayText}
+        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '2px' }}>|</span>}
+      </div>
+      {isComplete && (
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '8px', 
+          right: '12px', 
+          fontSize: '0.65em', 
+          opacity: 0.5,
+          animation: 'vn-bounce 1s infinite'
+        }}>
+          ▼ NEXT
+        </div>
+      )}
+      <style>{`
+        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      `}</style>
     </div>
   );
 }
