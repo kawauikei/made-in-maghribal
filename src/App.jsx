@@ -180,7 +180,7 @@ export default function App() {
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
-  const MIN_SCALE = 0.72;
+  const MIN_SCALE = 0.68;
   const MAX_SCALE = 1.25;
 
   const [viewportSize, setViewportSize] = useState({
@@ -1563,7 +1563,7 @@ export default function App() {
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
         </header>
 
-        <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '80px' }}>
+        <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '10px' }}>
           <div style={{ ...customerStyle, marginBottom: '30px' }}>
             <div style={{ 
               ...bubbleStyle, 
