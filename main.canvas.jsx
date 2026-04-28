@@ -11,6 +11,8 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
+import { checkNewEventUnlock } from './game/eventSystem';
+import { AFFECTION_EVENTS } from './data/affectionEvents';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -98,26 +100,35 @@ function App() {
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
 
+  // Event State
+  const [seenEventIds, setSeenEventIds] = useState([]);
+  const [activeEvent, setActiveEvent] = useState(null);
+
   // Initial Load
   useEffect(() => {
-    setHasSave(hasSaveData());
+    const data = loadSaveData();
+    if (data) {
+      setHasSave(true);
+      // We don't restore everything automatically on mount, 
+      // but we do need the seenEventIds for the session logic
+      setSeenEventIds(data.seenEventIds || []);
+    }
   }, []);
 
   // Auto-Save
   useEffect(() => {
-    // Only save if we are not on the START screen OR if we just initialized audio etc.
-    // Actually, we want to save any progress.
     if (screen !== 'START') {
       saveGameData({
-        screen,
+        screen: screen === 'EVENT' ? 'RESULT' : screen, // Fallback EVENT to RESULT for safety
         activeHeroineId,
         workshopState,
         affection,
-        isAudioEnabled
+        isAudioEnabled,
+        seenEventIds
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled]);
+  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled, seenEventIds]);
 
   // Sync mute state
   useEffect(() => {
@@ -154,6 +165,8 @@ function App() {
     setActiveHeroineId('hakima');
     setWorkshopState(createInitialWorkshopState());
     setAffection(createInitialAffection(HEROINES.map(h => h.id)));
+    setSeenEventIds([]);
+    setActiveEvent(null);
     setSession(null);
     
     setScreen('HEROINE_SELECT');
@@ -168,6 +181,7 @@ function App() {
       setActiveHeroineId(data.activeHeroineId);
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
+      setSeenEventIds(data.seenEventIds || []);
       setIsAudioEnabled(data.isAudioEnabled);
     }
   };
@@ -176,7 +190,17 @@ function App() {
     if (window.confirm("セーブデータを削除しますか？")) {
       clearSaveData();
       setHasSave(false);
+      setSeenEventIds([]);
+      setActiveEvent(null);
     }
+  };
+
+  const handleCloseEvent = () => {
+    audioEngine.playSfx('uiTapBottle');
+    setSeenEventIds(prev => [...prev, activeEvent.id]);
+    setActiveEvent(null);
+    audioEngine.playSfx('workshopDayEnd');
+    setScreen('DAY_END');
   };
 
   // Select Heroine and start Intro
@@ -200,20 +224,20 @@ function App() {
     setScreen('QUIZ');
   };
 
-  // End of service, go to Day End
+  // End of service, go to Day End (or Event)
   const handleEndDay = () => {
-    audioEngine.playSfx('workshopDayEnd');
-    setScreen('DAY_END');
+    if (activeEvent) {
+      setScreen('EVENT');
+    } else {
+      audioEngine.playSfx('workshopDayEnd');
+      setScreen('DAY_END');
+    }
   };
 
   // Back to Title
   const handleBackToTitle = () => {
     audioEngine.playSfx('uiTapBottle');
-    // We don't reset everything here because we might want to stay in current progress
-    // But App.jsx currently resets everything on handleBackToTitle.
-    // If we want to support "Continue", we should NOT reset everything here if we want the save to persist.
-    // Actually, the auto-save will have saved the current state.
-    // When we go back to title, we just change the screen.
+    // Keep internal states for Continue logic
     setScreen('START');
     setHasSave(hasSaveData());
   };
@@ -243,8 +267,15 @@ function App() {
       
       // Calculate and apply affection gain
       const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
-      setAffection(prev => addAffection(prev, activeHeroineId, gain));
+      const nextAffection = addAffection(affection, activeHeroineId, gain);
+      setAffection(nextAffection);
       setLastAffectionGain(gain);
+
+      // Check for Event Unlock
+      const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+      if (unlockedEvent) {
+        setActiveEvent(unlockedEvent);
+      }
 
       const result = getWorkshopResult(correctCount);
       setWorkshopState(prev => applyWorkshopResult(prev, result));
@@ -490,6 +521,32 @@ function App() {
             <button onClick={handleNextDay} style={buttonStyle}>次の日へ進む</button>
             <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444' }}>タイトルへ戻る</button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'EVENT' && activeEvent) {
+    return (
+      <div style={containerStyle}>
+        {renderAudioToggle()}
+        <h1 style={titleStyle}>親密度イベント：{activeEvent.title}</h1>
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <HeroineDisplay 
+              heroine={activeHeroine} 
+              type="standing" 
+              size="large" 
+              expression={activeEvent.expression} 
+            />
+            <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
+              <div style={{ fontSize: '0.9em', color: activeHeroine.themeColor, fontWeight: 'bold', marginBottom: '10px' }}>
+                {activeEvent.speaker}
+              </div>
+              <p style={{ fontSize: '1.1em', lineHeight: '1.6' }}>「{activeEvent.text}」</p>
+            </div>
+          </div>
+          <button onClick={handleCloseEvent} style={buttonStyle}>閉じる</button>
         </div>
       </div>
     );

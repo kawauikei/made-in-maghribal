@@ -16,6 +16,7 @@ export function createDefaultSaveData() {
     activeHeroineId: 'hakima',
     workshopState: createInitialWorkshopState(),
     affection: createInitialAffection(HEROINES.map(h => h.id)),
+    seenEventIds: [],
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -70,6 +71,11 @@ export function normalizeSaveData(raw) {
 
   // Audio safety
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
+
+  // Event safety
+  if (!Array.isArray(normalized.seenEventIds)) {
+    normalized.seenEventIds = [];
+  }
 
   return normalized;
 }
