@@ -6386,6 +6386,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
+  const [previewHeroineId, setPreviewHeroineId] = useState("hakima");
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
@@ -6503,6 +6504,7 @@ function App() {
     clearSaveData();
     setHasSave(false);
     setActiveHeroineId("hakima");
+    setPreviewHeroineId("hakima");
     setWorkshopState(createInitialWorkshopState());
     setAffection(createInitialAffection(HEROINES.map((h) => h.id)));
     setSeenEventIds([]);
@@ -6906,33 +6908,85 @@ function App() {
       ))));
     }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
   } else if (screen === "HEROINE_SELECT") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "パートナーを選ぶ"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "900px", background: "transparent", border: "none", boxShadow: "none" } }, /* @__PURE__ */ React.createElement("p", { style: { color: THEME.sand, marginBottom: "30px", textShadow: "1px 1px 2px #000" } }, "星瓶堂の仕事を手伝ってくれる、腕利きの錬金術師たちです。"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "25px", width: "100%" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
-      "div",
+    const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "パートナーを選ぶ"), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "20px",
+      marginBottom: "20px",
+      width: "100%",
+      maxWidth: "350px"
+    } }, HEROINES.map((h) => {
+      const isSelected = previewHeroineId === h.id;
+      return /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          key: h.id,
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            setPreviewHeroineId(h.id);
+          },
+          style: {
+            width: "70px",
+            height: "70px",
+            borderRadius: "50%",
+            border: `3px solid ${isSelected ? h.themeColor : "#ccc"}`,
+            background: isSelected ? h.themeColor + "22" : THEME.parchment,
+            padding: "2px",
+            cursor: "pointer",
+            transition: "all 0.2s",
+            transform: isSelected ? "scale(1.15)" : "scale(1.0)",
+            boxShadow: isSelected ? `0 0 15px ${h.themeColor}aa` : "none",
+            overflow: "hidden",
+            zIndex: isSelected ? 2 : 1
+          }
+        },
+        /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: h, type: "face", size: "small" })
+      );
+    })), /* @__PURE__ */ React.createElement("div", { style: {
+      ...cardStyle,
+      maxWidth: "350px",
+      height: "420px",
+      display: "flex",
+      flexDirection: "column",
+      padding: "20px",
+      background: THEME.parchment,
+      border: `2px solid ${selectedHeroine.themeColor}`,
+      position: "relative"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: selectedHeroine, type: "face", size: "medium", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection[selectedHeroine.id])))), /* @__PURE__ */ React.createElement("div", { style: {
+      ...narrativeBoxStyle,
+      flex: 1,
+      padding: "12px",
+      fontSize: "0.9em",
+      marginBottom: "15px",
+      overflowY: "auto",
+      background: "rgba(255,255,255,0.4)",
+      border: "1px solid rgba(0,0,0,0.05)",
+      color: "#333",
+      textAlign: "left"
+    } }, selectedHeroine.description), /* @__PURE__ */ React.createElement(
+      "button",
       {
-        key: heroine.id,
-        className: "heroine-card",
-        onClick: () => handleSelectHeroine(heroine.id),
+        onClick: () => handleSelectHeroine(selectedHeroine.id),
         style: {
-          background: THEME.parchment,
-          padding: "25px",
-          borderRadius: "8px",
-          border: `2px solid ${THEME.brass}`,
-          cursor: "pointer",
-          textAlign: "center",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column"
+          ...buttonStyle,
+          width: "100%",
+          margin: 0,
+          background: selectedHeroine.themeColor,
+          color: "#fff",
+          border: `2px solid ${selectedHeroine.themeColor}`,
+          boxShadow: "0 4px 0 rgba(0,0,0,0.2)"
         }
       },
-      /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "6px", height: "100%", background: heroine.themeColor } }),
-      /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "20px", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine, type: "face", size: "large", expression: "normal" })),
-      /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 5px 0", fontSize: "1.4em", color: THEME.textDark } }, heroine.name),
-      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: heroine.themeColor, fontWeight: "bold", marginBottom: "10px" } }, heroine.role),
-      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginBottom: "15px", borderBottom: "1px solid #ddd", paddingBottom: "10px" } }, "現在の親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection[heroine.id])),
-      /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", color: "#444", textAlign: "left", margin: "0 0 20px 0", lineHeight: "1.6", flex: 1 } }, heroine.description),
-      /* @__PURE__ */ React.createElement("button", { style: { ...buttonStyle, width: "100%", margin: 0 } }, "手伝いを頼む")
-    ))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "40px", display: "flex", gap: "15px", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "140px" } }, "戻る"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "140px" } }, "思い出"))));
+      selectedHeroine.name,
+      "と店を開く"
+    )), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      gap: "12px",
+      marginTop: "20px",
+      width: "100%",
+      maxWidth: "350px"
+    } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, flex: 1, margin: 0, fontSize: "0.9em", background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` } }, "戻る"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, flex: 1, margin: 0, fontSize: "0.9em", background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` } }, "思い出の記録")));
   } else if (screen === "QUIZ" && session) {
     const currentQuestion = session.questions[session.currentIndex];
     mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("header", { style: {
