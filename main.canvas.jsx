@@ -502,6 +502,9 @@ function App() {
 
       // Check for Event Unlock
       const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+      if (unlockedEvent) {
+        setActiveEvent(unlockedEvent);
+      }
       const result = getWorkshopResult(correctCount);
       setWorkshopState(prev => applyWorkshopResult(prev, result));
       setScreen('RESULT');
@@ -1705,7 +1708,6 @@ const itemNameStyle = {
   color: '#444',
   fontWeight: 'bold'
 };
-
 
 
 
