@@ -5609,6 +5609,7 @@ const HEROINES = [
     },
     routeTheme: "専門的な協力関係を通じた信頼の再構築",
     musicMood: "落ち着いた仕事仲間の雰囲気",
+    greeting: "おはよう、ナーディル。今日もお店、開けましょうか。あたしも準備、手伝うから。あんたの目利き、しっかり見せてもらうよ。",
     assets: { standing: {}, face: {} }
   },
   {
@@ -5634,6 +5635,7 @@ const HEROINES = [
     },
     routeTheme: "ビジネスパートナーとしての対等な関係性",
     musicMood: "知性的で透明感のある旋律",
+    greeting: "おはようございます、先輩。今日も素晴らしい目利きを期待しています。私も隣で、鑑定の極意を学ばせてくださいね。",
     assets: { standing: {}, face: {} }
   },
   {
@@ -5650,6 +5652,7 @@ const HEROINES = [
       standingScale: 1.05
     },
     description: "若くして王宮錬金局の技官を務めるエリート。公務の傍ら、在野の優れた技術者であるナディールのもとへ、難易度の高い依頼や調査協力を持ち込んでくる。",
+    greeting: "おはよう、ナーディル。今日の朝の空気は、真理を見通すのに最適だと思わないか？ さあ、始めよう。君の鑑定、興味深く見守らせてもらうよ。",
     personality: "冷静沈着で公私の区別がはっきりしている。しかし、珍しい古物や高度な錬金術の話になると、年相応の好奇心を覗かせることもある。",
     relationship: "元々は公的な依頼主の一人だったが、ナディールの亡き祖父とも交流があり、現在は個人的な興味も含めて星瓶堂の再興を静かに見守っている。",
     stats: {
@@ -6085,7 +6088,7 @@ const AFFECTION_EVENTS = {
       title: "もう一度、隣に",
       speaker: "ハキマ",
       expression: "joy",
-      text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。",
+      text: "ナーディル、さっきの品選び……なんだか少しだけ昔を思い出したよ。あんたが一人前になろうと必死なのは、見てればわかる。……あの日から、あんまり変わってないね。",
       stillImageId: "hakimaMorningVisit01"
     },
     {
@@ -6095,7 +6098,7 @@ const AFFECTION_EVENTS = {
       title: "狐の耳は嘘をつかない",
       speaker: "ハキマ",
       expression: "fun",
-      text: "……あ、あんまり耳をジロジロ見ないでよ。ほら、仕事に戻った戻った！（ピコピコと耳が嬉しそうに動いている）"
+      text: "……あ、あんまり耳をジロジロ見ないでよ！ ほら、次の鑑定依頼が来てるみたいだよ。……ったく、あんたのそういう真っ直ぐなところ、たまに困るんだから。（耳がピコピコと嬉しそうに動いている）"
     }
   ],
   mira: [
@@ -6106,7 +6109,7 @@ const AFFECTION_EVENTS = {
       title: "普通の女の子として",
       speaker: "ミラ",
       expression: "fun",
-      text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。",
+      text: "……ふふっ。先輩とこうして品物を見つめていると、商会の義務も学園の課題も、すべて忘れてしまえそうです。ただの『私』でいられるこの場所が、少しずつ特別になってきました。",
       stillImageId: "miraAfterSchool01"
     },
     {
@@ -6116,7 +6119,7 @@ const AFFECTION_EVENTS = {
       title: "商人の目利き",
       speaker: "ミラ",
       expression: "joy",
-      text: "先輩、今の品選びは実に見事でした。商人の娘として、尊敬してしまいます。……私も、もっと頑張らなくては。"
+      text: "先輩、今の品選び……実に見事でした。ただ価値を見るだけでなく、持ち主の心まで汲み取る。商人として、そして一人の人間として、深く尊敬してしまいます。……私も、負けていられませんね。"
     }
   ],
   dariya: [
@@ -6127,7 +6130,7 @@ const AFFECTION_EVENTS = {
       title: "安らぎの工房",
       speaker: "ダリヤ",
       expression: "joy",
-      text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。",
+      text: "……ふぅ。王宮や研究所の喧騒を離れて、ここで君の話を聞いていると、不思議と心が凪いでいくのがわかるよ。この工房の空気は、どんな霊薬よりも私に効くらしい。感謝しているよ、ナーディル。",
       stillImageId: "dariyaAfterHours01"
     },
     {
@@ -6137,7 +6140,7 @@ const AFFECTION_EVENTS = {
       title: "共鳴する真理",
       speaker: "ダリヤ",
       expression: "fun",
-      text: "君の調合理論は、時に王立研究所の教授たちよりも核心を突いているね。……面白い。君という人間をもっと知りたくなったよ。"
+      text: "君の調合理論は、時に王立研究所の教授たちよりも核心を突いているね。真理を求める瞳……私はそれが大好きだ。……面白いな、君という人間を、もっと深く研究してみたくなったよ。"
     }
   ]
 };
@@ -6281,71 +6284,62 @@ const STILL_IMAGES = {
 const ENDINGS = {
   hakima: {
     good: {
-      title: "星瓶堂の新しい明日",
-      text: "10日間の激務を終え、星瓶堂はかつてない活気を取り戻した。ハキマの鑑定眼とあなたの接客が噛み合い、今や街で一番の骨董店だ。「お疲れ様。……ねえ、これからもずっと、隣で支え合っていけるかな？」彼女の瞳には、鑑定書には記されない確かな想いが宿っていた。",
+      title: "再会の約束、黄昏の街で",
+      expression: "joy",
       bgId: "shopInteriorService",
-      stillId: null,
-      expression: "joy"
+      text: "「星瓶堂、本当に元通りになったね……。あんたの目利き、昔の店主さんにも負けてなかったよ。……ねえ、ナーディル。これからもこうして、隣にいてもいいかな？ 幼馴染としてじゃなくて、もっと別の……その、大切な人として」"
     },
     normal: {
-      title: "頼れる相棒",
-      text: "なんとか10日間を乗り切ることができた。店は安定し、ハキマとの信頼関係も盤石だ。「ふう、一時はどうなるかと思ったけど。あんたとなら、これからも上手くやっていけそうね」彼女は満足そうに笑い、また次の鑑定依頼へと目を向けた。",
-      bgId: "shopInteriorWorkshop",
-      stillId: null,
-      expression: "normal"
+      title: "日常の続き、隣の距離",
+      expression: "normal",
+      bgId: "shopInteriorService",
+      text: "「お疲れ様。なんとかお店、形になったね。これからも忙しくなりそうだけど、あたしもできる限り手伝うから。……あんたが困った時、一番に頼るのはあたしなんだからね。わかった？」"
     },
     bad: {
-      title: "遠い背中",
-      text: "約束の10日が過ぎた。店は辛うじて続いているが、二人の間に流れる空気はどこか余所余所しい。「……それじゃあ、私は自分の店に戻るわね。お疲れ様」ハキマは静かに去っていった。残されたのは、静まり返った星瓶堂だけだった。",
-      bgId: "shopExteriorDay",
-      stillId: null,
-      expression: "sad"
+      title: "すれ違う足音",
+      expression: "sad",
+      bgId: "shopInteriorService",
+      text: "「お店、やっぱり畳んじゃうんだね……。あたしも力になれなくてごめん。……ナーディル、あんたのこれからの道が、どこに繋がっていても……あたしは応援してるから。じゃあね」"
     }
   },
   mira: {
     good: {
-      title: "砂漠に咲く奇跡の縁",
-      text: "ミラのアドバイスは、星瓶堂に新しい客層を呼び込んだ。彼女の神秘的な魅力とあなたの目利きが、この店を聖域へと変えたのだ。「……あなたと一緒にいると、運命というものを信じたくなります」ミラの手が、そっとあなたの手に重なる。それは砂漠の夜風よりも温かかった。",
+      title: "黄金の砂漠に咲く花",
+      expression: "joy",
       bgId: "shopInteriorService",
-      stillId: null,
-      expression: "joy"
+      text: "「先輩、おめでとうございます。星瓶堂の再建、商会の人間としても、一人のファンとしても、これほど嬉しいことはありません。……もしよろしければ、これからもずっと、お傍であなたの鑑定を見届けてもよろしいでしょうか？」"
     },
     normal: {
-      title: "導きの灯火",
-      text: "10日間、ミラと共に歩んだ日々は刺激的だった。店は順調で、彼女もこの場所を気に入ったようだ。「お疲れ様でした。あなたの成長を見守るのも、私の役目だったのかもしれませんね」彼女は優雅に一礼し、明日の計画を語り始めた。",
-      bgId: "shopInteriorWorkshop",
-      stillId: null,
-      expression: "normal"
+      title: "商人たちの静かな午後",
+      expression: "normal",
+      bgId: "shopInteriorService",
+      text: "「一区切りですね、先輩。星瓶堂の評判も安定してきました。私も商会の仕事がありますが、時間を見つけては顔を出します。……あなたの選ぶ品々を、私はもっと見ていたいのです」"
     },
     bad: {
-      title: "消えゆく陽炎",
-      text: "10日が過ぎ、ミラの足が店から遠のいていった。彼女のような高貴な協力者を引き止めるには、今の星瓶堂はあまりに力不足だった。「さようなら。……またいつか、縁があれば」彼女の言葉は、砂嵐の中に消えていった。",
-      bgId: "shopExteriorNight",
-      stillId: null,
-      expression: "sad"
+      title: "遠ざかる学舎の鐘",
+      expression: "sad",
+      bgId: "shopInteriorService",
+      text: "「残念です、先輩……。星瓶堂がなくなってしまうなんて。私の力不足です。……いつかまた、あなたがどこかで鑑定の旗を掲げる日が来ると信じています。さようなら」"
     }
   },
   dariya: {
     good: {
-      title: "黄金の商会、はじまりの場所",
-      text: "ダリヤの商才とあなたの目利きは、星瓶堂を単なる骨董店以上の存在へと押し上げた。今や二人の前には無限のビジネスチャンスが広がっている。「ははっ！ 最高の結果じゃない！ あんたなら私のパートナーに相応しいって確信したわ」ダリヤは豪快に笑い、あなたを強く抱き寄せた。新しい時代の幕開けだ。",
+      title: "叡智の果て、君の隣",
+      expression: "joy",
       bgId: "shopInteriorService",
-      stillId: null,
-      expression: "joy"
+      text: "「素晴らしい結果だ、ナーディル。君の目利きは、王宮の宝物庫すら凌駕する真実を捉えていた。……私は決めたよ。王立研究所よりも、君の隣にいる方が、私の求める真理に近い。これからも、共に歩ませてくれないか？」"
     },
     normal: {
-      title: "好敵手、あるいはビジネスパートナー",
-      text: "10日間の奮闘の結果、店はかなりの利益を上げた。ダリヤもあなたの腕を認めたようだ。「悪くないわね。あんたとの仕事は刺激的だわ。次はもっと大きな案件を回してあげる」彼女は不敵に微笑み、次の取引へと向かっていった。",
-      bgId: "shopInteriorWorkshop",
-      stillId: null,
-      expression: "normal"
+      title: "真理への緩やかな道",
+      expression: "normal",
+      bgId: "shopInteriorService",
+      text: "「再建成功、おめでとう。君という人間は、やはり私の予測を超えてくる。これからも研究の合間に、君の鑑定を観察させてもらうよ。……ふふ、断っても無駄だ。君の理論は、あまりに魅力的すぎるからね」"
     },
     bad: {
-      title: "冷たい取引終了",
-      text: "10日が過ぎ、ダリヤとの契約は満了した。期待された成果を出せなかった星瓶堂に、彼女はもう興味を示さない。「ビジネスは結果がすべてよ。……残念だけど、ここまでね」彼女は一度も振り返ることなく、高級馬車へと乗り込んでいった。",
-      bgId: "shopExteriorDay",
-      stillId: null,
-      expression: "sad"
+      title: "霧に消える研究室",
+      expression: "sad",
+      bgId: "shopInteriorService",
+      text: "「……そうか。星瓶堂の灯が消えてしまうのだね。この場所で君と語った時間は、私にとって最も貴重なデータ……いや、思い出だった。……君の未来に、幸いがあらんことを」"
     }
   }
 };
@@ -6665,7 +6659,7 @@ function App() {
     setSeenEventIds([]);
     setActiveEvent(null);
     setSession(null);
-    setScreen("HEROINE_SELECT");
+    setScreen("PROLOGUE");
   };
   const handleContinue = () => {
     const data = loadSaveData();
@@ -7097,12 +7091,35 @@ function App() {
       },
       "記録を全て消去する"
     )));
+  } else if (screen === "PROLOGUE") {
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "鑑定士の旅立ち"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "30px", maxWidth: "600px" } }, /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        speaker: "物語の始まり",
+        text: "砂漠の街マグリバル。その喧騒を抜けた路地裏に、かつて多くの人々が訪れた骨董品店『星瓶堂』があった。鑑定士だった祖父が遺したこの場所は、今や埃を被り、閉ざされたままとなっている。……だが、今日から始まる10日間。あなたは大切な協力者と共に、この店に再び灯をともすことになる。",
+        themeColor: THEME.brass,
+        onComplete: () => {
+          audioEngine.playSfx("uiClickForward");
+          setScreen("HEROINE_SELECT");
+        }
+      }
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => {
+          audioEngine.playSfx("uiClickForward");
+          setScreen("HEROINE_SELECT");
+        },
+        style: { ...buttonStyle, marginTop: "30px", width: "100%", maxWidth: "280px" }
+      },
+      "鑑定士の道へ"
+    ))));
   } else if (screen === "INTRO") {
     mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: activeHeroine.name,
-        text: `おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`,
+        text: activeHeroine.greeting || `おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`,
         themeColor: activeHeroine.themeColor,
         onComplete: handleBeginService
       }
@@ -7112,12 +7129,12 @@ function App() {
     const rank = getRankInfo(correctCount);
     const mgmt = getWorkshopResult(correctCount);
     const resultNarrations = {
-      5: "お客は品を受け取ると、ぱっと顔を輝かせた。「これだよ、これ！　まさかこんなにぴったりの品があるなんて」今日の工房には、少し誇らしい空気が流れている。",
-      4: "お客は満足そうに品を抱えた。「助かったよ。次に困った時も、ここに来ればよさそうだ」手応えのある接客だった。",
-      3: "お客は少し迷いながらも、品を受け取った。「うん、悪くない。たぶんこれで何とかなると思う」もう少し相手の願いを読み取れれば、さらに良くなりそうだ。",
-      2: "お客は首をかしげながら品を見つめた。「うーん……今回はこれで試してみるよ」工房の棚には、まだ学ぶべきことが多く残っている。",
-      1: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。",
-      0: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。"
+      5: "「これだよ、これ！ まさかこんなにぴったりの品があるなんて」客人は品を受け取ると、ぱっと顔を輝かせた。あなたの確かな目利きが、誰かの未来を明るく照らした瞬間だ。",
+      4: "「助かったよ。次に困った時も、ここに来ればよさそうだ」客人は満足そうに品を抱えて去っていった。手応えのある接客が、星瓶堂の評判をまた一つ積み上げた。",
+      3: "「うん、悪くない。たぶんこれで何とかなると思う」客人は少し迷いながらも、納得して品を受け取った。もう少し相手の願いを深く読み取れば、さらなる高みへ行けるはずだ。",
+      2: "「うーん……今回はこれで試してみるよ」客人は首をかしげながら品を見つめている。星瓶堂の棚には、まだまだ学ぶべき知識と経験が眠っているようだ。",
+      1: "「気持ちはありがたいんだけど、ちょっと違うかもしれないな」客人の困ったような笑みが胸に刺さる。だが、この悔しさこそが次の目利きを研ぎ澄ます糧になる。",
+      0: "今日は誰の願いにも応えられなかった。静まり返った工房で、あなたは己の未熟さを噛みしめる。……だが、明日の太陽は必ず昇る。次こそは、最良の品を。"
     };
     mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "業務報告書"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
       VNBox,
@@ -7155,7 +7172,7 @@ function App() {
         size: "medium",
         expression: getDayEndExpression(correctCount)
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0, textAlign: "left" } }, /* @__PURE__ */ React.createElement("p", null, "夕暮れの工房に、今日選ばれた品々の余韻が残っている。"), /* @__PURE__ */ React.createElement("p", null, "小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。"), /* @__PURE__ */ React.createElement("p", { style: { marginTop: "10px", color: THEME.brass, fontWeight: "bold" } }, activeHeroine.name, "：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」"))), /* @__PURE__ */ React.createElement("div", { style: {
+    ), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0, textAlign: "left" } }, /* @__PURE__ */ React.createElement("p", null, "夕暮れの工房に、今日選ばれた品々の余韻が静かに残っている。"), /* @__PURE__ */ React.createElement("p", null, "小さな手応えを一つずつ積み重ねていけば、この店にもきっと、失われた輝きが戻ってくるはずだ。"), /* @__PURE__ */ React.createElement("p", { style: { marginTop: "10px", color: THEME.brass, fontWeight: "bold" } }, activeHeroine.name, "：「お疲れ様。……いい目利きだったよ。明日の準備を整えたら、今日はゆっくり休みましょう」"))), /* @__PURE__ */ React.createElement("div", { style: {
       background: "rgba(0,0,0,0.05)",
       padding: "20px",
       borderRadius: "4px",
@@ -7455,7 +7472,7 @@ function App() {
     const finalAffection = affection[activeHeroineId];
     const finalSales = workshopState.sales;
     const finalReputation = workshopState.reputation;
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "10日間の総決算"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, " との歩み")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上合計"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最終的な評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, " との絆"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.9em", marginBottom: "30px" } }, "星瓶堂の再建期間は、これで幕を閉じます。", /* @__PURE__ */ React.createElement("br", null), "あなたの選択が、どのような結末を導いたのでしょうか。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "結末を見届ける")));
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "10日間の総決算"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, " との歩み")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上合計"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最終的な評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, " との絆"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.95em", marginBottom: "30px", lineHeight: "1.6" } }, "この10日間、あなたはマグリバルの地で、祖父の遺した工房と向き合ってきました。", /* @__PURE__ */ React.createElement("br", null), "傍らにいた", activeHeroine.name, "との時間は、星瓶堂に何をもたらしたのでしょうか。", /* @__PURE__ */ React.createElement("br", null), "運命の結末を、その目で見届けてください。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "結末を見届ける")));
   } else if (screen === "ENDING") {
     const finalAffection = affection[activeHeroineId];
     const finalReputation = workshopState.reputation;
