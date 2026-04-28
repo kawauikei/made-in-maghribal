@@ -5553,6 +5553,21 @@ function shuffleArray(array) {
   }
   return result;
 }
+function getWorkshopResult(correctCount) {
+  if (correctCount >= 5) {
+    return { reputation: 3, sales: 120, satisfaction: 3 };
+  }
+  if (correctCount === 4) {
+    return { reputation: 2, sales: 100, satisfaction: 2 };
+  }
+  if (correctCount === 3) {
+    return { reputation: 1, sales: 80, satisfaction: 1 };
+  }
+  if (correctCount === 2) {
+    return { reputation: 0, sales: 50, satisfaction: 0 };
+  }
+  return { reputation: -1, sales: 20, satisfaction: -1 };
+}
 const HEROINES = [
   {
     id: "hakima",
@@ -5638,6 +5653,7 @@ function App() {
   if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
+    const mgmt = getWorkshopResult(correctCount);
     const resultNarrations = {
       5: "お客は品を受け取ると、ぱっと顔を輝かせた。\n「これだよ、これ！　まさかこんなにぴったりの品があるなんて」\n今日の工房には、少し誇らしい空気が流れている。",
       4: "お客は満足そうに品を抱えた。\n「助かったよ。次に困った時も、ここに来ればよさそうだ」\n手応えのある接客だった。",
@@ -5646,7 +5662,16 @@ function App() {
       1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
       0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
     };
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small" }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small" }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "10px",
+      margin: "20px 0",
+      background: "rgba(255,255,255,0.05)",
+      padding: "15px",
+      borderRadius: "12px",
+      border: "1px solid rgba(255,255,255,0.1)"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? "#4caf50" : "#f44336" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
   }
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("style", null, `
