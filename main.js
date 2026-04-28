@@ -6118,6 +6118,124 @@ function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
   if (eligibleEvents.length === 0) return null;
   return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
 }
+const BACKGROUND_IMAGES = {
+  shopExteriorDay: {
+    id: "shopExteriorDay",
+    label: "星瓶堂 店構え（昼）",
+    src: "images/background/bg_shop_exterior_day.jpg"
+  },
+  shopExteriorNight: {
+    id: "shopExteriorNight",
+    label: "星瓶堂 店構え（夜）",
+    src: "images/background/bg_shop_exterior_night.jpg"
+  },
+  shopInteriorService: {
+    id: "shopInteriorService",
+    label: "星瓶堂 店内（接客）",
+    src: "images/background/bg_shop_interior_service.jpg"
+  },
+  shopInteriorWorkshop: {
+    id: "shopInteriorWorkshop",
+    label: "星瓶堂 店内（工房）",
+    src: "images/background/bg_shop_interior_workshop.jpg"
+  },
+  universityCourtyard: {
+    id: "universityCourtyard",
+    label: "錬金大学 中庭",
+    src: "images/background/bg_university_courtyard.jpg"
+  },
+  nadirRoom: {
+    id: "nadirRoom",
+    label: "ナディールの自室",
+    src: "images/background/bg_nadir_room.jpg"
+  },
+  hakimaRoom: {
+    id: "hakimaRoom",
+    label: "ハキーマの自室",
+    src: "images/background/bg_hakima_room.jpg"
+  },
+  miraRoom: {
+    id: "miraRoom",
+    label: "ミラの自室",
+    src: "images/background/bg_mira_room.jpg"
+  },
+  dariyaRoom: {
+    id: "dariyaRoom",
+    label: "ダリヤの私室",
+    src: "images/background/bg_dariya_room.jpg"
+  },
+  marketCentral: {
+    id: "marketCentral",
+    label: "マグリバル中央市場",
+    src: "images/background/bg_market_central.jpg"
+  },
+  palaceCorridor: {
+    id: "palaceCorridor",
+    label: "王宮の回廊",
+    src: "images/background/bg_palace_corridor.jpg"
+  },
+  palaceLab: {
+    id: "palaceLab",
+    label: "王宮錬金局",
+    src: "images/background/bg_palace_lab.jpg"
+  },
+  spotFountain: {
+    id: "spotFountain",
+    label: "大噴水広場",
+    src: "images/background/bg_spot_fountain.jpg"
+  },
+  spotFestivalStreet: {
+    id: "spotFestivalStreet",
+    label: "夜祭りの通り",
+    src: "images/background/bg_spot_festival_street.jpg"
+  },
+  spotPortView: {
+    id: "spotPortView",
+    label: "海港都市の展望通り",
+    src: "images/background/bg_spot_port_view.jpg"
+  },
+  spotOasisView: {
+    id: "spotOasisView",
+    label: "砂漠のオアシス展望地",
+    src: "images/background/bg_spot_oasis_view.jpg"
+  },
+  spotRuins: {
+    id: "spotRuins",
+    label: "古代錬金遺跡",
+    src: "images/background/bg_spot_ruins.jpg"
+  },
+  spotStarView: {
+    id: "spotStarView",
+    label: "星見の屋上",
+    src: "images/background/bg_spot_star_view.jpg"
+  }
+};
+const STILL_IMAGES = {
+  hakimaMorningVisit01: {
+    id: "hakimaMorningVisit01",
+    label: "朝の押しかけ訪問",
+    heroineId: "hakima",
+    src: "images/still/still_hakima_morning_visit_01.jpg"
+  },
+  miraAfterSchool01: {
+    id: "miraAfterSchool01",
+    label: "放課後の店番",
+    heroineId: "mira",
+    src: "images/still/still_mira_after_school_01.jpg"
+  },
+  dariyaAfterHours01: {
+    id: "dariyaAfterHours01",
+    label: "閉店後の来訪",
+    heroineId: "dariya",
+    src: "images/still/still_dariya_after_hours_01.jpg"
+  },
+  groupShopping01: {
+    id: "groupShopping01",
+    label: "4人で買い出し",
+    heroineId: null,
+    src: "images/still/still_group_shopping_01.jpg"
+  }
+};
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
@@ -6167,6 +6285,8 @@ function App() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
   const [hasSave, setHasSave] = useState(false);
+  const [bgTestIndex, setBgTestIndex] = useState(0);
+  const [stillTestIndex, setStillTestIndex] = useState(0);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
@@ -6337,6 +6457,13 @@ function App() {
         style: { ...buttonStyle, background: "#444", marginTop: "10px", width: "100%", maxWidth: "280px" }
       },
       "Sound Test"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setScreen("VISUAL_TEST"),
+        style: { ...buttonStyle, background: "#444", marginTop: "10px", width: "100%", maxWidth: "280px" }
+      },
+      "Visual Test"
     ), hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -6417,6 +6544,72 @@ function App() {
         expression: activeEvent.expression
       }
     ), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: activeHeroine.themeColor, fontWeight: "bold", marginBottom: "10px" } }, activeEvent.speaker), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", lineHeight: "1.6" } }, "「", activeEvent.text, "」"))), /* @__PURE__ */ React.createElement("button", { onClick: handleCloseEvent, style: buttonStyle }, "閉じる")));
+  }
+  if (screen === "VISUAL_TEST") {
+    const bgList = Object.values(BACKGROUND_IMAGES);
+    const stillList = Object.values(STILL_IMAGES);
+    const bg = bgList[bgTestIndex % bgList.length];
+    const still = stillList[stillTestIndex % stillList.length];
+    const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Background: ", bg.label, " (", bg.id, ")"), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setBgTestIndex((prev) => (prev + 1) % bgList.length),
+        style: { ...buttonStyle, marginTop: 0, padding: "4px 12px", fontSize: "0.8em" }
+      },
+      "Next Background"
+    )), /* @__PURE__ */ React.createElement("div", { style: {
+      width: "100%",
+      height: "240px",
+      background: "#000",
+      borderRadius: "8px",
+      overflow: "hidden",
+      border: "2px solid #444",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        key: bg.id,
+        src: getFullPath(bg.src),
+        alt: bg.label,
+        style: { width: "100%", height: "100%", objectFit: "cover" },
+        onError: (e) => {
+          e.target.style.display = "none";
+          e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
+        }
+      }
+    ))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Still: ", still.label, " (", still.id, ")"), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setStillTestIndex((prev) => (prev + 1) % stillList.length),
+        style: { ...buttonStyle, marginTop: 0, padding: "4px 12px", fontSize: "0.8em" }
+      },
+      "Next Still"
+    )), /* @__PURE__ */ React.createElement("div", { style: {
+      width: "100%",
+      height: "340px",
+      background: "#000",
+      borderRadius: "8px",
+      overflow: "hidden",
+      border: "2px solid #444",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        key: still.id,
+        src: getFullPath(still.src),
+        alt: still.label,
+        style: { width: "100%", height: "100%", objectFit: "contain" },
+        onError: (e) => {
+          e.target.style.display = "none";
+          e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+        }
+      }
+    ))), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る")));
   }
   if (screen === "HEROINE_SELECT") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "誰と店を開く？"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap", marginBottom: "30px" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
