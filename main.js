@@ -6703,7 +6703,10 @@ function App() {
       const nextAffection = addAffection(affection, activeHeroineId, gain);
       setAffection(nextAffection);
       setLastAffectionGain(gain);
-      checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+      const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+      if (unlockedEvent) {
+        setActiveEvent(unlockedEvent);
+      }
       const result = getWorkshopResult(correctCount);
       setWorkshopState((prev) => applyWorkshopResult(prev, result));
       setScreen("RESULT");
