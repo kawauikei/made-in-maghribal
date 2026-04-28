@@ -5590,8 +5590,8 @@ const HEROINES = [
     id: "hakima",
     fullName: "ハキマ・アル＝ルハーン",
     name: "ハキマ",
-    role: "鑑定士見習い / 幼馴染",
-    age: 18,
+    role: "品質鑑定見習い / 知己",
+    age: 19,
     themeColor: "#ffcc00",
     // Gold/Yellow
     themeTrackId: "HAKIMA-01",
@@ -5599,16 +5599,16 @@ const HEROINES = [
       facePosition: "center 20%",
       standingScale: 1
     },
-    description: "星瓶堂の隣にある骨董品店の娘で、ナディールとは幼少期からの腐れ縁。現在は正式な鑑定士を目指して修行中の身である。",
-    personality: "快活で世話焼き。ナディールの錬金術の腕は認めているが、商売っ気のなさを危惧して、何かと理由をつけては店に顔を出してくる。",
-    relationship: "ナディールにとっては、気兼ねなく専門知識を相談できる数少ない相手。彼女もまた、古い道具に宿る物語を解き明かすため、彼の技術を頼りにしている。",
+    description: "親戚が営む香料・薬草・染料の商会『アル＝ルハーン香材商会』で品質鑑定見習いを務める少女。素材の真贋を見抜く確かな目を持っている。",
+    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。好きな相手ほど厳しく接してしまう傾向がある。",
+    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂の再建に際し、商会の鑑定担当として関わることになる。若店主としてのナーディルの手腕を試すような態度を取る。",
     stats: {
       precision: 80,
       knowledge: 70,
       social: 90
     },
-    routeTheme: "専門的な協力関係を通じた信頼の再構築",
-    musicMood: "落ち着いた仕事仲間の雰囲気",
+    routeTheme: "同業者としての対等な信頼関係の構築",
+    musicMood: "快活で少し強気な旋律",
     greeting: "おはよう、ナーディル。今日もお店、開けましょうか。あたしも準備、手伝うから。あんたの目利き、しっかり見せてもらうよ。",
     assets: { standing: {}, face: {} }
   },
@@ -5617,7 +5617,7 @@ const HEROINES = [
     fullName: "ミラ・サフワーン",
     name: "ミラ",
     role: "錬金大学の後輩 / 商家令嬢",
-    age: 17,
+    age: 16,
     themeColor: "#3d5afe",
     // Royal Blue
     themeTrackId: "MIRA-01",
@@ -5625,15 +5625,15 @@ const HEROINES = [
       facePosition: "center 15%",
       standingScale: 0.95
     },
-    description: "マグリバル錬金大学でナディールの一学年後輩だった才女。実家は中央市場でも指折りの大商人で、自身も経営学と錬金術を学んでいる。",
-    personality: "理知的で少し勝気。効率と論理を重んじるが、ナディールの作る「機能美に優れた」作品に対しては、密かな尊敬を抱いている。",
-    relationship: "卒業後、家業の新規事業として星瓶堂との提携を画策し、ビジネスパートナーとしての立ち位置を確立しようとしている。彼女の持ち込む素材や市場情報は極めて正確である。",
+    description: "大商会『アル・アサド商会』の令嬢で、錬金大学の現役学生。今年卒業見込みで、大学史上初の3年飛び級を果たすと目されている天才少女。",
+    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前の商人・錬金術師として振る舞おうとするが、ナーディルの前では年相応の甘えが出ることも。",
+    relationship: "大学時代の先輩後輩。課題の相談や素材の購入、商会の試作品モニターなどの接点を通じて距離を縮めていく。周囲の『天才』という評価ではなく、一人の女の子として見られたいと願っている。",
     stats: {
       precision: 95,
       knowledge: 85,
       social: 60
     },
-    routeTheme: "ビジネスパートナーとしての対等な関係性",
+    routeTheme: "天才少女が普通の恋を知る物語",
     musicMood: "知性的で透明感のある旋律",
     greeting: "おはようございます、先輩。今日も素晴らしい目利きを期待しています。私も隣で、鑑定の極意を学ばせてくださいね。",
     assets: { standing: {}, face: {} }
@@ -5642,8 +5642,8 @@ const HEROINES = [
     id: "dariya",
     fullName: "ダリア・ザフラーン",
     name: "ダリヤ",
-    role: "王宮錬金局・技官 / 知己",
-    age: 20,
+    role: "王宮錬金術師 / 知己",
+    age: 23,
     themeColor: "#f44336",
     // Crimson/Red
     themeTrackId: "DARIYA-01",
@@ -5651,24 +5651,22 @@ const HEROINES = [
       facePosition: "center 25%",
       standingScale: 1.05
     },
-    description: "若くして王宮錬金局の技官を務めるエリート。公務の傍ら、在野の優れた技術者であるナディールのもとへ、難易度の高い依頼や調査協力を持ち込んでくる。",
+    description: "王宮錬金局の調合・検証部門に所属するエリート。鬼族（単角）の女性で、王都では気品ある美女として知られるが、鬼族の美意識からは少し外れているという自覚がある。",
+    personality: "クールで皮肉屋だが、内面は王宮の重圧に疲れている。普段は『強いお姉さん』を装っているが、心を許した相手には弱さを見せたり甘えたりすることもある。",
+    relationship: "大学時代の優秀な先輩。現在は公務の傍ら、星瓶堂に王宮向けの鑑定依頼や試作の検証を持ち込んでくる。完璧であることを求められる日々の中で、星瓶堂を唯一の安らぎの場と感じるようになる。",
     greeting: "おはよう、ナーディル。今日の朝の空気は、真理を見通すのに最適だと思わないか？ さあ、始めよう。君の鑑定、興味深く見守らせてもらうよ。",
-    personality: "冷静沈着で公私の区別がはっきりしている。しかし、珍しい古物や高度な錬金術の話になると、年相応の好奇心を覗かせることもある。",
-    relationship: "元々は公的な依頼主の一人だったが、ナディールの亡き祖父とも交流があり、現在は個人的な興味も含めて星瓶堂の再興を静かに見守っている。",
     stats: {
-      precision: 75,
+      precision: 90,
       knowledge: 95,
-      social: 80
+      social: 75
     },
-    routeTheme: "公的な立場を超えた個人的な知己としての絆",
-    musicMood: "気品と好奇心が混ざり合う調べ",
+    routeTheme: "完璧でない自分を受け止める安らぎの恋",
+    musicMood: "気品があり、どこか憂いを含んだ旋律",
     assets: { standing: {}, face: {} }
   }
 ];
 function getHeroineAsset(heroineId, type, expression = "normal") {
-  const dir = type === "face" ? "face_proc" : "standing_proc";
-  const ext = "png";
-  return `characters/${heroineId}/${dir}/${expression}.${ext}`;
+  return `characters/${heroineId}/${heroineId}_${type}_${expression}.png`;
 }
 function getResultExpression(correctCount) {
   if (correctCount >= 5) return "fun";
@@ -6088,7 +6086,7 @@ const AFFECTION_EVENTS = {
       title: "もう一度、隣に",
       speaker: "ハキマ",
       expression: "joy",
-      text: "ナーディル、さっきの品選び……なんだか少しだけ昔を思い出したよ。あんたが一人前になろうと必死なのは、見てればわかる。……あの日から、あんまり変わってないね。",
+      text: "ナーディル、さっきの品選び……なんだかあんたが店を継いだばかりの頃を思い出したよ。一人前になろうと必死なのは、見てればわかる。……あの時より、ずっと頼もしくなったね。",
       stillImageId: "hakimaMorningVisit01"
     },
     {
@@ -6287,7 +6285,7 @@ const ENDINGS = {
       title: "再会の約束、黄昏の街で",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "「星瓶堂、本当に元通りになったね……。あんたの目利き、昔の店主さんにも負けてなかったよ。……ねえ、ナーディル。これからもこうして、隣にいてもいいかな？ 幼馴染としてじゃなくて、もっと別の……その、大切な人として」"
+      text: "「星瓶堂、本当に元通りになったね……。あんたの目利き、昔の店主さんにも負けてなかったよ。……ねえ、ナーディル。これからもこうして、隣にいてもいいかな？ ……あたしにとってあんたは、もうただの同業者じゃない。もっと別の……その、大切な人なんだから」"
     },
     normal: {
       title: "日常の続き、隣の距離",
