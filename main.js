@@ -6436,6 +6436,39 @@ function App() {
       setScreen("RESULT");
     }
   };
+  const SCREEN_BACKGROUNDS = {
+    INTRO: "shopExteriorDay",
+    RESULT: "shopInteriorWorkshop",
+    DAY_END: "shopExteriorNight"
+  };
+  const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
+  const renderBackground = (screen2) => {
+    const bgId = SCREEN_BACKGROUNDS[screen2];
+    if (!bgId) return null;
+    const bg = BACKGROUND_IMAGES[bgId];
+    if (!bg) return null;
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: `url(${getFullPath(bg.src)})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      zIndex: 0,
+      pointerEvents: "none"
+    } }), /* @__PURE__ */ React.createElement("div", { style: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0,0,0,0.4)",
+      zIndex: 1,
+      pointerEvents: "none"
+    } }));
+  };
   const renderAudioToggle = () => /* @__PURE__ */ React.createElement(
     "button",
     {
@@ -6499,7 +6532,7 @@ function App() {
     ))));
   }
   if (screen === "INTRO") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, SHOP.localName), /* @__PURE__ */ React.createElement("p", null, "「おはよう、", PROTAGONIST.shortName, "。今日もお店を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
+    return /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, SHOP.localName), /* @__PURE__ */ React.createElement("p", null, "「おはよう、", PROTAGONIST.shortName, "。今日もお店を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める"))));
   }
   if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
@@ -6513,7 +6546,7 @@ function App() {
       1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
       0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
     };
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
@@ -6530,12 +6563,12 @@ function App() {
       padding: "15px",
       borderRadius: "12px",
       border: "1px solid rgba(255,255,255,0.1)"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? "#4caf50" : "#f44336" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleEndDay, style: buttonStyle }, "店じまいする")));
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? "#4caf50" : "#f44336" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleEndDay, style: buttonStyle }, "店じまいする"))));
   }
   if (screen === "DAY_END" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const mgmt = getWorkshopResult(correctCount);
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "一日の終わり"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "一日の終わり"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
@@ -6549,11 +6582,11 @@ function App() {
       borderRadius: "12px",
       marginBottom: "30px",
       border: "1px solid rgba(255,255,255,0.05)"
-    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, affection[activeHeroine.id], " / 100")))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
+    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, affection[activeHeroine.id], " / 100")))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る")))));
   }
   if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
-    const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
+    const getFullPath2 = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "親密度イベント：", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, still && /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
       height: "300px",
@@ -6568,7 +6601,7 @@ function App() {
     } }, /* @__PURE__ */ React.createElement(
       "img",
       {
-        src: getFullPath(still.src),
+        src: getFullPath2(still.src),
         alt: still.label,
         style: { width: "100%", height: "100%", objectFit: "contain" },
         onError: (e) => {
@@ -6591,7 +6624,7 @@ function App() {
     const stillList = Object.values(STILL_IMAGES);
     const bg = bgList[bgTestIndex % bgList.length];
     const still = stillList[stillTestIndex % stillList.length];
-    const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
+    const getFullPath2 = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Background: ", bg.label, " (", bg.id, ")"), /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -6613,7 +6646,7 @@ function App() {
       "img",
       {
         key: bg.id,
-        src: getFullPath(bg.src),
+        src: getFullPath2(bg.src),
         alt: bg.label,
         style: { width: "100%", height: "100%", objectFit: "cover" },
         onError: (e) => {
@@ -6642,7 +6675,7 @@ function App() {
       "img",
       {
         key: still.id,
-        src: getFullPath(still.src),
+        src: getFullPath2(still.src),
         alt: still.label,
         style: { width: "100%", height: "100%", objectFit: "contain" },
         onError: (e) => {
