@@ -16,3 +16,7 @@ public/characters/
 - **Format**: `.webp` (preferred) or `.png`
 - **Standing**: Transparent background, centered. Recommended height: 800px+
 - **Face**: Square (1:1), centered. Recommended size: 256x256px
+
+## Local Preprocessing
+These assets are managed by the character asset pipeline tool in `tools/character_asset_pipeline/`. 
+Manual modifications should be documented in `character_asset_config.json` if used, to avoid being overwritten by future automated processing.
