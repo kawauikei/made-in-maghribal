@@ -6055,6 +6055,15 @@ const AFFECTION_EVENTS = {
       speaker: "ハキマ",
       expression: "joy",
       text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。"
+    },
+    {
+      id: "hakima_10",
+      heroineId: "hakima",
+      threshold: 10,
+      title: "狐の耳は嘘をつかない",
+      speaker: "ハキマ",
+      expression: "fun",
+      text: "……あ、あんまり耳をジロジロ見ないでよ。ほら、仕事に戻った戻った！（ピコピコと耳が嬉しそうに動いている）"
     }
   ],
   mira: [
@@ -6066,6 +6075,15 @@ const AFFECTION_EVENTS = {
       speaker: "ミラ",
       expression: "fun",
       text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。"
+    },
+    {
+      id: "mira_10",
+      heroineId: "mira",
+      threshold: 10,
+      title: "商人の目利き",
+      speaker: "ミラ",
+      expression: "joy",
+      text: "先輩、今の品選びは実に見事でした。商人の娘として、尊敬してしまいます。……私も、もっと頑張らなくては。"
     }
   ],
   dariya: [
@@ -6077,6 +6095,15 @@ const AFFECTION_EVENTS = {
       speaker: "ダリヤ",
       expression: "joy",
       text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。"
+    },
+    {
+      id: "dariya_10",
+      heroineId: "dariya",
+      threshold: 10,
+      title: "共鳴する真理",
+      speaker: "ダリヤ",
+      expression: "fun",
+      text: "君の調合理論は、時に王立研究所の教授たちよりも核心を突いているね。……面白い。君という人間をもっと知りたくなったよ。"
     }
   ]
 };
@@ -6089,7 +6116,7 @@ function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
     (event) => currentAffection >= event.threshold && !seenEventIds.includes(event.id)
   );
   if (eligibleEvents.length === 0) return null;
-  return eligibleEvents.sort((a, b) => b.threshold - a.threshold)[0];
+  return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
 }
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
