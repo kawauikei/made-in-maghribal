@@ -13,6 +13,7 @@ import { createInitialAffection, addAffection, calculateQuizAffectionGain } from
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
 import { checkNewEventUnlock } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
+import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -93,6 +94,8 @@ function App() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
   const [hasSave, setHasSave] = useState(false);
+  const [bgTestIndex, setBgTestIndex] = useState(0);
+  const [stillTestIndex, setStillTestIndex] = useState(0);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -341,6 +344,13 @@ function App() {
               Sound Test
             </button>
 
+            <button 
+              onClick={() => setScreen('VISUAL_TEST')} 
+              style={{ ...buttonStyle, background: '#444', marginTop: '10px', width: '100%', maxWidth: '280px' }}
+            >
+              Visual Test
+            </button>
+
             {hasSave && (
               <button 
                 onClick={handleResetSave} 
@@ -547,6 +557,93 @@ function App() {
             </div>
           </div>
           <button onClick={handleCloseEvent} style={buttonStyle}>閉じる</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'VISUAL_TEST') {
+    const bgList = Object.values(BACKGROUND_IMAGES);
+    const stillList = Object.values(STILL_IMAGES);
+    
+    const bg = bgList[bgTestIndex % bgList.length];
+    const still = stillList[stillTestIndex % stillList.length];
+
+    const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
+
+    return (
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>Visual Asset Test</h1>
+        <div style={{ ...cardStyle, maxWidth: '800px' }}>
+          <div style={{ marginBottom: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Background: {bg.label} ({bg.id})</h3>
+              <button 
+                onClick={() => setBgTestIndex(prev => (prev + 1) % bgList.length)}
+                style={{ ...buttonStyle, marginTop: 0, padding: '4px 12px', fontSize: '0.8em' }}
+              >
+                Next Background
+              </button>
+            </div>
+            <div style={{ 
+              width: '100%', 
+              height: '240px', 
+              background: '#000', 
+              borderRadius: '8px', 
+              overflow: 'hidden',
+              border: '2px solid #444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <img 
+                key={bg.id}
+                src={getFullPath(bg.src)} 
+                alt={bg.label}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
+                }}
+              />
+            </div>
+          </div>
+
+          <div style={{ marginBottom: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Still: {still.label} ({still.id})</h3>
+              <button 
+                onClick={() => setStillTestIndex(prev => (prev + 1) % stillList.length)}
+                style={{ ...buttonStyle, marginTop: 0, padding: '4px 12px', fontSize: '0.8em' }}
+              >
+                Next Still
+              </button>
+            </div>
+            <div style={{ 
+              width: '100%', 
+              height: '340px', 
+              background: '#000', 
+              borderRadius: '8px', 
+              overflow: 'hidden',
+              border: '2px solid #444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <img 
+                key={still.id}
+                src={getFullPath(still.src)} 
+                alt={still.label}
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+                }}
+              />
+            </div>
+          </div>
+
+          <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
         </div>
       </div>
     );
