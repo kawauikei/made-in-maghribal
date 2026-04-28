@@ -3,9 +3,13 @@ import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 
+const ACTIVE_HEROINE_ID = 'hakima';
+
 export default function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
+
+  const activeHeroine = HEROINES.find(h => h.id === ACTIVE_HEROINE_ID) || HEROINES[0];
 
   // Go to INTRO
   const handleStartGame = () => {
@@ -50,11 +54,14 @@ export default function App() {
       <div style={containerStyle}>
         <h1 style={titleStyle}>工房の朝</h1>
         <div style={cardStyle}>
-          <div style={narrativeBoxStyle}>
-            <p>ここは砂漠の王国マグリバル。</p>
-            <p>あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。</p>
-            <p>今日も工房には、少し困ったお客がやってくる。</p>
-            <p>相手の願いを読み取り、ぴったりの品を選ぼう。</p>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+             <HeroineDisplay heroine={activeHeroine} type="standing" size="large" />
+             <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
+                <p>ここは砂漠の王国マグリバル。</p>
+                <p>あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。</p>
+                <p>今日も工房には、少し困ったお客がやってくる。</p>
+                <p>相手の願いを読み取り、ぴったりの品を選ぼう。</p>
+             </div>
           </div>
           <button onClick={handleBeginService} style={buttonStyle}>接客を始める</button>
         </div>
@@ -85,9 +92,13 @@ export default function App() {
             ))}
           </div>
 
-          <div style={{ fontSize: '1.2em', color: '#ffcc00', marginBottom: '10px', fontWeight: 'bold', marginTop: '20px' }}>
-            称号：{rank.title}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
+            <HeroineDisplay heroine={activeHeroine} type="face" size="small" />
+            <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
+              称号：{rank.title}
+            </div>
           </div>
+
           <h2 style={{ margin: '10px 0' }}>最終スコア: {session.score} 点</h2>
           <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
             {session.questions.length} 問中 {correctCount} 問正解
@@ -172,6 +183,52 @@ export default function App() {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+// --- SUB COMPONENTS ---
+
+function HeroineDisplay({ heroine, type, size = "large" }) {
+  const [imgError, setImgError] = useState(false);
+  const assetPath = getHeroineAsset(heroine.id, type);
+  const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+
+  const isPortrait = type === 'standing';
+  const displaySize = size === 'large' ? (isPortrait ? 180 : 100) : (isPortrait ? 80 : 50);
+
+  const containerStyle = {
+    width: isPortrait ? `${displaySize * 0.7}px` : `${displaySize}px`,
+    height: `${displaySize}px`,
+    borderRadius: isPortrait ? '12px' : '50%',
+    overflow: 'hidden',
+    background: heroine.themeColor || '#444',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: `2px solid ${heroine.themeColor || '#ffcc00'}`,
+    boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+    flexShrink: 0
+  };
+
+  if (!fullPath || imgError) {
+    return (
+      <div style={containerStyle}>
+        <span style={{ fontSize: size === 'large' ? '2em' : '1.2em', fontWeight: 'bold', color: '#111' }}>
+          {heroine.name[0]}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div style={containerStyle}>
+      <img 
+        src={fullPath} 
+        alt={heroine.name} 
+        style={{ width: '100%', height: '100%', objectFit: isPortrait ? 'contain' : 'cover' }}
+        onError={() => setImgError(true)}
+      />
     </div>
   );
 }
