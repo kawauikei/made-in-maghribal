@@ -105,15 +105,15 @@ function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE } = {}) {
 }
 function getRankInfo(correctCount) {
   if (correctCount >= 5) {
-    return { title: "マグリバル一の目利き", message: "完璧な接客です。お客さんは満面の笑みで工房を後にしました。" };
+    return { title: "星瓶堂の若店主", message: "客の求める品を見極める目が、もうしっかり育っています。星瓶堂の接客は、これからもっと磨けます。" };
   } else if (correctCount >= 4) {
-    return { title: "腕利き店主", message: "かなり良い接客です。あと一歩で評判が大きく伸びそうです。" };
+    return { title: "若き錬金店主", message: "なかなか鋭いです。あと一歩で、さらに星瓶堂らしい判断ができそうです。" };
   } else if (correctCount >= 3) {
-    return { title: "駆け出し店主", message: "まずまずの接客です。商品の特徴を少しずつ掴めてきました。" };
+    return { title: "かけだし店主", message: "まずまずです。品選びの勘は、少しずつ形になっています。" };
   } else if (correctCount >= 2) {
-    return { title: "新米鑑定士", message: "まだ迷いがあるようです。お客さんの希望をよく見てみましょう。" };
+    return { title: "星瓶堂の一歩目", message: "手応えはあります。星瓶堂の仕事に、だんだん慣れてきました。" };
   } else {
-    return { title: "迷える見習い", message: "今日は少し噛み合いませんでした。品物の色・種類・雰囲気を覚えていきましょう。" };
+    return { title: "見習い錬金店主", message: "ここからです。星瓶堂の仕事は、ひとつずつ覚えていけば大丈夫です。" };
   }
 }
 const items = [
@@ -5588,80 +5588,77 @@ function applyWorkshopResult(state, result) {
 const HEROINES = [
   {
     id: "hakima",
-    fullName: "ハキマ・アル＝ルハーン",
+    fullName: "ハキマアル＝ルハーン",
     name: "ハキマ",
     role: "品質鑑定見習い / 知己",
     age: 19,
     themeColor: "#ffcc00",
-    // Gold/Yellow
     themeTrackId: "HAKIMA-01",
     visualConfig: {
       facePosition: "center 20%",
       standingScale: 1
     },
-    description: "親戚が営む香料・薬草・染料の商会『アル＝ルハーン香材商会』で品質鑑定見習いを務める少女。素材の真贋を見抜く確かな目を持っている。",
-    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。好きな相手ほど厳しく接してしまう傾向がある。",
-    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を盛り立てていく過程で、商会の鑑定担当として関わることになる。若店主としてのナーディルの手腕を試すような態度を取る。",
+    description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
+    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
+    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
     stats: {
       precision: 80,
       knowledge: 70,
       social: 90
     },
-    routeTheme: "同業者としての対等な信頼関係の構築",
-    musicMood: "快活で少し強気な旋律",
-    greeting: "おはよう、ナーディル。今日もお店、開けましょうか。あたしも準備、手伝うから。あんたの目利き、しっかり見せてもらうよ。",
+    routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
+    musicMood: "軽やかで少し照れくさい旋律",
+    greeting: "おはよう、ナーディル。今日も星瓶堂らしい目利き、見せてよね。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "mira",
-    fullName: "ミラ・サフワーン",
+    fullName: "ミラサフワーン",
     name: "ミラ",
-    role: "錬金大学の後輩 / 商家令嬢",
+    role: "錬金大学の先輩 / 相談相手",
     age: 16,
     themeColor: "#3d5afe",
-    // Royal Blue
     themeTrackId: "MIRA-01",
     visualConfig: {
       facePosition: "center 15%",
       standingScale: 0.95
     },
-    description: "大商会『アル・アサド商会』の令嬢で、錬金大学の現役学生。今年卒業見込みで、大学史上初の3年飛び級を果たすと目されている天才少女。",
-    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前の商人・錬金術師として振る舞おうとするが、ナーディルの前では年相応の甘えが出ることも。",
-    relationship: "大学時代の先輩後輩。課題の相談や素材の購入、商会の試作品モニターなどの接点を通じて距離を縮めていく。周囲の『天才』という評価ではなく、一人の女の子として見られたいと願っている。",
+    description: "錬金大学で学ぶ少女。知識の吸収が早く、星瓶堂では新しい発想を持ち込んでくれる。",
+    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前として見られたいと思っている。",
+    relationship: "課題の相談や素材の購入、試作品の確認などを通じて距離を縮める協力者。",
     stats: {
       precision: 95,
       knowledge: 85,
       social: 60
     },
-    routeTheme: "天才少女が普通の恋を知る物語",
+    routeTheme: "知識と好奇心がつなぐ協力関係",
     musicMood: "知性的で透明感のある旋律",
-    greeting: "おはようございます、先輩。今日も素晴らしい目利きを期待しています。私も隣で、鑑定の極意を学ばせてくださいね。",
+    greeting: "おはようございます、先輩。今日もいい品を見つけましょう。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "dariya",
-    fullName: "ダリア・ザフラーン",
+    fullName: "ダリヤザフラーン",
     name: "ダリヤ",
-    role: "王宮錬金術師 / 知己",
+    role: "王宮錬金局のエリート",
     age: 23,
     themeColor: "#f44336",
-    // Crimson/Red
     themeTrackId: "DARIYA-01",
     visualConfig: {
       facePosition: "center 25%",
       standingScale: 1.05
     },
-    description: "王宮錬金局の調合・検証部門に所属するエリート。鬼族（単角）の女性で、王都では気品ある美女として知られるが、鬼族の美意識からは少し外れているという自覚がある。",
-    personality: "クールで皮肉屋だが、内面は王宮の重圧に疲れている。普段は『強いお姉さん』を装っているが、心を許した相手には弱さを見せたり甘えたりすることもある。",
-    relationship: "大学時代の優秀な先輩。現在は公務の傍ら、星瓶堂に王宮向けの鑑定依頼や試作の検証を持ち込んでくる。完璧であることを求められる日々の中で、星瓶堂を唯一の安らぎの場と感じるようになる。",
-    greeting: "おはよう、ナーディル。今日の朝の空気は、真理を見通すのに最適だと思わないか？ さあ、始めよう。君の鑑定、興味深く見守らせてもらうよ。",
+    description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
+    personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
+    relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
+    greeting: "おはよう、ナーディル。今日は君の判断を見せてもらおう。",
     stats: {
       precision: 90,
       knowledge: 95,
       social: 75
     },
-    routeTheme: "完璧でない自分を受け止める安らぎの恋",
-    musicMood: "気品があり、どこか憂いを含んだ旋律",
+    routeTheme: "立場の強さと本音の揺れが交わる関係",
+    musicMood: "静かな緊張感を帯びた旋律",
     assets: { standing: {}, face: {} }
   }
 ];
@@ -6282,62 +6279,62 @@ const STILL_IMAGES = {
 const ENDINGS = {
   hakima: {
     good: {
-      title: "再会の約束、黄昏の街で",
+      title: "星瓶堂の灯が、やさしく続く",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "「星瓶堂、活気が出てきたね……。あんたの目利き、立派なものだったよ。……ねえ、ナーディル。これからもこうして、隣にいてもいいかな？ ……あたしにとってあんたは、もうただの同業者じゃない。もっと別の……その、大切な人なんだから」"
+      text: "今日までの積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また明日も星瓶堂を手伝うと言った。"
     },
     normal: {
-      title: "日常の続き、隣の距離",
+      title: "いつもの一日が、少し特別になる",
       expression: "normal",
       bgId: "shopInteriorService",
-      text: "「お疲れ様。なんとかお店、形になったね。これからも忙しくなりそうだけど、あたしもできる限り手伝うから。……あんたが困った時、一番に頼るのはあたしなんだからね。わかった？」"
+      text: "星瓶堂で重ねた会話は、静かに次の約束へつながっていく。"
     },
     bad: {
-      title: "すれ違う足音",
+      title: "言えなかった言葉",
       expression: "sad",
       bgId: "shopInteriorService",
-      text: "「お店、やっぱり畳んじゃうんだね……。あたしも力になれなくてごめん。……ナーディル、あんたのこれからの道が、どこに繋がっていても……あたしは応援してるから。じゃあね」"
+      text: "少しすれ違いは残ったけれど、星瓶堂で過ごした時間が消えるわけではない。"
     }
   },
   mira: {
     good: {
-      title: "黄金の砂漠に咲く花",
+      title: "ひらめきが、未来を照らす",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "「先輩、おめでとうございます。星瓶堂のさらなる発展、商会の人間としても、一人のファンとしても、これほど嬉しいことはありません。……もしよろしければ、これからもずっと、お傍であなたの鑑定を見届けてもよろしいでしょうか？」"
+      text: "ミラは新しい発想を携えて、また星瓶堂にやってくる。次の相談が、もう楽しみだ。"
     },
     normal: {
-      title: "商人たちの静かな午後",
+      title: "学びの途中で",
       expression: "normal",
       bgId: "shopInteriorService",
-      text: "「一区切りですね、先輩。星瓶堂の評判も安定してきました。私も商会の仕事がありますが、時間を見つけては顔を出します。……あなたの選ぶ品々を、私はもっと見ていたいのです」"
+      text: "まだまだ途中。でも、二人でなら次の一歩も見つけられる。"
     },
     bad: {
-      title: "遠ざかる学舎の鐘",
+      title: "少し遠回り",
       expression: "sad",
       bgId: "shopInteriorService",
-      text: "「残念です、先輩……。星瓶堂がなくなってしまうなんて。私の力不足です。……いつかまた、あなたがどこかで鑑定の旗を掲げる日が来ると信じています。さようなら」"
+      text: "距離は少しだけ離れたまま。それでも、また会えば言葉を交わせるはずだ。"
     }
   },
   dariya: {
     good: {
-      title: "叡智の果て、君の隣",
+      title: "静かな信頼",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "「素晴らしい結果だ、ナーディル。君の目利きは、王宮の宝物庫すら凌駕する真実を捉えていた。……私は決めたよ。王立研究所よりも、君の隣にいる方が、私の求める真理に近い。これからも、共に歩ませてくれないか？」"
+      text: "ダリヤは星瓶堂に、気を抜ける場所を見つけた。そうしてまた、少しだけ笑った。"
     },
     normal: {
-      title: "真理への緩やかな道",
+      title: "気配を残して",
       expression: "normal",
       bgId: "shopInteriorService",
-      text: "「再建成功、おめでとう。君という人間は、やはり私の予測を超えてくる。これからも研究の合間に、君の鑑定を観察させてもらうよ。……ふふ、断っても無駄だ。君の理論は、あまりに魅力的すぎるからね」"
+      text: "短い時間でも、言葉を重ねれば距離は変わる。星瓶堂には、その余韻が残る。"
     },
     bad: {
-      title: "霧に消える研究室",
+      title: "まだほどけない心",
       expression: "sad",
       bgId: "shopInteriorService",
-      text: "「……そうか。星瓶堂の灯が消えてしまうのだね。この場所で君と語った時間は、私にとって最も貴重なデータ……いや、思い出だった。……君の未来に、幸いがあらんことを」"
+      text: "話し足りない気持ちはある。それでも、星瓶堂での記憶はここにある。"
     }
   }
 };
@@ -7090,11 +7087,11 @@ function App() {
       "記録を全て消去する"
     )));
   } else if (screen === "PROLOGUE") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "鑑定士の旅立ち"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: "物語の始まり",
-        text: "砂漠の街マグリバル。その喧騒を抜けた路地裏に、若き錬金術師ナーディルが営む工房『星瓶堂』がある。かつては多くの人々が訪れたこの場所を、再び活気ある店へと育てていくのがあなたの目的だ。……今日から始まる10日間。あなたは大切な協力者と共に、鑑定士としての新たな一歩を踏み出すことになる。",
+        text: "砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。若店主ナーディルは、客の依頼に合う品を見極めながら、10日間の営業のなかで協力者との縁を育てていく。",
         themeColor: THEME.brass,
         onComplete: () => {
           audioEngine.playSfx("uiClickForward");
@@ -7110,7 +7107,7 @@ function App() {
         },
         style: { ...buttonStyle, marginTop: "30px", width: "100%", maxWidth: "280px" }
       },
-      "鑑定士の道へ"
+      "星瓶堂へ進む"
     ))));
   } else if (screen === "INTRO") {
     mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
@@ -7257,18 +7254,18 @@ function App() {
           e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", overflowX: "auto", padding: "10px 0", scrollbarWidth: "thin", width: "100%" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "10px", padding: "10px 0", width: "100%" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
       "div",
       {
         key: item.id,
         onClick: () => setBgTestIndex(idx),
         style: {
-          flex: "0 0 100px",
           aspectRatio: "16/9",
-          borderRadius: "4px",
+          borderRadius: "8px",
           overflow: "hidden",
           border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : "#333"}`,
-          cursor: "pointer"
+          cursor: "pointer",
+          boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
         }
       },
       /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
@@ -7284,18 +7281,18 @@ function App() {
           e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", overflowX: "auto", padding: "10px 0", scrollbarWidth: "thin", width: "100%" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "10px", padding: "10px 0", width: "100%" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
       "div",
       {
         key: item.id,
         onClick: () => setStillTestIndex(idx),
         style: {
-          flex: "0 0 100px",
           aspectRatio: "16/9",
-          borderRadius: "4px",
+          borderRadius: "8px",
           overflow: "hidden",
           border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : "#333"}`,
-          cursor: "pointer"
+          cursor: "pointer",
+          boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
         }
       },
       /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
