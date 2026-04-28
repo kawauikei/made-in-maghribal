@@ -1853,7 +1853,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
       style={{
         width: '100%',
         boxSizing: 'border-box',
-        minHeight: '140px',
+        height: '160px',
         background: 'rgba(26, 42, 58, 0.95)',
         borderLeft: `4px solid ${themeColor || '#c5a059'}`,
         padding: '20px 24px',
@@ -1879,7 +1879,8 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
           letterSpacing: '0.08em',
           textShadow: '0 1px 2px rgba(0,0,0,0.5)'
         }}>
-          【{speaker}、E        </div>
+          {speaker}
+        </div>
       )}
       <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
         {displayText}
@@ -2041,6 +2042,7 @@ const itemNameStyle = {
   color: '#444',
   fontWeight: 'bold'
 };
+
 
 
 
