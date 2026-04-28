@@ -6977,13 +6977,14 @@ function App() {
     )));
   } else if (screen === "PROLOGUE") {
     const prologuePages = [
-      "砂漠の街�Eグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある、E",
-      "若店主ナ�EチE��ルは、客の依頼に合う品を見極めながら、協力老E��の縁を少しずつ育ててぁE��、E"
+      "砂漠の街マグリバル。路地の一角に、小さな錬金術店『星瓶堂』がある。",
+      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。"
     ];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "���r���̎n�܂�"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
-        speaker: "�i�[�f�B��",
+        speaker: "ナーディル",
         pages: prologuePages,
         themeColor: THEME.brass,
         onComplete: () => {
@@ -7592,7 +7593,8 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
         userSelect: "none",
         lineHeight: "1.7",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        overflow: "hidden"
       }
     },
     speaker && /* @__PURE__ */ React.createElement("div", { style: {
@@ -7613,7 +7615,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
       color: themeColor || "#c5a059",
       fontWeight: "bold",
       animation: "vn-bounce 1s infinite"
-    } }, "▼ NEXT"),
+    } }, "NEXT"),
     /* @__PURE__ */ React.createElement("style", null, `
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
