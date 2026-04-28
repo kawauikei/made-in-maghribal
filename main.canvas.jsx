@@ -882,6 +882,10 @@ function App() {
       </div>
     );
   } else if (screen === 'PROLOGUE') {
+    const prologuePages = [
+      "砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。",
+      "若店主ナーディルは、客の依頼に合う品を見極めながら、協力者との縁を少しずつ育てていく。"
+    ];
     mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
@@ -892,7 +896,7 @@ function App() {
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox 
               speaker="物語の始まり"
-              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。若店主ナーディルは、客の依頼に合う品を見極めながら、10日間の営業のなかで協力者との縁を育てていく。"
+              pages={prologuePages}
               themeColor={THEME.brass}
               onComplete={() => {
                 setIsPrologueComplete(true);
@@ -1803,14 +1807,17 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   );
 }
 
-function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false }) {
-  const [displayText, setDisplayText] = useState(skip ? text : "");
+function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip = false }) {
+  const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
+  const [pageIndex, setPageIndex] = useState(0);
+  const currentText = pageList[pageIndex] || "";
+  const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (skip) {
-      setDisplayText(text);
+      setDisplayText(currentText);
       setIsComplete(true);
       return;
     }
@@ -1818,27 +1825,32 @@ function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false
     setDisplayText("");
     setIsComplete(false);
     setCurrentIndex(0);
-  }, [text, skip]);
+  }, [currentText, skip]);
 
   useEffect(() => {
     if (isComplete || skip) return;
 
-    if (currentIndex < text.length) {
+    if (currentIndex < currentText.length) {
       const timer = setTimeout(() => {
-        setDisplayText(prev => prev + text[currentIndex]);
+        setDisplayText(prev => prev + currentText[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }, speed);
       return () => clearTimeout(timer);
     } else {
       setIsComplete(true);
     }
-  }, [currentIndex, text, isComplete, speed, skip]);
+  }, [currentIndex, currentText, isComplete, speed, skip]);
 
   const handleClick = (e) => {
     if (e) e.stopPropagation();
     if (!isComplete) {
-      setDisplayText(text);
+      setDisplayText(currentText);
       setIsComplete(true);
+    } else if (pageIndex < pageList.length - 1) {
+      setPageIndex(prev => prev + 1);
+      setDisplayText("");
+      setIsComplete(false);
+      setCurrentIndex(0);
     } else if (onComplete) {
       onComplete();
     }
@@ -1883,7 +1895,7 @@ function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
       </div>
-      {isComplete && (
+      {isComplete && pageIndex < pageList.length - 1 && (
         <div style={{ 
           position: 'absolute', 
           bottom: '12px', 
