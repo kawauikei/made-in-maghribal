@@ -3,6 +3,7 @@ import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
+import { getResultExpression, getDayEndExpression } from './game/presentation';
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -85,7 +86,7 @@ export default function App() {
         <h1 style={titleStyle}>{workshopState.day}日目：工房の朝</h1>
         <div style={cardStyle}>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-             <HeroineDisplay heroine={activeHeroine} type="standing" size="large" />
+             <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
              <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
                 <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{workshopState.day}日目の朝</div>
                 <p>「おはよう。今日も工房の扉を開けましょうか」</p>
@@ -124,7 +125,12 @@ export default function App() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
-            <HeroineDisplay heroine={activeHeroine} type="face" size="small" />
+            <HeroineDisplay 
+              heroine={activeHeroine} 
+              type="face" 
+              size="small" 
+              expression={getResultExpression(correctCount)}
+            />
             <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
               称号：{rank.title}
             </div>
@@ -181,12 +187,20 @@ export default function App() {
       <div style={containerStyle}>
         <h1 style={titleStyle}>一日の終わり</h1>
         <div style={cardStyle}>
-          <div style={{ ...narrativeBoxStyle, textAlign: 'left' }}>
-            <p>夕暮れの工房に、今日選ばれた品々の余韻が残っている。</p>
-            <p>小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。</p>
-            <p style={{ marginTop: '20px', color: activeHeroine.themeColor, fontWeight: 'bold' }}>
-              {activeHeroine.name}：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」
-            </p>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <HeroineDisplay 
+              heroine={activeHeroine} 
+              type="face" 
+              size="medium" 
+              expression={getDayEndExpression(correctCount)}
+            />
+            <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0, textAlign: 'left' }}>
+              <p>夕暮れの工房に、今日選ばれた品々の余韻が残っている。</p>
+              <p>小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。</p>
+              <p style={{ marginTop: '10px', color: activeHeroine.themeColor, fontWeight: 'bold' }}>
+                {activeHeroine.name}：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」
+              </p>
+            </div>
           </div>
 
           <div style={{ 
@@ -243,7 +257,7 @@ export default function App() {
                 }}
               >
                 <div style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center' }}>
-                  <HeroineDisplay heroine={heroine} type="face" size="large" />
+                  <HeroineDisplay heroine={heroine} type="face" size="large" expression="normal" />
                 </div>
                 <h3 style={{ margin: '0 0 10px 0', fontSize: '1.2em' }}>{heroine.name}</h3>
                 <div style={{ fontSize: '0.8em', color: '#ffcc00', marginBottom: '10px' }}>{heroine.role}</div>
@@ -347,9 +361,9 @@ export default function App() {
 
 // --- SUB COMPONENTS ---
 
-function HeroineDisplay({ heroine, type, size = "large" }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   const [imgError, setImgError] = useState(false);
-  const assetPath = getHeroineAsset(heroine.id, type);
+  const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
 
   const isPortrait = type === 'standing';
