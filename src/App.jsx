@@ -878,8 +878,9 @@ export default function App() {
     );
   } else if (screen === 'PROLOGUE') {
     const prologuePages = [
-      "砂漠の街�Eグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある、E",
-      "若店主ナ�EチE��ルは、客の依頼に合う品を見極めながら、協力老E��の縁を少しずつ育ててぁE��、E",
+      "砂漠の街マグリバル。路地の一角に、小さな錬金術店『星瓶堂』がある。",
+      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
     ];
     mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
@@ -887,10 +888,10 @@ export default function App() {
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>���r���̎n�܂�</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
-            <VNBox 
-               speaker="�i�[�f�B��"
+            <VNBox
+              speaker="ナーディル"
               pages={prologuePages}
               themeColor={THEME.brass}
               onComplete={() => {
@@ -899,11 +900,11 @@ export default function App() {
             />
             <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {isPrologueComplete && (
-                <button 
+                <button
                   onClick={() => {
                     audioEngine.playSfx('uiClickForward');
                     setScreen('HEROINE_SELECT');
-                  }} 
+                  }}
                   style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
                 >
                   星瓶堂へ進む
@@ -1866,7 +1867,8 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
         userSelect: 'none',
         lineHeight: '1.7',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}
     >
       {speaker && (
@@ -1896,7 +1898,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
           fontWeight: 'bold',
           animation: 'vn-bounce 1s infinite'
         }}>
-          ▼ NEXT
+          NEXT
         </div>
       )}
       <style>{`
