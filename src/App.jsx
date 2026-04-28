@@ -4,16 +4,26 @@ import { getRankInfo } from './game/scoring';
 import { getWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 
-const ACTIVE_HEROINE_ID = 'hakima';
-
 export default function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
+  const [activeHeroineId, setActiveHeroineId] = useState('hakima');
 
-  const activeHeroine = HEROINES.find(h => h.id === ACTIVE_HEROINE_ID) || HEROINES[0];
+  const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
 
-  // Go to INTRO
+  // Go to Heroine Select
   const handleStartGame = () => {
+    setScreen('HEROINE_SELECT');
+  };
+
+  // Select Heroine and start Intro
+  const handleSelectHeroine = (id) => {
+    setActiveHeroineId(id);
+    setScreen('INTRO');
+  };
+
+  // Go to INTRO (Next Day)
+  const handleNextDay = () => {
     setScreen('INTRO');
   };
 
@@ -30,6 +40,7 @@ export default function App() {
 
   // Back to Title
   const handleBackToTitle = () => {
+    setActiveHeroineId('hakima');
     setSession(null);
     setScreen('START');
   };
@@ -185,9 +196,60 @@ export default function App() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <button onClick={handleStartGame} style={buttonStyle}>次の日へ進む</button>
+            <button onClick={handleNextDay} style={buttonStyle}>次の日へ進む</button>
             <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444' }}>タイトルへ戻る</button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'HEROINE_SELECT') {
+    return (
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>誰と店を開く？</h1>
+        <div style={{ ...cardStyle, maxWidth: '800px' }}>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '30px' }}>
+            {HEROINES.map(heroine => (
+              <div 
+                key={heroine.id} 
+                onClick={() => handleSelectHeroine(heroine.id)}
+                style={{ 
+                  flex: '1',
+                  minWidth: '200px',
+                  maxWidth: '240px',
+                  background: 'rgba(255,255,255,0.05)',
+                  padding: '20px',
+                  borderRadius: '16px',
+                  border: `2px solid ${heroine.themeColor}`,
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s',
+                  textAlign: 'center'
+                }}
+              >
+                <div style={{ marginBottom: '15px', display: 'flex', justifyContent: 'center' }}>
+                  <HeroineDisplay heroine={heroine} type="face" size="large" />
+                </div>
+                <h3 style={{ margin: '0 0 10px 0', fontSize: '1.2em' }}>{heroine.name}</h3>
+                <div style={{ fontSize: '0.8em', color: '#ffcc00', marginBottom: '10px' }}>{heroine.role}</div>
+                <p style={{ fontSize: '0.85em', color: '#ccc', textAlign: 'left', margin: 0, minHeight: '4.5em' }}>
+                  {heroine.description}
+                </p>
+                <div style={{ 
+                  marginTop: '15px', 
+                  padding: '8px', 
+                  background: heroine.themeColor, 
+                  color: '#111', 
+                  borderRadius: '8px',
+                  fontWeight: 'bold',
+                  fontSize: '0.9em'
+                }}>
+                  選択する
+                </div>
+              </div>
+            ))}
+          </div>
+          <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444', maxWidth: '200px' }}>戻る</button>
         </div>
       </div>
     );
