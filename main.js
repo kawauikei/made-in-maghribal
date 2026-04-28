@@ -6497,6 +6497,7 @@ function App() {
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
+  const [quizFeedback, setQuizFeedback] = useState(null);
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
@@ -6796,30 +6797,37 @@ function App() {
     setHasSave(hasSaveData());
   };
   const handleSelect = (itemId) => {
-    if (!session || session.isFinished) return;
+    if (!session || session.isFinished || quizFeedback) return;
     audioEngine.playSfx("quizChoicePick");
     const updatedSession = answerQuestion(session, itemId);
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
-    if (lastAnswer && lastAnswer.isCorrect) {
-      audioEngine.playSfx("quizCorrectStarChime");
-    } else {
-      audioEngine.playSfx("quizWrongSandTap");
-    }
-    setSession(updatedSession);
-    if (updatedSession.isFinished) {
-      const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
-      const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
-      const nextAffection = addAffection(affection, activeHeroineId, gain);
-      setAffection(nextAffection);
-      setLastAffectionGain(gain);
-      const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-      if (unlockedEvent) {
-        setActiveEvent(unlockedEvent);
+    const isCorrect = lastAnswer.isCorrect;
+    setQuizFeedback({ itemId, isCorrect });
+    setTimeout(() => {
+      if (isCorrect) {
+        audioEngine.playSfx("quizCorrectStarChime");
+      } else {
+        audioEngine.playSfx("quizWrongSandTap");
       }
-      const result = getWorkshopResult(correctCount);
-      setWorkshopState((prev) => applyWorkshopResult(prev, result));
-      setScreen("RESULT");
-    }
+      setTimeout(() => {
+        setQuizFeedback(null);
+        setSession(updatedSession);
+        if (updatedSession.isFinished) {
+          const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
+          const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
+          const nextAffection = addAffection(affection, activeHeroineId, gain);
+          setAffection(nextAffection);
+          setLastAffectionGain(gain);
+          const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+          if (unlockedEvent) {
+            setActiveEvent(unlockedEvent);
+          }
+          const result = getWorkshopResult(correctCount);
+          setWorkshopState((prev) => applyWorkshopResult(prev, result));
+          setScreen("RESULT");
+        }
+      }, 650);
+    }, 150);
   };
   const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
   const renderBackground = (screen2) => {
@@ -6873,6 +6881,37 @@ function App() {
         display: flex;
         flex-direction: column;
         alignItems: center;
+      }
+
+      /* Quiz Animations (M9-3) */
+      @keyframes staggerIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
+      .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
+
+      @keyframes goldFlash {
+        0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); border-color: ${THEME.brass}; }
+        50% { box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0.8); border-color: #ffcc00; background: #fffdf0; }
+        100% { box-shadow: 0 0 15px 5px rgba(255, 204, 0, 0.4); border-color: #ffcc00; background: #fffdf0; }
+      }
+      .feedback-correct { 
+        animation: goldFlash 0.5s ease-out forwards; 
+        z-index: 10;
+        transform: scale(1.05) !important;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-6px); }
+        40%, 80% { transform: translateX(6px); }
+      }
+      .feedback-wrong { 
+        animation: shake 0.4s ease-in-out; 
+        border-color: #f44 !important; 
+        background: #fff5f5 !important;
+        opacity: 0.8;
       }
     `);
   const renderAudioToggle = () => /* @__PURE__ */ React.createElement(
@@ -7405,28 +7444,36 @@ function App() {
       gridTemplateColumns: "1fr 1fr",
       gap: "20px",
       width: "100%"
-    } }, currentQuestion.choices.map((item) => /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        key: item.id,
-        onClick: () => handleSelect(item.id),
-        className: "item-card",
-        style: itemCardStyle
-      },
-      /* @__PURE__ */ React.createElement(
-        "img",
+    } }, currentQuestion.choices.map((item, index) => {
+      const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
+      const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
+      const staggerClass = `quiz-option-${index}`;
+      return /* @__PURE__ */ React.createElement(
+        "div",
         {
-          src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
-          alt: item.name,
-          style: { ...imageStyle, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
-          onError: (e) => {
-            e.target.onerror = null;
-            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+          key: item.id,
+          onClick: () => handleSelect(item.id),
+          className: `item-card ${staggerClass} ${feedbackClass}`,
+          style: {
+            ...itemCardStyle,
+            pointerEvents: quizFeedback ? "none" : "auto"
           }
-        }
-      ),
-      /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px" } }, item.name)
-    )))));
+        },
+        /* @__PURE__ */ React.createElement(
+          "img",
+          {
+            src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
+            alt: item.name,
+            style: { ...imageStyle, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
+            onError: (e) => {
+              e.target.onerror = null;
+              e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+            }
+          }
+        ),
+        /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px" } }, item.name)
+      );
+    }))));
   }
   const renderLoadingOverlay = (message = "Loading...") => /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
