@@ -19,12 +19,13 @@ import { ENDINGS } from './data/endings';
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', zIndex: 2000, overflowY: 'auto', padding: '20px' }}>
-      <div style={{ maxWidth: '600px', margin: '0 auto', background: '#222', padding: '20px', borderRadius: '10px', border: '1px solid #444', color: '#eee' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
+      <div style={{ maxWidth: '600px', width: '100%', height: '100%', margin: '0 auto', background: '#222', borderRadius: '8px', border: '1px solid #444', color: '#eee', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', padding: '10px 12px', borderBottom: '1px solid #444', flexShrink: 0 }}>
           <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>Sound Test</h2>
-          <button onClick={onClose} style={{ padding: '8px 16px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
+          <button onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
         </div>
+        <div style={{ overflowY: 'auto', padding: '12px' }}>
         {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
 
         {/* BGM Section */}
@@ -134,6 +135,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
@@ -150,6 +152,7 @@ function App() {
   const [hasSave, setHasSave] = useState(false);
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
+  const [visualTestMode, setVisualTestMode] = useState('background');
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -170,20 +173,32 @@ function App() {
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
-  const MIN_SCALE = 0.85;
+  const MIN_SCALE = 0.72;
   const MAX_SCALE = 1.25;
 
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 390,
-    height: typeof window !== 'undefined' ? window.innerHeight : 780
+    height: typeof window !== 'undefined' ? (window.visualViewport?.height || window.innerHeight) : 780
   });
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      const viewport = window.visualViewport;
+      const doc = document.documentElement;
+      setWindowSize({
+        width: Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth)),
+        height: Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight))
+      });
     };
+    handleResize();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.visualViewport?.addEventListener('resize', handleResize);
+    window.visualViewport?.addEventListener('scroll', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('scroll', handleResize);
+    };
   }, []);
 
   const rawScale = Math.min(
@@ -194,8 +209,8 @@ function App() {
   const isClipped = rawScale < MIN_SCALE;
 
   const outerWrapperStyle = {
-    width: '100vw',
-    height: '100dvh',
+    width: `${windowSize.width}px`,
+    height: `${windowSize.height}px`,
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: isClipped ? 'flex-start' : 'center',
@@ -591,6 +606,54 @@ function App() {
     </button>
   );
 
+  const utilityHeaderStyle = {
+    width: '100%',
+    minHeight: '44px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '8px',
+    padding: '6px 8px',
+    marginBottom: '8px',
+    background: 'rgba(26, 42, 58, 0.96)',
+    borderBottom: `1px solid ${THEME.brass}`,
+    boxSizing: 'border-box',
+    flexShrink: 0,
+    zIndex: 20
+  };
+
+  const utilityBackButtonStyle = {
+    ...buttonStyle,
+    margin: 0,
+    padding: '7px 10px',
+    minWidth: '72px',
+    fontSize: '0.82em',
+    background: THEME.nightBlue,
+    color: THEME.sand,
+    border: `1px solid ${THEME.brass}`,
+    boxShadow: 'none'
+  };
+
+  const renderUtilityHeader = (title, action = handleBackToTitle, right = null) => (
+    <div style={utilityHeaderStyle}>
+      <button onClick={action} style={utilityBackButtonStyle}>Back</button>
+      <div style={{
+        color: THEME.sand,
+        fontWeight: 'bold',
+        fontSize: '0.95em',
+        textAlign: 'center',
+        flex: 1,
+        minWidth: 0,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
+      }}>
+        {title}
+      </div>
+      <div style={{ minWidth: '72px', display: 'flex', justifyContent: 'flex-end' }}>{right}</div>
+    </div>
+  );
+
   let mainContent = null;
 
   if (screen === 'START') {
@@ -913,9 +976,15 @@ function App() {
 
     mainContent = (
       <div style={containerStyle}>
-        <h1 style={titleStyle}>Visual Asset Test</h1>
-        <div style={{ ...cardStyle, maxWidth: '800px' }}>
-          <div style={{ marginBottom: '30px' }}>
+        {renderThemeStyles()}
+        <button onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, position: 'absolute', top: '6px', left: '8px', zIndex: 50 }}>Back</button>
+        <h1 style={{ ...titleStyle, marginTop: '36px', marginBottom: '8px' }}>Visual Asset Test</h1>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', width: '100%', marginBottom: '8px' }}>
+          <button onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, width: '100%', background: visualTestMode === 'background' ? THEME.brass : THEME.nightBlue, color: visualTestMode === 'background' ? THEME.textDark : THEME.sand }}>Background</button>
+          <button onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, width: '100%', background: visualTestMode === 'still' ? THEME.brass : THEME.nightBlue, color: visualTestMode === 'still' ? THEME.textDark : THEME.sand }}>Still</button>
+        </div>
+        <div style={{ ...cardStyle, maxWidth: '800px', maxHeight: '700px', overflowY: 'auto', paddingTop: '10px' }}>
+          <div style={{ marginBottom: '12px', display: visualTestMode === 'background' ? 'block' : 'none' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Background: {bg.label} ({bg.id})</h3>
               <button 
@@ -927,7 +996,7 @@ function App() {
             </div>
             <div style={{ 
               width: '100%', 
-              height: '240px', 
+              height: '150px', 
               background: '#000', 
               borderRadius: '8px', 
               overflow: 'hidden',
@@ -949,7 +1018,7 @@ function App() {
             </div>
           </div>
 
-          <div style={{ marginBottom: '30px' }}>
+          <div style={{ marginBottom: '12px', display: visualTestMode === 'still' ? 'block' : 'none' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Still: {still.label} ({still.id})</h3>
               <button 
@@ -961,7 +1030,7 @@ function App() {
             </div>
             <div style={{ 
               width: '100%', 
-              height: '340px', 
+              height: '220px', 
               background: '#000', 
               borderRadius: '8px', 
               overflow: 'hidden',
@@ -1010,12 +1079,13 @@ function App() {
     };
 
     mainContent = (
-      <div style={containerStyle}>
+      <div style={{ ...containerStyle, padding: 0 }}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        <h1 style={titleStyle}>思い出の記録</h1>
-        <div style={{ ...cardStyle, maxWidth: '800px', minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1 }}>
+        {renderUtilityHeader('Memories')}
+        <h1 style={{ ...titleStyle, display: 'none' }}>思い出の記録</h1>
+        <div style={{ ...cardStyle, maxWidth: '800px', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', margin: '0 8px 8px', width: 'calc(100% - 16px)', overflow: 'hidden' }}>
+          <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}>
             {seenEvents.length === 0 ? (
               <div style={{ padding: '60px 20px', color: '#666', fontStyle: 'italic', textAlign: 'center' }}>
                 <p>まだ記された思い出はありません。</p>
@@ -1072,7 +1142,7 @@ function App() {
               </div>
             )}
           </div>
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <div style={{ display: 'none' }}>
             <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '240px' }}>記録を閉じる</button>
           </div>
         </div>
