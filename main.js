@@ -6296,6 +6296,7 @@ function App() {
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
+  const [isRecallMode, setIsRecallMode] = useState(false);
   useEffect(() => {
     const data = loadSaveData();
     if (data) {
@@ -6370,10 +6371,16 @@ function App() {
   };
   const handleCloseEvent = () => {
     audioEngine.playSfx("uiTapBottle");
-    setSeenEventIds((prev) => [...prev, activeEvent.id]);
-    setActiveEvent(null);
-    audioEngine.playSfx("workshopDayEnd");
-    setScreen("DAY_END");
+    if (isRecallMode) {
+      setActiveEvent(null);
+      setIsRecallMode(false);
+      setScreen("MEMORIES");
+    } else {
+      setSeenEventIds((prev) => [...prev, activeEvent.id]);
+      setActiveEvent(null);
+      audioEngine.playSfx("workshopDayEnd");
+      setScreen("DAY_END");
+    }
   };
   const handleSelectHeroine = (id) => {
     audioEngine.playSfx("uiConfirmChime");
@@ -6467,6 +6474,13 @@ function App() {
         style: { ...buttonStyle, background: "#444", marginTop: "10px", width: "100%", maxWidth: "280px" }
       },
       "Visual Test"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setScreen("MEMORIES"),
+        style: { ...buttonStyle, background: "#a080d0", marginTop: "10px", width: "100%", maxWidth: "280px" }
+      },
+      "思い出"
     ), hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -6638,6 +6652,40 @@ function App() {
       }
     ))), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る")));
   }
+  if (screen === "MEMORIES") {
+    const allEvents = Object.values(AFFECTION_EVENTS).flat();
+    const seenEvents = allEvents.filter((e) => seenEventIds.includes(e.id));
+    const handleRecallEvent = (event) => {
+      audioEngine.playSfx("uiConfirmChime");
+      setActiveEvent(event);
+      setIsRecallMode(true);
+      setActiveHeroineId(event.heroineId);
+      setScreen("EVENT");
+    };
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "思い出（イベント回想）"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", textAlign: "left" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("p", { style: { textAlign: "center", color: "#888", margin: "40px 0" } }, "まだ思い出はありません。") : /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "15px" } }, HEROINES.map((heroine) => {
+      const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
+      if (heroineSeenEvents.length === 0) return null;
+      return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { borderBottom: `2px solid ${heroine.themeColor}`, paddingBottom: "5px", color: heroine.themeColor } }, heroine.name), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "10px", marginTop: "10px" } }, heroineSeenEvents.map((event) => /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          key: event.id,
+          onClick: () => handleRecallEvent(event),
+          style: {
+            background: "rgba(255,255,255,0.05)",
+            padding: "12px 15px",
+            borderRadius: "8px",
+            border: "1px solid #444",
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }
+        },
+        /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.95em" } }, event.title),
+        /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.75em", background: "#444", padding: "2px 6px", borderRadius: "4px" } }, "Lv.", event.threshold)
+      ))));
+    })), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444", maxWidth: "200px" } }, "タイトルへ戻る"))));
+  }
   if (screen === "HEROINE_SELECT") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "誰と店を開く？"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap", marginBottom: "30px" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
       "div",
@@ -6671,7 +6719,7 @@ function App() {
         fontWeight: "bold",
         fontSize: "0.9em"
       } }, "選択する")
-    ))), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444", maxWidth: "200px" } }, "戻る")));
+    ))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444", maxWidth: "200px", margin: 0 } }, "戻る"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, background: "#a080d0", maxWidth: "200px", margin: 0 } }, "思い出"))));
   }
   if (screen === "QUIZ" && session) {
     const currentQuestion = session.questions[session.currentIndex];
