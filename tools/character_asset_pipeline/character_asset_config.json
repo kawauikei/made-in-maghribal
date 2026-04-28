@@ -31,5 +31,16 @@
       "surprise": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_06_surpise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
     }
+  },
+  "nader": {
+    "variants": {
+      "normal": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_01_normal.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "joy": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_02_joy.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "anger": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_03_anger.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "cry": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_04_cry.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "fun": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_05_fun.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "surprise": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_06_surprise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
+    }
   }
 }

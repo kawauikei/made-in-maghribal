@@ -7,6 +7,54 @@ import { getResultExpression, getDayEndExpression } from './game/presentation';
 import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS, getTrackById } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
+import { SFX_CANDIDATES } from './data/sfxCandidates';
+
+function SoundTest({ onClose, isAudioEnabled }) {
+  const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', zIndex: 2000, overflowY: 'auto', padding: '20px' }}>
+      <div style={{ maxWidth: '600px', margin: '0 auto', background: '#222', padding: '20px', borderRadius: '10px', border: '1px solid #444', color: '#eee' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>SFX Sound Test</h2>
+          <button onClick={onClose} style={{ padding: '8px 16px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
+        </div>
+        {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
+        {groups.map(group => (
+          <div key={group} style={{ marginBottom: '24px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
+            <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>{group}</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
+              {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
+                <div key={c.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{c.label}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#777', marginBottom: '8px', wordBreak: 'break-all' }}>{c.src.split('/').pop()}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#999', marginBottom: '8px' }}>Vol: {c.volume} / Start: {c.start}s</div>
+                  {c.note && <div style={{ fontSize: '0.7rem', fontStyle: 'italic', color: '#666', marginBottom: '8px' }}>{c.note}</div>}
+                  <button 
+                    onClick={() => audioEngine.playSfxCandidate(c.id)}
+                    disabled={!isAudioEnabled}
+                    style={{ 
+                      width: '100%', 
+                      padding: '8px', 
+                      background: isAudioEnabled ? '#3d5afe' : '#333', 
+                      color: isAudioEnabled ? '#fff' : '#666', 
+                      border: 'none', 
+                      borderRadius: '4px',
+                      cursor: isAudioEnabled ? 'pointer' : 'default',
+                      fontSize: '0.85rem',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    Play
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -14,6 +62,7 @@ export default function App() {
   const [activeHeroineId, setActiveHeroineId] = useState('hakima');
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [showSoundTest, setShowSoundTest] = useState(false);
 
   // Sync mute state
   useEffect(() => {
@@ -121,6 +170,7 @@ export default function App() {
     return (
       <div style={containerStyle}>
         {renderAudioToggle()}
+        {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} />}
         <h1 style={titleStyle}>{SHOP.name}</h1>
         <div style={cardStyle}>
           <p style={{ fontSize: '1.1em', marginBottom: '10px', fontWeight: 'bold' }}>
@@ -130,6 +180,12 @@ export default function App() {
             若き店主{PROTAGONIST.shortName}として、錬金術店を切り盛りしましょう。
           </p>
           <button onClick={handleStartGame} style={buttonStyle}>店を開く</button>
+          <button 
+            onClick={() => setShowSoundTest(true)} 
+            style={{ ...buttonStyle, background: '#444', marginTop: '10px' }}
+          >
+            Sound Test
+          </button>
         </div>
       </div>
     );

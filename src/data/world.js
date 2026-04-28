@@ -18,7 +18,7 @@ export const SHOP = {
 };
 
 export const PROTAGONIST = {
-  id: "nadir",
+  id: "nader",
   name: "ナーディル・アル＝カーミル",
   shortName: "ナーディル",
   age: 20,

@@ -1,3 +1,5 @@
+import { SFX_CANDIDATES } from '../data/sfxCandidates';
+
 /**
  * Simple Audio Engine for Made in Maghribal
  * 
@@ -86,6 +88,52 @@ class SimpleAudioEngine {
    */
   isPlaying() {
     return !!this.audio && !this.audio.paused;
+  }
+
+  /**
+   * Play an SFX candidate (used in Sound Test)
+   * @param {string} candidateId 
+   */
+  playSfxCandidate(candidateId) {
+    if (this.isMuted) return;
+
+    const candidate = SFX_CANDIDATES.find(c => c.id === candidateId);
+    if (!candidate) {
+      console.warn(`SFX candidate not found: ${candidateId}`);
+      return;
+    }
+
+    const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, '$1/');
+    
+    try {
+      const sfx = new Audio(fullSrc);
+      
+      // Candidate specific volume scaled by global volume
+      // SFX often need slightly higher weight to be audible over BGM
+      const targetVol = (candidate.volume || 1.0) * this.volume * 1.5; 
+      sfx.volume = Math.max(0, Math.min(1, targetVol));
+      
+      if (candidate.start) {
+        sfx.currentTime = candidate.start;
+      }
+
+      // Handle end point
+      if (candidate.end !== null && typeof candidate.end === 'number') {
+        const checkEnd = () => {
+          if (sfx.currentTime >= candidate.end) {
+            sfx.pause();
+            sfx.removeEventListener('timeupdate', checkEnd);
+          }
+        };
+        sfx.addEventListener('timeupdate', checkEnd);
+      }
+
+      sfx.play().catch(err => {
+        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+      });
+    } catch (err) {
+      console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
+    }
   }
 }
 
