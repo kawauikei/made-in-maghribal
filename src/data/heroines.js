@@ -2,40 +2,58 @@
  * Heroine Data Definitions
  * 
  * Asset Placement Rules (public/characters/):
- * - Standing: [heroine_id]/standing_[pose].webp (Full body standing image)
- * - Face: [heroine_id]/face_[expression].webp (Square face icon)
+ * - Standing: [heroine_id]/standing/[variant].png
+ * - Face: [heroine_id]/face/[variant].png
  */
 
 export const HEROINES = [
   {
-    id: "selena",
-    name: "セレナ",
+    id: "hakima",
+    name: "ハキマ",
     role: "工房の先輩 / 幼馴染",
-    description: "家族から工房を受け継いだあなたを、公私ともに支えてくれる頼れる先輩。少しおせっかいなところも。",
+    description: "家族から工房を受け継いだあなたを、公私ともに支えてくれる頼れる先輩。",
     assets: {
       standing: {
-        default: "characters/selena/standing_default.webp",
-        smile: "characters/selena/standing_smile.webp",
-        surprised: "characters/selena/standing_surprised.webp"
+        default: "characters/hakima/standing/default.png"
       },
       face: {
-        default: "characters/selena/face_default.webp",
-        smile: "characters/selena/face_smile.webp"
+        default: "characters/hakima/face/default.png"
       }
     },
     themeColor: "#ffcc00"
+  },
+  {
+    id: "mira",
+    name: "ミラ",
+    role: "旅の商人",
+    description: "珍しい素材を工房に持ち込んでくれる、快活な少女。",
+    assets: {
+      standing: {
+        default: "characters/mira/standing/default.png"
+      },
+      face: {
+        default: "characters/mira/face/default.png"
+      }
+    },
+    themeColor: "#00ccff"
+  },
+  {
+    id: "dariya",
+    name: "ダリヤ",
+    role: "王宮の使者",
+    description: "時折、王宮からの特別な依頼を携えてやってくる。",
+    assets: {
+      standing: {
+        default: "characters/dariya/standing/default.png"
+      },
+      face: {
+        default: "characters/dariya/face/default.png"
+      }
+    },
+    themeColor: "#cc00ff"
   }
 ];
 
-/**
- * Utility to get heroine asset path relative to the public root.
- * Supports fallback to 'default' variant if requested variant is missing.
- * 
- * @param {string} heroineId 
- * @param {'standing' | 'face'} type 
- * @param {string} variant 
- * @returns {string | null}
- */
 export function getHeroineAsset(heroineId, type, variant = "default") {
   const heroine = HEROINES.find(h => h.id === heroineId);
   if (!heroine) return null;

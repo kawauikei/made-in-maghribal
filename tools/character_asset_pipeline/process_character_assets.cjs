@@ -37,13 +37,15 @@ function validate() {
         console.log(`  - Variant: ${variantName}`);
         
         // Validation logic
-        if (!variant.source) console.error("    Missing 'source' image path");
+        if (!heroine.sourcePath) console.error("    Missing 'sourcePath' for heroine");
         if (!variant.faceCrop) console.warn("    No 'faceCrop' defined (will use default center)");
         
         // Simulated output paths
-        const faceOut = `public/characters/${heroineId}/face_${variantName}.webp`;
-        const standOut = `public/characters/${heroineId}/standing_${variantName}.webp`;
+        // New rule: public/characters/[id]/standing/[variant].png
+        const faceOut = `public/characters/${heroineId}/face/${variantName}.png`;
+        const standOut = `public/characters/${heroineId}/standing/${variantName}.png`;
         
+        console.log(`    Source: ${heroine.sourcePath || 'MISSING'}`);
         console.log(`    Expected Face: ${faceOut}`);
         console.log(`    Expected Stand: ${standOut}`);
       });
