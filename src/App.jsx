@@ -27,7 +27,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
           <button onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
         </div>
         <div style={{ overflowY: 'auto', padding: '12px' }}>
-        {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
+        {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、�E生されません、E</div>}
 
         {/* BGM Section */}
         <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px solid #444' }}>
@@ -155,6 +155,8 @@ export default function App() {
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
+  const [menuView, setMenuView] = useState('main');
+  const [vnBacklog, setVnBacklog] = useState([]);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -370,7 +372,7 @@ export default function App() {
   };
 
   const handleResetSave = () => {
-    if (window.confirm("セーブデータを削除しますか？")) {
+    if (window.confirm("�Z�[�u�f�[�^���폜���܂����H")) {
       clearSaveData();
       setHasSave(false);
       setSeenEventIds([]);
@@ -523,6 +525,7 @@ export default function App() {
     // Keep internal states for Continue logic
     setScreen('START');
     setHasSave(hasSaveData());
+    setMenuView('main');
   };
 
   // Handle answer selection (Improved in M9-3)
@@ -686,14 +689,36 @@ export default function App() {
           }}
           aria-label="Menu"
         >
-          ⚙️
-        </button>
+          ⚙︁E        </button>
       </div>
     );
   };
 
   const renderMenuModal = () => {
     if (!isMenuOpen) return null;
+
+    if (menuView === 'log') {
+      return (
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+          <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+            <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>VN���O</h2>
+            <div style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {vnBacklog.length === 0 ? (
+                <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>�܂����O�͂���܂���</div>
+              ) : vnBacklog.slice().reverse().map((entry, idx) => (
+                <div key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
+                  <div style={{ fontSize: '0.8em', color: THEME.brassDark, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / {entry.routeMode} / #{entry.sequence}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.9em', color: THEME.textDark, marginBottom: '4px' }}>{entry.speaker || 'Narration'}</div>
+                  <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.5' }}>{entry.text}</div>
+                </div>
+              ))}
+            </div>
+            <button style={{ ...buttonStyle, marginTop: '14px', background: '#666', color: 'white', width: '100%' }} onClick={() => setMenuView('main')}>�߂�</button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div 
         style={{
@@ -703,56 +728,29 @@ export default function App() {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px' }}>
-          <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>設定</h2>
-          
+        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+          <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>�ݒ�</h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
             <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
-            <button 
-              onClick={() => {
-                audioEngine.playSfx('uiTapBottle');
-                setIsAudioEnabled(!isAudioEnabled);
-              }}
-              style={{
-                background: isAudioEnabled ? THEME.starGold : '#999',
-                color: isAudioEnabled ? THEME.textDark : '#fff', 
-                border: 'none', padding: '8px 16px', borderRadius: '20px',
-                fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
-            >
-              {isAudioEnabled ? 'ミュート' : '再生'}
+            <button onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }} style={{ background: isAudioEnabled ? THEME.starGold : '#999', color: isAudioEnabled ? THEME.textDark : '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+              {isAudioEnabled ? 'ON' : 'OFF'}
             </button>
           </div>
-
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-            <span style={{ fontSize: '0.9em', color: '#999' }}>音量（準備中）</span>
+            <span style={{ fontSize: '0.9em', color: '#999' }}>�ȈՃZ�[�u���</span>
             <div style={{ width: '80px', height: '6px', background: '#eee', borderRadius: '3px' }}>
-              <div style={{ width: '70%', height: '100%', background: THEME.brass, borderRadius: '3px' }}></div>
+              <div style={{ width: '70%', height: '100%', background: THEME.brass, borderRadius: '3px' }} />
             </div>
           </div>
-
           <div style={{ marginTop: '25px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <button 
-              style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }}
-              onClick={() => { 
-                audioEngine.playSfx('uiTapBottle');
-                if (window.confirm("タイトルに戻りますか？")) { 
-                  setIsMenuOpen(false); 
-                  setScreen('START'); 
-                } 
-              }}
-            >
-              タイトルへ戻る
+            <button style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: '100%' }} onClick={() => setMenuView('log')}>
+              VN���O
             </button>
-            <button 
-              style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }}
-              onClick={() => {
-                audioEngine.playSfx('uiTapBottle');
-                setIsMenuOpen(false);
-              }}
-            >
-              閉じる
+            <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("�^�C�g���ɖ߂�܂����H")) { setIsMenuOpen(false); setScreen('START'); } }}>
+              �^�C�g���֖߂�
+            </button>
+            <button style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(false); setMenuView('main'); }}>
+              ����
             </button>
           </div>
         </div>
@@ -820,8 +818,7 @@ export default function App() {
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
           <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
-            ～ {SHOP.localName} ～
-          </div>
+            �E�E{SHOP.localName} �E�E          </div>
         </div>
 
         <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
@@ -830,8 +827,7 @@ export default function App() {
               onClick={handleContinue} 
               style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
             >
-              つづきから
-            </button>
+              つづきかめE            </button>
           )}
           
           <button onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '260px', margin: 0 }}>
@@ -874,7 +870,7 @@ export default function App() {
                 opacity: 0.6
               }}
             >
-              記録を全て消去する
+              記録を�Eて消去する
             </button>
           )}
         </div>
@@ -882,8 +878,8 @@ export default function App() {
     );
   } else if (screen === 'PROLOGUE') {
     const prologuePages = [
-      "砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。",
-      "若店主ナーディルは、客の依頼に合う品を見極めながら、協力者との縁を少しずつ育てていく。"
+      "砂漠の街�Eグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある、E",
+      "若店主ナ�EチE��ルは、客の依頼に合う品を見極めながら、協力老E��の縁を少しずつ育ててぁE��、E",
     ];
     mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
@@ -891,10 +887,10 @@ export default function App() {
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>���r���̎n�܂�</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox 
-              speaker="物語の始まり"
+               speaker="�i�[�f�B��"
               pages={prologuePages}
               themeColor={THEME.brass}
               onComplete={() => {
@@ -925,24 +921,24 @@ export default function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}日目：{SHOP.name}の朝</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}����</h1>
           <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
                <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
                <div style={{ flex: 1 }}>
                  <VNBox 
                    speaker={activeHeroine.name}
-                   text={activeHeroine.greeting || `おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
+                    text={activeHeroine.greeting || `${PROTAGONIST.shortName}�A����ɂ��́B�����͂�낵�����肢���܂��B`}
                    themeColor={activeHeroine.themeColor}
                    onComplete={handleBeginService}
                  />
                </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
-              <p style={{ margin: 0, lineHeight: '1.6' }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>���r���̒��B�i�[�f�B���͂����̂悤�ɓX���J���A�q���}���鏀���𐮂��Ă���B</p>
+              <p style={{ margin: 0, lineHeight: '1.6' }}>�����͂ǂ�ȕi���K�v���A�܂��͑���̘b�𕷂��Ƃ��납��n�܂�B</p>
             </div>
-            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>接客を始める</button>
+            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>�c�Ƃ��n�߂�</button>
           </div>
         </div>
       </div>
@@ -953,12 +949,12 @@ export default function App() {
     const mgmt = getWorkshopResult(correctCount);
 
     const resultNarrations = {
-      5: "「これだよ、これ！ まさかこんなにぴったりの品があるなんて」客人は品を受け取ると、ぱっと顔を輝かせた。あなたの確かな目利きが、誰かの未来を明るく照らした瞬間だ。",
-      4: "「助かったよ。次に困った時も、ここに来ればよさそうだ」客人は満足そうに品を抱えて去っていった。手応えのある接客が、星瓶堂の評判をまた一つ積み上げた。",
-      3: "「うん、悪くない。たぶんこれで何とかなると思う」客人は少し迷いながらも、納得して品を受け取った。もう少し相手の願いを深く読み取れば、さらなる高みへ行けるはずだ。",
-      2: "「うーん……今回はこれで試してみるよ」客人は首をかしげながら品を見つめている。星瓶堂の棚には、まだまだ学ぶべき知識と経験が眠っているようだ。",
-      1: "「気持ちはありがたいんだけど、ちょっと違うかもしれないな」客人の困ったような笑みが胸に刺さる。だが、この悔しさこそが次の目利きを研ぎ澄ます糧になる。",
-      0: "今日は誰の願いにも応えられなかった。静まり返った工房で、あなたは己の未熟さを噛みしめる。……だが、明日の太陽は必ず昇る。次こそは、最良の品を。"
+      5: "�听���B�����͐��r���̗��ꂪ�悭�����Ă����B",
+      4: "�悭������B�q�̘b�𕷂����A�i��I�Ԏ�������肵�Ă���B",
+      3: "�܂��܂����B�����͂��邪�A���̈�肪�����Ă���B",
+      2: "���������B�q�̈Ӑ}�����߂�΁A�i�I�т͂����Ɗy�ɂȂ�B",
+      1: "�ɂ����B�ł炸����̘b�𕷂��Ƃ��납�琮���Ă������B",
+      0: "�����͂��܂������Ȃ������B�����A���̉c�ƂŎ��߂���B",
     };
     
     mainContent = (
@@ -985,7 +981,7 @@ export default function App() {
                 expression={getResultExpression(correctCount)}
               />
               <div style={{ fontSize: '1.1em', color: activeHeroine.themeColor, fontWeight: 'bold' }}>
-                {activeHeroine.name}との絆 +{lastAffectionGain}
+                {activeHeroine.name}との絁E+{lastAffectionGain}
               </div>
             </div>
 
@@ -1006,7 +1002,7 @@ export default function App() {
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>売上</div>
+                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>売丁E</div>
                 <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brassDark }}>
                   {mgmt.sales}G
                 </div>
@@ -1021,12 +1017,12 @@ export default function App() {
 
             <h2 style={{ margin: '10px 0', fontSize: '1.2em' }}>最終評価: {session.score} 点</h2>
             <p style={{ fontSize: '1em', marginBottom: '20px', color: '#666' }}>
-              依頼 {session.questions.length} 件中 {correctCount} 件達成
+              依頼 {session.questions.length} 件中 {correctCount} 件達�E
             </p>
             <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
-              「{rank.message}」
+              {rank.message}
             </div>
-            <button onClick={handleEndDay} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>店じまいする</button>
+            <button onClick={handleEndDay} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>���֐i��</button>
           </div>
         </div>
       </div>
@@ -1041,7 +1037,7 @@ export default function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>工房日誌</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>�����I��</h1>
           <div style={{ ...cardStyle, borderRadius: '8px', background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '25px', marginTop: '10px' }}>
             <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginBottom: '30px', flexWrap: 'nowrap' }}>
             <HeroineDisplay 
@@ -1051,10 +1047,10 @@ export default function App() {
               expression={getDayEndExpression(correctCount)}
             />
             <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0, textAlign: 'left' }}>
-              <p>夕暮れの工房に、今日選ばれた品々の余韻が静かに残っている。</p>
-              <p>小さな手応えを一つずつ積み重ねていけば、この店にもきっと、失われた輝きが戻ってくるはずだ。</p>
+              <p>�����̉c�Ƃ̎艞�����A���̈���ɂȂ����Ă���B</p>
+              <p>�����������Ă��A�q�̘b�𕷂��ĕi��I�ԗ���͏����������Ă����B</p>
               <p style={{ marginTop: '10px', color: THEME.brass, fontWeight: 'bold' }}>
-                {activeHeroine.name}：「お疲れ様。……いい目利きだったよ。明日の準備を整えたら、今日はゆっくり休みましょう」
+                {activeHeroine.name}�Ƃ̉��́A�����̐ςݏd�˂ŏ������`�ɂȂ��Ă����B
               </p>
             </div>
           </div>
@@ -1068,24 +1064,24 @@ export default function App() {
           }}>
             <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>本日の経営記録</h3>
             <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '15px' }}>
-               <div>売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{mgmt.sales}G</span></div>
+               <div>売丁E <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{mgmt.sales}G</span></div>
                <div>評判: <span style={{ color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
             </div>
             
             <div style={{ textAlign: 'left', fontSize: '0.85em', color: '#444', borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-              <strong>現在の工房の状態 ({workshopState.day}日目終了)</strong>
+              <strong>現在の工房の状慁E({workshopState.day}日目終亁E</strong>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
-                 <div>総売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
+                 <div>総売丁E <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
                  <div>総評判: <span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
                  <div>満足度: <span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
-                 <div>親密度: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
+                 <div>親寁E��: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
             <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の日へ進む</button>
-            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>�^�C�g���֖߂�</button>
           </div>
         </div>
       </div>
@@ -1099,7 +1095,7 @@ export default function App() {
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        <h1 style={titleStyle}>親愛の記録：{activeEvent.title}</h1>
+        <h1 style={titleStyle}>親愛�E記録�E�{activeEvent.title}</h1>
         <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
           {still && (
             <div style={{ 
@@ -1303,8 +1299,8 @@ export default function App() {
           <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}>
             {seenEvents.length === 0 ? (
               <div style={{ padding: '60px 20px', color: '#666', fontStyle: 'italic', textAlign: 'center' }}>
-                <p>まだ記された思い出はありません。</p>
-                <p style={{ fontSize: '0.9em', marginTop: '10px' }}>日々の仕事を通じて、彼女たちとの絆を深めましょう。</p>
+                <p>�܂����Ԃ������L���͂���܂���B</p>
+                <p style={{ fontSize: '0.9em', marginTop: '10px' }}>�c�Ƃ�i�߂�ƁA�����ɋL�����ςݏオ���Ă����܂��B</p>
               </div>
             ) : (
               <div style={{ textAlign: 'left' }}>
@@ -1347,7 +1343,7 @@ export default function App() {
                             }}
                           >
                             <span style={{ fontWeight: 'bold' }}>{event.title}</span>
-                            <span style={{ fontSize: '0.8em', color: THEME.brassDark }}>閲覧する →</span>
+                            <span style={{ fontSize: '0.8em', color: THEME.brassDark }}>�ڍׂ�����</span>
                           </div>
                         ))}
                       </div>
@@ -1371,7 +1367,7 @@ export default function App() {
         {renderThemeStyles()}
         {renderAudioToggle()}
         
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
+        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める�E�E</h1>
         
         {/* Tabs for Heroine selection */}
         <div style={{ 
@@ -1459,7 +1455,7 @@ export default function App() {
                <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
                <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
                <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
-                 親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection[selectedHeroine.id]}</span>
+                 親寁E��: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection[selectedHeroine.id]}</span>
                </div>
              </div>
           </div>
@@ -1491,8 +1487,7 @@ export default function App() {
               boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
             }}
           >
-            {selectedHeroine.name}を頼る
-          </button>
+            {selectedHeroine.name}を頼めE          </button>
         </div>
 
         {/* Navigation Footer */}
@@ -1503,7 +1498,7 @@ export default function App() {
           width: '100%', 
           maxWidth: '350px' 
         }}>
-           <button onClick={handleBackToTitle} style={{ ...buttonStyle, flex: 1, margin: 0, fontSize: '0.9em', background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` }}>戻る</button>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, flex: 1, margin: 0, fontSize: '0.9em', background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` }}>�^�C�g���֖߂�</button>
            <button onClick={() => setScreen('MEMORIES')} style={{ ...buttonStyle, flex: 1, margin: 0, fontSize: '0.9em', background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` }}>思い出の記録</button>
         </div>
       </div>
@@ -1518,7 +1513,7 @@ export default function App() {
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        <h1 style={titleStyle}>10日間の総決算</h1>
+        <h1 style={titleStyle}>10日間�E総決箁E</h1>
         <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
           <div style={{ marginBottom: '25px' }}>
             <HeroineDisplay heroine={activeHeroine} type="face" size="medium" />
@@ -1529,7 +1524,7 @@ export default function App() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '30px' }}>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>総売上合計</span>
+               <span>総売上合訁E</span>
                <span style={{ fontWeight: 'bold' }}>{finalSales} G</span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
@@ -1539,18 +1534,14 @@ export default function App() {
                </span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>{activeHeroine.name} との絆</span>
+               <span>{activeHeroine.name} との絁E</span>
                <span style={{ fontWeight: 'bold', color: THEME.brassDark }}>{finalAffection} / 100</span>
              </div>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>
-            この10日間、あなたはマグリバルの地で、自らの工房と向き合ってきました。<br />
-            傍らにいた{activeHeroine.name}との時間は、星瓶堂に何をもたらしたのでしょうか。<br />
-            運命の結末を、その目で見届けてください。
-          </p>
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10���Ԃ̉c�Ƃ���߂�����A���̈���֐i�݂܂��B</p>
 
-          <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
+          <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>���������͂���</button>
         </div>
       </div>
     );
@@ -1604,7 +1595,7 @@ export default function App() {
             />
           </div>
 
-          <button onClick={handleFinishGame} style={{ ...buttonStyle, marginBottom: '20px', width: '100%', maxWidth: '240px' }}>タイトルへ戻る</button>
+          <button onClick={handleFinishGame} style={{ ...buttonStyle, marginBottom: '20px', width: '100%', maxWidth: '240px' }}>タイトルへ戻めE</button>
         </div>
       </div>
     );
@@ -1726,7 +1717,7 @@ export default function App() {
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
-          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
+          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を征E��てぁE��ぁE..`)}
           
           {renderMenuModal()}
           {!isInitialLoading && (
@@ -1734,7 +1725,7 @@ export default function App() {
               {mainContent || (
                 <div style={containerStyle}>
                   <p>Loading...</p>
-                  <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+                  <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻めE</button>
                 </div>
               )}
             </div>
@@ -1887,8 +1878,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
           letterSpacing: '0.08em',
           textShadow: '0 1px 2px rgba(0,0,0,0.5)'
         }}>
-          【{speaker}】
-        </div>
+          【{speaker}、E        </div>
       )}
       <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
         {displayText}
@@ -2050,3 +2040,10 @@ const itemNameStyle = {
   color: '#444',
   fontWeight: 'bold'
 };
+
+
+
+
+
+
+
