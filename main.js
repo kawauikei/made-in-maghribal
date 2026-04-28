@@ -5682,6 +5682,18 @@ function getHeroineAsset(heroineId, type, expression = "normal") {
   if (!variantPath) return null;
   return variantPath;
 }
+function getResultExpression(correctCount) {
+  if (correctCount >= 5) return "fun";
+  if (correctCount >= 4) return "joy";
+  if (correctCount >= 3) return "normal";
+  if (correctCount >= 2) return "sorrow";
+  return "cry";
+}
+function getDayEndExpression(correctCount) {
+  if (correctCount >= 4) return "joy";
+  if (correctCount >= 2) return "normal";
+  return "sorrow";
+}
 function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
@@ -5727,7 +5739,7 @@ function App() {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Made in Maghribal"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "30px" } }, "接客クイズへようこそ。5問の連続クイズに挑戦しましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く")));
   }
   if (screen === "INTRO") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, workshopState.day, "日目の朝"), /* @__PURE__ */ React.createElement("p", null, "「おはよう。今日も工房の扉を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "昨日の疲れを感じさせない様子で、", activeHeroine.name, "は道具の手入れを始めている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, workshopState.day, "日目の朝"), /* @__PURE__ */ React.createElement("p", null, "「おはよう。今日も工房の扉を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "昨日の疲れを感じさせない様子で、", activeHeroine.name, "は道具の手入れを始めている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
   }
   if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
@@ -5741,7 +5753,15 @@ function App() {
       1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
       0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
     };
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small" }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("div", { style: {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
+      HeroineDisplay,
+      {
+        heroine: activeHeroine,
+        type: "face",
+        size: "small",
+        expression: getResultExpression(correctCount)
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "10px",
@@ -5755,7 +5775,15 @@ function App() {
   if (screen === "DAY_END" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const mgmt = getWorkshopResult(correctCount);
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "一日の終わり"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, textAlign: "left" } }, /* @__PURE__ */ React.createElement("p", null, "夕暮れの工房に、今日選ばれた品々の余韻が残っている。"), /* @__PURE__ */ React.createElement("p", null, "小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。"), /* @__PURE__ */ React.createElement("p", { style: { marginTop: "20px", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」")), /* @__PURE__ */ React.createElement("div", { style: {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "一日の終わり"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      HeroineDisplay,
+      {
+        heroine: activeHeroine,
+        type: "face",
+        size: "medium",
+        expression: getDayEndExpression(correctCount)
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0, textAlign: "left" } }, /* @__PURE__ */ React.createElement("p", null, "夕暮れの工房に、今日選ばれた品々の余韻が残っている。"), /* @__PURE__ */ React.createElement("p", null, "小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。"), /* @__PURE__ */ React.createElement("p", { style: { marginTop: "10px", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」"))), /* @__PURE__ */ React.createElement("div", { style: {
       background: "rgba(0,0,0,0.2)",
       padding: "20px",
       borderRadius: "12px",
@@ -5782,7 +5810,7 @@ function App() {
           textAlign: "center"
         }
       },
-      /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine, type: "face", size: "large" })),
+      /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine, type: "face", size: "large", expression: "normal" })),
       /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px 0", fontSize: "1.2em" } }, heroine.name),
       /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#ffcc00", marginBottom: "10px" } }, heroine.role),
       /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.85em", color: "#ccc", textAlign: "left", margin: 0, minHeight: "4.5em" } }, heroine.description),
@@ -5852,9 +5880,9 @@ function App() {
     /* @__PURE__ */ React.createElement("div", { style: itemNameStyle }, item.name)
   )))));
 }
-function HeroineDisplay({ heroine, type, size = "large" }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   const [imgError, setImgError] = useState(false);
-  const assetPath = getHeroineAsset(heroine.id, type);
+  const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
   const isPortrait = type === "standing";
   const sizePx = size === "large" ? 120 : size === "medium" ? 80 : 60;
