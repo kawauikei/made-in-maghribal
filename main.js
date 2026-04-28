@@ -5768,6 +5768,38 @@ const TRACKS = {
     title: "ダリヤのテーマ"
   }
 };
+const SFX_CANDIDATES = [
+  // --- Group: uiTapBottle ---
+  { id: "uiTapBottle01", group: "uiTapBottle", variant: 1, src: "audio/se/ui_tap_bottle_01.mp3", label: "Tap Bottle 1", volume: 0.8, start: 0, end: null, note: "Standard glass tap" },
+  { id: "uiTapBottle02", group: "uiTapBottle", variant: 2, src: "audio/se/ui_tap_bottle_01_2.mp3", label: "Tap Bottle 2", volume: 0.8, start: 0, end: null, note: "Soft glass tap" },
+  { id: "uiTapBottle03", group: "uiTapBottle", variant: 3, src: "audio/se/ui_tap_bottle_01_3.mp3", label: "Tap Bottle 3", volume: 0.8, start: 0, end: null, note: "Sharp glass tap" },
+  { id: "uiTapBottle04", group: "uiTapBottle", variant: 4, src: "audio/se/ui_tap_bottle_01_4.mp3", label: "Tap Bottle 4", volume: 0.8, start: 0, end: null, note: "Deep glass tap" },
+  // --- Group: uiConfirmChime ---
+  { id: "uiConfirmChime01", group: "uiConfirmChime", variant: 1, src: "audio/se/ui_confirm_chime_01.mp3", label: "Confirm Chime 1", volume: 0.7, start: 0, end: null, note: "Bright chime" },
+  { id: "uiConfirmChime02", group: "uiConfirmChime", variant: 2, src: "audio/se/ui_confirm_chime_01_2.mp3", label: "Confirm Chime 2", volume: 0.7, start: 0, end: null, note: "Soft chime" },
+  { id: "uiConfirmChime03", group: "uiConfirmChime", variant: 3, src: "audio/se/ui_confirm_chime_01_3.mp3", label: "Confirm Chime 3", volume: 0.7, start: 0, end: null, note: "Arabic bell style" },
+  { id: "uiConfirmChime04", group: "uiConfirmChime", variant: 4, src: "audio/se/ui_confirm_chime_01_4.mp3", label: "Confirm Chime 4", volume: 0.7, start: 0, end: null, note: "Deep bell style" },
+  // --- Group: quizChoicePick ---
+  { id: "quizChoicePick01", group: "quizChoicePick", variant: 1, src: "audio/se/quiz_choice_pick_01.mp3", label: "Choice Pick 1", volume: 0.6, start: 0, end: null, note: "Light wooden tap" },
+  { id: "quizChoicePick02", group: "quizChoicePick", variant: 2, src: "audio/se/quiz_choice_pick_01_2.mp3", label: "Choice Pick 2", volume: 0.6, start: 0, end: null, note: "Soft wooden tap" },
+  { id: "quizChoicePick03", group: "quizChoicePick", variant: 3, src: "audio/se/quiz_choice_pick_01_3.mp3", label: "Choice Pick 3", volume: 0.6, start: 0, end: null, note: "Clicky wooden tap" },
+  { id: "quizChoicePick04", group: "quizChoicePick", variant: 4, src: "audio/se/quiz_choice_pick_01_4.mp3", label: "Choice Pick 4", volume: 0.6, start: 0, end: null, note: "Dull wooden tap" },
+  // --- Group: quizCorrectStarChime ---
+  { id: "quizCorrectStarChime01", group: "quizCorrectStarChime", variant: 1, src: "audio/se/quiz_correct_star_chime_01.mp3", label: "Correct Chime 1", volume: 0.8, start: 0, end: null, note: "Magical star sound" },
+  { id: "quizCorrectStarChime02", group: "quizCorrectStarChime", variant: 2, src: "audio/se/quiz_correct_star_chime_01_2.mp3", label: "Correct Chime 2", volume: 0.8, start: 0, end: null, note: "Bright magical star" },
+  { id: "quizCorrectStarChime03", group: "quizCorrectStarChime", variant: 3, src: "audio/se/quiz_correct_star_chime_01_3.mp3", label: "Correct Chime 3", volume: 0.8, start: 0, end: null, note: "Descending star sparkle" },
+  { id: "quizCorrectStarChime04", group: "quizCorrectStarChime", variant: 4, src: "audio/se/quiz_correct_star_chime_01_4.mp3", label: "Correct Chime 4", volume: 0.8, start: 0, end: null, note: "Ascending star sparkle" },
+  // --- Group: quizWrongSandTap ---
+  { id: "quizWrongSandTap01", group: "quizWrongSandTap", variant: 1, src: "audio/se/quiz_wrong_sand_tap_01.mp3", label: "Wrong Sand 1", volume: 0.7, start: 0, end: null, note: "Dry sand spill" },
+  { id: "quizWrongSandTap02", group: "quizWrongSandTap", variant: 2, src: "audio/se/quiz_wrong_sand_tap_01_2.mp3", label: "Wrong Sand 2", volume: 0.7, start: 0, end: null, note: "Soft sand spill" },
+  { id: "quizWrongSandTap03", group: "quizWrongSandTap", variant: 3, src: "audio/se/quiz_wrong_sand_tap_01_3.mp3", label: "Wrong Sand 3", volume: 0.7, start: 0, end: null, note: "Heavy sand spill" },
+  { id: "quizWrongSandTap04", group: "quizWrongSandTap", variant: 4, src: "audio/se/quiz_wrong_sand_tap_01_4.mp3", label: "Wrong Sand 4", volume: 0.7, start: 0, end: null, note: "Quick sand spill" },
+  // --- Group: workshopDayEnd ---
+  { id: "workshopDayEnd01", group: "workshopDayEnd", variant: 1, src: "audio/se/workshop_day_end_01.mp3", label: "Day End 1", volume: 0.8, start: 0, end: null, note: "Workshop closing" },
+  { id: "workshopDayEnd02", group: "workshopDayEnd", variant: 2, src: "audio/se/workshop_day_end_01_2.mp3", label: "Day End 2", volume: 0.8, start: 0, end: null, note: "Workshop door close" },
+  { id: "workshopDayEnd03", group: "workshopDayEnd", variant: 3, src: "audio/se/workshop_day_end_01_3.mp3", label: "Day End 3", volume: 0.8, start: 0, end: null, note: "Soft closing" },
+  { id: "workshopDayEnd04", group: "workshopDayEnd", variant: 4, src: "audio/se/workshop_day_end_01_4.mp3", label: "Day End 4", volume: 0.8, start: 0, end: null, note: "Quiet closing" }
+];
 class SimpleAudioEngine {
   constructor() {
     this.audio = null;
@@ -5839,14 +5871,72 @@ class SimpleAudioEngine {
   isPlaying() {
     return !!this.audio && !this.audio.paused;
   }
+  /**
+   * Play an SFX candidate (used in Sound Test)
+   * @param {string} candidateId 
+   */
+  playSfxCandidate(candidateId) {
+    if (this.isMuted) return;
+    const candidate = SFX_CANDIDATES.find((c) => c.id === candidateId);
+    if (!candidate) {
+      console.warn(`SFX candidate not found: ${candidateId}`);
+      return;
+    }
+    const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, "$1/");
+    try {
+      const sfx = new Audio(fullSrc);
+      const targetVol = (candidate.volume || 1) * this.volume * 1.5;
+      sfx.volume = Math.max(0, Math.min(1, targetVol));
+      if (candidate.start) {
+        sfx.currentTime = candidate.start;
+      }
+      if (candidate.end !== null && typeof candidate.end === "number") {
+        const checkEnd = () => {
+          if (sfx.currentTime >= candidate.end) {
+            sfx.pause();
+            sfx.removeEventListener("timeupdate", checkEnd);
+          }
+        };
+        sfx.addEventListener("timeupdate", checkEnd);
+      }
+      sfx.play().catch((err) => {
+        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+      });
+    } catch (err) {
+      console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
+    }
+  }
 }
 const audioEngine = new SimpleAudioEngine();
+function SoundTest({ onClose, isAudioEnabled }) {
+  const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement("div", { key: c.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, c.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#777", marginBottom: "8px", wordBreak: "break-all" } }, c.src.split("/").pop()), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#999", marginBottom: "8px" } }, "Vol: ", c.volume, " / Start: ", c.start, "s"), c.note && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", fontStyle: "italic", color: "#666", marginBottom: "8px" } }, c.note), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => audioEngine.playSfxCandidate(c.id),
+      disabled: !isAudioEnabled,
+      style: {
+        width: "100%",
+        padding: "8px",
+        background: isAudioEnabled ? "#3d5afe" : "#333",
+        color: isAudioEnabled ? "#fff" : "#666",
+        border: "none",
+        borderRadius: "4px",
+        cursor: isAudioEnabled ? "pointer" : "default",
+        fontSize: "0.85rem",
+        fontWeight: "bold"
+      }
+    },
+    "Play"
+  ))))))));
+}
 function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [showSoundTest, setShowSoundTest] = useState(false);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -5925,7 +6015,14 @@ function App() {
     /* @__PURE__ */ React.createElement("span", null, isAudioEnabled ? "🔊 BGM ON" : "🔇 BGM OFF")
   );
   if (screen === "START") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "10px", fontWeight: "bold" } }, "～ ", SHOP.localName, " ～"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "30px", color: "#ccc" } }, "若き店主", PROTAGONIST.shortName, "として、錬金術店を切り盛りしましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "10px", fontWeight: "bold" } }, "～ ", SHOP.localName, " ～"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "30px", color: "#ccc" } }, "若き店主", PROTAGONIST.shortName, "として、錬金術店を切り盛りしましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く"), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setShowSoundTest(true),
+        style: { ...buttonStyle, background: "#444", marginTop: "10px" }
+      },
+      "Sound Test"
+    )));
   }
   if (screen === "INTRO") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, SHOP.localName), /* @__PURE__ */ React.createElement("p", null, "「おはよう、", PROTAGONIST.shortName, "。今日もお店を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
