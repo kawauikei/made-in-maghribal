@@ -1201,23 +1201,26 @@ export default function App() {
               </div>
 
               {/* Thumbnail Selector */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px', padding: '10px 0', width: '100%' }}>
-                {bgList.map((item, idx) => (
-                  <div 
-                    key={item.id} 
-                    onClick={() => setBgTestIndex(idx)}
-                    style={{ 
-                      aspectRatio: '16/9', 
-                      borderRadius: '8px', 
-                      overflow: 'hidden', 
-                      border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : '#333'}`,
-                      cursor: 'pointer',
-                      boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
-                    }}
-                  >
-                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                ))}
+              <div style={{ width: '100%', maxWidth: '800px', height: '180px', overflowX: 'auto', overflowY: 'hidden', padding: '8px 0', scrollbarWidth: 'thin' }}>
+                <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
+                  {bgList.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      onClick={() => setBgTestIndex(idx)}
+                      style={{
+                        width: '140px',
+                        height: '80px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : '#333'}`,
+                        cursor: 'pointer',
+                        boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
+                      }}
+                    >
+                      <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
@@ -1242,23 +1245,26 @@ export default function App() {
               </div>
 
               {/* Thumbnail Selector */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px', padding: '10px 0', width: '100%' }}>
-                {stillList.map((item, idx) => (
-                  <div 
-                    key={item.id} 
-                    onClick={() => setStillTestIndex(idx)}
-                    style={{ 
-                      aspectRatio: '16/9', 
-                      borderRadius: '8px', 
-                      overflow: 'hidden', 
-                      border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : '#333'}`,
-                      cursor: 'pointer',
-                      boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
-                    }}
-                  >
-                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                ))}
+              <div style={{ width: '100%', maxWidth: '800px', height: '180px', overflowX: 'auto', overflowY: 'hidden', padding: '8px 0', scrollbarWidth: 'thin' }}>
+                <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
+                  {stillList.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      onClick={() => setStillTestIndex(idx)}
+                      style={{
+                        width: '140px',
+                        height: '80px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : '#333'}`,
+                        cursor: 'pointer',
+                        boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
+                      }}
+                    >
+                      <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
