@@ -7,11 +7,6 @@ export default function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
 
-  // Verify character data loading
-  React.useEffect(() => {
-    console.log("Characters initialized:", HEROINES);
-  }, []);
-
   // Go to INTRO
   const handleStartGame = () => {
     setScreen('INTRO');

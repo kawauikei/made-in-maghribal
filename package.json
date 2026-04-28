@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node tools/post-build.js",
-    "test": "node tests/quizEngine.test.js"
+    "test": "node tests/quizEngine.test.js",
+    "assets:characters": "node tools/character_asset_pipeline/process_character_assets.cjs"
   },
   "dependencies": {
     "react": "^18.3.1",

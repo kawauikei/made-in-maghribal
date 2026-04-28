@@ -1,0 +1,24 @@
+{
+  "selena": {
+    "sourceDir": "source/characters/selena",
+    "variants": {
+      "default": {
+        "source": "standing_base.png",
+        "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 },
+        "standing": {
+          "scale": 1.0,
+          "anchor": "bottom-center",
+          "offset": { "x": 0, "y": 0 }
+        }
+      },
+      "smile": {
+        "source": "standing_smile.png",
+        "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 },
+        "standing": {
+          "scale": 1.0,
+          "anchor": "bottom-center"
+        }
+      }
+    }
+  }
+}
