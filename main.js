@@ -5632,9 +5632,15 @@ function App() {
     setScreen("INTRO");
   };
   const handleBeginService = () => {
-    const newSession = createQuizSession({ questionCount: 5 });
-    setSession(newSession);
+    setSession(createQuizSession({ questionCount: 5 }));
     setScreen("QUIZ");
+  };
+  const handleEndDay = () => {
+    setScreen("DAY_END");
+  };
+  const handleBackToTitle = () => {
+    setSession(null);
+    setScreen("START");
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
@@ -5671,7 +5677,18 @@ function App() {
       padding: "15px",
       borderRadius: "12px",
       border: "1px solid rgba(255,255,255,0.1)"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? "#4caf50" : "#f44336" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? "#4caf50" : "#f44336" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleEndDay, style: buttonStyle }, "店じまいする")));
+  }
+  if (screen === "DAY_END" && session) {
+    const correctCount = session.answers.filter((a) => a.isCorrect).length;
+    const mgmt = getWorkshopResult(correctCount);
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "一日の終わり"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, textAlign: "left" } }, /* @__PURE__ */ React.createElement("p", null, "夕暮れの工房に、今日選ばれた品々の余韻が残っている。"), /* @__PURE__ */ React.createElement("p", null, "小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。"), /* @__PURE__ */ React.createElement("p", { style: { marginTop: "20px", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」")), /* @__PURE__ */ React.createElement("div", { style: {
+      background: "rgba(0,0,0,0.2)",
+      padding: "20px",
+      borderRadius: "12px",
+      marginBottom: "30px",
+      border: "1px solid rgba(255,255,255,0.05)"
+    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
   }
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("style", null, `
