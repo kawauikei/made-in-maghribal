@@ -35,6 +35,27 @@ function testImageAssets() {
   assert.strictEqual(allIds.length, uniqueIds.size, "All asset IDs should be unique");
   console.log("✅ PASSED: Unique Asset IDs");
 
+  // Test Case 5: Event Linkage (M8-18)
+  const { AFFECTION_EVENTS } = require('../src/data/affectionEvents.js');
+  
+  Object.keys(AFFECTION_EVENTS).forEach(heroineId => {
+    const events = AFFECTION_EVENTS[heroineId];
+    events.forEach(event => {
+      if (event.threshold === 5) {
+        assert.ok(event.stillImageId, `Event ${event.id} (threshold 5) should have stillImageId`);
+        const still = STILL_IMAGES[event.stillImageId];
+        assert.ok(still, `stillImageId ${event.stillImageId} for event ${event.id} should exist in STILL_IMAGES`);
+        assert.strictEqual(still.heroineId, heroineId, `Still ${event.stillImageId} should belong to ${heroineId}`);
+      }
+      
+      // Safety check: if stillImageId exists, it must be valid
+      if (event.stillImageId) {
+        assert.ok(STILL_IMAGES[event.stillImageId], `stillImageId ${event.stillImageId} for event ${event.id} must be valid`);
+      }
+    });
+  });
+  console.log("✅ PASSED: Event-Still linkage (threshold 5)");
+
   console.log("\n--- All image asset tests completed successfully! ---");
 }
 

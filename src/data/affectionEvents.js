@@ -11,7 +11,8 @@ export const AFFECTION_EVENTS = {
       title: "もう一度、隣に",
       speaker: "ハキマ",
       expression: "joy",
-      text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。"
+      text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。",
+      stillImageId: "hakimaMorningVisit01"
     },
     {
       id: "hakima_10",
@@ -31,7 +32,8 @@ export const AFFECTION_EVENTS = {
       title: "普通の女の子として",
       speaker: "ミラ",
       expression: "fun",
-      text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。"
+      text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。",
+      stillImageId: "miraAfterSchool01"
     },
     {
       id: "mira_10",
@@ -51,7 +53,8 @@ export const AFFECTION_EVENTS = {
       title: "安らぎの工房",
       speaker: "ダリヤ",
       expression: "joy",
-      text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。"
+      text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。",
+      stillImageId: "dariyaAfterHours01"
     },
     {
       id: "dariya_10",

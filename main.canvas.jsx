@@ -537,18 +537,47 @@ function App() {
   }
 
   if (screen === 'EVENT' && activeEvent) {
+    const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
+    const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
+
     return (
       <div style={containerStyle}>
         {renderAudioToggle()}
         <h1 style={titleStyle}>親密度イベント：{activeEvent.title}</h1>
         <div style={cardStyle}>
+          {still && (
+            <div style={{ 
+              width: '100%', 
+              height: '300px', 
+              background: '#000', 
+              borderRadius: '12px', 
+              overflow: 'hidden',
+              border: '2px solid #444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '20px'
+            }}>
+              <img 
+                src={getFullPath(still.src)} 
+                alt={still.label}
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+                }}
+              />
+            </div>
+          )}
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <HeroineDisplay 
-              heroine={activeHeroine} 
-              type="standing" 
-              size="large" 
-              expression={activeEvent.expression} 
-            />
+            {!still && (
+              <HeroineDisplay 
+                heroine={activeHeroine} 
+                type="standing" 
+                size="large" 
+                expression={activeEvent.expression} 
+              />
+            )}
             <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
               <div style={{ fontSize: '0.9em', color: activeHeroine.themeColor, fontWeight: 'bold', marginBottom: '10px' }}>
                 {activeEvent.speaker}
