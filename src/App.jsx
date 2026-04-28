@@ -5,12 +5,38 @@ import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } fr
 import { HEROINES, getHeroineAsset } from './data/heroines';
 import { getResultExpression, getDayEndExpression } from './game/presentation';
 import { WORLD, SHOP, PROTAGONIST } from './data/world';
+import { TRACKS, getTrackById } from './data/tracks';
+import { audioEngine } from './game/audioEngine';
 
 export default function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
   const [activeHeroineId, setActiveHeroineId] = useState('hakima');
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+
+  // Sync mute state
+  useEffect(() => {
+    audioEngine.setMuted(!isAudioEnabled);
+  }, [isAudioEnabled]);
+
+  // Handle BGM per screen
+  useEffect(() => {
+    let trackId = null;
+    if (screen === 'START' || screen === 'HEROINE_SELECT') {
+      trackId = 'titleTheme';
+    } else if (screen === 'QUIZ') {
+      trackId = 'quizBasic01';
+    } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
+      trackId = 'workshopTheme';
+    }
+
+    if (trackId) {
+      audioEngine.playTrack(TRACKS[trackId]);
+    } else {
+      audioEngine.stop();
+    }
+  }, [screen]);
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
 
@@ -67,9 +93,34 @@ export default function App() {
 
   // --- RENDER HELPERS ---
 
+  const renderAudioToggle = () => (
+    <button 
+      onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+      style={{
+        position: 'fixed',
+        top: '10px',
+        right: '10px',
+        zIndex: 1000,
+        background: 'rgba(0,0,0,0.5)',
+        color: '#fff',
+        border: '1px solid rgba(255,255,255,0.2)',
+        borderRadius: '20px',
+        padding: '5px 12px',
+        fontSize: '0.8em',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px'
+      }}
+    >
+      <span>{isAudioEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}</span>
+    </button>
+  );
+
   if (screen === 'START') {
     return (
       <div style={containerStyle}>
+        {renderAudioToggle()}
         <h1 style={titleStyle}>{SHOP.name}</h1>
         <div style={cardStyle}>
           <p style={{ fontSize: '1.1em', marginBottom: '10px', fontWeight: 'bold' }}>
@@ -87,6 +138,7 @@ export default function App() {
   if (screen === 'INTRO') {
     return (
       <div style={containerStyle}>
+        {renderAudioToggle()}
         <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
         <div style={cardStyle}>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -120,6 +172,7 @@ export default function App() {
     
     return (
       <div style={containerStyle}>
+        {renderAudioToggle()}
         <h1 style={titleStyle}>業務終了</h1>
         <div style={cardStyle}>
           <div style={narrativeBoxStyle}>
@@ -189,6 +242,7 @@ export default function App() {
 
     return (
       <div style={containerStyle}>
+        {renderAudioToggle()}
         <h1 style={titleStyle}>一日の終わり</h1>
         <div style={cardStyle}>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -240,6 +294,7 @@ export default function App() {
   if (screen === 'HEROINE_SELECT') {
     return (
       <div style={containerStyle}>
+        {renderAudioToggle()}
         <h1 style={titleStyle}>誰と店を開く？</h1>
         <div style={{ ...cardStyle, maxWidth: '800px' }}>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '30px' }}>
@@ -292,6 +347,7 @@ export default function App() {
 
   return (
     <div style={containerStyle}>
+      {renderAudioToggle()}
       <style>{`
         .item-card {
           background: #333;
