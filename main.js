@@ -5553,9 +5553,66 @@ function shuffleArray(array) {
   }
   return result;
 }
+const HEROINES = [
+  {
+    id: "hakima",
+    name: "ハキマ",
+    role: "工房の先輩 / 幼馴染",
+    description: "家族から工房を受け継いだあなたを、公私ともに支えてくれる頼れる先輩。",
+    assets: {
+      standing: {
+        default: "characters/hakima/standing/default.png"
+      },
+      face: {
+        default: "characters/hakima/face/default.png"
+      }
+    },
+    themeColor: "#ffcc00"
+  },
+  {
+    id: "mira",
+    name: "ミラ",
+    role: "旅の商人",
+    description: "珍しい素材を工房に持ち込んでくれる、快活な少女。",
+    assets: {
+      standing: {
+        default: "characters/mira/standing/default.png"
+      },
+      face: {
+        default: "characters/mira/face/default.png"
+      }
+    },
+    themeColor: "#00ccff"
+  },
+  {
+    id: "dariya",
+    name: "ダリヤ",
+    role: "王宮の使者",
+    description: "時折、王宮からの特別な依頼を携えてやってくる。",
+    assets: {
+      standing: {
+        default: "characters/dariya/standing/default.png"
+      },
+      face: {
+        default: "characters/dariya/face/default.png"
+      }
+    },
+    themeColor: "#cc00ff"
+  }
+];
+function getHeroineAsset(heroineId, type, variant = "default") {
+  var _a, _b;
+  const heroine = HEROINES.find((h) => h.id === heroineId);
+  if (!heroine) return null;
+  const variantPath = ((_a = heroine.assets[type]) == null ? void 0 : _a[variant]) || ((_b = heroine.assets[type]) == null ? void 0 : _b.default);
+  if (!variantPath) return null;
+  return variantPath;
+}
+const ACTIVE_HEROINE_ID = "hakima";
 function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
+  const activeHeroine = HEROINES.find((h) => h.id === ACTIVE_HEROINE_ID) || HEROINES[0];
   const handleStartGame = () => {
     setScreen("INTRO");
   };
@@ -5576,7 +5633,7 @@ function App() {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Made in Maghribal"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "30px" } }, "接客クイズへようこそ。5問の連続クイズに挑戦しましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く")));
   }
   if (screen === "INTRO") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, /* @__PURE__ */ React.createElement("p", null, "ここは砂漠の王国マグリバル。"), /* @__PURE__ */ React.createElement("p", null, "あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。"), /* @__PURE__ */ React.createElement("p", null, "今日も工房には、少し困ったお客がやってくる。"), /* @__PURE__ */ React.createElement("p", null, "相手の願いを読み取り、ぴったりの品を選ぼう。")), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("p", null, "ここは砂漠の王国マグリバル。"), /* @__PURE__ */ React.createElement("p", null, "あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。"), /* @__PURE__ */ React.createElement("p", null, "今日も工房には、少し困ったお客がやってくる。"), /* @__PURE__ */ React.createElement("p", null, "相手の願いを読み取り、ぴったりの品を選ぼう。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
   }
   if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
@@ -5589,7 +5646,7 @@ function App() {
       1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
       0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
     };
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", marginBottom: "10px", fontWeight: "bold", marginTop: "20px" } }, "称号：", rank.title), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務終了"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount].split("\n").map((line, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { margin: "0 0 8px 0" } }, line))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small" }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "20px" } }, session.questions.length, " 問中 ", correctCount, " 問正解"), /* @__PURE__ */ React.createElement("div", { style: { background: "#333", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontStyle: "italic", color: "#ccc" } }, "「", rank.message, "」"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "もう一度挑戦")));
   }
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("style", null, `
@@ -5645,6 +5702,38 @@ function App() {
     ),
     /* @__PURE__ */ React.createElement("div", { style: itemNameStyle }, item.name)
   )))));
+}
+function HeroineDisplay({ heroine, type, size = "large" }) {
+  const [imgError, setImgError] = useState(false);
+  const assetPath = getHeroineAsset(heroine.id, type);
+  const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
+  const isPortrait = type === "standing";
+  const displaySize = size === "large" ? isPortrait ? 180 : 100 : isPortrait ? 80 : 50;
+  const containerStyle2 = {
+    width: isPortrait ? `${displaySize * 0.7}px` : `${displaySize}px`,
+    height: `${displaySize}px`,
+    borderRadius: isPortrait ? "12px" : "50%",
+    overflow: "hidden",
+    background: heroine.themeColor || "#444",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: `2px solid ${heroine.themeColor || "#ffcc00"}`,
+    boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+    flexShrink: 0
+  };
+  if (!fullPath || imgError) {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: size === "large" ? "2em" : "1.2em", fontWeight: "bold", color: "#111" } }, heroine.name[0]));
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      src: fullPath,
+      alt: heroine.name,
+      style: { width: "100%", height: "100%", objectFit: isPortrait ? "contain" : "cover" },
+      onError: () => setImgError(true)
+    }
+  ));
 }
 const containerStyle = {
   padding: "20px",
