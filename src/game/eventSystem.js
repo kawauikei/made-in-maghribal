@@ -20,6 +20,7 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
 
   if (eligibleEvents.length === 0) return null;
 
-  // Return the one with the highest threshold among eligible ones
-  return eligibleEvents.sort((a, b) => b.threshold - a.threshold)[0];
+  // Return the one with the lowest threshold among eligible ones
+  // to ensure sequential progression (5 first, then 10).
+  return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
 }

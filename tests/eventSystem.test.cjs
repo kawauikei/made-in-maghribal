@@ -20,12 +20,20 @@ try {
 
   // Test Case 3: Already seen
   const e3 = checkNewEventUnlock('hakima', 10, ['hakima_5']);
-  assert.strictEqual(e3, null, "Should not re-trigger seen event");
-  console.log("✅ PASSED: Do not re-trigger seen events");
+  assert.ok(e3 !== null);
+  assert.strictEqual(e3.id, 'hakima_10', "Should unlock threshold 10 if 5 is seen");
+  console.log("✅ PASSED: Unlock threshold 10 after threshold 5 is seen");
 
-  // Test Case 4: Multiple events (Hypothetical for future)
-  // Even if we don't have them now, the logic should handle it.
-  // We'll skip this unless we add more test data.
+  // Test Case 4: Sequential check (Jump to 12)
+  const e4a = checkNewEventUnlock('hakima', 12, []);
+  assert.strictEqual(e4a.id, 'hakima_5', "Should unlock lowest threshold first (5)");
+  
+  const e4b = checkNewEventUnlock('hakima', 12, ['hakima_5']);
+  assert.strictEqual(e4b.id, 'hakima_10', "Should unlock next threshold (10) after 5 is seen");
+  
+  const e4c = checkNewEventUnlock('hakima', 12, ['hakima_5', 'hakima_10']);
+  assert.strictEqual(e4c, null, "No more events left to unlock");
+  console.log("✅ PASSED: Sequential unlocking (4->12 jump)");
 
   // Test Case 5: Unknown heroine
   const e5 = checkNewEventUnlock('unknown', 100, []);
