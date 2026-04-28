@@ -159,6 +159,63 @@ export default function App() {
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
+  // --- Scale-to-Fit Implementation (M8-23) ---
+  const BASE_WIDTH = 390;
+  const BASE_HEIGHT = 780;
+  const MIN_SCALE = 0.85;
+  const MAX_SCALE = 1.25;
+
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 390,
+    height: typeof window !== 'undefined' ? window.innerHeight : 780
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const rawScale = Math.min(
+    windowSize.width / BASE_WIDTH,
+    windowSize.height / BASE_HEIGHT
+  );
+  const scale = Math.min(Math.max(rawScale, MIN_SCALE), MAX_SCALE);
+  const isClipped = rawScale < MIN_SCALE;
+
+  const outerWrapperStyle = {
+    width: '100vw',
+    height: '100dvh',
+    backgroundColor: '#000',
+    display: 'flex',
+    justifyContent: isClipped ? 'flex-start' : 'center',
+    alignItems: isClipped ? 'flex-start' : 'center',
+    overflow: isClipped ? 'auto' : 'hidden',
+    position: 'relative'
+  };
+
+  const canvasContainerStyle = {
+    width: `${BASE_WIDTH * scale}px`,
+    height: `${BASE_HEIGHT * scale}px`,
+    position: 'relative',
+    flexShrink: 0
+  };
+
+  const canvasStyle = {
+    width: `${BASE_WIDTH}px`,
+    height: `${BASE_HEIGHT}px`,
+    transform: `scale(${scale})`,
+    transformOrigin: 'top left',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    overflow: 'hidden',
+    background: '#1a2a3a',
+    color: '#eee'
+  };
+
   // Initial Load
   useEffect(() => {
     const data = loadSaveData();
@@ -347,10 +404,6 @@ export default function App() {
 
       // Check for Event Unlock
       const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-      if (unlockedEvent) {
-        setActiveEvent(unlockedEvent);
-      }
-
       const result = getWorkshopResult(correctCount);
       setWorkshopState(prev => applyWorkshopResult(prev, result));
       setScreen('RESULT');
@@ -359,26 +412,14 @@ export default function App() {
 
   // --- RENDER HELPERS ---
 
-  const THEME = {
-    sand: '#e2d1b1',
-    parchment: '#f4e9d5',
-    brass: '#c5a059',
-    brassDark: '#8e6d2e',
-    nightBlue: '#1a2a3a',
-    oasisTeal: '#2a5a5a',
-    textDark: '#2a2a2a',
-    starGold: '#ffcc00'
-  };
-
-  const SCREEN_BACKGROUNDS = {
-    INTRO: 'shopExteriorDay',
-    RESULT: 'shopInteriorWorkshop',
-    DAY_END: 'shopExteriorNight'
-  };
-
   const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
 
   const renderBackground = (screen) => {
+    const SCREEN_BACKGROUNDS = {
+      INTRO: 'shopExteriorDay',
+      RESULT: 'shopInteriorWorkshop',
+      DAY_END: 'shopExteriorNight'
+    };
     const bgId = SCREEN_BACKGROUNDS[screen];
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
@@ -387,14 +428,14 @@ export default function App() {
     return (
       <>
         <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           backgroundImage: `url(${getFullPath(bg.src)})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
           zIndex: 0, pointerEvents: 'none'
         }} />
         <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(26, 42, 58, 0.5)', // nightBlue overlay
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(26, 42, 58, 0.5)',
           zIndex: 1, pointerEvents: 'none'
         }} />
       </>
@@ -416,7 +457,7 @@ export default function App() {
     <button 
       onClick={() => setIsAudioEnabled(!isAudioEnabled)}
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: '10px',
         right: '10px',
         zIndex: 1000,
@@ -436,51 +477,53 @@ export default function App() {
     </button>
   );
 
+  let mainContent = null;
+
   if (screen === 'START') {
-    return (
+    mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
         {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} />}
         
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ ...titleStyle, fontSize: '3.2em', margin: '0 0 10px 0' }}>{SHOP.name}</h1>
-          <div style={{ color: THEME.sand, fontSize: '1.2em', letterSpacing: '0.15em', textShadow: '1px 1px 2px #000', opacity: 0.9 }}>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
+          <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
             ～ {SHOP.localName} ～
           </div>
         </div>
 
-        <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center', padding: '0' }}>
+        <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
           {hasSave && (
             <button 
               onClick={handleContinue} 
-              style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '300px', margin: 0 }}
+              style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
             >
               つづきから
             </button>
           )}
           
-          <button onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '300px', margin: 0 }}>
+          <button onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '260px', margin: 0 }}>
             {hasSave ? 'はじめから' : '店を開く'}
           </button>
 
           <button 
             onClick={() => setScreen('MEMORIES')} 
-            style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '300px', margin: 0 }}
+            style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}
           >
             思い出の記録
           </button>
 
-          <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px' }}>
+          <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
             <button 
               onClick={() => setShowSoundTest(true)} 
-              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.9em', flex: 1, margin: 0 }}
+              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
             >
               Sound
             </button>
             <button 
               onClick={() => setScreen('VISUAL_TEST')} 
-              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.9em', flex: 1, margin: 0 }}
+              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
             >
               Visual
             </button>
@@ -495,9 +538,9 @@ export default function App() {
                 color: '#844', 
                 textDecoration: 'underline', 
                 cursor: 'pointer',
-                fontSize: '0.85em',
-                marginTop: '15px',
-                opacity: 0.7
+                fontSize: '0.75em',
+                marginTop: '10px',
+                opacity: 0.6
               }}
             >
               記録を全て消去する
@@ -506,10 +549,8 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'INTRO') {
-    return (
+  } else if (screen === 'INTRO') {
+    mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
@@ -517,37 +558,37 @@ export default function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
           <div style={cardStyle}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-               <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
-               <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-                  <div style={{ fontSize: '0.9em', color: THEME.brass, marginBottom: '10px', fontWeight: 'bold' }}>{SHOP.localName}</div>
-                  <p>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
-                  <p>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
-                  <p>今日の客人は、どんな品を求めてやってくるだろうか。</p>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+               <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
+               <div style={{ ...narrativeBoxStyle, flex: 1, minWidth: 0, marginBottom: 0 }}>
+                  <div style={{ fontSize: '0.8em', color: THEME.brass, marginBottom: '4px', fontWeight: 'bold' }}>{SHOP.localName}</div>
+                  <p style={{ margin: 0 }}>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
                </div>
+            </div>
+            <div style={{ ...narrativeBoxStyle, background: 'transparent', borderLeft: 'none', padding: 0 }}>
+              <p style={{ margin: '0 0 8px 0' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
+              <p style={{ margin: 0 }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
             </div>
             <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>接客を始める</button>
           </div>
         </div>
       </div>
     );
-  }
-
-  if (screen === 'RESULT' && session) {
+  } else if (screen === 'RESULT' && session) {
     const correctCount = session.answers.filter(a => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
     const mgmt = getWorkshopResult(correctCount);
 
     const resultNarrations = {
-      5: "お客は品を受け取ると、ぱっと顔を輝かせた。\n「これだよ、これ！　まさかこんなにぴったりの品があるなんて」\n今日の工房には、少し誇らしい空気が流れている。",
-      4: "お客は満足そうに品を抱えた。\n「助かったよ。次に困った時も、ここに来ればよさそうだ」\n手応えのある接客だった。",
-      3: "お客は少し迷いながらも、品を受け取った。\n「うん、悪くない。たぶんこれで何とかなると思う」\nもう少し相手の願いを読み取れれば、さらに良くなりそうだ。",
-      2: "お客は首をかしげながら品を見つめた。\n「うーん……今回はこれで試してみるよ」\n工房の棚には、まだ学ぶべきことが多く残っている。",
-      1: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。",
-      0: "お客は困ったように笑った。\n「気持ちはありがたいんだけど、ちょっと違うかもしれないな」\n今日の失敗も、きっと明日の目利きにつながる。"
+      5: "お客は品を受け取ると、ぱっと顔を輝かせた。「これだよ、これ！　まさかこんなにぴったりの品があるなんて」今日の工房には、少し誇らしい空気が流れている。",
+      4: "お客は満足そうに品を抱えた。「助かったよ。次に困った時も、ここに来ればよさそうだ」手応えのある接客だった。",
+      3: "お客は少し迷いながらも、品を受け取った。「うん、悪くない。たぶんこれで何とかなると思う」もう少し相手の願いを読み取れれば、さらに良くなりそうだ。",
+      2: "お客は首をかしげながら品を見つめた。「うーん……今回はこれで試してみるよ」工房の棚には、まだ学ぶべきことが多く残っている。",
+      1: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。",
+      0: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。"
     };
     
-    return (
+    mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
@@ -555,13 +596,8 @@ export default function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>業務報告書</h1>
           <div style={{ ...cardStyle, borderRadius: '4px', border: `3px double ${THEME.brass}` }}>
-            <div style={{ position: 'absolute', top: '10px', right: '10px', width: '60px', height: '60px', border: `2px solid ${THEME.brass}`, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: THEME.brass, fontWeight: 'bold', transform: 'rotate(15deg)', opacity: 0.6, fontSize: '0.8em' }}>
-              店印
-            </div>
             <div style={narrativeBoxStyle}>
-              {resultNarrations[correctCount].split('\n').map((line, i) => (
-                <p key={i} style={{ margin: '0 0 8px 0' }}>{line}</p>
-              ))}
+              {resultNarrations[correctCount]}
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
@@ -573,12 +609,6 @@ export default function App() {
               />
               <div style={{ fontSize: '1.1em', color: activeHeroine.themeColor, fontWeight: 'bold' }}>
                 {activeHeroine.name}との絆 +{lastAffectionGain}
-              </div>
-            </div>
-
-            <div style={{ margin: '20px 0', border: `1px solid ${THEME.brassDark}`, background: 'rgba(0,0,0,0.03)', padding: '15px', borderRadius: '4px' }}>
-              <div style={{ fontSize: '1.2em', color: THEME.brassDark, fontWeight: 'bold' }}>
-                評価：{rank.title}
               </div>
             </div>
 
@@ -624,13 +654,11 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'DAY_END' && session) {
-    const correctCount = session.answers.filter(a => a.isCorrect).length;
+  } else if (screen === 'DAY_END') {
+    const correctCount = session ? session.answers.filter(a => a.isCorrect).length : 0;
     const mgmt = getWorkshopResult(correctCount);
 
-    return (
+    mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
@@ -686,12 +714,11 @@ export default function App() {
       </div>
     </div>
     );
-  }
+  } else if (screen === 'EVENT' && activeEvent) {
 
-  if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    return (
+    mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
@@ -748,18 +775,14 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'VISUAL_TEST') {
+  } else if (screen === 'VISUAL_TEST') {
     const bgList = Object.values(BACKGROUND_IMAGES);
     const stillList = Object.values(STILL_IMAGES);
     
     const bg = bgList[bgTestIndex % bgList.length];
     const still = stillList[stillTestIndex % stillList.length];
 
-    const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
-
-    return (
+    mainContent = (
       <div style={containerStyle}>
         <h1 style={titleStyle}>Visual Asset Test</h1>
         <div style={{ ...cardStyle, maxWidth: '800px' }}>
@@ -835,9 +858,7 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'MEMORIES') {
+  } else if (screen === 'MEMORIES') {
     const allEvents = Object.values(AFFECTION_EVENTS).flat();
     const seenEvents = allEvents.filter(e => seenEventIds.includes(e.id));
     
@@ -849,7 +870,7 @@ export default function App() {
       setScreen('EVENT');
     };
 
-    return (
+    mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
@@ -918,10 +939,8 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'HEROINE_SELECT') {
-    return (
+  } else if (screen === 'HEROINE_SELECT') {
+    mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
@@ -972,11 +991,9 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (screen === 'QUIZ' && session) {
+  } else if (screen === 'QUIZ' && session) {
     const currentQuestion = session.questions[session.currentIndex];
-    return (
+    mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
@@ -1020,16 +1037,7 @@ export default function App() {
                 key={item.id} 
                 onClick={() => handleSelect(item.id)}
                 className="item-card"
-                style={{
-                  background: 'rgba(0,0,0,0.03)',
-                  padding: '15px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  textAlign: 'center',
-                  transition: 'all 0.2s ease',
-                  position: 'relative'
-                }}
+                style={itemCardStyle}
               >
                 <img 
                   src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
@@ -1051,11 +1059,18 @@ export default function App() {
     );
   }
 
-  // Fallback / Loading
   return (
-    <div style={containerStyle}>
-      <p>Loading...</p>
-      <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+    <div style={outerWrapperStyle}>
+      <div style={canvasContainerStyle}>
+        <div style={canvasStyle}>
+          {mainContent || (
+            <div style={containerStyle}>
+              <p>Loading...</p>
+              <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1068,7 +1083,6 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
   const isStanding = type === 'standing';
   
-  // Responsive sizing
   const displaySize = size === 'large' 
     ? (isStanding ? 320 : 120) 
     : (size === 'medium' ? (isStanding ? 180 : 80) : (isStanding ? 120 : 60));
@@ -1092,8 +1106,6 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    // Standing is now pre-cropped to bust-up, so top center is safe. 
-    // Face uses visualConfig.
     objectPosition: isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%'),
     display: imgError ? 'none' : 'block'
   };
@@ -1137,50 +1149,82 @@ const THEME = {
 };
 
 const containerStyle = {
-  padding: '20px',
-  fontFamily: 'sans-serif',
-  background: '#1a2a3a', // nightBlue base
-  color: '#eee',
-  minHeight: '100vh',
+  width: '100%',
+  height: '100%',
+  padding: '12px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'flex-start',
+  overflow: 'hidden',
+  position: 'relative',
+  boxSizing: 'border-box'
 };
 
 const titleStyle = { 
-  color: '#e2d1b1', // sand
-  marginBottom: '40px',
+  color: '#e2d1b1',
+  fontSize: '1.4em',
+  margin: '0 0 12px 0',
   textAlign: 'center',
-  textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-  letterSpacing: '0.05em'
+  textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+  fontWeight: 'bold'
 };
 
 const headerStyle = {
   width: '100%',
-  maxWidth: '600px',
   display: 'flex',
   justifyContent: 'space-between',
-  marginBottom: '20px',
-  fontSize: '1.1em',
+  marginBottom: '10px',
+  fontSize: '0.9em',
   color: '#e2d1b1'
 };
 
 const cardStyle = {
   width: '100%',
-  maxWidth: '600px',
-  padding: '30px',
-  border: `2px solid ${THEME.brass}`,
-  borderRadius: '8px', // Slightly sharper workshop look
+  padding: '12px',
+  border: `1px solid ${THEME.brass}`,
+  borderRadius: '8px',
   background: THEME.parchment,
   color: THEME.textDark,
   textAlign: 'center',
-  boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-  position: 'relative'
+  boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+  position: 'relative',
+  boxSizing: 'border-box'
+};
+
+const narrativeBoxStyle = {
+  background: 'rgba(0, 0, 0, 0.75)',
+  padding: '20px',
+  borderRadius: '8px',
+  marginBottom: '30px',
+  textAlign: 'left',
+  lineHeight: '1.8',
+  fontSize: '1em',
+  color: '#f4e9d5',
+  border: `1px solid ${THEME.brass}`,
+  borderLeft: `5px solid ${THEME.brass}`,
+  boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+  backdropFilter: 'blur(4px)'
+};
+
+const buttonStyle = {
+  padding: '12px 24px',
+  fontSize: '1.1em',
+  background: THEME.brass,
+  color: '#1a1a1a',
+  border: `2px solid ${THEME.brassDark}`,
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  marginTop: '20px',
+  boxShadow: '0 4px 0 #8e6d2e',
+  outline: 'none',
+  userSelect: 'none',
+  WebkitTapHighlightColor: 'transparent'
 };
 
 const customerStyle = {
-  marginBottom: '30px',
+  marginBottom: '15px',
   display: 'flex',
   justifyContent: 'center'
 };
@@ -1188,12 +1232,12 @@ const customerStyle = {
 const bubbleStyle = {
   background: '#fff',
   color: '#222',
-  padding: '15px 25px',
-  borderRadius: '20px',
+  padding: '12px 18px',
+  borderRadius: '15px',
   position: 'relative',
-  fontSize: '1.2em',
+  fontSize: '0.95em',
   fontWeight: 'bold',
-  boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
   border: '1px solid #ddd'
 };
 
@@ -1227,33 +1271,4 @@ const itemNameStyle = {
   fontWeight: 'bold'
 };
 
-const narrativeBoxStyle = {
-  background: 'rgba(0, 0, 0, 0.75)',
-  padding: '20px',
-  borderRadius: '8px',
-  marginBottom: '30px',
-  textAlign: 'left',
-  lineHeight: '1.8',
-  fontSize: '1em',
-  color: '#f4e9d5', // parchment text
-  border: `1px solid ${THEME.brass}`,
-  borderLeft: `5px solid ${THEME.brass}`,
-  boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
-  backdropFilter: 'blur(4px)'
-};
 
-const buttonStyle = {
-  padding: '12px 24px',
-  fontSize: '1.1em',
-  background: THEME.brass,
-  color: '#1a1a1a',
-  border: `2px solid ${THEME.brassDark}`,
-  borderRadius: '4px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  marginTop: '20px',
-  boxShadow: '0 4px 0 #8e6d2e', // 3D effect
-  outline: 'none',
-  userSelect: 'none',
-  WebkitTapHighlightColor: 'transparent'
-};
