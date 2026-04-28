@@ -8,7 +8,7 @@ const { HEROINES } = require('../src/data/heroines');
 console.log("\n--- Made in Maghribal: Audio Manifest Tests ---");
 
 function testCommonTracks() {
-  const commonIds = ['titleTheme', 'workshopTheme', 'quizBasic01'];
+  const commonIds = ['MAIN-01', 'MAIN-02', 'MAIN-03'];
   commonIds.forEach(id => {
     if (!TRACKS[id]) {
       throw new Error(`Common track not found in manifest: ${id}`);
@@ -18,7 +18,7 @@ function testCommonTracks() {
 }
 
 function testHeroineThemes() {
-  const heroineThemeIds = ['hakimaTheme', 'miraTheme', 'dariyaTheme'];
+  const heroineThemeIds = ['HAKIMA-01', 'MIRA-01', 'DARIYA-01'];
   heroineThemeIds.forEach(id => {
     if (!TRACKS[id]) {
       throw new Error(`Heroine theme track not found in manifest: ${id}`);
@@ -42,8 +42,8 @@ function testHelpers() {
   if (getTrackById('invalid') !== null) {
     throw new Error("getTrackById should return null for invalid ID");
   }
-  const title = getTrackById('titleTheme');
-  if (!title || title.id !== 'titleTheme') {
+  const title = getTrackById('MAIN-01');
+  if (!title || title.id !== 'MAIN-01') {
     throw new Error("getTrackById failed to retrieve valid track");
   }
 

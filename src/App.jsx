@@ -20,10 +20,62 @@ function SoundTest({ onClose, isAudioEnabled }) {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', zIndex: 2000, overflowY: 'auto', padding: '20px' }}>
       <div style={{ maxWidth: '600px', margin: '0 auto', background: '#222', padding: '20px', borderRadius: '10px', border: '1px solid #444', color: '#eee' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>SFX Sound Test</h2>
+          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>Sound Test</h2>
           <button onClick={onClose} style={{ padding: '8px 16px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
         </div>
         {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
+
+        {/* BGM Section */}
+        <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px solid #444' }}>
+          <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>BGM (Music)</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+            {Object.values(TRACKS).map(track => (
+              <div key={track.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{track.id}</div>
+                <div style={{ fontSize: '0.8rem', color: '#f0d080', marginBottom: '6px' }}>{track.title}</div>
+                <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', wordBreak: 'break-all', fontStyle: 'italic' }}>{track.src}</div>
+                <button 
+                  onClick={() => audioEngine.playTrack(track)}
+                  disabled={!isAudioEnabled}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px', 
+                    background: isAudioEnabled ? '#3d5afe' : '#333', 
+                    color: isAudioEnabled ? '#fff' : '#666', 
+                    border: 'none', 
+                    borderRadius: '4px',
+                    cursor: isAudioEnabled ? 'pointer' : 'default',
+                    fontSize: '0.8rem',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Play
+                </button>
+              </div>
+            ))}
+            <button 
+              onClick={() => audioEngine.stop()}
+              style={{ 
+                width: '100%', 
+                padding: '12px', 
+                background: '#555', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                fontSize: '0.85rem', 
+                fontWeight: 'bold',
+                gridColumn: '1 / -1',
+                marginTop: '10px'
+              }}
+            >
+              STOP MUSIC
+            </button>
+          </div>
+        </div>
+
+        <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (Sound Effects)</h3>
+
         {groups.map(group => (
           <div key={group} style={{ marginBottom: '24px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
             <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>{group}</h3>
@@ -141,20 +193,32 @@ export default function App() {
   // Handle BGM per screen
   useEffect(() => {
     let trackId = null;
-    if (screen === 'START' || screen === 'HEROINE_SELECT') {
-      trackId = 'titleTheme';
+    const day = workshopState.day || 1;
+    const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
+
+    if (screen === 'START' || screen === 'HEROINE_SELECT' || screen === 'MEMORIES') {
+      trackId = 'MAIN-01';
     } else if (screen === 'QUIZ') {
-      trackId = 'quizBasic01';
+      if (day <= 3) {
+        trackId = 'MAIN-03';
+      } else if (day <= 6) {
+        trackId = `${hPrefix}-02`;
+      } else {
+        trackId = `${hPrefix}-03`;
+      }
     } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
-      trackId = 'workshopTheme';
+      trackId = 'MAIN-02';
+    } else if (screen === 'EVENT') {
+      trackId = `${hPrefix}-01`;
     }
 
-    if (trackId) {
+    if (trackId && TRACKS[trackId]) {
       audioEngine.playTrack(TRACKS[trackId]);
     } else {
       audioEngine.stop();
     }
-  }, [screen]);
+  }, [screen, workshopState.day, activeHeroineId]);
+
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
 
