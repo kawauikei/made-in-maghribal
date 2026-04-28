@@ -886,10 +886,10 @@ function App() {
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
           <h1 style={{ ...titleStyle, marginBottom: '30px' }}>鑑定士の旅立ち</h1>
-          <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '30px', maxWidth: '600px' }}>
+          <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox 
               speaker="物語の始まり"
-              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、かつて多くの人々が訪れた骨董品店『星瓶堂』があった。鑑定士だった祖父が遺したこの場所は、今や埃を被り、閉ざされたままとなっている。……だが、今日から始まる10日間。あなたは大切な協力者と共に、この店に再び灯をともすことになる。"
+              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、若き錬金術師ナーディルが営む工房『星瓶堂』がある。かつては多くの人々が訪れたこの場所を、再び活気ある店へと育てていくのがあなたの目的だ。……今日から始まる10日間。あなたは大切な協力者と共に、鑑定士としての新たな一歩を踏み出すことになる。"
               themeColor={THEME.brass}
               onComplete={() => {
                 audioEngine.playSfx('uiClickForward');
@@ -1168,94 +1168,101 @@ function App() {
     const still = stillList[stillTestIndex % stillList.length];
 
     mainContent = (
-      <div style={containerStyle}>
+      <div style={{ ...containerStyle, padding: '0 0 20px 0' }}>
         {renderThemeStyles()}
-        <button onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, position: 'absolute', top: '6px', left: '8px', zIndex: 50 }}>Back</button>
-        <h1 style={{ ...titleStyle, marginTop: '36px', marginBottom: '8px' }}>Visual Asset Test</h1>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', width: '100%', marginBottom: '8px' }}>
-          <button onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, width: '100%', background: visualTestMode === 'background' ? THEME.brass : THEME.nightBlue, color: visualTestMode === 'background' ? THEME.textDark : THEME.sand }}>Background</button>
-          <button onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, width: '100%', background: visualTestMode === 'still' ? THEME.brass : THEME.nightBlue, color: visualTestMode === 'still' ? THEME.textDark : THEME.sand }}>Still</button>
+        {/* Fixed Header */}
+        <div style={{ width: '100%', padding: '10px 16px', background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
+          <button onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>TITLE</button>
+          <div style={{ flex: 1, color: THEME.sand, fontWeight: 'bold', fontSize: '0.9em' }}>Visual Asset Test</div>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>BG</button>
+            <button onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'still' ? THEME.brass : '#333', color: visualTestMode === 'still' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>STILL</button>
+          </div>
         </div>
-        <div style={{ ...cardStyle, maxWidth: '800px', maxHeight: '700px', overflowY: 'auto', paddingTop: '10px' }}>
-          <div style={{ marginBottom: '12px', display: visualTestMode === 'background' ? 'block' : 'none' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Background: {bg.label} ({bg.id})</h3>
-              <button 
-                onClick={() => setBgTestIndex(prev => (prev + 1) % bgList.length)}
-                style={{ ...buttonStyle, marginTop: 0, padding: '4px 12px', fontSize: '0.8em' }}
-              >
-                Next Background
-              </button>
-            </div>
-            <div style={{ 
-              width: '100%', 
-              height: '150px', 
-              background: '#000', 
-              borderRadius: '8px', 
-              overflow: 'hidden',
-              border: '2px solid #444',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <img 
-                key={bg.id}
-                src={getFullPath(bg.src)} 
-                alt={bg.label}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
-                }}
-              />
-            </div>
-          </div>
+        <div style={{ flex: 1, width: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 16px' }}>
+          {visualTestMode === 'background' ? (
+            <div style={{ width: '100%', maxWidth: '800px' }}>
+              <div style={{ marginBottom: '15px', textAlign: 'left' }}>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass }}>{bg.label}</div>
+                <div style={{ fontSize: '0.75em', color: '#888' }}>ID: {bg.id} | Path: {bg.src}</div>
+              </div>
 
-          <div style={{ marginBottom: '12px', display: visualTestMode === 'still' ? 'block' : 'none' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <h3 style={{ color: '#aaa', fontSize: '0.9em', margin: 0 }}>Still: {still.label} ({still.id})</h3>
-              <button 
-                onClick={() => setStillTestIndex(prev => (prev + 1) % stillList.length)}
-                style={{ ...buttonStyle, marginTop: 0, padding: '4px 12px', fontSize: '0.8em' }}
-              >
-                Next Still
-              </button>
-            </div>
-            <div style={{ 
-              width: '100%', 
-              height: '220px', 
-              background: '#000', 
-              borderRadius: '8px', 
-              overflow: 'hidden',
-              border: '2px solid #444',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <img 
-                key={still.id}
-                src={getFullPath(still.src)} 
-                alt={still.label}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
-                }}
-              />
-            </div>
-          </div>
+              {/* Main Preview */}
+              <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <img 
+                  key={bg.id}
+                  src={getFullPath(bg.src)} 
+                  alt={bg.label} 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
+                  }}
+                />
+              </div>
 
-          <div style={{ 
-            position: 'sticky', 
-            bottom: 0, 
-            padding: '15px 0', 
-            background: THEME.parchment,
-            borderTop: '1px solid #ddd',
-            width: '100%',
-            zIndex: 10
-          }}>
-            <button onClick={handleBackToTitle} style={{ ...buttonStyle, margin: 0, width: '100%' }}>タイトルへ戻る</button>
-          </div>
+              {/* Thumbnail Selector */}
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '10px 0', scrollbarWidth: 'thin', width: '100%' }}>
+                {bgList.map((item, idx) => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => setBgTestIndex(idx)}
+                    style={{ 
+                      flex: '0 0 100px', 
+                      aspectRatio: '16/9', 
+                      borderRadius: '4px', 
+                      overflow: 'hidden', 
+                      border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : '#333'}`,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{ width: '100%', maxWidth: '800px' }}>
+              <div style={{ marginBottom: '15px', textAlign: 'left' }}>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass }}>{still.label}</div>
+                <div style={{ fontSize: '0.75em', color: '#888' }}>ID: {still.id} | Path: {still.src} | Focus: {still.focusX}, {still.focusY}</div>
+              </div>
+
+              {/* Main Preview (Contain mode for inspection) */}
+              <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <img 
+                  key={still.id}
+                  src={getFullPath(still.src)} 
+                  alt={still.label} 
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+                  }}
+                />
+              </div>
+
+              {/* Thumbnail Selector */}
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '10px 0', scrollbarWidth: 'thin', width: '100%' }}>
+                {stillList.map((item, idx) => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => setStillTestIndex(idx)}
+                    style={{ 
+                      flex: '0 0 100px', 
+                      aspectRatio: '16/9', 
+                      borderRadius: '4px', 
+                      overflow: 'hidden', 
+                      border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : '#333'}`,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -1523,7 +1530,7 @@ function App() {
           </div>
 
           <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>
-            この10日間、あなたはマグリバルの地で、祖父の遺した工房と向き合ってきました。<br />
+            この10日間、あなたはマグリバルの地で、自らの工房と向き合ってきました。<br />
             傍らにいた{activeHeroine.name}との時間は、星瓶堂に何をもたらしたのでしょうか。<br />
             運命の結末を、その目で見届けてください。
           </p>
@@ -1830,10 +1837,11 @@ function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false
       onClick={handleClick}
       style={{
         width: '100%',
-        minHeight: '80px',
-        background: 'rgba(26, 42, 58, 0.9)',
+        boxSizing: 'border-box',
+        minHeight: '140px',
+        background: 'rgba(26, 42, 58, 0.95)',
         borderLeft: `4px solid ${themeColor || '#c5a059'}`,
-        padding: '22px 28px',
+        padding: '20px 24px',
         borderRadius: '0 12px 12px 0',
         cursor: 'pointer',
         color: '#f4e9d5',
@@ -1842,22 +1850,24 @@ function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false
         boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
-        lineHeight: '1.7'
+        lineHeight: '1.7',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       {speaker && (
         <div style={{ 
-          fontSize: '0.9em', 
+          fontSize: '0.85em', 
           color: themeColor || '#c5a059', 
           fontWeight: 'bold', 
-          marginBottom: '10px',
+          marginBottom: '8px',
           letterSpacing: '0.08em',
           textShadow: '0 1px 2px rgba(0,0,0,0.5)'
         }}>
           【{speaker}】
         </div>
       )}
-      <div style={{ fontSize: '1.1em', lineHeight: '1.8', minHeight: '3.6em' }}>
+      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
       </div>

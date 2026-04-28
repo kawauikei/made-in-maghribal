@@ -93,7 +93,7 @@ runTest('Scoring: Rank titles for 5-question sessions', () => {
   assert.strictEqual(getRankInfo(5).title, 'マグリバル一の目利き');
   assert.strictEqual(getRankInfo(4).title, '腕利き店主');
   assert.strictEqual(getRankInfo(3).title, '駆け出し店主');
-  assert.strictEqual(getRankInfo(2).title, '見習い店番');
+  assert.strictEqual(getRankInfo(2).title, '新米鑑定士');
   assert.strictEqual(getRankInfo(1).title, '迷える見習い');
   assert.strictEqual(getRankInfo(0).title, '迷える見習い');
 });

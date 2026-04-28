@@ -27,7 +27,7 @@ export function getRankInfo(correctCount) {
   } else if (correctCount >= 3) {
     return { title: "駆け出し店主", message: "まずまずの接客です。商品の特徴を少しずつ掴めてきました。" };
   } else if (correctCount >= 2) {
-    return { title: "見習い店番", message: "まだ迷いがあるようです。お客さんの希望をよく見てみましょう。" };
+    return { title: "新米鑑定士", message: "まだ迷いがあるようです。お客さんの希望をよく見てみましょう。" };
   } else {
     return { title: "迷える見習い", message: "今日は少し噛み合いませんでした。品物の色・種類・雰囲気を覚えていきましょう。" };
   }

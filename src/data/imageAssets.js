@@ -106,7 +106,7 @@ export const STILL_IMAGES = {
   },
   miraAfterSchool01: {
     id: "miraAfterSchool01",
-    label: "放課後の店番",
+    label: "放課後のひととき",
     heroineId: "mira",
     src: "images/still/still_mira_after_school_01.jpg",
     focusX: 0.5,
