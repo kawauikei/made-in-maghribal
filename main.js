@@ -5929,6 +5929,33 @@ class SimpleAudioEngine {
   }
 }
 const audioEngine = new SimpleAudioEngine();
+const AFFECTION_LIMITS = {
+  MIN: 0,
+  MAX: 100
+};
+function createInitialAffection(heroineIds) {
+  const state = {};
+  heroineIds.forEach((id) => {
+    state[id] = 0;
+  });
+  return state;
+}
+function clampAffection(value) {
+  return Math.max(AFFECTION_LIMITS.MIN, Math.min(AFFECTION_LIMITS.MAX, value));
+}
+function addAffection(affectionState, heroineId, amount) {
+  if (!(heroineId in affectionState)) {
+    console.warn(`Attempted to add affection to unknown heroineId: ${heroineId}`);
+    return affectionState;
+  }
+  return {
+    ...affectionState,
+    [heroineId]: clampAffection(affectionState[heroineId] + amount)
+  };
+}
+function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
+  return Math.max(0, correctCount);
+}
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
@@ -5977,6 +6004,10 @@ function App() {
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
+  const [affection, setAffection] = useState(
+    () => createInitialAffection(HEROINES.map((h) => h.id))
+  );
+  const [lastAffectionGain, setLastAffectionGain] = useState(0);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6039,6 +6070,9 @@ function App() {
     setSession(updatedSession);
     if (updatedSession.isFinished) {
       const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
+      const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
+      setAffection((prev) => addAffection(prev, activeHeroineId, gain));
+      setLastAffectionGain(gain);
       const result = getWorkshopResult(correctCount);
       setWorkshopState((prev) => applyWorkshopResult(prev, result));
       setScreen("RESULT");
@@ -6100,7 +6134,7 @@ function App() {
         size: "small",
         expression: getResultExpression(correctCount)
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("div", { style: {
+    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, activeHeroine.name, "との親密度 +", lastAffectionGain)), /* @__PURE__ */ React.createElement("div", { style: { margin: "20px 0", border: "1px solid #444", borderRadius: "12px", padding: "15px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", color: "#ffcc00", fontWeight: "bold" } }, "称号：", rank.title)), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "10px",
@@ -6128,7 +6162,7 @@ function App() {
       borderRadius: "12px",
       marginBottom: "30px",
       border: "1px solid rgba(255,255,255,0.05)"
-    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
+    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, affection[activeHeroine.id], " / 100")))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
   }
   if (screen === "HEROINE_SELECT") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "誰と店を開く？"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap", marginBottom: "30px" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
@@ -6151,7 +6185,8 @@ function App() {
       },
       /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine, type: "face", size: "large", expression: "normal" })),
       /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px 0", fontSize: "1.2em" } }, heroine.name),
-      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#ffcc00", marginBottom: "10px" } }, heroine.role),
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#ffcc00", marginBottom: "5px" } }, heroine.role),
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#aaa", marginBottom: "10px" } }, "親密度: ", affection[heroine.id], " / 100"),
       /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.85em", color: "#ccc", textAlign: "left", margin: 0, minHeight: "4.5em" } }, heroine.description),
       /* @__PURE__ */ React.createElement("div", { style: {
         marginTop: "15px",
