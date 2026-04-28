@@ -7578,7 +7578,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
       style: {
         width: "100%",
         boxSizing: "border-box",
-        minHeight: "140px",
+        height: "160px",
         background: "rgba(26, 42, 58, 0.95)",
         borderLeft: `4px solid ${themeColor || "#c5a059"}`,
         padding: "20px 24px",
@@ -7602,7 +7602,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
       marginBottom: "8px",
       letterSpacing: "0.08em",
       textShadow: "0 1px 2px rgba(0,0,0,0.5)"
-    } }, "【", speaker, "、E        "),
+    } }, speaker),
     /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "4.8em", flex: 1 } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: "2px solid #c5a059" } }, " ")),
     isComplete && pageIndex < pageList.length - 1 && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
