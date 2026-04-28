@@ -529,6 +529,19 @@ export default function App() {
       .heroine-card:active { transform: scale(0.98); background: ${THEME.sand} !important; }
       .memory-item { border-left: 4px solid ${THEME.brassDark}; background: rgba(0,0,0,0.1); transition: background 0.2s; }
       .memory-item:active { background: rgba(197, 160, 89, 0.2); }
+      
+      @keyframes screenIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .screen-enter {
+        animation: screenIn 0.4s ease-out forwards;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        alignItems: center;
+      }
     `}</style>
   );
 
@@ -1244,12 +1257,16 @@ export default function App() {
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
-          {!isInitialLoading && (mainContent || (
-            <div style={containerStyle}>
-              <p>Loading...</p>
-              <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+          {!isInitialLoading && (
+            <div key={screen} className="screen-enter">
+              {mainContent || (
+                <div style={containerStyle}>
+                  <p>Loading...</p>
+                  <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+                </div>
+              )}
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
