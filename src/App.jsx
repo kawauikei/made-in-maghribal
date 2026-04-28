@@ -19,9 +19,19 @@ export default function App() {
 
   // Generate quiz and start service
   const handleBeginService = () => {
-    const newSession = createQuizSession({ questionCount: 5 });
-    setSession(newSession);
+    setSession(createQuizSession({ questionCount: 5 }));
     setScreen('QUIZ');
+  };
+
+  // End of service, go to Day End
+  const handleEndDay = () => {
+    setScreen('DAY_END');
+  };
+
+  // Back to Title
+  const handleBackToTitle = () => {
+    setSession(null);
+    setScreen('START');
   };
 
   // Handle answer selection
@@ -138,7 +148,46 @@ export default function App() {
           <div style={{ background: '#333', padding: '15px', borderRadius: '8px', marginBottom: '30px', fontStyle: 'italic', color: '#ccc' }}>
             「{rank.message}」
           </div>
-          <button onClick={handleStartGame} style={buttonStyle}>もう一度挑戦</button>
+          <button onClick={handleEndDay} style={buttonStyle}>店じまいする</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (screen === 'DAY_END' && session) {
+    const correctCount = session.answers.filter(a => a.isCorrect).length;
+    const mgmt = getWorkshopResult(correctCount);
+
+    return (
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>一日の終わり</h1>
+        <div style={cardStyle}>
+          <div style={{ ...narrativeBoxStyle, textAlign: 'left' }}>
+            <p>夕暮れの工房に、今日選ばれた品々の余韻が残っている。</p>
+            <p>小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。</p>
+            <p style={{ marginTop: '20px', color: activeHeroine.themeColor, fontWeight: 'bold' }}>
+              {activeHeroine.name}：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」
+            </p>
+          </div>
+
+          <div style={{ 
+            background: 'rgba(0,0,0,0.2)', 
+            padding: '20px', 
+            borderRadius: '12px', 
+            marginBottom: '30px',
+            border: '1px solid rgba(255,255,255,0.05)'
+          }}>
+            <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#aaa' }}>本日の経営概況</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+               <div>売上: <span style={{ color: '#ffcc00' }}>{mgmt.sales}G</span></div>
+               <div>評判: <span style={{ color: mgmt.reputation >= 0 ? '#4caf50' : '#f44336' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <button onClick={handleStartGame} style={buttonStyle}>次の日へ進む</button>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444' }}>タイトルへ戻る</button>
+          </div>
         </div>
       </div>
     );
