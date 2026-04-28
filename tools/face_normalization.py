@@ -48,7 +48,18 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
     
     flood_img = mask_wide.copy()
     temp_mask = np.zeros((h + 2, w + 2), np.uint8)
-    seeds = [(0, 0), (w-1, 0), (0, h-1), (w-1, h-1), (w//2, 0), (w//2, h-1), (0, h//2), (w-1, h//2)]
+    
+    # Dense perimeter seeds to catch background regions split by the character
+    seeds = []
+    # Every 10px along all four edges for maximum coverage
+    for x in range(0, w, 10):
+        seeds.append((x, 0))
+        seeds.append((x, h-1))
+    for y in range(0, h, 10):
+        seeds.append((0, y))
+        seeds.append((w-1, y))
+    seeds += [(w-1, 0), (0, h-1), (w-1, h-1), (w//2, 0), (w//2, h-1), (0, h//2), (w-1, h//2)]
+
     for sx, sy in seeds:
         if flood_img[sy, sx] == 255:
             cv2.floodFill(flood_img, temp_mask, (sx, sy), 128)
@@ -57,49 +68,85 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
     outer_mask[flood_img == 128] = 255
     
     # --- B. Enclosed Hole Identification ---
-    # Background-like pixels that were NOT connected to the border
     enclosed_candidates = cv2.bitwise_and(mask_wide, cv2.bitwise_not(outer_mask))
     
-    # Filter enclosed holes using Connected Components
+    # Catching "Pure Magenta" variance (especially for JPEG sources)
+    lower_magenta = np.array([100, 0, 120], dtype=np.uint8)
+    upper_magenta = np.array([255, 140, 255], dtype=np.uint8)
+    mask_pure_magenta = cv2.inRange(cv_img, lower_magenta, upper_magenta)
+    enclosed_candidates = cv2.bitwise_or(enclosed_candidates, cv2.bitwise_and(mask_pure_magenta, cv2.bitwise_not(outer_mask)))
+
     num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(enclosed_candidates, connectivity=8)
     safe_holes_mask = np.zeros((h, w), np.uint8)
     
-    # Face Protection Zone (No holes allowed here)
     cx_pct, cy_pct = FACE_CENTERS.get(char_id, (0.5, 0.25))
     face_x, face_y = int(w * cx_pct), int(h * cy_pct)
-    # Radius depends on whether it's a crop or full image
-    face_protection_radius = int(min(h, w) * 0.15) 
+    # Protection radius for the head/neck area
+    face_protection_radius = int(min(h, w) * 0.22) 
     
+    if debug_prefix:
+        print(f"  Diagnosing holes for {char_id} ({debug_prefix}):")
+
     for i in range(1, num_labels):
         area = stats[i, cv2.CC_STAT_AREA]
+        cx, cy = centroids[i]
         
-        # Filter 1: Size
-        if area < 15: continue # Ignore noise
-        if area > (h * w * 0.05): continue # Too big for an enclosed hole (max 5%)
-        
-        # Filter 2: Position (Avoid face center)
-        dist_to_face = np.sqrt((centroids[i][0] - face_x)**2 + (centroids[i][1] - face_y)**2)
-        if dist_to_face < face_protection_radius:
-            continue
-            
-        # Filter 3: Color Similarity (Mean color of the hole component)
         comp_mask = (labels == i).astype(np.uint8) * 255
         mean_val = cv2.mean(cv_img, mask=comp_mask)[:3]
         color_dist = np.sqrt(sum((c1 - c2)**2 for c1, c2 in zip(mean_val, bg_color)))
         
-        if color_dist < THRESHOLD * 0.7: # Tighter for internal holes
-            safe_holes_mask = cv2.bitwise_or(safe_holes_mask, comp_mask)
+        dist_to_face = np.sqrt((cx - face_x)**2 + (cy - face_y)**2)
+        
+        # BGR: [B, G, R]
+        is_pure_magenta = (mean_val[1] < 130) and (mean_val[2] > 120) and (mean_val[0] > 100)
+        
+        is_too_small = area < 8
+        is_too_big = area > (h * w * 0.35)
+        is_in_face_zone = dist_to_face < face_protection_radius
+        
+        # VERY RELAXED for background holes that are far from face and look like background
+        # (Using 2.0x THRESHOLD if far from face)
+        threshold_multiplier = 1.3 if is_in_face_zone else 2.5
+        if is_pure_magenta and not is_in_face_zone:
+             threshold_multiplier = 3.5 # Extreme relaxation for pure magenta background holes
+             
+        dist_threshold = THRESHOLD * threshold_multiplier
+        is_color_mismatch = color_dist >= dist_threshold
+        
+        if not (is_too_small or is_too_big or (is_in_face_zone and is_color_mismatch)):
+            # If it's in the face zone, we are strict. If it's outside, we are loose.
+            if is_in_face_zone:
+                 if not is_color_mismatch:
+                     safe_holes_mask = cv2.bitwise_or(safe_holes_mask, comp_mask)
+            else:
+                 # Outside face zone, if it's reasonably background-like or pure magenta, take it
+                 if not is_color_mismatch or is_pure_magenta:
+                     safe_holes_mask = cv2.bitwise_or(safe_holes_mask, comp_mask)
+                     
+        elif area > 100:
+            print(f"    Rejected {i}: area={area}, face_dist={dist_to_face:.1f}, dist={color_dist:.1f}, face_zone={is_in_face_zone}")
             
-    # --- C. Character Protection Mask (Skin) ---
+    # --- C. Character Protection ---
     hsv = cv2.cvtColor(cv_img, cv2.COLOR_BGR2HSV)
-    lower_skin = np.array([0, 20, 70], dtype=np.uint8)
-    upper_skin = np.array([25, 255, 255], dtype=np.uint8)
+    # 1. Skin Mask
+    lower_skin = np.array([0, 25, 50], dtype=np.uint8)
+    upper_skin = np.array([35, 255, 255], dtype=np.uint8)
     skin_mask = cv2.inRange(hsv, lower_skin, upper_skin)
     
-    # --- D. Final Background Mask Assembly ---
+    # 2. Vibrant Color Protection (Protect saturated colors that aren't magenta background)
+    # Magenta Background H is ~150. S is high.
+    # We want to protect H in [0-140] and [160-180] if S is very high.
+    vibrant_mask = cv2.inRange(hsv, np.array([0, 150, 50]), np.array([140, 255, 255]))
+    vibrant_mask = cv2.bitwise_or(vibrant_mask, cv2.inRange(hsv, np.array([165, 150, 50]), np.array([180, 255, 255])))
+    
+    protection_mask = cv2.bitwise_or(skin_mask, vibrant_mask)
+    
+    # Final Background Mask
     final_mask = cv2.bitwise_or(outer_mask, safe_holes_mask)
-    # Remove protected skin areas from transparency
-    final_mask = cv2.bitwise_and(final_mask, cv2.bitwise_not(skin_mask))
+    # Apply Protection
+    final_mask = cv2.bitwise_and(final_mask, cv2.bitwise_not(protection_mask))
+
+
     
     # --- E. Edge Cleanup (Dilation) ---
     kernel = np.ones((3, 3), np.uint8)
