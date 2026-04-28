@@ -5701,7 +5701,7 @@ const HEROINES = [
     visualConfig: {
       facePosition: "center 17%"
     },
-    themeColor: "#cc00ff"
+    themeColor: "#9400d3"
   }
 ];
 function getHeroineAsset(heroineId, type, expression = "normal") {
@@ -5710,6 +5710,9 @@ function getHeroineAsset(heroineId, type, expression = "normal") {
   if (!heroine) return null;
   if (type === "face") {
     return `characters/${heroineId}/face_proc/${expression}.png`;
+  }
+  if (type === "standing") {
+    return `characters/${heroineId}/standing_proc/${expression}.png`;
   }
   const variantPath = ((_a = heroine.assets[type]) == null ? void 0 : _a[expression]) || ((_b = heroine.assets[type]) == null ? void 0 : _b.normal) || ((_c = heroine.assets[type]) == null ? void 0 : _c.default);
   if (!variantPath) return null;
@@ -6966,62 +6969,44 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
-  const isPortrait = type === "standing";
-  const sizePx = size === "large" ? 120 : size === "medium" ? 80 : 60;
-  if (type === "face") {
-    return /* @__PURE__ */ React.createElement("div", { style: {
-      width: `${sizePx}px`,
-      height: `${sizePx}px`,
-      borderRadius: "50%",
-      backgroundColor: heroine.themeColor + "33",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: heroine.themeColor,
-      fontWeight: "bold",
-      fontSize: `${sizePx * 0.4}px`,
-      overflow: "hidden",
-      border: `2px solid ${heroine.themeColor}`,
-      position: "relative"
-    } }, /* @__PURE__ */ React.createElement(
-      "img",
-      {
-        src: fullPath,
-        alt: heroine.name,
-        style: {
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: ((_a = heroine.visualConfig) == null ? void 0 : _a.facePosition) || "center 20%",
-          display: imgError ? "none" : "block"
-        },
-        onError: () => setImgError(true)
-      }
-    ), imgError && /* @__PURE__ */ React.createElement("span", null, heroine.name[0]));
-  }
-  const displaySize = size === "large" ? isPortrait ? 180 : 100 : isPortrait ? 80 : 50;
+  const isStanding = type === "standing";
+  const displaySize = size === "large" ? isStanding ? 320 : 120 : size === "medium" ? isStanding ? 180 : 80 : isStanding ? 120 : 60;
   const containerStyle2 = {
-    width: isPortrait ? `${displaySize * 0.7}px` : `${displaySize}px`,
+    width: isStanding ? `${displaySize * 0.75}px` : `${displaySize}px`,
     height: `${displaySize}px`,
-    borderRadius: isPortrait ? "12px" : "50%",
+    borderRadius: isStanding ? "16px" : "50%",
     overflow: "hidden",
-    background: heroine.themeColor || "#444",
+    backgroundColor: (heroine.themeColor || "#444") + "33",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     border: `2px solid ${heroine.themeColor || "#ffcc00"}`,
-    boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-    flexShrink: 0
+    boxShadow: isStanding ? "0 12px 30px rgba(0,0,0,0.5)" : "0 4px 15px rgba(0,0,0,0.3)",
+    flexShrink: 0,
+    position: "relative"
+  };
+  const imgStyle = {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    // Standing is now pre-cropped to bust-up, so top center is safe. 
+    // Face uses visualConfig.
+    objectPosition: isStanding ? "top center" : ((_a = heroine.visualConfig) == null ? void 0 : _a.facePosition) || "center 20%",
+    display: imgError ? "none" : "block"
   };
   if (!fullPath || imgError) {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: size === "large" ? "2em" : "1.2em", fontWeight: "bold", color: "#111" } }, heroine.name[0]));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement("span", { style: {
+      fontSize: `${displaySize * 0.4}px`,
+      fontWeight: "bold",
+      color: heroine.themeColor || "#111"
+    } }, heroine.name ? heroine.name[0] : "?"));
   }
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement(
     "img",
     {
       src: fullPath,
       alt: heroine.name,
-      style: { width: "100%", height: "100%", objectFit: isPortrait ? "contain" : "cover" },
+      style: imgStyle,
       onError: () => setImgError(true)
     }
   ));
