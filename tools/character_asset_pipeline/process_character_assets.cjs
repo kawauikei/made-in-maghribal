@@ -1,8 +1,8 @@
 /**
- * Character Asset Preprocessing Script (V1: Copy)
+ * Character Asset Preprocessing Script (V1.1: Multi-Variant Copy)
  * 
  * This script processes character assets defined in character_asset_config.json.
- * V1 simply copies source images to target public directories.
+ * V1.1 supports multiple variants per heroine, each with its own sourcePath.
  */
 
 const fs = require('fs');
@@ -12,7 +12,7 @@ const CONFIG_PATH = path.join(__dirname, 'character_asset_config.json');
 const PUBLIC_DIR = path.resolve(__dirname, '../../public/characters');
 
 function processAssets() {
-  console.log("--- Character Asset Preprocessing Tool (V1: Copy) ---");
+  console.log("--- Character Asset Preprocessing Tool (V1.1: Multi-Variant Copy) ---");
 
   if (!fs.existsSync(CONFIG_PATH)) {
     console.warn(`[SKIP] Config not found: ${CONFIG_PATH}`);
@@ -22,19 +22,23 @@ function processAssets() {
   try {
     const assetConfig = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
     
-    for (const [id, config] of Object.entries(assetConfig)) {
+    for (const [id, heroineConfig] of Object.entries(assetConfig)) {
       console.log(`\nProcessing heroine: [${id}]`);
-      const sourcePath = path.resolve(__dirname, '../../', config.sourcePath);
-      
-      if (!fs.existsSync(sourcePath)) {
-        console.warn(`  [WARN] Source not found for ${id}: ${sourcePath}`);
-        continue;
-      }
 
-      const variants = config.variants || { default: {} };
+      const variants = heroineConfig.variants || {};
       for (const [variantName, variantConfig] of Object.entries(variants)) {
-        console.log(`  - Variant: ${variantName}`);
-        
+        const rawSourcePath = variantConfig.sourcePath;
+        if (!rawSourcePath) {
+          console.warn(`  [SKIP] No sourcePath defined for ${id}/${variantName}`);
+          continue;
+        }
+
+        const sourcePath = path.resolve(__dirname, '../../', rawSourcePath);
+        if (!fs.existsSync(sourcePath)) {
+          console.warn(`  [WARN] Source not found for ${id}/${variantName}: ${sourcePath}`);
+          continue;
+        }
+
         // Output paths
         const standingDir = path.join(PUBLIC_DIR, id, 'standing');
         const faceDir = path.join(PUBLIC_DIR, id, 'face');
@@ -45,14 +49,19 @@ function processAssets() {
         const standingPath = path.join(standingDir, `${variantName}.png`);
         const facePath = path.join(faceDir, `${variantName}.png`);
 
-        // V1: Simple copy
-        // Note: Real cropping/resizing requires 'sharp' or 'jimp'
         try {
           fs.copyFileSync(sourcePath, standingPath);
           fs.copyFileSync(sourcePath, facePath);
-          console.log(`  [SUCCESS] Copied to ${id}/${variantName}.png (standing & face)`);
+          console.log(`  [SUCCESS] Generated ${id}/${variantName}.png`);
+
+          // Compatibility: If this is 'normal', also copy to 'default.png'
+          if (variantName === 'normal') {
+            fs.copyFileSync(sourcePath, path.join(standingDir, 'default.png'));
+            fs.copyFileSync(sourcePath, path.join(faceDir, 'default.png'));
+            console.log(`  [INFO] Created default.png alias for normal`);
+          }
         } catch (err) {
-          console.error(`  [ERROR] Failed to copy for ${id}:`, err.message);
+          console.error(`  [ERROR] Failed to copy for ${id}/${variantName}:`, err.message);
         }
       }
     }
