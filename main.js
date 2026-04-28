@@ -5815,6 +5815,38 @@ function HeroineDisplay({ heroine, type, size = "large" }) {
   const assetPath = getHeroineAsset(heroine.id, type);
   const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
   const isPortrait = type === "standing";
+  const sizePx = size === "large" ? 120 : size === "medium" ? 80 : 60;
+  if (type === "face") {
+    return /* @__PURE__ */ React.createElement("div", { style: {
+      width: `${sizePx}px`,
+      height: `${sizePx}px`,
+      borderRadius: "50%",
+      backgroundColor: heroine.themeColor + "33",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: heroine.themeColor,
+      fontWeight: "bold",
+      fontSize: `${sizePx * 0.4}px`,
+      overflow: "hidden",
+      border: `2px solid ${heroine.themeColor}`,
+      position: "relative"
+    } }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: fullPath,
+        alt: heroine.name,
+        style: {
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center 20%",
+          display: imgError ? "none" : "block"
+        },
+        onError: () => setImgError(true)
+      }
+    ), imgError && /* @__PURE__ */ React.createElement("span", null, heroine.name[0]));
+  }
   const displaySize = size === "large" ? isPortrait ? 180 : 100 : isPortrait ? 80 : 50;
   const containerStyle2 = {
     width: isPortrait ? `${displaySize * 0.7}px` : `${displaySize}px`,
