@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
-import { getWorkshopResult } from './game/management';
+import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 
 export default function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
   const [activeHeroineId, setActiveHeroineId] = useState('hakima');
+  const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
 
@@ -24,6 +25,7 @@ export default function App() {
 
   // Go to INTRO (Next Day)
   const handleNextDay = () => {
+    setWorkshopState(prev => ({ ...prev, day: prev.day + 1 }));
     setScreen('INTRO');
   };
 
@@ -41,6 +43,7 @@ export default function App() {
   // Back to Title
   const handleBackToTitle = () => {
     setActiveHeroineId('hakima');
+    setWorkshopState(createInitialWorkshopState());
     setSession(null);
     setScreen('START');
   };
@@ -48,9 +51,14 @@ export default function App() {
   // Handle answer selection
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
-    const nextSession = answerQuestion(session, itemId);
-    setSession(nextSession);
-    if (nextSession.isFinished) {
+    const updatedSession = answerQuestion(session, itemId);
+    setSession(updatedSession);
+
+    // If quiz just finished, accumulate results immediately
+    if (updatedSession.isFinished) {
+      const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
+      const result = getWorkshopResult(correctCount);
+      setWorkshopState(prev => applyWorkshopResult(prev, result));
       setScreen('RESULT');
     }
   };
@@ -74,15 +82,15 @@ export default function App() {
   if (screen === 'INTRO') {
     return (
       <div style={containerStyle}>
-        <h1 style={titleStyle}>工房の朝</h1>
+        <h1 style={titleStyle}>{workshopState.day}日目：工房の朝</h1>
         <div style={cardStyle}>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
              <HeroineDisplay heroine={activeHeroine} type="standing" size="large" />
              <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-                <p>ここは砂漠の王国マグリバル。</p>
-                <p>あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。</p>
-                <p>今日も工房には、少し困ったお客がやってくる。</p>
-                <p>相手の願いを読み取り、ぴったりの品を選ぼう。</p>
+                <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{workshopState.day}日目の朝</div>
+                <p>「おはよう。今日も工房の扉を開けましょうか」</p>
+                <p>昨日の疲れを感じさせない様子で、{activeHeroine.name}は道具の手入れを始めている。</p>
+                <p>今日の客人は、どんな品を求めてやってくるだろうか。</p>
              </div>
           </div>
           <button onClick={handleBeginService} style={buttonStyle}>接客を始める</button>
@@ -189,9 +197,16 @@ export default function App() {
             border: '1px solid rgba(255,255,255,0.05)'
           }}>
             <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#aaa' }}>本日の経営概況</h3>
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '10px' }}>
                <div>売上: <span style={{ color: '#ffcc00' }}>{mgmt.sales}G</span></div>
                <div>評判: <span style={{ color: mgmt.reputation >= 0 ? '#4caf50' : '#f44336' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
+            </div>
+            
+            <h3 style={{ margin: '15px 0 15px 0', fontSize: '1em', color: '#aaa' }}>現在の累計状態 ({workshopState.day}日目終了)</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '0.95em' }}>
+               <div>総売上: <span style={{ color: '#ffcc00', fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
+               <div>総評判: <span style={{ color: workshopState.reputation >= 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
+               <div>満足度: <span style={{ color: workshopState.satisfaction >= 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
             </div>
           </div>
 

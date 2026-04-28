@@ -25,3 +25,28 @@ export function getWorkshopResult(correctCount) {
   // 0 or 1 correct
   return { reputation: -1, sales: 20, satisfaction: -1 };
 }
+
+/**
+ * Creates the initial state for a new workshop session.
+ */
+export function createInitialWorkshopState() {
+  return {
+    day: 1,
+    reputation: 0,
+    sales: 0,
+    satisfaction: 0
+  };
+}
+
+/**
+ * Accumulates a single service result into the overall workshop state.
+ * Immutably returns a new state object.
+ */
+export function applyWorkshopResult(state, result) {
+  return {
+    day: state.day, // Day is usually incremented separately at the end of the day loop
+    reputation: state.reputation + result.reputation,
+    sales: state.sales + result.sales,
+    satisfaction: state.satisfaction + result.satisfaction
+  };
+}
