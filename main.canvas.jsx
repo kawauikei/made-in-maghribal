@@ -885,11 +885,11 @@ function App() {
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>鑑定士の旅立ち</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox 
               speaker="物語の始まり"
-              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、若き錬金術師ナーディルが営む工房『星瓶堂』がある。かつては多くの人々が訪れたこの場所を、再び活気ある店へと育てていくのがあなたの目的だ。……今日から始まる10日間。あなたは大切な協力者と共に、鑑定士としての新たな一歩を踏み出すことになる。"
+              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。若店主ナーディルは、客の依頼に合う品を見極めながら、10日間の営業のなかで協力者との縁を育てていく。"
               themeColor={THEME.brass}
               onComplete={() => {
                 audioEngine.playSfx('uiClickForward');
@@ -903,7 +903,7 @@ function App() {
               }} 
               style={{ ...buttonStyle, marginTop: '30px', width: '100%', maxWidth: '280px' }}
             >
-              鑑定士の道へ
+              星瓶堂へ進む
             </button>
           </div>
         </div>
@@ -1202,18 +1202,18 @@ function App() {
               </div>
 
               {/* Thumbnail Selector */}
-              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '10px 0', scrollbarWidth: 'thin', width: '100%' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px', padding: '10px 0', width: '100%' }}>
                 {bgList.map((item, idx) => (
                   <div 
                     key={item.id} 
                     onClick={() => setBgTestIndex(idx)}
                     style={{ 
-                      flex: '0 0 100px', 
                       aspectRatio: '16/9', 
-                      borderRadius: '4px', 
+                      borderRadius: '8px', 
                       overflow: 'hidden', 
                       border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : '#333'}`,
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
                     }}
                   >
                     <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -1243,18 +1243,18 @@ function App() {
               </div>
 
               {/* Thumbnail Selector */}
-              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '10px 0', scrollbarWidth: 'thin', width: '100%' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px', padding: '10px 0', width: '100%' }}>
                 {stillList.map((item, idx) => (
                   <div 
                     key={item.id} 
                     onClick={() => setStillTestIndex(idx)}
                     style={{ 
-                      flex: '0 0 100px', 
                       aspectRatio: '16/9', 
-                      borderRadius: '4px', 
+                      borderRadius: '8px', 
                       overflow: 'hidden', 
                       border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : '#333'}`,
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
                     }}
                   >
                     <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -2027,7 +2027,6 @@ const itemNameStyle = {
   color: '#444',
   fontWeight: 'bold'
 };
-
 
 
 const apiKey = ""; // Gemini Canvas direct paste version
