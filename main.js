@@ -5568,6 +5568,23 @@ function getWorkshopResult(correctCount) {
   }
   return { reputation: -1, sales: 20, satisfaction: -1 };
 }
+function createInitialWorkshopState() {
+  return {
+    day: 1,
+    reputation: 0,
+    sales: 0,
+    satisfaction: 0
+  };
+}
+function applyWorkshopResult(state, result) {
+  return {
+    day: state.day,
+    // Day is usually incremented separately at the end of the day loop
+    reputation: state.reputation + result.reputation,
+    sales: state.sales + result.sales,
+    satisfaction: state.satisfaction + result.satisfaction
+  };
+}
 const HEROINES = [
   {
     id: "hakima",
@@ -5627,6 +5644,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
+  const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const handleStartGame = () => {
     setScreen("HEROINE_SELECT");
@@ -5636,6 +5654,7 @@ function App() {
     setScreen("INTRO");
   };
   const handleNextDay = () => {
+    setWorkshopState((prev) => ({ ...prev, day: prev.day + 1 }));
     setScreen("INTRO");
   };
   const handleBeginService = () => {
@@ -5647,14 +5666,18 @@ function App() {
   };
   const handleBackToTitle = () => {
     setActiveHeroineId("hakima");
+    setWorkshopState(createInitialWorkshopState());
     setSession(null);
     setScreen("START");
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
-    const nextSession = answerQuestion(session, itemId);
-    setSession(nextSession);
-    if (nextSession.isFinished) {
+    const updatedSession = answerQuestion(session, itemId);
+    setSession(updatedSession);
+    if (updatedSession.isFinished) {
+      const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
+      const result = getWorkshopResult(correctCount);
+      setWorkshopState((prev) => applyWorkshopResult(prev, result));
       setScreen("RESULT");
     }
   };
@@ -5662,7 +5685,7 @@ function App() {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Made in Maghribal"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", marginBottom: "30px" } }, "接客クイズへようこそ。5問の連続クイズに挑戦しましょう。"), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "店を開く")));
   }
   if (screen === "INTRO") {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("p", null, "ここは砂漠の王国マグリバル。"), /* @__PURE__ */ React.createElement("p", null, "あなたは若き錬金術師として、家族から受け継いだ小さな工房を切り盛りしている。"), /* @__PURE__ */ React.createElement("p", null, "今日も工房には、少し困ったお客がやってくる。"), /* @__PURE__ */ React.createElement("p", null, "相手の願いを読み取り、ぴったりの品を選ぼう。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：工房の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "standing", size: "large" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: "#aaa", marginBottom: "10px" } }, workshopState.day, "日目の朝"), /* @__PURE__ */ React.createElement("p", null, "「おはよう。今日も工房の扉を開けましょうか」"), /* @__PURE__ */ React.createElement("p", null, "昨日の疲れを感じさせない様子で、", activeHeroine.name, "は道具の手入れを始めている。"), /* @__PURE__ */ React.createElement("p", null, "今日の客人は、どんな品を求めてやってくるだろうか。"))), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: buttonStyle }, "接客を始める")));
   }
   if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
@@ -5696,7 +5719,7 @@ function App() {
       borderRadius: "12px",
       marginBottom: "30px",
       border: "1px solid rgba(255,255,255,0.05)"
-    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
+    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
   }
   if (screen === "HEROINE_SELECT") {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "誰と店を開く？"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap", marginBottom: "30px" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
