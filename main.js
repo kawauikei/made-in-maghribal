@@ -6343,7 +6343,7 @@ const ENDINGS = {
 };
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
-  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#222", borderRadius: "8px", border: "1px solid #444", color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", padding: "10px 12px", borderBottom: "1px solid #444", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 14px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" } }, "Close")), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "12px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => audioEngine.playTrack(track),
@@ -6417,10 +6417,10 @@ function SoundTest({ onClose, isAudioEnabled }) {
       },
       "Play"
     ));
-  }))))));
+  })))))));
 }
 function App() {
-  var _a;
+  var _a, _b;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -6431,6 +6431,7 @@ function App() {
   const [hasSave, setHasSave] = useState(false);
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
+  const [visualTestMode, setVisualTestMode] = useState("background");
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
@@ -6443,18 +6444,32 @@ function App() {
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
-  const MIN_SCALE = 0.85;
+  const MIN_SCALE = 0.72;
   const MAX_SCALE = 1.25;
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 390,
-    height: typeof window !== "undefined" ? window.innerHeight : 780
+    height: typeof window !== "undefined" ? ((_a = window.visualViewport) == null ? void 0 : _a.height) || window.innerHeight : 780
   });
   useEffect(() => {
+    var _a2, _b2;
     const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      const viewport = window.visualViewport;
+      const doc = document.documentElement;
+      setWindowSize({
+        width: Math.floor(Math.min((viewport == null ? void 0 : viewport.width) || window.innerWidth, (doc == null ? void 0 : doc.clientWidth) || window.innerWidth)),
+        height: Math.floor(Math.min((viewport == null ? void 0 : viewport.height) || window.innerHeight, (doc == null ? void 0 : doc.clientHeight) || window.innerHeight))
+      });
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    (_a2 = window.visualViewport) == null ? void 0 : _a2.addEventListener("resize", handleResize);
+    (_b2 = window.visualViewport) == null ? void 0 : _b2.addEventListener("scroll", handleResize);
+    return () => {
+      var _a3, _b3;
+      window.removeEventListener("resize", handleResize);
+      (_a3 = window.visualViewport) == null ? void 0 : _a3.removeEventListener("resize", handleResize);
+      (_b3 = window.visualViewport) == null ? void 0 : _b3.removeEventListener("scroll", handleResize);
+    };
   }, []);
   const rawScale = Math.min(
     windowSize.width / BASE_WIDTH,
@@ -6463,8 +6478,8 @@ function App() {
   const scale = Math.min(Math.max(rawScale, MIN_SCALE), MAX_SCALE);
   const isClipped = rawScale < MIN_SCALE;
   const outerWrapperStyle = {
-    width: "100vw",
-    height: "100dvh",
+    width: `${windowSize.width}px`,
+    height: `${windowSize.height}px`,
     backgroundColor: "#000",
     display: "flex",
     justifyContent: isClipped ? "flex-start" : "center",
@@ -6789,6 +6804,43 @@ function App() {
     },
     /* @__PURE__ */ React.createElement("span", null, isAudioEnabled ? "🔊 BGM ON" : "🔇 BGM OFF")
   );
+  const utilityHeaderStyle = {
+    width: "100%",
+    minHeight: "44px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "8px",
+    padding: "6px 8px",
+    marginBottom: "8px",
+    background: "rgba(26, 42, 58, 0.96)",
+    borderBottom: `1px solid ${THEME.brass}`,
+    boxSizing: "border-box",
+    flexShrink: 0,
+    zIndex: 20
+  };
+  const utilityBackButtonStyle = {
+    ...buttonStyle,
+    margin: 0,
+    padding: "7px 10px",
+    minWidth: "72px",
+    fontSize: "0.82em",
+    background: THEME.nightBlue,
+    color: THEME.sand,
+    border: `1px solid ${THEME.brass}`,
+    boxShadow: "none"
+  };
+  const renderUtilityHeader = (title, action = handleBackToTitle, right = null) => /* @__PURE__ */ React.createElement("div", { style: utilityHeaderStyle }, /* @__PURE__ */ React.createElement("button", { onClick: action, style: utilityBackButtonStyle }, "Back"), /* @__PURE__ */ React.createElement("div", { style: {
+    color: THEME.sand,
+    fontWeight: "bold",
+    fontSize: "0.95em",
+    textAlign: "center",
+    flex: 1,
+    minWidth: 0,
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis"
+  } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
   let mainContent = null;
   if (screen === "START") {
     mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "～ ", SHOP.localName, " ～")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, hasSave && /* @__PURE__ */ React.createElement(
@@ -6963,7 +7015,7 @@ function App() {
     const stillList = Object.values(STILL_IMAGES);
     const bg = bgList[bgTestIndex % bgList.length];
     const still = stillList[stillTestIndex % stillList.length];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Background: ", bg.label, " (", bg.id, ")"), /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, position: "absolute", top: "6px", left: "8px", zIndex: 50 } }, "Back"), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginTop: "36px", marginBottom: "8px" } }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", width: "100%", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, width: "100%", background: visualTestMode === "background" ? THEME.brass : THEME.nightBlue, color: visualTestMode === "background" ? THEME.textDark : THEME.sand } }, "Background"), /* @__PURE__ */ React.createElement("button", { onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, width: "100%", background: visualTestMode === "still" ? THEME.brass : THEME.nightBlue, color: visualTestMode === "still" ? THEME.textDark : THEME.sand } }, "Still")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", maxHeight: "700px", overflowY: "auto", paddingTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px", display: visualTestMode === "background" ? "block" : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Background: ", bg.label, " (", bg.id, ")"), /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => setBgTestIndex((prev) => (prev + 1) % bgList.length),
@@ -6972,7 +7024,7 @@ function App() {
       "Next Background"
     )), /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
-      height: "240px",
+      height: "150px",
       background: "#000",
       borderRadius: "8px",
       overflow: "hidden",
@@ -6992,7 +7044,7 @@ function App() {
           e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
         }
       }
-    ))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Still: ", still.label, " (", still.id, ")"), /* @__PURE__ */ React.createElement(
+    ))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px", display: visualTestMode === "still" ? "block" : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.9em", margin: 0 } }, "Still: ", still.label, " (", still.id, ")"), /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => setStillTestIndex((prev) => (prev + 1) % stillList.length),
@@ -7001,7 +7053,7 @@ function App() {
       "Next Still"
     )), /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
-      height: "340px",
+      height: "220px",
       background: "#000",
       borderRadius: "8px",
       overflow: "hidden",
@@ -7040,7 +7092,7 @@ function App() {
       setActiveHeroineId(event.heroineId);
       setScreen("EVENT");
     };
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", minHeight: "400px", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ記された思い出はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "日々の仕事を通じて、彼女たちとの絆を深めましょう。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, HEROINES.map((heroine) => {
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, padding: 0 } }, renderThemeStyles(), renderAudioToggle(), renderUtilityHeader("Memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, display: "none" } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", margin: "0 8px 8px", width: "calc(100% - 16px)", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ記された思い出はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "日々の仕事を通じて、彼女たちとの絆を深めましょう。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, HEROINES.map((heroine) => {
       const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
       if (heroineSeenEvents.length === 0) return null;
       return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
@@ -7074,7 +7126,7 @@ function App() {
         /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, event.title),
         /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.8em", color: THEME.brassDark } }, "閲覧する →")
       ))));
-    }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
+    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "none" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
   } else if (screen === "HEROINE_SELECT") {
     const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
     mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
@@ -7279,7 +7331,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_a = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _a.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
