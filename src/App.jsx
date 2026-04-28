@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
@@ -14,6 +14,8 @@ import { checkNewEventUnlock } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
+import { SFX } from './data/sfx';
+import itemsData from './data/generated/items.json';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -168,23 +170,26 @@ export default function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+  const outerWrapperRef = useRef(null);
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
+  const MAX_LOGICAL_WIDTH = 560;
   const MIN_SCALE = 0.72;
   const MAX_SCALE = 1.25;
 
-  const [windowSize, setWindowSize] = useState({
+  const [viewportSize, setViewportSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 390,
     height: typeof window !== 'undefined' ? (window.visualViewport?.height || window.innerHeight) : 780
   });
+  const [hostSize, setHostSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const handleResize = () => {
       const viewport = window.visualViewport;
       const doc = document.documentElement;
-      setWindowSize({
+      setViewportSize({
         width: Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth)),
         height: Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight))
       });
@@ -200,33 +205,58 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const target = outerWrapperRef.current?.parentElement || document.documentElement;
+    const observer = new ResizeObserver(entries => {
+      const rect = entries[0]?.contentRect;
+      if (!rect) return;
+      setHostSize({
+        width: Math.floor(rect.width),
+        height: Math.floor(rect.height)
+      });
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const measuredSize = {
+    width: hostSize.width || viewportSize.width,
+    height: hostSize.height || viewportSize.height
+  };
+
   const rawScale = Math.min(
-    windowSize.width / BASE_WIDTH,
-    windowSize.height / BASE_HEIGHT
+    measuredSize.width / BASE_WIDTH,
+    measuredSize.height / BASE_HEIGHT
   );
   const scale = Math.min(Math.max(rawScale, MIN_SCALE), MAX_SCALE);
+  const logicalWidth = Math.min(
+    MAX_LOGICAL_WIDTH,
+    Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
+  );
   const isClipped = rawScale < MIN_SCALE;
 
   const outerWrapperStyle = {
-    width: `${windowSize.width}px`,
-    height: `${windowSize.height}px`,
+    width: '100%',
+    height: '100%',
+    minHeight: `${measuredSize.height}px`,
     backgroundColor: '#000',
     display: 'flex',
-    justifyContent: isClipped ? 'flex-start' : 'center',
+    justifyContent: 'center',
     alignItems: isClipped ? 'flex-start' : 'center',
     overflow: isClipped ? 'auto' : 'hidden',
     position: 'relative'
   };
 
   const canvasContainerStyle = {
-    width: `${BASE_WIDTH * scale}px`,
+    width: `${logicalWidth * scale}px`,
     height: `${BASE_HEIGHT * scale}px`,
     position: 'relative',
     flexShrink: 0
   };
 
   const canvasStyle = {
-    width: `${BASE_WIDTH}px`,
+    width: `${logicalWidth}px`,
     height: `${BASE_HEIGHT}px`,
     transform: `scale(${scale})`,
     transformOrigin: 'top left',
@@ -359,15 +389,19 @@ export default function App() {
 
   // Select Heroine and start Intro
   useEffect(() => {
+    const asset = (type, src) => ({ type, src: `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/') });
+    const expressions = ['normal', 'joy', 'fun', 'sorrow', 'anger', 'surprise', 'cry'];
     const essentialAssets = [
-      // BGM
-      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main01_title.mp3`.replace(/([^:])\/\//g, '$1/') },
-      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main02_shop.mp3`.replace(/([^:])\/\//g, '$1/') },
-      
-      // UI Backgrounds
-      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_exterior_day.jpg`.replace(/([^:])\/\//g, '$1/') },
-      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_interior_service.jpg`.replace(/([^:])\/\//g, '$1/') }
-    ];
+      ...Object.values(TRACKS).map(track => asset('audio', track.src)),
+      ...Object.values(SFX).map(sfx => asset('audio', sfx.src)),
+      ...Object.values(BACKGROUND_IMAGES).map(bg => asset('image', bg.src)),
+      ...Object.values(STILL_IMAGES).map(still => asset('image', still.src)),
+      ...itemsData.items.map(item => asset('image', item.image)),
+      ...HEROINES.flatMap(heroine => expressions.flatMap(expression => [
+        asset('image', `characters/${heroine.id}/face_proc/${expression}.png`),
+        asset('image', `characters/${heroine.id}/standing_proc/${expression}.png`)
+      ]))
+    ].filter((entry, index, list) => list.findIndex(item => item.src === entry.src) === index);
 
     const loadAll = async () => {
       await preloadAssets(essentialAssets, setLoadingProgress);
@@ -1179,18 +1213,45 @@ export default function App() {
                   width: '70px',
                   height: '70px',
                   borderRadius: '50%',
-                  border: `3px solid ${isSelected ? h.themeColor : '#ccc'}`,
-                  background: isSelected ? h.themeColor + '22' : THEME.parchment,
-                  padding: '2px',
+                  border: `3px solid ${isSelected ? h.themeColor : 'rgba(226,209,177,0.65)'}`,
+                  background: '#111',
+                  padding: 0,
                   cursor: 'pointer',
                   transition: 'all 0.2s',
-                  transform: isSelected ? 'scale(1.15)' : 'scale(1.0)',
-                  boxShadow: isSelected ? `0 0 15px ${h.themeColor}aa` : 'none',
+                  transform: isSelected ? 'scale(1.12)' : 'scale(1.0)',
+                  boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : '0 2px 8px rgba(0,0,0,0.35)',
                   overflow: 'hidden',
-                  zIndex: isSelected ? 2 : 1
+                  zIndex: isSelected ? 2 : 1,
+                  boxSizing: 'border-box',
+                  position: 'relative'
                 }}
               >
-                <HeroineDisplay heroine={h} type="face" size="small" />
+                <img
+                  src={getFullPath(getHeroineAsset(h.id, 'face', 'normal'))}
+                  alt={h.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: h.visualConfig?.facePosition || 'center 20%',
+                    display: 'block',
+                    borderRadius: '50%',
+                    clipPath: 'circle(50% at 50% 50%)'
+                  }}
+                />
+                {isSelected && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '7px',
+                    left: '-3px',
+                    width: '18px',
+                    height: '50px',
+                    borderLeft: `3px solid ${THEME.starGold}`,
+                    borderRadius: '50%',
+                    filter: `drop-shadow(0 0 5px ${h.themeColor})`,
+                    pointerEvents: 'none'
+                  }} />
+                )}
               </div>
             );
           })}
@@ -1465,7 +1526,7 @@ export default function App() {
   );
 
   return (
-    <div style={outerWrapperStyle}>
+    <div ref={outerWrapperRef} style={outerWrapperStyle}>
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
