@@ -5620,6 +5620,9 @@ const HEROINES = [
         sorrow: "characters/hakima/face/sorrow.png"
       }
     },
+    visualConfig: {
+      facePosition: "center 24%"
+    },
     themeColor: "#ffcc00"
   },
   {
@@ -5655,6 +5658,9 @@ const HEROINES = [
         surprise: "characters/mira/face/surprise.png",
         sorrow: "characters/mira/face/sorrow.png"
       }
+    },
+    visualConfig: {
+      facePosition: "center 23%"
     },
     themeColor: "#00ccff"
   },
@@ -5692,6 +5698,9 @@ const HEROINES = [
         sorrow: "characters/dariya/face/sorrow.png"
       }
     },
+    visualConfig: {
+      facePosition: "center 17%"
+    },
     themeColor: "#cc00ff"
   }
 ];
@@ -5699,6 +5708,9 @@ function getHeroineAsset(heroineId, type, expression = "normal") {
   var _a, _b, _c;
   const heroine = HEROINES.find((h) => h.id === heroineId);
   if (!heroine) return null;
+  if (type === "face") {
+    return `characters/${heroineId}/face_proc/${expression}.png`;
+  }
   const variantPath = ((_a = heroine.assets[type]) == null ? void 0 : _a[expression]) || ((_b = heroine.assets[type]) == null ? void 0 : _b.normal) || ((_c = heroine.assets[type]) == null ? void 0 : _c.default);
   if (!variantPath) return null;
   return variantPath;
@@ -6950,6 +6962,7 @@ function App() {
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
+  var _a;
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
@@ -6979,7 +6992,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          objectPosition: "center 20%",
+          objectPosition: ((_a = heroine.visualConfig) == null ? void 0 : _a.facePosition) || "center 20%",
           display: imgError ? "none" : "block"
         },
         onError: () => setImgError(true)
