@@ -295,6 +295,37 @@ export default function App() {
 
   // --- RENDER HELPERS ---
 
+  const SCREEN_BACKGROUNDS = {
+    INTRO: 'shopExteriorDay',
+    RESULT: 'shopInteriorWorkshop',
+    DAY_END: 'shopExteriorNight'
+  };
+
+  const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
+
+  const renderBackground = (screen) => {
+    const bgId = SCREEN_BACKGROUNDS[screen];
+    if (!bgId) return null;
+    const bg = BACKGROUND_IMAGES[bgId];
+    if (!bg) return null;
+
+    return (
+      <>
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `url(${getFullPath(bg.src)})`,
+          backgroundSize: 'cover', backgroundPosition: 'center',
+          zIndex: 0, pointerEvents: 'none'
+        }} />
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          zIndex: 1, pointerEvents: 'none'
+        }} />
+      </>
+    );
+  };
+
   const renderAudioToggle = () => (
     <button 
       onClick={() => setIsAudioEnabled(!isAudioEnabled)}
@@ -389,20 +420,23 @@ export default function App() {
 
   if (screen === 'INTRO') {
     return (
-      <div style={containerStyle}>
-        {renderAudioToggle()}
-        <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
-        <div style={cardStyle}>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-             <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
-             <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-                <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{SHOP.localName}</div>
-                <p>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
-                <p>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
-                <p>今日の客人は、どんな品を求めてやってくるだろうか。</p>
-             </div>
+      <div style={{ ...containerStyle, position: 'relative' }}>
+        {renderBackground(screen)}
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {renderAudioToggle()}
+          <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+               <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
+               <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
+                  <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{SHOP.localName}</div>
+                  <p>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
+                  <p>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
+                  <p>今日の客人は、どんな品を求めてやってくるだろうか。</p>
+               </div>
+            </div>
+            <button onClick={handleBeginService} style={buttonStyle}>接客を始める</button>
           </div>
-          <button onClick={handleBeginService} style={buttonStyle}>接客を始める</button>
         </div>
       </div>
     );
@@ -423,72 +457,75 @@ export default function App() {
     };
     
     return (
-      <div style={containerStyle}>
-        {renderAudioToggle()}
-        <h1 style={titleStyle}>業務終了</h1>
-        <div style={cardStyle}>
-          <div style={narrativeBoxStyle}>
-            {resultNarrations[correctCount].split('\n').map((line, i) => (
-              <p key={i} style={{ margin: '0 0 8px 0' }}>{line}</p>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
-            <HeroineDisplay 
-              heroine={activeHeroine} 
-              type="face" 
-              size="small" 
-              expression={getResultExpression(correctCount)}
-            />
-            <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
-              {activeHeroine.name}との親密度 +{lastAffectionGain}
+      <div style={{ ...containerStyle, position: 'relative' }}>
+        {renderBackground(screen)}
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {renderAudioToggle()}
+          <h1 style={titleStyle}>業務終了</h1>
+          <div style={cardStyle}>
+            <div style={narrativeBoxStyle}>
+              {resultNarrations[correctCount].split('\n').map((line, i) => (
+                <p key={i} style={{ margin: '0 0 8px 0' }}>{line}</p>
+              ))}
             </div>
-          </div>
 
-          <div style={{ margin: '20px 0', border: '1px solid #444', borderRadius: '12px', padding: '15px' }}>
-            <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
-              称号：{rank.title}
-            </div>
-          </div>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '10px', 
-            margin: '20px 0',
-            background: 'rgba(255,255,255,0.05)',
-            padding: '15px',
-            borderRadius: '12px',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>評判</div>
-              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? '#4caf50' : '#f44336' }}>
-                {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
+              <HeroineDisplay 
+                heroine={activeHeroine} 
+                type="face" 
+                size="small" 
+                expression={getResultExpression(correctCount)}
+              />
+              <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
+                {activeHeroine.name}との親密度 +{lastAffectionGain}
               </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>売上</div>
-              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: '#ffcc00' }}>
-                {mgmt.sales}G
-              </div>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>満足度</div>
-              <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? '#4caf50' : '#f44336' }}>
-                {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
-              </div>
-            </div>
-          </div>
 
-          <h2 style={{ margin: '10px 0' }}>最終スコア: {session.score} 点</h2>
-          <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-            {session.questions.length} 問中 {correctCount} 問正解
-          </p>
-          <div style={{ background: '#333', padding: '15px', borderRadius: '8px', marginBottom: '30px', fontStyle: 'italic', color: '#ccc' }}>
-            「{rank.message}」
+            <div style={{ margin: '20px 0', border: '1px solid #444', borderRadius: '12px', padding: '15px' }}>
+              <div style={{ fontSize: '1.2em', color: '#ffcc00', fontWeight: 'bold' }}>
+                称号：{rank.title}
+              </div>
+            </div>
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(3, 1fr)', 
+              gap: '10px', 
+              margin: '20px 0',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '15px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>評判</div>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? '#4caf50' : '#f44336' }}>
+                  {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
+                </div>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>売上</div>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: '#ffcc00' }}>
+                  {mgmt.sales}G
+                </div>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '0.8em', color: '#aaa', marginBottom: '4px' }}>満足度</div>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? '#4caf50' : '#f44336' }}>
+                  {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
+                </div>
+              </div>
+            </div>
+
+            <h2 style={{ margin: '10px 0' }}>最終スコア: {session.score} 点</h2>
+            <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
+              {session.questions.length} 問中 {correctCount} 問正解
+            </p>
+            <div style={{ background: '#333', padding: '15px', borderRadius: '8px', marginBottom: '30px', fontStyle: 'italic', color: '#ccc' }}>
+              「{rank.message}」
+            </div>
+            <button onClick={handleEndDay} style={buttonStyle}>店じまいする</button>
           </div>
-          <button onClick={handleEndDay} style={buttonStyle}>店じまいする</button>
         </div>
       </div>
     );
@@ -499,11 +536,13 @@ export default function App() {
     const mgmt = getWorkshopResult(correctCount);
 
     return (
-      <div style={containerStyle}>
-        {renderAudioToggle()}
-        <h1 style={titleStyle}>一日の終わり</h1>
-        <div style={cardStyle}>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ ...containerStyle, position: 'relative' }}>
+        {renderBackground(screen)}
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {renderAudioToggle()}
+          <h1 style={titleStyle}>一日の終わり</h1>
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <HeroineDisplay 
               heroine={activeHeroine} 
               type="face" 
@@ -547,6 +586,7 @@ export default function App() {
           </div>
         </div>
       </div>
+    </div>
     );
   }
 
