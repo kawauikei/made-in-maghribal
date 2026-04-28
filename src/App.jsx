@@ -882,24 +882,26 @@ export default function App() {
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
-        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
-          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0 }}>
-            <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginBottom: '20px' }}>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}日目：{SHOP.name}の朝</h1>
+          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
                <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
-               <VNBox 
-                 speaker={activeHeroine.name}
-                 text={`おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
-                 themeColor={activeHeroine.themeColor}
-                 onComplete={handleBeginService}
-               />
+               <div style={{ flex: 1 }}>
+                 <VNBox 
+                   speaker={activeHeroine.name}
+                   text={`おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
+                   themeColor={activeHeroine.themeColor}
+                   onComplete={handleBeginService}
+                 />
+               </div>
             </div>
-            <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.4)', color: '#fff', borderLeft: `4px solid ${THEME.brass}` }}>
-              <p style={{ margin: '0 0 8px 0' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
-              <p style={{ margin: 0 }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
+            <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
+              <p style={{ margin: 0, lineHeight: '1.6' }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
             </div>
-            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px', marginTop: '20px' }}>接客を始める</button>
+            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>接客を始める</button>
           </div>
         </div>
       </div>
@@ -922,15 +924,17 @@ export default function App() {
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
-        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={titleStyle}>業務報告書</h1>
-          <div style={{ ...cardStyle, borderRadius: '4px', border: `3px double ${THEME.brass}` }}>
-            <VNBox 
-              text={resultNarrations[correctCount]}
-              themeColor={THEME.brass}
-              onComplete={handleEndDay}
-            />
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>業務報告書</h1>
+          <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
+            <div style={{ marginBottom: '25px' }}>
+              <VNBox 
+                text={resultNarrations[correctCount]}
+                themeColor={THEME.brass}
+                onComplete={handleEndDay}
+              />
+            </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
               <HeroineDisplay 
@@ -994,11 +998,11 @@ export default function App() {
       <div style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
-        <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={titleStyle}>工房日誌</h1>
-          <div style={{ ...cardStyle, borderRadius: '4px' }}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'nowrap', justifyContent: 'center' }}>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>工房日誌</h1>
+          <div style={{ ...cardStyle, borderRadius: '8px', background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '25px', marginTop: '10px' }}>
+            <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginBottom: '30px', flexWrap: 'nowrap' }}>
             <HeroineDisplay 
               heroine={activeHeroine} 
               type="face" 
@@ -1059,21 +1063,27 @@ export default function App() {
           {still && (
             <div style={{ 
               width: '100%', 
-              height: '300px', 
+              aspectRatio: '16 / 9',
               background: '#000', 
               borderRadius: '8px', 
               overflow: 'hidden',
-              border: `2px solid ${THEME.brass}`,
+              border: `1px solid ${THEME.brass}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: '20px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+              marginBottom: '24px',
+              boxShadow: '0 8px 25px rgba(0,0,0,0.6)',
+              position: 'relative'
             }}>
               <img 
                 src={getFullPath(still.src)} 
                 alt={still.label}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: isRecallMode ? 'contain' : 'cover',
+                  objectPosition: `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+                }}
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
@@ -1563,8 +1573,8 @@ export default function App() {
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
         </header>
 
-        <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '10px' }}>
-          <div style={{ ...customerStyle, marginBottom: '30px' }}>
+        <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ ...customerStyle, marginBottom: '35px' }}>
             <div style={{ 
               ...bubbleStyle, 
               background: '#fff', 
@@ -1583,8 +1593,10 @@ export default function App() {
           <div className="choice-container" style={{ 
             display: 'grid', 
             gridTemplateColumns: '1fr 1fr', 
-            gap: '20px', 
-            width: '100%' 
+            gap: '24px', 
+            width: '100%',
+            marginTop: 'auto',
+            padding: '10px 0'
           }}>
             {currentQuestion.choices.map((item, index) => {
               const isSelected = quizFeedback?.itemId === item.id;
@@ -1788,39 +1800,43 @@ function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false
         minHeight: '80px',
         background: 'rgba(26, 42, 58, 0.9)',
         borderLeft: `4px solid ${themeColor || '#c5a059'}`,
-        padding: '15px 20px',
-        borderRadius: '0 8px 8px 0',
+        padding: '22px 28px',
+        borderRadius: '0 12px 12px 0',
         cursor: 'pointer',
         color: '#f4e9d5',
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-        fontFamily: "'Inter', sans-serif",
-        userSelect: 'none'
+        boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+        fontFamily: "'Outfit', 'Inter', sans-serif",
+        userSelect: 'none',
+        lineHeight: '1.7'
       }}
     >
       {speaker && (
         <div style={{ 
-          fontSize: '0.85em', 
+          fontSize: '0.9em', 
           color: themeColor || '#c5a059', 
           fontWeight: 'bold', 
-          marginBottom: '8px',
-          letterSpacing: '0.05em'
+          marginBottom: '10px',
+          letterSpacing: '0.08em',
+          textShadow: '0 1px 2px rgba(0,0,0,0.5)'
         }}>
-          {speaker}
+          【{speaker}】
         </div>
       )}
-      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '1.5em' }}>
+      <div style={{ fontSize: '1.1em', lineHeight: '1.8', minHeight: '3.6em' }}>
         {displayText}
-        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '2px' }}>|</span>}
+        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
       </div>
       {isComplete && (
         <div style={{ 
           position: 'absolute', 
-          bottom: '8px', 
-          right: '12px', 
-          fontSize: '0.65em', 
-          opacity: 0.5,
+          bottom: '12px', 
+          right: '20px', 
+          fontSize: '0.75em', 
+          opacity: 0.7,
+          color: themeColor || '#c5a059',
+          fontWeight: 'bold',
           animation: 'vn-bounce 1s infinite'
         }}>
           ▼ NEXT

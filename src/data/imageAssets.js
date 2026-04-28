@@ -100,25 +100,33 @@ export const STILL_IMAGES = {
     id: "hakimaMorningVisit01",
     label: "朝の押しかけ訪問",
     heroineId: "hakima",
-    src: "images/still/still_hakima_morning_visit_01.jpg"
+    src: "images/still/still_hakima_morning_visit_01.jpg",
+    focusX: 0.5,
+    focusY: 0.4
   },
   miraAfterSchool01: {
     id: "miraAfterSchool01",
     label: "放課後の店番",
     heroineId: "mira",
-    src: "images/still/still_mira_after_school_01.jpg"
+    src: "images/still/still_mira_after_school_01.jpg",
+    focusX: 0.5,
+    focusY: 0.45
   },
   dariyaAfterHours01: {
     id: "dariyaAfterHours01",
     label: "閉店後の来訪",
     heroineId: "dariya",
-    src: "images/still/still_dariya_after_hours_01.jpg"
+    src: "images/still/still_dariya_after_hours_01.jpg",
+    focusX: 0.5,
+    focusY: 0.4
   },
   groupShopping01: {
     id: "groupShopping01",
     label: "4人で買い出し",
     heroineId: null,
-    src: "images/still/still_group_shopping_01.jpg"
+    src: "images/still/still_group_shopping_01.jpg",
+    focusX: 0.5,
+    focusY: 0.5
   }
 };
 
