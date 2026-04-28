@@ -6501,6 +6501,7 @@ function App() {
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -6508,7 +6509,7 @@ function App() {
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
-  const MIN_SCALE = 0.72;
+  const MIN_SCALE = 0.68;
   const MAX_SCALE = 1.25;
   const [viewportSize, setViewportSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 390,
@@ -6914,29 +6915,96 @@ function App() {
         opacity: 0.8;
       }
     `);
-  const renderAudioToggle = () => /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      onClick: () => setIsAudioEnabled(!isAudioEnabled),
-      style: {
-        position: "absolute",
-        top: "10px",
-        right: "10px",
-        zIndex: 1e3,
-        background: "rgba(0,0,0,0.5)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.2)",
-        borderRadius: "20px",
-        padding: "5px 12px",
-        fontSize: "0.8em",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        gap: "5px"
-      }
-    },
-    /* @__PURE__ */ React.createElement("span", null, isAudioEnabled ? "🔊 BGM ON" : "🔇 BGM OFF")
-  );
+  const renderAudioToggle = () => {
+    const isHudVisible = !["START", "ENDING", "FINAL_RESULT", "MEMORIES", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
+    if (!isHudVisible) return null;
+    return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "10px", right: "10px", zIndex: 1e3 } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setIsMenuOpen(true),
+        style: {
+          background: "white",
+          border: `2px solid ${THEME.brass}`,
+          width: "36px",
+          height: "36px",
+          borderRadius: "50%",
+          fontSize: "20px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
+        },
+        "aria-label": "Menu"
+      },
+      "⚙️"
+    ));
+  };
+  const renderMenuModal = () => {
+    if (!isMenuOpen) return null;
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0,0,0,0.6)",
+          zIndex: 3e3,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backdropFilter: "blur(4px)"
+        }
+      },
+      /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "300px", background: "#fff", padding: "25px", borderRadius: "12px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 20px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.4em" } }, "設定"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            setIsAudioEnabled(!isAudioEnabled);
+          },
+          style: {
+            background: isAudioEnabled ? THEME.starGold : "#999",
+            color: isAudioEnabled ? THEME.textDark : "#fff",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontSize: "0.9em",
+            fontWeight: "bold",
+            cursor: "pointer",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+          }
+        },
+        isAudioEnabled ? "ミュート" : "再生"
+      )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", color: "#999" } }, "音量（準備中）"), /* @__PURE__ */ React.createElement("div", { style: { width: "80px", height: "6px", background: "#eee", borderRadius: "3px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "70%", height: "100%", background: THEME.brass, borderRadius: "3px" } }))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "25px", display: "flex", flexDirection: "column", gap: "12px" } }, /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          style: { ...buttonStyle, marginTop: 0, background: "#ff5555", color: "white", width: "100%" },
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            if (window.confirm("タイトルに戻りますか？")) {
+              setIsMenuOpen(false);
+              setScreen("START");
+            }
+          }
+        },
+        "タイトルへ戻る"
+      ), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", width: "100%" },
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            setIsMenuOpen(false);
+          }
+        },
+        "閉じる"
+      )))
+    );
+  };
   const utilityHeaderStyle = {
     width: "100%",
     minHeight: "44px",
@@ -7428,8 +7496,10 @@ function App() {
       color: THEME.sand,
       borderBottom: `2px solid ${THEME.brass}`,
       padding: "12px 20px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.3)"
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "鑑定依頼 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "80px" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+      justifyContent: "flex-start",
+      gap: "20px"
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "鑑定依頼 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       background: "#fff",
       color: "#333",
@@ -7501,7 +7571,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), renderMenuModal(), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
