@@ -949,7 +949,7 @@ export default function App() {
         {renderThemeStyles()}
         {renderAudioToggle()}
         
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>パートナーを選ぶ</h1>
+        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
         
         {/* Tabs for Heroine selection */}
         <div style={{ 
@@ -1042,7 +1042,7 @@ export default function App() {
               boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
             }}
           >
-            {selectedHeroine.name}と店を開く
+            {selectedHeroine.name}を頼る
           </button>
         </div>
 
