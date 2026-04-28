@@ -668,7 +668,7 @@ export default function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>工房日誌</h1>
           <div style={{ ...cardStyle, borderRadius: '4px' }}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'nowrap', justifyContent: 'center' }}>
             <HeroineDisplay 
               heroine={activeHeroine} 
               type="face" 
@@ -752,7 +752,7 @@ export default function App() {
             </div>
           )}
           
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'nowrap', justifyContent: 'center' }}>
             {!still && (
               <HeroineDisplay 
                 heroine={activeHeroine} 
@@ -1097,7 +1097,7 @@ export default function App() {
 
           <div className="choice-container" style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gridTemplateColumns: '1fr 1fr', 
             gap: '20px', 
             width: '100%' 
           }}>
