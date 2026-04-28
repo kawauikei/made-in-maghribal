@@ -5588,6 +5588,7 @@ function applyWorkshopResult(state, result) {
 const HEROINES = [
   {
     id: "hakima",
+    fullName: "ハキマ・アル＝ルハーン",
     name: "ハキーマ",
     role: "鑑定士見習い / 幼馴染",
     age: 18,
@@ -5605,10 +5606,14 @@ const HEROINES = [
       precision: 80,
       knowledge: 70,
       social: 90
-    }
+    },
+    routeTheme: "専門的な協力関係を通じた信頼の再構築",
+    musicMood: "落ち着いた仕事仲間の雰囲気",
+    assets: { standing: {}, face: {} }
   },
   {
     id: "mira",
+    fullName: "ミラ・サフワーン",
     name: "ミラ",
     role: "錬金大学の後輩 / 商家令嬢",
     age: 17,
@@ -5626,10 +5631,14 @@ const HEROINES = [
       precision: 95,
       knowledge: 85,
       social: 60
-    }
+    },
+    routeTheme: "ビジネスパートナーとしての対等な関係性",
+    musicMood: "知性的で透明感のある旋律",
+    assets: { standing: {}, face: {} }
   },
   {
     id: "dariya",
+    fullName: "ダリア・ザフラーン",
     name: "ダリヤ",
     role: "王宮錬金局・技官 / 知己",
     age: 20,
@@ -5647,7 +5656,10 @@ const HEROINES = [
       precision: 75,
       knowledge: 95,
       social: 80
-    }
+    },
+    routeTheme: "公的な立場を超えた個人的な知己としての絆",
+    musicMood: "気品と好奇心が混ざり合う調べ",
+    assets: { standing: {}, face: {} }
   }
 ];
 function getHeroineAsset(heroineId, type, expression = "normal") {
