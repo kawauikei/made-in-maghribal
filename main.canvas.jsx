@@ -605,78 +605,87 @@ function App() {
     );
   }
 
-  const currentQuestion = session.questions[session.currentIndex];
-
-  return (
-    <div style={containerStyle}>
-      {renderAudioToggle()}
-      <style>{`
-        .item-card {
-          background: #333;
-          padding: 15px;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: transform 0.1s, background 0.1s, border-color 0.1s;
-          border: 2px solid #555;
-          text-align: center;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-          -webkit-tap-highlight-color: transparent;
-        }
-        .item-card:active {
-          background: #444;
-          transform: scale(0.97);
-          border-color: #ffcc00;
-        }
-        .choice-container {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-          width: 100%;
-        }
-        @media (max-width: 480px) {
-          .choice-container {
-            grid-template-columns: 1fr;
-            gap: 15px;
-          }
+  if (screen === 'QUIZ' && session) {
+    const currentQuestion = session.questions[session.currentIndex];
+    return (
+      <div style={containerStyle}>
+        {renderAudioToggle()}
+        <style>{`
           .item-card {
-            padding: 12px;
+            background: #333;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.1s, border-color 0.1s;
+            border: 2px solid #555;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            -webkit-tap-highlight-color: transparent;
           }
-        }
-      `}</style>
+          .item-card:active {
+            background: #444;
+            transform: scale(0.97);
+            border-color: #ffcc00;
+          }
+          .choice-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+          }
+          @media (max-width: 480px) {
+            .choice-container {
+              grid-template-columns: 1fr;
+              gap: 15px;
+            }
+            .item-card {
+              padding: 12px;
+            }
+          }
+        `}</style>
 
-      <header style={headerStyle}>
-        <span>問題 {session.currentIndex + 1} / {session.questions.length}</span>
-        <span style={{ fontWeight: 'bold' }}>スコア: {session.score}</span>
-      </header>
+        <header style={headerStyle}>
+          <span>問題 {session.currentIndex + 1} / {session.questions.length}</span>
+          <span style={{ fontWeight: 'bold' }}>スコア: {session.score}</span>
+        </header>
 
-      <div style={cardStyle}>
-        <div style={customerStyle}>
-          <div style={bubbleStyle}>
-            {currentQuestion.request.text}
+        <div style={cardStyle}>
+          <div style={customerStyle}>
+            <div style={bubbleStyle}>
+              {currentQuestion.request.text}
+            </div>
+          </div>
+
+          <div className="choice-container">
+            {currentQuestion.choices.map((item) => (
+              <div 
+                key={item.id} 
+                onClick={() => handleSelect(item.id)}
+                className="item-card"
+              >
+                <img 
+                  src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
+                  alt={item.name} 
+                  style={imageStyle}
+                  onError={(e) => {
+                    e.target.onerror = null; 
+                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+                  }}
+                />
+                <div style={itemNameStyle}>{item.name}</div>
+              </div>
+            ))}
           </div>
         </div>
-
-        <div className="choice-container">
-          {currentQuestion.choices.map((item) => (
-            <div 
-              key={item.id} 
-              onClick={() => handleSelect(item.id)}
-              className="item-card"
-            >
-              <img 
-                src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
-                alt={item.name} 
-                style={imageStyle}
-                onError={(e) => {
-                  e.target.onerror = null; 
-                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
-                }}
-              />
-              <div style={itemNameStyle}>{item.name}</div>
-            </div>
-          ))}
-        </div>
       </div>
+    );
+  }
+
+  // Fallback / Loading
+  return (
+    <div style={containerStyle}>
+      <p>Loading...</p>
+      <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
     </div>
   );
 }
