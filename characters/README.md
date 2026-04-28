@@ -6,10 +6,10 @@ Assets should be placed in subdirectories named after the heroine's `id`.
 ```
 public/characters/
   └── [heroine_id]/
-        ├── standing_default.webp   (Main standing image)
-        ├── standing_smile.webp     (Variation)
-        ├── face_default.webp       (Square icon for dialogue)
-        └── face_smile.webp         (Variation)
+        ├── standing/
+        │     └── [variant].png
+        └── face/
+              └── [variant].png
 ```
 
 ## Image Specifications
