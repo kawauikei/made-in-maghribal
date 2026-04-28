@@ -160,6 +160,11 @@ export default function App() {
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
+  // --- Asset Loading State (M8-28) ---
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
@@ -337,10 +342,82 @@ export default function App() {
   };
 
   // Select Heroine and start Intro
-  const handleSelectHeroine = (id) => {
-    audioEngine.playSfx('uiConfirmChime');
-    setActiveHeroineId(id);
-    setScreen('INTRO');
+  useEffect(() => {
+    const essentialAssets = [
+      // BGM
+      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main01_title.mp3`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main02_shop.mp3`.replace(/([^:])\/\//g, '$1/') },
+      
+      // UI Backgrounds
+      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_exterior_day.jpg`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_interior_service.jpg`.replace(/([^:])\/\//g, '$1/') }
+    ];
+
+    const loadAll = async () => {
+      await preloadAssets(essentialAssets, setLoadingProgress);
+      setIsInitialLoading(false);
+    };
+
+    loadAll();
+  }, []);
+
+  const preloadAssets = async (assetList, onProgress) => {
+    let loadedCount = 0;
+    const totalCount = assetList.length;
+    if (totalCount === 0) return;
+
+    const loadPromises = assetList.map(async (asset) => {
+      try {
+        if (asset.type === 'image') {
+          await new Promise((resolve) => {
+            const img = new Image();
+            img.src = asset.src;
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        } else if (asset.type === 'audio') {
+          const audio = new Audio(asset.src);
+          audio.preload = "auto";
+        }
+        loadedCount++;
+        if (onProgress) onProgress(Math.floor((loadedCount / totalCount) * 100));
+      } catch (err) {
+        console.warn("Preload failed:", asset.src);
+      }
+    });
+
+    await Promise.all(loadPromises);
+  };
+
+  const handleSelectHeroine = async (heroineId) => {
+    setIsHeroineLoading(true);
+    setLoadingProgress(0);
+    
+    const heroine = HEROINES.find(h => h.id === heroineId);
+    const themeTrack = getTrackById(heroine.themeTrackId);
+    
+    const heroineAssets = [
+      { type: 'audio', src: `${import.meta.env.BASE_URL}${themeTrack.src}`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/standing_proc/normal.png`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/face_proc/normal.png`.replace(/([^:])\/\//g, '$1/') }
+    ];
+
+    await preloadAssets(heroineAssets, setLoadingProgress);
+    
+    setActiveHeroineId(heroineId);
+    setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
+    
+    // Auto-save when starting a new session with a heroine
+    saveGameData({
+      workshopState: { ...workshopState, activeHeroineId: heroineId },
+      affection,
+      seenEventIds
+    });
+    
+    setTimeout(() => {
+      setIsHeroineLoading(false);
+      setScreen('INTRO');
+    }, 500); // Small buffer for smoothness
   };
 
   // Go to INTRO (Next Day)
@@ -1128,16 +1205,51 @@ export default function App() {
     );
   }
 
+  const renderLoadingOverlay = (message = "Loading...") => (
+    <div style={{
+      position: 'absolute',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.85)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      color: THEME.sand,
+      fontFamily: "'Outfit', sans-serif"
+    }}>
+      <div style={{ fontSize: '1.2em', marginBottom: '20px', letterSpacing: '0.1em' }}>{message}</div>
+      <div style={{ 
+        width: '200px', 
+        height: '4px', 
+        background: 'rgba(255,255,255,0.1)', 
+        borderRadius: '2px',
+        overflow: 'hidden'
+      }}>
+        <div style={{ 
+          width: `${loadingProgress}%`, 
+          height: '100%', 
+          background: THEME.starGold, 
+          transition: 'width 0.3s' 
+        }} />
+      </div>
+      <div style={{ marginTop: '10px', fontSize: '0.8em', opacity: 0.7 }}>{loadingProgress}%</div>
+    </div>
+  );
+
   return (
     <div style={outerWrapperStyle}>
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
-          {mainContent || (
+          {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
+          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
+          
+          {!isInitialLoading && (mainContent || (
             <div style={containerStyle}>
               <p>Loading...</p>
               <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>

@@ -137,6 +137,21 @@ class SimpleAudioEngine {
   }
 
   /**
+   * Preload a track to warm up the cache
+   * @param {Object} track - Track object from tracks.js
+   */
+  preloadTrack(track) {
+    if (!track || !track.src) return;
+    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, '$1/');
+    try {
+      const audio = new Audio(fullSrc);
+      audio.preload = "auto";
+    } catch (err) {
+      console.warn(`Preload failed for ${track.id}:`, err);
+    }
+  }
+
+  /**
    * Play a production-selected SFX by its functional key
    * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
    */
