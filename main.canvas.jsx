@@ -106,6 +106,7 @@ function App() {
   // Event State
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
+  const [isRecallMode, setIsRecallMode] = useState(false);
 
   // Initial Load
   useEffect(() => {
@@ -200,10 +201,17 @@ function App() {
 
   const handleCloseEvent = () => {
     audioEngine.playSfx('uiTapBottle');
-    setSeenEventIds(prev => [...prev, activeEvent.id]);
-    setActiveEvent(null);
-    audioEngine.playSfx('workshopDayEnd');
-    setScreen('DAY_END');
+    
+    if (isRecallMode) {
+      setActiveEvent(null);
+      setIsRecallMode(false);
+      setScreen('MEMORIES');
+    } else {
+      setSeenEventIds(prev => [...prev, activeEvent.id]);
+      setActiveEvent(null);
+      audioEngine.playSfx('workshopDayEnd');
+      setScreen('DAY_END');
+    }
   };
 
   // Select Heroine and start Intro
@@ -349,6 +357,13 @@ function App() {
               style={{ ...buttonStyle, background: '#444', marginTop: '10px', width: '100%', maxWidth: '280px' }}
             >
               Visual Test
+            </button>
+
+            <button 
+              onClick={() => setScreen('MEMORIES')} 
+              style={{ ...buttonStyle, background: '#a080d0', marginTop: '10px', width: '100%', maxWidth: '280px' }}
+            >
+              思い出
             </button>
 
             {hasSave && (
@@ -678,6 +693,71 @@ function App() {
     );
   }
 
+  if (screen === 'MEMORIES') {
+    const allEvents = Object.values(AFFECTION_EVENTS).flat();
+    const seenEvents = allEvents.filter(e => seenEventIds.includes(e.id));
+    
+    const handleRecallEvent = (event) => {
+      audioEngine.playSfx('uiConfirmChime');
+      setActiveEvent(event);
+      setIsRecallMode(true);
+      // Ensure we set the correct heroine context for the event
+      setActiveHeroineId(event.heroineId); 
+      setScreen('EVENT');
+    };
+
+    return (
+      <div style={containerStyle}>
+        {renderAudioToggle()}
+        <h1 style={titleStyle}>思い出（イベント回想）</h1>
+        <div style={{ ...cardStyle, maxWidth: '800px', textAlign: 'left' }}>
+          {seenEvents.length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#888', margin: '40px 0' }}>まだ思い出はありません。</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {HEROINES.map(heroine => {
+                const heroineSeenEvents = seenEvents.filter(e => e.heroineId === heroine.id);
+                if (heroineSeenEvents.length === 0) return null;
+
+                return (
+                  <div key={heroine.id} style={{ marginBottom: '20px' }}>
+                    <h3 style={{ borderBottom: `2px solid ${heroine.themeColor}`, paddingBottom: '5px', color: heroine.themeColor }}>
+                      {heroine.name}
+                    </h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '10px', marginTop: '10px' }}>
+                      {heroineSeenEvents.map(event => (
+                        <div 
+                          key={event.id}
+                          onClick={() => handleRecallEvent(event)}
+                          style={{
+                            background: 'rgba(255,255,255,0.05)',
+                            padding: '12px 15px',
+                            borderRadius: '8px',
+                            border: '1px solid #444',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <span style={{ fontSize: '0.95em' }}>{event.title}</span>
+                          <span style={{ fontSize: '0.75em', background: '#444', padding: '2px 6px', borderRadius: '4px' }}>Lv.{event.threshold}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444', maxWidth: '200px' }}>タイトルへ戻る</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (screen === 'HEROINE_SELECT') {
     return (
       <div style={containerStyle}>
@@ -725,7 +805,10 @@ function App() {
               </div>
             ))}
           </div>
-          <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444', maxWidth: '200px' }}>戻る</button>
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: '#444', maxWidth: '200px', margin: 0 }}>戻る</button>
+            <button onClick={() => setScreen('MEMORIES')} style={{ ...buttonStyle, background: '#a080d0', maxWidth: '200px', margin: 0 }}>思い出</button>
+          </div>
         </div>
       </div>
     );
