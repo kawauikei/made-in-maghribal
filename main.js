@@ -5623,12 +5623,19 @@ function getHeroineAsset(heroineId, type, variant = "default") {
   if (!variantPath) return null;
   return variantPath;
 }
-const ACTIVE_HEROINE_ID = "hakima";
 function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
-  const activeHeroine = HEROINES.find((h) => h.id === ACTIVE_HEROINE_ID) || HEROINES[0];
+  const [activeHeroineId, setActiveHeroineId] = useState("hakima");
+  const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const handleStartGame = () => {
+    setScreen("HEROINE_SELECT");
+  };
+  const handleSelectHeroine = (id) => {
+    setActiveHeroineId(id);
+    setScreen("INTRO");
+  };
+  const handleNextDay = () => {
     setScreen("INTRO");
   };
   const handleBeginService = () => {
@@ -5639,6 +5646,7 @@ function App() {
     setScreen("DAY_END");
   };
   const handleBackToTitle = () => {
+    setActiveHeroineId("hakima");
     setSession(null);
     setScreen("START");
   };
@@ -5688,7 +5696,41 @@ function App() {
       borderRadius: "12px",
       marginBottom: "30px",
       border: "1px solid rgba(255,255,255,0.05)"
-    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
+    } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
+  }
+  if (screen === "HEROINE_SELECT") {
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "誰と店を開く？"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap", marginBottom: "30px" } }, HEROINES.map((heroine) => /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: heroine.id,
+        onClick: () => handleSelectHeroine(heroine.id),
+        style: {
+          flex: "1",
+          minWidth: "200px",
+          maxWidth: "240px",
+          background: "rgba(255,255,255,0.05)",
+          padding: "20px",
+          borderRadius: "16px",
+          border: `2px solid ${heroine.themeColor}`,
+          cursor: "pointer",
+          transition: "transform 0.2s",
+          textAlign: "center"
+        }
+      },
+      /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine, type: "face", size: "large" })),
+      /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px 0", fontSize: "1.2em" } }, heroine.name),
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#ffcc00", marginBottom: "10px" } }, heroine.role),
+      /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.85em", color: "#ccc", textAlign: "left", margin: 0, minHeight: "4.5em" } }, heroine.description),
+      /* @__PURE__ */ React.createElement("div", { style: {
+        marginTop: "15px",
+        padding: "8px",
+        background: heroine.themeColor,
+        color: "#111",
+        borderRadius: "8px",
+        fontWeight: "bold",
+        fontSize: "0.9em"
+      } }, "選択する")
+    ))), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444", maxWidth: "200px" } }, "戻る")));
   }
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("style", null, `
