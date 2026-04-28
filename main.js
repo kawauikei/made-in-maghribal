@@ -6400,6 +6400,7 @@ function App() {
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState("background");
+  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
@@ -6564,6 +6565,7 @@ function App() {
     setSeenEventIds([]);
     setActiveEvent(null);
     setSession(null);
+    setIsPrologueComplete(false);
     setScreen("PROLOGUE");
   };
   const handleContinue = () => {
@@ -7005,21 +7007,20 @@ function App() {
         text: "砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。若店主ナーディルは、客の依頼に合う品を見極めながら、10日間の営業のなかで協力者との縁を育てていく。",
         themeColor: THEME.brass,
         onComplete: () => {
-          audioEngine.playSfx("uiClickForward");
-          setScreen("HEROINE_SELECT");
+          setIsPrologueComplete(true);
         }
       }
-    ), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "54px", marginTop: "18px", display: "flex", justifyContent: "center", alignItems: "center" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => {
           audioEngine.playSfx("uiClickForward");
           setScreen("HEROINE_SELECT");
         },
-        style: { ...buttonStyle, marginTop: "30px", width: "100%", maxWidth: "280px" }
+        style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 }
       },
       "星瓶堂へ進む"
-    ))));
+    )))));
   } else if (screen === "INTRO") {
     mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
       VNBox,
