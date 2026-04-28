@@ -13,7 +13,7 @@ import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/s
 import { checkNewEventUnlock } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
-// import { ENDINGS } from './data/endings';
+import { ENDINGS } from './data/endings';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -434,7 +434,7 @@ export default function App() {
 
   const handleSeeEnding = () => {
     audioEngine.playSfx('uiConfirmChime');
-    // setScreen('ENDING');
+    setScreen('ENDING');
   };
 
   const handleFinishGame = () => {
@@ -1227,11 +1227,60 @@ export default function App() {
         </div>
       </div>
     );
-  /*
   } else if (screen === 'ENDING') {
-    ...
-  }
-  */
+    const finalAffection = affection[activeHeroineId];
+    const finalReputation = workshopState.reputation;
+    
+    let endingType = "normal";
+    if (finalAffection >= 80 && finalReputation >= 40) {
+      endingType = "good";
+    } else if (finalAffection < 40) {
+      endingType = "bad";
+    }
+
+    const endingData = ENDINGS[activeHeroineId][endingType];
+    const bg = endingData.bgId ? BACKGROUND_IMAGES[endingData.bgId] : BACKGROUND_IMAGES.shopInteriorService;
+
+    mainContent = (
+      <div style={{ ...containerStyle, position: 'relative' }}>
+        {renderThemeStyles()}
+        {/* Special Ending Background */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `url(${getFullPath(bg.src)})`,
+          backgroundSize: 'cover', backgroundPosition: 'center',
+          zIndex: 0
+        }} />
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1
+        }} />
+
+        <div style={{ zIndex: 2, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h1 style={{ ...titleStyle, marginTop: '20px' }}>{endingData.title}</h1>
+          
+          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', marginBottom: '20px', width: '100%' }}>
+            <HeroineDisplay 
+              heroine={activeHeroine} 
+              type="standing" 
+              size="large" 
+              expression={endingData.expression} 
+            />
+          </div>
+
+          <div style={{ width: '100%', padding: '10px' }}>
+            <VNBox 
+              speaker={activeHeroine.name}
+              text={endingData.text}
+              themeColor={activeHeroine.themeColor}
+              onComplete={handleFinishGame}
+            />
+          </div>
+
+          <button onClick={handleFinishGame} style={{ ...buttonStyle, marginBottom: '20px', width: '100%', maxWidth: '240px' }}>タイトルへ戻る</button>
+        </div>
+      </div>
+    );
   } else if (screen === 'QUIZ' && session) {
     const currentQuestion = session.questions[session.currentIndex];
     mainContent = (
