@@ -5,6 +5,7 @@ import { getRankInfo } from './game/scoring';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 import { getResultExpression, getDayEndExpression } from './game/presentation';
+import { WORLD, SHOP, PROTAGONIST } from './data/world';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -70,10 +71,13 @@ function App() {
   if (screen === 'START') {
     return (
       <div style={containerStyle}>
-        <h1 style={titleStyle}>Made in Maghribal</h1>
+        <h1 style={titleStyle}>{SHOP.name}</h1>
         <div style={cardStyle}>
-          <p style={{ fontSize: '1.1em', marginBottom: '30px' }}>
-            接客クイズへようこそ。5問の連続クイズに挑戦しましょう。
+          <p style={{ fontSize: '1.1em', marginBottom: '10px', fontWeight: 'bold' }}>
+            ～ {SHOP.localName} ～
+          </p>
+          <p style={{ fontSize: '1em', marginBottom: '30px', color: '#ccc' }}>
+            若き店主{PROTAGONIST.shortName}として、錬金術店を切り盛りしましょう。
           </p>
           <button onClick={handleStartGame} style={buttonStyle}>店を開く</button>
         </div>
@@ -84,14 +88,14 @@ function App() {
   if (screen === 'INTRO') {
     return (
       <div style={containerStyle}>
-        <h1 style={titleStyle}>{workshopState.day}日目：工房の朝</h1>
+        <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
         <div style={cardStyle}>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
              <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
              <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-                <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{workshopState.day}日目の朝</div>
-                <p>「おはよう。今日も工房の扉を開けましょうか」</p>
-                <p>昨日の疲れを感じさせない様子で、{activeHeroine.name}は道具の手入れを始めている。</p>
+                <div style={{ fontSize: '0.9em', color: '#aaa', marginBottom: '10px' }}>{SHOP.localName}</div>
+                <p>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
+                <p>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
                 <p>今日の客人は、どんな品を求めてやってくるだろうか。</p>
              </div>
           </div>
