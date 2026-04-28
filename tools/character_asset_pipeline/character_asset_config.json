@@ -1,0 +1,29 @@
+{
+  "hakima": {
+    "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_01_normal.jpeg",
+    "variants": {
+      "default": {
+        "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 },
+        "standing": { "scale": 1.0, "anchor": "bottom-center" }
+      }
+    }
+  },
+  "mira": {
+    "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_01_normal.jpeg",
+    "variants": {
+      "default": {
+        "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 },
+        "standing": { "scale": 1.0, "anchor": "bottom-center" }
+      }
+    }
+  },
+  "dariya": {
+    "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_01_normal.jpeg",
+    "variants": {
+      "default": {
+        "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 },
+        "standing": { "scale": 1.0, "anchor": "bottom-center" }
+      }
+    }
+  }
+}

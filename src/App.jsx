@@ -353,6 +353,42 @@ function HeroineDisplay({ heroine, type, size = "large" }) {
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
 
   const isPortrait = type === 'standing';
+  const sizePx = size === 'large' ? 120 : size === 'medium' ? 80 : 60;
+  
+  if (type === 'face') {
+    return (
+      <div style={{
+        width: `${sizePx}px`,
+        height: `${sizePx}px`,
+        borderRadius: '50%',
+        backgroundColor: heroine.themeColor + '33',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: heroine.themeColor,
+        fontWeight: 'bold',
+        fontSize: `${sizePx * 0.4}px`,
+        overflow: 'hidden',
+        border: `2px solid ${heroine.themeColor}`,
+        position: 'relative'
+      }}>
+        <img 
+          src={fullPath} 
+          alt={heroine.name}
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'cover',
+            objectPosition: 'center 20%',
+            display: imgError ? 'none' : 'block'
+          }}
+          onError={() => setImgError(true)}
+        />
+        {imgError && <span>{heroine.name[0]}</span>}
+      </div>
+    );
+  }
+
   const displaySize = size === 'large' ? (isPortrait ? 180 : 100) : (isPortrait ? 80 : 50);
 
   const containerStyle = {
