@@ -6054,7 +6054,8 @@ const AFFECTION_EVENTS = {
       title: "もう一度、隣に",
       speaker: "ハキマ",
       expression: "joy",
-      text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。"
+      text: "ナーディル、今日の接客……少しだけ昔を思い出したよ。あんたが一人前になろうと頑張ってるのは、見てればわかるから。",
+      stillImageId: "hakimaMorningVisit01"
     },
     {
       id: "hakima_10",
@@ -6074,7 +6075,8 @@ const AFFECTION_EVENTS = {
       title: "普通の女の子として",
       speaker: "ミラ",
       expression: "fun",
-      text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。"
+      text: "先輩との時間は、商会の令嬢でも学生でもない、ただの私でいられる気がします。ふふ、不思議なものですね。",
+      stillImageId: "miraAfterSchool01"
     },
     {
       id: "mira_10",
@@ -6094,7 +6096,8 @@ const AFFECTION_EVENTS = {
       title: "安らぎの工房",
       speaker: "ダリヤ",
       expression: "joy",
-      text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。"
+      text: "……ふぅ。王宮の喧騒を忘れて、ここで君の話を聞いていると、肩の荷が下りる気分だよ。感謝している、ナーディル。",
+      stillImageId: "dariyaAfterHours01"
     },
     {
       id: "dariya_10",
@@ -6535,7 +6538,31 @@ function App() {
     } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#aaa" } }, "本日の経営概況"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? "#4caf50" : "#f44336" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("h3", { style: { margin: "15px 0 15px 0", fontSize: "1em", color: "#aaa" } }, "現在の累計状態 (", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "0.95em" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? "#4caf50" : "#f44336", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: "#ffcc00", fontWeight: "bold" } }, affection[activeHeroine.id], " / 100")))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: buttonStyle }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: "#444" } }, "タイトルへ戻る"))));
   }
   if (screen === "EVENT" && activeEvent) {
-    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "親密度イベント：", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
+    const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
+    return /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "親密度イベント：", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, still && /* @__PURE__ */ React.createElement("div", { style: {
+      width: "100%",
+      height: "300px",
+      background: "#000",
+      borderRadius: "12px",
+      overflow: "hidden",
+      border: "2px solid #444",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: "20px"
+    } }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: getFullPath(still.src),
+        alt: still.label,
+        style: { width: "100%", height: "100%", objectFit: "contain" },
+        onError: (e) => {
+          e.target.style.display = "none";
+          e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+        }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, !still && /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
