@@ -35,7 +35,7 @@ export const BACKGROUND_IMAGES = {
   },
   hakimaRoom: {
     id: "hakimaRoom",
-    label: "ハキーマの自室",
+    label: "ハキマの自室",
     src: "images/background/bg_hakima_room.jpg"
   },
   miraRoom: {

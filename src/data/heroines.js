@@ -6,7 +6,7 @@ export const HEROINES = [
   {
     id: "hakima",
     fullName: "ハキマ・アル＝ルハーン",
-    name: "ハキーマ",
+    name: "ハキマ",
     role: "鑑定士見習い / 幼馴染",
     age: 18,
     themeColor: "#ffcc00", // Gold/Yellow

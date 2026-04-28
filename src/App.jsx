@@ -13,6 +13,7 @@ import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/s
 import { checkNewEventUnlock } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
+// import { ENDINGS } from './data/endings';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -420,11 +421,28 @@ export default function App() {
     }, 500); // Small buffer for smoothness
   };
 
-  // Go to INTRO (Next Day)
+  // Go to INTRO (Next Day) or FINAL_RESULT
   const handleNextDay = () => {
     audioEngine.playSfx('uiTapBottle');
-    setWorkshopState(prev => ({ ...prev, day: prev.day + 1 }));
-    setScreen('INTRO');
+    if (workshopState.day >= 10) {
+      setScreen('FINAL_RESULT');
+    } else {
+      setWorkshopState(prev => ({ ...prev, day: prev.day + 1 }));
+      setScreen('INTRO');
+    }
+  };
+
+  const handleSeeEnding = () => {
+    audioEngine.playSfx('uiConfirmChime');
+    // setScreen('ENDING');
+  };
+
+  const handleFinishGame = () => {
+    audioEngine.playSfx('uiTapBottle');
+    // Clear save on game completion
+    clearSaveData();
+    setHasSave(false);
+    setScreen('START');
   };
 
   // Generate quiz and start service
@@ -1165,6 +1183,55 @@ export default function App() {
       </div>
     );
 
+  } else if (screen === 'FINAL_RESULT') {
+    const finalAffection = affection[activeHeroineId];
+    const finalSales = workshopState.sales;
+    const finalReputation = workshopState.reputation;
+    
+    mainContent = (
+      <div style={containerStyle}>
+        {renderThemeStyles()}
+        {renderAudioToggle()}
+        <h1 style={titleStyle}>10日間の総決算</h1>
+        <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
+          <div style={{ marginBottom: '25px' }}>
+            <HeroineDisplay heroine={activeHeroine} type="face" size="medium" />
+            <div style={{ marginTop: '10px', fontSize: '1.2em', fontWeight: 'bold', color: THEME.brassDark }}>
+              {activeHeroine.name} との歩み
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '30px' }}>
+             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
+               <span>総売上合計</span>
+               <span style={{ fontWeight: 'bold' }}>{finalSales} G</span>
+             </div>
+             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
+               <span>最終的な評判</span>
+               <span style={{ fontWeight: 'bold', color: finalReputation >= 0 ? THEME.oasisTeal : '#844' }}>
+                 {finalReputation >= 0 ? `+${finalReputation}` : finalReputation}
+               </span>
+             </div>
+             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
+               <span>{activeHeroine.name} との絆</span>
+               <span style={{ fontWeight: 'bold', color: THEME.brassDark }}>{finalAffection} / 100</span>
+             </div>
+          </div>
+
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginBottom: '30px' }}>
+            星瓶堂の再建期間は、これで幕を閉じます。<br />
+            あなたの選択が、どのような結末を導いたのでしょうか。
+          </p>
+
+          <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
+        </div>
+      </div>
+    );
+  /*
+  } else if (screen === 'ENDING') {
+    ...
+  }
+  */
   } else if (screen === 'QUIZ' && session) {
     const currentQuestion = session.questions[session.currentIndex];
     mainContent = (
