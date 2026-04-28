@@ -5768,6 +5768,14 @@ const TRACKS = {
     title: "ダリヤのテーマ"
   }
 };
+const SELECTED_SFX = {
+  uiTapBottle: "uiTapBottle01",
+  uiConfirmChime: "uiConfirmChime01",
+  quizChoicePick: "quizChoicePick01",
+  quizCorrectStarChime: "quizCorrectStarChime01",
+  quizWrongSandTap: "quizWrongSandTap01",
+  workshopDayEnd: "workshopDayEnd01"
+};
 const SFX_CANDIDATES = [
   // --- Group: uiTapBottle ---
   { id: "uiTapBottle01", group: "uiTapBottle", variant: 1, src: "audio/se/ui_tap_bottle_01.mp3", label: "Tap Bottle 1", volume: 0.8, start: 0, end: null, note: "Standard glass tap" },
@@ -5906,29 +5914,61 @@ class SimpleAudioEngine {
       console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
     }
   }
+  /**
+   * Play a production-selected SFX by its functional key
+   * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
+   */
+  playSfx(sfxKey) {
+    if (this.isMuted) return;
+    const candidateId = SELECTED_SFX[sfxKey];
+    if (!candidateId) {
+      console.warn(`No production SFX selected for key: ${sfxKey}`);
+      return;
+    }
+    this.playSfxCandidate(candidateId);
+  }
 }
 const audioEngine = new SimpleAudioEngine();
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
-  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement("div", { key: c.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, c.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#777", marginBottom: "8px", wordBreak: "break-all" } }, c.src.split("/").pop()), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#999", marginBottom: "8px" } }, "Vol: ", c.volume, " / Start: ", c.start, "s"), c.note && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", fontStyle: "italic", color: "#666", marginBottom: "8px" } }, c.note), /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      onClick: () => audioEngine.playSfxCandidate(c.id),
-      disabled: !isAudioEnabled,
-      style: {
-        width: "100%",
-        padding: "8px",
-        background: isAudioEnabled ? "#3d5afe" : "#333",
-        color: isAudioEnabled ? "#fff" : "#666",
-        border: "none",
-        borderRadius: "4px",
-        cursor: isAudioEnabled ? "pointer" : "default",
-        fontSize: "0.85rem",
-        fontWeight: "bold"
-      }
-    },
-    "Play"
-  ))))))));
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.9)", zIndex: 2e3, overflowY: "auto", padding: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", margin: "0 auto", background: "#222", padding: "20px", borderRadius: "10px", border: "1px solid #444", color: "#eee" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "SFX Sound Test"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { padding: "8px 16px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" } }, "Close")), !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "24px", paddingBottom: "12px", borderBottom: "1px solid #333" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => {
+    const isSelected = Object.values(SELECTED_SFX).includes(c.id);
+    return /* @__PURE__ */ React.createElement("div", { key: c.id, style: {
+      background: "#2a2a2a",
+      padding: "12px",
+      borderRadius: "6px",
+      border: isSelected ? "1px solid #00ff00" : "1px solid #3a3a3a",
+      position: "relative"
+    } }, isSelected && /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      top: "-8px",
+      right: "8px",
+      background: "#00ff00",
+      color: "#000",
+      fontSize: "0.6rem",
+      padding: "2px 6px",
+      borderRadius: "10px",
+      fontWeight: "bold"
+    } }, "SELECTED"), /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, c.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#777", marginBottom: "8px", wordBreak: "break-all" } }, c.src.split("/").pop()), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", color: "#999", marginBottom: "8px" } }, "Vol: ", c.volume, " / Start: ", c.start, "s"), c.note && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7rem", fontStyle: "italic", color: "#666", marginBottom: "8px" } }, c.note), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => audioEngine.playSfxCandidate(c.id),
+        disabled: !isAudioEnabled,
+        style: {
+          width: "100%",
+          padding: "8px",
+          background: isAudioEnabled ? isSelected ? "#00c853" : "#3d5afe" : "#333",
+          color: isAudioEnabled ? "#fff" : "#666",
+          border: "none",
+          borderRadius: "4px",
+          cursor: isAudioEnabled ? "pointer" : "default",
+          fontSize: "0.85rem",
+          fontWeight: "bold"
+        }
+      },
+      "Play"
+    ));
+  }))))));
 }
 function App() {
   const [session, setSession] = useState(null);
@@ -5957,24 +5997,30 @@ function App() {
   }, [screen]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const handleStartGame = () => {
+    audioEngine.playSfx("uiTapBottle");
     setScreen("HEROINE_SELECT");
   };
   const handleSelectHeroine = (id) => {
+    audioEngine.playSfx("uiConfirmChime");
     setActiveHeroineId(id);
     setScreen("INTRO");
   };
   const handleNextDay = () => {
+    audioEngine.playSfx("uiTapBottle");
     setWorkshopState((prev) => ({ ...prev, day: prev.day + 1 }));
     setScreen("INTRO");
   };
   const handleBeginService = () => {
+    audioEngine.playSfx("uiTapBottle");
     setSession(createQuizSession({ questionCount: 5 }));
     setScreen("QUIZ");
   };
   const handleEndDay = () => {
+    audioEngine.playSfx("workshopDayEnd");
     setScreen("DAY_END");
   };
   const handleBackToTitle = () => {
+    audioEngine.playSfx("uiTapBottle");
     setActiveHeroineId("hakima");
     setWorkshopState(createInitialWorkshopState());
     setSession(null);
@@ -5982,7 +6028,14 @@ function App() {
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
+    audioEngine.playSfx("quizChoicePick");
     const updatedSession = answerQuestion(session, itemId);
+    const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
+    if (lastAnswer && lastAnswer.isCorrect) {
+      audioEngine.playSfx("quizCorrectStarChime");
+    } else {
+      audioEngine.playSfx("quizWrongSandTap");
+    }
     setSession(updatedSession);
     if (updatedSession.isFinished) {
       const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
