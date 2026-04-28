@@ -154,6 +154,7 @@ export default function App() {
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
+  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -349,6 +350,7 @@ export default function App() {
     setSeenEventIds([]);
     setActiveEvent(null);
     setSession(null);
+    setIsPrologueComplete(false);
     
     setScreen('PROLOGUE');
   };
@@ -892,19 +894,22 @@ export default function App() {
               text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、小さな錬金術店『星瓶堂』がある。若店主ナーディルは、客の依頼に合う品を見極めながら、10日間の営業のなかで協力者との縁を育てていく。"
               themeColor={THEME.brass}
               onComplete={() => {
-                audioEngine.playSfx('uiClickForward');
-                setScreen('HEROINE_SELECT');
+                setIsPrologueComplete(true);
               }}
             />
-            <button 
-              onClick={() => {
-                audioEngine.playSfx('uiClickForward');
-                setScreen('HEROINE_SELECT');
-              }} 
-              style={{ ...buttonStyle, marginTop: '30px', width: '100%', maxWidth: '280px' }}
-            >
-              星瓶堂へ進む
-            </button>
+            <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              {isPrologueComplete && (
+                <button 
+                  onClick={() => {
+                    audioEngine.playSfx('uiClickForward');
+                    setScreen('HEROINE_SELECT');
+                  }} 
+                  style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
+                >
+                  星瓶堂へ進む
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
