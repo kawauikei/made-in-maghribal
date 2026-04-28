@@ -350,7 +350,7 @@ export default function App() {
     setActiveEvent(null);
     setSession(null);
     
-    setScreen('HEROINE_SELECT');
+    setScreen('PROLOGUE');
   };
 
   // Continue from Save
@@ -877,6 +877,37 @@ export default function App() {
         </div>
       </div>
     );
+  } else if (screen === 'PROLOGUE') {
+    mainContent = (
+      <div style={{ ...containerStyle, position: 'relative' }}>
+        {renderThemeStyles()}
+        {renderBackground('START')}
+        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          {renderAudioToggle()}
+          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>鑑定士の旅立ち</h1>
+          <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '30px', maxWidth: '600px' }}>
+            <VNBox 
+              speaker="物語の始まり"
+              text="砂漠の街マグリバル。その喧騒を抜けた路地裏に、かつて多くの人々が訪れた骨董品店『星瓶堂』があった。鑑定士だった祖父が遺したこの場所は、今や埃を被り、閉ざされたままとなっている。……だが、今日から始まる10日間。あなたは大切な協力者と共に、この店に再び灯をともすことになる。"
+              themeColor={THEME.brass}
+              onComplete={() => {
+                audioEngine.playSfx('uiClickForward');
+                setScreen('HEROINE_SELECT');
+              }}
+            />
+            <button 
+              onClick={() => {
+                audioEngine.playSfx('uiClickForward');
+                setScreen('HEROINE_SELECT');
+              }} 
+              style={{ ...buttonStyle, marginTop: '30px', width: '100%', maxWidth: '280px' }}
+            >
+              鑑定士の道へ
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   } else if (screen === 'INTRO') {
     mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
@@ -891,7 +922,7 @@ export default function App() {
                <div style={{ flex: 1 }}>
                  <VNBox 
                    speaker={activeHeroine.name}
-                   text={`おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
+                   text={activeHeroine.greeting || `おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
                    themeColor={activeHeroine.themeColor}
                    onComplete={handleBeginService}
                  />
@@ -912,12 +943,12 @@ export default function App() {
     const mgmt = getWorkshopResult(correctCount);
 
     const resultNarrations = {
-      5: "お客は品を受け取ると、ぱっと顔を輝かせた。「これだよ、これ！　まさかこんなにぴったりの品があるなんて」今日の工房には、少し誇らしい空気が流れている。",
-      4: "お客は満足そうに品を抱えた。「助かったよ。次に困った時も、ここに来ればよさそうだ」手応えのある接客だった。",
-      3: "お客は少し迷いながらも、品を受け取った。「うん、悪くない。たぶんこれで何とかなると思う」もう少し相手の願いを読み取れれば、さらに良くなりそうだ。",
-      2: "お客は首をかしげながら品を見つめた。「うーん……今回はこれで試してみるよ」工房の棚には、まだ学ぶべきことが多く残っている。",
-      1: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。",
-      0: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。"
+      5: "「これだよ、これ！ まさかこんなにぴったりの品があるなんて」客人は品を受け取ると、ぱっと顔を輝かせた。あなたの確かな目利きが、誰かの未来を明るく照らした瞬間だ。",
+      4: "「助かったよ。次に困った時も、ここに来ればよさそうだ」客人は満足そうに品を抱えて去っていった。手応えのある接客が、星瓶堂の評判をまた一つ積み上げた。",
+      3: "「うん、悪くない。たぶんこれで何とかなると思う」客人は少し迷いながらも、納得して品を受け取った。もう少し相手の願いを深く読み取れば、さらなる高みへ行けるはずだ。",
+      2: "「うーん……今回はこれで試してみるよ」客人は首をかしげながら品を見つめている。星瓶堂の棚には、まだまだ学ぶべき知識と経験が眠っているようだ。",
+      1: "「気持ちはありがたいんだけど、ちょっと違うかもしれないな」客人の困ったような笑みが胸に刺さる。だが、この悔しさこそが次の目利きを研ぎ澄ます糧になる。",
+      0: "今日は誰の願いにも応えられなかった。静まり返った工房で、あなたは己の未熟さを噛みしめる。……だが、明日の太陽は必ず昇る。次こそは、最良の品を。"
     };
     
     mainContent = (
@@ -1010,10 +1041,10 @@ export default function App() {
               expression={getDayEndExpression(correctCount)}
             />
             <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0, textAlign: 'left' }}>
-              <p>夕暮れの工房に、今日選ばれた品々の余韻が残っている。</p>
-              <p>小さな手応えを積み重ねれば、この店にもきっと評判が根づいていくはずだ。</p>
+              <p>夕暮れの工房に、今日選ばれた品々の余韻が静かに残っている。</p>
+              <p>小さな手応えを一つずつ積み重ねていけば、この店にもきっと、失われた輝きが戻ってくるはずだ。</p>
               <p style={{ marginTop: '10px', color: THEME.brass, fontWeight: 'bold' }}>
-                {activeHeroine.name}：「お疲れ様。明日の準備をしたら、今日はもう休みましょう」
+                {activeHeroine.name}：「お疲れ様。……いい目利きだったよ。明日の準備を整えたら、今日はゆっくり休みましょう」
               </p>
             </div>
           </div>
@@ -1490,9 +1521,10 @@ export default function App() {
              </div>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.9em', marginBottom: '30px' }}>
-            星瓶堂の再建期間は、これで幕を閉じます。<br />
-            あなたの選択が、どのような結末を導いたのでしょうか。
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>
+            この10日間、あなたはマグリバルの地で、祖父の遺した工房と向き合ってきました。<br />
+            傍らにいた{activeHeroine.name}との時間は、星瓶堂に何をもたらしたのでしょうか。<br />
+            運命の結末を、その目で見届けてください。
           </p>
 
           <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
