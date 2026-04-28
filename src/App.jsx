@@ -576,6 +576,7 @@ export default function App() {
   // --- RENDER HELPERS ---
 
   const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
+  const getFileName = (path) => path?.split('/').pop() || '';
 
   const renderBackground = (screen) => {
     const SCREEN_BACKGROUNDS = {
@@ -1181,9 +1182,9 @@ export default function App() {
         <div style={{ flex: 1, width: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 16px' }}>
           {visualTestMode === 'background' ? (
             <div style={{ width: '100%', maxWidth: '800px' }}>
-              <div style={{ marginBottom: '15px', textAlign: 'left' }}>
-                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass }}>{bg.label}</div>
-                <div style={{ fontSize: '0.75em', color: '#888' }}>ID: {bg.id} | Path: {bg.src}</div>
+              <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }}>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{bg.label}</div>
+                <div style={{ fontSize: '0.75em', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }} title={bg.src}>ID: {bg.id} | Path: {getFileName(bg.src)}</div>
               </div>
 
               {/* Main Preview */}
@@ -1225,9 +1226,9 @@ export default function App() {
             </div>
           ) : (
             <div style={{ width: '100%', maxWidth: '800px' }}>
-              <div style={{ marginBottom: '15px', textAlign: 'left' }}>
-                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass }}>{still.label}</div>
-                <div style={{ fontSize: '0.75em', color: '#888' }}>ID: {still.id} | Path: {still.src} | Focus: {still.focusX}, {still.focusY}</div>
+              <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }}>
+                <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{still.label}</div>
+                <div style={{ fontSize: '0.75em', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }} title={`${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}`}>ID: {still.id} | Path: {getFileName(still.src)} | Focus: {still.focusX}, {still.focusY}</div>
               </div>
 
               {/* Main Preview (Contain mode for inspection) */}
