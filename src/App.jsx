@@ -979,7 +979,17 @@ export default function App() {
             </div>
           </div>
 
-          <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+          <div style={{ 
+            position: 'sticky', 
+            bottom: 0, 
+            padding: '15px 0', 
+            background: THEME.parchment,
+            borderTop: '1px solid #ddd',
+            width: '100%',
+            zIndex: 10
+          }}>
+            <button onClick={handleBackToTitle} style={{ ...buttonStyle, margin: 0, width: '100%' }}>タイトルへ戻る</button>
+          </div>
         </div>
       </div>
     );
