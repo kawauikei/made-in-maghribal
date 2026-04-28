@@ -78,18 +78,14 @@ export default function App() {
 
     return (
         <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column", background: "#111", overflow: "hidden" }}>
-            <div style={{ minHeight: "24px", height: showStatus ? "52px" : "24px", color: "#bbb", fontSize: "11px", borderBottom: "1px solid #333", fontFamily: "sans-serif", background: "#1f1f1f", display: "flex", alignItems: "center", gap: "8px", padding: showStatus ? "6px 10px" : "0 8px", boxSizing: "border-box", flexShrink: 0 }}>
+            <div style={{ minHeight: "24px", height: "24px", color: "#bbb", fontSize: "11px", borderBottom: "1px solid #333", fontFamily: "sans-serif", background: "#1f1f1f", display: "flex", alignItems: "center", gap: "8px", padding: "0 8px", boxSizing: "border-box", flexShrink: 0 }}>
                 <button
                     onClick={() => setShowStatus(!showStatus)}
-                    style={{ border: "1px solid #444", background: "#2b2b2b", color: "#ddd", borderRadius: "4px", fontSize: "10px", padding: "2px 6px", cursor: "pointer" }}
+                    title={showStatus ? "Hide loader status" : "Show loader status"}
+                    style={{ width: "18px", height: "18px", border: "1px solid #444", background: showStatus ? "#444" : "#2b2b2b", color: "#ddd", borderRadius: "50%", fontSize: "10px", padding: 0, cursor: "pointer", lineHeight: "16px" }}
                 >
-                    {showStatus ? "hide" : "loader"}
+                    i
                 </button>
-                {showStatus ? (
-                    <span><strong>External Loader</strong>: Running main.js from GitHub Pages</span>
-                ) : (
-                    <span style={{ opacity: 0.65 }}>main.js</span>
-                )}
             </div>
 
             <iframe
