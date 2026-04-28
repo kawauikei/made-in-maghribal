@@ -1,4 +1,4 @@
-import { SFX_CANDIDATES } from '../data/sfxCandidates';
+import { SFX_CANDIDATES, SELECTED_SFX } from '../data/sfxCandidates';
 
 /**
  * Simple Audio Engine for Made in Maghribal
@@ -134,6 +134,22 @@ class SimpleAudioEngine {
     } catch (err) {
       console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
     }
+  }
+
+  /**
+   * Play a production-selected SFX by its functional key
+   * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
+   */
+  playSfx(sfxKey) {
+    if (this.isMuted) return;
+    
+    const candidateId = SELECTED_SFX[sfxKey];
+    if (!candidateId) {
+      console.warn(`No production SFX selected for key: ${sfxKey}`);
+      return;
+    }
+
+    this.playSfxCandidate(candidateId);
   }
 }
 

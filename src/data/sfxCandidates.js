@@ -3,6 +3,15 @@
  * Contains 24 candidate sounds for UI and Quiz interactions.
  */
 
+export const SELECTED_SFX = {
+  uiTapBottle: "uiTapBottle01",
+  uiConfirmChime: "uiConfirmChime01",
+  quizChoicePick: "quizChoicePick01",
+  quizCorrectStarChime: "quizCorrectStarChime01",
+  quizWrongSandTap: "quizWrongSandTap01",
+  workshopDayEnd: "workshopDayEnd01"
+};
+
 export const SFX_CANDIDATES = [
   // --- Group: uiTapBottle ---
   { id: "uiTapBottle01", group: "uiTapBottle", variant: 1, src: "audio/se/ui_tap_bottle_01.mp3", label: "Tap Bottle 1", volume: 0.8, start: 0, end: null, note: "Standard glass tap" },

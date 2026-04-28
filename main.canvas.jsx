@@ -8,7 +8,7 @@ import { getResultExpression, getDayEndExpression } from './game/presentation';
 import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS, getTrackById } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
-import { SFX_CANDIDATES } from './data/sfxCandidates';
+import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -24,31 +24,55 @@ function SoundTest({ onClose, isAudioEnabled }) {
           <div key={group} style={{ marginBottom: '24px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
             <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>{group}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
-              {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
-                <div key={c.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{c.label}</div>
-                  <div style={{ fontSize: '0.7rem', color: '#777', marginBottom: '8px', wordBreak: 'break-all' }}>{c.src.split('/').pop()}</div>
-                  <div style={{ fontSize: '0.7rem', color: '#999', marginBottom: '8px' }}>Vol: {c.volume} / Start: {c.start}s</div>
-                  {c.note && <div style={{ fontSize: '0.7rem', fontStyle: 'italic', color: '#666', marginBottom: '8px' }}>{c.note}</div>}
-                  <button 
-                    onClick={() => audioEngine.playSfxCandidate(c.id)}
-                    disabled={!isAudioEnabled}
-                    style={{ 
-                      width: '100%', 
-                      padding: '8px', 
-                      background: isAudioEnabled ? '#3d5afe' : '#333', 
-                      color: isAudioEnabled ? '#fff' : '#666', 
-                      border: 'none', 
-                      borderRadius: '4px',
-                      cursor: isAudioEnabled ? 'pointer' : 'default',
-                      fontSize: '0.85rem',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    Play
-                  </button>
-                </div>
-              ))}
+              {SFX_CANDIDATES.filter(c => c.group === group).map(c => {
+                const isSelected = Object.values(SELECTED_SFX).includes(c.id);
+                return (
+                  <div key={c.id} style={{ 
+                    background: '#2a2a2a', 
+                    padding: '12px', 
+                    borderRadius: '6px', 
+                    border: isSelected ? '1px solid #00ff00' : '1px solid #3a3a3a',
+                    position: 'relative'
+                  }}>
+                    {isSelected && (
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '-8px', 
+                        right: '8px', 
+                        background: '#00ff00', 
+                        color: '#000', 
+                        fontSize: '0.6rem', 
+                        padding: '2px 6px', 
+                        borderRadius: '10px',
+                        fontWeight: 'bold'
+                      }}>
+                        SELECTED
+                      </div>
+                    )}
+                    <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{c.label}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#777', marginBottom: '8px', wordBreak: 'break-all' }}>{c.src.split('/').pop()}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#999', marginBottom: '8px' }}>Vol: {c.volume} / Start: {c.start}s</div>
+                    {c.note && <div style={{ fontSize: '0.7rem', fontStyle: 'italic', color: '#666', marginBottom: '8px' }}>{c.note}</div>}
+                    <button 
+                      onClick={() => audioEngine.playSfxCandidate(c.id)}
+                      disabled={!isAudioEnabled}
+                      style={{ 
+                        width: '100%', 
+                        padding: '8px', 
+                        background: isAudioEnabled ? (isSelected ? '#00c853' : '#3d5afe') : '#333', 
+                        color: isAudioEnabled ? '#fff' : '#666', 
+                        border: 'none', 
+                        borderRadius: '4px',
+                        cursor: isAudioEnabled ? 'pointer' : 'default',
+                        fontSize: '0.85rem',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Play
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -92,34 +116,40 @@ function App() {
 
   // Go to Heroine Select
   const handleStartGame = () => {
+    audioEngine.playSfx('uiTapBottle');
     setScreen('HEROINE_SELECT');
   };
 
   // Select Heroine and start Intro
   const handleSelectHeroine = (id) => {
+    audioEngine.playSfx('uiConfirmChime');
     setActiveHeroineId(id);
     setScreen('INTRO');
   };
 
   // Go to INTRO (Next Day)
   const handleNextDay = () => {
+    audioEngine.playSfx('uiTapBottle');
     setWorkshopState(prev => ({ ...prev, day: prev.day + 1 }));
     setScreen('INTRO');
   };
 
   // Generate quiz and start service
   const handleBeginService = () => {
+    audioEngine.playSfx('uiTapBottle');
     setSession(createQuizSession({ questionCount: 5 }));
     setScreen('QUIZ');
   };
 
   // End of service, go to Day End
   const handleEndDay = () => {
+    audioEngine.playSfx('workshopDayEnd');
     setScreen('DAY_END');
   };
 
   // Back to Title
   const handleBackToTitle = () => {
+    audioEngine.playSfx('uiTapBottle');
     setActiveHeroineId('hakima');
     setWorkshopState(createInitialWorkshopState());
     setSession(null);
@@ -129,7 +159,20 @@ function App() {
   // Handle answer selection
   const handleSelect = (itemId) => {
     if (!session || session.isFinished) return;
+    
+    // Play choice sound
+    audioEngine.playSfx('quizChoicePick');
+    
     const updatedSession = answerQuestion(session, itemId);
+    
+    // Play result sound
+    const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
+    if (lastAnswer && lastAnswer.isCorrect) {
+      audioEngine.playSfx('quizCorrectStarChime');
+    } else {
+      audioEngine.playSfx('quizWrongSandTap');
+    }
+
     setSession(updatedSession);
 
     // If quiz just finished, accumulate results immediately
