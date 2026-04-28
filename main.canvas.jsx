@@ -161,6 +161,11 @@ function App() {
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
+  // --- Asset Loading State (M8-28) ---
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
@@ -338,10 +343,82 @@ function App() {
   };
 
   // Select Heroine and start Intro
-  const handleSelectHeroine = (id) => {
-    audioEngine.playSfx('uiConfirmChime');
-    setActiveHeroineId(id);
-    setScreen('INTRO');
+  useEffect(() => {
+    const essentialAssets = [
+      // BGM
+      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main01_title.mp3`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'audio', src: `${import.meta.env.BASE_URL}audio/bgm/main/main02_shop.mp3`.replace(/([^:])\/\//g, '$1/') },
+      
+      // UI Backgrounds
+      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_exterior_day.jpg`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}images/background/bg_shop_interior_service.jpg`.replace(/([^:])\/\//g, '$1/') }
+    ];
+
+    const loadAll = async () => {
+      await preloadAssets(essentialAssets, setLoadingProgress);
+      setIsInitialLoading(false);
+    };
+
+    loadAll();
+  }, []);
+
+  const preloadAssets = async (assetList, onProgress) => {
+    let loadedCount = 0;
+    const totalCount = assetList.length;
+    if (totalCount === 0) return;
+
+    const loadPromises = assetList.map(async (asset) => {
+      try {
+        if (asset.type === 'image') {
+          await new Promise((resolve) => {
+            const img = new Image();
+            img.src = asset.src;
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        } else if (asset.type === 'audio') {
+          const audio = new Audio(asset.src);
+          audio.preload = "auto";
+        }
+        loadedCount++;
+        if (onProgress) onProgress(Math.floor((loadedCount / totalCount) * 100));
+      } catch (err) {
+        console.warn("Preload failed:", asset.src);
+      }
+    });
+
+    await Promise.all(loadPromises);
+  };
+
+  const handleSelectHeroine = async (heroineId) => {
+    setIsHeroineLoading(true);
+    setLoadingProgress(0);
+    
+    const heroine = HEROINES.find(h => h.id === heroineId);
+    const themeTrack = getTrackById(heroine.themeTrackId);
+    
+    const heroineAssets = [
+      { type: 'audio', src: `${import.meta.env.BASE_URL}${themeTrack.src}`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/standing_proc/normal.png`.replace(/([^:])\/\//g, '$1/') },
+      { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/face_proc/normal.png`.replace(/([^:])\/\//g, '$1/') }
+    ];
+
+    await preloadAssets(heroineAssets, setLoadingProgress);
+    
+    setActiveHeroineId(heroineId);
+    setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
+    
+    // Auto-save when starting a new session with a heroine
+    saveGameData({
+      workshopState: { ...workshopState, activeHeroineId: heroineId },
+      affection,
+      seenEventIds
+    });
+    
+    setTimeout(() => {
+      setIsHeroineLoading(false);
+      setScreen('INTRO');
+    }, 500); // Small buffer for smoothness
   };
 
   // Go to INTRO (Next Day)
@@ -453,6 +530,19 @@ function App() {
       .heroine-card:active { transform: scale(0.98); background: ${THEME.sand} !important; }
       .memory-item { border-left: 4px solid ${THEME.brassDark}; background: rgba(0,0,0,0.1); transition: background 0.2s; }
       .memory-item:active { background: rgba(197, 160, 89, 0.2); }
+      
+      @keyframes screenIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .screen-enter {
+        animation: screenIn 0.4s ease-out forwards;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        alignItems: center;
+      }
     `}</style>
   );
 
@@ -560,19 +650,21 @@ function App() {
         <div style={{ zIndex: 2, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {renderAudioToggle()}
           <h1 style={titleStyle}>{workshopState.day}日目：{SHOP.name}の朝</h1>
-          <div style={cardStyle}>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0 }}>
+            <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginBottom: '20px' }}>
                <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
-               <div style={{ ...narrativeBoxStyle, flex: 1, minWidth: 0, marginBottom: 0 }}>
-                  <div style={{ fontSize: '0.8em', color: THEME.brass, marginBottom: '4px', fontWeight: 'bold' }}>{SHOP.localName}</div>
-                  <p style={{ margin: 0 }}>「おはよう、{PROTAGONIST.shortName}。今日もお店を開けましょうか」</p>
-               </div>
+               <VNBox 
+                 speaker={activeHeroine.name}
+                 text={`おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`}
+                 themeColor={activeHeroine.themeColor}
+                 onComplete={handleBeginService}
+               />
             </div>
-            <div style={{ ...narrativeBoxStyle, background: 'transparent', borderLeft: 'none', padding: 0 }}>
+            <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.4)', color: '#fff', borderLeft: `4px solid ${THEME.brass}` }}>
               <p style={{ margin: '0 0 8px 0' }}>朝の光が差し込む店内で、{activeHeroine.name}は手際よく準備を手伝ってくれている。</p>
               <p style={{ margin: 0 }}>今日の客人は、どんな品を求めてやってくるだろうか。</p>
             </div>
-            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>接客を始める</button>
+            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '240px', marginTop: '20px' }}>接客を始める</button>
           </div>
         </div>
       </div>
@@ -599,9 +691,11 @@ function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>業務報告書</h1>
           <div style={{ ...cardStyle, borderRadius: '4px', border: `3px double ${THEME.brass}` }}>
-            <div style={narrativeBoxStyle}>
-              {resultNarrations[correctCount]}
-            </div>
+            <VNBox 
+              text={resultNarrations[correctCount]}
+              themeColor={THEME.brass}
+              onComplete={handleEndDay}
+            />
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
               <HeroineDisplay 
@@ -669,7 +763,7 @@ function App() {
           {renderAudioToggle()}
           <h1 style={titleStyle}>工房日誌</h1>
           <div style={{ ...cardStyle, borderRadius: '4px' }}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'nowrap', justifyContent: 'center' }}>
             <HeroineDisplay 
               heroine={activeHeroine} 
               type="face" 
@@ -753,28 +847,39 @@ function App() {
             </div>
           )}
           
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
             {!still && (
-              <HeroineDisplay 
-                heroine={activeHeroine} 
-                type="standing" 
-                size="large" 
-                expression={activeEvent.expression} 
-              />
-            )}
-            <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0 }}>
-              <div style={{ fontSize: '0.9em', color: activeHeroine.themeColor, fontWeight: 'bold', marginBottom: '10px' }}>
-                {activeEvent.speaker}
+              <div style={{ marginBottom: '20px' }}>
+                <HeroineDisplay 
+                  heroine={activeHeroine} 
+                  type="standing" 
+                  size="large" 
+                  expression={activeEvent.expression} 
+                />
               </div>
-              <p style={{ fontSize: '1.1em', lineHeight: '1.6' }}>「{activeEvent.text}」</p>
+            )}
+            <VNBox 
+              speaker={activeEvent.speaker}
+              text={activeEvent.text}
+              themeColor={activeHeroine.themeColor}
+              onComplete={handleCloseEvent}
+              skip={seenEventIds.includes(activeEvent.id)}
+            />
+            <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
+              <button 
+                onClick={handleCloseEvent} 
+                style={{ ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }}
+              >
+                次へ
+              </button>
+              {seenEventIds.includes(activeEvent.id) && (
+                <button 
+                  onClick={handleCloseEvent}
+                  style={{ ...buttonStyle, flex: 1, margin: 0, background: '#444', color: '#ccc', fontSize: '0.8em' }}
+                >
+                  SKIP
+                </button>
+              )}
             </div>
-          </div>
-          <button 
-            onClick={handleCloseEvent} 
-            style={{ ...buttonStyle, width: '100%', maxWidth: '240px', background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }}
-          >
-            記録を閉じる
-          </button>
         </div>
       </div>
     );
@@ -950,7 +1055,7 @@ function App() {
         {renderThemeStyles()}
         {renderAudioToggle()}
         
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>パートナーを選ぶ</h1>
+        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
         
         {/* Tabs for Heroine selection */}
         <div style={{ 
@@ -1043,7 +1148,7 @@ function App() {
               boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
             }}
           >
-            {selectedHeroine.name}と店を開く
+            {selectedHeroine.name}を頼る
           </button>
         </div>
 
@@ -1098,7 +1203,7 @@ function App() {
 
           <div className="choice-container" style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gridTemplateColumns: '1fr 1fr', 
             gap: '20px', 
             width: '100%' 
           }}>
@@ -1129,14 +1234,53 @@ function App() {
     );
   }
 
+  const renderLoadingOverlay = (message = "Loading...") => (
+    <div style={{
+      position: 'absolute',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.85)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      color: THEME.sand,
+      fontFamily: "'Outfit', sans-serif"
+    }}>
+      <div style={{ fontSize: '1.2em', marginBottom: '20px', letterSpacing: '0.1em' }}>{message}</div>
+      <div style={{ 
+        width: '200px', 
+        height: '4px', 
+        background: 'rgba(255,255,255,0.1)', 
+        borderRadius: '2px',
+        overflow: 'hidden'
+      }}>
+        <div style={{ 
+          width: `${loadingProgress}%`, 
+          height: '100%', 
+          background: THEME.starGold, 
+          transition: 'width 0.3s' 
+        }} />
+      </div>
+      <div style={{ marginTop: '10px', fontSize: '0.8em', opacity: 0.7 }}>{loadingProgress}%</div>
+    </div>
+  );
+
   return (
     <div style={outerWrapperStyle}>
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
-          {mainContent || (
-            <div style={containerStyle}>
-              <p>Loading...</p>
-              <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+          {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
+          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
+          
+          {!isInitialLoading && (
+            <div key={screen} className="screen-enter">
+              {mainContent || (
+                <div style={containerStyle}>
+                  <p>Loading...</p>
+                  <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1202,6 +1346,101 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
         style={imgStyle}
         onError={() => setImgError(true)}
       />
+    </div>
+  );
+}
+
+function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false }) {
+  const [displayText, setDisplayText] = useState(skip ? text : "");
+  const [isComplete, setIsComplete] = useState(skip);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (skip) {
+      setDisplayText(text);
+      setIsComplete(true);
+      return;
+    }
+
+    setDisplayText("");
+    setIsComplete(false);
+    setCurrentIndex(0);
+  }, [text, skip]);
+
+  useEffect(() => {
+    if (isComplete || skip) return;
+
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    } else {
+      setIsComplete(true);
+    }
+  }, [currentIndex, text, isComplete, speed, skip]);
+
+  const handleClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isComplete) {
+      setDisplayText(text);
+      setIsComplete(true);
+    } else if (onComplete) {
+      onComplete();
+    }
+  };
+
+  return (
+    <div 
+      onClick={handleClick}
+      style={{
+        width: '100%',
+        minHeight: '80px',
+        background: 'rgba(26, 42, 58, 0.9)',
+        borderLeft: `4px solid ${themeColor || '#c5a059'}`,
+        padding: '15px 20px',
+        borderRadius: '0 8px 8px 0',
+        cursor: 'pointer',
+        color: '#f4e9d5',
+        textAlign: 'left',
+        position: 'relative',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+        fontFamily: "'Inter', sans-serif",
+        userSelect: 'none'
+      }}
+    >
+      {speaker && (
+        <div style={{ 
+          fontSize: '0.85em', 
+          color: themeColor || '#c5a059', 
+          fontWeight: 'bold', 
+          marginBottom: '8px',
+          letterSpacing: '0.05em'
+        }}>
+          {speaker}
+        </div>
+      )}
+      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '1.5em' }}>
+        {displayText}
+        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '2px' }}>|</span>}
+      </div>
+      {isComplete && (
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '8px', 
+          right: '12px', 
+          fontSize: '0.65em', 
+          opacity: 0.5,
+          animation: 'vn-bounce 1s infinite'
+        }}>
+          ▼ NEXT
+        </div>
+      )}
+      <style>{`
+        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      `}</style>
     </div>
   );
 }
