@@ -1094,7 +1094,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
             width: '100%', 
             height: '100%', 
             objectFit: 'cover',
-            objectPosition: 'center 20%',
+            objectPosition: heroine.visualConfig?.facePosition || 'center 20%',
             display: imgError ? 'none' : 'block'
           }}
           onError={() => setImgError(true)}

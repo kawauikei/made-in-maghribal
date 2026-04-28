@@ -41,6 +41,9 @@ export const HEROINES = [
         sorrow: "characters/hakima/face/sorrow.png"
       }
     },
+    visualConfig: {
+      facePosition: "center 24%"
+    },
     themeColor: "#ffcc00"
   },
   {
@@ -76,6 +79,9 @@ export const HEROINES = [
         surprise: "characters/mira/face/surprise.png",
         sorrow: "characters/mira/face/sorrow.png"
       }
+    },
+    visualConfig: {
+      facePosition: "center 23%"
     },
     themeColor: "#00ccff"
   },
@@ -113,6 +119,9 @@ export const HEROINES = [
         sorrow: "characters/dariya/face/sorrow.png"
       }
     },
+    visualConfig: {
+      facePosition: "center 17%"
+    },
     themeColor: "#cc00ff"
   }
 ];
@@ -120,6 +129,13 @@ export const HEROINES = [
 export function getHeroineAsset(heroineId, type, expression = "normal") {
   const heroine = HEROINES.find(h => h.id === heroineId);
   if (!heroine) return null;
+  
+  // Prioritize face_proc for "face" type
+  if (type === 'face') {
+    // For nader (not in HEROINES list but we might call this), 
+    // or if we want to be safe, we check if the char is known.
+    return `characters/${heroineId}/face_proc/${expression}.png`;
+  }
   
   // Expression fallback: specified -> normal -> default
   const variantPath = heroine.assets[type]?.[expression] 
