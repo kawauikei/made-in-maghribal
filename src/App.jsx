@@ -161,6 +161,9 @@ export default function App() {
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
 
+  // Quiz Interaction Feedback (M9-3)
+  const [quizFeedback, setQuizFeedback] = useState(null); // { itemId, isCorrect }
+
   // Event State
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
@@ -519,44 +522,54 @@ export default function App() {
     setHasSave(hasSaveData());
   };
 
-  // Handle answer selection
+  // Handle answer selection (Improved in M9-3)
   const handleSelect = (itemId) => {
-    if (!session || session.isFinished) return;
+    if (!session || session.isFinished || quizFeedback) return;
     
-    // Play choice sound
+    // 1. Play choice sound immediately
     audioEngine.playSfx('quizChoicePick');
     
     const updatedSession = answerQuestion(session, itemId);
-    
-    // Play result sound
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
-    if (lastAnswer && lastAnswer.isCorrect) {
-      audioEngine.playSfx('quizCorrectStarChime');
-    } else {
-      audioEngine.playSfx('quizWrongSandTap');
-    }
+    const isCorrect = lastAnswer.isCorrect;
 
-    setSession(updatedSession);
+    // 2. Trigger visual feedback
+    setQuizFeedback({ itemId, isCorrect });
 
-    // If quiz just finished, accumulate results immediately
-    if (updatedSession.isFinished) {
-      const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
-      
-      // Calculate and apply affection gain
-      const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
-      const nextAffection = addAffection(affection, activeHeroineId, gain);
-      setAffection(nextAffection);
-      setLastAffectionGain(gain);
-
-      // Check for Event Unlock
-      const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-      if (unlockedEvent) {
-        setActiveEvent(unlockedEvent);
+    // 3. Delay result sound slightly to avoid harsh overlap
+    setTimeout(() => {
+      if (isCorrect) {
+        audioEngine.playSfx('quizCorrectStarChime');
+      } else {
+        audioEngine.playSfx('quizWrongSandTap');
       }
-      const result = getWorkshopResult(correctCount);
-      setWorkshopState(prev => applyWorkshopResult(prev, result));
-      setScreen('RESULT');
-    }
+
+      // 4. Wait for animation to finish before proceeding
+      setTimeout(() => {
+        setQuizFeedback(null);
+        setSession(updatedSession);
+
+        // If quiz just finished, accumulate results
+        if (updatedSession.isFinished) {
+          const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
+          
+          // Calculate and apply affection gain
+          const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
+          const nextAffection = addAffection(affection, activeHeroineId, gain);
+          setAffection(nextAffection);
+          setLastAffectionGain(gain);
+
+          // Check for Event Unlock
+          const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+          if (unlockedEvent) {
+            setActiveEvent(unlockedEvent);
+          }
+          const result = getWorkshopResult(correctCount);
+          setWorkshopState(prev => applyWorkshopResult(prev, result));
+          setScreen('RESULT');
+        }
+      }, 650); // Feedback display duration
+    }, 150); // Gap between tap and result sound
   };
 
   // --- RENDER HELPERS ---
@@ -611,6 +624,37 @@ export default function App() {
         display: flex;
         flex-direction: column;
         alignItems: center;
+      }
+
+      /* Quiz Animations (M9-3) */
+      @keyframes staggerIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
+      .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
+
+      @keyframes goldFlash {
+        0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); border-color: ${THEME.brass}; }
+        50% { box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0.8); border-color: #ffcc00; background: #fffdf0; }
+        100% { box-shadow: 0 0 15px 5px rgba(255, 204, 0, 0.4); border-color: #ffcc00; background: #fffdf0; }
+      }
+      .feedback-correct { 
+        animation: goldFlash 0.5s ease-out forwards; 
+        z-index: 10;
+        transform: scale(1.05) !important;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-6px); }
+        40%, 80% { transform: translateX(6px); }
+      }
+      .feedback-wrong { 
+        animation: shake 0.4s ease-in-out; 
+        border-color: #f44 !important; 
+        background: #fff5f5 !important;
+        opacity: 0.8;
       }
     `}</style>
   );
@@ -1466,27 +1510,36 @@ export default function App() {
             gap: '20px', 
             width: '100%' 
           }}>
-            {currentQuestion.choices.map((item) => (
-              <div 
-                key={item.id} 
-                onClick={() => handleSelect(item.id)}
-                className="item-card"
-                style={itemCardStyle}
-              >
-                <img 
-                  src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
-                  alt={item.name} 
-                  style={{ ...imageStyle, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}
-                  onError={(e) => {
-                    e.target.onerror = null; 
-                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+            {currentQuestion.choices.map((item, index) => {
+              const isSelected = quizFeedback?.itemId === item.id;
+              const feedbackClass = isSelected ? (quizFeedback.isCorrect ? 'feedback-correct' : 'feedback-wrong') : '';
+              const staggerClass = `quiz-option-${index}`;
+              
+              return (
+                <div 
+                  key={item.id} 
+                  onClick={() => handleSelect(item.id)}
+                  className={`item-card ${staggerClass} ${feedbackClass}`}
+                  style={{
+                    ...itemCardStyle,
+                    pointerEvents: quizFeedback ? 'none' : 'auto'
                   }}
-                />
-                <div style={{ ...itemNameStyle, color: THEME.textDark, borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '10px' }}>
-                  {item.name}
+                >
+                  <img 
+                    src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
+                    alt={item.name} 
+                    style={{ ...imageStyle, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+                    }}
+                  />
+                  <div style={{ ...itemNameStyle, color: THEME.textDark, borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '10px' }}>
+                    {item.name}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
