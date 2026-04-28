@@ -1,5 +1,5 @@
 import React from 'react';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
