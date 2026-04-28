@@ -168,6 +168,7 @@ export default function App() {
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -659,29 +660,102 @@ export default function App() {
     `}</style>
   );
 
-  const renderAudioToggle = () => (
-    <button 
-      onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-      style={{
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        zIndex: 1000,
-        background: 'rgba(0,0,0,0.5)',
-        color: '#fff',
-        border: '1px solid rgba(255,255,255,0.2)',
-        borderRadius: '20px',
-        padding: '5px 12px',
-        fontSize: '0.8em',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '5px'
-      }}
-    >
-      <span>{isAudioEnabled ? '🔊 BGM ON' : '🔇 BGM OFF'}</span>
-    </button>
-  );
+  const renderAudioToggle = () => {
+    const isHudVisible = !['START', 'ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
+    if (!isHudVisible) return null;
+    
+    return (
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+        <button 
+          onClick={() => setIsMenuOpen(true)}
+          style={{
+            background: 'white',
+            border: `2px solid ${THEME.brass}`,
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            fontSize: '20px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          aria-label="Menu"
+        >
+          ⚙️
+        </button>
+      </div>
+    );
+  };
+
+  const renderMenuModal = () => {
+    if (!isMenuOpen) return null;
+    return (
+      <div 
+        style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)', zIndex: 3000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(4px)'
+        }}
+      >
+        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px' }}>
+          <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>設定</h2>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+            <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
+            <button 
+              onClick={() => {
+                audioEngine.playSfx('uiTapBottle');
+                setIsAudioEnabled(!isAudioEnabled);
+              }}
+              style={{
+                background: isAudioEnabled ? THEME.starGold : '#999',
+                color: isAudioEnabled ? THEME.textDark : '#fff', 
+                border: 'none', padding: '8px 16px', borderRadius: '20px',
+                fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              {isAudioEnabled ? 'ミュート' : '再生'}
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+            <span style={{ fontSize: '0.9em', color: '#999' }}>音量（準備中）</span>
+            <div style={{ width: '80px', height: '6px', background: '#eee', borderRadius: '3px' }}>
+              <div style={{ width: '70%', height: '100%', background: THEME.brass, borderRadius: '3px' }}></div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '25px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <button 
+              style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }}
+              onClick={() => { 
+                audioEngine.playSfx('uiTapBottle');
+                if (window.confirm("タイトルに戻りますか？")) { 
+                  setIsMenuOpen(false); 
+                  setScreen('START'); 
+                } 
+              }}
+            >
+              タイトルへ戻る
+            </button>
+            <button 
+              style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }}
+              onClick={() => {
+                audioEngine.playSfx('uiTapBottle');
+                setIsMenuOpen(false);
+              }}
+            >
+              閉じる
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const utilityHeaderStyle = {
     width: '100%',
@@ -1481,7 +1555,9 @@ export default function App() {
           color: THEME.sand, 
           borderBottom: `2px solid ${THEME.brass}`,
           padding: '12px 20px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+          justifyContent: 'flex-start',
+          gap: '20px'
         }}>
           <span style={{ fontSize: '0.9em' }}>鑑定依頼 {session.currentIndex + 1} / {session.questions.length}</span>
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
@@ -1585,6 +1661,7 @@ export default function App() {
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
+          {renderMenuModal()}
           {!isInitialLoading && (
             <div key={screen} className="screen-enter">
               {mainContent || (
