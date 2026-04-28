@@ -5588,135 +5588,72 @@ function applyWorkshopResult(state, result) {
 const HEROINES = [
   {
     id: "hakima",
-    fullName: "ハキマ・アル＝ルハーン",
-    name: "ハキマ",
-    age: 19,
-    role: "香料・薬草・染料の商会 品質鑑定見習い",
-    relationship: "ナーディルの一つ下の幼馴染",
-    personality: "負けず嫌いで家族思い。口は少し悪いが面倒見がいい。好きな相手ほど厳しく接する。",
-    routeTheme: "置いていかれた幼馴染が、もう一度隣に立つ話",
-    musicMood: "少し尖ったテンポ、跳ねるリズム、狐っぽい軽快さ、幼馴染の温かさと切なさ",
+    name: "ハキーマ",
+    role: "鑑定士見習い / 幼馴染",
+    age: 18,
+    themeColor: "#ffcc00",
+    // Gold/Yellow
     themeTrackId: "HAKIMA-01",
-    description: "狐耳と尻尾を持つ獣人少女。負けず嫌いだが面倒見がよく、公私ともにナーディルを支えてくれる。",
-    assets: {
-      standing: {
-        default: "characters/hakima/standing/normal.png",
-        normal: "characters/hakima/standing/normal.png",
-        joy: "characters/hakima/standing/joy.png",
-        anger: "characters/hakima/standing/anger.png",
-        cry: "characters/hakima/standing/cry.png",
-        fun: "characters/hakima/standing/fun.png",
-        surprise: "characters/hakima/standing/surprise.png",
-        sorrow: "characters/hakima/standing/sorrow.png"
-      },
-      face: {
-        default: "characters/hakima/face/normal.png",
-        normal: "characters/hakima/face/normal.png",
-        joy: "characters/hakima/face/joy.png",
-        anger: "characters/hakima/face/anger.png",
-        cry: "characters/hakima/face/cry.png",
-        fun: "characters/hakima/face/fun.png",
-        surprise: "characters/hakima/face/surprise.png",
-        sorrow: "characters/hakima/face/sorrow.png"
-      }
-    },
     visualConfig: {
-      facePosition: "center 24%"
+      facePosition: "center 20%",
+      standingScale: 1
     },
-    themeColor: "#ffcc00"
+    description: "星瓶堂の隣にある骨董品店の娘で、ナディールとは幼少期からの腐れ縁。現在は正式な鑑定士を目指して修行中の身である。",
+    personality: "快活で世話焼き。ナディールの錬金術の腕は認めているが、商売っ気のなさを危惧して、何かと理由をつけては店に顔を出してくる。",
+    relationship: "ナディールにとっては、気兼ねなく専門知識を相談できる数少ない相手。彼女もまた、古い道具に宿る物語を解き明かすため、彼の技術を頼りにしている。",
+    stats: {
+      precision: 80,
+      knowledge: 70,
+      social: 90
+    }
   },
   {
     id: "mira",
-    fullName: "ミラ-サフワーン",
     name: "ミラ",
-    age: 15,
-    role: "錬金大学 学生 / サフワーン商会の令嬢",
-    relationship: "ナーディルの大学時代の部活動の後輩",
-    personality: "礼儀正しく賢いが、少しませている。素材工学と商用錬金術が得意。",
-    routeTheme: "特別扱いされ続けた天才少女が、普通の恋を知る話",
-    musicMood: "透明感と知性、細かく動く可愛いメロディ、ベル、ピチカート、軽い弦、木管",
+    role: "錬金大学の後輩 / 商家令嬢",
+    age: 17,
+    themeColor: "#3d5afe",
+    // Royal Blue
     themeTrackId: "MIRA-01",
-    description: "王国屈指の大商会の娘でありながら、普通の女の子として見てほしいと願う賢い少女。",
-    assets: {
-      standing: {
-        default: "characters/mira/standing/normal.png",
-        normal: "characters/mira/standing/normal.png",
-        joy: "characters/mira/standing/joy.png",
-        anger: "characters/mira/standing/anger.png",
-        cry: "characters/mira/standing/cry.png",
-        fun: "characters/mira/standing/fun.png",
-        surprise: "characters/mira/standing/surprise.png",
-        sorrow: "characters/mira/standing/sorrow.png"
-      },
-      face: {
-        default: "characters/mira/face/normal.png",
-        normal: "characters/mira/face/normal.png",
-        joy: "characters/mira/face/joy.png",
-        anger: "characters/mira/face/anger.png",
-        cry: "characters/mira/face/cry.png",
-        fun: "characters/mira/face/fun.png",
-        surprise: "characters/mira/face/surprise.png",
-        sorrow: "characters/mira/face/sorrow.png"
-      }
-    },
     visualConfig: {
-      facePosition: "center 23%"
+      facePosition: "center 15%",
+      standingScale: 0.95
     },
-    themeColor: "#00ccff"
+    description: "マグリバル錬金大学でナディールの一学年後輩だった才女。実家は中央市場でも指折りの大商人で、自身も経営学と錬金術を学んでいる。",
+    personality: "理知的で少し勝気。効率と論理を重んじるが、ナディールの作る「機能美に優れた」作品に対しては、密かな尊敬を抱いている。",
+    relationship: "卒業後、家業の新規事業として星瓶堂との提携を画策し、ビジネスパートナーとしての立ち位置を確立しようとしている。彼女の持ち込む素材や市場情報は極めて正確である。",
+    stats: {
+      precision: 95,
+      knowledge: 85,
+      social: 60
+    }
   },
   {
     id: "dariya",
-    fullName: "ダリア・ザフラーン",
     name: "ダリヤ",
-    age: 23,
-    role: "王宮錬金術師",
-    relationship: "ナーディルの大学時代の先輩",
-    personality: "鬼族の女性。クールで気品があり、少し皮肉屋。内面は仕事でかなり疲れている。",
-    routeTheme: "一番でなくなった先輩が、それでも自分の価値を取り戻す話",
-    musicMood: "美しく重い、低弦、ピアノ、控えめな女声コーラス、金属的な響き、最後に救い",
+    role: "王宮錬金局・技官 / 知己",
+    age: 20,
+    themeColor: "#f44336",
+    // Crimson/Red
     themeTrackId: "DARIYA-01",
-    description: "普段はクールなエリートだが、星瓶堂ではふと気を抜いた素顔を見せる鬼族の先輩。",
-    assets: {
-      standing: {
-        default: "characters/dariya/standing/normal.png",
-        normal: "characters/dariya/standing/normal.png",
-        joy: "characters/dariya/standing/joy.png",
-        anger: "characters/dariya/standing/anger.png",
-        cry: "characters/dariya/standing/cry.png",
-        fun: "characters/dariya/standing/fun.png",
-        surprise: "characters/dariya/standing/surprise.png",
-        sorrow: "characters/dariya/standing/sorrow.png"
-      },
-      face: {
-        default: "characters/dariya/face/normal.png",
-        normal: "characters/dariya/face/normal.png",
-        joy: "characters/dariya/face/joy.png",
-        anger: "characters/dariya/face/anger.png",
-        cry: "characters/dariya/face/cry.png",
-        fun: "characters/dariya/face/fun.png",
-        surprise: "characters/dariya/face/surprise.png",
-        sorrow: "characters/dariya/face/sorrow.png"
-      }
-    },
     visualConfig: {
-      facePosition: "center 17%"
+      facePosition: "center 25%",
+      standingScale: 1.05
     },
-    themeColor: "#9400d3"
+    description: "若くして王宮錬金局の技官を務めるエリート。公務の傍ら、在野の優れた技術者であるナディールのもとへ、難易度の高い依頼や調査協力を持ち込んでくる。",
+    personality: "冷静沈着で公私の区別がはっきりしている。しかし、珍しい古物や高度な錬金術の話になると、年相応の好奇心を覗かせることもある。",
+    relationship: "元々は公的な依頼主の一人だったが、ナディールの亡き祖父とも交流があり、現在は個人的な興味も含めて星瓶堂の再興を静かに見守っている。",
+    stats: {
+      precision: 75,
+      knowledge: 95,
+      social: 80
+    }
   }
 ];
 function getHeroineAsset(heroineId, type, expression = "normal") {
-  var _a, _b, _c;
-  const heroine = HEROINES.find((h) => h.id === heroineId);
-  if (!heroine) return null;
-  if (type === "face") {
-    return `characters/${heroineId}/face_proc/${expression}.png`;
-  }
-  if (type === "standing") {
-    return `characters/${heroineId}/standing_proc/${expression}.png`;
-  }
-  const variantPath = ((_a = heroine.assets[type]) == null ? void 0 : _a[expression]) || ((_b = heroine.assets[type]) == null ? void 0 : _b.normal) || ((_c = heroine.assets[type]) == null ? void 0 : _c.default);
-  if (!variantPath) return null;
-  return variantPath;
+  const dir = type === "face" ? "face_proc" : "standing_proc";
+  const ext = "png";
+  return `characters/${heroineId}/${dir}/${expression}.${ext}`;
 }
 function getResultExpression(correctCount) {
   if (correctCount >= 5) return "fun";
@@ -5833,6 +5770,9 @@ const TRACKS = {
     title: "Tea Under the Rising Sun"
   }
 };
+function getTrackById(id) {
+  return TRACKS[id] || null;
+}
 const SELECTED_SFX = {
   uiTapBottle: "uiTapBottle01",
   uiConfirmChime: "uiConfirmChime01",
@@ -5977,6 +5917,20 @@ class SimpleAudioEngine {
       });
     } catch (err) {
       console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
+    }
+  }
+  /**
+   * Preload a track to warm up the cache
+   * @param {Object} track - Track object from tracks.js
+   */
+  preloadTrack(track) {
+    if (!track || !track.src) return;
+    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
+    try {
+      const audio = new Audio(fullSrc);
+      audio.preload = "auto";
+    } catch (err) {
+      console.warn(`Preload failed for ${track.id}:`, err);
     }
   }
   /**
@@ -6383,6 +6337,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
   }))))));
 }
 function App() {
+  var _a;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -6400,6 +6355,9 @@ function App() {
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isHeroineLoading, setIsHeroineLoading] = useState(false);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MIN_SCALE = 0.85;
@@ -6545,10 +6503,68 @@ function App() {
       setScreen("DAY_END");
     }
   };
-  const handleSelectHeroine = (id) => {
-    audioEngine.playSfx("uiConfirmChime");
-    setActiveHeroineId(id);
-    setScreen("INTRO");
+  useEffect(() => {
+    const essentialAssets = [
+      // BGM
+      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}audio/bgm/main/main01_title.mp3`.replace(/([^:])\/\//g, "$1/") },
+      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}audio/bgm/main/main02_shop.mp3`.replace(/([^:])\/\//g, "$1/") },
+      // UI Backgrounds
+      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}images/background/bg_shop_exterior_day.jpg`.replace(/([^:])\/\//g, "$1/") },
+      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}images/background/bg_shop_interior_service.jpg`.replace(/([^:])\/\//g, "$1/") }
+    ];
+    const loadAll = async () => {
+      await preloadAssets(essentialAssets, setLoadingProgress);
+      setIsInitialLoading(false);
+    };
+    loadAll();
+  }, []);
+  const preloadAssets = async (assetList, onProgress) => {
+    let loadedCount = 0;
+    const totalCount = assetList.length;
+    if (totalCount === 0) return;
+    const loadPromises = assetList.map(async (asset) => {
+      try {
+        if (asset.type === "image") {
+          await new Promise((resolve) => {
+            const img = new Image();
+            img.src = asset.src;
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        } else if (asset.type === "audio") {
+          const audio = new Audio(asset.src);
+          audio.preload = "auto";
+        }
+        loadedCount++;
+        if (onProgress) onProgress(Math.floor(loadedCount / totalCount * 100));
+      } catch (err) {
+        console.warn("Preload failed:", asset.src);
+      }
+    });
+    await Promise.all(loadPromises);
+  };
+  const handleSelectHeroine = async (heroineId) => {
+    setIsHeroineLoading(true);
+    setLoadingProgress(0);
+    const heroine = HEROINES.find((h) => h.id === heroineId);
+    const themeTrack = getTrackById(heroine.themeTrackId);
+    const heroineAssets = [
+      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}${themeTrack.src}`.replace(/([^:])\/\//g, "$1/") },
+      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}characters/${heroineId}/standing_proc/normal.png`.replace(/([^:])\/\//g, "$1/") },
+      { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}characters/${heroineId}/face_proc/normal.png`.replace(/([^:])\/\//g, "$1/") }
+    ];
+    await preloadAssets(heroineAssets, setLoadingProgress);
+    setActiveHeroineId(heroineId);
+    setWorkshopState((prev) => ({ ...prev, activeHeroineId: heroineId }));
+    saveGameData({
+      workshopState: { ...workshopState, activeHeroineId: heroineId },
+      affection,
+      seenEventIds
+    });
+    setTimeout(() => {
+      setIsHeroineLoading(false);
+      setScreen("INTRO");
+    }, 500);
   };
   const handleNextDay = () => {
     audioEngine.playSfx("uiTapBottle");
@@ -6636,6 +6652,19 @@ function App() {
       .heroine-card:active { transform: scale(0.98); background: ${THEME.sand} !important; }
       .memory-item { border-left: 4px solid ${THEME.brassDark}; background: rgba(0,0,0,0.1); transition: background 0.2s; }
       .memory-item:active { background: rgba(197, 160, 89, 0.2); }
+      
+      @keyframes screenIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .screen-enter {
+        animation: screenIn 0.4s ease-out forwards;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        alignItems: center;
+      }
     `);
   const renderAudioToggle = () => /* @__PURE__ */ React.createElement(
     "button",
@@ -6708,7 +6737,15 @@ function App() {
       "記録を全て消去する"
     )));
   } else if (screen === "INTRO") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: cardStyle }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "12px", alignItems: "center", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: 1, minWidth: 0, marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: THEME.brass, marginBottom: "4px", fontWeight: "bold" } }, SHOP.localName), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "「おはよう、", PROTAGONIST.shortName, "。今日もお店を開けましょうか」"))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "transparent", borderLeft: "none", padding: 0 } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 8px 0" } }, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "今日の客人は、どんな品を求めてやってくるだろうか。")), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "240px" } }, "接客を始める"))));
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, workshopState.day, "日目：", SHOP.name, "の朝"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "flex-start", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        speaker: activeHeroine.name,
+        text: `おはよう、${PROTAGONIST.shortName}。今日もお店を開けましょうか。`,
+        themeColor: activeHeroine.themeColor,
+        onComplete: handleBeginService
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.4)", color: "#fff", borderLeft: `4px solid ${THEME.brass}` } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 8px 0" } }, "朝の光が差し込む店内で、", activeHeroine.name, "は手際よく準備を手伝ってくれている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0 } }, "今日の客人は、どんな品を求めてやってくるだろうか。")), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "240px", marginTop: "20px" } }, "接客を始める"))));
   } else if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
@@ -6721,7 +6758,14 @@ function App() {
       1: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。",
       0: "お客は困ったように笑った。「気持ちはありがたいんだけど、ちょっと違うかもしれないな」今日の失敗も、きっと明日の目利きにつながる。"
     };
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務報告書"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "4px", border: `3px double ${THEME.brass}` } }, /* @__PURE__ */ React.createElement("div", { style: narrativeBoxStyle }, resultNarrations[correctCount]), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "業務報告書"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "4px", border: `3px double ${THEME.brass}` } }, /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        text: resultNarrations[correctCount],
+        themeColor: THEME.brass,
+        onComplete: handleEndDay
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
@@ -6742,7 +6786,7 @@ function App() {
   } else if (screen === "DAY_END") {
     const correctCount = session ? session.answers.filter((a) => a.isCorrect).length : 0;
     const mgmt = getWorkshopResult(correctCount);
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房日誌"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "工房日誌"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "nowrap", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
@@ -6782,7 +6826,7 @@ function App() {
           e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", justifyContent: "center" } }, !still && /* @__PURE__ */ React.createElement(
+    )), !still && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
@@ -6790,14 +6834,30 @@ function App() {
         size: "large",
         expression: activeEvent.expression
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, flex: "1", minWidth: "280px", marginBottom: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.9em", color: activeHeroine.themeColor, fontWeight: "bold", marginBottom: "10px" } }, activeEvent.speaker), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1.1em", lineHeight: "1.6" } }, "「", activeEvent.text, "」"))), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        speaker: activeEvent.speaker,
+        text: activeEvent.text,
+        themeColor: activeHeroine.themeColor,
+        onComplete: handleCloseEvent,
+        skip: seenEventIds.includes(activeEvent.id)
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "100%", maxWidth: "300px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: handleCloseEvent,
-        style: { ...buttonStyle, width: "100%", maxWidth: "240px", background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }
+        style: { ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }
       },
-      "記録を閉じる"
-    )));
+      "次へ"
+    ), seenEventIds.includes(activeEvent.id) && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: handleCloseEvent,
+        style: { ...buttonStyle, flex: 1, margin: 0, background: "#444", color: "#ccc", fontSize: "0.8em" }
+      },
+      "SKIP"
+    ))));
   } else if (screen === "VISUAL_TEST") {
     const bgList = Object.values(BACKGROUND_IMAGES);
     const stillList = Object.values(STILL_IMAGES);
@@ -6909,7 +6969,7 @@ function App() {
     }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
   } else if (screen === "HEROINE_SELECT") {
     const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "パートナーを選ぶ"), /* @__PURE__ */ React.createElement("div", { style: {
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       justifyContent: "center",
       gap: "20px",
@@ -6979,7 +7039,7 @@ function App() {
         }
       },
       selectedHeroine.name,
-      "と店を開く"
+      "を頼る"
     )), /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       gap: "12px",
@@ -7008,7 +7068,7 @@ function App() {
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)"
     } }, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+      gridTemplateColumns: "1fr 1fr",
       gap: "20px",
       width: "100%"
     } }, currentQuestion.choices.map((item) => /* @__PURE__ */ React.createElement(
@@ -7034,7 +7094,33 @@ function App() {
       /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px" } }, item.name)
     )))));
   }
-  return /* @__PURE__ */ React.createElement("div", { style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る")))));
+  const renderLoadingOverlay = (message = "Loading...") => /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0,0,0,0.85)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1e3,
+    color: THEME.sand,
+    fontFamily: "'Outfit', sans-serif"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.2em", marginBottom: "20px", letterSpacing: "0.1em" } }, message), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "200px",
+    height: "4px",
+    background: "rgba(255,255,255,0.1)",
+    borderRadius: "2px",
+    overflow: "hidden"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    width: `${loadingProgress}%`,
+    height: "100%",
+    background: THEME.starGold,
+    transition: "width 0.3s"
+  } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
+  return /* @__PURE__ */ React.createElement("div", { style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_a = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _a.name}を待っています...`), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
@@ -7080,6 +7166,83 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
       onError: () => setImgError(true)
     }
   ));
+}
+function VNBox({ text, speaker, themeColor, onComplete, speed = 30, skip = false }) {
+  const [displayText, setDisplayText] = useState(skip ? text : "");
+  const [isComplete, setIsComplete] = useState(skip);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    if (skip) {
+      setDisplayText(text);
+      setIsComplete(true);
+      return;
+    }
+    setDisplayText("");
+    setIsComplete(false);
+    setCurrentIndex(0);
+  }, [text, skip]);
+  useEffect(() => {
+    if (isComplete || skip) return;
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText((prev) => prev + text[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    } else {
+      setIsComplete(true);
+    }
+  }, [currentIndex, text, isComplete, speed, skip]);
+  const handleClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isComplete) {
+      setDisplayText(text);
+      setIsComplete(true);
+    } else if (onComplete) {
+      onComplete();
+    }
+  };
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      onClick: handleClick,
+      style: {
+        width: "100%",
+        minHeight: "80px",
+        background: "rgba(26, 42, 58, 0.9)",
+        borderLeft: `4px solid ${themeColor || "#c5a059"}`,
+        padding: "15px 20px",
+        borderRadius: "0 8px 8px 0",
+        cursor: "pointer",
+        color: "#f4e9d5",
+        textAlign: "left",
+        position: "relative",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+        fontFamily: "'Inter', sans-serif",
+        userSelect: "none"
+      }
+    },
+    speaker && /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.85em",
+      color: themeColor || "#c5a059",
+      fontWeight: "bold",
+      marginBottom: "8px",
+      letterSpacing: "0.05em"
+    } }, speaker),
+    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "1.5em" } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "2px" } }, "|")),
+    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: "8px",
+      right: "12px",
+      fontSize: "0.65em",
+      opacity: 0.5,
+      animation: "vn-bounce 1s infinite"
+    } }, "▼ NEXT"),
+    /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      `)
+  );
 }
 const THEME = {
   sand: "#e2d1b1",
