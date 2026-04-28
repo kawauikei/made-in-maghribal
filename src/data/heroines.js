@@ -17,6 +17,7 @@ export const HEROINES = [
     personality: "負けず嫌いで家族思い。口は少し悪いが面倒見がいい。好きな相手ほど厳しく接する。",
     routeTheme: "置いていかれた幼馴染が、もう一度隣に立つ話",
     musicMood: "少し尖ったテンポ、跳ねるリズム、狐っぽい軽快さ、幼馴染の温かさと切なさ",
+    themeTrackId: "hakimaTheme",
     description: "狐耳と尻尾を持つ獣人少女。負けず嫌いだが面倒見がよく、公私ともにナーディルを支えてくれる。",
     assets: {
       standing: {
@@ -52,6 +53,7 @@ export const HEROINES = [
     personality: "礼儀正しく賢いが、少しませている。素材工学と商用錬金術が得意。",
     routeTheme: "特別扱いされ続けた天才少女が、普通の恋を知る話",
     musicMood: "透明感と知性、細かく動く可愛いメロディ、ベル、ピチカート、軽い弦、木管",
+    themeTrackId: "miraTheme",
     description: "王国屈指の大商会の娘でありながら、普通の女の子として見てほしいと願う賢い少女。",
     assets: {
       standing: {
@@ -87,6 +89,7 @@ export const HEROINES = [
     personality: "鬼族の女性。クールで気品があり、少し皮肉屋。内面は仕事でかなり疲れている。",
     routeTheme: "一番でなくなった先輩が、それでも自分の価値を取り戻す話",
     musicMood: "美しく重い、低弦、ピアノ、控えめな女声コーラス、金属的な響き、最後に救い",
+    themeTrackId: "dariyaTheme",
     description: "普段はクールなエリートだが、星瓶堂ではふと気を抜いた素顔を見せる鬼族の先輩。",
     assets: {
       standing: {
