@@ -5874,13 +5874,25 @@ const SFX_CANDIDATES = [
   { id: "workshopDayEnd03", group: "workshopDayEnd", variant: 3, src: "audio/se/workshop_day_end_01_3.mp3", label: "Day End 3", volume: 0.8, start: 0, end: null, note: "Soft closing" },
   { id: "workshopDayEnd04", group: "workshopDayEnd", variant: 4, src: "audio/se/workshop_day_end_01_4.mp3", label: "Day End 4", volume: 0.8, start: 0, end: null, note: "Quiet closing" }
 ];
+const clampVolume$1 = (value, fallback = 0.8) => {
+  if (typeof value !== "number" && typeof value !== "string") return fallback;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+};
 class SimpleAudioEngine {
   constructor() {
     this.audio = null;
+    this.lastSfx = null;
     this.currentTrackId = null;
     this.isMuted = false;
-    this.volume = 0.5;
+    this.bgmVolume = 0.8;
+    this.seVolume = 0.8;
+    this.volume = this.bgmVolume;
     this.baseUrl = "https://kawauikei.github.io/made-in-maghribal/";
+    if (typeof window !== "undefined") {
+      window.__madeInMaghribalAudioEngine = this;
+    }
   }
   /**
    * Play a track by its manifest data
@@ -5897,7 +5909,7 @@ class SimpleAudioEngine {
     try {
       this.audio = new Audio(fullSrc);
       this.audio.loop = track.loop || false;
-      this.audio.volume = this.volume;
+      this.audio.volume = this.bgmVolume;
       this.audio.muted = this.isMuted;
       this.audio.play().catch((err) => {
         console.warn(`Audio playback failed for ${track.id}:`, err.message);
@@ -5930,14 +5942,30 @@ class SimpleAudioEngine {
     }
   }
   /**
-   * Set global volume (0.0 to 1.0)
+   * Set BGM volume (0.0 to 1.0)
    * @param {number} value 
    */
-  setVolume(value) {
-    this.volume = Math.max(0, Math.min(1, value));
+  setBgmVolume(value) {
+    this.bgmVolume = clampVolume$1(value);
+    this.volume = this.bgmVolume;
     if (this.audio) {
-      this.audio.volume = this.volume;
+      this.audio.volume = this.bgmVolume;
     }
+  }
+  /**
+   * Set SE volume (0.0 to 1.0)
+   * @param {number} value
+   */
+  setSeVolume(value) {
+    this.seVolume = clampVolume$1(value);
+  }
+  /**
+   * Backward-compatible alias for callers that expect a single global volume.
+   * @param {number} value
+   */
+  setVolume(value) {
+    this.setBgmVolume(value);
+    this.setSeVolume(value);
   }
   /**
    * Check if currently playing
@@ -5959,7 +5987,7 @@ class SimpleAudioEngine {
     const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, "$1/");
     try {
       const sfx = new Audio(fullSrc);
-      const targetVol = (candidate.volume || 1) * this.volume * 1.5;
+      const targetVol = (candidate.volume || 1) * this.seVolume * 1.5;
       sfx.volume = Math.max(0, Math.min(1, targetVol));
       if (candidate.start) {
         sfx.currentTime = candidate.start;
@@ -5976,6 +6004,7 @@ class SimpleAudioEngine {
       sfx.play().catch((err) => {
         console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
       });
+      this.lastSfx = sfx;
     } catch (err) {
       console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
     }
@@ -6038,6 +6067,13 @@ function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
 }
 const SAVE_DATA_VERSION = "1.0";
 const STORAGE_KEY = "made_in_maghribal_save";
+const DEFAULT_AUDIO_VOLUME$1 = 0.8;
+const clampVolume = (value, fallback = DEFAULT_AUDIO_VOLUME$1) => {
+  if (typeof value !== "number" && typeof value !== "string") return fallback;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+};
 function createDefaultSaveData() {
   return {
     version: SAVE_DATA_VERSION,
@@ -6050,6 +6086,8 @@ function createDefaultSaveData() {
     activeEvent: null,
     vnBacklog: [],
     textSpeed: "normal",
+    bgmVolume: DEFAULT_AUDIO_VOLUME$1,
+    seVolume: DEFAULT_AUDIO_VOLUME$1,
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -6086,6 +6124,8 @@ function normalizeSaveData(raw) {
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
   const validTextSpeeds = ["slow", "normal", "fast", "instant"];
   normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : "normal";
+  normalized.bgmVolume = clampVolume(normalized.bgmVolume);
+  normalized.seVolume = clampVolume(normalized.seVolume);
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
   }
@@ -6416,6 +6456,7 @@ const TEXT_SPEED_META = {
   instant: { label: "瞬時", delay: 0 }
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
+const DEFAULT_AUDIO_VOLUME = 0.8;
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#222", borderRadius: "8px", border: "1px solid #444", color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", padding: "10px 12px", borderBottom: "1px solid #444", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "サウンド設定 Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "8px 14px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" } }, "Close")), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "12px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
@@ -6512,6 +6553,8 @@ function App() {
   const [menuView, setMenuView] = useState("main");
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState("normal");
+  const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
+  const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
@@ -6627,6 +6670,8 @@ function App() {
       setHasSave(true);
       setRouteMode(data.routeMode || "normal");
       setTextSpeed(data.textSpeed || "normal");
+      setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
+      setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
       setSeenEventIds(data.seenEventIds || []);
     }
@@ -6641,6 +6686,8 @@ function App() {
         workshopState,
         affection,
         textSpeed,
+        bgmVolume,
+        seVolume,
         isAudioEnabled,
         seenEventIds,
         activeEvent,
@@ -6648,7 +6695,13 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  useEffect(() => {
+    audioEngine.setBgmVolume(bgmVolume);
+  }, [bgmVolume]);
+  useEffect(() => {
+    audioEngine.setSeVolume(seVolume);
+  }, [seVolume]);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6715,6 +6768,8 @@ function App() {
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || "normal");
       setTextSpeed(data.textSpeed || "normal");
+      setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
+      setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -6808,6 +6863,8 @@ function App() {
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
+      bgmVolume,
+      seVolume,
       seenEventIds,
       vnBacklog
     });
@@ -7101,7 +7158,33 @@ function App() {
           },
           meta.label
         );
-      }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
+      }))), /* @__PURE__ */ React.createElement("div", { style: { padding: "14px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", color: THEME.textDark, fontWeight: "bold", marginBottom: "8px" } }, "BGM音量"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          "data-testid": "bgm-volume-slider",
+          "aria-label": "BGM音量",
+          type: "range",
+          min: "0",
+          max: "100",
+          step: "1",
+          value: Math.round(bgmVolume * 100),
+          onChange: (e) => setBgmVolume(Number(e.target.value) / 100),
+          style: { flex: 1, minWidth: 0 }
+        }
+      ), /* @__PURE__ */ React.createElement("span", { style: { width: "48px", textAlign: "right", fontSize: "0.85em", color: THEME.textDark, fontWeight: "bold" } }, Math.round(bgmVolume * 100), "%"))), /* @__PURE__ */ React.createElement("div", { style: { padding: "14px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", color: THEME.textDark, fontWeight: "bold", marginBottom: "8px" } }, "SE音量"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          "data-testid": "se-volume-slider",
+          "aria-label": "SE音量",
+          type: "range",
+          min: "0",
+          max: "100",
+          step: "1",
+          value: Math.round(seVolume * 100),
+          onChange: (e) => setSeVolume(Number(e.target.value) / 100),
+          style: { flex: 1, minWidth: 0 }
+        }
+      ), /* @__PURE__ */ React.createElement("span", { style: { width: "48px", textAlign: "right", fontSize: "0.85em", color: THEME.textDark, fontWeight: "bold" } }, Math.round(seVolume * 100), "%"))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
         audioEngine.playSfx("uiTapBottle");
         setIsAudioEnabled(!isAudioEnabled);
       }, style: { background: isAudioEnabled ? THEME.starGold : "#999", color: isAudioEnabled ? THEME.textDark : "#fff", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "0.9em", fontWeight: "bold", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" } }, isAudioEnabled ? "ON" : "OFF")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", color: "#999" } }, "簡易セーブ状態"), /* @__PURE__ */ React.createElement("div", { style: { width: "80px", height: "6px", background: "#eee", borderRadius: "3px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "70%", height: "100%", background: THEME.brass, borderRadius: "3px" } }))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "25px", display: "flex", flexDirection: "column", gap: "12px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-open", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: "100%" }, onClick: () => setMenuView("log") }, "ログ"), /* @__PURE__ */ React.createElement("button", { style: { ...buttonStyle, marginTop: 0, background: "#ff5555", color: "white", width: "100%" }, onClick: () => {
