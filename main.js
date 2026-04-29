@@ -6049,6 +6049,7 @@ function createDefaultSaveData() {
     seenEventIds: [],
     activeEvent: null,
     vnBacklog: [],
+    textSpeed: "normal",
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -6083,6 +6084,8 @@ function normalizeSaveData(raw) {
     };
   }
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
+  const validTextSpeeds = ["slow", "normal", "fast", "instant"];
+  normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : "normal";
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
   }
@@ -6406,6 +6409,13 @@ const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE
 const getBacklogRouteModeLabel = (routeMode) => {
   return routeMode === "long_history" ? "過去から続く縁" : "現在から育つ縁";
 };
+const TEXT_SPEED_META = {
+  slow: { label: "遅い", delay: 45 },
+  normal: { label: "標準", delay: 30 },
+  fast: { label: "速い", delay: 18 },
+  instant: { label: "瞬時", delay: 0 }
+};
+const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#222", borderRadius: "8px", border: "1px solid #444", color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", padding: "10px 12px", borderBottom: "1px solid #444", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "サウンド設定 Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "8px 14px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" } }, "Close")), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "12px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
@@ -6501,6 +6511,7 @@ function App() {
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [menuView, setMenuView] = useState("main");
   const [vnBacklog, setVnBacklog] = useState([]);
+  const [textSpeed, setTextSpeed] = useState("normal");
   const backlogScrollRef = useRef(null);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
@@ -6615,6 +6626,8 @@ function App() {
     if (data) {
       setHasSave(true);
       setRouteMode(data.routeMode || "normal");
+      setTextSpeed(data.textSpeed || "normal");
+      setIsAudioEnabled(Boolean(data.isAudioEnabled));
       setSeenEventIds(data.seenEventIds || []);
     }
   }, []);
@@ -6627,6 +6640,7 @@ function App() {
         routeMode,
         workshopState,
         affection,
+        textSpeed,
         isAudioEnabled,
         seenEventIds,
         activeEvent,
@@ -6634,7 +6648,7 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6676,6 +6690,8 @@ function App() {
     }
   }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
+  const textSpeedMeta = getTextSpeedMeta(textSpeed);
+  const isInstantTextSpeed = textSpeed === "instant";
   const handleStartGame = () => {
     audioEngine.playSfx("uiTapBottle");
     clearSaveData();
@@ -6698,6 +6714,7 @@ function App() {
       setScreen(data.screen);
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || "normal");
+      setTextSpeed(data.textSpeed || "normal");
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -6790,6 +6807,7 @@ function App() {
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
+      textSpeed,
       seenEventIds,
       vnBacklog
     });
@@ -7057,7 +7075,33 @@ function App() {
           backdropFilter: "blur(4px)"
         }
       },
-      /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "300px", background: "#fff", padding: "25px", borderRadius: "12px", maxHeight: "90vh", overflow: "hidden", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 20px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.4em" } }, "設定"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
+      /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "300px", background: "#fff", padding: "25px", borderRadius: "12px", maxHeight: "90vh", overflow: "hidden", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 20px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.4em" } }, "設定"), /* @__PURE__ */ React.createElement("div", { style: { padding: "14px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", color: THEME.textDark, fontWeight: "bold", marginBottom: "8px" } }, "テキスト速度"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "8px" } }, Object.entries(TEXT_SPEED_META).map(([mode, meta]) => {
+        const isSelected = textSpeed === mode;
+        return /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            key: mode,
+            "data-testid": `text-speed-${mode}`,
+            "aria-pressed": isSelected,
+            onClick: () => {
+              audioEngine.playSfx("uiTapBottle");
+              setTextSpeed(mode);
+            },
+            style: {
+              ...buttonStyle,
+              margin: 0,
+              padding: "10px 8px",
+              fontSize: "0.76em",
+              lineHeight: 1.2,
+              background: isSelected ? THEME.starGold : "#eef1f4",
+              color: isSelected ? THEME.textDark : "#445",
+              border: `1px solid ${isSelected ? THEME.starGold : "#ccd6dd"}`,
+              boxShadow: isSelected ? "0 0 0 2px rgba(255, 204, 0, 0.16)" : "none"
+            }
+          },
+          meta.label
+        );
+      }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
         audioEngine.playSfx("uiTapBottle");
         setIsAudioEnabled(!isAudioEnabled);
       }, style: { background: isAudioEnabled ? THEME.starGold : "#999", color: isAudioEnabled ? THEME.textDark : "#fff", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "0.9em", fontWeight: "bold", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" } }, isAudioEnabled ? "ON" : "OFF")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", color: "#999" } }, "簡易セーブ状態"), /* @__PURE__ */ React.createElement("div", { style: { width: "80px", height: "6px", background: "#eee", borderRadius: "3px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "70%", height: "100%", background: THEME.brass, borderRadius: "3px" } }))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "25px", display: "flex", flexDirection: "column", gap: "12px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-open", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: "100%" }, onClick: () => setMenuView("log") }, "ログ"), /* @__PURE__ */ React.createElement("button", { style: { ...buttonStyle, marginTop: 0, background: "#ff5555", color: "white", width: "100%" }, onClick: () => {
@@ -7200,6 +7244,8 @@ function App() {
         speaker: "ナーディル",
         pages: prologuePages,
         themeColor: THEME.brass,
+        speed: textSpeedMeta.delay,
+        skip: isInstantTextSpeed,
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "PROLOGUE" }),
         onComplete: () => {
           setIsPrologueComplete(true);
@@ -7224,6 +7270,8 @@ function App() {
         speaker: activeHeroine.name,
         text: activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`,
         themeColor: activeHeroine.themeColor,
+        speed: textSpeedMeta.delay,
+        skip: isInstantTextSpeed,
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
         onComplete: handleBeginService
       }
@@ -7245,6 +7293,8 @@ function App() {
       {
         text: resultNarrations[correctCount],
         themeColor: THEME.brass,
+        speed: textSpeedMeta.delay,
+        skip: isInstantTextSpeed,
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
         onComplete: handleEndDay
       }
@@ -7315,9 +7365,10 @@ function App() {
         speaker: activeEvent.speaker,
         pages: getEventPages(activeEvent, routeMode),
         themeColor: activeHeroine.themeColor,
+        speed: textSpeedMeta.delay,
+        skip: isInstantTextSpeed || seenEventIds.includes(activeEvent.id),
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "EVENT" }),
-        onComplete: handleCloseEvent,
-        skip: seenEventIds.includes(activeEvent.id)
+        onComplete: handleCloseEvent
       }
     ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "100%", maxWidth: "300px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
       "button",
@@ -7602,6 +7653,8 @@ function App() {
         speaker: activeHeroine.name,
         text: endingData.text,
         themeColor: activeHeroine.themeColor,
+        speed: textSpeedMeta.delay,
+        skip: isInstantTextSpeed,
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "ENDING" }),
         onComplete: handleFinishGame
       }
