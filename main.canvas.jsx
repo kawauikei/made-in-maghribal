@@ -1375,7 +1375,7 @@ function App() {
         {renderThemeStyles()}
         {renderAudioToggle()}
         
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める�E�E</h1>
+        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
         
         {/* Tabs for Heroine selection */}
         <div style={{ 

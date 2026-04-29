@@ -22,6 +22,11 @@ const expectNoConsoleErrors = (page) => {
   return errors;
 };
 
+const expectStableBoxHeight = async (locator, expectedHeight) => {
+  const box = await locator.boundingBox();
+  expect(Math.round(box.height)).toBe(expectedHeight);
+};
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => {
@@ -44,17 +49,31 @@ test('normal route smoke flow', async ({ page }) => {
   const vnBox = page.getByTestId('vn-box');
   await expect(vnBox).toBeVisible();
   await expect(page.getByTestId('prologue-next')).toHaveCount(0);
+  const initialBox = await vnBox.boundingBox();
+  const vnBoxHeight = Math.round(initialBox.height);
+  expect(vnBoxHeight).toBeGreaterThan(0);
+
+  await vnBox.click();
+  await expect(vnBox).toContainText('砂漠の街マグリバル');
+  await expectStableBoxHeight(vnBox, vnBoxHeight);
 
   await vnBox.click();
   await vnBox.click();
+  await expect(vnBox).toContainText('若店主ナーディル');
+  await expectStableBoxHeight(vnBox, vnBoxHeight);
+
   await vnBox.click();
   await vnBox.click();
-  await vnBox.click();
+  await expect(vnBox).toContainText('これからの10日間');
+  await expectStableBoxHeight(vnBox, vnBoxHeight);
+
   await vnBox.click();
   await expect(page.getByTestId('prologue-next')).toBeVisible();
+  await assertNoHorizontalScroll(page);
 
   await page.getByTestId('prologue-next').click();
   await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
+  await expect(page.getByText('誰との縁を深める？', { exact: true })).toBeVisible();
   await expect(page.getByTestId('heroine-tab-hakima')).toBeVisible();
   await assertNoHorizontalScroll(page);
 
