@@ -726,7 +726,7 @@ export default function App() {
           }}
           aria-label="Menu"
         >
-          笞呻ｸ・        </button>
+          ⚙️        </button>
       </div>
     );
   };
@@ -854,7 +854,7 @@ export default function App() {
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
           <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
-            ・・{SHOP.localName} ・・          </div>
+            — {SHOP.localName} —          </div>
         </div>
 
         <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
