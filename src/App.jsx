@@ -1708,6 +1708,7 @@ export default function App() {
               speaker={activeHeroine.name}
               text={endingData.text}
               themeColor={activeHeroine.themeColor}
+              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />
           </div>

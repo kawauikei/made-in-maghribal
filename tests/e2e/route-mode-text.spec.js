@@ -124,3 +124,30 @@ test('verify RESULT backlog entry is stored', async ({ page }) => {
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
   expect(saved.vnBacklog.some((entry) => entry.screen === 'RESULT')).toBe(true);
 });
+
+test('verify ENDING backlog entry is stored', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('made_in_maghribal_save', JSON.stringify({
+      version: "1.0",
+      screen: 'FINAL_RESULT',
+      activeHeroineId: 'hakima',
+      routeMode: 'normal',
+      workshopState: { day: 10, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'hakima' },
+      affection: { hakima: 80, mira: 0, dariya: 0 },
+      seenEventIds: [],
+      activeEvent: null,
+      vnBacklog: [],
+      isAudioEnabled: false
+    }));
+  });
+
+  await page.goto('/');
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByText('結末を見届ける')).toBeVisible({ timeout: 15000 });
+  await page.getByText('結末を見届ける').click();
+  await expect(page.getByText('タイトルへ戻る')).toBeVisible({ timeout: 15000 });
+  await page.waitForTimeout(3000);
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.vnBacklog.some((entry) => entry.screen === 'ENDING')).toBe(true);
+});
