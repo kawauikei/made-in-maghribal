@@ -6047,6 +6047,7 @@ function createDefaultSaveData() {
     workshopState: createInitialWorkshopState(),
     affection: createInitialAffection(HEROINES.map((h) => h.id)),
     seenEventIds: [],
+    activeEvent: null,
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -6083,6 +6084,9 @@ function normalizeSaveData(raw) {
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
+  }
+  if (normalized.activeEvent && typeof normalized.activeEvent !== "object") {
+    normalized.activeEvent = null;
   }
   return normalized;
 }
@@ -6137,6 +6141,12 @@ const AFFECTION_EVENTS = {
       speaker: "ハキマ",
       expression: "joy",
       text: "ナーディル、さっきの品選び……なんだかあんたが店を継いだばかりの頃を思い出したよ。一人前になろうと必死なのは、見てればわかる。……あの時より、ずっと頼もしくなったね。",
+      routePages: {
+        long_history: [
+          "ナーディル、さっきの品選び……あんたが店を継いだ日のことを思い出したよ。",
+          "あの頃からずっと、あんたの隣にいるけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。"
+        ]
+      },
       stillImageId: "hakimaMorningVisit01"
     },
     {
@@ -6158,6 +6168,12 @@ const AFFECTION_EVENTS = {
       speaker: "ミラ",
       expression: "fun",
       text: "……ふふっ。先輩とこうして品物を見つめていると、商会の義務も学園の課題も、すべて忘れてしまえそうです。ただの『私』でいられるこの場所が、少しずつ特別になってきました。",
+      routePages: {
+        long_history: [
+          "……ふふっ。先輩とこうしていると、子供の頃に路地裏を駆け回っていたのを思い出します。",
+          "今は立場こそ違いますが、先輩の隣が一番落ち着くのは……昔から変わりませんね。"
+        ]
+      },
       stillImageId: "miraAfterSchool01"
     },
     {
@@ -6179,6 +6195,12 @@ const AFFECTION_EVENTS = {
       speaker: "ダリヤ",
       expression: "joy",
       text: "……ふぅ。王宮や研究所の喧騒を離れて、ここで君の話を聞いていると、不思議と心が凪いでいくのがわかるよ。この工房の空気は、どんな霊薬よりも私に効くらしい。感謝しているよ、ナーディル。",
+      routePages: {
+        long_history: [
+          "……ふぅ。君がまだ薬草の区別もつかなかった頃からの付き合いだが……。",
+          "今や、私の最も信頼する鑑定士だ。君の工房の空気は、どんな霊薬よりも私を安らげてくれるよ。"
+        ]
+      },
       stillImageId: "dariyaAfterHours01"
     },
     {
@@ -6202,6 +6224,17 @@ function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
   );
   if (eligibleEvents.length === 0) return null;
   return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
+}
+function getEventPages(event, routeMode) {
+  var _a;
+  if (!event) return [""];
+  if (routeMode === "long_history" && ((_a = event.routePages) == null ? void 0 : _a.long_history)) {
+    return event.routePages.long_history;
+  }
+  if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
+    return event.pages;
+  }
+  return [event.text || ""];
 }
 const BACKGROUND_IMAGES = {
   shopExteriorDay: { id: "shopExteriorDay", label: "shop exterior day", src: "images/background/bg_shop_exterior_day.jpg" },
@@ -6573,7 +6606,8 @@ function App() {
         workshopState,
         affection,
         isAudioEnabled,
-        seenEventIds
+        seenEventIds,
+        activeEvent
       });
       setHasSave(true);
     }
@@ -6643,6 +6677,7 @@ function App() {
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
+      setActiveEvent(data.activeEvent || null);
       setIsAudioEnabled(data.isAudioEnabled);
     }
   };
@@ -7249,7 +7284,7 @@ function App() {
       VNBox,
       {
         speaker: activeEvent.speaker,
-        text: activeEvent.text,
+        pages: getEventPages(activeEvent, routeMode),
         themeColor: activeHeroine.themeColor,
         onComplete: handleCloseEvent,
         skip: seenEventIds.includes(activeEvent.id)
