@@ -5,8 +5,8 @@ from PIL import Image
 from pathlib import Path
 
 # Configuration
-CHARACTERS = ["hakima", "mira", "dariya", "nader"]
-EXPRESSIONS = ["normal", "joy", "anger", "cry", "fun", "surprise", "sorrow"]
+CHARACTERS = ["hakima", "mira", "dariya", "nader", "common"]
+EXPRESSIONS = ["normal", "joy", "anger", "cry", "fun", "surprise", "sorrow", "student", "social", "maid", "running_group"]
 BASE_DIR = Path("public/characters")
 FACE_SUBDIR = "face_proc"
 STANDING_SUBDIR = "standing"
@@ -17,15 +17,17 @@ STANDING_PROC_SIZE = (640, 640)
 FACE_CENTERS = {
     "hakima": (0.50, 0.24),
     "mira":   (0.46, 0.23),
-    "dariya": (0.52, 0.20), # Moved down
-    "nader":  (0.50, 0.19)
+    "dariya": (0.52, 0.20),
+    "nader":  (0.50, 0.19),
+    "common": (0.50, 0.50) # Default for group/system assets
 }
 
 FACE_SCALE_FACTORS = {
     "hakima": 0.35,
     "mira":   0.35,
-    "dariya": 0.24, # Zoomed in
-    "nader":  0.35
+    "dariya": 0.24,
+    "nader":  0.35,
+    "common": 1.0 # No zoom for common
 }
 
 # Color tolerance - Increased for better fringe removal
@@ -104,11 +106,11 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
         is_too_big = area > (h * w * 0.35)
         is_in_face_zone = dist_to_face < face_protection_radius
         
-        # VERY RELAXED for background holes that are far from face and look like background
-        # (Using 2.0x THRESHOLD if far from face)
+        # RELAXATION logic: If it's clearly background magenta, be more lenient even near the face.
         threshold_multiplier = 1.3 if is_in_face_zone else 2.5
-        if is_pure_magenta and not is_in_face_zone:
-             threshold_multiplier = 3.5 # Extreme relaxation for pure magenta background holes
+        if is_pure_magenta:
+             # Even in face zone, if it's pure magenta, we are much more confident it's background.
+             threshold_multiplier = 4.0 if not is_in_face_zone else 2.2
              
         dist_threshold = THRESHOLD * threshold_multiplier
         is_color_mismatch = color_dist >= dist_threshold
@@ -116,13 +118,13 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
         if not (is_too_small or is_too_big or (is_in_face_zone and is_color_mismatch)):
             # If it's in the face zone, we are strict. If it's outside, we are loose.
             if is_in_face_zone:
-                 if not is_color_mismatch:
+                 if not is_color_mismatch or is_pure_magenta:
                      safe_holes_mask = cv2.bitwise_or(safe_holes_mask, comp_mask)
             else:
                  # Outside face zone, if it's reasonably background-like or pure magenta, take it
                  if not is_color_mismatch or is_pure_magenta:
                      safe_holes_mask = cv2.bitwise_or(safe_holes_mask, comp_mask)
-                     
+                      
         elif area > 100:
             print(f"    Rejected {i}: area={area}, face_dist={dist_to_face:.1f}, dist={color_dist:.1f}, face_zone={is_in_face_zone}")
             
@@ -133,20 +135,40 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
     upper_skin = np.array([35, 255, 255], dtype=np.uint8)
     skin_mask = cv2.inRange(hsv, lower_skin, upper_skin)
     
-    # 2. Vibrant Color Protection (Protect saturated colors that aren't magenta background)
-    # Magenta Background H is ~150. S is high.
-    # We want to protect H in [0-140] and [160-180] if S is very high.
-    vibrant_mask = cv2.inRange(hsv, np.array([0, 150, 50]), np.array([140, 255, 255]))
-    vibrant_mask = cv2.bitwise_or(vibrant_mask, cv2.inRange(hsv, np.array([165, 150, 50]), np.array([180, 255, 255])))
+    # 2. Vibrant Color Protection (Protect saturated colors that aren't the background)
+    bg_hsv = cv2.cvtColor(np.uint8([[bg_color]]), cv2.COLOR_BGR2HSV)[0][0]
+    bg_h = bg_hsv[0]
+    
+    # We want to protect colors that are NOT near bg_h.
+    h_margin = 15
+    lower_bg = (bg_h - h_margin) % 180
+    upper_bg = (bg_h + h_margin) % 180
+    
+    if lower_bg < upper_bg:
+        bg_range_mask = cv2.inRange(hsv, np.array([lower_bg, 50, 40]), np.array([upper_bg, 255, 255]))
+    else:
+        bg_range_mask = cv2.bitwise_or(
+            cv2.inRange(hsv, np.array([0, 50, 40]), np.array([upper_bg, 255, 255])),
+            cv2.inRange(hsv, np.array([lower_bg, 50, 40]), np.array([180, 255, 255]))
+        )
+    
+    # Vibrant pixels (S > 80) that are NOT the background hue
+    vibrant_mask = cv2.inRange(hsv, np.array([0, 80, 40]), np.array([180, 255, 255]))
+    vibrant_mask = cv2.bitwise_and(vibrant_mask, cv2.bitwise_not(bg_range_mask))
     
     protection_mask = cv2.bitwise_or(skin_mask, vibrant_mask)
     
-    # Final Background Mask
-    final_mask = cv2.bitwise_or(outer_mask, safe_holes_mask)
-    # Apply Protection
-    final_mask = cv2.bitwise_and(final_mask, cv2.bitwise_not(protection_mask))
-
-
+    # --- D. Final Mask Synthesis (Dual Logic) ---
+    # 1. Connectivity based mask (Edge-connected + Trusted Holes)
+    # This is High-Confidence background, so we DO NOT apply protection here.
+    connectivity_mask = cv2.bitwise_or(outer_mask, safe_holes_mask)
+    
+    # 2. Global color based mask (Islands/Fragments matching background color)
+    # This is Low-Confidence, so we APPLY strict protection to avoid cutting the character.
+    global_color_mask = cv2.bitwise_and(mask_wide, cv2.bitwise_not(protection_mask))
+    
+    # Combine them
+    final_mask = cv2.bitwise_or(connectivity_mask, global_color_mask)
     
     # --- E. Edge Cleanup (Dilation) ---
     kernel = np.ones((3, 3), np.uint8)
@@ -159,15 +181,15 @@ def remove_background(cv_img, bg_color, char_id, debug_prefix=None):
     if debug_prefix:
         debug_dir = Path("scratch/debug_masks")
         debug_dir.mkdir(parents=True, exist_ok=True)
-        cv2.imwrite(str(debug_dir / f"{debug_prefix}_outer.png"), outer_mask)
-        cv2.imwrite(str(debug_dir / f"{debug_prefix}_holes.png"), safe_holes_mask)
-        cv2.imwrite(str(debug_dir / f"{debug_prefix}_skin.png"), skin_mask)
+        cv2.imwrite(str(debug_dir / f"{debug_prefix}_connectivity.png"), connectivity_mask)
+        cv2.imwrite(str(debug_dir / f"{debug_prefix}_global_color.png"), global_color_mask)
+        cv2.imwrite(str(debug_dir / f"{debug_prefix}_protection.png"), protection_mask)
         cv2.imwrite(str(debug_dir / f"{debug_prefix}_final.png"), final_mask)
         
     return bgra
 
 
-def process_character(char_id):
+def process_character(char_id, variants):
     print(f"Processing character: {char_id}")
     src_dir = BASE_DIR / char_id / STANDING_SUBDIR
     face_out_dir = BASE_DIR / char_id / FACE_SUBDIR
@@ -179,14 +201,16 @@ def process_character(char_id):
     center_x_pct, center_y_pct = FACE_CENTERS.get(char_id, (0.5, 0.25))
     face_scale = FACE_SCALE_FACTORS.get(char_id, 0.35)
     
-    for expr in EXPRESSIONS:
+    for expr in variants.keys():
         src_path = src_dir / f"{expr}.png"
         if not src_path.exists():
             src_path = src_dir / "default.png"
             if not src_path.exists():
                 src_path = src_dir / f"{expr}.webp"
                 if not src_path.exists():
-                    continue
+                    src_path = src_dir / f"{expr}.jpeg"
+                    if not src_path.exists():
+                        continue
         
         img = cv2.imread(str(src_path))
         if img is None: continue
@@ -194,49 +218,83 @@ def process_character(char_id):
         h, w = img.shape[:2]
         cx, cy = int(w * center_x_pct), int(h * center_y_pct)
         
-        # Sample background from multiple corners for robustness
-        bg_samples = [img[0, 0], img[0, w-1], img[h-1, 0], img[h-1, w-1]]
-        bg_color = np.mean(bg_samples, axis=0).astype(np.uint8)
+        # Robust background sampling: use median of corner 10x10 patches
+        s = 10
+        corners = [
+            img[0:s, 0:s],
+            img[0:s, w-s:w],
+            img[h-s:h, 0:s],
+            img[h-s:h, w-s:w]
+        ]
+        all_samples = np.concatenate([c.reshape(-1, 3) for c in corners])
+        bg_color = np.median(all_samples, axis=0).astype(np.uint8)
         
         # --- REMOVE BACKGROUND ---
-        # Debug only for normal expression to avoid clutter
         debug_prefix = f"{char_id}_{expr}" if expr == "normal" else None
         transparent_full = remove_background(img, bg_color, char_id, debug_prefix)
 
         # --- FACE PROC ---
-        face_side = int(h * face_scale)
-        fx = max(0, cx - face_side//2)
-        fy = max(0, cy - face_side//2)
-        if fx + face_side > w: fx = w - face_side
-        if fy + face_side > h: fy = h - face_side
-        fx, fy = max(0, fx), max(0, fy)
-        
-        face_crop = transparent_full[fy:fy+face_side, fx:fx+face_side]
-        final_face = cv2.resize(face_crop, FACE_SIZE, interpolation=cv2.INTER_LANCZOS4)
-        cv2.imwrite(str(face_out_dir / f"{expr}.png"), final_face)
+        if char_id != "common":
+            face_side = int(h * face_scale)
+            fx = max(0, cx - face_side//2)
+            fy = max(0, cy - face_side//2)
+            if fx + face_side > w: fx = w - face_side
+            if fy + face_side > h: fy = h - face_side
+            fx, fy = max(0, fx), max(0, fy)
+            
+            face_crop = transparent_full[fy:fy+face_side, fx:fx+face_side]
+            final_face = cv2.resize(face_crop, FACE_SIZE, interpolation=cv2.INTER_LANCZOS4)
+            cv2.imwrite(str(face_out_dir / f"{expr}.png"), final_face)
         
         # --- STANDING PROC ---
-        standing_side = int(h * 0.75) 
-        scx, scy = cx, cy + int(h * 0.18) 
-        
-        sx = max(0, scx - standing_side//2)
-        sy = max(0, scy - standing_side//2)
-        if sx + standing_side > w: sx = w - standing_side
-        if sy + standing_side > h: sy = h - standing_side
-        sx, sy = max(0, sx), max(0, sy)
-        
-        standing_crop = transparent_full[sy:sy+standing_side, sx:sx+standing_side]
-        final_standing = cv2.resize(standing_crop, STANDING_PROC_SIZE, interpolation=cv2.INTER_LANCZOS4)
-        cv2.imwrite(str(standing_out_dir / f"{expr}.png"), final_standing)
+        if char_id == "common":
+            target_h = STANDING_PROC_SIZE[1]
+            aspect = w / h
+            target_w = int(target_h * aspect)
+            final_standing = cv2.resize(transparent_full, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
+            cv2.imwrite(str(standing_out_dir / f"{expr}.png"), final_standing)
+        else:
+            standing_side = int(h * 0.75) 
+            scx, scy = cx, cy + int(h * 0.18) 
+            
+            sx = max(0, scx - standing_side//2)
+            sy = max(0, scy - standing_side//2)
+            if sx + standing_side > w: sx = w - standing_side
+            if sy + standing_side > h: sy = h - standing_side
+            sx, sy = max(0, sx), max(0, sy)
+            
+            standing_crop = transparent_full[sy:sy+standing_side, sx:sx+standing_side]
+            final_standing = cv2.resize(standing_crop, STANDING_PROC_SIZE, interpolation=cv2.INTER_LANCZOS4)
+            cv2.imwrite(str(standing_out_dir / f"{expr}.png"), final_standing)
         
         print(f"  Processed: {expr}")
 
 
+def main():
+    import json
+    config_path = Path("tools/character_asset_pipeline/character_asset_config.json")
+    if not config_path.exists():
+        print(f"Config not found: {config_path}")
+        return
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        asset_config = json.load(f)
 
 def main():
-    for char in CHARACTERS:
-        process_character(char)
-    print("\nNormalization complete with improved fringe removal.")
+    import json
+    config_path = Path("tools/character_asset_pipeline/character_asset_config.json")
+    if not config_path.exists():
+        print(f"Config not found: {config_path}")
+        return
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        asset_config = json.load(f)
+
+    for char_id, config in asset_config.items():
+        variants = config.get("variants", {})
+        process_character(char_id, variants)
+    
+    print("\nNormalization complete with config-driven variants.")
 
 if __name__ == "__main__":
     main()
