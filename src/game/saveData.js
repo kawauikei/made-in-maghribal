@@ -4,6 +4,14 @@ import { HEROINES } from '../data/heroines.js';
 
 export const SAVE_DATA_VERSION = "1.0";
 export const STORAGE_KEY = "made_in_maghribal_save";
+const DEFAULT_AUDIO_VOLUME = 0.8;
+
+const clampVolume = (value, fallback = DEFAULT_AUDIO_VOLUME) => {
+  if (typeof value !== 'number' && typeof value !== 'string') return fallback;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+};
 
 /**
  * Creates the default save data structure
@@ -21,6 +29,8 @@ export function createDefaultSaveData() {
     activeEvent: null,
     vnBacklog: [],
     textSpeed: 'normal',
+    bgmVolume: DEFAULT_AUDIO_VOLUME,
+    seVolume: DEFAULT_AUDIO_VOLUME,
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -80,6 +90,8 @@ export function normalizeSaveData(raw) {
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
   const validTextSpeeds = ['slow', 'normal', 'fast', 'instant'];
   normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : 'normal';
+  normalized.bgmVolume = clampVolume(normalized.bgmVolume);
+  normalized.seVolume = clampVolume(normalized.seVolume);
 
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];

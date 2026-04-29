@@ -27,6 +27,14 @@ const expectStableBoxHeight = async (locator, expectedHeight) => {
   expect(Math.round(box.height)).toBe(expectedHeight);
 };
 
+const setRangeValue = async (page, locator, value) => {
+  await locator.focus();
+  await page.keyboard.press('Home');
+  for (let i = 0; i < value; i++) {
+    await page.keyboard.press('ArrowRight');
+  }
+};
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => {
@@ -184,6 +192,70 @@ test('text speed option persists and instant mode reveals VN text immediately', 
   await page.getByTestId('start-continue').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
   await expect(page.getByTestId('vn-box')).toContainText('NEXT', { timeout: 2000 });
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('audio volume options persist and affect live audio objects', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+
+  const prologueBox = page.getByTestId('vn-box');
+  for (let i = 0; i < 6; i++) {
+    await prologueBox.click();
+    await page.waitForTimeout(100);
+  }
+
+  await expect(page.getByTestId('prologue-next')).toBeVisible({ timeout: 15000 });
+  await page.getByTestId('prologue-next').click();
+  await page.getByTestId('heroine-tab-hakima').click();
+  await page.getByTestId('heroine-start').click();
+  await expect(page.getByTestId('intro-screen')).toBeVisible();
+
+  await expect(page.getByTestId('options-open')).toBeVisible();
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+
+  await setRangeValue(page, page.getByTestId('bgm-volume-slider'), 25);
+  await setRangeValue(page, page.getByTestId('se-volume-slider'), 60);
+  await expect(page.getByTestId('bgm-volume-slider')).toHaveValue('25');
+  await expect(page.getByTestId('se-volume-slider')).toHaveValue('60');
+  await page.waitForTimeout(150);
+
+  const savedAfterAdjust = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(savedAfterAdjust.bgmVolume).toBeCloseTo(0.25, 2);
+  expect(savedAfterAdjust.seVolume).toBeCloseTo(0.6, 2);
+
+  const liveBeforeToggle = await page.evaluate(() => ({
+    bgmVolume: window.__madeInMaghribalAudioEngine?.audio?.volume,
+    seVolume: window.__madeInMaghribalAudioEngine?.seVolume
+  }));
+  expect(liveBeforeToggle.bgmVolume).toBeCloseTo(0.25, 2);
+  expect(liveBeforeToggle.seVolume).toBeCloseTo(0.6, 2);
+
+  await page.getByTestId('options-modal').getByRole('button', { name: 'OFF' }).click();
+  await page.getByTestId('options-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
+
+  const liveAfterSfx = await page.evaluate(() => ({
+    bgmVolume: window.__madeInMaghribalAudioEngine?.audio?.volume,
+    seVolume: window.__madeInMaghribalAudioEngine?.seVolume,
+    lastSfxVolume: window.__madeInMaghribalAudioEngine?.lastSfx?.volume
+  }));
+  expect(liveAfterSfx.bgmVolume).toBeCloseTo(0.25, 2);
+  expect(liveAfterSfx.seVolume).toBeCloseTo(0.6, 2);
+  expect(liveAfterSfx.lastSfxVolume).toBeCloseTo(0.72, 2);
+
+  await page.reload();
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByTestId('intro-screen')).toBeVisible();
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await expect(page.getByTestId('bgm-volume-slider')).toHaveValue('25');
+  await expect(page.getByTestId('se-volume-slider')).toHaveValue('60');
 
   expect(consoleErrors).toEqual([]);
 });

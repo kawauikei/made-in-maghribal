@@ -40,6 +40,7 @@ const TEXT_SPEED_META = {
 };
 
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
+const DEFAULT_AUDIO_VOLUME = 0.8;
 
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -183,6 +184,8 @@ export default function App() {
   const [menuView, setMenuView] = useState('main');
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState('normal');
+  const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
+  const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
   
   // Affection / Intimacy State
@@ -315,6 +318,8 @@ export default function App() {
       setHasSave(true);
       setRouteMode(data.routeMode || 'normal');
       setTextSpeed(data.textSpeed || 'normal');
+      setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
+      setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
@@ -332,6 +337,8 @@ export default function App() {
         workshopState,
         affection,
         textSpeed,
+        bgmVolume,
+        seVolume,
         isAudioEnabled,
         seenEventIds,
         activeEvent,
@@ -339,7 +346,15 @@ export default function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+
+  useEffect(() => {
+    audioEngine.setBgmVolume(bgmVolume);
+  }, [bgmVolume]);
+
+  useEffect(() => {
+    audioEngine.setSeVolume(seVolume);
+  }, [seVolume]);
 
   // Sync mute state
   useEffect(() => {
@@ -421,6 +436,8 @@ export default function App() {
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || 'normal');
       setTextSpeed(data.textSpeed || 'normal');
+      setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
+      setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -531,6 +548,8 @@ export default function App() {
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
+      bgmVolume,
+      seVolume,
       seenEventIds,
       vnBacklog
     });
@@ -890,6 +909,44 @@ export default function App() {
                   </button>
                 );
               })}
+            </div>
+          </div>
+          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>BGM音量</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <input
+                data-testid="bgm-volume-slider"
+                aria-label="BGM音量"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={Math.round(bgmVolume * 100)}
+                onChange={(e) => setBgmVolume(Number(e.target.value) / 100)}
+                style={{ flex: 1, minWidth: 0 }}
+              />
+              <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
+                {Math.round(bgmVolume * 100)}%
+              </span>
+            </div>
+          </div>
+          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>SE音量</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <input
+                data-testid="se-volume-slider"
+                aria-label="SE音量"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={Math.round(seVolume * 100)}
+                onChange={(e) => setSeVolume(Number(e.target.value) / 100)}
+                style={{ flex: 1, minWidth: 0 }}
+              />
+              <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
+                {Math.round(seVolume * 100)}%
+              </span>
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>

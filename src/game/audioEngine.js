@@ -1,5 +1,12 @@
 import { SFX_CANDIDATES, SELECTED_SFX } from '../data/sfxCandidates';
 
+const clampVolume = (value, fallback = 0.8) => {
+  if (typeof value !== 'number' && typeof value !== 'string') return fallback;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+};
+
 /**
  * Simple Audio Engine for Made in Maghribal
  * 
@@ -9,10 +16,16 @@ import { SFX_CANDIDATES, SELECTED_SFX } from '../data/sfxCandidates';
 class SimpleAudioEngine {
   constructor() {
     this.audio = null;
+    this.lastSfx = null;
     this.currentTrackId = null;
     this.isMuted = false;
-    this.volume = 0.5;
+    this.bgmVolume = 0.8;
+    this.seVolume = 0.8;
+    this.volume = this.bgmVolume;
     this.baseUrl = import.meta.env.BASE_URL || "/";
+    if (typeof window !== 'undefined') {
+      window.__madeInMaghribalAudioEngine = this;
+    }
   }
 
   /**
@@ -34,7 +47,7 @@ class SimpleAudioEngine {
     try {
       this.audio = new Audio(fullSrc);
       this.audio.loop = track.loop || false;
-      this.audio.volume = this.volume;
+      this.audio.volume = this.bgmVolume;
       this.audio.muted = this.isMuted;
       
       this.audio.play().catch(err => {
@@ -73,14 +86,32 @@ class SimpleAudioEngine {
   }
 
   /**
-   * Set global volume (0.0 to 1.0)
+   * Set BGM volume (0.0 to 1.0)
    * @param {number} value 
    */
-  setVolume(value) {
-    this.volume = Math.max(0, Math.min(1, value));
+  setBgmVolume(value) {
+    this.bgmVolume = clampVolume(value);
+    this.volume = this.bgmVolume;
     if (this.audio) {
-      this.audio.volume = this.volume;
+      this.audio.volume = this.bgmVolume;
     }
+  }
+
+  /**
+   * Set SE volume (0.0 to 1.0)
+   * @param {number} value
+   */
+  setSeVolume(value) {
+    this.seVolume = clampVolume(value);
+  }
+
+  /**
+   * Backward-compatible alias for callers that expect a single global volume.
+   * @param {number} value
+   */
+  setVolume(value) {
+    this.setBgmVolume(value);
+    this.setSeVolume(value);
   }
 
   /**
@@ -110,7 +141,7 @@ class SimpleAudioEngine {
       
       // Candidate specific volume scaled by global volume
       // SFX often need slightly higher weight to be audible over BGM
-      const targetVol = (candidate.volume || 1.0) * this.volume * 1.5; 
+      const targetVol = (candidate.volume || 1.0) * this.seVolume * 1.5; 
       sfx.volume = Math.max(0, Math.min(1, targetVol));
       
       if (candidate.start) {
@@ -131,6 +162,7 @@ class SimpleAudioEngine {
       sfx.play().catch(err => {
         console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
       });
+      this.lastSfx = sfx;
     } catch (err) {
       console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
     }

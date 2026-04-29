@@ -33,6 +33,8 @@ try {
   assert.ok(def.affection.hakima === 0);
   assert.strictEqual(def.routeMode, 'normal');
   assert.strictEqual(def.textSpeed, 'normal');
+  assert.strictEqual(def.bgmVolume, 0.8);
+  assert.strictEqual(def.seVolume, 0.8);
   assert.deepStrictEqual(def.vnBacklog, []);
   console.log("PASSED: createDefaultSaveData");
 
@@ -45,7 +47,9 @@ try {
     },
     screen: 'QUIZ',
     routeMode: 'invalid-mode',
-    textSpeed: 'warp'
+    textSpeed: 'warp',
+    bgmVolume: 1.2,
+    seVolume: -0.1
   };
   const norm = normalizeSaveData(messy);
   assert.strictEqual(norm.affection.hakima, 100);
@@ -54,6 +58,8 @@ try {
   assert.strictEqual(norm.screen, 'INTRO');
   assert.strictEqual(norm.routeMode, 'normal');
   assert.strictEqual(norm.textSpeed, 'normal');
+  assert.strictEqual(norm.bgmVolume, 1);
+  assert.strictEqual(norm.seVolume, 0);
   console.log("PASSED: normalizeSaveData (Clamping & Filtering)");
 
   const validTextSpeed = normalizeSaveData({
@@ -107,6 +113,8 @@ try {
   myData.affection.hakima = 10;
   myData.routeMode = 'long_history';
   myData.textSpeed = 'fast';
+  myData.bgmVolume = 0.35;
+  myData.seVolume = 0.62;
   myData.vnBacklog = [{
     speaker: 'Hakima',
     text: 'Saved backlog entry',
@@ -124,6 +132,8 @@ try {
   assert.strictEqual(loaded.affection.hakima, 10);
   assert.strictEqual(loaded.routeMode, 'long_history');
   assert.strictEqual(loaded.textSpeed, 'fast');
+  assert.strictEqual(loaded.bgmVolume, 0.35);
+  assert.strictEqual(loaded.seVolume, 0.62);
   assert.strictEqual(loaded.vnBacklog.length, 1);
   assert.strictEqual(loaded.vnBacklog[0].routeMode, 'long_history');
   assert.strictEqual(loaded.vnBacklog[0].text, 'Saved backlog entry');
@@ -138,6 +148,8 @@ try {
     seenEventIds: ['mira_1']
   });
   assert.deepStrictEqual(legacyBacklog.vnBacklog, []);
+  assert.strictEqual(legacyBacklog.bgmVolume, 0.8);
+  assert.strictEqual(legacyBacklog.seVolume, 0.8);
   console.log("PASSED: legacy save vnBacklog default");
 
   clearSaveData();
