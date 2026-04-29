@@ -14,6 +14,7 @@ export function createDefaultSaveData() {
     version: SAVE_DATA_VERSION,
     screen: 'START',
     activeHeroineId: 'hakima',
+    routeMode: 'normal',
     workshopState: createInitialWorkshopState(),
     affection: createInitialAffection(HEROINES.map(h => h.id)),
     seenEventIds: [],
@@ -49,6 +50,9 @@ export function normalizeSaveData(raw) {
   if (!validHeroineIds.includes(normalized.activeHeroineId)) {
     normalized.activeHeroineId = base.activeHeroineId;
   }
+
+  // Route mode safety
+  normalized.routeMode = normalized.routeMode === 'long_history' ? 'long_history' : 'normal';
 
   // Affection safety
   const validatedAffection = {};

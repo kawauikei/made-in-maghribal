@@ -18,6 +18,17 @@ import { ENDINGS } from './data/endings';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
 
+const ROUTE_MODE_META = {
+  normal: {
+    label: '現在から育つ縁'
+  },
+  long_history: {
+    label: '過去から続く縁'
+  }
+};
+
+const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
+
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
@@ -147,6 +158,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
   const [activeHeroineId, setActiveHeroineId] = useState('hakima');
+  const [routeMode, setRouteMode] = useState('normal');
   const [previewHeroineId, setPreviewHeroineId] = useState('hakima');
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
@@ -281,6 +293,7 @@ function App() {
     const data = loadSaveData();
     if (data) {
       setHasSave(true);
+      setRouteMode(data.routeMode || 'normal');
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
       setSeenEventIds(data.seenEventIds || []);
@@ -293,6 +306,7 @@ function App() {
       saveGameData({
         screen: screen === 'EVENT' ? 'RESULT' : screen, // Fallback EVENT to RESULT for safety
         activeHeroineId,
+        routeMode,
         workshopState,
         affection,
         isAudioEnabled,
@@ -300,7 +314,7 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled, seenEventIds]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds]);
 
   // Sync mute state
   useEffect(() => {
@@ -377,6 +391,7 @@ function App() {
       audioEngine.playSfx('uiConfirmChime');
       setScreen(data.screen);
       setActiveHeroineId(data.activeHeroineId);
+      setRouteMode(data.routeMode || 'normal');
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -481,6 +496,7 @@ function App() {
     
     // Auto-save when starting a new session with a heroine
     saveGameData({
+      routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       seenEventIds
@@ -558,7 +574,7 @@ function App() {
           text,
           screen: sourceScreen || screen,
           heroineId: activeHeroineId,
-          routeMode: 'normal',
+          routeMode,
           sequence: prev.length + 1
         }
       ];
@@ -703,12 +719,42 @@ function App() {
     `}</style>
   );
 
+  const renderRouteModeBadge = (compact = false) => {
+    const meta = getRouteModeMeta(routeMode);
+    return (
+      <div
+        data-testid="route-mode-badge"
+        data-route-mode={routeMode}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: compact ? '5px 8px' : '6px 10px',
+          borderRadius: '999px',
+          border: `1px solid ${THEME.brass}`,
+          background: 'rgba(255,255,255,0.9)',
+          color: THEME.nightBlue,
+          fontSize: compact ? '0.7em' : '0.78em',
+          fontWeight: 'bold',
+          lineHeight: 1,
+          textAlign: 'center',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+          maxWidth: '100%',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        {meta.label}
+      </div>
+    );
+  };
+
   const renderAudioToggle = () => {
     const isHudVisible = !['START', 'ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
     if (!isHudVisible) return null;
     
     return (
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+        {renderRouteModeBadge(true)}
         <button 
           data-testid="options-open"
           onClick={() => setIsMenuOpen(true)}
@@ -743,13 +789,16 @@ function App() {
             <div style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {vnBacklog.length === 0 ? (
                 <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>{'\u307e\u3060\u30ed\u30b0\u306f\u3042\u308a\u307e\u305b\u3093'}</div>
-              ) : vnBacklog.slice().reverse().map((entry, idx) => (
-                <div data-testid="backlog-entry" key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
-                  <div style={{ fontSize: '0.8em', color: THEME.brassDark, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / {entry.routeMode} / #{entry.sequence}</div>
-                  <div style={{ fontWeight: 'bold', fontSize: '0.9em', color: THEME.textDark, marginBottom: '4px' }}>{entry.speaker || 'Narration'}</div>
-                  <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.5' }}>{entry.text}</div>
-                </div>
-              ))}
+              ) : vnBacklog.slice().reverse().map((entry, idx) => {
+                const entryRouteMeta = getRouteModeMeta(entry.routeMode);
+                return (
+                  <div data-testid="backlog-entry" data-route-mode={entry.routeMode || 'normal'} key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
+                    <div style={{ fontSize: '0.8em', color: THEME.brassDark, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / {entryRouteMeta.label} / #{entry.sequence}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.9em', color: THEME.textDark, marginBottom: '4px' }}>{entry.speaker || 'Narration'}</div>
+                    <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.5' }}>{entry.text}</div>
+                  </div>
+                );
+              })}
             </div>
             <button data-testid="backlog-close" style={{ ...buttonStyle, marginTop: '14px', background: '#666', color: 'white', width: '100%', flexShrink: 0 }} onClick={() => setMenuView('main')}>{'\u623b\u308b'}</button>
           </div>
@@ -859,8 +908,46 @@ function App() {
         </div>
 
         <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
+          <div style={{ width: '100%', maxWidth: '260px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'stretch' }}>
+            <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁の流れ</div>
+            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+              {Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+                const isSelected = routeMode === mode;
+                return (
+                  <button
+                    key={mode}
+                    data-testid={`route-mode-${mode}`}
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      audioEngine.playSfx('uiTapBottle');
+                      setRouteMode(mode);
+                    }}
+                    style={{
+                      ...buttonStyle,
+                      flex: 1,
+                      margin: 0,
+                      padding: '10px 8px',
+                      fontSize: '0.74em',
+                      lineHeight: 1.2,
+                      background: isSelected ? THEME.starGold : '#2c3e50',
+                      color: isSelected ? THEME.textDark : THEME.sand,
+                      border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
+                      boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.2)' : 'none'
+                    }}
+                  >
+                    {meta.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
+              {renderRouteModeBadge()}
+            </div>
+          </div>
+
           {hasSave && (
             <button 
+              data-testid="start-continue"
               onClick={handleContinue} 
               style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
             >
@@ -2079,14 +2166,6 @@ const itemNameStyle = {
   color: '#444',
   fontWeight: 'bold'
 };
-
-
-
-
-
-
-
-
 
 
 const apiKey = ""; // Gemini Canvas direct paste version

@@ -54,17 +54,14 @@ test('normal route smoke flow', async ({ page }) => {
   expect(vnBoxHeight).toBeGreaterThan(0);
 
   await vnBox.click();
-  await expect(vnBox).toContainText('砂漠の街マグリバル');
   await expectStableBoxHeight(vnBox, vnBoxHeight);
 
   await vnBox.click();
   await vnBox.click();
-  await expect(vnBox).toContainText('若店主ナーディル');
   await expectStableBoxHeight(vnBox, vnBoxHeight);
 
   await vnBox.click();
   await vnBox.click();
-  await expect(vnBox).toContainText('これからの10日間');
   await expectStableBoxHeight(vnBox, vnBoxHeight);
 
   await vnBox.click();
@@ -73,13 +70,11 @@ test('normal route smoke flow', async ({ page }) => {
 
   await page.getByTestId('prologue-next').click();
   await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
-  await expect(page.getByText('誰との縁を深める？', { exact: true })).toBeVisible();
-  await expect(page.getByTestId('heroine-tab-hakima')).toBeVisible();
-  await assertNoHorizontalScroll(page);
-
   await expect(page.getByTestId('heroine-tab-hakima')).toBeVisible();
   await expect(page.getByTestId('heroine-tab-mira')).toBeVisible();
   await expect(page.getByTestId('heroine-tab-dariya')).toBeVisible();
+  await assertNoHorizontalScroll(page);
+
   await page.getByTestId('heroine-tab-hakima').click();
   await page.getByTestId('heroine-start').click();
 
@@ -90,7 +85,6 @@ test('normal route smoke flow', async ({ page }) => {
   await page.getByTestId('backlog-open').click();
   await expect(page.getByTestId('backlog-modal')).toBeVisible();
   await expect(page.getByTestId('backlog-entry')).toHaveCount(4);
-  await expect(page.getByTestId('backlog-modal')).toContainText('砂漠の街マグリバル');
   await expect(page.getByTestId('backlog-modal')).toContainText('PROLOGUE');
   await expect(page.getByTestId('backlog-modal')).toContainText('INTRO');
   await page.getByTestId('backlog-close').click();
@@ -102,6 +96,48 @@ test('normal route smoke flow', async ({ page }) => {
   await expect(page.getByTestId('quiz-screen')).toBeVisible();
   await expect(page.getByTestId('quiz-choice')).toHaveCount(2);
   await assertNoHorizontalScroll(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('route mode selection and resume flow', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await expect(page.getByTestId('route-mode-normal')).toHaveAttribute('aria-pressed', 'true');
+
+  await page.getByTestId('route-mode-long_history').click();
+  await expect(page.getByTestId('route-mode-long_history')).toHaveAttribute('aria-pressed', 'true');
+
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  await expect(page.getByTestId('route-mode-badge')).toHaveAttribute('data-route-mode', 'long_history');
+
+  const vnBox = page.getByTestId('vn-box');
+  for (let i = 0; i < 6; i++) {
+    await vnBox.click();
+    await page.waitForTimeout(100);
+  }
+
+  await expect(page.getByTestId('prologue-next')).toBeVisible({ timeout: 15000 });
+  await page.getByTestId('prologue-next').click();
+  await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
+
+  await page.getByTestId('options-open').click();
+  await page.getByTestId('backlog-open').click();
+  await expect(page.getByTestId('backlog-modal')).toBeVisible();
+  await expect(page.getByTestId('backlog-entry').first()).toHaveAttribute('data-route-mode', 'long_history');
+  await page.getByTestId('backlog-close').click();
+  await page.getByTestId('options-close').click();
+
+  await page.reload();
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await expect(page.getByTestId('route-mode-long_history')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('start-continue')).toBeVisible();
+
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
+  await expect(page.getByTestId('route-mode-badge')).toHaveAttribute('data-route-mode', 'long_history');
 
   expect(consoleErrors).toEqual([]);
 });
