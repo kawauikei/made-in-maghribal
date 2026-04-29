@@ -7234,6 +7234,7 @@ function App() {
       {
         text: resultNarrations[correctCount],
         themeColor: THEME.brass,
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
         onComplete: handleEndDay
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
