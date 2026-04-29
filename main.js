@@ -7303,6 +7303,7 @@ function App() {
         speaker: activeEvent.speaker,
         pages: getEventPages(activeEvent, routeMode),
         themeColor: activeHeroine.themeColor,
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "EVENT" }),
         onComplete: handleCloseEvent,
         skip: seenEventIds.includes(activeEvent.id)
       }
