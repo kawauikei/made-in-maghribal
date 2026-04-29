@@ -357,3 +357,40 @@ test('sound test sound toggle works', async ({ page }) => {
   await page.getByRole('button', { name: '音をONにする' }).click();
   await expect(page.getByText('音声がOFFのため、再生されません。')).toHaveCount(0);
 });
+
+test('START screen settings persist after reload', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  
+  // Open options and change text speed
+  await page.getByTestId('start-options').click();
+  await page.getByTestId('text-speed-fast').click();
+  await expect(page.getByTestId('text-speed-fast')).toHaveAttribute('aria-pressed', 'true');
+  
+  // Check if save exists in localStorage immediately
+  const savedBeforeReload = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(savedBeforeReload.textSpeed).toBe('fast');
+  // Confirm it didn't create fake progress (screen should still be START)
+  expect(savedBeforeReload.screen).toBe('START');
+  
+  await page.getByTestId('options-close').click();
+  
+  // Reload page
+  await page.reload();
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  
+  // Verify setting is still there
+  await page.getByTestId('start-options').click();
+  await expect(page.getByTestId('text-speed-fast')).toHaveAttribute('aria-pressed', 'true');
+  await page.getByTestId('options-close').click();
+  
+  // Start new game and verify setting is still there
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  const savedInGame = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(savedInGame.textSpeed).toBe('fast');
+  // Confirm screen is now PROLOGUE
+  expect(savedInGame.screen).toBe('PROLOGUE');
+  
+  expect(consoleErrors).toEqual([]);
+});

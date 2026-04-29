@@ -198,7 +198,10 @@ function App() {
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [showSoundTest, setShowSoundTest] = useState(false);
-  const [hasSave, setHasSave] = useState(false);
+  const [hasSave, setHasSave] = useState(() => {
+    const data = loadSaveData();
+    return !!(data && data.screen !== 'START');
+  });
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
@@ -338,7 +341,7 @@ function App() {
   useEffect(() => {
     const data = loadSaveData();
     if (data) {
-      setHasSave(true);
+      setHasSave(data.screen !== 'START');
       setRouteMode(data.routeMode || 'normal');
       setTextSpeed(data.textSpeed || 'normal');
       setInstantUnreadText(data.instantUnreadText === true);
@@ -370,6 +373,24 @@ function App() {
         vnBacklog
       });
       setHasSave(true);
+    } else {
+      // On START screen: save settings into existing save file if it exists,
+      // or create a default save with these settings if it doesn't.
+      const currentData = loadSaveData();
+      saveGameData({
+        ...(currentData || {}),
+        textSpeed,
+        instantUnreadText,
+        bgmVolume,
+        seVolume,
+        isAudioEnabled
+      });
+      // Do NOT setHasSave(true) if it's just a settings-only save on START screen
+      if (currentData && currentData.screen !== 'START') {
+        setHasSave(true);
+      } else {
+        setHasSave(false);
+      }
     }
   }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
 
