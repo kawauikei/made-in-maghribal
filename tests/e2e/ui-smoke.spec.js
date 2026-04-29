@@ -95,7 +95,7 @@ test('normal route smoke flow', async ({ page }) => {
   await expect(page.getByTestId('backlog-entry')).toHaveCount(4);
   await expect(page.getByTestId('backlog-modal')).toContainText('PROLOGUE');
   await expect(page.getByTestId('backlog-modal')).toContainText('INTRO');
-  await page.getByTestId('backlog-close').click();
+  await page.getByTestId('backlog-back').click();
   await expect(page.getByTestId('options-modal')).toBeVisible();
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
@@ -136,7 +136,7 @@ test('route mode selection and resume flow', async ({ page }) => {
   await expect(page.getByTestId('backlog-modal')).toBeVisible();
   await expect(page.getByTestId('backlog-entry').first()).toHaveAttribute('data-route-mode', 'long_history');
   await expect(page.getByTestId('backlog-modal')).toContainText('過去から続く縁');
-  await page.getByTestId('backlog-close').click();
+  await page.getByTestId('backlog-back').click();
   await page.getByTestId('options-close').click();
 
   await page.reload();
@@ -317,4 +317,41 @@ test('instant unread toggle shows VN text immediately', async ({ page }) => {
   await expect(page.getByTestId('instant-unread-toggle')).toHaveAttribute('aria-pressed', 'true');
 
   expect(consoleErrors).toEqual([]);
+});
+
+test('options open from start screen', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await page.getByTestId('start-options').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await page.getByTestId('modal-x-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
+  expect(consoleErrors).toEqual([]);
+});
+
+test('backlog opens from hud and start screen', async ({ page }) => {
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await page.getByTestId('backlog-hud-open').click();
+  await expect(page.getByTestId('backlog-modal')).toBeVisible();
+  await page.getByTestId('backlog-close').click();
+  await expect(page.getByTestId('backlog-modal')).toHaveCount(0);
+});
+
+test('sound test sound toggle works', async ({ page }) => {
+  await page.getByTestId('sound-test-open').click();
+  await expect(page.getByTestId('sound-test-modal')).toBeVisible();
+  
+  // Force audio OFF via options
+  await page.getByTestId('sound-test-close').click();
+  await page.getByTestId('start-options').click();
+  await page.getByTestId('audio-enabled-toggle').click();
+  await page.getByTestId('options-close').click();
+  
+  await page.getByTestId('sound-test-open').click();
+  await expect(page.getByText('音声がOFFのため、再生されません。')).toBeVisible();
+  await page.getByRole('button', { name: '音をONにする' }).click();
+  await expect(page.getByText('音声がOFFのため、再生されません。')).toHaveCount(0);
+  
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.audioEnabled).toBe(true);
 });

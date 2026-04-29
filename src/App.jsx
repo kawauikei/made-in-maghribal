@@ -1,3 +1,14 @@
+const THEME = {
+  sand: '#e2d1b1',
+  parchment: '#f4e9d5',
+  brass: '#c5a059',
+  brassDark: '#8e6d2e',
+  nightBlue: '#1a2a3a',
+  oasisTeal: '#2a5a5a',
+  textDark: '#2a2a2a',
+  starGold: '#ffcc00'
+};
+
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
@@ -42,7 +53,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 
-function SoundTest({ onClose, isAudioEnabled }) {
+function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
     <div data-testid="sound-test-modal" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
@@ -52,7 +63,17 @@ function SoundTest({ onClose, isAudioEnabled }) {
           <button data-testid="sound-test-close" onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
         </div>
         <div style={{ overflowY: 'auto', padding: '12px' }}>
-        {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
+        {!isAudioEnabled && (
+          <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>音声がOFFのため、再生されません。</span>
+            <button 
+              onClick={onToggleAudio} 
+              style={{ padding: '6px 12px', background: THEME.starGold, color: THEME.textDark, border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}
+            >
+              音をONにする
+            </button>
+          </div>
+        )}
 
         {/* BGM Section */}
         <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px solid #444' }}>
@@ -806,31 +827,54 @@ export default function App() {
   };
 
   const renderAudioToggle = () => {
-    const isHudVisible = !['START', 'ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
+    const isHudVisible = !['ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
     if (!isHudVisible) return null;
     
     return (
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
         {renderRouteModeBadge(true)}
-        <button 
-          data-testid="options-open"
-          onClick={() => setIsMenuOpen(true)}
-          style={{
-            background: 'white',
-            border: `2px solid ${THEME.brass}`,
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            fontSize: '20px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          aria-label="Menu"
-        >
-          ⚙️        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button 
+            data-testid="backlog-hud-open"
+            onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(true); setMenuView('log'); }}
+            style={{
+              background: 'white',
+              border: `2px solid ${THEME.brass}`,
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              fontSize: '22px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            }}
+            aria-label="Backlog"
+          >
+            📖
+          </button>
+          <button 
+            data-testid="options-open"
+            onClick={() => setIsMenuOpen(true)}
+            style={{
+              background: 'white',
+              border: `2px solid ${THEME.brass}`,
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              fontSize: '22px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            }}
+            aria-label="Menu"
+          >
+            ⚙️
+          </button>
+        </div>
       </div>
     );
   };
@@ -838,10 +882,46 @@ export default function App() {
   const renderMenuModal = () => {
     if (!isMenuOpen) return null;
 
+    const closeMenu = () => {
+      audioEngine.playSfx('uiTapBottle');
+      setIsMenuOpen(false);
+      setMenuView('main');
+    };
+
+    const CloseX = () => (
+      <button 
+        data-testid="modal-x-close"
+        onClick={closeMenu}
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: '#eee',
+          border: 'none',
+          color: '#333',
+          fontSize: '18px',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
+          boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
+        }}
+        aria-label="Close"
+      >
+        ×
+      </button>
+    );
+
     if (menuView === 'log') {
       return (
         <div data-testid="backlog-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            <CloseX />
             <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>{'VN\u30ed\u30b0'}</h2>
             <div ref={backlogScrollRef} data-testid="backlog-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {vnBacklog.length === 0 ? (
@@ -866,7 +946,10 @@ export default function App() {
                 );
               })}
             </div>
-            <button data-testid="backlog-close" style={{ ...buttonStyle, marginTop: '14px', background: '#666', color: 'white', width: '100%', flexShrink: 0 }} onClick={() => setMenuView('main')}>{'\u623b\u308b'}</button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+              <button data-testid="backlog-back" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }} onClick={() => setMenuView('main')}>{'\u623b\u308b'}</button>
+              <button data-testid="backlog-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', flex: 1 }} onClick={closeMenu}>閉じる</button>
+            </div>
           </div>
         </div>
       );
@@ -875,7 +958,8 @@ export default function App() {
     if (menuView === 'help') {
       return (
         <div data-testid="help-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div style={{ ...cardStyle, maxWidth: '340px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ ...cardStyle, maxWidth: '340px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            <CloseX />
             <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>遊び方</h2>
             <div data-testid="help-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '12px 2px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
@@ -885,8 +969,10 @@ export default function App() {
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Backlog から最近の会話を確認できます。</p>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Options ではテキスト速度、音量、未読即時表示を変更できます。</p>
             </div>
-            <button data-testid="help-back" style={{ ...buttonStyle, marginTop: '14px', background: THEME.nightBlue, color: THEME.sand, width: '100%', flexShrink: 0 }} onClick={() => setMenuView('main')}>戻る</button>
-            <button data-testid="help-close" style={{ ...buttonStyle, marginTop: '10px', background: '#666', color: 'white', width: '100%', flexShrink: 0 }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(false); setMenuView('main'); }}>閉じる</button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+              <button data-testid="help-back" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }} onClick={() => setMenuView('main')}>戻る</button>
+              <button data-testid="help-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', flex: 1 }} onClick={closeMenu}>閉じる</button>
+            </div>
           </div>
         </div>
       );
@@ -902,124 +988,123 @@ export default function App() {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+          <CloseX />
           <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>設定</h2>
-          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>テキスト速度</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
-              {Object.entries(TEXT_SPEED_META).map(([mode, meta]) => {
-                const isSelected = textSpeed === mode;
-                return (
-                  <button
-                    key={mode}
-                    data-testid={`text-speed-${mode}`}
-                    aria-pressed={isSelected}
-                    onClick={() => {
-                      audioEngine.playSfx('uiTapBottle');
-                      setTextSpeed(mode);
-                    }}
-                    style={{
-                      ...buttonStyle,
-                      margin: 0,
-                      padding: '10px 8px',
-                      fontSize: '0.76em',
-                      lineHeight: 1.2,
-                      background: isSelected ? THEME.starGold : '#eef1f4',
-                      color: isSelected ? THEME.textDark : '#445',
-                      border: `1px solid ${isSelected ? THEME.starGold : '#ccd6dd'}`,
-                      boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.16)' : 'none'
-                    }}
-                  >
-                    {meta.label}
-                  </button>
-                );
-              })}
+          <div style={{ overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
+            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>テキスト速度</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
+                {Object.entries(TEXT_SPEED_META).map(([mode, meta]) => {
+                  const isSelected = textSpeed === mode;
+                  return (
+                    <button
+                      key={mode}
+                      data-testid={`text-speed-${mode}`}
+                      aria-pressed={isSelected}
+                      onClick={() => {
+                        audioEngine.playSfx('uiTapBottle');
+                        setTextSpeed(mode);
+                      }}
+                      style={{
+                        ...buttonStyle,
+                        margin: 0,
+                        padding: '10px 8px',
+                        fontSize: '0.76em',
+                        lineHeight: 1.2,
+                        background: isSelected ? THEME.starGold : '#eef1f4',
+                        color: isSelected ? THEME.textDark : '#445',
+                        border: `1px solid ${isSelected ? THEME.starGold : '#ccd6dd'}`,
+                        boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.16)' : 'none'
+                      }}
+                    >
+                      {meta.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>BGM音量</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  data-testid="bgm-volume-slider"
+                  aria-label="BGM音量"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={Math.round(bgmVolume * 100)}
+                  onChange={(e) => setBgmVolume(Number(e.target.value) / 100)}
+                  style={{ flex: 1, minWidth: 0 }}
+                />
+                <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
+                  {Math.round(bgmVolume * 100)}%
+                </span>
+              </div>
+            </div>
+            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>SE音量</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  data-testid="se-volume-slider"
+                  aria-label="SE音量"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={Math.round(seVolume * 100)}
+                  onChange={(e) => setSeVolume(Number(e.target.value) / 100)}
+                  style={{ flex: 1, minWidth: 0 }}
+                />
+                <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
+                  {Math.round(seVolume * 100)}%
+                </span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold' }}>未読も瞬時表示</div>
+                <div style={{ fontSize: '0.75em', color: '#777', marginTop: '2px' }}>未読テキストも即時で表示する</div>
+              </div>
+              <button
+                data-testid="instant-unread-toggle"
+                aria-pressed={instantUnreadText}
+                onClick={() => {
+                  audioEngine.playSfx('uiTapBottle');
+                  setInstantUnreadText(prev => !prev);
+                }}
+                style={{
+                  ...buttonStyle,
+                  margin: 0,
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '0.9em',
+                  fontWeight: 'bold',
+                  background: instantUnreadText ? THEME.starGold : '#999',
+                  color: instantUnreadText ? THEME.textDark : '#fff',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                {instantUnreadText ? 'ON' : 'OFF'}
+              </button>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+              <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
+              <button data-testid="audio-enabled-toggle" onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }} style={{ background: isAudioEnabled ? THEME.starGold : '#999', color: isAudioEnabled ? THEME.textDark : '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                {isAudioEnabled ? 'ON' : 'OFF'}
+              </button>
             </div>
           </div>
-          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>BGM音量</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                data-testid="bgm-volume-slider"
-                aria-label="BGM音量"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value={Math.round(bgmVolume * 100)}
-                onChange={(e) => setBgmVolume(Number(e.target.value) / 100)}
-                style={{ flex: 1, minWidth: 0 }}
-              />
-              <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
-                {Math.round(bgmVolume * 100)}%
-              </span>
+          <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button data-testid="help-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.brass, color: THEME.textDark, flex: 1, fontSize: '0.9em' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setMenuView('help'); }}>遊び方</button>
+              <button data-testid="backlog-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1, fontSize: '0.9em' }} onClick={() => setMenuView('log')}>{'\u30ed\u30b0'}</button>
             </div>
-          </div>
-          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>SE音量</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                data-testid="se-volume-slider"
-                aria-label="SE音量"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value={Math.round(seVolume * 100)}
-                onChange={(e) => setSeVolume(Number(e.target.value) / 100)}
-                style={{ flex: 1, minWidth: 0 }}
-              />
-              <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
-                {Math.round(seVolume * 100)}%
-              </span>
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold' }}>未読も瞬時表示</div>
-              <div style={{ fontSize: '0.75em', color: '#777', marginTop: '2px' }}>未読テキストも即時で表示する</div>
-            </div>
-            <button
-              data-testid="instant-unread-toggle"
-              aria-pressed={instantUnreadText}
-              onClick={() => {
-                audioEngine.playSfx('uiTapBottle');
-                setInstantUnreadText(prev => !prev);
-              }}
-              style={{
-                ...buttonStyle,
-                margin: 0,
-                padding: '8px 16px',
-                borderRadius: '20px',
-                fontSize: '0.9em',
-                fontWeight: 'bold',
-                background: instantUnreadText ? THEME.starGold : '#999',
-                color: instantUnreadText ? THEME.textDark : '#fff',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
-            >
-              {instantUnreadText ? 'ON' : 'OFF'}
-            </button>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-            <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
-            <button onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }} style={{ background: isAudioEnabled ? THEME.starGold : '#999', color: isAudioEnabled ? THEME.textDark : '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-              {isAudioEnabled ? 'ON' : 'OFF'}
-            </button>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-            <span style={{ fontSize: '0.9em', color: '#999' }}>簡易セーブ状態</span>
-            <div style={{ width: '80px', height: '6px', background: '#eee', borderRadius: '3px' }}>
-              <div style={{ width: '70%', height: '100%', background: THEME.brass, borderRadius: '3px' }} />
-            </div>
-          </div>
-          <div style={{ marginTop: '25px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <button data-testid="help-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.brass, color: THEME.textDark, width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setMenuView('help'); }}>遊び方</button>
-            <button data-testid="backlog-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: '100%' }} onClick={() => setMenuView('log')}>{'\u30ed\u30b0'}</button>
-            <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("タイトルに戻りますか？")) { setIsMenuOpen(false); setScreen('START'); } }}>
+            <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%', fontSize: '0.95em' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("タイトルに戻りますか？")) { setIsMenuOpen(false); setScreen('START'); } }}>
               タイトルへ戻る
             </button>
-            <button data-testid="options-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(false); setMenuView('main'); }}>
+            <button data-testid="options-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%', fontSize: '0.95em' }} onClick={closeMenu}>
               閉じる
             </button>
           </div>
@@ -1083,7 +1168,6 @@ export default function App() {
       <div data-testid="start-screen" style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} />}
         
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
@@ -1152,11 +1236,18 @@ export default function App() {
 
           <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
             <button 
+              data-testid="start-options"
+              onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(true); }}
+              style={{ ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: '0.85em', flex: 1, margin: 0 }}
+            >
+              設定
+            </button>
+            <button 
               data-testid="sound-test-open"
               onClick={() => setShowSoundTest(true)} 
               style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
             >
-              サウンド設定
+              音設定
             </button>
             <button 
               data-testid="visual-test-open"
@@ -2027,6 +2118,7 @@ export default function App() {
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
           {renderMenuModal()}
+          {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (
             <div key={screen} className="screen-enter">
               {mainContent || (
@@ -2229,16 +2321,6 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
 }
 
 // Minimal Styles
-const THEME = {
-  sand: '#e2d1b1',
-  parchment: '#f4e9d5',
-  brass: '#c5a059',
-  brassDark: '#8e6d2e',
-  nightBlue: '#1a2a3a',
-  oasisTeal: '#2a5a5a',
-  textDark: '#2a2a2a',
-  starGold: '#ffcc00'
-};
 
 const containerStyle = {
   width: '100%',
