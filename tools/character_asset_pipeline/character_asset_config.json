@@ -7,7 +7,10 @@
       "cry": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_04_cry.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "fun": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_05_fun.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "surprise": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_06_surprise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
-      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
+      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/01_Hakima_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "student": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/ex1.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "social": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/ex2.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "maid": { "sourcePath": "tools/character_asset_pipeline/source/01_Hakima/ex3.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
     }
   },
   "mira": {
@@ -18,7 +21,10 @@
       "cry": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_04_cry.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "fun": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_05_fun.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "surprise": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_06_surprise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
-      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
+      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/02_Mira_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "student": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/ex1.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "social": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/ex2.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "maid": { "sourcePath": "tools/character_asset_pipeline/source/02_Mira/ex3.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
     }
   },
   "dariya": {
@@ -29,7 +35,10 @@
       "cry": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_04_cry.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "fun": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_05_fun.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "surprise": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_06_surpise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
-      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
+      "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/03_Dariya_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "student": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/ex1.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "social": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/ex2.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
+      "maid": { "sourcePath": "tools/character_asset_pipeline/source/03_Dariya/ex3.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
     }
   },
   "nader": {
@@ -41,6 +50,11 @@
       "fun": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_05_fun.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "surprise": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_06_surprise.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } },
       "sorrow": { "sourcePath": "tools/character_asset_pipeline/source/04_Nader/04_Nader_07_sorrow.jpeg", "faceCrop": { "x": 300, "y": 150, "w": 400, "h": 400 } }
+    }
+  },
+  "common": {
+    "variants": {
+      "running_group": { "sourcePath": "tools/character_asset_pipeline/source/00_common/running_group.jpeg" }
     }
   }
 }
