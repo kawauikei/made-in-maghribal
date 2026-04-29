@@ -311,11 +311,12 @@ function App() {
         affection,
         isAudioEnabled,
         seenEventIds,
-        activeEvent
+        activeEvent,
+        vnBacklog
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
 
   // Sync mute state
   useEffect(() => {
@@ -379,6 +380,7 @@ function App() {
     setAffection(createInitialAffection(HEROINES.map(h => h.id)));
     setSeenEventIds([]);
     setActiveEvent(null);
+    setVnBacklog([]);
     setSession(null);
     setIsPrologueComplete(false);
     
@@ -397,6 +399,7 @@ function App() {
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
       setActiveEvent(data.activeEvent || null);
+      setVnBacklog(data.vnBacklog || []);
       setIsAudioEnabled(data.isAudioEnabled);
     }
   };
@@ -501,7 +504,8 @@ function App() {
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
-      seenEventIds
+      seenEventIds,
+      vnBacklog
     });
     
     setTimeout(() => {

@@ -19,6 +19,7 @@ export function createDefaultSaveData() {
     affection: createInitialAffection(HEROINES.map(h => h.id)),
     seenEventIds: [],
     activeEvent: null,
+    vnBacklog: [],
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -84,6 +85,23 @@ export function normalizeSaveData(raw) {
   // Active event safety
   if (normalized.activeEvent && typeof normalized.activeEvent !== 'object') {
     normalized.activeEvent = null;
+  }
+
+  // Backlog safety: keep only valid entries and cap history size.
+  if (!Array.isArray(normalized.vnBacklog)) {
+    normalized.vnBacklog = [];
+  } else {
+    normalized.vnBacklog = normalized.vnBacklog
+      .filter(entry => entry && typeof entry === 'object' && typeof entry.text === 'string')
+      .slice(-100)
+      .map((entry, index) => ({
+        speaker: typeof entry.speaker === 'string' ? entry.speaker : '',
+        text: entry.text,
+        screen: typeof entry.screen === 'string' && entry.screen ? entry.screen : normalized.screen,
+        heroineId: validHeroineIds.includes(entry.heroineId) ? entry.heroineId : normalized.activeHeroineId,
+        routeMode: entry.routeMode === 'long_history' ? 'long_history' : 'normal',
+        sequence: Number.isFinite(entry.sequence) ? entry.sequence : index + 1
+      }));
   }
 
   return normalized;

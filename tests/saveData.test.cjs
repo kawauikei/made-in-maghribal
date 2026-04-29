@@ -32,6 +32,7 @@ try {
   assert.strictEqual(def.workshopState.day, 1);
   assert.ok(def.affection.hakima === 0);
   assert.strictEqual(def.routeMode, 'normal');
+  assert.deepStrictEqual(def.vnBacklog, []);
   console.log("PASSED: createDefaultSaveData");
 
   // Test: normalizeSaveData (Clamping affection + routeMode fallback)
@@ -51,6 +52,30 @@ try {
   assert.strictEqual(norm.screen, 'INTRO');
   assert.strictEqual(norm.routeMode, 'normal');
   console.log("PASSED: normalizeSaveData (Clamping & Filtering)");
+
+  // Test: vnBacklog normalization keeps valid entries and rejects invalid values
+  const invalidBacklog = normalizeSaveData({
+    vnBacklog: 'broken'
+  });
+  assert.deepStrictEqual(invalidBacklog.vnBacklog, []);
+
+  const backlogEntries = Array.from({ length: 120 }, (_, i) => ({
+    speaker: i % 2 === 0 ? 'Narrator' : 'Hakima',
+    text: `Text ${i}`,
+    screen: 'INTRO',
+    heroineId: 'hakima',
+    routeMode: i % 2 === 0 ? 'normal' : 'long_history',
+    sequence: i + 1
+  }));
+  backlogEntries.splice(12, 0, { speaker: 'Broken', text: null });
+  const backlogNorm = normalizeSaveData({
+    vnBacklog: backlogEntries
+  });
+  assert.strictEqual(backlogNorm.vnBacklog.length, 100);
+  assert.strictEqual(backlogNorm.vnBacklog[0].text, 'Text 20');
+  assert.strictEqual(backlogNorm.vnBacklog[99].text, 'Text 119');
+  assert.strictEqual(backlogNorm.vnBacklog[1].routeMode, 'long_history');
+  console.log("PASSED: vnBacklog normalization, invalid handling, and 100-entry cap");
 
   // Test: legacy save without routeMode defaults to normal
   const legacy = normalizeSaveData({
@@ -72,6 +97,14 @@ try {
   myData.workshopState.day = 5;
   myData.affection.hakima = 10;
   myData.routeMode = 'long_history';
+  myData.vnBacklog = [{
+    speaker: 'Hakima',
+    text: 'Saved backlog entry',
+    screen: 'INTRO',
+    heroineId: 'hakima',
+    routeMode: 'long_history',
+    sequence: 1
+  }];
 
   saveGameData(myData);
   assert.strictEqual(hasSaveData(), true);
@@ -80,7 +113,21 @@ try {
   assert.strictEqual(loaded.workshopState.day, 5);
   assert.strictEqual(loaded.affection.hakima, 10);
   assert.strictEqual(loaded.routeMode, 'long_history');
+  assert.strictEqual(loaded.vnBacklog.length, 1);
+  assert.strictEqual(loaded.vnBacklog[0].routeMode, 'long_history');
+  assert.strictEqual(loaded.vnBacklog[0].text, 'Saved backlog entry');
   console.log("PASSED: save/load/has cycle");
+
+  // Test: old saves without vnBacklog default to an empty array
+  const legacyBacklog = normalizeSaveData({
+    screen: 'RESULT',
+    activeHeroineId: 'mira',
+    workshopState: { day: 3, reputation: 12, sales: 5, satisfaction: 8 },
+    affection: { hakima: 5, mira: 7, dariya: 9 },
+    seenEventIds: ['mira_1']
+  });
+  assert.deepStrictEqual(legacyBacklog.vnBacklog, []);
+  console.log("PASSED: legacy save vnBacklog default");
 
   clearSaveData();
   assert.strictEqual(hasSaveData(), false);
