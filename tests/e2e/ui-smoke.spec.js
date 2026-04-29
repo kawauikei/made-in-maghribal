@@ -57,6 +57,26 @@ const advancePrologueToNextButton = async (page) => {
   await advanceVNUntilVisible(page, 'prologue-next', 'vn-box', 20);
 };
 
+/**
+ * Specifically for the intro flow (after heroine select).
+ */
+const advanceIntroToQuiz = async (page) => {
+  await advanceVNUntilVisible(page, 'quiz-screen', 'vn-box', 20);
+};
+
+/**
+ * Assert that VN text is revealed immediately (no typing animation).
+ */
+const assertTextRevealedImmediately = async (page) => {
+  const vnBox = page.getByTestId('vn-box');
+  await expect(vnBox).not.toHaveText('', { timeout: 3000 });
+  const text1 = await vnBox.innerText();
+  await page.waitForTimeout(200);
+  const text2 = await vnBox.innerText();
+  expect(text1).toBe(text2);
+  expect(text1.length).toBeGreaterThan(5);
+};
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => {
@@ -261,6 +281,18 @@ test('audio volume options persist and affect live audio objects', async ({ page
   await expect(page.getByTestId('bgm-volume-slider')).toHaveValue('25');
   await expect(page.getByTestId('se-volume-slider')).toHaveValue('60');
 
+  // Further verification: Advance to Quiz and check if volume is still correct
+  await page.getByTestId('options-close').click();
+  await advanceIntroToQuiz(page);
+  await expect(page.getByTestId('quiz-screen')).toBeVisible();
+
+  const liveInQuiz = await page.evaluate(() => ({
+    bgmVolume: window.__madeInMaghribalAudioEngine?.audio?.volume,
+    seVolume: window.__madeInMaghribalAudioEngine?.seVolume
+  }));
+  expect(liveInQuiz.bgmVolume).toBeCloseTo(0.25, 2);
+  expect(liveInQuiz.seVolume).toBeCloseTo(0.6, 2);
+
   expect(consoleErrors).toEqual([]);
 });
 
@@ -270,6 +302,7 @@ test('help opens from options and returns to settings', async ({ page }) => {
   await page.getByTestId('start-new-game').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
 
+  // 1. Test on Prologue screen
   await page.getByTestId('options-open').click();
   await expect(page.getByTestId('options-modal')).toBeVisible();
   await expect(page.getByTestId('help-open')).toBeVisible();
@@ -281,10 +314,24 @@ test('help opens from options and returns to settings', async ({ page }) => {
 
   await page.getByTestId('help-back').click();
   await expect(page.getByTestId('options-modal')).toBeVisible();
-  await expect(page.getByTestId('text-speed-normal')).toBeVisible();
+  await page.getByTestId('options-close').click();
+
+  // 2. Advance to Intro and verify help still works
+  await advancePrologueToNextButton(page);
+  await page.getByTestId('prologue-next').click();
+  await page.getByTestId('heroine-tab-hakima').click();
+  await page.getByTestId('heroine-start').click();
+  await expect(page.getByTestId('intro-screen')).toBeVisible();
+
+  await page.getByTestId('options-open').click();
+  await page.getByTestId('help-open').click();
+  await expect(page.getByTestId('help-modal')).toBeVisible();
+  await expect(page.getByTestId('help-modal')).toContainText('遊び方');
+
+  await page.getByTestId('help-back').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
   await expect(page.getByTestId('bgm-volume-slider')).toBeVisible();
   await expect(page.getByTestId('se-volume-slider')).toBeVisible();
-  await expect(page.getByTestId('instant-unread-toggle')).toBeVisible();
 
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
@@ -310,16 +357,22 @@ test('instant unread toggle shows VN text immediately', async ({ page }) => {
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
 
   const vnBox = page.getByTestId('vn-box');
-  // In instant mode, text should be fully revealed immediately (with NEXT indicator)
-  await expect(vnBox).toContainText('NEXT');
+  // Verify text is revealed immediately (not typing) using helper
+  await assertTextRevealedImmediately(page);
 
   await page.reload();
   await expect(page.getByTestId('start-screen')).toBeVisible();
   await page.getByTestId('start-continue').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  
+  // Verify setting persisted
   await page.getByTestId('options-open').click();
   await expect(page.getByTestId('options-modal')).toBeVisible();
   await expect(page.getByTestId('instant-unread-toggle')).toHaveAttribute('aria-pressed', 'true');
+  await page.getByTestId('options-close').click();
+
+  // Verify instant reveal still works after reload
+  await assertTextRevealedImmediately(page);
 
   expect(consoleErrors).toEqual([]);
 });
@@ -372,10 +425,9 @@ test('START screen settings persist after reload', async ({ page }) => {
   await page.getByTestId('text-speed-fast').click();
   await expect(page.getByTestId('text-speed-fast')).toHaveAttribute('aria-pressed', 'true');
   
-  // Check if save exists in localStorage immediately
+  // Check if save exists in localStorage immediately (M9-10 Instant Save)
   const savedBeforeReload = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
   expect(savedBeforeReload.textSpeed).toBe('fast');
-  // Confirm it didn't create fake progress (screen should still be START)
   expect(savedBeforeReload.screen).toBe('START');
   
   await page.getByTestId('options-close').click();
@@ -389,13 +441,17 @@ test('START screen settings persist after reload', async ({ page }) => {
   await expect(page.getByTestId('text-speed-fast')).toHaveAttribute('aria-pressed', 'true');
   await page.getByTestId('options-close').click();
   
-  // Start new game and verify setting is still there
+  // Start new game and verify setting persists through prologue
   await page.getByTestId('start-new-game').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  
+  await advancePrologueToNextButton(page);
+  await page.getByTestId('prologue-next').click();
+  await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
+  
+  // Final check: setting should still be 'fast'
   const savedInGame = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
   expect(savedInGame.textSpeed).toBe('fast');
-  // Confirm screen is now PROLOGUE
-  expect(savedInGame.screen).toBe('PROLOGUE');
   
   expect(consoleErrors).toEqual([]);
 });

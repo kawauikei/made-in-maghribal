@@ -79,50 +79,56 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
         {/* BGM Section */}
         <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px solid #444' }}>
           <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>BGM (Music)</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
-            {Object.values(TRACKS).map(track => (
-              <div key={track.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{track.id}</div>
-                <div style={{ fontSize: '0.8rem', color: '#f0d080', marginBottom: '6px' }}>{track.title}</div>
-                <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', wordBreak: 'break-all', fontStyle: 'italic' }}>{track.src}</div>
-                <button 
-                  onClick={() => audioEngine.playTrack(track)}
-                  disabled={!isAudioEnabled}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    background: isAudioEnabled ? '#3d5afe' : '#333', 
-                    color: isAudioEnabled ? '#fff' : '#666', 
-                    border: 'none', 
-                    borderRadius: '4px',
-                    cursor: isAudioEnabled ? 'pointer' : 'default',
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  Play
-                </button>
+          
+          {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
+            <div key={category} style={{ marginBottom: '20px' }}>
+              <h4 style={{ color: '#888', fontSize: '0.75rem', marginBottom: '10px', borderLeft: '3px solid #555', paddingLeft: '8px' }}>{category}</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+                {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => (
+                  <div key={track.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{track.id}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#f0d080', marginBottom: '6px' }}>{track.title}</div>
+                    <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', wordBreak: 'break-all', fontStyle: 'italic' }}>{track.src}</div>
+                    <button 
+                      onClick={() => audioEngine.playTrack(track)}
+                      disabled={!isAudioEnabled}
+                      style={{ 
+                        width: '100%', 
+                        padding: '8px', 
+                        background: isAudioEnabled ? '#3d5afe' : '#333', 
+                        color: isAudioEnabled ? '#fff' : '#666', 
+                        border: 'none', 
+                        borderRadius: '4px',
+                        cursor: isAudioEnabled ? 'pointer' : 'default',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Play
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-            <button 
-              onClick={() => audioEngine.stop()}
-              style={{ 
-                width: '100%', 
-                padding: '12px', 
-                background: '#555', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '4px', 
-                cursor: 'pointer', 
-                fontSize: '0.85rem', 
-                fontWeight: 'bold',
-                gridColumn: '1 / -1',
-                marginTop: '10px'
-              }}
-            >
-              STOP MUSIC
-            </button>
-          </div>
+            </div>
+          ))}
+
+          <button 
+            onClick={() => audioEngine.stop()}
+            style={{ 
+              width: '100%', 
+              padding: '12px', 
+              background: '#555', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer', 
+              fontSize: '0.85rem', 
+              fontWeight: 'bold',
+              marginTop: '10px'
+            }}
+          >
+            STOP MUSIC
+          </button>
         </div>
 
         <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド設定 Effects)</h3>
@@ -252,17 +258,22 @@ function App() {
     const handleResize = () => {
       const viewport = window.visualViewport;
       const doc = document.documentElement;
-      setViewportSize({
-        width: Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth)),
-        height: Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight))
+      const newWidth = Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth));
+      const newHeight = Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight));
+      
+      setViewportSize(prev => {
+        // Only update if change is significant (> 1px) to avoid micro-drift
+        if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
+        return { width: newWidth, height: newHeight };
       });
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
+    const resizeEvents = ['resize', 'orientationchange'];
+    resizeEvents.forEach(e => window.addEventListener(e, handleResize));
     window.visualViewport?.addEventListener('resize', handleResize);
     window.visualViewport?.addEventListener('scroll', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      resizeEvents.forEach(e => window.removeEventListener(e, handleResize));
       window.visualViewport?.removeEventListener('resize', handleResize);
       window.visualViewport?.removeEventListener('scroll', handleResize);
     };
@@ -270,13 +281,22 @@ function App() {
 
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined') return;
-    const target = outerWrapperRef.current?.parentElement || document.documentElement;
+    // Monitor the parent element, but be careful of loops if parent is root
+    const target = outerWrapperRef.current?.parentElement || document.body;
+    const isRoot = target === document.body || target === document.documentElement || target.id === 'root';
+    
     const observer = new ResizeObserver(entries => {
       const rect = entries[0]?.contentRect;
       if (!rect) return;
-      setHostSize({
-        width: Math.floor(rect.width),
-        height: Math.floor(rect.height)
+      
+      const newWidth = Math.floor(rect.width);
+      const newHeight = Math.floor(rect.height);
+      
+      setHostSize(prev => {
+        // Ignore micro-changes that might be caused by scrollbars or rounding in root containers
+        if (isRoot && Math.abs(prev.width - newWidth) <= 2 && Math.abs(prev.height - newHeight) <= 2) return prev;
+        if (prev.width === newWidth && prev.height === newHeight) return prev;
+        return { width: newWidth, height: newHeight };
       });
     });
     observer.observe(target);
@@ -308,7 +328,7 @@ function App() {
   const outerWrapperStyle = {
     width: '100%',
     height: '100%',
-    minHeight: `${measuredSize.height}px`,
+    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
@@ -1304,7 +1324,9 @@ function App() {
     const prologuePages = [
       "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
       "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
       "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+      "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
     ];
     mainContent = (
       <div data-testid="prologue-screen" style={{ ...containerStyle, position: 'relative' }}>
@@ -1367,8 +1389,9 @@ function App() {
               </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナディールは店を開き、客を迎える準備を整えている。</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。</p>
               <p style={{ margin: 0, lineHeight: '1.6' }}>今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
+              <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
             </div>
             <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
           </div>

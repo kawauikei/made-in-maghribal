@@ -257,17 +257,22 @@ export default function App() {
     const handleResize = () => {
       const viewport = window.visualViewport;
       const doc = document.documentElement;
-      setViewportSize({
-        width: Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth)),
-        height: Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight))
+      const newWidth = Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth));
+      const newHeight = Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight));
+      
+      setViewportSize(prev => {
+        // Only update if change is significant (> 1px) to avoid micro-drift
+        if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
+        return { width: newWidth, height: newHeight };
       });
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
+    const resizeEvents = ['resize', 'orientationchange'];
+    resizeEvents.forEach(e => window.addEventListener(e, handleResize));
     window.visualViewport?.addEventListener('resize', handleResize);
     window.visualViewport?.addEventListener('scroll', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      resizeEvents.forEach(e => window.removeEventListener(e, handleResize));
       window.visualViewport?.removeEventListener('resize', handleResize);
       window.visualViewport?.removeEventListener('scroll', handleResize);
     };
@@ -275,13 +280,22 @@ export default function App() {
 
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined') return;
-    const target = outerWrapperRef.current?.parentElement || document.documentElement;
+    // Monitor the parent element, but be careful of loops if parent is root
+    const target = outerWrapperRef.current?.parentElement || document.body;
+    const isRoot = target === document.body || target === document.documentElement || target.id === 'root';
+    
     const observer = new ResizeObserver(entries => {
       const rect = entries[0]?.contentRect;
       if (!rect) return;
-      setHostSize({
-        width: Math.floor(rect.width),
-        height: Math.floor(rect.height)
+      
+      const newWidth = Math.floor(rect.width);
+      const newHeight = Math.floor(rect.height);
+      
+      setHostSize(prev => {
+        // Ignore micro-changes that might be caused by scrollbars or rounding in root containers
+        if (isRoot && Math.abs(prev.width - newWidth) <= 2 && Math.abs(prev.height - newHeight) <= 2) return prev;
+        if (prev.width === newWidth && prev.height === newHeight) return prev;
+        return { width: newWidth, height: newHeight };
       });
     });
     observer.observe(target);
@@ -313,7 +327,7 @@ export default function App() {
   const outerWrapperStyle = {
     width: '100%',
     height: '100%',
-    minHeight: `${measuredSize.height}px`,
+    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
@@ -1309,7 +1323,9 @@ export default function App() {
     const prologuePages = [
       "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
       "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
       "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+      "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
     ];
     mainContent = (
       <div data-testid="prologue-screen" style={{ ...containerStyle, position: 'relative' }}>
@@ -1372,8 +1388,9 @@ export default function App() {
               </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナディールは店を開き、客を迎える準備を整えている。</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。</p>
               <p style={{ margin: 0, lineHeight: '1.6' }}>今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
+              <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
             </div>
             <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
           </div>
