@@ -21,13 +21,6 @@ export const SFX = {
     volume: 0.5,
     description: "Soft brass chime for confirmation"
   },
-  uiBackCloth: {
-    id: "uiBackCloth",
-    usage: "ui_back",
-    src: "audio/se/ui_back_cloth_01.mp3",
-    volume: 0.4,
-    description: "Cloth rustle for backing out or closing menus"
-  },
 
   // --- Quiz Interactions ---
   quizChoicePick: {
@@ -53,13 +46,6 @@ export const SFX = {
   },
 
   // --- Workshop Events ---
-  workshopCoinGain: {
-    id: "workshopCoinGain",
-    usage: "workshop_gain",
-    src: "audio/se/workshop_coin_gain_01.mp3",
-    volume: 0.5,
-    description: "Light coin jingle for earning sales"
-  },
   workshopDayEnd: {
     id: "workshopDayEnd",
     usage: "workshop_day_end",
