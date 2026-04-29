@@ -6086,6 +6086,7 @@ function createDefaultSaveData() {
     activeEvent: null,
     vnBacklog: [],
     textSpeed: "normal",
+    instantUnreadText: false,
     bgmVolume: DEFAULT_AUDIO_VOLUME$1,
     seVolume: DEFAULT_AUDIO_VOLUME$1,
     isAudioEnabled: false,
@@ -6124,6 +6125,7 @@ function normalizeSaveData(raw) {
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
   const validTextSpeeds = ["slow", "normal", "fast", "instant"];
   normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : "normal";
+  normalized.instantUnreadText = normalized.instantUnreadText === true;
   normalized.bgmVolume = clampVolume(normalized.bgmVolume);
   normalized.seVolume = clampVolume(normalized.seVolume);
   if (!Array.isArray(normalized.seenEventIds)) {
@@ -6553,6 +6555,7 @@ function App() {
   const [menuView, setMenuView] = useState("main");
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState("normal");
+  const [instantUnreadText, setInstantUnreadText] = useState(false);
   const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
@@ -6670,6 +6673,7 @@ function App() {
       setHasSave(true);
       setRouteMode(data.routeMode || "normal");
       setTextSpeed(data.textSpeed || "normal");
+      setInstantUnreadText(data.instantUnreadText === true);
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
@@ -6686,6 +6690,7 @@ function App() {
         workshopState,
         affection,
         textSpeed,
+        instantUnreadText,
         bgmVolume,
         seVolume,
         isAudioEnabled,
@@ -6695,7 +6700,7 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
   useEffect(() => {
     audioEngine.setBgmVolume(bgmVolume);
   }, [bgmVolume]);
@@ -6744,7 +6749,7 @@ function App() {
   }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
-  const isInstantTextSpeed = textSpeed === "instant";
+  const isInstantTextSpeed = textSpeed === "instant" || instantUnreadText;
   const handleStartGame = () => {
     audioEngine.playSfx("uiTapBottle");
     clearSaveData();
@@ -6768,6 +6773,7 @@ function App() {
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || "normal");
       setTextSpeed(data.textSpeed || "normal");
+      setInstantUnreadText(data.instantUnreadText === true);
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
@@ -6863,6 +6869,7 @@ function App() {
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
+      instantUnreadText,
       bgmVolume,
       seVolume,
       seenEventIds,
@@ -7184,7 +7191,29 @@ function App() {
           onChange: (e) => setSeVolume(Number(e.target.value) / 100),
           style: { flex: 1, minWidth: 0 }
         }
-      ), /* @__PURE__ */ React.createElement("span", { style: { width: "48px", textAlign: "right", fontSize: "0.85em", color: THEME.textDark, fontWeight: "bold" } }, Math.round(seVolume * 100), "%"))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
+      ), /* @__PURE__ */ React.createElement("span", { style: { width: "48px", textAlign: "right", fontSize: "0.85em", color: THEME.textDark, fontWeight: "bold" } }, Math.round(seVolume * 100), "%"))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("div", { style: { minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", color: THEME.textDark, fontWeight: "bold" } }, "未読も瞬時表示"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#777", marginTop: "2px" } }, "未読テキストも即時で表示する")), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          "data-testid": "instant-unread-toggle",
+          "aria-pressed": instantUnreadText,
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            setInstantUnreadText((prev) => !prev);
+          },
+          style: {
+            ...buttonStyle,
+            margin: 0,
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontSize: "0.9em",
+            fontWeight: "bold",
+            background: instantUnreadText ? THEME.starGold : "#999",
+            color: instantUnreadText ? THEME.textDark : "#fff",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+          }
+        },
+        instantUnreadText ? "ON" : "OFF"
+      )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", color: THEME.textDark, fontWeight: "bold" } }, "BGM: ", isAudioEnabled ? "ON" : "OFF"), /* @__PURE__ */ React.createElement("button", { onClick: () => {
         audioEngine.playSfx("uiTapBottle");
         setIsAudioEnabled(!isAudioEnabled);
       }, style: { background: isAudioEnabled ? THEME.starGold : "#999", color: isAudioEnabled ? THEME.textDark : "#fff", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "0.9em", fontWeight: "bold", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" } }, isAudioEnabled ? "ON" : "OFF")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", color: "#999" } }, "簡易セーブ状態"), /* @__PURE__ */ React.createElement("div", { style: { width: "80px", height: "6px", background: "#eee", borderRadius: "3px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "70%", height: "100%", background: THEME.brass, borderRadius: "3px" } }))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "25px", display: "flex", flexDirection: "column", gap: "12px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-open", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: "100%" }, onClick: () => setMenuView("log") }, "ログ"), /* @__PURE__ */ React.createElement("button", { style: { ...buttonStyle, marginTop: 0, background: "#ff5555", color: "white", width: "100%" }, onClick: () => {
