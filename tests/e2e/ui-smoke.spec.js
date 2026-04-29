@@ -260,6 +260,34 @@ test('audio volume options persist and affect live audio objects', async ({ page
   expect(consoleErrors).toEqual([]);
 });
 
+test('help opens from options and returns to settings', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await expect(page.getByTestId('help-open')).toBeVisible();
+
+  await page.getByTestId('help-open').click();
+  await expect(page.getByTestId('help-modal')).toBeVisible();
+  await expect(page.getByTestId('help-modal')).toContainText('遊び方');
+  await expect(page.getByTestId('help-modal')).toContainText('お客さんの依頼を読み');
+
+  await page.getByTestId('help-back').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await expect(page.getByTestId('text-speed-normal')).toBeVisible();
+  await expect(page.getByTestId('bgm-volume-slider')).toBeVisible();
+  await expect(page.getByTestId('se-volume-slider')).toBeVisible();
+  await expect(page.getByTestId('instant-unread-toggle')).toBeVisible();
+
+  await page.getByTestId('options-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('instant unread toggle shows VN text immediately', async ({ page }) => {
   const consoleErrors = expectNoConsoleErrors(page);
 
