@@ -927,24 +927,24 @@ function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}����</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}日目</h1>
           <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
-               <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
-               <div style={{ flex: 1 }}>
-                 <VNBox 
-                   speaker={activeHeroine.name}
-                    text={activeHeroine.greeting || `${PROTAGONIST.shortName}�A����ɂ��́B�����͂�낵�����肢���܂��B`}
-                   themeColor={activeHeroine.themeColor}
-                   onComplete={handleBeginService}
-                 />
-               </div>
+              <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
+              <div style={{ flex: 1 }}>
+                <VNBox
+                  speaker={activeHeroine.name}
+                  text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
+                  themeColor={activeHeroine.themeColor}
+                  onComplete={handleBeginService}
+                />
+              </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>���r���̒��B�i�[�f�B���͂����̂悤�ɓX���J���A�q���}���鏀���𐮂��Ă���B</p>
-              <p style={{ margin: 0, lineHeight: '1.6' }}>�����͂ǂ�ȕi���K�v���A�܂��͑���̘b�𕷂��Ƃ��납��n�܂�B</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。</p>
+              <p style={{ margin: 0, lineHeight: '1.6' }}>今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
             </div>
-            <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>�c�Ƃ��n�߂�</button>
+            <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
           </div>
         </div>
       </div>
