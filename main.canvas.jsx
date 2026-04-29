@@ -247,7 +247,7 @@ function App() {
 
   useEffect(() => {
     if (isMenuOpen && menuView === 'log' && backlogScrollRef.current) {
-      backlogScrollRef.current.scrollTop = 0;
+      backlogScrollRef.current.scrollTop = backlogScrollRef.current.scrollHeight;
     }
   }, [isMenuOpen, menuView, vnBacklog]);
 

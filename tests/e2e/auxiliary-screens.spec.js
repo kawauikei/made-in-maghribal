@@ -159,7 +159,7 @@ test('Backlog opens at latest entry', async ({ page }) => {
   await expect(page.getByTestId('backlog-modal')).toContainText('過去から続く縁');
 
   const scrollTop = await page.getByTestId('backlog-scroll').evaluate(el => el.scrollTop);
-  expect(scrollTop).toBe(0);
+  expect(scrollTop).toBeGreaterThan(0);
   expect(consoleErrors).toEqual([]);
 });
 
