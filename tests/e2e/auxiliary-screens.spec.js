@@ -116,8 +116,10 @@ test('Backlog functional flow', async ({ page }) => {
   await expect(page.getByTestId('backlog-modal')).toContainText('砂漠の街マグリバル');
   await checkMojibake(page);
 
-  await page.getByTestId('backlog-close').click();
+  await page.getByTestId('backlog-back').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
   await page.getByTestId('options-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
   await expect(page.getByTestId('intro-screen')).toBeVisible();
 
   expect(consoleErrors).toEqual([]);
