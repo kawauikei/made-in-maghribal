@@ -28,6 +28,10 @@ const ROUTE_MODE_META = {
 
 const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
 
+const getBacklogRouteModeLabel = (routeMode) => {
+  return routeMode === 'long_history' ? '過去から続く縁' : '現在から育つ縁';
+};
+
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
@@ -169,6 +173,7 @@ export default function App() {
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [menuView, setMenuView] = useState('main');
   const [vnBacklog, setVnBacklog] = useState([]);
+  const backlogScrollRef = useRef(null);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -238,6 +243,12 @@ export default function App() {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (isMenuOpen && menuView === 'log' && backlogScrollRef.current) {
+      backlogScrollRef.current.scrollTop = 0;
+    }
+  }, [isMenuOpen, menuView, vnBacklog]);
 
   const measuredSize = {
     width: hostSize.width || viewportSize.width,
@@ -791,16 +802,25 @@ export default function App() {
         <div data-testid="backlog-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
           <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
             <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>{'VN\u30ed\u30b0'}</h2>
-            <div style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div ref={backlogScrollRef} data-testid="backlog-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {vnBacklog.length === 0 ? (
                 <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>{'\u307e\u3060\u30ed\u30b0\u306f\u3042\u308a\u307e\u305b\u3093'}</div>
               ) : vnBacklog.slice().reverse().map((entry, idx) => {
-                const entryRouteMeta = getRouteModeMeta(entry.routeMode);
+                const routeModeLabel = getBacklogRouteModeLabel(entry.routeMode);
+                const routeModeBadgeStyle = entry.routeMode === 'long_history'
+                  ? { background: '#fff5e0', color: THEME.brassDark, border: '1px solid #e6dcc3' }
+                  : { background: '#eef4f7', color: THEME.nightBlue, border: '1px solid #d9e4ea' };
+                const isNarration = !entry.speaker;
                 return (
-                  <div data-testid="backlog-entry" data-route-mode={entry.routeMode || 'normal'} key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
-                    <div style={{ fontSize: '0.8em', color: THEME.brassDark, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / {entryRouteMeta.label} / #{entry.sequence}</div>
-                    <div style={{ fontWeight: 'bold', fontSize: '0.9em', color: THEME.textDark, marginBottom: '4px' }}>{entry.speaker || 'Narration'}</div>
-                    <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.5' }}>{entry.text}</div>
+                  <div data-testid="backlog-entry" data-route-mode={entry.routeMode || 'normal'} key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '10px', padding: '12px 13px', textAlign: 'left', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                      <div style={{ fontSize: '0.74em', color: '#8a6a2b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / #{entry.sequence}</div>
+                      <div data-testid="backlog-route-mode" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.68em', fontWeight: 'bold', lineHeight: 1, padding: '3px 8px', borderRadius: '999px', whiteSpace: 'nowrap', ...routeModeBadgeStyle }}>
+                        {routeModeLabel}
+                      </div>
+                    </div>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.92em', color: isNarration ? '#555' : THEME.textDark, marginBottom: '6px' }}>{entry.speaker || 'Narration'}</div>
+                    <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.6', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{entry.text}</div>
                   </div>
                 );
               })}

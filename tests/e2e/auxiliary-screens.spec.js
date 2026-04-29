@@ -110,6 +110,7 @@ test('Backlog functional flow', async ({ page }) => {
   
   await expect(page.getByTestId('backlog-modal')).toBeVisible();
   await expect(page.getByTestId('backlog-entry')).not.toHaveCount(0);
+  await expect(page.getByTestId('backlog-modal')).toContainText('現在から育つ縁');
   
   // Check for content
   await expect(page.getByTestId('backlog-modal')).toContainText('砂漠の街マグリバル');
@@ -119,6 +120,46 @@ test('Backlog functional flow', async ({ page }) => {
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('intro-screen')).toBeVisible();
 
+  expect(consoleErrors).toEqual([]);
+});
+
+test('Backlog opens at latest entry', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await page.addInitScript(() => {
+    localStorage.setItem('made_in_maghribal_save', JSON.stringify({
+      version: '1.0',
+      screen: 'INTRO',
+      activeHeroineId: 'hakima',
+      routeMode: 'normal',
+      workshopState: { day: 1, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'hakima' },
+      affection: { hakima: 10, mira: 0, dariya: 0 },
+      seenEventIds: [],
+      activeEvent: null,
+      vnBacklog: Array.from({ length: 18 }, (_, i) => ({
+        speaker: i % 2 === 0 ? 'Narration' : 'Hakima',
+        text: `Log ${i + 1}`,
+        screen: 'INTRO',
+        heroineId: 'hakima',
+        routeMode: i % 2 === 0 ? 'normal' : 'long_history',
+        sequence: i + 1
+      })),
+      isAudioEnabled: false
+    }));
+  });
+
+  await page.reload();
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByTestId('intro-screen')).toBeVisible();
+  await page.getByTestId('options-open').click();
+  await page.getByTestId('backlog-open').click();
+
+  await expect(page.getByTestId('backlog-modal')).toBeVisible();
+  await expect(page.getByTestId('backlog-entry').first()).toContainText('#19');
+  await expect(page.getByTestId('backlog-modal')).toContainText('過去から続く縁');
+
+  const scrollTop = await page.getByTestId('backlog-scroll').evaluate(el => el.scrollTop);
+  expect(scrollTop).toBe(0);
   expect(consoleErrors).toEqual([]);
 });
 

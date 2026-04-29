@@ -127,6 +127,7 @@ test('route mode selection and resume flow', async ({ page }) => {
   await page.getByTestId('backlog-open').click();
   await expect(page.getByTestId('backlog-modal')).toBeVisible();
   await expect(page.getByTestId('backlog-entry').first()).toHaveAttribute('data-route-mode', 'long_history');
+  await expect(page.getByTestId('backlog-modal')).toContainText('過去から続く縁');
   await page.getByTestId('backlog-close').click();
   await page.getByTestId('options-close').click();
 
