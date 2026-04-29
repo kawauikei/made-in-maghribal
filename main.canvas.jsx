@@ -1106,6 +1106,7 @@ function App() {
               <VNBox 
                 text={resultNarrations[correctCount]}
                 themeColor={THEME.brass}
+                onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
                 onComplete={handleEndDay}
               />
             </div>

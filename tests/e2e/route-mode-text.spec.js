@@ -91,3 +91,36 @@ test('verify long_history route text in hakima_5', async ({ page }) => {
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
   expect(saved.vnBacklog.some((entry) => entry.screen === 'EVENT' && entry.routeMode === 'long_history')).toBe(true);
 });
+
+test('verify RESULT backlog entry is stored', async ({ page }) => {
+  await page.getByTestId('start-new-game').click();
+
+  const prologueBox = page.getByTestId('vn-box');
+  for (let i = 0; i < 6; i++) {
+    await prologueBox.click();
+    await page.waitForTimeout(100);
+  }
+
+  await expect(page.getByTestId('prologue-next')).toBeVisible({ timeout: 15000 });
+  await page.getByTestId('prologue-next').click();
+  await page.getByTestId('heroine-tab-hakima').click();
+  await page.getByTestId('heroine-start').click();
+
+  await expect(page.getByTestId('intro-screen')).toBeVisible();
+  await page.getByTestId('intro-start').click();
+  await expect(page.getByTestId('quiz-screen')).toBeVisible();
+
+  for (let i = 0; i < 5; i++) {
+    const choices = page.getByTestId('quiz-choice');
+    await expect(choices).toHaveCount(2);
+    await choices.first().click();
+    await page.waitForTimeout(900);
+  }
+
+  await expect(page.getByText('業務報告書')).toBeVisible({ timeout: 15000 });
+  const resultBox = page.getByTestId('vn-box');
+  await resultBox.click();
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.vnBacklog.some((entry) => entry.screen === 'RESULT')).toBe(true);
+});
