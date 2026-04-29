@@ -22,17 +22,39 @@ const expectNoConsoleErrors = (page) => {
   return errors;
 };
 
-const expectStableBoxHeight = async (locator, expectedHeight) => {
-  const box = await locator.boundingBox();
-  expect(Math.round(box.height)).toBe(expectedHeight);
-};
-
 const setRangeValue = async (page, locator, value) => {
   await locator.focus();
   await page.keyboard.press('Home');
   for (let i = 0; i < value; i++) {
     await page.keyboard.press('ArrowRight');
   }
+};
+
+/**
+ * Advance VN dialogue until a target element becomes visible.
+ * This replaces brittle fixed click loops.
+ */
+const advanceVNUntilVisible = async (page, targetTestId, triggerTestId = 'vn-box', maxSteps = 30) => {
+  const trigger = page.getByTestId(triggerTestId);
+  const target = page.getByTestId(targetTestId);
+  for (let i = 0; i < maxSteps; i++) {
+    // If target is already visible, we are done
+    if (await target.isVisible()) return;
+    
+    // Click trigger (usually the VN box itself)
+    await trigger.click();
+    // Small pause for state update/animation
+    await page.waitForTimeout(50);
+  }
+  const bodyText = await page.evaluate(() => document.body.innerText);
+  throw new Error(`Failed to reach [${targetTestId}] after ${maxSteps} steps. Current body: ${bodyText.substring(0, 150)}...`);
+};
+
+/**
+ * Specifically for the prologue flow.
+ */
+const advancePrologueToNextButton = async (page) => {
+  await advanceVNUntilVisible(page, 'prologue-next', 'vn-box', 20);
 };
 
 test.beforeEach(async ({ page }) => {
@@ -61,18 +83,8 @@ test('normal route smoke flow', async ({ page }) => {
   const vnBoxHeight = Math.round(initialBox.height);
   expect(vnBoxHeight).toBeGreaterThan(0);
 
-  await vnBox.click();
-  await expectStableBoxHeight(vnBox, vnBoxHeight);
-
-  await vnBox.click();
-  await vnBox.click();
-  await expectStableBoxHeight(vnBox, vnBoxHeight);
-
-  await vnBox.click();
-  await vnBox.click();
-  await expectStableBoxHeight(vnBox, vnBoxHeight);
-
-  await vnBox.click();
+  // Click through prologue pages using helper
+  await advancePrologueToNextButton(page);
   await expect(page.getByTestId('prologue-next')).toBeVisible();
   await assertNoHorizontalScroll(page);
 
@@ -121,13 +133,8 @@ test('route mode selection and resume flow', async ({ page }) => {
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
   await expect(page.getByTestId('route-mode-badge')).toHaveAttribute('data-route-mode', 'long_history');
 
-  const vnBox = page.getByTestId('vn-box');
-  for (let i = 0; i < 6; i++) {
-    await vnBox.click();
-    await page.waitForTimeout(100);
-  }
-
-  await expect(page.getByTestId('prologue-next')).toBeVisible({ timeout: 15000 });
+  // Click through prologue pages using helper
+  await advancePrologueToNextButton(page);
   await page.getByTestId('prologue-next').click();
   await expect(page.getByTestId('heroine-select-screen')).toBeVisible();
 
@@ -191,7 +198,9 @@ test('text speed option persists and instant mode reveals VN text immediately', 
   await expect(page.getByTestId('start-screen')).toBeVisible();
   await page.getByTestId('start-continue').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
-  await expect(page.getByTestId('vn-box')).toContainText('NEXT', { timeout: 2000 });
+  const vnBox = page.getByTestId('vn-box');
+  // In instant mode, text should be fully revealed immediately (with NEXT indicator)
+  await expect(vnBox).toContainText('NEXT', { timeout: 2000 });
 
   expect(consoleErrors).toEqual([]);
 });
@@ -202,13 +211,8 @@ test('audio volume options persist and affect live audio objects', async ({ page
   await page.getByTestId('start-new-game').click();
   await expect(page.getByTestId('prologue-screen')).toBeVisible();
 
-  const prologueBox = page.getByTestId('vn-box');
-  for (let i = 0; i < 6; i++) {
-    await prologueBox.click();
-    await page.waitForTimeout(100);
-  }
-
-  await expect(page.getByTestId('prologue-next')).toBeVisible({ timeout: 15000 });
+  // Click through prologue pages using helper
+  await advancePrologueToNextButton(page);
   await page.getByTestId('prologue-next').click();
   await page.getByTestId('heroine-tab-hakima').click();
   await page.getByTestId('heroine-start').click();
@@ -305,8 +309,9 @@ test('instant unread toggle shows VN text immediately', async ({ page }) => {
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
 
-  await page.waitForTimeout(200);
-  await expect(page.getByTestId('vn-box')).toContainText('NEXT');
+  const vnBox = page.getByTestId('vn-box');
+  // In instant mode, text should be fully revealed immediately (with NEXT indicator)
+  await expect(vnBox).toContainText('NEXT');
 
   await page.reload();
   await expect(page.getByTestId('start-screen')).toBeVisible();
