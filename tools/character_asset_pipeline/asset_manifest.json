@@ -1,194 +1,232 @@
 {
   "assets": {
     "hakima/normal": {
-      "hash": "3cb922806030df8ff0a0adb9a553281dbe94111fb0f98c559496473a90518bf3",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_01_normal.jpeg",
-      "updated_at": 1777326537.8254466
+      "hash": "71feb97314fee08c9bfe5892293e63b245359f46ddc671c6da8a5c531a830f7f",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\normal.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487188.785982
     },
     "hakima/joy": {
-      "hash": "b410dd261d75e86338216a92b02f72508d1f90a33d1f634ea79e10c70bbb0ef9",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_02_joy.jpeg",
-      "updated_at": 1777335922.2939327
+      "hash": "4eed9b2994fa87f60bdc2190c581e222551baaf9392d3526effe311553254f06",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\joy.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487198.3575044
     },
     "hakima/anger": {
-      "hash": "42da8e5ec13077cc1e67e2d56b51cf78a7f2639cbf50641ef36f524d341c3266",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_03_anger.jpeg",
-      "updated_at": 1777335925.3099282
+      "hash": "2cfbfcb6753a8686239bf7ba976ac6d25a4c923ea33db7d06eb79b1f2865a234",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\anger.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487200.784425
     },
     "hakima/cry": {
-      "hash": "62675af4d473da1e435f9d1eeeb87b0190b23870a4dc9cb07c12f07a5fdc59e9",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_04_cry.jpeg",
-      "updated_at": 1777335927.1760108
+      "hash": "12f6c27150c5f0baeb37772ea0c36f877089afb9f962ca2c40e165c67fd1b254",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\cry.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487202.7949755
     },
     "hakima/fun": {
-      "hash": "147c47fca18e8410ec31754ddb927e48391fef29b14a9cbc53a1798f05683fe7",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_05_fun.jpeg",
-      "updated_at": 1777335929.2116213
+      "hash": "51ba36ff80e4cd7811e97f1384f0c86d249593af3802efcde890e608f87dfa67",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\fun.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487204.5160713
     },
     "hakima/surprise": {
-      "hash": "d8264776db30f017fcfdeb1378481cbcf701b7dc778680ecc9636869561db1ff",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_06_surprise.jpeg",
-      "updated_at": 1777335931.4308422
+      "hash": "4035cf2c11f5f776a203f03efaed907339db4769ee518acba74a38f923ab07c3",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\surprise.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487206.4703622
     },
     "hakima/sorrow": {
-      "hash": "7e4066a2c707eeeb8fddf59563445317df0934a2e21b1f31cf316ced7263ebc1",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\01_Hakima_07_sorrow.jpeg",
-      "updated_at": 1777335934.730933
+      "hash": "05c738284cd783c22a7b3ab8c2ba134c162dc024dbf11ebfd91bc533b42c0b45",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\sorrow.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487208.3631139
     },
     "hakima/student": {
-      "hash": "fac0e59234b6526e1c7e735170e2336d19b59d9b99580f6000462f4b5244cf93",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\ex1.jpeg",
-      "updated_at": 1777430513.5060136
+      "hash": "424a67798598e66f3e812b0dae7ca0b29e0ba4df08a47cc580c5739260d49053",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\student.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487258.7713058
     },
     "hakima/social": {
-      "hash": "6fe200e169b214205251024ec141de52bf4600aa098edfc7bbc9b53d53eff9ab",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\ex2.jpeg",
-      "updated_at": 1777430515.6876183
+      "hash": "08fe59dc759bf86cc49464b094c96e1bf7ab8fa12bd560ac5993e443a2f270d4",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\social.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487313.07053
     },
     "hakima/maid": {
-      "hash": "8d158d286c896769f49234e3269a66e933423cab4535cfea97e2b0f517178922",
-      "source": "tools\\character_asset_pipeline\\source\\01_Hakima\\ex3.jpeg",
-      "updated_at": 1777430519.1561966
+      "hash": "5791e3748a95634e632da5e369554cf781c510818851083a1fe79a2dcd9d8c3b",
+      "source": "tools\\character_asset_pipeline\\source_clean\\01_Hakima\\maid.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487886.9998598
     },
     "mira/normal": {
-      "hash": "b3a89483159bfcef5eb646a006a8306f7ce9562c41152ba82fa8d4db020f7b8d",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_01_normal.jpeg",
-      "updated_at": 1777326541.0866582
+      "hash": "96c8ebae947b805cf2308d9ff85a5a2ff321ec24af9b1ddacbb27d2b6cea1a0a",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\normal.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487191.2193706
     },
     "mira/joy": {
-      "hash": "e53d998d33025843862b7026a7f029349519df1a84990a2287302960da048b9d",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_02_joy.jpeg",
-      "updated_at": 1777335936.7626739
+      "hash": "293873b10cf8f5e169129c1fa7fbdf504b2599ed94be9774ba4b6b3c84c8b3d4",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\joy.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487210.6766412
     },
     "mira/anger": {
-      "hash": "93a60f4ba09fd041880e871d003a0ceef2dce43fbc965c13dbf2a5ec5755db98",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_03_anger.jpeg",
-      "updated_at": 1777335938.3260736
+      "hash": "49f4cafb68a37c0f75e0287ffae70b7ce7f1a8d26b4533953654cdb2ad5269e9",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\anger.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487212.848828
     },
     "mira/cry": {
-      "hash": "979916e544ca7d0c4ab19d3b03cf06ee8f23a510720f7bebd3172568b2047925",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_04_cry.jpeg",
-      "updated_at": 1777335940.7670968
+      "hash": "3192b0437bb7e938ff92241113bf309db4cc2a53f28001057e7114a81c6589b3",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\cry.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487214.685837
     },
     "mira/fun": {
-      "hash": "9a7652d02247607cc04c5d9d3340ae504adcf0a2aa54e41308e375e838aef041",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_05_fun.jpeg",
-      "updated_at": 1777335943.7395957
+      "hash": "396250d641ed81f534b7ccad476ff9de297f1b8c227f6b64b578ee2850cba1bd",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\fun.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487218.2178516
     },
     "mira/surprise": {
-      "hash": "ffcdc3d37bc935c83e89e2779613c315de5a137af52dac3f5344003e12dacbb5",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_06_surprise.jpeg",
-      "updated_at": 1777335945.5337272
+      "hash": "7b4b482814d42c3558252780d14e9a0b7b431e9bb0f5808ed70a0a449d055109",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\surprise.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487222.0717156
     },
     "mira/sorrow": {
-      "hash": "2edd87ac04233aec30ea64202e0c9f5d5bc2fd6d7d402277f66bddfea88e7a4d",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\02_Mira_07_sorrow.jpeg",
-      "updated_at": 1777335949.3572733
+      "hash": "082b195e07c1bfd376f2d03b1d995a649c63459c0b6d3a3865608149e145157c",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\sorrow.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487223.122758
     },
     "mira/student": {
-      "hash": "f15e4793564fe7b16395a1f60fd3e2de24e445b27de288819173e9a2b9a186f5",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\ex1.jpeg",
-      "updated_at": 1777430520.9216428
+      "hash": "fe714147f5eaa0f363699b4a834433022e91632eb2851ffe3de7e5f4c402eec0",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\student.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487320.9961505
     },
     "mira/social": {
-      "hash": "9e1c3a062364cda6c60402677289966f2869370b7d08fd51e784c2db65f1d3a0",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\ex2.jpeg",
-      "updated_at": 1777430522.9709985
+      "hash": "a13d7c6db1dffc719e144dbf5b8ed63297afe36946813c5ee39213d69035eeb6",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\social.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487323.442966
     },
     "mira/maid": {
-      "hash": "8e2abdf72c2aa88f515620e2aa4eb3e93f089fda9352b4f93a534030f777add0",
-      "source": "tools\\character_asset_pipeline\\source\\02_Mira\\ex3.jpeg",
-      "updated_at": 1777435321.1559029
+      "hash": "11ec8016b30921ae5382ee648300de6896f8620c5d513f2949b760581d861f56",
+      "source": "tools\\character_asset_pipeline\\source_clean\\02_Mira\\maid.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487330.836939
     },
     "dariya/normal": {
-      "hash": "5f85559e0cc33e5607684ced9300be2a70c0a145e7c592ef26f8594fb845bb9c",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_01_normal.jpeg",
-      "updated_at": 1777326544.1601958
+      "hash": "65c3818192e20154de4e198a3abad93cac10f452c9228c27d6bcb6a56f512261",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\normal.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487192.9832797
     },
     "dariya/joy": {
-      "hash": "099fdbc6a5c2d36ca71dae9726800cd0715af1ab6993e9d15c8813fdd567f0de",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_02_joy.jpeg",
-      "updated_at": 1777335951.8750353
+      "hash": "bd84648589d8963421a8d833407228df70185ba1af2cc329ea847c8216bfa36a",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\joy.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487224.9828992
     },
     "dariya/anger": {
-      "hash": "a5b1952bf1844a3ded357eda31a2c5ebe069e3a8254f714c1943381040bcce9d",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_03_anger.jpeg",
-      "updated_at": 1777335954.2359798
+      "hash": "8a298a056600cfc0d340d78d8a4b2a04f5a389777239852ef88d190010eba827",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\anger.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487228.4131727
     },
     "dariya/cry": {
-      "hash": "987db54231146495affe9e503b4b582f60643e0cf539e14d154b1dbbc3f0aeec",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_04_cry.jpeg",
-      "updated_at": 1777335959.6935315
+      "hash": "9bbefed497e93700017bcc48215baa6af7b82be963d1bfb9bb1e5b7c67645175",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\cry.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487228.9363923
     },
     "dariya/fun": {
-      "hash": "399ede1de51f711370b474acc9ef34f71211ccefd41a9427dcefd47cf0d9bc19",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_05_fun.jpeg",
-      "updated_at": 1777335984.855946
+      "hash": "3480b0de450826019a45ccb06c8dff821668f97cc1f7907c465c8862440fea1e",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\fun.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487230.161793
     },
     "dariya/surprise": {
-      "hash": "0ffd2e925d2188dccbfc1458cf3ca7a0aef23455b2f68ebd54bcd3a78cab7c72",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_06_surpise.jpeg",
-      "updated_at": 1777336091.0580578
+      "hash": "1513af6da640c420c63a5264c2a8d28ffc8fb9903cfd8546465723b7ae3ec0c7",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\surprise.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487232.9623728
     },
     "dariya/sorrow": {
-      "hash": "c608b7fd5a1e27d6671ec0d6003d045acb5efc94c0cb09595dd1f6d801aab881",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\03_Dariya_07_sorrow.jpeg",
-      "updated_at": 1777336092.758598
+      "hash": "fd517f1582d588e3f152a4681857ba54f254c2fc45647bd358610e6e1d3bd6c7",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\sorrow.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487234.3411984
     },
     "dariya/student": {
-      "hash": "c751d71b4d1b9db01d0f8d29585a94f6b3ffcbbb063354fec5621f4a520f44d1",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\ex1.jpeg",
-      "updated_at": 1777430527.095116
+      "hash": "02b9b621847c1e85562dc5e63562f415551e884e4422906d0b4780088fdeef34",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\student.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487325.499212
     },
     "dariya/social": {
-      "hash": "3ba739144f686bbcb4548ebc257a3a3c75a367447b6427d0ed79187f88fd09e9",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\ex2.jpeg",
-      "updated_at": 1777430529.3096037
+      "hash": "caed93e09b6130041a1244ce325b76f5e7bae9d84ad64ebd8f2d7daa1a4defdd",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\social.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487327.4467578
     },
     "dariya/maid": {
-      "hash": "6d8c50a97efe8ee41779bc4f8ffa7530379db156611117281248a3e2341872de",
-      "source": "tools\\character_asset_pipeline\\source\\03_Dariya\\ex3.jpeg",
-      "updated_at": 1777430531.304775
+      "hash": "814cd4ba42e71673bef9d039594773d27e54e76ec50ebc5cac29cf39c6ec01a2",
+      "source": "tools\\character_asset_pipeline\\source_clean\\03_Dariya\\maid.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487329.5063088
     },
     "nader/normal": {
-      "hash": "9cdf163b16c5448fa87135cda760ddf502fbd59df4e2fee577e60d06e89160db",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_01_normal.jpeg",
-      "updated_at": 1777339129.1228743
+      "hash": "847ed88b81b8b376a87bc0459524d6552b121a3b322e521ba7a6e07cf4f4a613",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\normal.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487237.1405802
     },
     "nader/joy": {
-      "hash": "98f66321966dc537a7f024e07b078bea3869b9e1d4bae9d766046037e16f1042",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_02_joy.jpeg",
-      "updated_at": 1777339127.3413804
+      "hash": "a06f96147a7274cb2543d6bf3fc52cf67c615d00646ece8238435086b732358e",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\joy.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487240.0714114
     },
     "nader/anger": {
-      "hash": "d0d411add18fd265c3b3df1f463c0d6616be77e3fc768d21bf69614ba9f5858d",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_03_anger.jpeg",
-      "updated_at": 1777339135.4117815
+      "hash": "dfcfe907a369dec1be6b2fb5d5a1b7671ba3e712ea835438cb5198d2b2553641",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\anger.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487242.763205
     },
     "nader/cry": {
-      "hash": "39efa4fdb5ed91aaa4e054601ba0e13124afd7b87b25c04e8387a5ac99d16971",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_04_cry.jpeg",
-      "updated_at": 1777339137.6868036
+      "hash": "eb57b00995a6e83d554f94dcd7efd142e00a4fa86877f4c397482a41689e6eda",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\cry.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487686.1940856
     },
     "nader/fun": {
-      "hash": "671cbf95b085c707fc8910eb8cfd0b51f8364e2fec48e0e9b398db53d6f46178",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_05_fun.jpeg",
-      "updated_at": 1777339139.9301789
+      "hash": "05c3451a106e07c7abbae5a8e9aeaa7dad33d37f27c00e906d6f2120ea0c8220",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\fun.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487249.142207
     },
     "nader/surprise": {
-      "hash": "222f249a069f5d248cbd8e912eb1c55c493b262486826d3d7d6c2bd4d3e15fde",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_06_surprise.jpeg",
-      "updated_at": 1777339141.713879
+      "hash": "1b52c1c0e8870f3ba8ad76cbb977620b7b6b8f58425d269d63884d62ecc924c6",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\surprise.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487251.1254306
     },
     "nader/sorrow": {
-      "hash": "b9058343d26bf144232bb8f77ed61e7fadbd89294c34736af594d7e9816197aa",
-      "source": "tools\\character_asset_pipeline\\source\\04_Nader\\04_Nader_07_sorrow.jpeg",
-      "updated_at": 1777339143.79203
+      "hash": "649ce0b5cdc5f7e747dc3c01bc32f9b73640b5b44b2fe89a4ca6664f3ea63fdc",
+      "source": "tools\\character_asset_pipeline\\source_clean\\04_Nader\\sorrow.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487684.4605722
     },
     "common/running_group": {
-      "hash": "4aedfb825c73c1fa5e44c6fde3c70abc0738066e6730abf30106ad430d052930",
-      "source": "tools\\character_asset_pipeline\\source\\00_common\\running_group.jpeg",
-      "updated_at": 1777430510.1425006
+      "hash": "9a8505723142bad544accfc555d09f4833b49c28f48b45664b409ea03914306a",
+      "source": "tools\\character_asset_pipeline\\source_clean\\00_common\\running_group.jpeg",
+      "is_clean": true,
+      "updated_at": 1777487256.4619052
     }
   },
   "version": "1.0"

@@ -1,18 +1,42 @@
+
 /**
- * Character Asset Preprocessing Script (V1.1: Multi-Variant Copy)
+ * Character Asset Preprocessing Script (V1.2: source_clean Priority)
  * 
  * This script processes character assets defined in character_asset_config.json.
- * V1.1 supports multiple variants per heroine, each with its own sourcePath.
+ * It prioritizes 'source_clean' directory if available, falling back to 'source'.
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const CONFIG_PATH = path.join(__dirname, 'character_asset_config.json');
+const SOURCE_CLEAN_ROOT = path.join(__dirname, 'source_clean');
 const PUBLIC_DIR = path.resolve(__dirname, '../../public/characters');
 
+const CHAR_FOLDER_MAP = {
+    "hakima": "01_Hakima",
+    "mira": "02_Mira",
+    "dariya": "03_Dariya",
+    "nader": "04_Nader",
+    "common": "00_common"
+};
+const ALLOWED_EXTENSIONS = [".jpeg", ".jpg", ".png", ".webp"];
+
+function findBestSource(id, variantName, configSourcePath) {
+  const folderName = CHAR_FOLDER_MAP[id];
+  if (folderName) {
+    const cleanDir = path.join(SOURCE_CLEAN_ROOT, folderName);
+    for (const ext of ALLOWED_EXTENSIONS) {
+      const cleanPath = path.join(cleanDir, variantName + ext);
+      if (fs.existsSync(cleanPath)) return { path: cleanPath, isClean: true };
+    }
+  }
+  const fallbackPath = path.resolve(__dirname, '../../', configSourcePath);
+  return fs.existsSync(fallbackPath) ? { path: fallbackPath, isClean: false } : null;
+}
+
 function processAssets() {
-  console.log("--- Character Asset Preprocessing Tool (V1.1: Multi-Variant Copy) ---");
+  console.log("--- Character Asset Preprocessing Tool (V1.2: source_clean Priority) ---");
 
   if (!fs.existsSync(CONFIG_PATH)) {
     console.warn(`[SKIP] Config not found: ${CONFIG_PATH}`);
@@ -27,17 +51,16 @@ function processAssets() {
 
       const variants = heroineConfig.variants || {};
       for (const [variantName, variantConfig] of Object.entries(variants)) {
-        const rawSourcePath = variantConfig.sourcePath;
-        if (!rawSourcePath) {
-          console.warn(`  [SKIP] No sourcePath defined for ${id}/${variantName}`);
+        const configSourcePath = variantConfig.sourcePath;
+        const result = findBestSource(id, variantName, configSourcePath);
+
+        if (!result) {
+          console.warn(`  [SKIP] No source found for ${id}/${variantName}`);
           continue;
         }
 
-        const sourcePath = path.resolve(__dirname, '../../', rawSourcePath);
-        if (!fs.existsSync(sourcePath)) {
-          console.warn(`  [WARN] Source not found for ${id}/${variantName}: ${sourcePath}`);
-          continue;
-        }
+        const sourcePath = result.path;
+        const sourceLabel = result.isClean ? "CLEAN" : "FALLBACK";
 
         // Output paths
         const standingDir = path.join(PUBLIC_DIR, id, 'standing');
@@ -52,9 +75,8 @@ function processAssets() {
         try {
           fs.copyFileSync(sourcePath, standingPath);
           fs.copyFileSync(sourcePath, facePath);
-          console.log(`  [SUCCESS] Generated ${id}/${variantName}.png`);
+          console.log(`  [SUCCESS] Copied ${id}/${variantName}.png (${sourceLabel})`);
 
-          // Compatibility: If this is 'normal', also copy to 'default.png'
           if (variantName === 'normal') {
             fs.copyFileSync(sourcePath, path.join(standingDir, 'default.png'));
             fs.copyFileSync(sourcePath, path.join(faceDir, 'default.png'));
@@ -70,9 +92,10 @@ function processAssets() {
     const { execSync } = require('child_process');
     const pythonPath = "C:\\Users\\khqv\\AppData\\Local\\Programs\\Python\\Python310\\python.exe";
     const scriptPath = path.join(__dirname, 'face_normalization.py');
+    const args = process.argv.slice(2).join(' '); // Pass --force etc.
     
     try {
-      execSync(`"${pythonPath}" "${scriptPath}"`, { stdio: 'inherit' });
+      execSync(`"${pythonPath}" "${scriptPath}" ${args}`, { stdio: 'inherit' });
       console.log("[SUCCESS] Normalization complete.");
     } catch (err) {
       console.error("[ERROR] Normalization failed:", err.message);
