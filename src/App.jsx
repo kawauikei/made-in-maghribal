@@ -10,7 +10,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -309,7 +309,8 @@ export default function App() {
         workshopState,
         affection,
         isAudioEnabled,
-        seenEventIds
+        seenEventIds,
+        activeEvent
       });
       setHasSave(true);
     }
@@ -394,6 +395,7 @@ export default function App() {
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
+      setActiveEvent(data.activeEvent || null);
       setIsAudioEnabled(data.isAudioEnabled);
     }
   };
@@ -1245,7 +1247,7 @@ export default function App() {
             )}
             <VNBox 
               speaker={activeEvent.speaker}
-              text={activeEvent.text}
+              pages={getEventPages(activeEvent, routeMode)}
               themeColor={activeHeroine.themeColor}
               onComplete={handleCloseEvent}
               skip={seenEventIds.includes(activeEvent.id)}

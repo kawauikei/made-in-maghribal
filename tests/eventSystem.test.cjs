@@ -2,11 +2,12 @@
  * Regression tests for Event System Logic
  */
 const assert = require('assert');
-const { checkNewEventUnlock } = require('../src/game/eventSystem.js');
+const { checkNewEventUnlock, getEventPages } = require('../src/game/eventSystem.js');
 
 console.log("\n--- Made in Maghribal: Event System Tests ---");
 
 try {
+  // --- checkNewEventUnlock Tests ---
   // Test Case 1: No events met threshold
   const e1 = checkNewEventUnlock('hakima', 2, []);
   assert.strictEqual(e1, null, "Should not unlock at affection 2");
@@ -39,6 +40,38 @@ try {
   const e5 = checkNewEventUnlock('unknown', 100, []);
   assert.strictEqual(e5, null);
   console.log("✅ PASSED: Safety for unknown heroine");
+
+  // --- getEventPages Tests ---
+  console.log("\nTesting getEventPages...");
+  
+  const mockEvent = {
+    text: "Normal text",
+    routePages: {
+      long_history: ["IF page 1", "IF page 2"]
+    }
+  };
+
+  // Test Case 6: normal route
+  const p1 = getEventPages(mockEvent, 'normal');
+  assert.deepStrictEqual(p1, ["Normal text"], "Normal route should return base text");
+  console.log("✅ PASSED: getEventPages normal route fallback");
+
+  // Test Case 7: long_history route
+  const p2 = getEventPages(mockEvent, 'long_history');
+  assert.deepStrictEqual(p2, ["IF page 1", "IF page 2"], "long_history should return IF pages");
+  console.log("✅ PASSED: getEventPages long_history route selection");
+
+  // Test Case 8: long_history route without IF text
+  const mockEventSimple = { text: "Simple text" };
+  const p3 = getEventPages(mockEventSimple, 'long_history');
+  assert.deepStrictEqual(p3, ["Simple text"], "Should fallback if IF text is missing");
+  console.log("✅ PASSED: getEventPages fallback for missing IF text");
+
+  // Test Case 9: Event with explicit pages
+  const mockEventPages = { pages: ["Page 1", "Page 2"] };
+  const p4 = getEventPages(mockEventPages, 'normal');
+  assert.deepStrictEqual(p4, ["Page 1", "Page 2"], "Should return pages if provided");
+  console.log("✅ PASSED: getEventPages using explicit pages");
 
   console.log("\n--- All event system tests completed successfully! ---");
 } catch (err) {

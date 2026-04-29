@@ -18,6 +18,7 @@ export function createDefaultSaveData() {
     workshopState: createInitialWorkshopState(),
     affection: createInitialAffection(HEROINES.map(h => h.id)),
     seenEventIds: [],
+    activeEvent: null,
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -76,9 +77,13 @@ export function normalizeSaveData(raw) {
   // Audio safety
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
 
-  // Event safety
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
+  }
+
+  // Active event safety
+  if (normalized.activeEvent && typeof normalized.activeEvent !== 'object') {
+    normalized.activeEvent = null;
   }
 
   return normalized;

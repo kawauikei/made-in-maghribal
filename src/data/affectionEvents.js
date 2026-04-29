@@ -12,6 +12,12 @@ export const AFFECTION_EVENTS = {
       speaker: "ハキマ",
       expression: "joy",
       text: "ナーディル、さっきの品選び……なんだかあんたが店を継いだばかりの頃を思い出したよ。一人前になろうと必死なのは、見てればわかる。……あの時より、ずっと頼もしくなったね。",
+      routePages: {
+        long_history: [
+          "ナーディル、さっきの品選び……あんたが店を継いだ日のことを思い出したよ。",
+          "あの頃からずっと、あんたの隣にいるけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。"
+        ]
+      },
       stillImageId: "hakimaMorningVisit01"
     },
     {
@@ -33,6 +39,12 @@ export const AFFECTION_EVENTS = {
       speaker: "ミラ",
       expression: "fun",
       text: "……ふふっ。先輩とこうして品物を見つめていると、商会の義務も学園の課題も、すべて忘れてしまえそうです。ただの『私』でいられるこの場所が、少しずつ特別になってきました。",
+      routePages: {
+        long_history: [
+          "……ふふっ。先輩とこうしていると、子供の頃に路地裏を駆け回っていたのを思い出します。",
+          "今は立場こそ違いますが、先輩の隣が一番落ち着くのは……昔から変わりませんね。"
+        ]
+      },
       stillImageId: "miraAfterSchool01"
     },
     {
@@ -54,6 +66,12 @@ export const AFFECTION_EVENTS = {
       speaker: "ダリヤ",
       expression: "joy",
       text: "……ふぅ。王宮や研究所の喧騒を離れて、ここで君の話を聞いていると、不思議と心が凪いでいくのがわかるよ。この工房の空気は、どんな霊薬よりも私に効くらしい。感謝しているよ、ナーディル。",
+      routePages: {
+        long_history: [
+          "……ふぅ。君がまだ薬草の区別もつかなかった頃からの付き合いだが……。",
+          "今や、私の最も信頼する鑑定士だ。君の工房の空気は、どんな霊薬よりも私を安らげてくれるよ。"
+        ]
+      },
       stillImageId: "dariyaAfterHours01"
     },
     {
