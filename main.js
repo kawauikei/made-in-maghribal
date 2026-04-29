@@ -6834,6 +6834,7 @@ function App() {
     return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "10px", right: "10px", zIndex: 1e3 } }, /* @__PURE__ */ React.createElement(
       "button",
       {
+        "data-testid": "options-open",
         onClick: () => setIsMenuOpen(true),
         style: {
           background: "white",
@@ -6861,6 +6862,7 @@ function App() {
     return /* @__PURE__ */ React.createElement(
       "div",
       {
+        "data-testid": "options-modal",
         style: {
           position: "absolute",
           top: 0,
@@ -6884,7 +6886,7 @@ function App() {
           setIsMenuOpen(false);
           setScreen("START");
         }
-      } }, "�^�C�g���֖߂�"), /* @__PURE__ */ React.createElement("button", { style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", width: "100%" }, onClick: () => {
+      } }, "�^�C�g���֖߂�"), /* @__PURE__ */ React.createElement("button", { "data-testid": "options-close", style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", width: "100%" }, onClick: () => {
         audioEngine.playSfx("uiTapBottle");
         setIsMenuOpen(false);
         setMenuView("main");
@@ -6930,14 +6932,14 @@ function App() {
   } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
   let mainContent = null;
   if (screen === "START") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "�E�E", SHOP.localName, " �E�E          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, hasSave && /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "�E�E", SHOP.localName, " �E�E          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: handleContinue,
         style: { ...buttonStyle, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
       },
       "つづきかめE            "
-    ), /* @__PURE__ */ React.createElement("button", { onClick: handleStartGame, style: { ...buttonStyle, width: "100%", maxWidth: "260px", margin: 0 } }, hasSave ? "はじめから" : "店を開く"), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("button", { "data-testid": "start-new-game", onClick: handleStartGame, style: { ...buttonStyle, width: "100%", maxWidth: "260px", margin: 0 } }, hasSave ? "はじめから" : "店を開く"), /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => setScreen("MEMORIES"),
@@ -6954,6 +6956,7 @@ function App() {
     ), /* @__PURE__ */ React.createElement(
       "button",
       {
+        "data-testid": "visual-test-open",
         onClick: () => setScreen("VISUAL_TEST"),
         style: { ...buttonStyle, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
       },
@@ -6981,7 +6984,7 @@ function App() {
       "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
       "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。"
     ];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "prologue-screen", style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: "ナーディル",
@@ -6994,6 +6997,7 @@ function App() {
     ), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "54px", marginTop: "18px", display: "flex", justifyContent: "center", alignItems: "center" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
       "button",
       {
+        "data-testid": "prologue-next",
         onClick: () => {
           audioEngine.playSfx("uiClickForward");
           setScreen("HEROINE_SELECT");
@@ -7003,7 +7007,7 @@ function App() {
       "星瓶堂へ進む"
     )))));
   } else if (screen === "INTRO") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "����"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "intro-screen", style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "����"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: activeHeroine.name,
@@ -7011,7 +7015,7 @@ function App() {
         themeColor: activeHeroine.themeColor,
         onComplete: handleBeginService
       }
-    ))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "���r���̒��B�i�[�f�B���͂����̂悤�ɓX���J���A�q���}���鏀���𐮂��Ă���B"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "�����͂ǂ�ȕi���K�v���A�܂��͑���̘b�𕷂��Ƃ��납��n�܂�B")), /* @__PURE__ */ React.createElement("button", { onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "280px", marginTop: "10px" } }, "�c�Ƃ��n�߂�"))));
+    ))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "���r���̒��B�i�[�f�B���͂����̂悤�ɓX���J���A�q���}���鏀���𐮂��Ă���B"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "�����͂ǂ�ȕi���K�v���A�܂��͑���̘b�𕷂��Ƃ��납��n�܂�B")), /* @__PURE__ */ React.createElement("button", { "data-testid": "intro-start", onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "280px", marginTop: "10px" } }, "�c�Ƃ��n�߂�"))));
   } else if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
@@ -7135,7 +7139,7 @@ function App() {
     const stillList = Object.values(STILL_IMAGES);
     const bg = bgList[bgTestIndex % bgList.length];
     const still = stillList[stillTestIndex % stillList.length];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, padding: "0 0 20px 0" } }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle, padding: "0 0 20px 0" } }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "Visual Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
       "img",
       {
         key: bg.id,
@@ -7150,6 +7154,7 @@ function App() {
     )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
       "div",
       {
+        "data-testid": "visual-test-thumbnail",
         key: item.id,
         onClick: () => setBgTestIndex(idx),
         style: {
@@ -7178,6 +7183,7 @@ function App() {
     )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
       "div",
       {
+        "data-testid": "visual-test-thumbnail",
         key: item.id,
         onClick: () => setStillTestIndex(idx),
         style: {
@@ -7239,7 +7245,7 @@ function App() {
     }))), /* @__PURE__ */ React.createElement("div", { style: { display: "none" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
   } else if (screen === "HEROINE_SELECT") {
     const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める�E�E"), /* @__PURE__ */ React.createElement("div", { style: {
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める�E�E"), /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       justifyContent: "center",
       gap: "20px",
@@ -7252,6 +7258,7 @@ function App() {
       return /* @__PURE__ */ React.createElement(
         "div",
         {
+          "data-testid": `heroine-tab-${h.id}`,
           key: h.id,
           onClick: () => {
             audioEngine.playSfx("uiTapBottle");
@@ -7326,6 +7333,7 @@ function App() {
     } }, selectedHeroine.description), /* @__PURE__ */ React.createElement(
       "button",
       {
+        "data-testid": "heroine-start",
         onClick: () => handleSelectHeroine(selectedHeroine.id),
         style: {
           ...buttonStyle,
@@ -7399,7 +7407,7 @@ function App() {
     )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻めE")));
   } else if (screen === "QUIZ" && session) {
     const currentQuestion = session.questions[session.currentIndex];
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("header", { style: {
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("header", { style: {
       ...headerStyle,
       background: THEME.nightBlue,
       color: THEME.sand,
@@ -7432,6 +7440,7 @@ function App() {
       return /* @__PURE__ */ React.createElement(
         "div",
         {
+          "data-testid": "quiz-choice",
           key: item.id,
           onClick: () => handleSelect(item.id),
           className: `item-card ${staggerClass} ${feedbackClass}`,
@@ -7575,6 +7584,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
   return /* @__PURE__ */ React.createElement(
     "div",
     {
+      "data-testid": "vn-box",
       onClick: handleClick,
       style: {
         width: "100%",
