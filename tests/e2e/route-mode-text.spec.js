@@ -9,6 +9,14 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
+const seedEventSave = async (page, data) => {
+  await page.addInitScript((arg) => {
+    localStorage.setItem(arg.key, JSON.stringify(arg.data));
+  }, { key: 'made_in_maghribal_save', data });
+  await page.goto('/');
+  await page.getByTestId('start-continue').click();
+};
+
 test('verify normal route text in hakima_5', async ({ page }) => {
   const STORAGE_KEY = "made_in_maghribal_save";
   const data = {
@@ -90,6 +98,123 @@ test('verify long_history route text in hakima_5', async ({ page }) => {
 
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
   expect(saved.vnBacklog.some((entry) => entry.screen === 'EVENT' && entry.routeMode === 'long_history')).toBe(true);
+});
+
+test('verify routeMode fallback for hakima_10 uses normal text', async ({ page }) => {
+  await seedEventSave(page, {
+    version: '1.0',
+    screen: 'EVENT',
+    activeHeroineId: 'hakima',
+    workshopState: { day: 1, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'hakima' },
+    affection: { hakima: 10, mira: 0, dariya: 0 },
+    seenEventIds: [],
+    activeEvent: {
+      id: 'hakima_10',
+      heroineId: 'hakima',
+      threshold: 10,
+      title: 'Hakima 10',
+      speaker: 'Hakima',
+      expression: 'fun',
+      text: 'Normal fallback for Hakima 10.',
+      routePages: {
+        long_history: ['Hakima 10 IF page 1', 'Hakima 10 IF page 2']
+      },
+      stillImageId: 'hakimaMorningVisit01'
+    },
+    isAudioEnabled: false
+  });
+
+  await expect(page.getByTestId('vn-box')).toContainText('Normal fallback for Hakima 10.');
+});
+
+test('verify long_history route text in hakima_10', async ({ page }) => {
+  await seedEventSave(page, {
+    version: '1.0',
+    screen: 'EVENT',
+    activeHeroineId: 'hakima',
+    routeMode: 'long_history',
+    workshopState: { day: 1, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'hakima' },
+    affection: { hakima: 10, mira: 0, dariya: 0 },
+    seenEventIds: [],
+    activeEvent: {
+      id: 'hakima_10',
+      heroineId: 'hakima',
+      threshold: 10,
+      title: 'Hakima 10',
+      speaker: 'Hakima',
+      expression: 'fun',
+      text: 'Normal fallback for Hakima 10.',
+      routePages: {
+        long_history: ['Hakima 10 IF page 1', 'Hakima 10 IF page 2']
+      },
+      stillImageId: 'hakimaMorningVisit01'
+    },
+    isAudioEnabled: false
+  });
+
+  await expect(page.getByTestId('vn-box')).toContainText('Hakima 10 IF page 1');
+  await page.getByTestId('vn-box').click();
+  await expect(page.getByTestId('vn-box')).toContainText('Hakima 10 IF page 2');
+});
+
+test('verify long_history route text in mira_10', async ({ page }) => {
+  await seedEventSave(page, {
+    version: '1.0',
+    screen: 'EVENT',
+    activeHeroineId: 'mira',
+    routeMode: 'long_history',
+    workshopState: { day: 1, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'mira' },
+    affection: { hakima: 0, mira: 10, dariya: 0 },
+    seenEventIds: [],
+    activeEvent: {
+      id: 'mira_10',
+      heroineId: 'mira',
+      threshold: 10,
+      title: 'Mira 10',
+      speaker: 'Mira',
+      expression: 'joy',
+      text: 'Normal fallback for Mira 10.',
+      routePages: {
+        long_history: ['Mira 10 IF page 1', 'Mira 10 IF page 2']
+      },
+      stillImageId: 'miraAfterSchool01'
+    },
+    isAudioEnabled: false
+  });
+
+  await expect(page.getByTestId('vn-box')).toContainText('Mira 10 IF page 1');
+  await page.getByTestId('vn-box').click();
+  await expect(page.getByTestId('vn-box')).toContainText('Mira 10 IF page 2');
+});
+
+test('verify long_history route text in dariya_10', async ({ page }) => {
+  await seedEventSave(page, {
+    version: '1.0',
+    screen: 'EVENT',
+    activeHeroineId: 'dariya',
+    routeMode: 'long_history',
+    workshopState: { day: 1, sales: 0, reputation: 0, satisfaction: 0, activeHeroineId: 'dariya' },
+    affection: { hakima: 0, mira: 0, dariya: 10 },
+    seenEventIds: [],
+    activeEvent: {
+      id: 'dariya_10',
+      heroineId: 'dariya',
+      threshold: 10,
+      title: 'Dariya 10',
+      speaker: 'Dariya',
+      expression: 'fun',
+      text: 'Normal fallback for Dariya 10.',
+      routePages: {
+        long_history: ['Dariya 10 IF page 1', 'Dariya 10 IF page 2']
+      },
+      stillImageId: 'dariyaAfterHours01'
+    },
+    isAudioEnabled: false
+  });
+
+  await expect(page.getByTestId('vn-box')).toContainText('Dariya 10 IF page 1');
+  await page.getByTestId('vn-box').click();
+  await expect(page.getByTestId('vn-box')).toContainText('Dariya 10 IF page 2');
 });
 
 test('verify RESULT backlog entry is stored', async ({ page }) => {
