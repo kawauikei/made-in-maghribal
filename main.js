@@ -6048,6 +6048,7 @@ function createDefaultSaveData() {
     affection: createInitialAffection(HEROINES.map((h) => h.id)),
     seenEventIds: [],
     activeEvent: null,
+    vnBacklog: [],
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -6087,6 +6088,18 @@ function normalizeSaveData(raw) {
   }
   if (normalized.activeEvent && typeof normalized.activeEvent !== "object") {
     normalized.activeEvent = null;
+  }
+  if (!Array.isArray(normalized.vnBacklog)) {
+    normalized.vnBacklog = [];
+  } else {
+    normalized.vnBacklog = normalized.vnBacklog.filter((entry) => entry && typeof entry === "object" && typeof entry.text === "string").slice(-100).map((entry, index) => ({
+      speaker: typeof entry.speaker === "string" ? entry.speaker : "",
+      text: entry.text,
+      screen: typeof entry.screen === "string" && entry.screen ? entry.screen : normalized.screen,
+      heroineId: validHeroineIds.includes(entry.heroineId) ? entry.heroineId : normalized.activeHeroineId,
+      routeMode: entry.routeMode === "long_history" ? "long_history" : "normal",
+      sequence: Number.isFinite(entry.sequence) ? entry.sequence : index + 1
+    }));
   }
   return normalized;
 }
@@ -6607,11 +6620,12 @@ function App() {
         affection,
         isAudioEnabled,
         seenEventIds,
-        activeEvent
+        activeEvent,
+        vnBacklog
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6663,6 +6677,7 @@ function App() {
     setAffection(createInitialAffection(HEROINES.map((h) => h.id)));
     setSeenEventIds([]);
     setActiveEvent(null);
+    setVnBacklog([]);
     setSession(null);
     setIsPrologueComplete(false);
     setScreen("PROLOGUE");
@@ -6678,6 +6693,7 @@ function App() {
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
       setActiveEvent(data.activeEvent || null);
+      setVnBacklog(data.vnBacklog || []);
       setIsAudioEnabled(data.isAudioEnabled);
     }
   };
@@ -6765,7 +6781,8 @@ function App() {
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
-      seenEventIds
+      seenEventIds,
+      vnBacklog
     });
     setTimeout(() => {
       setIsHeroineLoading(false);
