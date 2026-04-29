@@ -7245,7 +7245,7 @@ function App() {
     }))), /* @__PURE__ */ React.createElement("div", { style: { display: "none" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
   } else if (screen === "HEROINE_SELECT") {
     const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める�E�E"), /* @__PURE__ */ React.createElement("div", { style: {
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       justifyContent: "center",
       gap: "20px",
