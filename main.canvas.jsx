@@ -21,11 +21,11 @@ import itemsData from './data/generated/items.json';
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
+    <div data-testid="sound-test-modal" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
       <div style={{ maxWidth: '600px', width: '100%', height: '100%', margin: '0 auto', background: '#222', borderRadius: '8px', border: '1px solid #444', color: '#eee', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', padding: '10px 12px', borderBottom: '1px solid #444', flexShrink: 0 }}>
-          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>サウンド紱定 Test</h2>
-          <button onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
+          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>サウンド設定 Test</h2>
+          <button data-testid="sound-test-close" onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
         </div>
         <div style={{ overflowY: 'auto', padding: '12px' }}>
         {!isAudioEnabled && <div style={{ background: '#422', padding: '10px', marginBottom: '20px', borderRadius: '4px', color: '#f88', fontSize: '0.9rem' }}>音声がOFFのため、再生されません。</div>}
@@ -79,7 +79,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
           </div>
         </div>
 
-        <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド紱定 Effects)</h3>
+        <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド設定 Effects)</h3>
 
         {groups.map(group => (
           <div key={group} style={{ marginBottom: '24px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
@@ -823,9 +823,9 @@ function App() {
     boxShadow: 'none'
   };
 
-  const renderUtilityHeader = (title, action = handleBackToTitle, right = null) => (
+  const renderUtilityHeader = (title, action = handleBackToTitle, right = null, testId = null) => (
     <div style={utilityHeaderStyle}>
-      <button onClick={action} style={utilityBackButtonStyle}>戻る</button>
+      <button data-testid={testId ? `${testId}-back` : undefined} onClick={action} style={utilityBackButtonStyle}>戻る</button>
       <div style={{
         color: THEME.sand,
         fontWeight: 'bold',
@@ -872,6 +872,7 @@ function App() {
           </button>
 
           <button 
+            data-testid="memories-open"
             onClick={() => setScreen('MEMORIES')} 
             style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}
           >
@@ -880,6 +881,7 @@ function App() {
 
           <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
             <button 
+              data-testid="sound-test-open"
               onClick={() => setShowSoundTest(true)} 
               style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
             >
@@ -1193,7 +1195,7 @@ function App() {
         {renderThemeStyles()}
         {/* Fixed Header */}
         <div style={{ width: '100%', padding: '10px 16px', background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
-          <button onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>TITLE</button>
+          <button data-testid="visual-test-back" onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>TITLE</button>
           <div style={{ flex: 1, color: THEME.sand, fontWeight: 'bold', fontSize: '0.9em' }}>映像確認 Asset Test</div>
           <div style={{ display: 'flex', gap: '4px' }}>
             <button data-testid="visual-test-tab-bg" onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>BG</button>
@@ -1308,10 +1310,10 @@ function App() {
     };
 
     mainContent = (
-      <div style={{ ...containerStyle, padding: 0 }}>
+      <div data-testid="memories-screen" style={{ ...containerStyle, padding: 0 }}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        {renderUtilityHeader('Memories')}
+        {renderUtilityHeader('Memories', handleBackToTitle, null, 'memories')}
         <h1 style={{ ...titleStyle, display: 'none' }}>思い出の記録</h1>
         <div style={{ ...cardStyle, maxWidth: '800px', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', margin: '0 8px 8px', width: 'calc(100% - 16px)', overflow: 'hidden' }}>
           <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}>
