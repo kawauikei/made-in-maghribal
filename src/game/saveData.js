@@ -29,6 +29,7 @@ export function createDefaultSaveData() {
     activeEvent: null,
     vnBacklog: [],
     textSpeed: 'normal',
+    instantUnreadText: false,
     bgmVolume: DEFAULT_AUDIO_VOLUME,
     seVolume: DEFAULT_AUDIO_VOLUME,
     isAudioEnabled: false,
@@ -90,6 +91,7 @@ export function normalizeSaveData(raw) {
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
   const validTextSpeeds = ['slow', 'normal', 'fast', 'instant'];
   normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : 'normal';
+  normalized.instantUnreadText = normalized.instantUnreadText === true;
   normalized.bgmVolume = clampVolume(normalized.bgmVolume);
   normalized.seVolume = clampVolume(normalized.seVolume);
 

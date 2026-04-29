@@ -185,6 +185,7 @@ function App() {
   const [menuView, setMenuView] = useState('main');
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState('normal');
+  const [instantUnreadText, setInstantUnreadText] = useState(false);
   const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
@@ -319,6 +320,7 @@ function App() {
       setHasSave(true);
       setRouteMode(data.routeMode || 'normal');
       setTextSpeed(data.textSpeed || 'normal');
+      setInstantUnreadText(data.instantUnreadText === true);
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
@@ -338,6 +340,7 @@ function App() {
         workshopState,
         affection,
         textSpeed,
+        instantUnreadText,
         bgmVolume,
         seVolume,
         isAudioEnabled,
@@ -347,7 +350,7 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
 
   useEffect(() => {
     audioEngine.setBgmVolume(bgmVolume);
@@ -406,7 +409,7 @@ function App() {
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
-  const isInstantTextSpeed = textSpeed === 'instant';
+  const isInstantTextSpeed = textSpeed === 'instant' || instantUnreadText;
 
   // Go to Heroine Select (New Game)
   const handleStartGame = () => {
@@ -437,6 +440,7 @@ function App() {
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || 'normal');
       setTextSpeed(data.textSpeed || 'normal');
+      setInstantUnreadText(data.instantUnreadText === true);
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
@@ -549,6 +553,7 @@ function App() {
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
+      instantUnreadText,
       bgmVolume,
       seVolume,
       seenEventIds,
@@ -949,6 +954,33 @@ function App() {
                 {Math.round(seVolume * 100)}%
               </span>
             </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold' }}>未読も瞬時表示</div>
+              <div style={{ fontSize: '0.75em', color: '#777', marginTop: '2px' }}>未読テキストも即時で表示する</div>
+            </div>
+            <button
+              data-testid="instant-unread-toggle"
+              aria-pressed={instantUnreadText}
+              onClick={() => {
+                audioEngine.playSfx('uiTapBottle');
+                setInstantUnreadText(prev => !prev);
+              }}
+              style={{
+                ...buttonStyle,
+                margin: 0,
+                padding: '8px 16px',
+                borderRadius: '20px',
+                fontSize: '0.9em',
+                fontWeight: 'bold',
+                background: instantUnreadText ? THEME.starGold : '#999',
+                color: instantUnreadText ? THEME.textDark : '#fff',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              {instantUnreadText ? 'ON' : 'OFF'}
+            </button>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
             <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>

@@ -235,7 +235,7 @@ test('audio volume options persist and affect live audio objects', async ({ page
   expect(liveBeforeToggle.bgmVolume).toBeCloseTo(0.25, 2);
   expect(liveBeforeToggle.seVolume).toBeCloseTo(0.6, 2);
 
-  await page.getByTestId('options-modal').getByRole('button', { name: 'OFF' }).click();
+  await page.getByTestId('options-modal').getByRole('button', { name: 'OFF' }).nth(1).click();
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
 
@@ -256,6 +256,37 @@ test('audio volume options persist and affect live audio objects', async ({ page
   await expect(page.getByTestId('options-modal')).toBeVisible();
   await expect(page.getByTestId('bgm-volume-slider')).toHaveValue('25');
   await expect(page.getByTestId('se-volume-slider')).toHaveValue('60');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('instant unread toggle shows VN text immediately', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await page.getByTestId('instant-unread-toggle').click();
+  await expect(page.getByTestId('instant-unread-toggle')).toHaveAttribute('aria-pressed', 'true');
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.instantUnreadText).toBe(true);
+
+  await page.getByTestId('options-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
+
+  await page.waitForTimeout(200);
+  await expect(page.getByTestId('vn-box')).toContainText('NEXT');
+
+  await page.reload();
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await expect(page.getByTestId('instant-unread-toggle')).toHaveAttribute('aria-pressed', 'true');
 
   expect(consoleErrors).toEqual([]);
 });

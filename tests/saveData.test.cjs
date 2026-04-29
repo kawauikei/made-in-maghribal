@@ -33,6 +33,7 @@ try {
   assert.ok(def.affection.hakima === 0);
   assert.strictEqual(def.routeMode, 'normal');
   assert.strictEqual(def.textSpeed, 'normal');
+  assert.strictEqual(def.instantUnreadText, false);
   assert.strictEqual(def.bgmVolume, 0.8);
   assert.strictEqual(def.seVolume, 0.8);
   assert.deepStrictEqual(def.vnBacklog, []);
@@ -48,6 +49,7 @@ try {
     screen: 'QUIZ',
     routeMode: 'invalid-mode',
     textSpeed: 'warp',
+    instantUnreadText: 'yes',
     bgmVolume: 1.2,
     seVolume: -0.1
   };
@@ -58,6 +60,7 @@ try {
   assert.strictEqual(norm.screen, 'INTRO');
   assert.strictEqual(norm.routeMode, 'normal');
   assert.strictEqual(norm.textSpeed, 'normal');
+  assert.strictEqual(norm.instantUnreadText, false);
   assert.strictEqual(norm.bgmVolume, 1);
   assert.strictEqual(norm.seVolume, 0);
   console.log("PASSED: normalizeSaveData (Clamping & Filtering)");
@@ -67,6 +70,12 @@ try {
   });
   assert.strictEqual(validTextSpeed.textSpeed, 'instant');
   console.log("PASSED: textSpeed normalization");
+
+  const validInstantUnread = normalizeSaveData({
+    instantUnreadText: true
+  });
+  assert.strictEqual(validInstantUnread.instantUnreadText, true);
+  console.log("PASSED: instantUnreadText normalization");
 
   // Test: vnBacklog normalization keeps valid entries and rejects invalid values
   const invalidBacklog = normalizeSaveData({
@@ -113,6 +122,7 @@ try {
   myData.affection.hakima = 10;
   myData.routeMode = 'long_history';
   myData.textSpeed = 'fast';
+  myData.instantUnreadText = true;
   myData.bgmVolume = 0.35;
   myData.seVolume = 0.62;
   myData.vnBacklog = [{
@@ -132,6 +142,7 @@ try {
   assert.strictEqual(loaded.affection.hakima, 10);
   assert.strictEqual(loaded.routeMode, 'long_history');
   assert.strictEqual(loaded.textSpeed, 'fast');
+  assert.strictEqual(loaded.instantUnreadText, true);
   assert.strictEqual(loaded.bgmVolume, 0.35);
   assert.strictEqual(loaded.seVolume, 0.62);
   assert.strictEqual(loaded.vnBacklog.length, 1);
@@ -148,6 +159,7 @@ try {
     seenEventIds: ['mira_1']
   });
   assert.deepStrictEqual(legacyBacklog.vnBacklog, []);
+  assert.strictEqual(legacyBacklog.instantUnreadText, false);
   assert.strictEqual(legacyBacklog.bgmVolume, 0.8);
   assert.strictEqual(legacyBacklog.seVolume, 0.8);
   console.log("PASSED: legacy save vnBacklog default");
