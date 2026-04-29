@@ -87,4 +87,7 @@ test('verify long_history route text in hakima_5', async ({ page }) => {
   await expect(page.getByTestId('vn-box')).toContainText('あんたが店を継いだ日のことを思い出したよ');
   await page.getByTestId('vn-box').click();
   await expect(page.getByTestId('vn-box')).toContainText('あの頃からずっと、あんたの隣にいるけど');
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.vnBacklog.some((entry) => entry.screen === 'EVENT' && entry.routeMode === 'long_history')).toBe(true);
 });
