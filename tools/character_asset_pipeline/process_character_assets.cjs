@@ -66,6 +66,18 @@ function processAssets() {
       }
     }
 
+    console.log("\n[STEP 2] Running Face Normalization & Alpha Protection...");
+    const { execSync } = require('child_process');
+    const pythonPath = "C:\\Users\\khqv\\AppData\\Local\\Programs\\Python\\Python310\\python.exe";
+    const scriptPath = path.join(__dirname, 'face_normalization.py');
+    
+    try {
+      execSync(`"${pythonPath}" "${scriptPath}"`, { stdio: 'inherit' });
+      console.log("[SUCCESS] Normalization complete.");
+    } catch (err) {
+      console.error("[ERROR] Normalization failed:", err.message);
+    }
+
     console.log("\n[COMPLETE] Asset processing finished.");
 
   } catch (err) {
