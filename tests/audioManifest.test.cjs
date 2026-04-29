@@ -50,9 +50,26 @@ function testHelpers() {
   console.log("✅ PASSED: Audio helper functions");
 }
 
+function testExtraTracks() {
+  const extraPrefixes = ['extra_joy', 'extra_anger', 'extra_sorrow', 'extra_fun', 'extra_surprise'];
+  extraPrefixes.forEach(prefix => {
+    [1, 2].forEach(num => {
+      const id = `${prefix}_${num}`;
+      if (!TRACKS[id]) {
+        throw new Error(`Extra track not found in manifest: ${id}`);
+      }
+      if (TRACKS[id].category !== "共通イベントBGM") {
+        throw new Error(`Extra track ${id} has incorrect category: ${TRACKS[id].category}`);
+      }
+    });
+  });
+  console.log("✅ PASSED: Extra tracks exist and categorized");
+}
+
 try {
   testCommonTracks();
   testHeroineThemes();
+  testExtraTracks();
   testHelpers();
   console.log("\n--- All audio manifest tests completed successfully! ---\n");
 } catch (err) {

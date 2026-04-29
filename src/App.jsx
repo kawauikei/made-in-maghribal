@@ -78,50 +78,56 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
         {/* BGM Section */}
         <div style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px solid #444' }}>
           <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>BGM (Music)</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
-            {Object.values(TRACKS).map(track => (
-              <div key={track.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{track.id}</div>
-                <div style={{ fontSize: '0.8rem', color: '#f0d080', marginBottom: '6px' }}>{track.title}</div>
-                <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', wordBreak: 'break-all', fontStyle: 'italic' }}>{track.src}</div>
-                <button 
-                  onClick={() => audioEngine.playTrack(track)}
-                  disabled={!isAudioEnabled}
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
-                    background: isAudioEnabled ? '#3d5afe' : '#333', 
-                    color: isAudioEnabled ? '#fff' : '#666', 
-                    border: 'none', 
-                    borderRadius: '4px',
-                    cursor: isAudioEnabled ? 'pointer' : 'default',
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  Play
-                </button>
+          
+          {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
+            <div key={category} style={{ marginBottom: '20px' }}>
+              <h4 style={{ color: '#888', fontSize: '0.75rem', marginBottom: '10px', borderLeft: '3px solid #555', paddingLeft: '8px' }}>{category}</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+                {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => (
+                  <div key={track.id} style={{ background: '#2a2a2a', padding: '12px', borderRadius: '6px', border: '1px solid #3a3a3a' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '4px', color: '#fff' }}>{track.id}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#f0d080', marginBottom: '6px' }}>{track.title}</div>
+                    <div style={{ fontSize: '0.65rem', color: '#666', marginBottom: '8px', wordBreak: 'break-all', fontStyle: 'italic' }}>{track.src}</div>
+                    <button 
+                      onClick={() => audioEngine.playTrack(track)}
+                      disabled={!isAudioEnabled}
+                      style={{ 
+                        width: '100%', 
+                        padding: '8px', 
+                        background: isAudioEnabled ? '#3d5afe' : '#333', 
+                        color: isAudioEnabled ? '#fff' : '#666', 
+                        border: 'none', 
+                        borderRadius: '4px',
+                        cursor: isAudioEnabled ? 'pointer' : 'default',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Play
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-            <button 
-              onClick={() => audioEngine.stop()}
-              style={{ 
-                width: '100%', 
-                padding: '12px', 
-                background: '#555', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: '4px', 
-                cursor: 'pointer', 
-                fontSize: '0.85rem', 
-                fontWeight: 'bold',
-                gridColumn: '1 / -1',
-                marginTop: '10px'
-              }}
-            >
-              STOP MUSIC
-            </button>
-          </div>
+            </div>
+          ))}
+
+          <button 
+            onClick={() => audioEngine.stop()}
+            style={{ 
+              width: '100%', 
+              padding: '12px', 
+              background: '#555', 
+              color: '#fff', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer', 
+              fontSize: '0.85rem', 
+              fontWeight: 'bold',
+              marginTop: '10px'
+            }}
+          >
+            STOP MUSIC
+          </button>
         </div>
 
         <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド設定 Effects)</h3>
