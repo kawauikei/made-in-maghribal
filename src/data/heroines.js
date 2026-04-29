@@ -92,5 +92,6 @@ export function getHeroineById(id) {
  * @returns {string}
  */
 export function getHeroineAsset(heroineId, type, expression = 'normal') {
-  return `characters/${heroineId}/${heroineId}_${type}_${expression}.png`;
+  const subDir = type === 'face' ? 'face_proc' : 'standing_proc';
+  return `characters/${heroineId}/${subDir}/${expression}.png`;
 }

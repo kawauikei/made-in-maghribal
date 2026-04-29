@@ -46,9 +46,27 @@ export const TRACKS = {
   },
   "HAKIMA-04": {
     id: "HAKIMA-04",
-    src: "audio/bgm/hakima/hakima04_ending.mp3",
+    src: "audio/bgm/hakima/hakima04_game_c.mp3",
+    loop: true,
+    title: "Saffron and Silk"
+  },
+  "HAKIMA-05": {
+    id: "HAKIMA-05",
+    src: "audio/bgm/hakima/hakima05_game_d.mp3",
+    loop: true,
+    title: "Golden Hour Market"
+  },
+  "HAKIMA-06": {
+    id: "HAKIMA-06",
+    src: "audio/bgm/hakima/hakima06_ending.mp3",
     loop: true,
     title: "Morning Beside You"
+  },
+  "HAKIMA-07": {
+    id: "HAKIMA-07",
+    src: "audio/bgm/hakima/hakima07_ending2.mp3",
+    loop: true,
+    title: "Sunset Promises"
   },
 
   // --- Mira ---
@@ -72,9 +90,27 @@ export const TRACKS = {
   },
   "MIRA-04": {
     id: "MIRA-04",
-    src: "audio/bgm/mira/mira04_ending.mp3",
+    src: "audio/bgm/mira/mira04_game_c.mp3",
+    loop: true,
+    title: "Logic and Lace"
+  },
+  "MIRA-05": {
+    id: "MIRA-05",
+    src: "audio/bgm/mira/mira05_game_d.mp3",
+    loop: true,
+    title: "Starlight Solution"
+  },
+  "MIRA-06": {
+    id: "MIRA-06",
+    src: "audio/bgm/mira/mira06_ending.mp3",
     loop: true,
     title: "Finally Just Me"
+  },
+  "MIRA-07": {
+    id: "MIRA-07",
+    src: "audio/bgm/mira/mira07_ending2.mp3",
+    loop: true,
+    title: "The Tomorrow We Found"
   },
 
   // --- Dariya ---
@@ -98,9 +134,27 @@ export const TRACKS = {
   },
   "DARIYA-04": {
     id: "DARIYA-04",
-    src: "audio/bgm/dariya/dariya04_ending.mp3",
+    src: "audio/bgm/dariya/dariya04_game_c.mp3",
+    loop: true,
+    title: "Royal Reflection"
+  },
+  "DARIYA-05": {
+    id: "DARIYA-05",
+    src: "audio/bgm/dariya/dariya05_game_d.mp3",
+    loop: true,
+    title: "The Bureaucrat's Dream"
+  },
+  "DARIYA-06": {
+    id: "DARIYA-06",
+    src: "audio/bgm/dariya/dariya06_ending.mp3",
     loop: true,
     title: "Tea Under the Rising Sun"
+  },
+  "DARIYA-07": {
+    id: "DARIYA-07",
+    src: "audio/bgm/dariya/dariya07_ending2.mp3",
+    loop: true,
+    title: "Quiet Moonlight"
   }
 };
 
