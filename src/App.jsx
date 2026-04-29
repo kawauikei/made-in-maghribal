@@ -1635,7 +1635,7 @@ export default function App() {
           justifyContent: 'flex-start',
           gap: '20px'
         }}>
-          <span style={{ fontSize: '0.9em' }}>髑大ｮ壻ｾ晞�ｼ {session.currentIndex + 1} / {session.questions.length}</span>
+          <span style={{ fontSize: '0.9em' }}>依頼件数 {session.currentIndex + 1} / {session.questions.length}</span>
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
         </header>
 

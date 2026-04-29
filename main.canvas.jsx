@@ -24,7 +24,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
       <div style={{ maxWidth: '600px', width: '100%', height: '100%', margin: '0 auto', background: '#222', borderRadius: '8px', border: '1px solid #444', color: '#eee', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', padding: '10px 12px', borderBottom: '1px solid #444', flexShrink: 0 }}>
-          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>サウンド設定 Test</h2>
+          <h2 style={{ margin: 0, color: '#f0d080', fontSize: '1.2rem' }}>サウンド紱定 Test</h2>
           <button onClick={onClose} style={{ padding: '8px 14px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Close</button>
         </div>
         <div style={{ overflowY: 'auto', padding: '12px' }}>
@@ -79,7 +79,7 @@ function SoundTest({ onClose, isAudioEnabled }) {
           </div>
         </div>
 
-        <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド設定 Effects)</h3>
+        <h3 style={{ color: '#aaa', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.05em' }}>SFX (サウンド紱定 Effects)</h3>
 
         {groups.map(group => (
           <div key={group} style={{ marginBottom: '24px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
@@ -727,7 +727,7 @@ function App() {
           }}
           aria-label="Menu"
         >
-          笞呻ｸ・        </button>
+          ⚙️        </button>
       </div>
     );
   };
@@ -855,7 +855,7 @@ function App() {
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
           <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
-            ・・{SHOP.localName} ・・          </div>
+            — {SHOP.localName} —          </div>
         </div>
 
         <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
@@ -916,9 +916,9 @@ function App() {
     );
   } else if (screen === 'PROLOGUE') {
     const prologuePages = [
-      "遐よｼ�縺ｮ陦励�繧ｰ繝ｪ繝舌Ν縲りｷｯ蝨ｰ縺ｮ荳隗偵↓縲∝ｰ上＆縺ｪ骭ｬ驥題｡灘ｺ励取弌逑ｶ蝣ゅ上′縺ゅｋ縲�",
-      "闍･蠎嶺ｸｻ繝翫�繝�ぅ繝ｫ縺ｯ縲∝ｮ｢縺ｮ萓晞�ｼ縺ｫ蜷医≧蜩√ｒ驕ｸ縺ｳ縺ｪ縺後ｉ縲∽ｻ頑律繧ょｺ励ｒ髢九￥縲�",
-      "縺薙ｌ縺九ｉ縺ｮ10譌･髢薙ょ膚縺�ｒ驥阪�繧倶ｸｭ縺ｧ縲∝鵠蜉幄�◆縺｡縺ｨ縺ｮ邵√ｂ蟆代＠縺壹▽閧ｲ縺｣縺ｦ縺�￥縲�",
+      "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
+      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
     ];
     mainContent = (
       <div data-testid="prologue-screen" style={{ ...containerStyle, position: 'relative' }}>
@@ -926,10 +926,10 @@ function App() {
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>譏溽童蝣ゅ�蟋九∪繧�</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox
-              speaker="繝翫�繝�ぅ繝ｫ"
+              speaker="ナーディル"
               pages={prologuePages}
               themeColor={THEME.brass}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
@@ -947,7 +947,7 @@ function App() {
                   }}
                   style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
                 >
-                  譏溽童蝣ゅ∈騾ｲ繧
+                  星瓶堂へ進む
                 </button>
               )}
             </div>
@@ -977,7 +977,7 @@ function App() {
               </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナディールは店を開き、客を迎える準備を整えている。</p>
               <p style={{ margin: 0, lineHeight: '1.6' }}>今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
             </div>
             <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
@@ -1005,7 +1005,7 @@ function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>讌ｭ蜍吝�ｱ蜻頑嶌</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>業務報告書</h1>
           <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
             <div style={{ marginBottom: '25px' }}>
               <VNBox 
@@ -1038,28 +1038,28 @@ function App() {
               border: `1px solid ${THEME.brassDark}`
             }}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>隧募愛</div>
+                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>評判</div>
                 <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844' }}>
                   {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>螢ｲ荳・</div>
+                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>売上</div>
                 <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brassDark }}>
                   {mgmt.sales}G
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>貅雜ｳ蠎ｦ</div>
+                <div style={{ fontSize: '0.8em', color: '#666', marginBottom: '4px' }}>満足度</div>
                 <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : '#844' }}>
                   {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
                 </div>
               </div>
             </div>
 
-            <h2 style={{ margin: '10px 0', fontSize: '1.2em' }}>譛邨りｩ穂ｾ｡: {session.score} 轤ｹ</h2>
+            <h2 style={{ margin: '10px 0', fontSize: '1.2em' }}>最終スコア: {session.score} 点</h2>
             <p style={{ fontSize: '1em', marginBottom: '20px', color: '#666' }}>
-              萓晞�ｼ {session.questions.length} 莉ｶ荳ｭ {correctCount} 莉ｶ驕疲・
+              依頼 {session.questions.length} 件中 {correctCount} 件達成
             </p>
             <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
               {rank.message}
@@ -1078,56 +1078,30 @@ function App() {
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>日次終了</h1>
-          <div style={{ ...cardStyle, borderRadius: '8px', background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '25px', marginTop: '10px' }}>
-            <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginBottom: '30px', flexWrap: 'nowrap' }}>
-            <HeroineDisplay 
-              heroine={activeHeroine} 
-              type="face" 
-              size="medium" 
-              expression={getDayEndExpression(correctCount)}
-            />
-            <div style={{ ...narrativeBoxStyle, flex: '1', minWidth: '280px', marginBottom: 0, textAlign: 'left' }}>
-              <p>今日の営業の手応えが、次の一歩につながっている。</p>
-              <p>迷いがあっても、客の話を聞いて品を選ぶ流れは少しずつ整っていく。</p>
-              <p style={{ marginTop: '10px', color: THEME.brass, fontWeight: 'bold' }}>
-                {activeHeroine.name}との縁は、今日の積み重ねで少しずつ形になっていく。
-              </p>
-            </div>
-          </div>
-
-          <div style={{ 
-            background: 'rgba(0,0,0,0.05)', 
-            padding: '20px', 
-            borderRadius: '4px', 
-            marginBottom: '30px',
-            border: `1px solid ${THEME.brassDark}`
-          }}>
-            <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>譛ｬ譌･縺ｮ邨悟霧險倬鹸</h3>
+          <div style={{ ...cardStyle, width: '90%', maxWidth: '300px', background: 'rgba(255,255,255,0.95)', padding: '20px' }}>
+            <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>本日の営業記録</h3>
             <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '15px' }}>
-               <div>螢ｲ荳・ <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{mgmt.sales}G</span></div>
-               <div>隧募愛: <span style={{ color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
+               <div>売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{mgmt.sales}G</span></div>
+               <div>評判: <span style={{ color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
             </div>
             
             <div style={{ textAlign: 'left', fontSize: '0.85em', color: '#444', borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-              <strong>迴ｾ蝨ｨ縺ｮ蟾･謌ｿ縺ｮ迥ｶ諷・({workshopState.day}日目邨ゆｺ・</strong>
+              <strong>現在の工房の状態({workshopState.day}日目終了)</strong>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
-                 <div>邱丞｣ｲ荳・ <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
-                 <div>邱剰ｩ募愛: <span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
-                 <div>貅雜ｳ蠎ｦ: <span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
+                 <div>総売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
+                 <div>総評判: <span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
+                 <div>満足度: <span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
                  <div>親密度: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-            <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>谺｡縺ｮ譌･縺ｸ騾ｲ繧</button>
+            <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の日へ進む</button>
             <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
           </div>
         </div>
       </div>
-    </div>
     );
   } else if (screen === 'EVENT' && activeEvent) {
 
@@ -1533,7 +1507,8 @@ function App() {
               boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
             }}
           >
-            {selectedHeroine.name}繧帝�ｼ繧・          </button>
+            {selectedHeroine.name}を頼む
+          </button>
         </div>
 
         {/* Navigation Footer */}
@@ -1661,7 +1636,7 @@ function App() {
           justifyContent: 'flex-start',
           gap: '20px'
         }}>
-          <span style={{ fontSize: '0.9em' }}>髑大ｮ壻ｾ晞�ｼ {session.currentIndex + 1} / {session.questions.length}</span>
+          <span style={{ fontSize: '0.9em' }}>依頼件数 {session.currentIndex + 1} / {session.questions.length}</span>
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
         </header>
 
