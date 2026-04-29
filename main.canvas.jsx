@@ -674,6 +674,7 @@ function App() {
     return (
       <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
         <button 
+          data-testid="options-open"
           onClick={() => setIsMenuOpen(true)}
           style={{
             background: 'white',
@@ -722,6 +723,7 @@ function App() {
 
     return (
       <div 
+        data-testid="options-modal"
         style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(0,0,0,0.6)', zIndex: 3000,
@@ -750,7 +752,7 @@ function App() {
             <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("�^�C�g���ɖ߂�܂����H")) { setIsMenuOpen(false); setScreen('START'); } }}>
               �^�C�g���֖߂�
             </button>
-            <button style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(false); setMenuView('main'); }}>
+            <button data-testid="options-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(false); setMenuView('main'); }}>
               ����
             </button>
           </div>
@@ -811,7 +813,7 @@ function App() {
 
   if (screen === 'START') {
     mainContent = (
-      <div style={containerStyle}>
+      <div data-testid="start-screen" style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
         {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} />}
@@ -831,7 +833,7 @@ function App() {
               つづきかめE            </button>
           )}
           
-          <button onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '260px', margin: 0 }}>
+          <button data-testid="start-new-game" onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '260px', margin: 0 }}>
             {hasSave ? 'はじめから' : '店を開く'}
           </button>
 
@@ -850,6 +852,7 @@ function App() {
               Sound
             </button>
             <button 
+              data-testid="visual-test-open"
               onClick={() => setScreen('VISUAL_TEST')} 
               style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
             >
@@ -884,7 +887,7 @@ function App() {
       "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
     ];
     mainContent = (
-      <div style={{ ...containerStyle, position: 'relative' }}>
+      <div data-testid="prologue-screen" style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -902,6 +905,7 @@ function App() {
             <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {isPrologueComplete && (
                 <button
+                  data-testid="prologue-next"
                   onClick={() => {
                     audioEngine.playSfx('uiClickForward');
                     setScreen('HEROINE_SELECT');
@@ -918,7 +922,7 @@ function App() {
     );
   } else if (screen === 'INTRO') {
     mainContent = (
-      <div style={{ ...containerStyle, position: 'relative' }}>
+      <div data-testid="intro-screen" style={{ ...containerStyle, position: 'relative' }}>
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -940,7 +944,7 @@ function App() {
               <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>���r���̒��B�i�[�f�B���͂����̂悤�ɓX���J���A�q���}���鏀���𐮂��Ă���B</p>
               <p style={{ margin: 0, lineHeight: '1.6' }}>�����͂ǂ�ȕi���K�v���A�܂��͑���̘b�𕷂��Ƃ��납��n�܂�B</p>
             </div>
-            <button onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>�c�Ƃ��n�߂�</button>
+            <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>�c�Ƃ��n�߂�</button>
           </div>
         </div>
       </div>
@@ -1175,15 +1179,15 @@ function App() {
     const still = stillList[stillTestIndex % stillList.length];
 
     mainContent = (
-      <div style={{ ...containerStyle, padding: '0 0 20px 0' }}>
+      <div data-testid="visual-test-screen" style={{ ...containerStyle, padding: '0 0 20px 0' }}>
         {renderThemeStyles()}
         {/* Fixed Header */}
         <div style={{ width: '100%', padding: '10px 16px', background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
           <button onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>TITLE</button>
           <div style={{ flex: 1, color: THEME.sand, fontWeight: 'bold', fontSize: '0.9em' }}>Visual Asset Test</div>
           <div style={{ display: 'flex', gap: '4px' }}>
-            <button onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>BG</button>
-            <button onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'still' ? THEME.brass : '#333', color: visualTestMode === 'still' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>STILL</button>
+            <button data-testid="visual-test-tab-bg" onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>BG</button>
+            <button data-testid="visual-test-tab-still" onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'still' ? THEME.brass : '#333', color: visualTestMode === 'still' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>STILL</button>
           </div>
         </div>
         <div style={{ flex: 1, width: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 16px' }}>
@@ -1213,6 +1217,7 @@ function App() {
                 <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
                   {bgList.map((item, idx) => (
                     <div
+                      data-testid="visual-test-thumbnail"
                       key={item.id}
                       onClick={() => setBgTestIndex(idx)}
                       style={{
@@ -1257,6 +1262,7 @@ function App() {
                 <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
                   {stillList.map((item, idx) => (
                     <div
+                      data-testid="visual-test-thumbnail"
                       key={item.id}
                       onClick={() => setStillTestIndex(idx)}
                       style={{
@@ -1365,7 +1371,7 @@ function App() {
     const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
 
     mainContent = (
-      <div style={containerStyle}>
+      <div data-testid="heroine-select-screen" style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
         
@@ -1384,6 +1390,7 @@ function App() {
             const isSelected = previewHeroineId === h.id;
             return (
               <div 
+                data-testid={`heroine-tab-${h.id}`}
                 key={h.id}
                 onClick={() => {
                   audioEngine.playSfx('uiTapBottle');
@@ -1478,6 +1485,7 @@ function App() {
           </div>
 
           <button 
+            data-testid="heroine-start"
             onClick={() => handleSelectHeroine(selectedHeroine.id)}
             style={{ 
               ...buttonStyle, 
@@ -1604,7 +1612,7 @@ function App() {
   } else if (screen === 'QUIZ' && session) {
     const currentQuestion = session.questions[session.currentIndex];
     mainContent = (
-      <div style={containerStyle}>
+      <div data-testid="quiz-screen" style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
         <header style={{ 
@@ -1653,6 +1661,7 @@ function App() {
               
               return (
                 <div 
+                  data-testid="quiz-choice"
                   key={item.id} 
                   onClick={() => handleSelect(item.id)}
                   className={`item-card ${staggerClass} ${feedbackClass}`}
@@ -1850,6 +1859,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
 
   return (
     <div 
+      data-testid="vn-box"
       onClick={handleClick}
       style={{
         width: '100%',

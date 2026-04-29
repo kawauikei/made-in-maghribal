@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build && node tools/post-build.js",
     "test": "node tests/quizEngine.test.js && node tests/management.test.cjs && node tests/dataIntegrity.test.cjs && node tests/audioManifest.test.cjs && node tests/sfxManifest.test.cjs && node tests/saveData.test.cjs && node tests/eventSystem.test.cjs && node tests/imageAssets.test.cjs",
+    "test:e2e": "playwright test",
     "assets:characters": "node tools/character_asset_pipeline/process_character_assets.cjs"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.1",
     "vite-plugin-css-injected-by-js": "^3.5.1"
