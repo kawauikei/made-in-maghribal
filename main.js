@@ -7591,6 +7591,7 @@ function App() {
         speaker: activeHeroine.name,
         text: endingData.text,
         themeColor: activeHeroine.themeColor,
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "ENDING" }),
         onComplete: handleFinishGame
       }
     )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る")));
