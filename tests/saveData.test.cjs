@@ -32,6 +32,7 @@ try {
   assert.strictEqual(def.workshopState.day, 1);
   assert.ok(def.affection.hakima === 0);
   assert.strictEqual(def.routeMode, 'normal');
+  assert.strictEqual(def.textSpeed, 'normal');
   assert.deepStrictEqual(def.vnBacklog, []);
   console.log("PASSED: createDefaultSaveData");
 
@@ -43,7 +44,8 @@ try {
       nader: 50
     },
     screen: 'QUIZ',
-    routeMode: 'invalid-mode'
+    routeMode: 'invalid-mode',
+    textSpeed: 'warp'
   };
   const norm = normalizeSaveData(messy);
   assert.strictEqual(norm.affection.hakima, 100);
@@ -51,7 +53,14 @@ try {
   assert.strictEqual(norm.affection.nader, undefined);
   assert.strictEqual(norm.screen, 'INTRO');
   assert.strictEqual(norm.routeMode, 'normal');
+  assert.strictEqual(norm.textSpeed, 'normal');
   console.log("PASSED: normalizeSaveData (Clamping & Filtering)");
+
+  const validTextSpeed = normalizeSaveData({
+    textSpeed: 'instant'
+  });
+  assert.strictEqual(validTextSpeed.textSpeed, 'instant');
+  console.log("PASSED: textSpeed normalization");
 
   // Test: vnBacklog normalization keeps valid entries and rejects invalid values
   const invalidBacklog = normalizeSaveData({
@@ -97,6 +106,7 @@ try {
   myData.workshopState.day = 5;
   myData.affection.hakima = 10;
   myData.routeMode = 'long_history';
+  myData.textSpeed = 'fast';
   myData.vnBacklog = [{
     speaker: 'Hakima',
     text: 'Saved backlog entry',
@@ -113,6 +123,7 @@ try {
   assert.strictEqual(loaded.workshopState.day, 5);
   assert.strictEqual(loaded.affection.hakima, 10);
   assert.strictEqual(loaded.routeMode, 'long_history');
+  assert.strictEqual(loaded.textSpeed, 'fast');
   assert.strictEqual(loaded.vnBacklog.length, 1);
   assert.strictEqual(loaded.vnBacklog[0].routeMode, 'long_history');
   assert.strictEqual(loaded.vnBacklog[0].text, 'Saved backlog entry');

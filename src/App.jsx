@@ -32,6 +32,15 @@ const getBacklogRouteModeLabel = (routeMode) => {
   return routeMode === 'long_history' ? '過去から続く縁' : '現在から育つ縁';
 };
 
+const TEXT_SPEED_META = {
+  slow: { label: '遅い', delay: 45 },
+  normal: { label: '標準', delay: 30 },
+  fast: { label: '速い', delay: 18 },
+  instant: { label: '瞬時', delay: 0 }
+};
+
+const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
+
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   return (
@@ -173,6 +182,7 @@ export default function App() {
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [menuView, setMenuView] = useState('main');
   const [vnBacklog, setVnBacklog] = useState([]);
+  const [textSpeed, setTextSpeed] = useState('normal');
   const backlogScrollRef = useRef(null);
   
   // Affection / Intimacy State
@@ -304,6 +314,8 @@ export default function App() {
     if (data) {
       setHasSave(true);
       setRouteMode(data.routeMode || 'normal');
+      setTextSpeed(data.textSpeed || 'normal');
+      setIsAudioEnabled(Boolean(data.isAudioEnabled));
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
       setSeenEventIds(data.seenEventIds || []);
@@ -319,6 +331,7 @@ export default function App() {
         routeMode,
         workshopState,
         affection,
+        textSpeed,
         isAudioEnabled,
         seenEventIds,
         activeEvent,
@@ -326,7 +339,7 @@ export default function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
 
   // Sync mute state
   useEffect(() => {
@@ -376,6 +389,8 @@ export default function App() {
 
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
+  const textSpeedMeta = getTextSpeedMeta(textSpeed);
+  const isInstantTextSpeed = textSpeed === 'instant';
 
   // Go to Heroine Select (New Game)
   const handleStartGame = () => {
@@ -405,6 +420,7 @@ export default function App() {
       setScreen(data.screen);
       setActiveHeroineId(data.activeHeroineId);
       setRouteMode(data.routeMode || 'normal');
+      setTextSpeed(data.textSpeed || 'normal');
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -514,6 +530,7 @@ export default function App() {
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
+      textSpeed,
       seenEventIds,
       vnBacklog
     });
@@ -843,6 +860,38 @@ export default function App() {
       >
         <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>設定</h2>
+          <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
+            <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>テキスト速度</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
+              {Object.entries(TEXT_SPEED_META).map(([mode, meta]) => {
+                const isSelected = textSpeed === mode;
+                return (
+                  <button
+                    key={mode}
+                    data-testid={`text-speed-${mode}`}
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      audioEngine.playSfx('uiTapBottle');
+                      setTextSpeed(mode);
+                    }}
+                    style={{
+                      ...buttonStyle,
+                      margin: 0,
+                      padding: '10px 8px',
+                      fontSize: '0.76em',
+                      lineHeight: 1.2,
+                      background: isSelected ? THEME.starGold : '#eef1f4',
+                      color: isSelected ? THEME.textDark : '#445',
+                      border: `1px solid ${isSelected ? THEME.starGold : '#ccd6dd'}`,
+                      boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.16)' : 'none'
+                    }}
+                  >
+                    {meta.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
             <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
             <button onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }} style={{ background: isAudioEnabled ? THEME.starGold : '#999', color: isAudioEnabled ? THEME.textDark : '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
@@ -1046,6 +1095,8 @@ export default function App() {
               speaker="ナーディル"
               pages={prologuePages}
               themeColor={THEME.brass}
+              speed={textSpeedMeta.delay}
+              skip={isInstantTextSpeed}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
               onComplete={() => {
                 setIsPrologueComplete(true);
@@ -1085,6 +1136,8 @@ export default function App() {
                   speaker={activeHeroine.name}
                   text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
                   themeColor={activeHeroine.themeColor}
+                  speed={textSpeedMeta.delay}
+                  skip={isInstantTextSpeed}
                   onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
                   onComplete={handleBeginService}
                 />
@@ -1125,6 +1178,8 @@ export default function App() {
               <VNBox 
                 text={resultNarrations[correctCount]}
                 themeColor={THEME.brass}
+                speed={textSpeedMeta.delay}
+                skip={isInstantTextSpeed}
                 onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
                 onComplete={handleEndDay}
               />
@@ -1274,9 +1329,10 @@ export default function App() {
               speaker={activeEvent.speaker}
               pages={getEventPages(activeEvent, routeMode)}
               themeColor={activeHeroine.themeColor}
+              speed={textSpeedMeta.delay}
+              skip={isInstantTextSpeed || seenEventIds.includes(activeEvent.id)}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
-              skip={seenEventIds.includes(activeEvent.id)}
             />
             <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
               <button 
@@ -1728,6 +1784,8 @@ export default function App() {
               speaker={activeHeroine.name}
               text={endingData.text}
               themeColor={activeHeroine.themeColor}
+              speed={textSpeedMeta.delay}
+              skip={isInstantTextSpeed}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />

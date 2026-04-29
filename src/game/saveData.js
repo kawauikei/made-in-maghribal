@@ -20,6 +20,7 @@ export function createDefaultSaveData() {
     seenEventIds: [],
     activeEvent: null,
     vnBacklog: [],
+    textSpeed: 'normal',
     isAudioEnabled: false,
     timestamp: Date.now()
   };
@@ -77,6 +78,8 @@ export function normalizeSaveData(raw) {
 
   // Audio safety
   normalized.isAudioEnabled = Boolean(normalized.isAudioEnabled);
+  const validTextSpeeds = ['slow', 'normal', 'fast', 'instant'];
+  normalized.textSpeed = validTextSpeeds.includes(normalized.textSpeed) ? normalized.textSpeed : 'normal';
 
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];

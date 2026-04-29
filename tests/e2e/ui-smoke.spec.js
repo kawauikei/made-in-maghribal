@@ -161,3 +161,29 @@ test('visual asset test smoke flow', async ({ page }) => {
 
   expect(consoleErrors).toEqual([]);
 });
+
+test('text speed option persists and instant mode reveals VN text immediately', async ({ page }) => {
+  const consoleErrors = expectNoConsoleErrors(page);
+
+  await page.getByTestId('start-new-game').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+
+  await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await page.getByTestId('text-speed-instant').click();
+  await expect(page.getByTestId('text-speed-instant')).toHaveAttribute('aria-pressed', 'true');
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('made_in_maghribal_save')));
+  expect(saved.textSpeed).toBe('instant');
+
+  await page.getByTestId('options-close').click();
+  await expect(page.getByTestId('options-modal')).toHaveCount(0);
+
+  await page.reload();
+  await expect(page.getByTestId('start-screen')).toBeVisible();
+  await page.getByTestId('start-continue').click();
+  await expect(page.getByTestId('prologue-screen')).toBeVisible();
+  await expect(page.getByTestId('vn-box')).toContainText('NEXT', { timeout: 2000 });
+
+  expect(consoleErrors).toEqual([]);
+});
