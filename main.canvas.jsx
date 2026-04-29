@@ -529,6 +529,29 @@ function App() {
     setMenuView('main');
   };
 
+  const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
+    if (!text) return;
+
+    setVnBacklog(prev => {
+      const last = prev[prev.length - 1];
+      if (last?.screen === sourceScreen && last?.speaker === speaker && last?.text === text) {
+        return prev;
+      }
+
+      return [
+        ...prev,
+        {
+          speaker: speaker || '',
+          text,
+          screen: sourceScreen || screen,
+          heroineId: activeHeroineId,
+          routeMode: 'normal',
+          sequence: prev.length + 1
+        }
+      ];
+    });
+  };
+
   // Handle answer selection (Improved in M9-3)
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
@@ -701,21 +724,21 @@ function App() {
 
     if (menuView === 'log') {
       return (
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+        <div data-testid="backlog-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
           <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-            <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>VN���O</h2>
+            <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>{'VN\u30ed\u30b0'}</h2>
             <div style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {vnBacklog.length === 0 ? (
-                <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>�܂����O�͂���܂���</div>
+                <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>{'\u307e\u3060\u30ed\u30b0\u306f\u3042\u308a\u307e\u305b\u3093'}</div>
               ) : vnBacklog.slice().reverse().map((entry, idx) => (
-                <div key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
+                <div data-testid="backlog-entry" key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '8px', padding: '10px 12px', textAlign: 'left' }}>
                   <div style={{ fontSize: '0.8em', color: THEME.brassDark, marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / {entry.routeMode} / #{entry.sequence}</div>
                   <div style={{ fontWeight: 'bold', fontSize: '0.9em', color: THEME.textDark, marginBottom: '4px' }}>{entry.speaker || 'Narration'}</div>
                   <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.5' }}>{entry.text}</div>
                 </div>
               ))}
             </div>
-            <button style={{ ...buttonStyle, marginTop: '14px', background: '#666', color: 'white', width: '100%' }} onClick={() => setMenuView('main')}>�߂�</button>
+            <button data-testid="backlog-close" style={{ ...buttonStyle, marginTop: '14px', background: '#666', color: 'white', width: '100%', flexShrink: 0 }} onClick={() => setMenuView('main')}>{'\u623b\u308b'}</button>
           </div>
         </div>
       );
@@ -746,9 +769,7 @@ function App() {
             </div>
           </div>
           <div style={{ marginTop: '25px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <button style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: '100%' }} onClick={() => setMenuView('log')}>
-              VN���O
-            </button>
+            <button data-testid="backlog-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, width: '100%' }} onClick={() => setMenuView('log')}>{'\u30ed\u30b0'}</button>
             <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("�^�C�g���ɖ߂�܂����H")) { setIsMenuOpen(false); setScreen('START'); } }}>
               �^�C�g���֖߂�
             </button>
@@ -898,6 +919,7 @@ function App() {
               speaker="ナーディル"
               pages={prologuePages}
               themeColor={THEME.brass}
+              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
               onComplete={() => {
                 setIsPrologueComplete(true);
               }}
@@ -936,6 +958,7 @@ function App() {
                   speaker={activeHeroine.name}
                   text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
                   themeColor={activeHeroine.themeColor}
+                  onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
                   onComplete={handleBeginService}
                 />
               </div>
@@ -1808,18 +1831,28 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   );
 }
 
-function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip = false }) {
+function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }) {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   const currentText = pageList[pageIndex] || "";
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const loggedPagesRef = useRef(new Set());
+
+  const markPageComplete = () => {
+    if (!currentText) return;
+    const key = `${pageIndex}:${currentText}`;
+    if (loggedPagesRef.current.has(key)) return;
+    loggedPagesRef.current.add(key);
+    onPageComplete?.({ speaker, text: currentText, pageIndex });
+  };
 
   useEffect(() => {
     if (skip) {
       setDisplayText(currentText);
       setIsComplete(true);
+      markPageComplete();
       return;
     }
 
@@ -1839,6 +1872,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
       return () => clearTimeout(timer);
     } else {
       setIsComplete(true);
+      markPageComplete();
     }
   }, [currentIndex, currentText, isComplete, speed, skip]);
 
@@ -1847,6 +1881,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, speed = 30, skip 
     if (!isComplete) {
       setDisplayText(currentText);
       setIsComplete(true);
+      markPageComplete();
     } else if (pageIndex < pageList.length - 1) {
       setPageIndex(prev => prev + 1);
       setDisplayText("");

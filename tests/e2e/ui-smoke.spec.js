@@ -84,7 +84,16 @@ test('normal route smoke flow', async ({ page }) => {
   await page.getByTestId('heroine-start').click();
 
   await expect(page.getByTestId('intro-screen')).toBeVisible();
+  await page.getByTestId('vn-box').click();
   await page.getByTestId('options-open').click();
+  await expect(page.getByTestId('options-modal')).toBeVisible();
+  await page.getByTestId('backlog-open').click();
+  await expect(page.getByTestId('backlog-modal')).toBeVisible();
+  await expect(page.getByTestId('backlog-entry')).toHaveCount(4);
+  await expect(page.getByTestId('backlog-modal')).toContainText('砂漠の街マグリバル');
+  await expect(page.getByTestId('backlog-modal')).toContainText('PROLOGUE');
+  await expect(page.getByTestId('backlog-modal')).toContainText('INTRO');
+  await page.getByTestId('backlog-close').click();
   await expect(page.getByTestId('options-modal')).toBeVisible();
   await page.getByTestId('options-close').click();
   await expect(page.getByTestId('options-modal')).toHaveCount(0);
