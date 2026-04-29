@@ -6043,6 +6043,7 @@ function createDefaultSaveData() {
     version: SAVE_DATA_VERSION,
     screen: "START",
     activeHeroineId: "hakima",
+    routeMode: "normal",
     workshopState: createInitialWorkshopState(),
     affection: createInitialAffection(HEROINES.map((h) => h.id)),
     seenEventIds: [],
@@ -6064,6 +6065,7 @@ function normalizeSaveData(raw) {
   if (!validHeroineIds.includes(normalized.activeHeroineId)) {
     normalized.activeHeroineId = base.activeHeroineId;
   }
+  normalized.routeMode = normalized.routeMode === "long_history" ? "long_history" : "normal";
   const validatedAffection = {};
   validHeroineIds.forEach((id) => {
     const rawVal = raw.affection && raw.affection[id] || 0;
@@ -6346,6 +6348,15 @@ const SFX = {
     description: "Wooden door latch or shop bell for day end"
   }
 };
+const ROUTE_MODE_META = {
+  normal: {
+    label: "現在から育つ縁"
+  },
+  long_history: {
+    label: "過去から続く縁"
+  }
+};
+const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
 function SoundTest({ onClose, isAudioEnabled }) {
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#222", borderRadius: "8px", border: "1px solid #444", color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", padding: "10px 12px", borderBottom: "1px solid #444", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: "#f0d080", fontSize: "1.2rem" } }, "サウンド設定 Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "8px 14px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" } }, "Close")), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "12px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "10px", marginBottom: "20px", borderRadius: "4px", color: "#f88", fontSize: "0.9rem" } }, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "30px", paddingBottom: "20px", borderBottom: "2px solid #444" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" } }, "BGM (Music)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "12px" } }, Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("div", { key: track.id, style: { background: "#2a2a2a", padding: "12px", borderRadius: "6px", border: "1px solid #3a3a3a" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.85rem", marginBottom: "4px", color: "#fff" } }, track.id), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8rem", color: "#f0d080", marginBottom: "6px" } }, track.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px", wordBreak: "break-all", fontStyle: "italic" } }, track.src), /* @__PURE__ */ React.createElement(
@@ -6429,6 +6440,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
+  const [routeMode, setRouteMode] = useState("normal");
   const [previewHeroineId, setPreviewHeroineId] = useState("hakima");
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
@@ -6547,6 +6559,7 @@ function App() {
     const data = loadSaveData();
     if (data) {
       setHasSave(true);
+      setRouteMode(data.routeMode || "normal");
       setSeenEventIds(data.seenEventIds || []);
     }
   }, []);
@@ -6556,6 +6569,7 @@ function App() {
         screen: screen === "EVENT" ? "RESULT" : screen,
         // Fallback EVENT to RESULT for safety
         activeHeroineId,
+        routeMode,
         workshopState,
         affection,
         isAudioEnabled,
@@ -6563,7 +6577,7 @@ function App() {
       });
       setHasSave(true);
     }
-  }, [screen, activeHeroineId, workshopState, affection, isAudioEnabled, seenEventIds]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, isAudioEnabled, seenEventIds]);
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
@@ -6625,6 +6639,7 @@ function App() {
       audioEngine.playSfx("uiConfirmChime");
       setScreen(data.screen);
       setActiveHeroineId(data.activeHeroineId);
+      setRouteMode(data.routeMode || "normal");
       setWorkshopState(data.workshopState);
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
@@ -6712,6 +6727,7 @@ function App() {
     setActiveHeroineId(heroineId);
     setWorkshopState((prev) => ({ ...prev, activeHeroineId: heroineId }));
     saveGameData({
+      routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       seenEventIds
@@ -6773,7 +6789,7 @@ function App() {
           text,
           screen: sourceScreen || screen,
           heroineId: activeHeroineId,
-          routeMode: "normal",
+          routeMode,
           sequence: prev.length + 1
         }
       ];
@@ -6898,10 +6914,38 @@ function App() {
         opacity: 0.8;
       }
     `);
+  const renderRouteModeBadge = (compact = false) => {
+    const meta = getRouteModeMeta(routeMode);
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        "data-testid": "route-mode-badge",
+        "data-route-mode": routeMode,
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: compact ? "5px 8px" : "6px 10px",
+          borderRadius: "999px",
+          border: `1px solid ${THEME.brass}`,
+          background: "rgba(255,255,255,0.9)",
+          color: THEME.nightBlue,
+          fontSize: compact ? "0.7em" : "0.78em",
+          fontWeight: "bold",
+          lineHeight: 1,
+          textAlign: "center",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+          maxWidth: "100%",
+          whiteSpace: "nowrap"
+        }
+      },
+      meta.label
+    );
+  };
   const renderAudioToggle = () => {
     const isHudVisible = !["START", "ENDING", "FINAL_RESULT", "MEMORIES", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
     if (!isHudVisible) return null;
-    return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "10px", right: "10px", zIndex: 1e3 } }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "10px", right: "10px", zIndex: 1e3, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" } }, renderRouteModeBadge(true), /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "options-open",
@@ -6927,7 +6971,10 @@ function App() {
   const renderMenuModal = () => {
     if (!isMenuOpen) return null;
     if (menuView === "log") {
-      return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 3e3, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "320px", width: "92%", background: "#fff", padding: "20px", borderRadius: "12px", maxHeight: "90vh", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em" } }, "VNログ"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "10px 0", display: "flex", flexDirection: "column", gap: "10px" } }, vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.9em", textAlign: "center", padding: "24px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-entry", key: `${entry.sequence}-${idx}`, style: { background: "#faf7ef", border: "1px solid #e6dcc3", borderRadius: "8px", padding: "10px 12px", textAlign: "left" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: THEME.brassDark, marginBottom: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, entry.screen, " / ", entry.routeMode, " / #", entry.sequence), /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.9em", color: THEME.textDark, marginBottom: "4px" } }, entry.speaker || "Narration"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.88em", color: "#444", lineHeight: "1.5" } }, entry.text)))), /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-close", style: { ...buttonStyle, marginTop: "14px", background: "#666", color: "white", width: "100%", flexShrink: 0 }, onClick: () => setMenuView("main") }, "戻る")));
+      return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 3e3, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "320px", width: "92%", background: "#fff", padding: "20px", borderRadius: "12px", maxHeight: "90vh", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em" } }, "VNログ"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "10px 0", display: "flex", flexDirection: "column", gap: "10px" } }, vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.9em", textAlign: "center", padding: "24px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
+        const entryRouteMeta = getRouteModeMeta(entry.routeMode);
+        return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-entry", "data-route-mode": entry.routeMode || "normal", key: `${entry.sequence}-${idx}`, style: { background: "#faf7ef", border: "1px solid #e6dcc3", borderRadius: "8px", padding: "10px 12px", textAlign: "left" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: THEME.brassDark, marginBottom: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, entry.screen, " / ", entryRouteMeta.label, " / #", entry.sequence), /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.9em", color: THEME.textDark, marginBottom: "4px" } }, entry.speaker || "Narration"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.88em", color: "#444", lineHeight: "1.5" } }, entry.text));
+      })), /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-close", style: { ...buttonStyle, marginTop: "14px", background: "#666", color: "white", width: "100%", flexShrink: 0 }, onClick: () => setMenuView("main") }, "戻る")));
     }
     return /* @__PURE__ */ React.createElement(
       "div",
@@ -7002,9 +7049,37 @@ function App() {
   } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
   let mainContent = null;
   if (screen === "START") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, hasSave && /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁の流れ"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+      const isSelected = routeMode === mode;
+      return /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          key: mode,
+          "data-testid": `route-mode-${mode}`,
+          "aria-pressed": isSelected,
+          onClick: () => {
+            audioEngine.playSfx("uiTapBottle");
+            setRouteMode(mode);
+          },
+          style: {
+            ...buttonStyle,
+            flex: 1,
+            margin: 0,
+            padding: "10px 8px",
+            fontSize: "0.74em",
+            lineHeight: 1.2,
+            background: isSelected ? THEME.starGold : "#2c3e50",
+            color: isSelected ? THEME.textDark : THEME.sand,
+            border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
+            boxShadow: isSelected ? "0 0 0 2px rgba(255, 204, 0, 0.2)" : "none"
+          }
+        },
+        meta.label
+      );
+    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge())), hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
+        "data-testid": "start-continue",
         onClick: handleContinue,
         style: { ...buttonStyle, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
       },
