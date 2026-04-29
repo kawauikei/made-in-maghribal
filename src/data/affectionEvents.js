@@ -1,5 +1,8 @@
 /**
  * Affection Event Definitions for Made in Maghribal
+ *
+ * Normal route text lives in `text`.
+ * Route-specific IF text lives in `routePages.long_history`.
  */
 
 export const AFFECTION_EVENTS = {

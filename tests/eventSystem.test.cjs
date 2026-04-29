@@ -2,11 +2,16 @@
  * Regression tests for Event System Logic
  */
 const assert = require('assert');
+const path = require('path');
+const { pathToFileURL } = require('url');
 const { checkNewEventUnlock, getEventPages } = require('../src/game/eventSystem.js');
 
 console.log('\n--- Made in Maghribal: Event System Tests ---');
 
-try {
+async function main() {
+  const affectionModule = await import(pathToFileURL(path.resolve(__dirname, '../src/data/affectionEvents.js')).href);
+  const { AFFECTION_EVENTS, getEventsByHeroine } = affectionModule;
+
   // --- checkNewEventUnlock Tests ---
   const e1 = checkNewEventUnlock('hakima', 2, []);
   assert.strictEqual(e1, null, 'Should not unlock at affection 2');
@@ -68,9 +73,43 @@ try {
   assert.deepStrictEqual(p5, ['Normal text'], 'Missing routeMode should fallback to normal text');
   console.log('PASSED: getEventPages fallback for missing routeMode');
 
+  // --- Story Definition Structure Checks ---
+  const allEvents = Object.values(AFFECTION_EVENTS).flat();
+  const seenIds = new Set();
+
+  for (const heroineId of ['hakima', 'mira', 'dariya']) {
+    const heroineEvents = getEventsByHeroine(heroineId);
+    assert.strictEqual(heroineEvents.length, 2, `Expected exactly two events for ${heroineId}`);
+  }
+
+  for (const event of allEvents) {
+    assert.ok(event.id, 'Event id is required');
+    assert.ok(event.heroineId, `Event ${event.id} requires heroineId`);
+    assert.ok(Number.isFinite(event.threshold), `Event ${event.id} requires threshold`);
+    assert.ok(event.title, `Event ${event.id} requires title`);
+    assert.ok(event.text || Array.isArray(event.pages), `Event ${event.id} requires normal text or pages`);
+
+    if (event.routePages?.long_history) {
+      assert.ok(Array.isArray(event.routePages.long_history), `Event ${event.id} long_history must be an array`);
+      assert.ok(event.routePages.long_history.length > 0, `Event ${event.id} long_history cannot be empty`);
+    }
+
+    assert.ok(!seenIds.has(event.id), `Duplicate event id found: ${event.id}`);
+    seenIds.add(event.id);
+  }
+
+  assert.ok(seenIds.has('hakima_5'));
+  assert.ok(seenIds.has('hakima_10'));
+  assert.ok(seenIds.has('mira_5'));
+  assert.ok(seenIds.has('mira_10'));
+  assert.ok(seenIds.has('dariya_5'));
+  assert.ok(seenIds.has('dariya_10'));
+
   console.log('\n--- All event system tests completed successfully! ---');
-} catch (err) {
+}
+
+main().catch((err) => {
   console.error('\nTEST FAILED:');
   console.error(err);
   process.exit(1);
-}
+});
