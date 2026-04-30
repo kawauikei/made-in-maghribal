@@ -28,28 +28,28 @@ export const hudModalCard = {
 };
 
 export const hudCloseX = (onClose) => (
-  React.createElement(
-    'button',
-    {
-      onClick,
-      style: {
-        position: 'absolute',
-        top: '12px',
-        right: '12px',
-        width: '32px',
-        height: '32px',
-        borderRadius: '50%',
-        border: 'none',
-        background: 'rgba(0,0,0,0.1)',
-        color: THEME.nightBlue,
-        fontSize: '20px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 10
-      }
-    },
-    '×'
-  )
+  <button
+    data-testid="modal-x-close"
+    onClick={onClose}
+    style={{
+      position: 'absolute',
+      top: '12px',
+      right: '12px',
+      width: '32px',
+      height: '32px',
+      borderRadius: '50%',
+      border: 'none',
+      background: 'rgba(0,0,0,0.1)',
+      color: THEME.nightBlue,
+      fontSize: '20px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 10
+    }}
+    aria-label="Close"
+  >
+    ×
+  </button>
 );

@@ -60,27 +60,35 @@ try {
 
     // UIコンポーネントのインライン化処理
     // 名前付きインポート (import { THEME } ...) および名前なしインポート (import './ui/...') にも対応
-    const uiImportRegex = /import\s+(?:(\w+)|\{\s*([\w\s,]+)\s*\}|['"]\.\/ui\/(\w+)['"])\s*(?:from\s+['"]\.\/ui\/(\w+)['"])?;?\r?\n?/g;
+    // 複数のインポート形式 (import A, { B } from './ui/C') をカバーできるよう調整
+    const uiImportRegex = /import\s+([\w\s,{}]+)\s+from\s+['"]\.\/ui\/(\w+)['"];?\r?\n?|import\s+['"]\.\/ui\/(\w+)['"];?\r?\n?/g;
     let uiComponentsCode = '';
+    const inlinedFiles = new Set();
     
     // 全てのマッチを先に取得
     const matches = [...appCode.matchAll(uiImportRegex)];
     
     for (const match of matches) {
         const fullImportLine = match[0];
-        const defaultImportName = match[1];
-        const namedImportName = match[2];
-        const sideEffectFileName = match[3];
-        const fromFileName = match[4];
+        const importSpec = match[1]; // A, { B }
+        const fromFileName = match[2]; // C
+        const sideEffectFileName = match[3]; // Side effect only
         
         const fileName = fromFileName || sideEffectFileName;
         if (!fileName) continue;
 
-        const componentLabel = defaultImportName || namedImportName || fileName;
+        // App.jsx からこのインポート行を削除 (重複していても削除は必要)
+        appCode = appCode.replace(fullImportLine, '');
+
+        if (inlinedFiles.has(fileName)) {
+            console.log(`Skipping duplicate inline for ${fileName}`);
+            continue;
+        }
+
         const filePath = path.join('src', 'ui', `${fileName}.js${fs.existsSync(path.join('src', 'ui', `${fileName}.jsx`)) ? 'x' : ''}`);
         
         if (fs.existsSync(filePath)) {
-            console.log(`Inlining UI: ${componentLabel} from ${filePath}`);
+            console.log(`Inlining UI: ${fileName} from ${filePath}`);
             let compCode = fs.readFileSync(filePath, 'utf-8');
             
             // 不要なインポート/エクスポートを削除
@@ -92,10 +100,8 @@ try {
             // 相対パスの修正 (../ -> ./)
             compCode = compCode.replace(/['"]\.\.\//g, "'./");
             
-            uiComponentsCode += `\n// --- Inlined: ${componentLabel} ---\n${compCode}\n`;
-            
-            // App.jsx からこのインポート行を削除
-            appCode = appCode.replace(fullImportLine, '');
+            uiComponentsCode += `\n// --- Inlined: ${fileName} ---\n${compCode}\n`;
+            inlinedFiles.add(fileName);
         }
     }
 
