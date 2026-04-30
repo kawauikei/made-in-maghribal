@@ -60,13 +60,13 @@ const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
   "×"
 );
 const SELECTED_SFX = {
-  uiTapBottle: "uiTapBottle01",
-  uiConfirmChime: "uiConfirmChime01",
-  uiClickForward: "uiTapBottle01",
-  quizChoicePick: "quizChoicePick01",
+  uiTapBottle: "uiTapBottle02",
+  uiConfirmChime: "uiConfirmChime03",
+  uiClickForward: "uiTapBottle02",
+  quizChoicePick: "quizChoicePick03",
   quizCorrectStarChime: "quizCorrectStarChime01",
-  quizWrongSandTap: "quizWrongSandTap01",
-  workshopDayEnd: "workshopDayEnd01"
+  quizWrongSandTap: "quizWrongSandTap03",
+  workshopDayEnd: "workshopDayEnd02"
 };
 const SFX_CANDIDATES = [
   // --- Group: uiTapBottle ---
@@ -82,7 +82,7 @@ const SFX_CANDIDATES = [
   // --- Group: quizChoicePick ---
   { id: "quizChoicePick01", group: "quizChoicePick", variant: 1, src: "audio/se/quiz_choice_pick_01.mp3", label: "Choice Pick 1", volume: 0.6, start: 0, end: null, note: "Light wooden tap" },
   { id: "quizChoicePick02", group: "quizChoicePick", variant: 2, src: "audio/se/quiz_choice_pick_01_2.mp3", label: "Choice Pick 2", volume: 0.6, start: 0, end: null, note: "Soft wooden tap" },
-  { id: "quizChoicePick03", group: "quizChoicePick", variant: 3, src: "audio/se/quiz_choice_pick_01_3.mp3", label: "Choice Pick 3", volume: 0.6, start: 0, end: null, note: "Clicky wooden tap" },
+  { id: "quizChoicePick03", group: "quizChoicePick", variant: 3, src: "audio/se/quiz_choice_pick_01_3.mp3", label: "Choice Pick 3", volume: 0.6, start: 0, end: 1, note: "Clicky wooden tap" },
   { id: "quizChoicePick04", group: "quizChoicePick", variant: 4, src: "audio/se/quiz_choice_pick_01_4.mp3", label: "Choice Pick 4", volume: 0.6, start: 0, end: null, note: "Dull wooden tap" },
   // --- Group: quizCorrectStarChime ---
   { id: "quizCorrectStarChime01", group: "quizCorrectStarChime", variant: 1, src: "audio/se/quiz_correct_star_chime_01.mp3", label: "Correct Chime 1", volume: 0.8, start: 0, end: null, note: "Magical star sound" },
