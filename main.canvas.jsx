@@ -1123,7 +1123,8 @@ const HeroineSelectScreen = ({
   onOpenHelp,
   renderThemeStyles,
   HeroineDisplay,
-  getFullPath
+  getFullPath,
+  audioEngine
 }) => {
   const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
 
@@ -2759,6 +2760,7 @@ function App() {
         renderThemeStyles={renderThemeStyles}
         HeroineDisplay={HeroineDisplay}
         getFullPath={getFullPath}
+        audioEngine={audioEngine}
       />
     );
 

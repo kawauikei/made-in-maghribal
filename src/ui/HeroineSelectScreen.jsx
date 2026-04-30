@@ -2,7 +2,6 @@ import React from 'react';
 import { THEME } from './theme';
 import GameHud from './GameHud';
 import { HEROINES, getHeroineAsset } from '../data/heroines';
-import { audioEngine } from '../game/audioEngine';
 import { getRouteText } from '../game/eventSystem';
 
 /**
@@ -21,7 +20,8 @@ const HeroineSelectScreen = ({
   onOpenHelp,
   renderThemeStyles,
   HeroineDisplay,
-  getFullPath
+  getFullPath,
+  audioEngine
 }) => {
   const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
 

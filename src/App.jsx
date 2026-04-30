@@ -1202,6 +1202,7 @@ export default function App() {
         renderThemeStyles={renderThemeStyles}
         HeroineDisplay={HeroineDisplay}
         getFullPath={getFullPath}
+        audioEngine={audioEngine}
       />
     );
 
