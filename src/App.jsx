@@ -1,5 +1,7 @@
 import { THEME } from './ui/theme';
+import './ui/modalStyles';
 import HelpModal from './ui/HelpModal';
+import LogModal from './ui/LogModal';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -965,54 +967,6 @@ export default function App() {
     );
   };
 
-  // M10-UI-2: Log/Backlog Modal — simple list style
-  const renderLogModal = () => {
-    if (!showLog) return null;
-    const closeLog = () => { audioEngine.playSfx('uiTapBottle'); setShowLog(false); };
-
-    return (
-      <div data-testid="backlog-modal" style={hudModalBackdrop}>
-        <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
-          {hudCloseX(closeLog)}
-          <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
-          <div ref={backlogScrollRef} data-testid="backlog-scroll"
-            style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
-          >
-            {vnBacklog.length === 0 ? (
-              <div style={{ color: '#777', fontSize: '0.88em', textAlign: 'center', padding: '20px 0' }}>まだログはありません</div>
-            ) : vnBacklog.slice().reverse().map((entry, idx) => {
-              const isNarration = !entry.speaker;
-              const displayText = typeof entry.text === 'string' ? entry.text : (entry.text?.text || '');
-              if (!displayText) return null;
-              return (
-                <div
-                  data-testid="backlog-entry"
-                  data-route-mode={entry.routeMode || 'normal'}
-                  key={`${entry.sequence}-${idx}`}
-                  style={{ padding: '7px 10px', borderBottom: '1px solid #ede8df', textAlign: 'left' }}
-                >
-                  {!isNarration && (
-                    <span style={{ fontSize: '0.78em', fontWeight: 'bold', color: THEME.brassDark, display: 'block', marginBottom: '3px' }}>
-                      {entry.speaker}
-                    </span>
-                  )}
-                  <span style={{ fontSize: '0.85em', color: '#333', lineHeight: '1.55', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                    {displayText}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <button data-testid="backlog-close"
-              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
-              onClick={closeLog}
-            >閉じる</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
 
 
@@ -2086,7 +2040,7 @@ export default function App() {
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
           {renderOptionsModal()}
-          {renderLogModal()}
+          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (

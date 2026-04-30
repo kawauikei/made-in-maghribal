@@ -62,7 +62,7 @@ const NADER = {
 
 
 
-// --- Inlined Component: THEME ---
+// --- Inlined: THEME  ---
 const THEME = {
   sand: '#e2d1b1',
   parchment: '#f4e9d5',
@@ -75,9 +75,8 @@ const THEME = {
 };
 
 
-// --- Inlined Component: HelpModal ---
+// --- Inlined: modalStyles ---
 
-// Local copies of shared styles for HelpModal
 const hudModalBackdrop = {
   position: 'fixed',
   top: 0,
@@ -104,6 +103,36 @@ const hudModalCard = {
   border: `1px solid ${THEME.brass}`
 };
 
+const hudCloseX = (onClose) => (
+  React.createElement(
+    'button',
+    {
+      onClick,
+      style: {
+        position: 'absolute',
+        top: '12px',
+        right: '12px',
+        width: '32px',
+        height: '32px',
+        borderRadius: '50%',
+        border: 'none',
+        background: 'rgba(0,0,0,0.1)',
+        color: THEME.nightBlue,
+        fontSize: '20px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10
+      }
+    },
+    '×'
+  )
+);
+
+
+// --- Inlined: HelpModal ---
+
 const buttonStyle = {
   padding: '12px 20px',
   borderRadius: '8px',
@@ -114,32 +143,6 @@ const buttonStyle = {
   fontFamily: 'inherit',
   boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
 };
-
-const hudCloseX = (onClose) => (
-  <button
-    data-testid="help-modal-close-x"
-    onClick={onClose}
-    style={{
-      position: 'absolute',
-      top: '12px',
-      right: '12px',
-      width: '32px',
-      height: '32px',
-      borderRadius: '50%',
-      border: 'none',
-      background: 'rgba(0,0,0,0.1)',
-      color: THEME.nightBlue,
-      fontSize: '20px',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10
-    }}
-  >
-    ×
-  </button>
-);
 
 function HelpModal({ isOpen, onClose }) {
   if (!isOpen) return null;
@@ -177,7 +180,74 @@ function HelpModal({ isOpen, onClose }) {
 
 
 
-// --- Inlined Component: VNBox ---
+// --- Inlined: LogModal ---
+
+const logButtonStyle = {
+  padding: '12px 20px',
+  borderRadius: '8px',
+  border: 'none',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  transition: 'all 0.2s',
+  fontFamily: 'inherit',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+};
+
+function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
+  if (!isOpen) return null;
+
+  const handleClose = () => {
+    audioEngine.playSfx('uiTapBottle');
+    onClose();
+  };
+
+  return (
+    <div data-testid="backlog-modal" style={hudModalBackdrop}>
+      <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
+        {hudCloseX(handleClose)}
+        <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
+        <div ref={scrollRef} data-testid="backlog-scroll"
+          style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
+        >
+          {vnBacklog.length === 0 ? (
+            <div style={{ color: '#777', fontSize: '0.88em', textAlign: 'center', padding: '20px 0' }}>まだログはありません</div>
+          ) : vnBacklog.slice().reverse().map((entry, idx) => {
+            const isNarration = !entry.speaker;
+            const displayText = typeof entry.text === 'string' ? entry.text : (entry.text?.text || '');
+            if (!displayText) return null;
+            return (
+              <div
+                data-testid="backlog-entry"
+                data-route-mode={entry.routeMode || 'normal'}
+                key={`${entry.sequence}-${idx}`}
+                style={{ padding: '7px 10px', borderBottom: '1px solid #ede8df', textAlign: 'left' }}
+              >
+                {!isNarration && (
+                  <span style={{ fontSize: '0.78em', fontWeight: 'bold', color: THEME.brassDark, display: 'block', marginBottom: '3px' }}>
+                    {entry.speaker}
+                  </span>
+                )}
+                <span style={{ fontSize: '0.85em', color: '#333', lineHeight: '1.55', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                  {displayText}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ marginTop: '10px' }}>
+          <button data-testid="backlog-close"
+            style={{ ...logButtonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
+            onClick={handleClose}
+          >閉じる</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+// --- Inlined: VNBox ---
 
 /**
  * VNBox Component
@@ -335,7 +405,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
 
 
 
-// --- Inlined Component: SoundTest ---
+// --- Inlined: SoundTest ---
 
 
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
@@ -1360,54 +1430,6 @@ function App() {
     );
   };
 
-  // M10-UI-2: Log/Backlog Modal — simple list style
-  const renderLogModal = () => {
-    if (!showLog) return null;
-    const closeLog = () => { audioEngine.playSfx('uiTapBottle'); setShowLog(false); };
-
-    return (
-      <div data-testid="backlog-modal" style={hudModalBackdrop}>
-        <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
-          {hudCloseX(closeLog)}
-          <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
-          <div ref={backlogScrollRef} data-testid="backlog-scroll"
-            style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
-          >
-            {vnBacklog.length === 0 ? (
-              <div style={{ color: '#777', fontSize: '0.88em', textAlign: 'center', padding: '20px 0' }}>まだログはありません</div>
-            ) : vnBacklog.slice().reverse().map((entry, idx) => {
-              const isNarration = !entry.speaker;
-              const displayText = typeof entry.text === 'string' ? entry.text : (entry.text?.text || '');
-              if (!displayText) return null;
-              return (
-                <div
-                  data-testid="backlog-entry"
-                  data-route-mode={entry.routeMode || 'normal'}
-                  key={`${entry.sequence}-${idx}`}
-                  style={{ padding: '7px 10px', borderBottom: '1px solid #ede8df', textAlign: 'left' }}
-                >
-                  {!isNarration && (
-                    <span style={{ fontSize: '0.78em', fontWeight: 'bold', color: THEME.brassDark, display: 'block', marginBottom: '3px' }}>
-                      {entry.speaker}
-                    </span>
-                  )}
-                  <span style={{ fontSize: '0.85em', color: '#333', lineHeight: '1.55', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                    {displayText}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <button data-testid="backlog-close"
-              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
-              onClick={closeLog}
-            >閉じる</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
 
 
@@ -2481,7 +2503,7 @@ function App() {
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
           {renderOptionsModal()}
-          {renderLogModal()}
+          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (
