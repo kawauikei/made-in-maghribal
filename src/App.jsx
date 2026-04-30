@@ -7,6 +7,7 @@ import GameHud, { ROUTE_MODE_META, getRouteModeMeta, renderRouteModeBadge } from
 import { shouldIgnoreVnAdvanceClick, safeAdvanceVnBox, isVnAdvanceScreen, shouldSkipTypewriter } from './ui/vnClickHelpers';
 import VisualTestScreen from './ui/VisualTestScreen';
 import MemoriesScreen from './ui/MemoriesScreen';
+import StartScreen from './ui/StartScreen';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -794,126 +795,22 @@ export default function App() {
 
   if (screen === 'START') {
     mainContent = (
-      <div data-testid="start-screen" style={containerStyle}>
-        {renderThemeStyles()}
-        <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={() => setShowLog(true)} 
-          onOpenOptions={() => setShowOptions(true)} 
-          onOpenHelp={() => setShowHelp(true)} 
-        />
-        
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
-          <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
-            — {SHOP.localName} —          </div>
-        </div>
-
-        <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
-          <div style={{ width: '100%', maxWidth: '260px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'stretch' }}>
-            <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁のかたち</div>
-            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
-              {Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
-                const isSelected = routeMode === mode;
-                return (
-                  <button
-                    key={mode}
-                    data-testid={`route-mode-${mode}`}
-                    aria-pressed={isSelected}
-                    onClick={() => {
-                      audioEngine.playSfx('uiTapBottle');
-                      setRouteMode(mode);
-                    }}
-                    style={{
-                      ...buttonStyle,
-                      flex: 1,
-                      margin: 0,
-                      padding: '10px 8px',
-                      fontSize: '0.74em',
-                      lineHeight: 1.2,
-                      background: isSelected ? THEME.starGold : '#2c3e50',
-                      color: isSelected ? THEME.textDark : THEME.sand,
-                      border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
-                      boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.2)' : 'none'
-                    }}
-                  >
-                    {meta.label}
-                  </button>
-                );
-              })}
-            </div>
-            <div data-testid="route-mode-description" style={{ fontSize: '0.7em', color: THEME.parchment, opacity: 0.7, textAlign: 'center', marginTop: '2px', fontStyle: 'italic' }}>
-              {getRouteModeMeta(routeMode).description}
-            </div>
-            <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
-              {renderRouteModeBadge(routeMode)}
-            </div>
-            <button 
-              data-testid="start-new" 
-              onClick={handleStartGame} 
-              style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: '100%', maxWidth: '260px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-            >
-              <span style={{ fontSize: '1.2em' }}>☆</span> 星瓶堂を開く
-            </button>
-          </div>
-
-          {hasSave && (
-            <button 
-              data-testid="start-continue"
-              onClick={handleContinue} 
-              style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
-            >
-              つづきから            </button>
-          )}
-          
-          <button data-testid="memories-open" onClick={() => setScreen('MEMORIES')} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}>
-            思い出の記録
-          </button>
-
-          <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
-            <button 
-              data-testid="start-options"
-              onClick={() => { audioEngine.playSfx('uiTapBottle'); setShowOptions(true); }}
-              style={{ ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: '0.85em', flex: 1, margin: 0 }}
-            >
-              設定
-            </button>
-            <button 
-              data-testid="sound-test-open"
-              onClick={() => setShowSoundTest(true)} 
-              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
-            >
-              音設定
-            </button>
-            <button 
-              data-testid="visual-test-open"
-              onClick={() => setScreen('VISUAL_TEST')} 
-              style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
-            >
-              映像確認
-            </button>
-          </div>
-
-          {hasSave && (
-            <button 
-              onClick={handleResetSave} 
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: '#844', 
-                textDecoration: 'underline', 
-                cursor: 'pointer',
-                fontSize: '0.75em',
-                marginTop: '10px',
-                opacity: 0.6
-              }}
-            >
-              記録を全て削除する
-            </button>
-          )}
-        </div>
-      </div>
+      <StartScreen
+        screen={screen}
+        routeMode={routeMode}
+        setRouteMode={setRouteMode}
+        hasSave={hasSave}
+        onContinue={handleContinue}
+        onNewGame={handleStartGame}
+        onOpenMemories={() => setScreen('MEMORIES')}
+        onOpenOptions={() => setShowOptions(true)}
+        onOpenSoundTest={() => setShowSoundTest(true)}
+        onOpenVisualTest={() => setScreen('VISUAL_TEST')}
+        onClearSaveData={handleResetSave}
+        onOpenLog={() => setShowLog(true)}
+        onOpenHelp={() => setShowHelp(true)}
+        renderThemeStyles={renderThemeStyles}
+      />
     );
   } else if (screen === 'PROLOGUE') {
     const prologuePages = [
