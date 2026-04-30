@@ -59,7 +59,8 @@ try {
     const entryCode = fs.readFileSync(path.join('src', 'entry.canvas.jsx'), 'utf-8');
 
     // UIコンポーネントのインライン化処理
-    const uiImportRegex = /import\s+(\w+)\s+from\s+['"]\.\/ui\/(\w+)['"];?\r?\n?/g;
+    // 名前付きインポート (import { THEME } ...) にも対応
+    const uiImportRegex = /import\s+(?:(\w+)|\{\s*(\w+)\s*\})\s+from\s+['"]\.\/ui\/(\w+)['"];?\r?\n?/g;
     let uiComponentsCode = '';
     
     // 全てのマッチを先に取得
@@ -67,9 +68,11 @@ try {
     
     for (const match of matches) {
         const fullImportLine = match[0];
-        const componentName = match[1];
-        const fileName = match[2];
-        const filePath = path.join('src', 'ui', `${fileName}.jsx`);
+        const defaultImportName = match[1];
+        const namedImportName = match[2];
+        const componentName = defaultImportName || namedImportName;
+        const fileName = match[3];
+        const filePath = path.join('src', 'ui', `${fileName}.js${fs.existsSync(path.join('src', 'ui', `${fileName}.jsx`)) ? 'x' : ''}`);
         
         if (fs.existsSync(filePath)) {
             console.log(`Inlining UI component: ${componentName} from ${filePath}`);
@@ -79,6 +82,7 @@ try {
             compCode = compCode.replace(/^import\s+[\s\S]*?from\s+['"].*?['"];?\r?\n?/gm, '');
             compCode = compCode.replace(/export\s+default\s+\w+;?\r?\n?$/, '');
             compCode = compCode.replace(/export\s+default\s+/, '');
+            compCode = compCode.replace(/export\s+(const|function|class)/g, '$1'); // 名前付きエクスポートを通常定義に変換
             
             // 相対パスの修正 (../ -> ./)
             compCode = compCode.replace(/['"]\.\.\//g, "'./");

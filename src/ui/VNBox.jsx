@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { audioEngine } from '../game/audioEngine';
+import { THEME } from './theme';
 
 /**
  * VNBox Component
@@ -94,11 +95,11 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
         boxSizing: 'border-box',
         height: '160px',
         background: 'rgba(26, 42, 58, 0.95)',
-        borderLeft: `4px solid ${themeColor || '#c5a059'}`,
+        borderLeft: `4px solid ${themeColor || THEME.brass}`,
         padding: '20px 24px',
         borderRadius: '0 12px 12px 0',
         cursor: 'pointer',
-        color: '#f4e9d5',
+        color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
         boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
@@ -113,7 +114,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       {currentSpeaker && (
         <div style={{ 
           fontSize: '0.85em', 
-          color: themeColor || '#c5a059', 
+          color: themeColor || THEME.brass, 
           fontWeight: 'bold', 
           marginBottom: '8px',
           letterSpacing: '0.08em',
@@ -124,7 +125,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       )}
       <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
         {displayText}
-        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
+        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: `2px solid ${THEME.brass}` }}>&nbsp;</span>}
       </div>
       {isComplete && (
         <div style={{ 
@@ -132,7 +133,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
           bottom: '12px', 
           right: '20px', 
           fontSize: '0.8em', 
-          color: themeColor || '#c5a059',
+          color: themeColor || THEME.brass,
           fontWeight: 'bold',
           display: 'flex',
           alignItems: 'center',
@@ -141,7 +142,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
           background: 'rgba(0,0,0,0.3)',
           padding: '4px 10px',
           borderRadius: '999px',
-          border: `1px solid ${themeColor || '#c5a059'}44`
+          border: `1px solid ${themeColor || THEME.brass}44`
         }}>
           <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
           <span style={{ fontSize: '1.2em' }}>▼</span>
