@@ -75,6 +75,108 @@ const THEME = {
 };
 
 
+// --- Inlined Component: HelpModal ---
+
+// Local copies of shared styles for HelpModal
+const hudModalBackdrop = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: 'rgba(0,0,0,0.7)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 1000,
+  backdropFilter: 'blur(4px)'
+};
+
+const hudModalCard = {
+  background: THEME.parchment,
+  borderRadius: '16px',
+  width: '90%',
+  maxHeight: '85vh',
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'relative',
+  boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+  border: `1px solid ${THEME.brass}`
+};
+
+const buttonStyle = {
+  padding: '12px 20px',
+  borderRadius: '8px',
+  border: 'none',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  transition: 'all 0.2s',
+  fontFamily: 'inherit',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+};
+
+const hudCloseX = (onClose) => (
+  <button
+    data-testid="help-modal-close-x"
+    onClick={onClose}
+    style={{
+      position: 'absolute',
+      top: '12px',
+      right: '12px',
+      width: '32px',
+      height: '32px',
+      borderRadius: '50%',
+      border: 'none',
+      background: 'rgba(0,0,0,0.1)',
+      color: THEME.nightBlue,
+      fontSize: '20px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 10
+    }}
+  >
+    ×
+  </button>
+);
+
+function HelpModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  const handleClose = () => {
+    audioEngine.playSfx('uiTapBottle');
+    onClose();
+  };
+
+  return (
+    <div data-testid="help-modal" style={hudModalBackdrop}>
+      <div style={{ ...hudModalCard, maxWidth: '340px', padding: '18px 16px 14px' }}>
+        {hudCloseX(handleClose)}
+        <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>遊び方</h2>
+        <div data-testid="help-scroll"
+          style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 4px', display: 'flex', flexDirection: 'column', gap: '8px' }}
+        >
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・正解すると工房評価と親密度が上がります。</p>
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・10回の営業を終えると、結果とエンディングに進みます。</p>
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・親密度が上がるとイベントが発生します。</p>
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上のログボタン（📖）から最近の会話を確認できます。</p>
+          <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。</p>
+        </div>
+        <div style={{ marginTop: '10px' }}>
+          <button data-testid="help-close"
+            style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
+            onClick={handleClose}
+          >閉じる</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
 // --- Inlined Component: VNBox ---
 
 /**
@@ -1307,36 +1409,6 @@ function App() {
     );
   };
 
-  // M10-UI-2: Help Modal — independent, no navigation to Options/Log
-  const renderHelpModal = () => {
-    if (!showHelp) return null;
-    const closeHelp = () => { audioEngine.playSfx('uiTapBottle'); setShowHelp(false); };
-
-    return (
-      <div data-testid="help-modal" style={hudModalBackdrop}>
-        <div style={{ ...hudModalCard, maxWidth: '340px', padding: '18px 16px 14px' }}>
-          {hudCloseX(closeHelp)}
-          <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>遊び方</h2>
-          <div data-testid="help-scroll"
-            style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 4px', display: 'flex', flexDirection: 'column', gap: '8px' }}
-          >
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・正解すると工房評価と親密度が上がります。</p>
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・10回の営業を終えると、結果とエンディングに進みます。</p>
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・親密度が上がるとイベントが発生します。</p>
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上のログボタン（📖）から最近の会話を確認できます。</p>
-            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。</p>
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <button data-testid="help-close"
-              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
-              onClick={closeHelp}
-            >閉じる</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
 
 
@@ -2410,7 +2482,7 @@ function App() {
           
           {renderOptionsModal()}
           {renderLogModal()}
-          {renderHelpModal()}
+          <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (
             <div key={screen} className="screen-enter">
