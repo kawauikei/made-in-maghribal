@@ -1033,6 +1033,488 @@ const StartScreen = ({
     "記録を全て削除する"
   )));
 };
+const HEROINES = [
+  {
+    id: "hakima",
+    fullName: "ハキマアル＝ルハーン",
+    name: "ハキマ",
+    role: "品質鑑定見習い / 知己",
+    age: 19,
+    themeColor: "#ffcc00",
+    themeTrackId: "HAKIMA-01",
+    visualConfig: {
+      facePosition: "center 20%",
+      standingScale: 1
+    },
+    description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
+    routeDescription: "かつてナーディルと共に学んだ、香材商会の若き主。今は離れた場所にいるが、ある品を探して星瓶堂の扉を叩くことになる。",
+    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
+    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
+    routeRelationship: "過去から続く縁。かつて交わした約束を胸に、再び協力者として歩み寄る関係。",
+    stats: {
+      precision: 80,
+      knowledge: 70,
+      social: 90
+    },
+    routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
+    musicMood: "軽やかで少し照れくさい旋律",
+    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
+    assets: { standing: {}, face: {} }
+  },
+  {
+    id: "mira",
+    fullName: "ミラサフワーン",
+    name: "ミラ",
+    role: "錬金大学の後輩 / 協力者",
+    age: 16,
+    themeColor: "#3d5afe",
+    themeTrackId: "MIRA-01",
+    visualConfig: {
+      facePosition: "center 15%",
+      standingScale: 0.95
+    },
+    description: "錬金大学で学ぶ少女。知識の吸収が早く、星瓶堂では新しい発想を持ち込んでくれる。",
+    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前として見られたいと思っている。",
+    relationship: "課題の相談や素材の購入、試作品の確認などを通じて距離を縮める協力者。",
+    stats: {
+      precision: 95,
+      knowledge: 85,
+      social: 60
+    },
+    routeTheme: "知識と好奇心がつなぐ協力関係",
+    musicMood: "知性的で透明感のある旋律",
+    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
+    assets: { standing: {}, face: {} }
+  },
+  {
+    id: "dariya",
+    fullName: "ダリヤザフラーン",
+    name: "ダリヤ",
+    role: "王宮錬金局のエリート / 協力者",
+    age: 23,
+    themeColor: "#f44336",
+    themeTrackId: "DARIYA-01",
+    visualConfig: {
+      facePosition: "center 25%",
+      standingScale: 1.05
+    },
+    description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
+    personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
+    relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
+    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
+    stats: {
+      precision: 90,
+      knowledge: 95,
+      social: 75
+    },
+    routeTheme: "立場の強さと本音の揺れが交わる関係",
+    musicMood: "静かな緊張感を帯びた旋律",
+    assets: { standing: {}, face: {} }
+  }
+];
+function getHeroineAsset(heroineId, type, expression = "normal") {
+  const subDir = type === "face" ? "face_proc" : "standing_proc";
+  return `characters/${heroineId}/${subDir}/${expression}.png`;
+}
+const AFFECTION_EVENTS = {
+  hakima: [
+    {
+      id: "hakima_5",
+      heroineId: "hakima",
+      threshold: 5,
+      title: "もう一度、隣に",
+      stillImageId: "hakimaMorningVisit01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01",
+        heroineExpressions: ["anger", "normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "sorrow"]
+      },
+      summary: "昔のライバル関係を思い出しながら、ハキマはナーディルを試しつつも、その成長を認める。",
+      pages: [
+        { speaker: "ハキマ", expression: "anger", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。\n「今日は、あんたの目利きを見せてもらうから」" },
+        { speaker: "", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nだが香りの奥に、乾いた土と甘い樹脂の違いがあった。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。\n「……ふうん。品だけじゃなく、使う人まで見るんだ」" },
+        { speaker: "ハキマ", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。\n「まあ、今日のところは合格。少しだけ、頼りにしてあげる」" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ハキマ", expression: "normal", text: "ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。\n「こういう勝負、昔はよくやったよね」" },
+          { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。\nそれが少し誇らしくて、少しだけ悔しい。" },
+          { speaker: "ハキマ", expression: "sorrow", text: "「先に行くなら、置いていかないでよ」\nハキマは小さくつぶやき、すぐに耳まで赤くした。" },
+          { speaker: "ハキマ", expression: "joy", text: "「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」\nその声は、怒ったふりをするには優しすぎた。" }
+        ]
+      }
+    },
+    {
+      id: "hakima_10",
+      heroineId: "hakima",
+      threshold: 10,
+      title: "狐の耳は嘘をつかない",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01",
+        heroineExpressions: ["anger", "surprise", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "素直になれないハキマだが、ナーディルと同じ目線で品を選べたことに、深い喜びを感じている。",
+      pages: [
+        { speaker: "ハキマ", expression: "anger", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。\n「この配合、悪くないけど……客には少し強すぎるわね」" },
+        { speaker: "ハキマ", expression: "surprise", text: "ナーディルが薄める案を出すと、彼女は驚いた顔をした。\n「同じこと、考えてた。……先に言わないでよ」" },
+        { speaker: "ハキマ", expression: "sorrow", text: "「でも、そういうところは嫌いじゃない」\n言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。" },
+        { speaker: "ハキマ", expression: "joy", text: "彼女は慌てて背を向ける。\n「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ハキマ", expression: "surprise", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。\nハキマは目を丸くし、やがて呆れたように笑う。" },
+          { speaker: "ハキマ", expression: "normal", text: "「……昔は、あんたの方がいつも外してたのに」\n少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
+          { speaker: "ハキマ", expression: "joy", text: "「やっと追いついてきたってことね。なら、これからは対等だ」\n狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
+          { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
+        ]
+      }
+    }
+  ],
+  mira: [
+    {
+      id: "mira_5",
+      heroineId: "mira",
+      threshold: 5,
+      title: "普通の女の子として",
+      stillImageId: "miraAfterSchool01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01",
+        heroineExpressions: ["student", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise"]
+      },
+      summary: "天才として常に正解を求められるミラが、星瓶堂でだけは「迷うこと」を許され、一人の少女に戻る。",
+      pages: [
+        { speaker: "ミラ", expression: "student", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
+        { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
+        { speaker: "", expression: "surprise", text: "ナーディルが「迷っていい」と言うと、ミラは目を丸くした。\n天才なら即答するべきだと、ずっと思っていたから。" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです」\n彼女は小さく笑う。\n「そんな言い方をされたら、私でいたくなります」" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ミラ", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。\n「この式、先輩に何度も直してもらいましたね」" },
+          { speaker: "ミラ", expression: "sorrow", text: "「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」\n彼女の声は、少しだけ震えていた。" },
+          { speaker: "ミラ", expression: "surprise", text: "ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。\n「だから私は、またここに来たんです」" },
+          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」\nその笑顔は、少し照れくさそうだった。" }
+        ]
+      }
+    },
+    {
+      id: "mira_10",
+      heroineId: "mira",
+      threshold: 10,
+      title: "商人の目利き",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01",
+        heroineExpressions: ["normal", "fun", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。\n「この配合なら、もっと多くの人に届けられます」" },
+        { speaker: "", expression: "sorrow", text: "けれどナーディルは、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
+        { speaker: "ミラ", expression: "fun", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。\n「商人の目だけでは、見落とすものがありますね」" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩の隣でなら、正解を出す前の私でいられます」\nその言葉は、星明かりよりも静かに輝いていた。" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ミラ", expression: "normal", text: "星空の下、ミラは帳面を閉じた。\n「昔から、先輩は私の答えより、考えている顔を見ていました」" },
+          { speaker: "ミラ", expression: "fun", text: "「それが少し悔しくて、でも、とても嬉しかったんです」\n彼女は夜風に揺れる布を押さえ、小さく笑う。" },
+          { speaker: "ミラ", expression: "joy", text: "「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」\nその瞳は、もう迷っていなかった。" },
+          { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
+        ]
+      }
+    }
+  ],
+  dariya: [
+    {
+      id: "dariya_5",
+      heroineId: "dariya",
+      threshold: 5,
+      title: "安らぎの工房",
+      stillImageId: "dariyaAfterHours01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-01",
+        heroineExpressions: ["normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "sorrow"]
+      },
+      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは鎧を下ろし、一人の人として息をつく。",
+      pages: [
+        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「公務の確認だ。……半分は、口実かもしれないが」" },
+        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。\nナーディルは黙って椅子を引き、温かい茶を置く。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは少しだけ目を伏せた。\n「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」" },
+        { speaker: "", expression: "joy", text: "その笑みは疲れていたが、初めて肩の力が抜けていた。\n星瓶堂の夜は、どんな霊薬より静かに彼女を休ませた。" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。\n「君は相変わらず、追い出すのが下手だな」" },
+          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、強い先輩でいられない日がある」\nダリヤは苦笑し、視線を卓上の茶へ落とした。" },
+          { speaker: "ダリヤ", expression: "joy", text: "「それでも君は、昔から同じ顔で茶を出す」\nその声は、責めるにはあまりにも優しかった。" }
+        ]
+      }
+    },
+    {
+      id: "dariya_10",
+      heroineId: "dariya",
+      threshold: 10,
+      title: "共鳴する真理",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-01",
+        heroineExpressions: ["normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "完璧でなければならないという呪縛から解き放たれ、ダリヤはナーディルの前でだけ弱さを共有する。",
+      pages: [
+        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、静かに眉を寄せる。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合だ。……だが、君の作ったものより冷たい」\n彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。" },
+        { speaker: "ダリヤ", expression: "joy", text: "「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」\nそれは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。" },
+        { speaker: "ダリヤ", expression: "joy", text: "「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」\n彼女の横顔は、昼間よりずっと穏やかだった。" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたはずなのだが」" },
+          { speaker: "", expression: "normal", text: "ナーディルは答えを急かず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、特別でなくなるのが怖かった」\nダリヤの声は震えたが、逃げることはなかった。" },
+          { speaker: "ダリヤ", expression: "joy", text: "「だが君は、特別でない私にも茶を出すのだろう」\n彼女は泣きそうに笑い、ようやく前を向いた。" }
+        ]
+      }
+    }
+  ]
+};
+function getEventsByHeroine(heroineId) {
+  return AFFECTION_EVENTS[heroineId] || [];
+}
+function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
+  const events = getEventsByHeroine(heroineId);
+  const eligibleEvents = events.filter(
+    (event) => currentAffection >= event.threshold && !seenEventIds.includes(event.id)
+  );
+  if (eligibleEvents.length === 0) return null;
+  return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
+}
+function getEventPages(event, routeMode) {
+  var _a;
+  if (!event) return [{ speaker: "", expression: "normal", text: "" }];
+  let rawPages = [];
+  if (routeMode === "long_history" && ((_a = event.routePages) == null ? void 0 : _a.long_history)) {
+    rawPages = event.routePages.long_history;
+  } else if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
+    rawPages = event.pages;
+  } else {
+    rawPages = [event.text || ""];
+  }
+  return rawPages.map((page) => {
+    if (typeof page === "string") {
+      return {
+        speaker: "",
+        expression: "normal",
+        text: page
+      };
+    }
+    return {
+      speaker: page.speaker !== void 0 ? page.speaker : "",
+      expression: page.expression || "normal",
+      text: page.text || ""
+    };
+  });
+}
+function getRouteText(baseText, routeTexts, routeMode) {
+  if (routeTexts && routeTexts[routeMode]) {
+    return routeTexts[routeMode];
+  }
+  return baseText;
+}
+const HeroineSelectScreen = ({
+  previewHeroineId,
+  onPreviewHeroineChange,
+  onSelectHeroine,
+  affection,
+  routeMode,
+  screen,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  renderThemeStyles,
+  HeroineDisplay: HeroineDisplay2,
+  getFullPath
+}) => {
+  const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
+  const containerStyle2 = {
+    width: "100%",
+    height: "100%",
+    padding: "12px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    overflow: "hidden",
+    position: "relative",
+    boxSizing: "border-box"
+  };
+  const titleStyle2 = {
+    fontFamily: "'Playfair Display', serif",
+    color: THEME.starGold,
+    textShadow: `0 2px 10px ${THEME.nightBlue}`,
+    letterSpacing: "0.05em"
+  };
+  const cardStyle2 = {
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: "12px",
+    padding: "24px",
+    width: "100%",
+    maxWidth: "500px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+    border: `1px solid ${THEME.brass}`,
+    boxSizing: "border-box"
+  };
+  const buttonStyle2 = {
+    padding: "12px 24px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "1em",
+    fontWeight: "bold",
+    transition: "all 0.2s ease",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    margin: "10px 0",
+    fontFamily: "inherit"
+  };
+  const narrativeBoxStyle2 = {
+    background: "white",
+    borderRadius: "8px",
+    padding: "15px",
+    border: `1px solid ${THEME.brass}`,
+    boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)",
+    lineHeight: "1.6",
+    whiteSpace: "pre-wrap",
+    color: THEME.textDark
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle2 }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement(
+    GameHud,
+    {
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginBottom: "20px",
+    width: "100%",
+    maxWidth: "350px"
+  } }, HEROINES.map((h) => {
+    var _a;
+    const isSelected = previewHeroineId === h.id;
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        "data-testid": `heroine-tab-${h.id}`,
+        key: h.id,
+        onClick: () => {
+          if (audioEngine) audioEngine.playSfx("uiTapBottle");
+          if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
+        },
+        style: {
+          width: "70px",
+          height: "70px",
+          borderRadius: "50%",
+          border: `3px solid ${isSelected ? h.themeColor : "rgba(226,209,177,0.65)"}`,
+          background: "#111",
+          padding: 0,
+          cursor: "pointer",
+          transition: "all 0.2s",
+          transform: isSelected ? "scale(1.12)" : "scale(1.0)",
+          boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : "0 2px 8px rgba(0,0,0,0.35)",
+          overflow: "hidden",
+          zIndex: isSelected ? 2 : 1,
+          boxSizing: "border-box",
+          position: "relative"
+        }
+      },
+      /* @__PURE__ */ React.createElement(
+        "img",
+        {
+          src: getFullPath ? getFullPath(getHeroineAsset(h.id, "face", "normal")) : "",
+          alt: h.name,
+          style: {
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: ((_a = h.visualConfig) == null ? void 0 : _a.facePosition) || "center 20%",
+            display: "block",
+            borderRadius: "50%",
+            clipPath: "circle(50% at 50% 50%)"
+          }
+        }
+      ),
+      isSelected && /* @__PURE__ */ React.createElement("div", { style: {
+        position: "absolute",
+        top: "7px",
+        left: "-3px",
+        width: "18px",
+        height: "50px",
+        borderLeft: `3px solid ${THEME.starGold}`,
+        borderRadius: "50%",
+        filter: `drop-shadow(0 0 5px ${h.themeColor})`,
+        pointerEvents: "none"
+      } })
+    );
+  })), /* @__PURE__ */ React.createElement("div", { style: {
+    ...cardStyle2,
+    maxWidth: "350px",
+    height: "420px",
+    display: "flex",
+    flexDirection: "column",
+    padding: "20px",
+    background: THEME.parchment,
+    border: `2px solid ${selectedHeroine.themeColor}`,
+    position: "relative"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: selectedHeroine, type: "face", size: "medium", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection ? affection[selectedHeroine.id] : 0)))), /* @__PURE__ */ React.createElement("div", { style: {
+    ...narrativeBoxStyle2,
+    flex: 1,
+    padding: "12px",
+    fontSize: "0.9em",
+    marginBottom: "15px",
+    overflowY: "auto",
+    background: "rgba(255,255,255,0.4)",
+    border: "1px solid rgba(0,0,0,0.05)",
+    color: "#333",
+    textAlign: "left"
+  } }, getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "heroine-start",
+      onClick: () => onSelectHeroine && onSelectHeroine(selectedHeroine.id),
+      style: {
+        ...buttonStyle2,
+        width: "100%",
+        margin: 0,
+        background: selectedHeroine.themeColor,
+        color: "#fff",
+        border: `2px solid ${selectedHeroine.themeColor}`,
+        boxShadow: "0 4px 0 rgba(0,0,0,0.2)"
+      }
+    },
+    selectedHeroine.name,
+    "を頼む"
+  )), /* @__PURE__ */ React.createElement("div", { style: {
+    marginTop: "20px",
+    display: "flex",
+    gap: "20px",
+    opacity: 0.8
+  } }));
+};
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -6619,89 +7101,6 @@ function applyWorkshopResult(state, result) {
     satisfaction: state.satisfaction + result.satisfaction
   };
 }
-const HEROINES = [
-  {
-    id: "hakima",
-    fullName: "ハキマアル＝ルハーン",
-    name: "ハキマ",
-    role: "品質鑑定見習い / 知己",
-    age: 19,
-    themeColor: "#ffcc00",
-    themeTrackId: "HAKIMA-01",
-    visualConfig: {
-      facePosition: "center 20%",
-      standingScale: 1
-    },
-    description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
-    routeDescription: "かつてナーディルと共に学んだ、香材商会の若き主。今は離れた場所にいるが、ある品を探して星瓶堂の扉を叩くことになる。",
-    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
-    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
-    routeRelationship: "過去から続く縁。かつて交わした約束を胸に、再び協力者として歩み寄る関係。",
-    stats: {
-      precision: 80,
-      knowledge: 70,
-      social: 90
-    },
-    routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
-    musicMood: "軽やかで少し照れくさい旋律",
-    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
-    assets: { standing: {}, face: {} }
-  },
-  {
-    id: "mira",
-    fullName: "ミラサフワーン",
-    name: "ミラ",
-    role: "錬金大学の後輩 / 協力者",
-    age: 16,
-    themeColor: "#3d5afe",
-    themeTrackId: "MIRA-01",
-    visualConfig: {
-      facePosition: "center 15%",
-      standingScale: 0.95
-    },
-    description: "錬金大学で学ぶ少女。知識の吸収が早く、星瓶堂では新しい発想を持ち込んでくれる。",
-    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前として見られたいと思っている。",
-    relationship: "課題の相談や素材の購入、試作品の確認などを通じて距離を縮める協力者。",
-    stats: {
-      precision: 95,
-      knowledge: 85,
-      social: 60
-    },
-    routeTheme: "知識と好奇心がつなぐ協力関係",
-    musicMood: "知性的で透明感のある旋律",
-    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
-    assets: { standing: {}, face: {} }
-  },
-  {
-    id: "dariya",
-    fullName: "ダリヤザフラーン",
-    name: "ダリヤ",
-    role: "王宮錬金局のエリート / 協力者",
-    age: 23,
-    themeColor: "#f44336",
-    themeTrackId: "DARIYA-01",
-    visualConfig: {
-      facePosition: "center 25%",
-      standingScale: 1.05
-    },
-    description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
-    personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
-    relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
-    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
-    stats: {
-      precision: 90,
-      knowledge: 95,
-      social: 75
-    },
-    routeTheme: "立場の強さと本音の揺れが交わる関係",
-    musicMood: "静かな緊張感を帯びた旋律",
-    assets: { standing: {}, face: {} }
-  }
-];
-function getHeroineAsset(heroineId, type, expression = "normal") {
-  const subDir = type === "face" ? "face_proc" : "standing_proc";
-  return `characters/${heroineId}/${subDir}/${expression}.png`;
-}
 function getResultExpression(correctCount) {
   if (correctCount >= 5) return "fun";
   if (correctCount >= 4) return "joy";
@@ -7107,222 +7506,6 @@ function hasSaveData() {
 function clearSaveData() {
   if (!isStorageAvailable()) return;
   localStorage.removeItem(STORAGE_KEY);
-}
-const AFFECTION_EVENTS = {
-  hakima: [
-    {
-      id: "hakima_5",
-      heroineId: "hakima",
-      threshold: 5,
-      title: "もう一度、隣に",
-      stillImageId: "hakimaMorningVisit01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01",
-        heroineExpressions: ["anger", "normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "sorrow"]
-      },
-      summary: "昔のライバル関係を思い出しながら、ハキマはナーディルを試しつつも、その成長を認める。",
-      pages: [
-        { speaker: "ハキマ", expression: "anger", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。\n「今日は、あんたの目利きを見せてもらうから」" },
-        { speaker: "", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nだが香りの奥に、乾いた土と甘い樹脂の違いがあった。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。\n「……ふうん。品だけじゃなく、使う人まで見るんだ」" },
-        { speaker: "ハキマ", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。\n「まあ、今日のところは合格。少しだけ、頼りにしてあげる」" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ハキマ", expression: "normal", text: "ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。\n「こういう勝負、昔はよくやったよね」" },
-          { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。\nそれが少し誇らしくて、少しだけ悔しい。" },
-          { speaker: "ハキマ", expression: "sorrow", text: "「先に行くなら、置いていかないでよ」\nハキマは小さくつぶやき、すぐに耳まで赤くした。" },
-          { speaker: "ハキマ", expression: "joy", text: "「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」\nその声は、怒ったふりをするには優しすぎた。" }
-        ]
-      }
-    },
-    {
-      id: "hakima_10",
-      heroineId: "hakima",
-      threshold: 10,
-      title: "狐の耳は嘘をつかない",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01",
-        heroineExpressions: ["anger", "surprise", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "素直になれないハキマだが、ナーディルと同じ目線で品を選べたことに、深い喜びを感じている。",
-      pages: [
-        { speaker: "ハキマ", expression: "anger", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。\n「この配合、悪くないけど……客には少し強すぎるわね」" },
-        { speaker: "ハキマ", expression: "surprise", text: "ナーディルが薄める案を出すと、彼女は驚いた顔をした。\n「同じこと、考えてた。……先に言わないでよ」" },
-        { speaker: "ハキマ", expression: "sorrow", text: "「でも、そういうところは嫌いじゃない」\n言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。" },
-        { speaker: "ハキマ", expression: "joy", text: "彼女は慌てて背を向ける。\n「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ハキマ", expression: "surprise", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。\nハキマは目を丸くし、やがて呆れたように笑う。" },
-          { speaker: "ハキマ", expression: "normal", text: "「……昔は、あんたの方がいつも外してたのに」\n少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
-          { speaker: "ハキマ", expression: "joy", text: "「やっと追いついてきたってことね。なら、これからは対等だ」\n狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
-          { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
-        ]
-      }
-    }
-  ],
-  mira: [
-    {
-      id: "mira_5",
-      heroineId: "mira",
-      threshold: 5,
-      title: "普通の女の子として",
-      stillImageId: "miraAfterSchool01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01",
-        heroineExpressions: ["student", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise"]
-      },
-      summary: "天才として常に正解を求められるミラが、星瓶堂でだけは「迷うこと」を許され、一人の少女に戻る。",
-      pages: [
-        { speaker: "ミラ", expression: "student", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
-        { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
-        { speaker: "", expression: "surprise", text: "ナーディルが「迷っていい」と言うと、ミラは目を丸くした。\n天才なら即答するべきだと、ずっと思っていたから。" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです」\n彼女は小さく笑う。\n「そんな言い方をされたら、私でいたくなります」" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ミラ", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。\n「この式、先輩に何度も直してもらいましたね」" },
-          { speaker: "ミラ", expression: "sorrow", text: "「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」\n彼女の声は、少しだけ震えていた。" },
-          { speaker: "ミラ", expression: "surprise", text: "ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。\n「だから私は、またここに来たんです」" },
-          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」\nその笑顔は、少し照れくさそうだった。" }
-        ]
-      }
-    },
-    {
-      id: "mira_10",
-      heroineId: "mira",
-      threshold: 10,
-      title: "商人の目利き",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01",
-        heroineExpressions: ["normal", "fun", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。\n「この配合なら、もっと多くの人に届けられます」" },
-        { speaker: "", expression: "sorrow", text: "けれどナーディルは、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
-        { speaker: "ミラ", expression: "fun", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。\n「商人の目だけでは、見落とすものがありますね」" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩の隣でなら、正解を出す前の私でいられます」\nその言葉は、星明かりよりも静かに輝いていた。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ミラ", expression: "normal", text: "星空の下、ミラは帳面を閉じた。\n「昔から、先輩は私の答えより、考えている顔を見ていました」" },
-          { speaker: "ミラ", expression: "fun", text: "「それが少し悔しくて、でも、とても嬉しかったんです」\n彼女は夜風に揺れる布を押さえ、小さく笑う。" },
-          { speaker: "ミラ", expression: "joy", text: "「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」\nその瞳は、もう迷っていなかった。" },
-          { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
-        ]
-      }
-    }
-  ],
-  dariya: [
-    {
-      id: "dariya_5",
-      heroineId: "dariya",
-      threshold: 5,
-      title: "安らぎの工房",
-      stillImageId: "dariyaAfterHours01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-01",
-        heroineExpressions: ["normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "sorrow"]
-      },
-      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは鎧を下ろし、一人の人として息をつく。",
-      pages: [
-        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「公務の確認だ。……半分は、口実かもしれないが」" },
-        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。\nナーディルは黙って椅子を引き、温かい茶を置く。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは少しだけ目を伏せた。\n「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」" },
-        { speaker: "", expression: "joy", text: "その笑みは疲れていたが、初めて肩の力が抜けていた。\n星瓶堂の夜は、どんな霊薬より静かに彼女を休ませた。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。\n「君は相変わらず、追い出すのが下手だな」" },
-          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、強い先輩でいられない日がある」\nダリヤは苦笑し、視線を卓上の茶へ落とした。" },
-          { speaker: "ダリヤ", expression: "joy", text: "「それでも君は、昔から同じ顔で茶を出す」\nその声は、責めるにはあまりにも優しかった。" }
-        ]
-      }
-    },
-    {
-      id: "dariya_10",
-      heroineId: "dariya",
-      threshold: 10,
-      title: "共鳴する真理",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-01",
-        heroineExpressions: ["normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "完璧でなければならないという呪縛から解き放たれ、ダリヤはナーディルの前でだけ弱さを共有する。",
-      pages: [
-        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、静かに眉を寄せる。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合だ。……だが、君の作ったものより冷たい」\n彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」\nそれは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」\n彼女の横顔は、昼間よりずっと穏やかだった。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたはずなのだが」" },
-          { speaker: "", expression: "normal", text: "ナーディルは答えを急かず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、特別でなくなるのが怖かった」\nダリヤの声は震えたが、逃げることはなかった。" },
-          { speaker: "ダリヤ", expression: "joy", text: "「だが君は、特別でない私にも茶を出すのだろう」\n彼女は泣きそうに笑い、ようやく前を向いた。" }
-        ]
-      }
-    }
-  ]
-};
-function getEventsByHeroine(heroineId) {
-  return AFFECTION_EVENTS[heroineId] || [];
-}
-function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
-  const events = getEventsByHeroine(heroineId);
-  const eligibleEvents = events.filter(
-    (event) => currentAffection >= event.threshold && !seenEventIds.includes(event.id)
-  );
-  if (eligibleEvents.length === 0) return null;
-  return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
-}
-function getEventPages(event, routeMode) {
-  var _a;
-  if (!event) return [{ speaker: "", expression: "normal", text: "" }];
-  let rawPages = [];
-  if (routeMode === "long_history" && ((_a = event.routePages) == null ? void 0 : _a.long_history)) {
-    rawPages = event.routePages.long_history;
-  } else if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
-    rawPages = event.pages;
-  } else {
-    rawPages = [event.text || ""];
-  }
-  return rawPages.map((page) => {
-    if (typeof page === "string") {
-      return {
-        speaker: "",
-        expression: "normal",
-        text: page
-      };
-    }
-    return {
-      speaker: page.speaker !== void 0 ? page.speaker : "",
-      expression: page.expression || "normal",
-      text: page.text || ""
-    };
-  });
-}
-function getRouteText(baseText, routeTexts, routeMode) {
-  if (routeTexts && routeTexts[routeMode]) {
-    return routeTexts[routeMode];
-  }
-  return baseText;
 }
 const ENDINGS = {
   hakima: {
@@ -8602,125 +8785,23 @@ function App() {
       }
     );
   } else if (screen === "HEROINE_SELECT") {
-    const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
-      GameHud,
+    mainContent = /* @__PURE__ */ React.createElement(
+      HeroineSelectScreen,
       {
-        screen,
+        previewHeroineId,
+        onPreviewHeroineChange: setPreviewHeroineId,
+        onSelectHeroine: handleSelectHeroine,
+        affection,
         routeMode,
+        screen,
         onOpenLog: () => setShowLog(true),
         onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true)
+        onOpenHelp: () => setShowHelp(true),
+        renderThemeStyles,
+        HeroineDisplay,
+        getFullPath
       }
-    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      justifyContent: "center",
-      gap: "20px",
-      marginBottom: "20px",
-      width: "100%",
-      maxWidth: "350px"
-    } }, HEROINES.map((h) => {
-      var _a2;
-      const isSelected = previewHeroineId === h.id;
-      return /* @__PURE__ */ React.createElement(
-        "div",
-        {
-          "data-testid": `heroine-tab-${h.id}`,
-          key: h.id,
-          onClick: () => {
-            audioEngine.playSfx("uiTapBottle");
-            setPreviewHeroineId(h.id);
-          },
-          style: {
-            width: "70px",
-            height: "70px",
-            borderRadius: "50%",
-            border: `3px solid ${isSelected ? h.themeColor : "rgba(226,209,177,0.65)"}`,
-            background: "#111",
-            padding: 0,
-            cursor: "pointer",
-            transition: "all 0.2s",
-            transform: isSelected ? "scale(1.12)" : "scale(1.0)",
-            boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : "0 2px 8px rgba(0,0,0,0.35)",
-            overflow: "hidden",
-            zIndex: isSelected ? 2 : 1,
-            boxSizing: "border-box",
-            position: "relative"
-          }
-        },
-        /* @__PURE__ */ React.createElement(
-          "img",
-          {
-            src: getFullPath(getHeroineAsset(h.id, "face", "normal")),
-            alt: h.name,
-            style: {
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: ((_a2 = h.visualConfig) == null ? void 0 : _a2.facePosition) || "center 20%",
-              display: "block",
-              borderRadius: "50%",
-              clipPath: "circle(50% at 50% 50%)"
-            }
-          }
-        ),
-        isSelected && /* @__PURE__ */ React.createElement("div", { style: {
-          position: "absolute",
-          top: "7px",
-          left: "-3px",
-          width: "18px",
-          height: "50px",
-          borderLeft: `3px solid ${THEME.starGold}`,
-          borderRadius: "50%",
-          filter: `drop-shadow(0 0 5px ${h.themeColor})`,
-          pointerEvents: "none"
-        } })
-      );
-    })), /* @__PURE__ */ React.createElement("div", { style: {
-      ...cardStyle,
-      maxWidth: "350px",
-      height: "420px",
-      display: "flex",
-      flexDirection: "column",
-      padding: "20px",
-      background: THEME.parchment,
-      border: `2px solid ${selectedHeroine.themeColor}`,
-      position: "relative"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: selectedHeroine, type: "face", size: "medium", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection[selectedHeroine.id])))), /* @__PURE__ */ React.createElement("div", { style: {
-      ...narrativeBoxStyle,
-      flex: 1,
-      padding: "12px",
-      fontSize: "0.9em",
-      marginBottom: "15px",
-      overflowY: "auto",
-      background: "rgba(255,255,255,0.4)",
-      border: "1px solid rgba(0,0,0,0.05)",
-      color: "#333",
-      textAlign: "left"
-    } }, getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "heroine-start",
-        onClick: () => handleSelectHeroine(selectedHeroine.id),
-        style: {
-          ...buttonStyle,
-          width: "100%",
-          margin: 0,
-          background: selectedHeroine.themeColor,
-          color: "#fff",
-          border: `2px solid ${selectedHeroine.themeColor}`,
-          boxShadow: "0 4px 0 rgba(0,0,0,0.2)"
-        }
-      },
-      selectedHeroine.name,
-      "を頼む"
-    )), /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      gap: "12px",
-      marginTop: "20px",
-      width: "100%",
-      maxWidth: "350px"
-    } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, flex: 1, margin: 0, fontSize: "0.9em", background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` } }, "タイトルへ戻る"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, flex: 1, margin: 0, fontSize: "0.9em", background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` } }, "思い出の記録")));
+    );
   } else if (screen === "FINAL_RESULT") {
     const finalAffection = affection[activeHeroineId];
     const finalSales = workshopState.sales;
