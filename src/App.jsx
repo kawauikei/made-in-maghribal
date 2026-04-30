@@ -4,6 +4,7 @@ import HelpModal from './ui/HelpModal';
 import LogModal from './ui/LogModal';
 import OptionsModal from './ui/OptionsModal';
 import GameHud, { ROUTE_MODE_META, getRouteModeMeta, renderRouteModeBadge } from './ui/GameHud';
+import { shouldIgnoreVnAdvanceClick, safeAdvanceVnBox, isVnAdvanceScreen, shouldSkipTypewriter } from './ui/vnClickHelpers';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -188,17 +189,9 @@ export default function App() {
   );
   const isClipped = rawScale < MIN_SCALE;
 
-  const shouldIgnoreVnAdvanceClick = (e) => {
-    if (showOptions || showLog || showHelp || showSoundTest) return true;
-    if (e.target.closest('button, a, input, select, textarea, [data-no-vn-advance]')) {
-      return true;
-    }
-    return false;
-  };
-
   const handleVnAreaClick = (e) => {
-    if (shouldIgnoreVnAdvanceClick(e)) return;
-    vnRef.current?.advance();
+    if (shouldIgnoreVnAdvanceClick(e, { showOptions, showLog, showHelp, showSoundTest })) return;
+    safeAdvanceVnBox(vnRef);
   };
 
   const outerWrapperStyle = {
@@ -954,7 +947,7 @@ export default function App() {
               pages={prologuePages}
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
-              skip={isInstantTextSpeed}
+              skip={shouldSkipTypewriter(isInstantTextSpeed)}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
               onComplete={() => {
                 setIsPrologueComplete(true);
@@ -1016,7 +1009,7 @@ export default function App() {
                   text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
                   themeColor={activeHeroine.themeColor}
                   speed={textSpeedMeta.delay}
-                  skip={isInstantTextSpeed}
+                  skip={shouldSkipTypewriter(isInstantTextSpeed)}
                   onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
                   onComplete={handleBeginService}
                 />
@@ -1070,7 +1063,7 @@ export default function App() {
                 text={resultNarrations[correctCount]}
                 themeColor={THEME.brass}
                 speed={textSpeedMeta.delay}
-                skip={isInstantTextSpeed}
+                skip={shouldSkipTypewriter(isInstantTextSpeed)}
                 onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
                 onComplete={handleEndDay}
               />
@@ -1231,7 +1224,7 @@ export default function App() {
               pages={getEventPages(activeEvent, routeMode)}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
-              skip={isInstantTextSpeed || seenEventIds.includes(activeEvent.id)}
+              skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
             />
@@ -1724,7 +1717,7 @@ export default function App() {
               pages={endingData.pages}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
-              skip={isInstantTextSpeed}
+              skip={shouldSkipTypewriter(isInstantTextSpeed)}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />
