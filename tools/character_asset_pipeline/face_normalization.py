@@ -30,75 +30,119 @@ CHAR_FOLDER_MAP = {"hakima": "01_Hakima", "mira": "02_Mira", "dariya": "03_Dariy
 ALLOWED_EXTENSIONS = [".jpeg", ".jpg", ".png", ".webp"]
 
 def remove_background_v16(img):
+    """
+    V16.4 background removal.
+
+    Fixes small enclosed magenta background islands that can appear around
+    fingers / sleeves after tighter D2-Norm face crops, while keeping the
+    original V16 outer-background behavior.
+    """
     h, w = img.shape[:2]
-    # Sample background color profile from corners
+
+    # Sample background color profile from corners.
     corners = np.concatenate([
-        img[:10, :10], img[:10, -10:], 
+        img[:10, :10], img[:10, -10:],
         img[-10:, :10], img[-10:, -10:]
     ]).reshape(-1, 3)
     bg_median = np.median(corners, axis=0).astype(np.float32)
-    
-    # 1. Main Background Identification (Outer)
-    # Seed fill from corners to find the obvious background
+    b_bg, g_bg, r_bg = bg_median
+
     diff = np.abs(img.astype(np.float32) - bg_median)
-    dist = np.sqrt(np.sum(diff**2, axis=2))
-    
-    # Strict threshold for seeds
-    seeds = (dist < 40).astype(np.uint8) * 255
+    dist = np.sqrt(np.sum(diff ** 2, axis=2))
+
+    # 1. Main background identification.
+    # The old version flooded only from four corners.  That misses thin edge
+    # gaps when a character nearly touches a border, so seed from all edges.
+    seeds = (dist < 45).astype(np.uint8) * 255
     flood_mask = np.zeros((h + 2, w + 2), np.uint8)
-    for sx, sy in [(0,0), (w-1,0), (0,h-1), (w-1,h-1)]:
-        if seeds[sy, sx] > 0:
+
+    edge_points = []
+    step = 8
+    for x in range(0, w, step):
+        edge_points.append((x, 0))
+        edge_points.append((x, h - 1))
+    for y in range(0, h, step):
+        edge_points.append((0, y))
+        edge_points.append((w - 1, y))
+    edge_points.extend([(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)])
+
+    for sx, sy in edge_points:
+        if seeds[sy, sx] == 255:
             cv2.floodFill(seeds, flood_mask, (sx, sy), 128)
     is_outer_bg = (seeds == 128)
-    
-    # 2. Island Detection
-    # Potential background
-    potential_bg_mask = (dist < 80).astype(np.uint8) * 255
-    
-    # Core Protection Mask (roughly center of character)
-    core_mask = np.zeros((h, w), np.uint8)
-    cv2.rectangle(core_mask, (int(w*0.25), int(h*0.15)), (int(w*0.75), int(h*0.85)), 1, -1)
-    
-    # Connectivity analysis on potential background
-    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(potential_bg_mask, connectivity=4)
-    
+
+    # 2. Island detection for enclosed background holes.
+    # Use a relaxed mask for components, then decide component-by-component
+    # using median color.  This catches magenta islands between fingers.
+    potential_bg_mask = (dist < 105).astype(np.uint8) * 255
+    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(
+        potential_bg_mask, connectivity=4
+    )
+
     alpha = np.full((h, w), 255, dtype=np.uint8)
     alpha[is_outer_bg] = 0
-    
-    # For all other components, check if they are islands
+
+    # Keep the old "core" idea, but allow small/medium magenta-like islands
+    # inside the core to be removed when they match the sampled background.
+    core_mask = np.zeros((h, w), np.uint8)
+    cv2.rectangle(core_mask, (int(w * 0.20), int(h * 0.10)),
+                  (int(w * 0.80), int(h * 0.90)), 1, -1)
+
+    img_area = h * w
+    max_inner_island_area = max(1200, int(img_area * 0.035))
+
     for i in range(1, num_labels):
         x, y, cw, ch, area = stats[i]
-        if area < 10: continue
-        
+        if area < 8:
+            continue
+
         mask_i = (labels == i)
+
+        # Any component connected to the already-flooded background is
+        # definitely background.
         if np.any(is_outer_bg[mask_i]):
             alpha[mask_i] = 0
             continue
-            
-        # Median color profile
+
         comp_pixels = img[mask_i]
         comp_median = np.median(comp_pixels, axis=0).astype(np.float32)
-        comp_dist = np.sqrt(np.sum((comp_median - bg_median)**2))
-        
-        # Check if component overlaps with core character area
-        in_core = np.any(core_mask[mask_i])
-        
-        # Thresholding logic:
-        # If in core, be VERY strict (must be almost perfect match or pure magenta)
-        # If outside core, be a bit more relaxed to catch fringes
         b_c, g_c, r_c = comp_median
-        is_pure_magenta = (r_c > 240) and (b_c > 230) and (g_c < 60)
-        
+        comp_dist = float(np.sqrt(np.sum((comp_median - bg_median) ** 2)))
+
+        in_core = bool(np.any(core_mask[mask_i]))
+
+        # Background in this project is intentionally vivid magenta.
+        # JPEG compression / resizing can move it away from pure #ff00ff,
+        # so use "magenta-like and close to corner background" rather than
+        # the old very strict pure-magenta check.
+        magenta_like = (
+            r_c > 190 and b_c > 190 and g_c < 120 and
+            abs(float(r_c - r_bg)) < 85 and
+            abs(float(b_c - b_bg)) < 85 and
+            abs(float(g_c - g_bg)) < 100
+        )
+
+        bg_like_strict = comp_dist < 35
+        bg_like_relaxed = comp_dist < 75
+        small_or_medium_island = area <= max_inner_island_area
+
         if in_core:
-            if comp_dist < 20 or is_pure_magenta:
+            # Avoid cutting real costume details, but remove enclosed
+            # magenta holes between fingers / hands / sleeves.
+            if bg_like_strict or (small_or_medium_island and (bg_like_relaxed or magenta_like)):
                 alpha[mask_i] = 0
         else:
-            if comp_dist < 55 or is_pure_magenta:
+            if bg_like_relaxed or magenta_like:
                 alpha[mask_i] = 0
-            
-    # Final smoothing of alpha
+
+    # Slightly expand transparent background, then soften the edge.
+    # This reduces remaining one-pixel magenta fringes without touching
+    # the character body aggressively.
+    transparent = (alpha == 0).astype(np.uint8) * 255
+    transparent = cv2.dilate(transparent, np.ones((2, 2), np.uint8), iterations=1)
+    alpha[transparent > 0] = 0
     alpha = cv2.GaussianBlur(alpha, (3, 3), 0)
-    
+
     b, g, r = cv2.split(img)
     return cv2.merge([b, g, r, alpha])
 
@@ -152,46 +196,72 @@ def generate_bustup_v25(bgra, char_id, variant, out_dir, standards):
     cv2.imwrite(str(out_dir/f"{variant}.png"), bustup)
     return True
 
+def generate_face_v25(bgra, char_id, variant, v_config, is_clean):
+    """
+    Generates a 256x256 face icon from character_asset_config.json faceCrop.
+
+    This function is intentionally limited to face_proc output. It does not touch
+    standing_proc, bustup_proc, asset_manifest.json, or bustup_manifest.json.
+    """
+    if char_id == "common":
+        return False
+
+    h, w = bgra.shape[:2]
+    crop = v_config.get("faceCrop")
+    if not crop:
+        print(f"      [WARN] Missing faceCrop for {char_id}/{variant}. Skipping face.")
+        return False
+
+    scale = 2.0 if is_clean else 1.0
+    fx, fy = int(crop["x"] * scale), int(crop["y"] * scale)
+    fw, fh = int(crop["w"] * scale), int(crop["h"] * scale)
+
+    tfx = max(0, min(w - 1, fx))
+    tfy = max(0, min(h - 1, fy))
+    tfw = min(fw, w - tfx)
+    tfh = min(fh, h - tfy)
+
+    if tfw <= 0 or tfh <= 0:
+        print(f"      [WARN] Invalid faceCrop for {char_id}/{variant}: {crop}. Skipping face.")
+        return False
+
+    face_img = bgra[tfy:tfy+tfh, tfx:tfx+tfw]
+    if face_img.size == 0:
+        print(f"      [WARN] Empty face crop for {char_id}/{variant}: {crop}. Skipping face.")
+        return False
+
+    out_dir = BASE_DIR / char_id / FACE_SUBDIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+    face = cv2.resize(face_img, FACE_SIZE, interpolation=cv2.INTER_LANCZOS4)
+    cv2.imwrite(str(out_dir / f"{variant}.png"), face)
+    return True
+
 def process_v25(char_id, variant, src_p, v_config, is_clean, standards):
     img = cv2.imread(str(src_p))
     if img is None: return False
     h, w = img.shape[:2]
-    
+
     # Background Removal
     bgra = remove_background_v16(img)
-    
-    # 1. Face Icon (Legacy/Config Based for now, but targeting V25)
-    crop = v_config.get("faceCrop", {"x": 300, "y": 150, "w": 400, "h": 400})
-    scale = 2.0 if is_clean else 1.0
-    
-    fx, fy = int(crop["x"] * scale), int(crop["y"] * scale)
-    fw, fh = int(crop["w"] * scale), int(crop["h"] * scale)
-    
+
     out_dirs = {
         "face": BASE_DIR/char_id/FACE_SUBDIR, 
         "standing": BASE_DIR/char_id/STANDING_PROC_SUBDIR,
         "bustup": BASE_DIR/char_id/BUSTUP_PROC_SUBDIR
     }
     for d in out_dirs.values(): d.mkdir(parents=True, exist_ok=True)
-    
+
     if char_id != "common":
-        # Face Crop
-        tfx = max(0, min(w - 1, fx))
-        tfy = max(0, min(h - 1, fy))
-        tfw = min(fw, w - tfx)
-        tfh = min(fh, h - tfy)
-        
-        face_img = bgra[tfy:tfy+tfh, tfx:tfx+tfw]
-        if face_img.size > 0:
-            cv2.imwrite(str(out_dirs["face"]/f"{variant}.png"), cv2.resize(face_img, FACE_SIZE, interpolation=cv2.INTER_LANCZOS4))
-            
+        # 1. Face Icon (Config Based for V25 D2-Norm)
+        generate_face_v25(bgra, char_id, variant, v_config, is_clean)
+
         # Bustup (InsightFace Based)
         generate_bustup_v25(bgra, char_id, variant, out_dirs["bustup"], standards)
-    
+
     # 2. Standing (Maintain Legacy Aspect Ratio/Resize)
     th = STANDING_PROC_SIZE[1]
     cv2.imwrite(str(out_dirs["standing"]/f"{variant}.png"), cv2.resize(bgra, (int(th*(w/h)), th), interpolation=cv2.INTER_LANCZOS4))
-    
+
     print(f"    [SUCCESS] Processed {variant} ({PROCESSOR_VERSION}) | is_clean={is_clean}")
     return True
 
@@ -208,6 +278,10 @@ BUSTUP_MANIFEST_PATH = Path("tools/character_asset_pipeline/bustup_manifest.json
 def main():
     force = "--force" in sys.argv
     bustup_only = "--bustup-only" in sys.argv
+    face_only = "--face-only" in sys.argv
+    if bustup_only and face_only:
+        print("[ERROR] --bustup-only and --face-only cannot be used together.")
+        return
     
     config_file = CONFIG_PATH
     if "--config" in sys.argv:
@@ -231,7 +305,13 @@ def main():
             bustup_manifest = json.load(f)
 
     stats = {"skip": 0, "regen": 0, "fail": 0}
-    print(f"\n--- Character Asset Pipeline ({PROCESSOR_VERSION}: {'Bustup ONLY' if bustup_only else 'Full Update'}) ---")
+    if face_only:
+        mode_label = "Face ONLY"
+    elif bustup_only:
+        mode_label = "Bustup ONLY"
+    else:
+        mode_label = "Full Update"
+    print(f"\n--- Character Asset Pipeline ({PROCESSOR_VERSION}: {mode_label}) ---")
     
     for char_id, config in asset_config.items():
         print(f"\nCharacter: [{char_id}]")
@@ -271,7 +351,9 @@ def main():
                     "is_clean": is_clean, 
                     "updated_at": time.time()
                 }
-                if bustup_only:
+                if face_only:
+                    pass
+                elif bustup_only:
                     bustup_manifest["assets"][key] = entry
                 else:
                     manifest["assets"][key] = entry
@@ -281,10 +363,13 @@ def main():
             else: stats["fail"] += 1
             
     if stats["regen"] > 0:
-        if not bustup_only:
-            manifest_utils.save_manifest(manifest)
-        with open(BUSTUP_MANIFEST_PATH, "w", encoding="utf-8") as f:
-            json.dump(bustup_manifest, f, indent=2)
+        if face_only:
+            print("    [INFO] --face-only: manifest files were not updated.")
+        else:
+            if not bustup_only:
+                manifest_utils.save_manifest(manifest)
+            with open(BUSTUP_MANIFEST_PATH, "w", encoding="utf-8") as f:
+                json.dump(bustup_manifest, f, indent=2)
             
     print(f"\nFinal: skip={stats['skip']}, regen={stats['regen']}, fail={stats['fail']}")
 
