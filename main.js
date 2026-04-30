@@ -5599,8 +5599,10 @@ const HEROINES = [
       standingScale: 1
     },
     description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
+    routeDescription: "かつてナーディルと共に学んだ、香材商会の若き主。今は離れた場所にいるが、ある品を探して星瓶堂の扉を叩くことになる。",
     personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
     relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
+    routeRelationship: "過去から続く縁。かつて交わした約束を胸に、再び協力者として歩み寄る関係。",
     stats: {
       precision: 80,
       knowledge: 70,
@@ -6407,6 +6409,12 @@ function getEventPages(event, routeMode) {
   }
   return [event.text || ""];
 }
+function getRouteText(baseText, routeTexts, routeMode) {
+  if (routeTexts && routeTexts[routeMode]) {
+    return routeTexts[routeMode];
+  }
+  return baseText;
+}
 const BACKGROUND_IMAGES = {
   shopExteriorDay: { id: "shopExteriorDay", label: "shop exterior day", src: "images/background/bg_shop_exterior_day.jpg" },
   shopExteriorNight: { id: "shopExteriorNight", label: "shop exterior night", src: "images/background/bg_shop_exterior_night.jpg" },
@@ -6564,10 +6572,12 @@ const THEME = {
 };
 const ROUTE_MODE_META = {
   normal: {
-    label: "現在から育つ縁"
+    label: "現在から育つ縁",
+    description: "はじめて出会う今の縁"
   },
   long_history: {
-    label: "過去から続く縁"
+    label: "過去から続く縁",
+    description: "もう一つの世界線の縁"
   }
 };
 const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
@@ -6817,14 +6827,18 @@ function App() {
       setHasSave(true);
     } else {
       const currentData = loadSaveData();
-      saveGameData({
-        ...currentData || {},
-        textSpeed,
-        instantUnreadText,
-        bgmVolume,
-        seVolume,
-        isAudioEnabled
-      });
+      const isDefaultSettings = routeMode === "normal" && textSpeed === "normal" && instantUnreadText === false && Math.abs(bgmVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && Math.abs(seVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && isAudioEnabled === false;
+      if (currentData || !isDefaultSettings) {
+        saveGameData({
+          ...currentData || {},
+          routeMode,
+          textSpeed,
+          instantUnreadText,
+          bgmVolume,
+          seVolume,
+          isAudioEnabled
+        });
+      }
       if (currentData && currentData.screen !== "START") {
         setHasSave(true);
       } else {
@@ -7459,7 +7473,7 @@ function App() {
   } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
   let mainContent = null;
   if (screen === "START") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁の流れ"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
       const isSelected = routeMode === mode;
       return /* @__PURE__ */ React.createElement(
         "button",
@@ -7486,7 +7500,7 @@ function App() {
         },
         meta.label
       );
-    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge())), hasSave && /* @__PURE__ */ React.createElement(
+    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge())), hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "start-continue",
@@ -7897,7 +7911,7 @@ function App() {
       border: "1px solid rgba(0,0,0,0.05)",
       color: "#333",
       textAlign: "left"
-    } }, selectedHeroine.description), /* @__PURE__ */ React.createElement(
+    } }, getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)), /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "heroine-start",
