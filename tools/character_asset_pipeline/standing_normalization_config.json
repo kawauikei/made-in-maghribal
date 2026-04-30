@@ -1,0 +1,28 @@
+
+{
+    "description": "Standing Bust-up Normalization Standards (3:4) - V23.6 Final Candidates",
+    "frame_width": 480,
+    "frame_height": 640,
+    "standards": {
+        "dariya": {
+            "target_face_x": 240.0,
+            "target_face_y": 180.0,
+            "target_bbox_h": 195.7
+        },
+        "hakima": {
+            "target_face_x": 240.0,
+            "target_face_y": 199.2,
+            "target_bbox_h": 175.1
+        },
+        "mira": {
+            "target_face_x": 216.0,
+            "target_face_y": 180.0,
+            "target_bbox_h": 199.5
+        },
+        "nader": {
+            "target_face_x": 240.0,
+            "target_face_y": 180.0,
+            "target_bbox_h": 217.7
+        }
+    }
+}
