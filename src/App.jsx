@@ -8,6 +8,7 @@ import { shouldIgnoreVnAdvanceClick, safeAdvanceVnBox, isVnAdvanceScreen, should
 import VisualTestScreen from './ui/VisualTestScreen';
 import MemoriesScreen from './ui/MemoriesScreen';
 import StartScreen from './ui/StartScreen';
+import HeroineSelectScreen from './ui/HeroineSelectScreen';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -1187,157 +1188,21 @@ export default function App() {
       />
     );
   } else if (screen === 'HEROINE_SELECT') {
-    const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
-
     mainContent = (
-      <div data-testid="heroine-select-screen" style={containerStyle}>
-        {renderThemeStyles()}
-        <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={() => setShowLog(true)} 
-          onOpenOptions={() => setShowOptions(true)} 
-          onOpenHelp={() => setShowHelp(true)} 
-        />
-        
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
-        
-        {/* Tabs for Heroine selection */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px', 
-          marginBottom: '20px',
-          width: '100%',
-          maxWidth: '350px'
-        }}>
-          {HEROINES.map(h => {
-            const isSelected = previewHeroineId === h.id;
-            return (
-              <div 
-                data-testid={`heroine-tab-${h.id}`}
-                key={h.id}
-                onClick={() => {
-                  audioEngine.playSfx('uiTapBottle');
-                  setPreviewHeroineId(h.id);
-                }}
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '50%',
-                  border: `3px solid ${isSelected ? h.themeColor : 'rgba(226,209,177,0.65)'}`,
-                  background: '#111',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  transform: isSelected ? 'scale(1.12)' : 'scale(1.0)',
-                  boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : '0 2px 8px rgba(0,0,0,0.35)',
-                  overflow: 'hidden',
-                  zIndex: isSelected ? 2 : 1,
-                  boxSizing: 'border-box',
-                  position: 'relative'
-                }}
-              >
-                <img
-                  src={getFullPath(getHeroineAsset(h.id, 'face', 'normal'))}
-                  alt={h.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: h.visualConfig?.facePosition || 'center 20%',
-                    display: 'block',
-                    borderRadius: '50%',
-                    clipPath: 'circle(50% at 50% 50%)'
-                  }}
-                />
-                {isSelected && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '7px',
-                    left: '-3px',
-                    width: '18px',
-                    height: '50px',
-                    borderLeft: `3px solid ${THEME.starGold}`,
-                    borderRadius: '50%',
-                    filter: `drop-shadow(0 0 5px ${h.themeColor})`,
-                    pointerEvents: 'none'
-                  }} />
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Heroine Detail Card (Fixed Height to prevent scrolling) */}
-        <div style={{ 
-          ...cardStyle, 
-          maxWidth: '350px', 
-          height: '420px',
-          display: 'flex', 
-          flexDirection: 'column', 
-          padding: '20px',
-          background: THEME.parchment,
-          border: `2px solid ${selectedHeroine.themeColor}`,
-          position: 'relative'
-        }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: selectedHeroine.themeColor }} />
-          
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'center', marginBottom: '15px' }}>
-             <HeroineDisplay heroine={selectedHeroine} type="face" size="medium" expression="normal" />
-             <div style={{ textAlign: 'left', flex: 1 }}>
-               <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
-               <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
-               <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
-                 親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection[selectedHeroine.id]}</span>
-               </div>
-             </div>
-          </div>
-
-          <div style={{ 
-            ...narrativeBoxStyle, 
-            flex: 1, 
-            padding: '12px', 
-            fontSize: '0.9em', 
-            marginBottom: '15px', 
-            overflowY: 'auto',
-            background: 'rgba(255,255,255,0.4)',
-            border: '1px solid rgba(0,0,0,0.05)',
-            color: '#333',
-            textAlign: 'left'
-          }}>
-            {getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)}
-          </div>
-
-          <button 
-            data-testid="heroine-start"
-            onClick={() => handleSelectHeroine(selectedHeroine.id)}
-            style={{ 
-              ...buttonStyle, 
-              width: '100%', 
-              margin: 0, 
-              background: selectedHeroine.themeColor, 
-              color: '#fff', 
-              border: `2px solid ${selectedHeroine.themeColor}`,
-              boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
-            }}
-          >
-            {selectedHeroine.name}を頼む
-          </button>
-        </div>
-
-        {/* Navigation Footer */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '12px', 
-          marginTop: '20px', 
-          width: '100%', 
-          maxWidth: '350px' 
-        }}>
-            <button onClick={handleBackToTitle} style={{ ...buttonStyle, flex: 1, margin: 0, fontSize: '0.9em', background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` }}>タイトルへ戻る</button>
-           <button onClick={() => setScreen('MEMORIES')} style={{ ...buttonStyle, flex: 1, margin: 0, fontSize: '0.9em', background: THEME.nightBlue, color: THEME.sand, border: `1px solid ${THEME.brass}` }}>思い出の記録</button>
-        </div>
-      </div>
+      <HeroineSelectScreen
+        previewHeroineId={previewHeroineId}
+        onPreviewHeroineChange={setPreviewHeroineId}
+        onSelectHeroine={handleSelectHeroine}
+        affection={affection}
+        routeMode={routeMode}
+        screen={screen}
+        onOpenLog={() => setShowLog(true)}
+        onOpenOptions={() => setShowOptions(true)}
+        onOpenHelp={() => setShowHelp(true)}
+        renderThemeStyles={renderThemeStyles}
+        HeroineDisplay={HeroineDisplay}
+        getFullPath={getFullPath}
+      />
     );
 
   } else if (screen === 'FINAL_RESULT') {
