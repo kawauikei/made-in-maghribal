@@ -37,25 +37,23 @@ const IntroScreen = ({
       {renderThemeStyles()}
       {renderBackground(screen)}
       
-      {/* Nadir Standing */}
+      {/* Nadir Standing (Conversation Layer - Left) */}
       <div style={{ 
-        position: 'absolute', bottom: 0, left: '5%', zIndex: 1, 
-        pointerEvents: 'none', opacity: 0.9,
-        transform: 'translateX(-20%)'
+        position: 'absolute', bottom: 0, left: '2%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 0.4,
       }}>
         <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
       </div>
 
-      {/* Heroine Standing */}
+      {/* Heroine Standing (Conversation Layer - Right) */}
       <div style={{ 
-        position: 'absolute', bottom: 0, right: '5%', zIndex: 1, 
-        pointerEvents: 'none', opacity: 0.9,
-        transform: 'translateX(20%)'
+        position: 'absolute', bottom: 0, right: '2%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 0.55,
       }}>
         <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
       </div>
 
-      <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 

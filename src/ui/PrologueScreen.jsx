@@ -45,16 +45,16 @@ const PrologueScreen = ({
       {renderThemeStyles()}
       {renderBackground('START')}
       
-      {/* Nadir Standing */}
+      {/* Nadir Standing (Background Guide Layer) */}
       <div style={{ 
-        position: 'absolute', bottom: 0, right: '5%', zIndex: 1, 
-        pointerEvents: 'none', opacity: 0.9,
-        transform: 'translateX(20%)'
+        position: 'absolute', bottom: '-6%', right: '-8%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 0.3,
+        filter: 'grayscale(0.1) contrast(0.9)'
       }}>
         <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
       </div>
 
-      <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 
