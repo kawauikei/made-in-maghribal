@@ -5610,14 +5610,14 @@ const HEROINES = [
     },
     routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
     musicMood: "軽やかで少し照れくさい旋律",
-    greeting: "おはよう、ナーディル。今日も星瓶堂らしい目利き、見せてよね。",
+    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "mira",
     fullName: "ミラサフワーン",
     name: "ミラ",
-    role: "錬金大学の先輩 / 相談相手",
+    role: "錬金大学の後輩 / 協力者",
     age: 16,
     themeColor: "#3d5afe",
     themeTrackId: "MIRA-01",
@@ -5635,14 +5635,14 @@ const HEROINES = [
     },
     routeTheme: "知識と好奇心がつなぐ協力関係",
     musicMood: "知性的で透明感のある旋律",
-    greeting: "おはようございます、先輩。今日もいい品を見つけましょう。",
+    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "dariya",
     fullName: "ダリヤザフラーン",
     name: "ダリヤ",
-    role: "王宮錬金局のエリート",
+    role: "王宮錬金局のエリート / 協力者",
     age: 23,
     themeColor: "#f44336",
     themeTrackId: "DARIYA-01",
@@ -5653,7 +5653,7 @@ const HEROINES = [
     description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
     personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
     relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
-    greeting: "おはよう、ナーディル。今日は君の判断を見せてもらおう。",
+    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
     stats: {
       precision: 90,
       knowledge: 95,
@@ -6295,17 +6295,15 @@ const AFFECTION_EVENTS = {
       title: "もう一度、隣に",
       speaker: "ハキマ",
       expression: "joy",
-      text: "ナーディル、さっきの品選び……なんだかあんたが店を継いだばかりの頃を思い出したよ。一人前になろうと必死なのは、見てればわかる。……あの時より、ずっと頼もしくなったね。",
+      pages: [
+        "店先に立っていると、ハキマが薬草の束を抱えてやってきた。",
+        "「調子はどう？ 忙しそうだけど、無理はしてない？」",
+        "彼女は薬草の束を卓上に置き、棚の品を眺めながら、私の目利きを静かに見守っている。"
+      ],
       routePages: {
         long_history: [
           "ナーディル、さっきの品選び……あんたが店を継いだ日のことを思い出したよ。",
-          "あの頃からずっと、あんたの隣にいるけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。"
-        ]
-      },
-      routePages: {
-        long_history: [
-          "また会えたね、ナーディル。前に交わした約束、ちゃんと覚えてる。",
-          "遠回りしてきた分だけ、今のこの距離がうれしい。これからも隣で学ばせて。"
+          "あの頃からずっと、あんたの隣で品を見立ててきたけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。"
         ]
       },
       stillImageId: "hakimaMorningVisit01"
@@ -6335,12 +6333,6 @@ const AFFECTION_EVENTS = {
           "今は立場こそ違いますが、先輩の隣が一番落ち着くのは……昔から変わりませんね。"
         ]
       },
-      routePages: {
-        long_history: [
-          "やっぱり、君とは前にもこうして話していた気がする。",
-          "昔の記憶でも、今の私でも、笑って並べる相手がいるのはうれしいよ。"
-        ]
-      },
       stillImageId: "miraAfterSchool01"
     },
     {
@@ -6366,12 +6358,6 @@ const AFFECTION_EVENTS = {
         long_history: [
           "……ふぅ。君がまだ薬草の区別もつかなかった頃からの付き合いだが……。",
           "今や、私の最も信頼する鑑定士だ。君の工房の空気は、どんな霊薬よりも私を安らげてくれるよ。"
-        ]
-      },
-      routePages: {
-        long_history: [
-          "長い時間を経ても、こうして同じ答えに戻ってこられるのは不思議ですね。",
-          "過去から続く縁でも、今こうして選び直せることに意味があるのでしょう。"
         ]
       },
       stillImageId: "dariyaAfterHours01"
@@ -6457,7 +6443,7 @@ const ENDINGS = {
       title: "星瓶堂の灯が、やさしく続く",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "今日までの積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また明日も星瓶堂を手伝うと言った。"
+      text: "これまでの営業の積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また次の営業でも付き合ってくれると言った。"
     },
     normal: {
       title: "いつもの一日が、少し特別になる",
@@ -6477,7 +6463,7 @@ const ENDINGS = {
       title: "ひらめきが、未来を照らす",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "ミラは新しい発想を携えて、また星瓶堂にやってくる。次の相談が、もう楽しみだ。"
+      text: "ミラは新しい発想を携えて、また星瓶堂に足を運んでくれる。次の相談が、もう楽しみだ。"
     },
     normal: {
       title: "学びの途中で",
@@ -6572,12 +6558,12 @@ const THEME = {
 };
 const ROUTE_MODE_META = {
   normal: {
-    label: "現在から育つ縁",
-    description: "はじめて出会う今の縁"
+    label: "現在の縁",
+    description: "はじめて出会う、現在から育つ縁"
   },
   long_history: {
-    label: "過去から続く縁",
-    description: "もう一つの世界線の縁"
+    label: "過去の縁",
+    description: "通常ルートとは別の関係性で始まる、過去から続く縁"
   }
 };
 const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
@@ -7325,7 +7311,7 @@ function App() {
       })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", marginTop: "14px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-back", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }, onClick: () => setMenuView("main") }, "戻る"), /* @__PURE__ */ React.createElement("button", { "data-testid": "backlog-close", style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", flex: 1 }, onClick: closeMenu }, "閉じる"))));
     }
     if (menuView === "help") {
-      return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 3e3, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "340px", width: "92%", background: "#fff", padding: "20px", borderRadius: "12px", maxHeight: "90vh", display: "flex", flexDirection: "column", position: "relative" } }, /* @__PURE__ */ React.createElement(CloseX, null), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em" } }, "遊び方"), /* @__PURE__ */ React.createElement("div", { "data-testid": "help-scroll", style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "12px 2px", display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・お客さんの依頼を読み、合う商品を選びます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・正解すると工房評価と親密度が上がります。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・10日間の営業後、結果とエンディングに進みます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・親密度が上がるとイベントが発生します。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・Backlog から最近の会話を確認できます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・Options ではテキスト速度、音量、未読即時表示を変更できます。")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", marginTop: "14px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "help-back", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }, onClick: () => setMenuView("main") }, "戻る"), /* @__PURE__ */ React.createElement("button", { "data-testid": "help-close", style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", flex: 1 }, onClick: closeMenu }, "閉じる"))));
+      return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 3e3, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "340px", width: "92%", background: "#fff", padding: "20px", borderRadius: "12px", maxHeight: "90vh", display: "flex", flexDirection: "column", position: "relative" } }, /* @__PURE__ */ React.createElement(CloseX, null), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em" } }, "遊び方"), /* @__PURE__ */ React.createElement("div", { "data-testid": "help-scroll", style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "12px 2px", display: "flex", flexDirection: "column", gap: "10px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・お客さんの依頼を読み、合う商品を選びます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・正解すると工房評価と親密度が上がります。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・10回の営業を終えると、結果とエンディングに進みます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・親密度が上がるとイベントが発生します。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・Backlog から最近の会話を確認できます。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.92em" } }, "・Options ではテキスト速度、音量、未読即時表示を変更できます。")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", marginTop: "14px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "help-back", style: { ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }, onClick: () => setMenuView("main") }, "戻る"), /* @__PURE__ */ React.createElement("button", { "data-testid": "help-close", style: { ...buttonStyle, marginTop: 0, background: "#666", color: "white", flex: 1 }, onClick: closeMenu }, "閉じる"))));
     }
     return /* @__PURE__ */ React.createElement(
       "div",
@@ -7500,7 +7486,16 @@ function App() {
         },
         meta.label
       );
-    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge())), hasSave && /* @__PURE__ */ React.createElement(
+    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge()), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        "data-testid": "start-new",
+        onClick: handleStartGame,
+        style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: "100%", maxWidth: "260px", margin: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "☆"),
+      " 星瓶堂を開く"
+    )), hasSave && /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "start-continue",
@@ -7508,15 +7503,7 @@ function App() {
         style: { ...buttonStyle, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
       },
       "つづきから            "
-    ), /* @__PURE__ */ React.createElement("button", { "data-testid": "start-new-game", onClick: handleStartGame, style: { ...buttonStyle, width: "100%", maxWidth: "260px", margin: 0 } }, hasSave ? "はじめから" : "店を開く"), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "memories-open",
-        onClick: () => setScreen("MEMORIES"),
-        style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 }
-      },
-      "思い出の記録"
-    ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("button", { "data-testid": "memories-open", onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "start-options",
@@ -7563,9 +7550,9 @@ function App() {
   } else if (screen === "PROLOGUE") {
     const prologuePages = [
       "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
       "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-      "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+      "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
       "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。"
     ];
     mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "prologue-screen", style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground("START"), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
@@ -7594,7 +7581,7 @@ function App() {
       "星瓶堂へ進む"
     )))));
   } else if (screen === "INTRO") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "intro-screen", style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, workshopState.day, "日目"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "intro-screen", style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "第", workshopState.day, "回 営業開始"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: activeHeroine.name,
@@ -7605,20 +7592,20 @@ function App() {
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
         onComplete: handleBeginService
       }
-    ))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。"), /* @__PURE__ */ React.createElement("p", { style: { margin: "10px 0 0 0", fontSize: "0.85em", color: THEME.oasisTeal } }, "※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。")), /* @__PURE__ */ React.createElement("button", { "data-testid": "intro-start", onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "280px", marginTop: "10px" } }, "営業を始める"))));
+    ))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。"), /* @__PURE__ */ React.createElement("p", { style: { margin: "10px 0 0 0", fontSize: "0.85em", color: THEME.oasisTeal } }, "※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。")), /* @__PURE__ */ React.createElement("button", { "data-testid": "intro-start", onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "280px", marginTop: "10px" } }, "営業を始める"))));
   } else if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
     const rank = getRankInfo(correctCount);
     const mgmt = getWorkshopResult(correctCount);
     const resultNarrations = {
-      5: "大成功。今日は星瓶堂の流れがよく見えていた。",
+      5: "大成功。今回の営業は、星瓶堂の流れがよく見えていた。",
       4: "よくやった。客の話を聞き取り、品を選ぶ手つきも安定している。",
       3: "まずまずだ。迷いはあるが、次の一手が見えている。",
       2: "もう少し。客の意図をつかめれば、品選びはもっと楽になる。",
       1: "惜しい。焦らず相手の話を聞くところから整えていこう。",
-      0: "今日はうまくいかなかった。だが、次の営業で取り戻せる。"
+      0: "今回はうまくいかなかった。だが、次の営業で取り戻せる。"
     };
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "業務報告書"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, color: THEME.nightBlue, marginBottom: "20px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         text: resultNarrations[correctCount],
@@ -7645,11 +7632,11 @@ function App() {
       padding: "15px",
       borderRadius: "4px",
       border: `1px solid ${THEME.brassDark}`
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { onClick: handleEndDay, style: { ...buttonStyle, width: "100%", maxWidth: "240px" } }, "次へ進む"))));
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleNextDay, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "次の営業へ"))));
   } else if (screen === "DAY_END") {
     const correctCount = session ? session.answers.filter((a) => a.isCorrect).length : 0;
     const mgmt = getWorkshopResult(correctCount);
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "本日の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房の状態(", workshopState.day, "日目終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の日へ進む"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る"))));
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房の状態(第", workshopState.day, "回 営業終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の営業へ"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る"))));
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
     mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: THEME.nightBlue, color: THEME.parchment } }, still && /* @__PURE__ */ React.createElement("div", { style: {
@@ -7939,7 +7926,7 @@ function App() {
     const finalAffection = affection[activeHeroineId];
     const finalSales = workshopState.sales;
     const finalReputation = workshopState.reputation;
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "10日間の総決算"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, " との歩み")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上合計"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最終的な評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, " との縁"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.95em", marginBottom: "30px", lineHeight: "1.6" } }, "10日間の営業を締めくくり、次の一歩へ進みます。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "結末を見届ける")));
+    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle }, renderThemeStyles(), renderAudioToggle(), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "10回の営業総決算"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, " との歩み")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上合計"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最終的な評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, " との縁"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.95em", marginBottom: "30px", lineHeight: "1.6" } }, "10回の営業を締めくくり、次の一歩へ進みます。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "結末を見届ける")));
   } else if (screen === "ENDING") {
     const finalAffection = affection[activeHeroineId];
     const finalReputation = workshopState.reputation;
