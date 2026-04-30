@@ -63,7 +63,8 @@ const SELECTED_SFX = {
   uiTapBottle: "uiTapBottle03",
   uiConfirmChime: "uiConfirmChime03",
   uiClickForward: "uiTapBottle03",
-  uiHeroineSelect: "uiConfirmChime01",
+  uiHeroineTab: "uiConfirmChime01",
+  uiHeroineSelect: "uiConfirmChime03",
   uiGameStart: "uiConfirmChime04",
   quizChoicePick: "quizChoicePick03",
   quizCorrectStarChime: "quizCorrectStarChime01",
@@ -1425,7 +1426,7 @@ const HeroineSelectScreen = ({
         "data-testid": `heroine-tab-${h.id}`,
         key: h.id,
         onClick: () => {
-          if (audioEngine2) audioEngine2.playSfx("uiTapBottle");
+          if (audioEngine2) audioEngine2.playSfx("uiHeroineTab");
           if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
         },
         style: {
@@ -8327,7 +8328,6 @@ function App() {
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    audioEngine.playSfx("quizChoicePick");
     const updatedSession = answerQuestion(session, itemId);
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
