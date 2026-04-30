@@ -51,7 +51,7 @@ export const GameHud = ({
   onOpenOptions, 
   onOpenHelp 
 }) => {
-  const isHudVisible = !['ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
+  const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   if (!isHudVisible) return null;
 
   const hudBtnStyle = {
