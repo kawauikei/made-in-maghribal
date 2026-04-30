@@ -60,9 +60,9 @@ const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
   "×"
 );
 const SELECTED_SFX = {
-  uiTapBottle: "uiTapBottle02",
+  uiTapBottle: "uiTapBottle03",
   uiConfirmChime: "uiConfirmChime03",
-  uiClickForward: "uiTapBottle02",
+  uiClickForward: "uiTapBottle03",
   quizChoicePick: "quizChoicePick03",
   quizCorrectStarChime: "quizCorrectStarChime01",
   quizWrongSandTap: "quizWrongSandTap03",
