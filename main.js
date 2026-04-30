@@ -1344,7 +1344,8 @@ const HeroineSelectScreen = ({
   onOpenHelp,
   renderThemeStyles,
   HeroineDisplay: HeroineDisplay2,
-  getFullPath
+  getFullPath,
+  audioEngine: audioEngine2
 }) => {
   const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
   const containerStyle2 = {
@@ -1422,7 +1423,7 @@ const HeroineSelectScreen = ({
         "data-testid": `heroine-tab-${h.id}`,
         key: h.id,
         onClick: () => {
-          if (audioEngine) audioEngine.playSfx("uiTapBottle");
+          if (audioEngine2) audioEngine2.playSfx("uiTapBottle");
           if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
         },
         style: {
@@ -8799,7 +8800,8 @@ function App() {
         onOpenHelp: () => setShowHelp(true),
         renderThemeStyles,
         HeroineDisplay,
-        getFullPath
+        getFullPath,
+        audioEngine
       }
     );
   } else if (screen === "FINAL_RESULT") {
