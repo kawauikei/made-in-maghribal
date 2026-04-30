@@ -364,7 +364,7 @@ export default function App() {
 
   // Go to Heroine Select (New Game)
   const handleStartGame = () => {
-    audioEngine.playSfx('uiTapBottle');
+    audioEngine.playSfx('uiGameStart');
     clearSaveData();
     setHasSave(false);
     
@@ -481,6 +481,7 @@ export default function App() {
   };
 
   const handleSelectHeroine = async (heroineId) => {
+    audioEngine.playSfx('uiHeroineSelect');
     setIsHeroineLoading(true);
     setLoadingProgress(0);
     

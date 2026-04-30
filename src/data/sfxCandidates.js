@@ -7,6 +7,8 @@ export const SELECTED_SFX = {
   uiTapBottle: "uiTapBottle03",
   uiConfirmChime: "uiConfirmChime03",
   uiClickForward: "uiTapBottle03",
+  uiHeroineSelect: "uiConfirmChime01",
+  uiGameStart: "uiConfirmChime04",
   quizChoicePick: "quizChoicePick03",
   quizCorrectStarChime: "quizCorrectStarChime01",
   quizWrongSandTap: "quizWrongSandTap03",
