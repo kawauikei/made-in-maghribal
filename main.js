@@ -875,6 +875,164 @@ const MemoriesScreen = ({
     ))));
   })))));
 };
+const SHOP = {
+  name: "星瓶堂",
+  localName: "ダール・アル＝カワーキブ"
+};
+const PROTAGONIST = {
+  shortName: "ナーディル"
+};
+const StartScreen = ({
+  screen,
+  routeMode,
+  setRouteMode,
+  hasSave,
+  onContinue,
+  onNewGame,
+  onOpenMemories,
+  onOpenOptions,
+  onOpenSoundTest,
+  onOpenVisualTest,
+  onClearSaveData,
+  onOpenLog,
+  onOpenHelp,
+  renderThemeStyles
+}) => {
+  const containerStyle2 = {
+    width: "100%",
+    height: "100%",
+    padding: "12px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    overflow: "hidden",
+    position: "relative",
+    boxSizing: "border-box"
+  };
+  const titleStyle2 = {
+    fontFamily: "'Playfair Display', serif",
+    color: THEME.starGold,
+    textShadow: `0 2px 10px ${THEME.nightBlue}`,
+    letterSpacing: "0.05em"
+  };
+  const cardStyle2 = {
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: "12px",
+    padding: "24px",
+    width: "100%",
+    maxWidth: "500px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+    border: `1px solid ${THEME.brass}`,
+    boxSizing: "border-box"
+  };
+  const buttonStyle2 = {
+    padding: "12px 24px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "1em",
+    fontWeight: "bold",
+    transition: "all 0.2s ease",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    margin: "10px 0",
+    fontFamily: "inherit"
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle2 }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement(
+    GameHud,
+    {
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+    const isSelected = routeMode === mode;
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: mode,
+        "data-testid": `route-mode-${mode}`,
+        "aria-pressed": isSelected,
+        onClick: () => {
+          audioEngine.playSfx("uiTapBottle");
+          setRouteMode(mode);
+        },
+        style: {
+          ...buttonStyle2,
+          flex: 1,
+          margin: 0,
+          padding: "10px 8px",
+          fontSize: "0.74em",
+          lineHeight: 1.2,
+          background: isSelected ? THEME.starGold : "#2c3e50",
+          color: isSelected ? THEME.textDark : THEME.sand,
+          border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
+          boxShadow: isSelected ? "0 0 0 2px rgba(255, 204, 0, 0.2)" : "none"
+        }
+      },
+      meta.label
+    );
+  })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge(routeMode)), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "start-new",
+      onClick: onNewGame,
+      style: { ...buttonStyle2, background: THEME.nightBlue, color: THEME.sand, width: "100%", maxWidth: "260px", margin: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }
+    },
+    /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "☆"),
+    " 星瓶堂を開く"
+  )), hasSave && /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "start-continue",
+      onClick: onContinue,
+      style: { ...buttonStyle2, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
+    },
+    "つづきから"
+  ), /* @__PURE__ */ React.createElement("button", { "data-testid": "memories-open", onClick: onOpenMemories, style: { ...buttonStyle2, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "start-options",
+      onClick: onOpenOptions,
+      style: { ...buttonStyle2, background: THEME.brass, color: THEME.textDark, fontSize: "0.85em", flex: 1, margin: 0 }
+    },
+    "設定"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "sound-test-open",
+      onClick: onOpenSoundTest,
+      style: { ...buttonStyle2, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
+    },
+    "音設定"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "visual-test-open",
+      onClick: onOpenVisualTest,
+      style: { ...buttonStyle2, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
+    },
+    "映像確認"
+  )), hasSave && /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onClearSaveData,
+      style: {
+        background: "none",
+        border: "none",
+        color: "#844",
+        textDecoration: "underline",
+        cursor: "pointer",
+        fontSize: "0.75em",
+        marginTop: "10px",
+        opacity: 0.6
+      }
+    },
+    "記録を全て削除する"
+  )));
+};
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -6551,13 +6709,6 @@ function getResultExpression(correctCount) {
   if (correctCount >= 2) return "sorrow";
   return "cry";
 }
-const SHOP = {
-  name: "星瓶堂",
-  localName: "ダール・アル＝カワーキブ"
-};
-const PROTAGONIST = {
-  shortName: "ナーディル"
-};
 const TRACKS = {
   // --- Main BGM ---
   "MAIN-01": {
@@ -8145,103 +8296,25 @@ function App() {
   } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
   let mainContent = null;
   if (screen === "START") {
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "start-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
-      GameHud,
+    mainContent = /* @__PURE__ */ React.createElement(
+      StartScreen,
       {
         screen,
         routeMode,
-        onOpenLog: () => setShowLog(true),
+        setRouteMode,
+        hasSave,
+        onContinue: handleContinue,
+        onNewGame: handleStartGame,
+        onOpenMemories: () => setScreen("MEMORIES"),
         onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true)
+        onOpenSoundTest: () => setShowSoundTest(true),
+        onOpenVisualTest: () => setScreen("VISUAL_TEST"),
+        onClearSaveData: handleResetSave,
+        onOpenLog: () => setShowLog(true),
+        onOpenHelp: () => setShowHelp(true),
+        renderThemeStyles
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —          ")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
-      const isSelected = routeMode === mode;
-      return /* @__PURE__ */ React.createElement(
-        "button",
-        {
-          key: mode,
-          "data-testid": `route-mode-${mode}`,
-          "aria-pressed": isSelected,
-          onClick: () => {
-            audioEngine.playSfx("uiTapBottle");
-            setRouteMode(mode);
-          },
-          style: {
-            ...buttonStyle,
-            flex: 1,
-            margin: 0,
-            padding: "10px 8px",
-            fontSize: "0.74em",
-            lineHeight: 1.2,
-            background: isSelected ? THEME.starGold : "#2c3e50",
-            color: isSelected ? THEME.textDark : THEME.sand,
-            border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
-            boxShadow: isSelected ? "0 0 0 2px rgba(255, 204, 0, 0.2)" : "none"
-          }
-        },
-        meta.label
-      );
-    })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge(routeMode)), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "start-new",
-        onClick: handleStartGame,
-        style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: "100%", maxWidth: "260px", margin: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }
-      },
-      /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "☆"),
-      " 星瓶堂を開く"
-    )), hasSave && /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "start-continue",
-        onClick: handleContinue,
-        style: { ...buttonStyle, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
-      },
-      "つづきから            "
-    ), /* @__PURE__ */ React.createElement("button", { "data-testid": "memories-open", onClick: () => setScreen("MEMORIES"), style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "start-options",
-        onClick: () => {
-          audioEngine.playSfx("uiTapBottle");
-          setShowOptions(true);
-        },
-        style: { ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: "0.85em", flex: 1, margin: 0 }
-      },
-      "設定"
-    ), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "sound-test-open",
-        onClick: () => setShowSoundTest(true),
-        style: { ...buttonStyle, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
-      },
-      "音設定"
-    ), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "visual-test-open",
-        onClick: () => setScreen("VISUAL_TEST"),
-        style: { ...buttonStyle, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
-      },
-      "映像確認"
-    )), hasSave && /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        onClick: handleResetSave,
-        style: {
-          background: "none",
-          border: "none",
-          color: "#844",
-          textDecoration: "underline",
-          cursor: "pointer",
-          fontSize: "0.75em",
-          marginTop: "10px",
-          opacity: 0.6
-        }
-      },
-      "記録を全て削除する"
-    )));
+    );
   } else if (screen === "PROLOGUE") {
     const prologuePages = [
       "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
