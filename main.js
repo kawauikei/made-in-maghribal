@@ -639,6 +639,142 @@ const safeAdvanceVnBox = (vnRef) => {
 const shouldSkipTypewriter = (isInstantTextSpeed, isSeen = false) => {
   return isInstantTextSpeed || isSeen;
 };
+const BACKGROUND_IMAGES = {
+  shopExteriorDay: { id: "shopExteriorDay", label: "shop exterior day", src: "images/background/bg_shop_exterior_day.jpg" },
+  shopExteriorNight: { id: "shopExteriorNight", label: "shop exterior night", src: "images/background/bg_shop_exterior_night.jpg" },
+  shopInteriorService: { id: "shopInteriorService", label: "shop interior service", src: "images/background/bg_shop_interior_service.jpg" },
+  shopInteriorWorkshop: { id: "shopInteriorWorkshop", label: "shop interior workshop", src: "images/background/bg_shop_interior_workshop.jpg" },
+  universityCourtyard: { id: "universityCourtyard", label: "university courtyard", src: "images/background/bg_university_courtyard.jpg" },
+  nadirRoom: { id: "nadirRoom", label: "nadir room", src: "images/background/bg_nadir_room.jpg" },
+  hakimaRoom: { id: "hakimaRoom", label: "hakima room", src: "images/background/bg_hakima_room.jpg" },
+  miraRoom: { id: "miraRoom", label: "mira room", src: "images/background/bg_mira_room.jpg" },
+  dariyaRoom: { id: "dariyaRoom", label: "dariya room", src: "images/background/bg_dariya_room.jpg" },
+  marketCentral: { id: "marketCentral", label: "market central", src: "images/background/bg_market_central.jpg" },
+  palaceCorridor: { id: "palaceCorridor", label: "palace corridor", src: "images/background/bg_palace_corridor.jpg" },
+  palaceLab: { id: "palaceLab", label: "palace lab", src: "images/background/bg_palace_lab.jpg" },
+  spotFountain: { id: "spotFountain", label: "spot fountain", src: "images/background/bg_spot_fountain.jpg" },
+  spotFestivalStreet: { id: "spotFestivalStreet", label: "spot festival street", src: "images/background/bg_spot_festival_street.jpg" },
+  spotPortView: { id: "spotPortView", label: "spot port view", src: "images/background/bg_spot_port_view.jpg" },
+  spotOasisView: { id: "spotOasisView", label: "spot oasis view", src: "images/background/bg_spot_oasis_view.jpg" },
+  spotRuins: { id: "spotRuins", label: "spot ruins", src: "images/background/bg_spot_ruins.jpg" },
+  spotStarView: { id: "spotStarView", label: "spot star view", src: "images/background/bg_spot_star_view.jpg" }
+};
+const STILL_IMAGES = {
+  hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4 },
+  hakimaFestivalNight01: { id: "hakimaFestivalNight01", title: "祭りの夜", label: "祭りの夜", heroineId: "hakima", src: "images/still/still_hakima_festival_night_01.jpg", focusX: 0.5, focusY: 0.5 },
+  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5 },
+  hakimaRainShelter01: { id: "hakimaRainShelter01", title: "雨宿り", label: "雨宿り", heroineId: "hakima", src: "images/still/still_hakima_rain_shelter_01.jpg", focusX: 0.5, focusY: 0.5 },
+  miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45 },
+  miraAssignmentConsult01: { id: "miraAssignmentConsult01", title: "課題相談", label: "課題相談", heroineId: "mira", src: "images/still/still_mira_assignment_consult_01.jpg", focusX: 0.5, focusY: 0.5 },
+  miraStarryRooftop01: { id: "miraStarryRooftop01", title: "星見の屋上", label: "星見の屋上", heroineId: "mira", src: "images/still/still_mira_starry_rooftop_01.jpg", focusX: 0.5, focusY: 0.5 },
+  miraVisitSick01: { id: "miraVisitSick01", title: "見舞い", label: "見舞い", heroineId: "mira", src: "images/still/still_mira_visit_sick_01.jpg", focusX: 0.5, focusY: 0.5 },
+  dariyaAfterHours01: { id: "dariyaAfterHours01", title: "夜更けの訪問", label: "夜更けの訪問", heroineId: "dariya", src: "images/still/still_dariya_after_hours_01.jpg", focusX: 0.5, focusY: 0.4 },
+  dariyaLimitNight01: { id: "dariyaLimitNight01", title: "限界の夜", label: "限界の夜", heroineId: "dariya", src: "images/still/still_dariya_limit_night_01.jpg", focusX: 0.5, focusY: 0.5 },
+  dariyaPalaceCollaboration01: { id: "dariyaPalaceCollaboration01", title: "王宮との協力", label: "王宮との協力", heroineId: "dariya", src: "images/still/still_dariya_palace_collaboration_01.jpg", focusX: 0.5, focusY: 0.5 },
+  dariyaRainCorridor01: { id: "dariyaRainCorridor01", title: "雨の回廊", label: "雨の回廊", heroineId: "dariya", src: "images/still/still_dariya_rain_corridor_01.jpg", focusX: 0.5, focusY: 0.5 },
+  groupShopping01: { id: "groupShopping01", title: "買い出し", label: "買い出し", heroineId: null, src: "images/still/still_group_shopping_01.jpg", focusX: 0.5, focusY: 0.5 },
+  groupCelebration01: { id: "groupCelebration01", title: "ささやかな祝宴", label: "ささやかな祝宴", heroineId: null, src: "images/still/still_group_celebration_01.jpg", focusX: 0.5, focusY: 0.5 }
+};
+const VisualTestScreen = ({
+  visualTestMode,
+  setVisualTestMode,
+  bgTestIndex,
+  setBgTestIndex,
+  stillTestIndex,
+  setStillTestIndex,
+  handleBackToTitle,
+  getFullPath,
+  getFileName,
+  renderThemeStyles
+}) => {
+  const bgList = Object.values(BACKGROUND_IMAGES);
+  const stillList = Object.values(STILL_IMAGES);
+  const bg = bgList[bgTestIndex % bgList.length];
+  const still = stillList[stillTestIndex % stillList.length];
+  const containerStyle2 = {
+    width: "100%",
+    height: "100%",
+    padding: "12px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    overflow: "hidden",
+    position: "relative",
+    boxSizing: "border-box"
+  };
+  const utilityBackButtonStyle = {
+    padding: "8px 16px",
+    background: "#333",
+    color: THEME.sand,
+    border: `1px solid ${THEME.brass}`,
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "0.9em",
+    fontWeight: "bold",
+    margin: "10px 0",
+    alignSelf: "flex-start"
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      key: bg.id,
+      src: getFullPath(bg.src),
+      alt: bg.label,
+      style: { width: "100%", height: "100%", objectFit: "contain" },
+      onError: (e) => {
+        e.target.style.display = "none";
+        e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
+      }
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "visual-test-thumbnail",
+      key: item.id,
+      onClick: () => setBgTestIndex(idx),
+      style: {
+        width: "140px",
+        height: "80px",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : "#333"}`,
+        cursor: "pointer",
+        boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
+      }
+    },
+    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
+  ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      key: still.id,
+      src: getFullPath(still.src),
+      alt: still.label,
+      style: { width: "100%", height: "100%", objectFit: "contain" },
+      onError: (e) => {
+        e.target.style.display = "none";
+        e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+      }
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "visual-test-thumbnail",
+      key: item.id,
+      onClick: () => setStillTestIndex(idx),
+      style: {
+        width: "140px",
+        height: "80px",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : "#333"}`,
+        cursor: "pointer",
+        boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
+      }
+    },
+    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
+  )))))));
+};
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -6937,42 +7073,6 @@ function getRouteText(baseText, routeTexts, routeMode) {
   }
   return baseText;
 }
-const BACKGROUND_IMAGES = {
-  shopExteriorDay: { id: "shopExteriorDay", label: "shop exterior day", src: "images/background/bg_shop_exterior_day.jpg" },
-  shopExteriorNight: { id: "shopExteriorNight", label: "shop exterior night", src: "images/background/bg_shop_exterior_night.jpg" },
-  shopInteriorService: { id: "shopInteriorService", label: "shop interior service", src: "images/background/bg_shop_interior_service.jpg" },
-  shopInteriorWorkshop: { id: "shopInteriorWorkshop", label: "shop interior workshop", src: "images/background/bg_shop_interior_workshop.jpg" },
-  universityCourtyard: { id: "universityCourtyard", label: "university courtyard", src: "images/background/bg_university_courtyard.jpg" },
-  nadirRoom: { id: "nadirRoom", label: "nadir room", src: "images/background/bg_nadir_room.jpg" },
-  hakimaRoom: { id: "hakimaRoom", label: "hakima room", src: "images/background/bg_hakima_room.jpg" },
-  miraRoom: { id: "miraRoom", label: "mira room", src: "images/background/bg_mira_room.jpg" },
-  dariyaRoom: { id: "dariyaRoom", label: "dariya room", src: "images/background/bg_dariya_room.jpg" },
-  marketCentral: { id: "marketCentral", label: "market central", src: "images/background/bg_market_central.jpg" },
-  palaceCorridor: { id: "palaceCorridor", label: "palace corridor", src: "images/background/bg_palace_corridor.jpg" },
-  palaceLab: { id: "palaceLab", label: "palace lab", src: "images/background/bg_palace_lab.jpg" },
-  spotFountain: { id: "spotFountain", label: "spot fountain", src: "images/background/bg_spot_fountain.jpg" },
-  spotFestivalStreet: { id: "spotFestivalStreet", label: "spot festival street", src: "images/background/bg_spot_festival_street.jpg" },
-  spotPortView: { id: "spotPortView", label: "spot port view", src: "images/background/bg_spot_port_view.jpg" },
-  spotOasisView: { id: "spotOasisView", label: "spot oasis view", src: "images/background/bg_spot_oasis_view.jpg" },
-  spotRuins: { id: "spotRuins", label: "spot ruins", src: "images/background/bg_spot_ruins.jpg" },
-  spotStarView: { id: "spotStarView", label: "spot star view", src: "images/background/bg_spot_star_view.jpg" }
-};
-const STILL_IMAGES = {
-  hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4 },
-  hakimaFestivalNight01: { id: "hakimaFestivalNight01", title: "祭りの夜", label: "祭りの夜", heroineId: "hakima", src: "images/still/still_hakima_festival_night_01.jpg", focusX: 0.5, focusY: 0.5 },
-  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5 },
-  hakimaRainShelter01: { id: "hakimaRainShelter01", title: "雨宿り", label: "雨宿り", heroineId: "hakima", src: "images/still/still_hakima_rain_shelter_01.jpg", focusX: 0.5, focusY: 0.5 },
-  miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45 },
-  miraAssignmentConsult01: { id: "miraAssignmentConsult01", title: "課題相談", label: "課題相談", heroineId: "mira", src: "images/still/still_mira_assignment_consult_01.jpg", focusX: 0.5, focusY: 0.5 },
-  miraStarryRooftop01: { id: "miraStarryRooftop01", title: "星見の屋上", label: "星見の屋上", heroineId: "mira", src: "images/still/still_mira_starry_rooftop_01.jpg", focusX: 0.5, focusY: 0.5 },
-  miraVisitSick01: { id: "miraVisitSick01", title: "見舞い", label: "見舞い", heroineId: "mira", src: "images/still/still_mira_visit_sick_01.jpg", focusX: 0.5, focusY: 0.5 },
-  dariyaAfterHours01: { id: "dariyaAfterHours01", title: "夜更けの訪問", label: "夜更けの訪問", heroineId: "dariya", src: "images/still/still_dariya_after_hours_01.jpg", focusX: 0.5, focusY: 0.4 },
-  dariyaLimitNight01: { id: "dariyaLimitNight01", title: "限界の夜", label: "限界の夜", heroineId: "dariya", src: "images/still/still_dariya_limit_night_01.jpg", focusX: 0.5, focusY: 0.5 },
-  dariyaPalaceCollaboration01: { id: "dariyaPalaceCollaboration01", title: "王宮との協力", label: "王宮との協力", heroineId: "dariya", src: "images/still/still_dariya_palace_collaboration_01.jpg", focusX: 0.5, focusY: 0.5 },
-  dariyaRainCorridor01: { id: "dariyaRainCorridor01", title: "雨の回廊", label: "雨の回廊", heroineId: "dariya", src: "images/still/still_dariya_rain_corridor_01.jpg", focusX: 0.5, focusY: 0.5 },
-  groupShopping01: { id: "groupShopping01", title: "買い出し", label: "買い出し", heroineId: null, src: "images/still/still_group_shopping_01.jpg", focusX: 0.5, focusY: 0.5 },
-  groupCelebration01: { id: "groupCelebration01", title: "ささやかな祝宴", label: "ささやかな祝宴", heroineId: null, src: "images/still/still_group_celebration_01.jpg", focusX: 0.5, focusY: 0.5 }
-};
 const ENDINGS = {
   hakima: {
     good: {
@@ -8288,69 +8388,21 @@ function App() {
       "SKIP"
     ))));
   } else if (screen === "VISUAL_TEST") {
-    const bgList = Object.values(BACKGROUND_IMAGES);
-    const stillList = Object.values(STILL_IMAGES);
-    const bg = bgList[bgTestIndex % bgList.length];
-    const still = stillList[stillTestIndex % stillList.length];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle, padding: "0 0 20px 0" } }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
-      "img",
+    mainContent = /* @__PURE__ */ React.createElement(
+      VisualTestScreen,
       {
-        key: bg.id,
-        src: getFullPath(bg.src),
-        alt: bg.label,
-        style: { width: "100%", height: "100%", objectFit: "contain" },
-        onError: (e) => {
-          e.target.style.display = "none";
-          e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
-        }
+        visualTestMode,
+        setVisualTestMode,
+        bgTestIndex,
+        setBgTestIndex,
+        stillTestIndex,
+        setStillTestIndex,
+        handleBackToTitle,
+        getFullPath,
+        getFileName,
+        renderThemeStyles
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        "data-testid": "visual-test-thumbnail",
-        key: item.id,
-        onClick: () => setBgTestIndex(idx),
-        style: {
-          width: "140px",
-          height: "80px",
-          borderRadius: "8px",
-          overflow: "hidden",
-          border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : "#333"}`,
-          cursor: "pointer",
-          boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
-        }
-      },
-      /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
-    ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
-      "img",
-      {
-        key: still.id,
-        src: getFullPath(still.src),
-        alt: still.label,
-        style: { width: "100%", height: "100%", objectFit: "contain" },
-        onError: (e) => {
-          e.target.style.display = "none";
-          e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
-        }
-      }
-    )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 80px)", gridAutoColumns: "140px", gap: "10px", alignContent: "start", width: "max-content" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        "data-testid": "visual-test-thumbnail",
-        key: item.id,
-        onClick: () => setStillTestIndex(idx),
-        style: {
-          width: "140px",
-          height: "80px",
-          borderRadius: "8px",
-          overflow: "hidden",
-          border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : "#333"}`,
-          cursor: "pointer",
-          boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
-        }
-      },
-      /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
-    )))))));
+    );
   } else if (screen === "MEMORIES") {
     const allEvents = Object.values(AFFECTION_EVENTS).flat();
     const seenEvents = allEvents.filter((e) => seenEventIds.includes(e.id));
