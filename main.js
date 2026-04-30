@@ -9,6 +9,298 @@ const THEME = {
   textDark: "#2a2a2a",
   starGold: "#ffcc00"
 };
+const SELECTED_SFX = {
+  uiTapBottle: "uiTapBottle01",
+  uiConfirmChime: "uiConfirmChime01",
+  uiClickForward: "uiTapBottle01",
+  quizChoicePick: "quizChoicePick01",
+  quizCorrectStarChime: "quizCorrectStarChime01",
+  quizWrongSandTap: "quizWrongSandTap01",
+  workshopDayEnd: "workshopDayEnd01"
+};
+const SFX_CANDIDATES = [
+  // --- Group: uiTapBottle ---
+  { id: "uiTapBottle01", group: "uiTapBottle", variant: 1, src: "audio/se/ui_tap_bottle_01.mp3", label: "Tap Bottle 1", volume: 0.8, start: 0, end: null, note: "Standard glass tap" },
+  { id: "uiTapBottle02", group: "uiTapBottle", variant: 2, src: "audio/se/ui_tap_bottle_01_2.mp3", label: "Tap Bottle 2", volume: 0.8, start: 0, end: null, note: "Soft glass tap" },
+  { id: "uiTapBottle03", group: "uiTapBottle", variant: 3, src: "audio/se/ui_tap_bottle_01_3.mp3", label: "Tap Bottle 3", volume: 0.8, start: 0, end: null, note: "Sharp glass tap" },
+  { id: "uiTapBottle04", group: "uiTapBottle", variant: 4, src: "audio/se/ui_tap_bottle_01_4.mp3", label: "Tap Bottle 4", volume: 0.8, start: 0, end: null, note: "Deep glass tap" },
+  // --- Group: uiConfirmChime ---
+  { id: "uiConfirmChime01", group: "uiConfirmChime", variant: 1, src: "audio/se/ui_confirm_chime_01.mp3", label: "Confirm Chime 1", volume: 0.7, start: 0, end: null, note: "Bright chime" },
+  { id: "uiConfirmChime02", group: "uiConfirmChime", variant: 2, src: "audio/se/ui_confirm_chime_01_2.mp3", label: "Confirm Chime 2", volume: 0.7, start: 0, end: null, note: "Soft chime" },
+  { id: "uiConfirmChime03", group: "uiConfirmChime", variant: 3, src: "audio/se/ui_confirm_chime_01_3.mp3", label: "Confirm Chime 3", volume: 0.7, start: 0, end: null, note: "Arabic bell style" },
+  { id: "uiConfirmChime04", group: "uiConfirmChime", variant: 4, src: "audio/se/ui_confirm_chime_01_4.mp3", label: "Confirm Chime 4", volume: 0.7, start: 0, end: null, note: "Deep bell style" },
+  // --- Group: quizChoicePick ---
+  { id: "quizChoicePick01", group: "quizChoicePick", variant: 1, src: "audio/se/quiz_choice_pick_01.mp3", label: "Choice Pick 1", volume: 0.6, start: 0, end: null, note: "Light wooden tap" },
+  { id: "quizChoicePick02", group: "quizChoicePick", variant: 2, src: "audio/se/quiz_choice_pick_01_2.mp3", label: "Choice Pick 2", volume: 0.6, start: 0, end: null, note: "Soft wooden tap" },
+  { id: "quizChoicePick03", group: "quizChoicePick", variant: 3, src: "audio/se/quiz_choice_pick_01_3.mp3", label: "Choice Pick 3", volume: 0.6, start: 0, end: null, note: "Clicky wooden tap" },
+  { id: "quizChoicePick04", group: "quizChoicePick", variant: 4, src: "audio/se/quiz_choice_pick_01_4.mp3", label: "Choice Pick 4", volume: 0.6, start: 0, end: null, note: "Dull wooden tap" },
+  // --- Group: quizCorrectStarChime ---
+  { id: "quizCorrectStarChime01", group: "quizCorrectStarChime", variant: 1, src: "audio/se/quiz_correct_star_chime_01.mp3", label: "Correct Chime 1", volume: 0.8, start: 0, end: null, note: "Magical star sound" },
+  { id: "quizCorrectStarChime02", group: "quizCorrectStarChime", variant: 2, src: "audio/se/quiz_correct_star_chime_01_2.mp3", label: "Correct Chime 2", volume: 0.8, start: 0, end: null, note: "Bright magical star" },
+  { id: "quizCorrectStarChime03", group: "quizCorrectStarChime", variant: 3, src: "audio/se/quiz_correct_star_chime_01_3.mp3", label: "Correct Chime 3", volume: 0.8, start: 0, end: null, note: "Descending star sparkle" },
+  { id: "quizCorrectStarChime04", group: "quizCorrectStarChime", variant: 4, src: "audio/se/quiz_correct_star_chime_01_4.mp3", label: "Correct Chime 4", volume: 0.8, start: 0, end: null, note: "Ascending star sparkle" },
+  // --- Group: quizWrongSandTap ---
+  { id: "quizWrongSandTap01", group: "quizWrongSandTap", variant: 1, src: "audio/se/quiz_wrong_sand_tap_01.mp3", label: "Wrong Sand 1", volume: 0.7, start: 0, end: null, note: "Dry sand spill" },
+  { id: "quizWrongSandTap02", group: "quizWrongSandTap", variant: 2, src: "audio/se/quiz_wrong_sand_tap_01_2.mp3", label: "Wrong Sand 2", volume: 0.7, start: 0, end: null, note: "Soft sand spill" },
+  { id: "quizWrongSandTap03", group: "quizWrongSandTap", variant: 3, src: "audio/se/quiz_wrong_sand_tap_01_3.mp3", label: "Wrong Sand 3", volume: 0.7, start: 0, end: null, note: "Heavy sand spill" },
+  { id: "quizWrongSandTap04", group: "quizWrongSandTap", variant: 4, src: "audio/se/quiz_wrong_sand_tap_01_4.mp3", label: "Wrong Sand 4", volume: 0.7, start: 0, end: null, note: "Quick sand spill" },
+  // --- Group: workshopDayEnd ---
+  { id: "workshopDayEnd01", group: "workshopDayEnd", variant: 1, src: "audio/se/workshop_day_end_01.mp3", label: "Day End 1", volume: 0.8, start: 0, end: null, note: "Workshop closing" },
+  { id: "workshopDayEnd02", group: "workshopDayEnd", variant: 2, src: "audio/se/workshop_day_end_01_2.mp3", label: "Day End 2", volume: 0.8, start: 0, end: null, note: "Workshop door close" },
+  { id: "workshopDayEnd03", group: "workshopDayEnd", variant: 3, src: "audio/se/workshop_day_end_01_3.mp3", label: "Day End 3", volume: 0.8, start: 0, end: null, note: "Soft closing" },
+  { id: "workshopDayEnd04", group: "workshopDayEnd", variant: 4, src: "audio/se/workshop_day_end_01_4.mp3", label: "Day End 4", volume: 0.8, start: 0, end: null, note: "Quiet closing" }
+];
+const clampVolume$1 = (value, fallback = 0.8) => {
+  if (typeof value !== "number" && typeof value !== "string") return fallback;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+};
+class SimpleAudioEngine {
+  constructor() {
+    this.audio = null;
+    this.lastSfx = null;
+    this.currentTrackId = null;
+    this.isMuted = false;
+    this.bgmVolume = 0.8;
+    this.seVolume = 0.8;
+    this.volume = this.bgmVolume;
+    this.baseUrl = "https://kawauikei.github.io/made-in-maghribal/";
+    if (typeof window !== "undefined") {
+      window.__madeInMaghribalAudioEngine = this;
+    }
+  }
+  /**
+   * Play a track by its manifest data
+   * @param {Object} track - Track object from tracks.js
+   */
+  playTrack(track) {
+    if (!track || !track.src) {
+      this.stop();
+      return;
+    }
+    if (this.currentTrackId === track.id) return;
+    this.stop();
+    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
+    try {
+      this.audio = new Audio(fullSrc);
+      this.audio.loop = track.loop || false;
+      this.audio.volume = this.bgmVolume;
+      this.audio.muted = this.isMuted;
+      this.audio.play().catch((err) => {
+        console.warn(`Audio playback failed for ${track.id}:`, err.message);
+        this.stop();
+      });
+      this.currentTrackId = track.id;
+    } catch (err) {
+      console.error(`Failed to create Audio object for ${track.id}:`, err);
+    }
+  }
+  /**
+   * Stop the current track and cleanup
+   */
+  stop() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this.audio = null;
+    }
+    this.currentTrackId = null;
+  }
+  /**
+   * Toggle mute state
+   * @param {boolean} muted 
+   */
+  setMuted(muted) {
+    this.isMuted = muted;
+    if (this.audio) {
+      this.audio.muted = muted;
+    }
+  }
+  /**
+   * Set BGM volume (0.0 to 1.0)
+   * @param {number} value 
+   */
+  setBgmVolume(value) {
+    this.bgmVolume = clampVolume$1(value);
+    this.volume = this.bgmVolume;
+    if (this.audio) {
+      this.audio.volume = this.bgmVolume;
+    }
+  }
+  /**
+   * Set SE volume (0.0 to 1.0)
+   * @param {number} value
+   */
+  setSeVolume(value) {
+    this.seVolume = clampVolume$1(value);
+  }
+  /**
+   * Backward-compatible alias for callers that expect a single global volume.
+   * @param {number} value
+   */
+  setVolume(value) {
+    this.setBgmVolume(value);
+    this.setSeVolume(value);
+  }
+  /**
+   * Check if currently playing
+   */
+  isPlaying() {
+    return !!this.audio && !this.audio.paused;
+  }
+  /**
+   * Play an SFX candidate (used in Sound Test)
+   * @param {string} candidateId 
+   */
+  playSfxCandidate(candidateId) {
+    if (this.isMuted) return;
+    const candidate = SFX_CANDIDATES.find((c) => c.id === candidateId);
+    if (!candidate) {
+      console.warn(`SFX candidate not found: ${candidateId}`);
+      return;
+    }
+    const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, "$1/");
+    try {
+      const sfx = new Audio(fullSrc);
+      const targetVol = (candidate.volume || 1) * this.seVolume * 1.5;
+      sfx.volume = Math.max(0, Math.min(1, targetVol));
+      if (candidate.start) {
+        sfx.currentTime = candidate.start;
+      }
+      if (candidate.end !== null && typeof candidate.end === "number") {
+        const checkEnd = () => {
+          if (sfx.currentTime >= candidate.end) {
+            sfx.pause();
+            sfx.removeEventListener("timeupdate", checkEnd);
+          }
+        };
+        sfx.addEventListener("timeupdate", checkEnd);
+      }
+      sfx.play().catch((err) => {
+        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+      });
+      this.lastSfx = sfx;
+    } catch (err) {
+      console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
+    }
+  }
+  /**
+   * Preload a track to warm up the cache
+   * @param {Object} track - Track object from tracks.js
+   */
+  preloadTrack(track) {
+    if (!track || !track.src) return;
+    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
+    try {
+      const audio = new Audio(fullSrc);
+      audio.preload = "auto";
+    } catch (err) {
+      console.warn(`Preload failed for ${track.id}:`, err);
+    }
+  }
+  /**
+   * Play a production-selected SFX by its functional key
+   * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
+   */
+  playSfx(sfxKey) {
+    if (this.isMuted) return;
+    const candidateId = SELECTED_SFX[sfxKey];
+    if (!candidateId) {
+      console.warn(`No production SFX selected for key: ${sfxKey}`);
+      return;
+    }
+    this.playSfxCandidate(candidateId);
+  }
+}
+const audioEngine = new SimpleAudioEngine();
+const hudModalBackdrop = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(0,0,0,0.7)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 1e3,
+  backdropFilter: "blur(4px)"
+};
+const hudModalCard = {
+  background: THEME.parchment,
+  borderRadius: "16px",
+  width: "90%",
+  maxHeight: "85vh",
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+  border: `1px solid ${THEME.brass}`
+};
+const buttonStyle$1 = {
+  padding: "12px 20px",
+  borderRadius: "8px",
+  border: "none",
+  fontWeight: "bold",
+  cursor: "pointer",
+  transition: "all 0.2s",
+  fontFamily: "inherit",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
+};
+const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
+  "button",
+  {
+    "data-testid": "help-modal-close-x",
+    onClick: onClose,
+    style: {
+      position: "absolute",
+      top: "12px",
+      right: "12px",
+      width: "32px",
+      height: "32px",
+      borderRadius: "50%",
+      border: "none",
+      background: "rgba(0,0,0,0.1)",
+      color: THEME.nightBlue,
+      fontSize: "20px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10
+    }
+  },
+  "×"
+);
+function HelpModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+  const handleClose = () => {
+    audioEngine.playSfx("uiTapBottle");
+    onClose();
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "340px", padding: "18px 16px 14px" } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "遊び方"), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "help-scroll",
+      style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "10px 4px", display: "flex", flexDirection: "column", gap: "8px" }
+    },
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・お客さんの依頼を読み、合う商品を選びます。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・正解すると工房評価と親密度が上がります。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・10回の営業を終えると、結果とエンディングに進みます。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・親密度が上がるとイベントが発生します。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上のログボタン（📖）から最近の会話を確認できます。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。")
+  ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "help-close",
+      style: { ...buttonStyle$1, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
+      onClick: handleClose
+    },
+    "閉じる"
+  ))));
+}
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -5940,211 +6232,6 @@ const TRACKS = {
 function getTrackById(id) {
   return TRACKS[id] || null;
 }
-const SELECTED_SFX = {
-  uiTapBottle: "uiTapBottle01",
-  uiConfirmChime: "uiConfirmChime01",
-  uiClickForward: "uiTapBottle01",
-  quizChoicePick: "quizChoicePick01",
-  quizCorrectStarChime: "quizCorrectStarChime01",
-  quizWrongSandTap: "quizWrongSandTap01",
-  workshopDayEnd: "workshopDayEnd01"
-};
-const SFX_CANDIDATES = [
-  // --- Group: uiTapBottle ---
-  { id: "uiTapBottle01", group: "uiTapBottle", variant: 1, src: "audio/se/ui_tap_bottle_01.mp3", label: "Tap Bottle 1", volume: 0.8, start: 0, end: null, note: "Standard glass tap" },
-  { id: "uiTapBottle02", group: "uiTapBottle", variant: 2, src: "audio/se/ui_tap_bottle_01_2.mp3", label: "Tap Bottle 2", volume: 0.8, start: 0, end: null, note: "Soft glass tap" },
-  { id: "uiTapBottle03", group: "uiTapBottle", variant: 3, src: "audio/se/ui_tap_bottle_01_3.mp3", label: "Tap Bottle 3", volume: 0.8, start: 0, end: null, note: "Sharp glass tap" },
-  { id: "uiTapBottle04", group: "uiTapBottle", variant: 4, src: "audio/se/ui_tap_bottle_01_4.mp3", label: "Tap Bottle 4", volume: 0.8, start: 0, end: null, note: "Deep glass tap" },
-  // --- Group: uiConfirmChime ---
-  { id: "uiConfirmChime01", group: "uiConfirmChime", variant: 1, src: "audio/se/ui_confirm_chime_01.mp3", label: "Confirm Chime 1", volume: 0.7, start: 0, end: null, note: "Bright chime" },
-  { id: "uiConfirmChime02", group: "uiConfirmChime", variant: 2, src: "audio/se/ui_confirm_chime_01_2.mp3", label: "Confirm Chime 2", volume: 0.7, start: 0, end: null, note: "Soft chime" },
-  { id: "uiConfirmChime03", group: "uiConfirmChime", variant: 3, src: "audio/se/ui_confirm_chime_01_3.mp3", label: "Confirm Chime 3", volume: 0.7, start: 0, end: null, note: "Arabic bell style" },
-  { id: "uiConfirmChime04", group: "uiConfirmChime", variant: 4, src: "audio/se/ui_confirm_chime_01_4.mp3", label: "Confirm Chime 4", volume: 0.7, start: 0, end: null, note: "Deep bell style" },
-  // --- Group: quizChoicePick ---
-  { id: "quizChoicePick01", group: "quizChoicePick", variant: 1, src: "audio/se/quiz_choice_pick_01.mp3", label: "Choice Pick 1", volume: 0.6, start: 0, end: null, note: "Light wooden tap" },
-  { id: "quizChoicePick02", group: "quizChoicePick", variant: 2, src: "audio/se/quiz_choice_pick_01_2.mp3", label: "Choice Pick 2", volume: 0.6, start: 0, end: null, note: "Soft wooden tap" },
-  { id: "quizChoicePick03", group: "quizChoicePick", variant: 3, src: "audio/se/quiz_choice_pick_01_3.mp3", label: "Choice Pick 3", volume: 0.6, start: 0, end: null, note: "Clicky wooden tap" },
-  { id: "quizChoicePick04", group: "quizChoicePick", variant: 4, src: "audio/se/quiz_choice_pick_01_4.mp3", label: "Choice Pick 4", volume: 0.6, start: 0, end: null, note: "Dull wooden tap" },
-  // --- Group: quizCorrectStarChime ---
-  { id: "quizCorrectStarChime01", group: "quizCorrectStarChime", variant: 1, src: "audio/se/quiz_correct_star_chime_01.mp3", label: "Correct Chime 1", volume: 0.8, start: 0, end: null, note: "Magical star sound" },
-  { id: "quizCorrectStarChime02", group: "quizCorrectStarChime", variant: 2, src: "audio/se/quiz_correct_star_chime_01_2.mp3", label: "Correct Chime 2", volume: 0.8, start: 0, end: null, note: "Bright magical star" },
-  { id: "quizCorrectStarChime03", group: "quizCorrectStarChime", variant: 3, src: "audio/se/quiz_correct_star_chime_01_3.mp3", label: "Correct Chime 3", volume: 0.8, start: 0, end: null, note: "Descending star sparkle" },
-  { id: "quizCorrectStarChime04", group: "quizCorrectStarChime", variant: 4, src: "audio/se/quiz_correct_star_chime_01_4.mp3", label: "Correct Chime 4", volume: 0.8, start: 0, end: null, note: "Ascending star sparkle" },
-  // --- Group: quizWrongSandTap ---
-  { id: "quizWrongSandTap01", group: "quizWrongSandTap", variant: 1, src: "audio/se/quiz_wrong_sand_tap_01.mp3", label: "Wrong Sand 1", volume: 0.7, start: 0, end: null, note: "Dry sand spill" },
-  { id: "quizWrongSandTap02", group: "quizWrongSandTap", variant: 2, src: "audio/se/quiz_wrong_sand_tap_01_2.mp3", label: "Wrong Sand 2", volume: 0.7, start: 0, end: null, note: "Soft sand spill" },
-  { id: "quizWrongSandTap03", group: "quizWrongSandTap", variant: 3, src: "audio/se/quiz_wrong_sand_tap_01_3.mp3", label: "Wrong Sand 3", volume: 0.7, start: 0, end: null, note: "Heavy sand spill" },
-  { id: "quizWrongSandTap04", group: "quizWrongSandTap", variant: 4, src: "audio/se/quiz_wrong_sand_tap_01_4.mp3", label: "Wrong Sand 4", volume: 0.7, start: 0, end: null, note: "Quick sand spill" },
-  // --- Group: workshopDayEnd ---
-  { id: "workshopDayEnd01", group: "workshopDayEnd", variant: 1, src: "audio/se/workshop_day_end_01.mp3", label: "Day End 1", volume: 0.8, start: 0, end: null, note: "Workshop closing" },
-  { id: "workshopDayEnd02", group: "workshopDayEnd", variant: 2, src: "audio/se/workshop_day_end_01_2.mp3", label: "Day End 2", volume: 0.8, start: 0, end: null, note: "Workshop door close" },
-  { id: "workshopDayEnd03", group: "workshopDayEnd", variant: 3, src: "audio/se/workshop_day_end_01_3.mp3", label: "Day End 3", volume: 0.8, start: 0, end: null, note: "Soft closing" },
-  { id: "workshopDayEnd04", group: "workshopDayEnd", variant: 4, src: "audio/se/workshop_day_end_01_4.mp3", label: "Day End 4", volume: 0.8, start: 0, end: null, note: "Quiet closing" }
-];
-const clampVolume$1 = (value, fallback = 0.8) => {
-  if (typeof value !== "number" && typeof value !== "string") return fallback;
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return fallback;
-  return Math.max(0, Math.min(1, numeric));
-};
-class SimpleAudioEngine {
-  constructor() {
-    this.audio = null;
-    this.lastSfx = null;
-    this.currentTrackId = null;
-    this.isMuted = false;
-    this.bgmVolume = 0.8;
-    this.seVolume = 0.8;
-    this.volume = this.bgmVolume;
-    this.baseUrl = "https://kawauikei.github.io/made-in-maghribal/";
-    if (typeof window !== "undefined") {
-      window.__madeInMaghribalAudioEngine = this;
-    }
-  }
-  /**
-   * Play a track by its manifest data
-   * @param {Object} track - Track object from tracks.js
-   */
-  playTrack(track) {
-    if (!track || !track.src) {
-      this.stop();
-      return;
-    }
-    if (this.currentTrackId === track.id) return;
-    this.stop();
-    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
-    try {
-      this.audio = new Audio(fullSrc);
-      this.audio.loop = track.loop || false;
-      this.audio.volume = this.bgmVolume;
-      this.audio.muted = this.isMuted;
-      this.audio.play().catch((err) => {
-        console.warn(`Audio playback failed for ${track.id}:`, err.message);
-        this.stop();
-      });
-      this.currentTrackId = track.id;
-    } catch (err) {
-      console.error(`Failed to create Audio object for ${track.id}:`, err);
-    }
-  }
-  /**
-   * Stop the current track and cleanup
-   */
-  stop() {
-    if (this.audio) {
-      this.audio.pause();
-      this.audio.currentTime = 0;
-      this.audio = null;
-    }
-    this.currentTrackId = null;
-  }
-  /**
-   * Toggle mute state
-   * @param {boolean} muted 
-   */
-  setMuted(muted) {
-    this.isMuted = muted;
-    if (this.audio) {
-      this.audio.muted = muted;
-    }
-  }
-  /**
-   * Set BGM volume (0.0 to 1.0)
-   * @param {number} value 
-   */
-  setBgmVolume(value) {
-    this.bgmVolume = clampVolume$1(value);
-    this.volume = this.bgmVolume;
-    if (this.audio) {
-      this.audio.volume = this.bgmVolume;
-    }
-  }
-  /**
-   * Set SE volume (0.0 to 1.0)
-   * @param {number} value
-   */
-  setSeVolume(value) {
-    this.seVolume = clampVolume$1(value);
-  }
-  /**
-   * Backward-compatible alias for callers that expect a single global volume.
-   * @param {number} value
-   */
-  setVolume(value) {
-    this.setBgmVolume(value);
-    this.setSeVolume(value);
-  }
-  /**
-   * Check if currently playing
-   */
-  isPlaying() {
-    return !!this.audio && !this.audio.paused;
-  }
-  /**
-   * Play an SFX candidate (used in Sound Test)
-   * @param {string} candidateId 
-   */
-  playSfxCandidate(candidateId) {
-    if (this.isMuted) return;
-    const candidate = SFX_CANDIDATES.find((c) => c.id === candidateId);
-    if (!candidate) {
-      console.warn(`SFX candidate not found: ${candidateId}`);
-      return;
-    }
-    const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, "$1/");
-    try {
-      const sfx = new Audio(fullSrc);
-      const targetVol = (candidate.volume || 1) * this.seVolume * 1.5;
-      sfx.volume = Math.max(0, Math.min(1, targetVol));
-      if (candidate.start) {
-        sfx.currentTime = candidate.start;
-      }
-      if (candidate.end !== null && typeof candidate.end === "number") {
-        const checkEnd = () => {
-          if (sfx.currentTime >= candidate.end) {
-            sfx.pause();
-            sfx.removeEventListener("timeupdate", checkEnd);
-          }
-        };
-        sfx.addEventListener("timeupdate", checkEnd);
-      }
-      sfx.play().catch((err) => {
-        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
-      });
-      this.lastSfx = sfx;
-    } catch (err) {
-      console.error(`Failed to create SFX Audio object for candidate ${candidateId}:`, err);
-    }
-  }
-  /**
-   * Preload a track to warm up the cache
-   * @param {Object} track - Track object from tracks.js
-   */
-  preloadTrack(track) {
-    if (!track || !track.src) return;
-    const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
-    try {
-      const audio = new Audio(fullSrc);
-      audio.preload = "auto";
-    } catch (err) {
-      console.warn(`Preload failed for ${track.id}:`, err);
-    }
-  }
-  /**
-   * Play a production-selected SFX by its functional key
-   * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
-   */
-  playSfx(sfxKey) {
-    if (this.isMuted) return;
-    const candidateId = SELECTED_SFX[sfxKey];
-    if (!candidateId) {
-      console.warn(`No production SFX selected for key: ${sfxKey}`);
-      return;
-    }
-    this.playSfxCandidate(candidateId);
-  }
-}
-const audioEngine = new SimpleAudioEngine();
 const AFFECTION_LIMITS = {
   MIN: 0,
   MAX: 100
@@ -7577,7 +7664,7 @@ function App() {
       "？"
     )));
   };
-  const hudModalBackdrop = {
+  const hudModalBackdrop2 = {
     position: "absolute",
     top: 0,
     left: 0,
@@ -7590,7 +7677,7 @@ function App() {
     justifyContent: "center",
     backdropFilter: "blur(4px)"
   };
-  const hudModalCard = {
+  const hudModalCard2 = {
     ...cardStyle,
     background: "#fff",
     borderRadius: "14px",
@@ -7600,7 +7687,7 @@ function App() {
     position: "relative",
     width: "92%"
   };
-  const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
+  const hudCloseX2 = (onClose) => /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "modal-x-close",
@@ -7634,7 +7721,7 @@ function App() {
       audioEngine.playSfx("uiTapBottle");
       setShowOptions(false);
     };
-    return /* @__PURE__ */ React.createElement("div", { "data-testid": "options-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "340px", padding: "20px 18px" } }, hudCloseX(closeOptions), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.3em", paddingRight: "30px" } }, "設定"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { background: "#f5f5f5", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", fontWeight: "bold", color: THEME.textDark } }, "BGM"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { "data-testid": "options-modal", style: hudModalBackdrop2 }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard2, maxWidth: "340px", padding: "20px 18px" } }, hudCloseX2(closeOptions), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 14px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.3em", paddingRight: "30px" } }, "設定"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { background: "#f5f5f5", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", fontWeight: "bold", color: THEME.textDark } }, "BGM"), /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "audio-enabled-toggle",
@@ -7769,7 +7856,7 @@ function App() {
       audioEngine.playSfx("uiTapBottle");
       setShowLog(false);
     };
-    return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "360px", padding: "16px 14px 14px" } }, hudCloseX(closeLog), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "ログ"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop2 }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard2, maxWidth: "360px", padding: "16px 14px 14px" } }, hudCloseX2(closeLog), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "ログ"), /* @__PURE__ */ React.createElement(
       "div",
       {
         ref: backlogScrollRef,
@@ -7799,34 +7886,6 @@ function App() {
         "data-testid": "backlog-close",
         style: { ...buttonStyle, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
         onClick: closeLog
-      },
-      "閉じる"
-    ))));
-  };
-  const renderHelpModal = () => {
-    if (!showHelp) return null;
-    const closeHelp = () => {
-      audioEngine.playSfx("uiTapBottle");
-      setShowHelp(false);
-    };
-    return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "340px", padding: "18px 16px 14px" } }, hudCloseX(closeHelp), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "遊び方"), /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        "data-testid": "help-scroll",
-        style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "10px 4px", display: "flex", flexDirection: "column", gap: "8px" }
-      },
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・お客さんの依頼を読み、合う商品を選びます。"),
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・正解すると工房評価と親密度が上がります。"),
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・10回の営業を終えると、結果とエンディングに進みます。"),
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・親密度が上がるとイベントが発生します。"),
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上のログボタン（📖）から最近の会話を確認できます。"),
-      /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。")
-    ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "help-close",
-        style: { ...buttonStyle, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
-        onClick: closeHelp
       },
       "閉じる"
     ))));
@@ -8560,7 +8619,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), renderOptionsModal(), renderLogModal(), renderHelpModal(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), renderOptionsModal(), renderLogModal(), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
