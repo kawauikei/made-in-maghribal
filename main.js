@@ -1719,14 +1719,14 @@ const PrologueScreen = ({
     renderBackground("START"),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      bottom: 0,
-      right: "5%",
-      zIndex: 1,
+      bottom: "-6%",
+      right: "-8%",
+      zIndex: 2,
       pointerEvents: "none",
-      opacity: 0.9,
-      transform: "translateX(20%)"
+      opacity: 0.3,
+      filter: "grayscale(0.1) contrast(0.9)"
     } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -1795,22 +1795,20 @@ const IntroScreen = ({
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: 0,
-      left: "5%",
-      zIndex: 1,
+      left: "2%",
+      zIndex: 2,
       pointerEvents: "none",
-      opacity: 0.9,
-      transform: "translateX(-20%)"
+      opacity: 0.4
     } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: 0,
-      right: "5%",
-      zIndex: 1,
+      right: "2%",
+      zIndex: 2,
       pointerEvents: "none",
-      opacity: 0.9,
-      transform: "translateX(20%)"
+      opacity: 0.55
     } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" })),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
