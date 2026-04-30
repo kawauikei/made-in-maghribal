@@ -1,0 +1,377 @@
+{
+    "report": "v21_all_variants_d2_norm",
+    "generated_at": "2026-04-30 10:21:06",
+    "scaling_reference": "Dariya D2 (300cfg / 323bbox_w)",
+    "results": [
+        {
+            "char": "hakima",
+            "variant": "normal",
+            "input_hash": "71feb97314fee08c9bfe5892293e63b245359f46ddc671c6da8a5c531a830f7f",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "274,175 337x337",
+            "cell_hash_norm": "2b54c3579c1fab34034d126f74294ba046190f70e49e6dbcaad61ecec6c49355",
+            "confidence": 0.8008632063865662,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "joy",
+            "input_hash": "4eed9b2994fa87f60bdc2190c581e222551baaf9392d3526effe311553254f06",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "279,177 333x333",
+            "cell_hash_norm": "57bb5940dbe4949d563b438d9f8e0fbc5f8df6fed21bff0cf824e3a907132cad",
+            "confidence": 0.8279635906219482,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "anger",
+            "input_hash": "2cfbfcb6753a8686239bf7ba976ac6d25a4c923ea33db7d06eb79b1f2865a234",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "272,170 343x343",
+            "cell_hash_norm": "4654d28198d5d5cfe5e919a729242b851ed0dbad26755aa104526e0eb770cd06",
+            "confidence": 0.8531150221824646,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "cry",
+            "input_hash": "12f6c27150c5f0baeb37772ea0c36f877089afb9f962ca2c40e165c67fd1b254",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "280,197 308x308",
+            "cell_hash_norm": "1e766f24cb0846da17565647e5cd12acb7125b5783de23570dc34b7f926d4f4f",
+            "confidence": 0.7035784721374512,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "fun",
+            "input_hash": "51ba36ff80e4cd7811e97f1384f0c86d249593af3802efcde890e608f87dfa67",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "278,179 334x334",
+            "cell_hash_norm": "fd8b30c267c04d7a4d102d4c6411d3cd0c89c80b3ded860cfe9f4a02db6697e6",
+            "confidence": 0.8151483535766602,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "surprise",
+            "input_hash": "4035cf2c11f5f776a203f03efaed907339db4769ee518acba74a38f923ab07c3",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "278,168 343x343",
+            "cell_hash_norm": "4cff96584c7d3f194860508b31a07c3b70798661aabe6cd1c810514237c3e6d7",
+            "confidence": 0.6448103785514832,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "sorrow",
+            "input_hash": "05c738284cd783c22a7b3ab8c2ba134c162dc024dbf11ebfd91bc533b42c0b45",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "274,174 338x338",
+            "cell_hash_norm": "d6afebf8adb046555d08eecaf21711a9bcfc4117da90f8a8fffa56588b69ff61",
+            "confidence": 0.7886540293693542,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "student",
+            "input_hash": "424a67798598e66f3e812b0dae7ca0b29e0ba4df08a47cc580c5739260d49053",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "274,172 341x341",
+            "cell_hash_norm": "8674f7078fee1a3230142f45055cc7086c86655623c776ffd1d146f40da29beb",
+            "confidence": 0.773658037185669,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "social",
+            "input_hash": "08fe59dc759bf86cc49464b094c96e1bf7ab8fa12bd560ac5993e443a2f270d4",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "265,158 363x363",
+            "cell_hash_norm": "23e3e0d14688500436bdedb2703e498e1bd4feb8540946b5fd7f6f378e66dce1",
+            "confidence": 0.8211042881011963,
+            "status": "Success"
+        },
+        {
+            "char": "hakima",
+            "variant": "maid",
+            "input_hash": "5791e3748a95634e632da5e369554cf781c510818851083a1fe79a2dcd9d8c3b",
+            "current_crop": "320,160 340x340",
+            "d2_norm_crop": "273,161 351x351",
+            "cell_hash_norm": "b0e5fa980034ba7072e6eb403d902e0a85f564483948b9d91080b0f9ec473638",
+            "confidence": 0.8042900562286377,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "normal",
+            "input_hash": "96c8ebae947b805cf2308d9ff85a5a2ff321ec24af9b1ddacbb27d2b6cea1a0a",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "218,101 391x391",
+            "cell_hash_norm": "61e2318816f98edbf049503a577e4453e8c1f92128853e8d13066f0be87aa6e5",
+            "confidence": 0.7786087989807129,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "joy",
+            "input_hash": "293873b10cf8f5e169129c1fa7fbdf504b2599ed94be9774ba4b6b3c84c8b3d4",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "213,98 394x394",
+            "cell_hash_norm": "958b2106a24aa3e568c62cbd97d7874f35244a14e9a2303c383ad378bbf40e97",
+            "confidence": 0.8385714292526245,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "anger",
+            "input_hash": "49f4cafb68a37c0f75e0287ffae70b7ce7f1a8d26b4533953654cdb2ad5269e9",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "220,106 383x383",
+            "cell_hash_norm": "5900fb03362d89a21d70c4ce7dde95a4db65bf129e2d407d4cd131d2d4e53eea",
+            "confidence": 0.761102557182312,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "cry",
+            "input_hash": "3192b0437bb7e938ff92241113bf309db4cc2a53f28001057e7114a81c6589b3",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "216,112 383x383",
+            "cell_hash_norm": "39fb037cc37e94c2551c84f1b2e9f440f2f27fe82b6b1941b60ff8fdb37f5fd0",
+            "confidence": 0.800939679145813,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "fun",
+            "input_hash": "396250d641ed81f534b7ccad476ff9de297f1b8c227f6b64b578ee2850cba1bd",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "225,111 375x375",
+            "cell_hash_norm": "d18e972e29568aaae649c01e195e976c6facfd21c11cd725a54e199c55da9643",
+            "confidence": 0.8319162130355835,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "surprise",
+            "input_hash": "7b4b482814d42c3558252780d14e9a0b7b431e9bb0f5808ed70a0a449d055109",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "225,139 393x393",
+            "cell_hash_norm": "87f8878ef0454d6f84f6ddbcaea377152c593db637efd82c29a1948c53213c4f",
+            "confidence": 0.5269123315811157,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "sorrow",
+            "input_hash": "082b195e07c1bfd376f2d03b1d995a649c63459c0b6d3a3865608149e145157c",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "211,99 400x400",
+            "cell_hash_norm": "34648e41a468273b87481d5ed8ecde62d9f5439530e0ff72cf0aed22e8a473b5",
+            "confidence": 0.8139128684997559,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "student",
+            "input_hash": "fe714147f5eaa0f363699b4a834433022e91632eb2851ffe3de7e5f4c402eec0",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "230,112 381x381",
+            "cell_hash_norm": "f132fa1a16de8858026fb3186d7fd6ef1c2d59216c2169a6e0c5f252c8666f83",
+            "confidence": 0.7992205619812012,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "social",
+            "input_hash": "a13d7c6db1dffc719e144dbf5b8ed63297afe36946813c5ee39213d69035eeb6",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "223,109 381x381",
+            "cell_hash_norm": "081d9f3b12fc9d485ceeb02a80b14c5a5614e81155c6f2ccdf713a1b387f6a80",
+            "confidence": 0.8774834871292114,
+            "status": "Success"
+        },
+        {
+            "char": "mira",
+            "variant": "maid",
+            "input_hash": "11ec8016b30921ae5382ee648300de6896f8620c5d513f2949b760581d861f56",
+            "current_crop": "330,140 340x340",
+            "d2_norm_crop": "217,101 388x388",
+            "cell_hash_norm": "4074e46ec53d58340e8aa981f39757e70f66a1c5dd6f0ecc43798aead8df6331",
+            "confidence": 0.8472305536270142,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "normal",
+            "input_hash": "65c3818192e20154de4e198a3abad93cac10f452c9228c27d6bcb6a56f512261",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "302,108 300x300",
+            "cell_hash_norm": "b547eb9416d5020cbb477a26ad64ab09a9b7305370573d80535d1a66a946b133",
+            "confidence": 0.723191499710083,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "joy",
+            "input_hash": "bd84648589d8963421a8d833407228df70185ba1af2cc329ea847c8216bfa36a",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "306,123 284x284",
+            "cell_hash_norm": "3d05d05773631e415325649463b736710a7061b6cea46875da566d8b6b497d64",
+            "confidence": 0.6729866862297058,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "anger",
+            "input_hash": "8a298a056600cfc0d340d78d8a4b2a04f5a389777239852ef88d190010eba827",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "307,123 291x291",
+            "cell_hash_norm": "7b6623108e08610c9800cd6f2a8ac1168c85401f451f2b723f29517a235ebe4e",
+            "confidence": 0.7264060378074646,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "cry",
+            "input_hash": "9bbefed497e93700017bcc48215baa6af7b82be963d1bfb9bb1e5b7c67645175",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "325,133 262x262",
+            "cell_hash_norm": "cb352ad9f9dfc30869ef3e1277dd2ab18c6d0a39e72ed26d073679a32c013ed8",
+            "confidence": 0.7208881378173828,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "fun",
+            "input_hash": "3480b0de450826019a45ccb06c8dff821668f97cc1f7907c465c8862440fea1e",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "302,112 297x297",
+            "cell_hash_norm": "c1e9a7ceb3d9f2b532d5e203bc5ce72c45aabcaea20f76b3fded15593d7395a4",
+            "confidence": 0.740774393081665,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "surprise",
+            "input_hash": "1513af6da640c420c63a5264c2a8d28ffc8fb9903cfd8546465723b7ae3ec0c7",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "303,105 296x296",
+            "cell_hash_norm": "bc4bb0c56961a8ec05267b7c0226c70d4f7ea231ea4a3e8c5354968c38f49a94",
+            "confidence": 0.7135644555091858,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "sorrow",
+            "input_hash": "fd517f1582d588e3f152a4681857ba54f254c2fc45647bd358610e6e1d3bd6c7",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "300,103 300x300",
+            "cell_hash_norm": "121c238125808911cf87a691a83d8a3950ec329b7ca674e84405fca3d9235b77",
+            "confidence": 0.6853196024894714,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "student",
+            "input_hash": "02b9b621847c1e85562dc5e63562f415551e884e4422906d0b4780088fdeef34",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "308,120 287x287",
+            "cell_hash_norm": "2fbf361d5cbec041cf0ea555a3296822f272d2f340ce8d8154d77a453e6754ef",
+            "confidence": 0.6816116571426392,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "social",
+            "input_hash": "caed93e09b6130041a1244ce325b76f5e7bae9d84ad64ebd8f2d7daa1a4defdd",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "306,128 288x288",
+            "cell_hash_norm": "47c6a519825a2e6cb33a0ba179f4ea0033448f03a3695d4d040a6fae8a1ed665",
+            "confidence": 0.7032760977745056,
+            "status": "Success"
+        },
+        {
+            "char": "dariya",
+            "variant": "maid",
+            "input_hash": "814cd4ba42e71673bef9d039594773d27e54e76ec50ebc5cac29cf39c6ec01a2",
+            "current_crop": "350,180 300x300",
+            "d2_norm_crop": "309,132 285x285",
+            "cell_hash_norm": "19b45b57e61e02012c70cbb42dbb943b4eba462169a367aa5611d295b57e9d74",
+            "confidence": 0.7670169472694397,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "normal",
+            "input_hash": "847ed88b81b8b376a87bc0459524d6552b121a3b322e521ba7a6e07cf4f4a613",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "285,95 323x323",
+            "cell_hash_norm": "2f88b20cbe40b22706a50b96965600f640539a3c9f83b261136525fbd2ed0330",
+            "confidence": 0.8287786245346069,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "joy",
+            "input_hash": "a06f96147a7274cb2543d6bf3fc52cf67c615d00646ece8238435086b732358e",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "290,103 316x316",
+            "cell_hash_norm": "3ad65d27420531b752c6d1bf5c7ddb3621f361510d6c432d7e21f309eca3dc4b",
+            "confidence": 0.865151047706604,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "anger",
+            "input_hash": "dfcfe907a369dec1be6b2fb5d5a1b7671ba3e712ea835438cb5198d2b2553641",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "292,106 310x310",
+            "cell_hash_norm": "8bb532682c7f13e3accbc54405a3baa6510fd89107766146e0859b2e2c2c434f",
+            "confidence": 0.8570464253425598,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "cry",
+            "input_hash": "eb57b00995a6e83d554f94dcd7efd142e00a4fa86877f4c397482a41689e6eda",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "320,143 264x264",
+            "cell_hash_norm": "a8a7945cb2fd8fe378ebe4528a8659ccaa7255c3328872e48b29d2da41c5803a",
+            "confidence": 0.782316267490387,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "fun",
+            "input_hash": "05c3451a106e07c7abbae5a8e9aeaa7dad33d37f27c00e906d6f2120ea0c8220",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "299,115 304x304",
+            "cell_hash_norm": "4cdf984f512b5bdd8e58c5e1ca5f06f3829245e2e13a81f89682b48b53de8747",
+            "confidence": 0.8613153696060181,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "surprise",
+            "input_hash": "1b52c1c0e8870f3ba8ad76cbb977620b7b6b8f58425d269d63884d62ecc924c6",
+            "current_crop": "280,46 340x340",
+            "d2_norm_crop": "285,103 326x326",
+            "cell_hash_norm": "5f98335e0dc9deb032226feb0cfd2c7871bcd4fabed48befc3ff395502e2983c",
+            "confidence": 0.8744255304336548,
+            "status": "Success"
+        },
+        {
+            "char": "nader",
+            "variant": "sorrow",
+            "input_hash": "649ce0b5cdc5f7e747dc3c01bc32f9b73640b5b44b2fe89a4ca6664f3ea63fdc",
+            "current_crop": "320,140 340x340",
+            "d2_norm_crop": "289,100 317x317",
+            "cell_hash_norm": "f7d9ddf09e9ea9592a274b1a6e361f594f04d05adafbd8da298c098eaa8f0fdb",
+            "confidence": 0.8632554411888123,
+            "status": "Success"
+        }
+    ]
+}

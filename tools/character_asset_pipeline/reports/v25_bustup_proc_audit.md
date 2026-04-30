@@ -49,4 +49,4 @@ InsightFace による顔検出信頼度が基準値 (0.6) を下回ったバリ�
 
 ---
 **監査者**: Antigravity
-**監査資料**: [v25_all_variants_bustup_contact_sheet.jpg](./v25_all_variants_bustup_contact_sheet.jpg)
+**監査資料**: 視覚確認用 contact sheet はローカル補助資料として生成済みだが、リポジトリ肥大化を避けるため本コミットには含めない。監査の主情報は MD / JSON テーブルにて追跡可能。

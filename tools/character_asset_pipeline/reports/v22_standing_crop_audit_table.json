@@ -1,0 +1,636 @@
+{
+    "report": "v22_standing_crop_audit",
+    "generated_at": "2026-04-30 10:27:29",
+    "current_logic": "Full resize to height=640 (No Crop)",
+    "results": [
+        {
+            "char": "hakima",
+            "variant": "normal",
+            "input_hash": "71feb97314fee08c9bfe5892293e63b245359f46ddc671c6da8a5c531a830f7f",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                705,
+                496,
+                363,
+                385
+            ],
+            "face_center_y_in_frame": 183,
+            "face_width_in_frame": 96,
+            "cell_hash": "f3bef4b7a7577f166a1fad5cad33d91617cecc6cbde9555866f2a4d71dafe547",
+            "confidence": 0.8008632063865662
+        },
+        {
+            "char": "hakima",
+            "variant": "joy",
+            "input_hash": "4eed9b2994fa87f60bdc2190c581e222551baaf9392d3526effe311553254f06",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                713,
+                490,
+                359,
+                398
+            ],
+            "face_center_y_in_frame": 183,
+            "face_width_in_frame": 95,
+            "cell_hash": "7e48ae3fa0041e2a4ce74327f72f0d1c1177ad21251b26f724fc44ee445c864f",
+            "confidence": 0.8279635906219482
+        },
+        {
+            "char": "hakima",
+            "variant": "anger",
+            "input_hash": "2cfbfcb6753a8686239bf7ba976ac6d25a4c923ea33db7d06eb79b1f2865a234",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                703,
+                486,
+                370,
+                397
+            ],
+            "face_center_y_in_frame": 181,
+            "face_width_in_frame": 98,
+            "cell_hash": "26fd782fe1e5612c5af452d8f6c109cbc03a54f4157baf3712f45da2cc37f19e",
+            "confidence": 0.8531150221824646
+        },
+        {
+            "char": "hakima",
+            "variant": "cry",
+            "input_hash": "12f6c27150c5f0baeb37772ea0c36f877089afb9f962ca2c40e165c67fd1b254",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                704,
+                520,
+                332,
+                367
+            ],
+            "face_center_y_in_frame": 186,
+            "face_width_in_frame": 88,
+            "cell_hash": "34ca4eb18f60921c628b5879a71893e4b073101a6713b9086905a80a0475266a",
+            "confidence": 0.7035784721374512
+        },
+        {
+            "char": "hakima",
+            "variant": "fun",
+            "input_hash": "51ba36ff80e4cd7811e97f1384f0c86d249593af3802efcde890e608f87dfa67",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                711,
+                497,
+                360,
+                391
+            ],
+            "face_center_y_in_frame": 184,
+            "face_width_in_frame": 96,
+            "cell_hash": "a8e55a57ab554fa4805b65b0f60c386185b04bb8bce130b6484643dd056db65b",
+            "confidence": 0.8151483535766602
+        },
+        {
+            "char": "hakima",
+            "variant": "surprise",
+            "input_hash": "4035cf2c11f5f776a203f03efaed907339db4769ee518acba74a38f923ab07c3",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                716,
+                462,
+                370,
+                436
+            ],
+            "face_center_y_in_frame": 181,
+            "face_width_in_frame": 98,
+            "cell_hash": "65ecb1f94be6427f4669975e338ff4986248d984f07a5dd10cd10a0445a0ba37",
+            "confidence": 0.6448103785514832
+        },
+        {
+            "char": "hakima",
+            "variant": "sorrow",
+            "input_hash": "05c738284cd783c22a7b3ab8c2ba134c162dc024dbf11ebfd91bc533b42c0b45",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                705,
+                490,
+                364,
+                393
+            ],
+            "face_center_y_in_frame": 182,
+            "face_width_in_frame": 97,
+            "cell_hash": "d0a33934d433985d4bbe6428e354e9385fa3770990074a041894d08728f1916b",
+            "confidence": 0.7886540293693542
+        },
+        {
+            "char": "hakima",
+            "variant": "student",
+            "input_hash": "424a67798598e66f3e812b0dae7ca0b29e0ba4df08a47cc580c5739260d49053",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                706,
+                486,
+                368,
+                402
+            ],
+            "face_center_y_in_frame": 182,
+            "face_width_in_frame": 98,
+            "cell_hash": "8ddb2e8b8e5c176a727a96370dd725cb9818aac04ecc21c99cc8588e60e4f709",
+            "confidence": 0.773658037185669
+        },
+        {
+            "char": "hakima",
+            "variant": "social",
+            "input_hash": "08fe59dc759bf86cc49464b094c96e1bf7ab8fa12bd560ac5993e443a2f270d4",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                699,
+                471,
+                391,
+                420
+            ],
+            "face_center_y_in_frame": 181,
+            "face_width_in_frame": 104,
+            "cell_hash": "beb87cf298c5605612c1e8e7b19df70452a3eeea56001b97bedeadbd3c8e8301",
+            "confidence": 0.8211042881011963
+        },
+        {
+            "char": "hakima",
+            "variant": "maid",
+            "input_hash": "5791e3748a95634e632da5e369554cf781c510818851083a1fe79a2dcd9d8c3b",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                709,
+                463,
+                378,
+                423
+            ],
+            "face_center_y_in_frame": 179,
+            "face_width_in_frame": 100,
+            "cell_hash": "5ea7bb5f8d73cba1adefca83a5f67bf4f9440878ea5442c3c3e3852ffc72b333",
+            "confidence": 0.8042900562286377
+        },
+        {
+            "char": "mira",
+            "variant": "normal",
+            "input_hash": "96c8ebae947b805cf2308d9ff85a5a2ff321ec24af9b1ddacbb27d2b6cea1a0a",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                617,
+                315,
+                422,
+                559
+            ],
+            "face_center_y_in_frame": 158,
+            "face_width_in_frame": 112,
+            "cell_hash": "c91aac83718a076cb38d4ecff6276683e08cd8aea7eedaa9648463373d852096",
+            "confidence": 0.7786087989807129
+        },
+        {
+            "char": "mira",
+            "variant": "joy",
+            "input_hash": "293873b10cf8f5e169129c1fa7fbdf504b2599ed94be9774ba4b6b3c84c8b3d4",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                610,
+                317,
+                425,
+                549
+            ],
+            "face_center_y_in_frame": 157,
+            "face_width_in_frame": 113,
+            "cell_hash": "d127cb6e0f39f4f1c18a3e687157eac1e4c1833dd2172e67a3e83db1cb7aeaa1",
+            "confidence": 0.8385714292526245
+        },
+        {
+            "char": "mira",
+            "variant": "anger",
+            "input_hash": "49f4cafb68a37c0f75e0287ffae70b7ce7f1a8d26b4533953654cdb2ad5269e9",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                619,
+                322,
+                413,
+                548
+            ],
+            "face_center_y_in_frame": 158,
+            "face_width_in_frame": 110,
+            "cell_hash": "07e05105c0d2d89366076031f67ae1715c7ec8c44c0fd01b5d4208dbbb6ce55d",
+            "confidence": 0.761102557182312
+        },
+        {
+            "char": "mira",
+            "variant": "cry",
+            "input_hash": "3192b0437bb7e938ff92241113bf309db4cc2a53f28001057e7114a81c6589b3",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                610,
+                339,
+                413,
+                538
+            ],
+            "face_center_y_in_frame": 161,
+            "face_width_in_frame": 110,
+            "cell_hash": "5b5da0ab0a6c000d3e4d0a60494ae440e6998b022b438ee5827f985262234328",
+            "confidence": 0.800939679145813
+        },
+        {
+            "char": "mira",
+            "variant": "fun",
+            "input_hash": "396250d641ed81f534b7ccad476ff9de297f1b8c227f6b64b578ee2850cba1bd",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                624,
+                314,
+                404,
+                568
+            ],
+            "face_center_y_in_frame": 158,
+            "face_width_in_frame": 107,
+            "cell_hash": "9d1cb95141d931e1eb53dd7d5359bb43c53f0c87643a23bb2ce011f21fc21103",
+            "confidence": 0.8319162130355835
+        },
+        {
+            "char": "mira",
+            "variant": "surprise",
+            "input_hash": "7b4b482814d42c3558252780d14e9a0b7b431e9bb0f5808ed70a0a449d055109",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                633,
+                374,
+                424,
+                599
+            ],
+            "face_center_y_in_frame": 178,
+            "face_width_in_frame": 113,
+            "cell_hash": "92758ca8e121394f6d17016863141b973437700804bc21c13d1be77aa4649cf5",
+            "confidence": 0.5269123315811157
+        },
+        {
+            "char": "mira",
+            "variant": "sorrow",
+            "input_hash": "082b195e07c1bfd376f2d03b1d995a649c63459c0b6d3a3865608149e145157c",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                607,
+                327,
+                431,
+                546
+            ],
+            "face_center_y_in_frame": 159,
+            "face_width_in_frame": 114,
+            "cell_hash": "cca7721899bf2424a6cccd161706d9d008569f0592039cd6fcc0154b4f56cce2",
+            "confidence": 0.8139128684997559
+        },
+        {
+            "char": "mira",
+            "variant": "student",
+            "input_hash": "fe714147f5eaa0f363699b4a834433022e91632eb2851ffe3de7e5f4c402eec0",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                637,
+                326,
+                411,
+                560
+            ],
+            "face_center_y_in_frame": 160,
+            "face_width_in_frame": 109,
+            "cell_hash": "62312a28e7f91fdd1617ca444841e8ad1eb3a36dbdf18847f6ef62b9a9461562",
+            "confidence": 0.7992205619812012
+        },
+        {
+            "char": "mira",
+            "variant": "social",
+            "input_hash": "a13d7c6db1dffc719e144dbf5b8ed63297afe36946813c5ee39213d69035eeb6",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                624,
+                335,
+                411,
+                532
+            ],
+            "face_center_y_in_frame": 159,
+            "face_width_in_frame": 109,
+            "cell_hash": "7d138d5e35d35761a1ffd90650f41c858fc44462c917bf0d1bcc80cc8db3ec8b",
+            "confidence": 0.8774834871292114
+        },
+        {
+            "char": "mira",
+            "variant": "maid",
+            "input_hash": "11ec8016b30921ae5382ee648300de6896f8620c5d513f2949b760581d861f56",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                614,
+                317,
+                418,
+                548
+            ],
+            "face_center_y_in_frame": 157,
+            "face_width_in_frame": 111,
+            "cell_hash": "587dda8ad8ca592de384c8f4b8b7651005718abbb63981fbff9e5cefed19a01e",
+            "confidence": 0.8472305536270142
+        },
+        {
+            "char": "dariya",
+            "variant": "normal",
+            "input_hash": "65c3818192e20154de4e198a3abad93cac10f452c9228c27d6bcb6a56f512261",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                743,
+                324,
+                323,
+                384
+            ],
+            "face_center_y_in_frame": 137,
+            "face_width_in_frame": 86,
+            "cell_hash": "8daf715bbe5abd9f9615828c1e21153686206ce3d4b4f535aa3044d91192c39c",
+            "confidence": 0.723191499710083
+        },
+        {
+            "char": "dariya",
+            "variant": "joy",
+            "input_hash": "bd84648589d8963421a8d833407228df70185ba1af2cc329ea847c8216bfa36a",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                745,
+                349,
+                306,
+                363
+            ],
+            "face_center_y_in_frame": 141,
+            "face_width_in_frame": 81,
+            "cell_hash": "6c65e0306943eb6d18eab70ba4d50f5f190f4b55d8913561432ec5915c181d92",
+            "confidence": 0.6729866862297058
+        },
+        {
+            "char": "dariya",
+            "variant": "anger",
+            "input_hash": "8a298a056600cfc0d340d78d8a4b2a04f5a389777239852ef88d190010eba827",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                749,
+                371,
+                314,
+                337
+            ],
+            "face_center_y_in_frame": 142,
+            "face_width_in_frame": 83,
+            "cell_hash": "b838bcf2fe324340cddf32b801f0c8af9e9a9c6b27f0aee2b000420b6620e9e3",
+            "confidence": 0.7264060378074646
+        },
+        {
+            "char": "dariya",
+            "variant": "cry",
+            "input_hash": "9bbefed497e93700017bcc48215baa6af7b82be963d1bfb9bb1e5b7c67645175",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                772,
+                349,
+                283,
+                361
+            ],
+            "face_center_y_in_frame": 141,
+            "face_width_in_frame": 75,
+            "cell_hash": "2fbfde77cd5319bab277b8bba3f0d78832a212491669421c56dce089ac86ea6c",
+            "confidence": 0.7208881378173828
+        },
+        {
+            "char": "dariya",
+            "variant": "fun",
+            "input_hash": "3480b0de450826019a45ccb06c8dff821668f97cc1f7907c465c8862440fea1e",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                743,
+                328,
+                320,
+                388
+            ],
+            "face_center_y_in_frame": 138,
+            "face_width_in_frame": 85,
+            "cell_hash": "abc276fc74e0022b74e1f09d54bd9e2329a267541fb3b6a0ab2d3dbe6b96eda0",
+            "confidence": 0.740774393081665
+        },
+        {
+            "char": "dariya",
+            "variant": "surprise",
+            "input_hash": "1513af6da640c420c63a5264c2a8d28ffc8fb9903cfd8546465723b7ae3ec0c7",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                744,
+                293,
+                319,
+                428
+            ],
+            "face_center_y_in_frame": 135,
+            "face_width_in_frame": 85,
+            "cell_hash": "ef19f0ee22f7d14b82ad7b67aba68e9c3e745455fdd2f1123bacce31a56152d4",
+            "confidence": 0.7135644555091858
+        },
+        {
+            "char": "dariya",
+            "variant": "sorrow",
+            "input_hash": "fd517f1582d588e3f152a4681857ba54f254c2fc45647bd358610e6e1d3bd6c7",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                739,
+                310,
+                324,
+                395
+            ],
+            "face_center_y_in_frame": 134,
+            "face_width_in_frame": 86,
+            "cell_hash": "f3606d7c645315e05791894dc1edb6cef35c96ec01b0c9af0b9a759d5ca5b38e",
+            "confidence": 0.6853196024894714
+        },
+        {
+            "char": "dariya",
+            "variant": "student",
+            "input_hash": "02b9b621847c1e85562dc5e63562f415551e884e4422906d0b4780088fdeef34",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                749,
+                339,
+                310,
+                381
+            ],
+            "face_center_y_in_frame": 140,
+            "face_width_in_frame": 82,
+            "cell_hash": "dd4e3f592a1e678d557fc707759cf1005f8c0ad68b9dbccf48d8057b16815f4f",
+            "confidence": 0.6816116571426392
+        },
+        {
+            "char": "dariya",
+            "variant": "social",
+            "input_hash": "caed93e09b6130041a1244ce325b76f5e7bae9d84ad64ebd8f2d7daa1a4defdd",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                747,
+                373,
+                311,
+                345
+            ],
+            "face_center_y_in_frame": 145,
+            "face_width_in_frame": 82,
+            "cell_hash": "08265dfed29603042a765be617d554bba22903bcdb74523a826dd1b724a82972",
+            "confidence": 0.7032760977745056
+        },
+        {
+            "char": "dariya",
+            "variant": "maid",
+            "input_hash": "814cd4ba42e71673bef9d039594773d27e54e76ec50ebc5cac29cf39c6ec01a2",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                751,
+                388,
+                307,
+                324
+            ],
+            "face_center_y_in_frame": 146,
+            "face_width_in_frame": 81,
+            "cell_hash": "2d86f43e922f019864a7909ba5fbddae1a61f7f6e1b17be5306cf2a7858f4c8e",
+            "confidence": 0.7670169472694397
+        },
+        {
+            "char": "nader",
+            "variant": "normal",
+            "input_hash": "847ed88b81b8b376a87bc0459524d6552b121a3b322e521ba7a6e07cf4f4a613",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                721,
+                274,
+                348,
+                481
+            ],
+            "face_center_y_in_frame": 137,
+            "face_width_in_frame": 92,
+            "cell_hash": "e83b3b2c7f23e8131ef253911ac537dfd5e939ce6de526aa1ec6b99edf171461",
+            "confidence": 0.8287786245346069
+        },
+        {
+            "char": "nader",
+            "variant": "joy",
+            "input_hash": "a06f96147a7274cb2543d6bf3fc52cf67c615d00646ece8238435086b732358e",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                727,
+                290,
+                341,
+                469
+            ],
+            "face_center_y_in_frame": 139,
+            "face_width_in_frame": 90,
+            "cell_hash": "e2acc0b2c8424fd8e427d6f715e36ef636405432721eab57ab6046e4da85628f",
+            "confidence": 0.865151047706604
+        },
+        {
+            "char": "nader",
+            "variant": "anger",
+            "input_hash": "dfcfe907a369dec1be6b2fb5d5a1b7671ba3e712ea835438cb5198d2b2553641",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                728,
+                291,
+                334,
+                465
+            ],
+            "face_center_y_in_frame": 139,
+            "face_width_in_frame": 89,
+            "cell_hash": "e4a1975e7adda3d625c2224339da2cb0838de081d515d4375284af43be8a3c8b",
+            "confidence": 0.8570464253425598
+        },
+        {
+            "char": "nader",
+            "variant": "cry",
+            "input_hash": "eb57b00995a6e83d554f94dcd7efd142e00a4fa86877f4c397482a41689e6eda",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                764,
+                348,
+                285,
+                406
+            ],
+            "face_center_y_in_frame": 146,
+            "face_width_in_frame": 76,
+            "cell_hash": "7370f9e2e03eaf30368ae29d32a13ceaf94ea781d36dda5380627f915f62a78c",
+            "confidence": 0.782316267490387
+        },
+        {
+            "char": "nader",
+            "variant": "fun",
+            "input_hash": "05c3451a106e07c7abbae5a8e9aeaa7dad33d37f27c00e906d6f2120ea0c8220",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                740,
+                315,
+                328,
+                442
+            ],
+            "face_center_y_in_frame": 142,
+            "face_width_in_frame": 87,
+            "cell_hash": "cb2df334396d4586b4454ba97a2c0d41a1488be6b040644afb1c2cc4a437eb18",
+            "confidence": 0.8613153696060181
+        },
+        {
+            "char": "nader",
+            "variant": "surprise",
+            "input_hash": "1b52c1c0e8870f3ba8ad76cbb977620b7b6b8f58425d269d63884d62ecc924c6",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                721,
+                287,
+                351,
+                494
+            ],
+            "face_center_y_in_frame": 141,
+            "face_width_in_frame": 93,
+            "cell_hash": "821f331c4bd8c5103c10933cbc2b6df1427d2b9fd03994629a3cb8e72404dd67",
+            "confidence": 0.8744255304336548
+        },
+        {
+            "char": "nader",
+            "variant": "sorrow",
+            "input_hash": "649ce0b5cdc5f7e747dc3c01bc32f9b73640b5b44b2fe89a4ca6664f3ea63fdc",
+            "standing_height": 640,
+            "standing_width": 477,
+            "face_bbox_source": [
+                726,
+                281,
+                342,
+                474
+            ],
+            "face_center_y_in_frame": 137,
+            "face_width_in_frame": 91,
+            "cell_hash": "797e978ecc939541018076cb4e5cfd5758176ce29815c3a2277be3d87f23dced",
+            "confidence": 0.8632554411888123
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+# Standing Crop Audit Table (V22)
+
+| char | variant | frame face center y | frame face width | cell hash (8) | conf |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| hakima | normal | 183 | 96 | `f3bef4b7` | 0.80 |
+| hakima | joy | 183 | 95 | `7e48ae3f` | 0.83 |
+| hakima | anger | 181 | 98 | `26fd782f` | 0.85 |
+| hakima | cry | 186 | 88 | `34ca4eb1` | 0.70 |
+| hakima | fun | 184 | 96 | `a8e55a57` | 0.82 |
+| hakima | surprise | 181 | 98 | `65ecb1f9` | 0.64 |
+| hakima | sorrow | 182 | 97 | `d0a33934` | 0.79 |
+| hakima | student | 182 | 98 | `8ddb2e8b` | 0.77 |
+| hakima | social | 181 | 104 | `beb87cf2` | 0.82 |
+| hakima | maid | 179 | 100 | `5ea7bb5f` | 0.80 |
+| mira | normal | 158 | 112 | `c91aac83` | 0.78 |
+| mira | joy | 157 | 113 | `d127cb6e` | 0.84 |
+| mira | anger | 158 | 110 | `07e05105` | 0.76 |
+| mira | cry | 161 | 110 | `5b5da0ab` | 0.80 |
+| mira | fun | 158 | 107 | `9d1cb951` | 0.83 |
+| mira | surprise | 178 | 113 | `92758ca8` | 0.53 |
+| mira | sorrow | 159 | 114 | `cca77218` | 0.81 |
+| mira | student | 160 | 109 | `62312a28` | 0.80 |
+| mira | social | 159 | 109 | `7d138d5e` | 0.88 |
+| mira | maid | 157 | 111 | `587dda8a` | 0.85 |
+| dariya | normal | 137 | 86 | `8daf715b` | 0.72 |
+| dariya | joy | 141 | 81 | `6c65e030` | 0.67 |
+| dariya | anger | 142 | 83 | `b838bcf2` | 0.73 |
+| dariya | cry | 141 | 75 | `2fbfde77` | 0.72 |
+| dariya | fun | 138 | 85 | `abc276fc` | 0.74 |
+| dariya | surprise | 135 | 85 | `ef19f0ee` | 0.71 |
+| dariya | sorrow | 134 | 86 | `f3606d7c` | 0.69 |
+| dariya | student | 140 | 82 | `dd4e3f59` | 0.68 |
+| dariya | social | 145 | 82 | `08265dfe` | 0.70 |
+| dariya | maid | 146 | 81 | `2d86f43e` | 0.77 |
+| nader | normal | 137 | 92 | `e83b3b2c` | 0.83 |
+| nader | joy | 139 | 90 | `e2acc0b2` | 0.87 |
+| nader | anger | 139 | 89 | `e4a1975e` | 0.86 |
+| nader | cry | 146 | 76 | `7370f9e2` | 0.78 |
+| nader | fun | 142 | 87 | `cb2df334` | 0.86 |
+| nader | surprise | 141 | 93 | `821f331c` | 0.87 |
+| nader | sorrow | 137 | 91 | `797e978e` | 0.86 |
