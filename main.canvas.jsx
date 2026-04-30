@@ -10,7 +10,7 @@ const THEME = {
   starGold: '#ffcc00'
 };
 
-import React, { useState, useEffect, useRef } from 'react';
+const { useState, useEffect, useRef } = React;
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
@@ -28,8 +28,6 @@ import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
-import VNBox from './ui/VNBox';
-import SoundTest from './ui/SoundTest';
 
 
 
@@ -70,6 +68,299 @@ const NADER = {
     standingScale: 1.0
   }
 };
+
+
+
+
+// --- Inlined Component: VNBox ---
+
+/**
+ * VNBox Component
+ * Handles typewriter effect, page progression, and NEXT/FINISH indicators.
+ * Supported Props:
+ * - text: Single page text (fallback if pages not provided)
+ * - pages: Array of page strings or objects { speaker, text }
+ * - speaker: Default speaker name
+ * - themeColor: Accent color for border and UI elements
+ * - onComplete: Callback when the last page is finished
+ * - onPageComplete: Callback when a page finishes typing
+ * - speed: Typewriter delay (ms)
+ * - skip: If true, renders text instantly
+ */
+const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
+  const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
+  const [pageIndex, setPageIndex] = useState(0);
+  
+  const currentPage = pageList[pageIndex];
+  const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
+  const currentSpeaker = typeof currentPage === 'object' && currentPage?.speaker !== undefined ? currentPage.speaker : speaker;
+
+  const [displayText, setDisplayText] = useState(skip ? currentText : "");
+  const [isComplete, setIsComplete] = useState(skip);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const loggedPagesRef = useRef(new Set());
+
+  const markPageComplete = () => {
+    if (!currentText) return;
+    const key = `${pageIndex}:${currentText}`;
+    if (loggedPagesRef.current.has(key)) return;
+    loggedPagesRef.current.add(key);
+    onPageComplete?.({ speaker: currentSpeaker, text: currentText, pageIndex });
+  };
+
+  useEffect(() => {
+    if (skip) {
+      setDisplayText(currentText);
+      setIsComplete(true);
+      markPageComplete();
+      return;
+    }
+
+    setDisplayText("");
+    setIsComplete(false);
+    setCurrentIndex(0);
+  }, [currentText, skip]);
+
+  useEffect(() => {
+    if (isComplete || skip) return;
+
+    if (currentIndex < currentText.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(prev => prev + currentText[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    } else {
+      setIsComplete(true);
+      markPageComplete();
+    }
+  }, [currentIndex, currentText, isComplete, speed, skip]);
+
+  const handleClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isComplete) {
+      setDisplayText(currentText);
+      setIsComplete(true);
+      markPageComplete();
+    } else if (pageIndex < pageList.length - 1) {
+      setPageIndex(prev => prev + 1);
+      setDisplayText("");
+      setIsComplete(false);
+      setCurrentIndex(0);
+      audioEngine.playSfx('uiTapBottle');
+    } else if (onComplete) {
+      audioEngine.playSfx('uiTapBottle');
+      onComplete();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    advance: () => handleClick()
+  }));
+
+  return (
+    <div 
+      data-testid="vn-box"
+      onClick={handleClick}
+      style={{
+        width: '100%',
+        boxSizing: 'border-box',
+        height: '160px',
+        background: 'rgba(26, 42, 58, 0.95)',
+        borderLeft: `4px solid ${themeColor || '#c5a059'}`,
+        padding: '20px 24px',
+        borderRadius: '0 12px 12px 0',
+        cursor: 'pointer',
+        color: '#f4e9d5',
+        textAlign: 'left',
+        position: 'relative',
+        boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+        fontFamily: "'Outfit', 'Inter', sans-serif",
+        userSelect: 'none',
+        lineHeight: '1.7',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }}
+    >
+      {currentSpeaker && (
+        <div style={{ 
+          fontSize: '0.85em', 
+          color: themeColor || '#c5a059', 
+          fontWeight: 'bold', 
+          marginBottom: '8px',
+          letterSpacing: '0.08em',
+          textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+        }}>
+          {currentSpeaker}
+        </div>
+      )}
+      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
+        {displayText}
+        {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
+      </div>
+      {isComplete && (
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '12px', 
+          right: '20px', 
+          fontSize: '0.8em', 
+          color: themeColor || '#c5a059',
+          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          animation: 'vn-bounce 1s infinite',
+          background: 'rgba(0,0,0,0.3)',
+          padding: '4px 10px',
+          borderRadius: '999px',
+          border: `1px solid ${themeColor || '#c5a059'}44`
+        }}>
+          <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
+          <span style={{ fontSize: '1.2em' }}>▼</span>
+        </div>
+      )}
+      <style>{`
+        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      `}</style>
+    </div>
+  );
+});
+
+
+
+// --- Inlined Component: SoundTest ---
+
+const THEME = {
+  sand: '#e2d1b1',
+  parchment: '#f4e9d5',
+  brass: '#c5a059',
+  brassDark: '#8e6d2e',
+  nightBlue: '#1a2a3a',
+  oasisTeal: '#2a5a5a',
+  textDark: '#2a2a2a',
+  starGold: '#ffcc00'
+};
+
+function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
+  const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
+  const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
+  const currentTrack = currentPlayingId ? Object.values(TRACKS).find(t => t.id === currentPlayingId) : null;
+
+  const handlePlayTrack = (track) => {
+    audioEngine.playTrack(track);
+    setCurrentPlayingId(track.id);
+  };
+
+  const handleStop = () => {
+    audioEngine.stop();
+    setCurrentPlayingId(null);
+  };
+
+  return (
+    <div data-testid="sound-test-modal" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.92)', zIndex: 2000, display: 'flex', flexDirection: 'column', padding: '8px' }}>
+      <div style={{ maxWidth: '600px', width: '100%', height: '100%', margin: '0 auto', background: '#1a1a1a', borderRadius: '12px', border: `1px solid ${THEME.brassDark}`, color: '#eee', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+        {/* Fixed Header */}
+        <div style={{ padding: '12px 16px', background: 'rgba(26, 42, 58, 0.98)', borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h2 style={{ margin: 0, color: THEME.starGold, fontSize: '1.1rem', fontWeight: 'bold' }}>Sound Test</h2>
+            <button data-testid="sound-test-close" onClick={onClose} style={{ padding: '6px 12px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>閉じる</button>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: '6px' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase' }}>Now Playing</div>
+              <div style={{ fontSize: '0.85rem', color: currentTrack ? THEME.starGold : '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '500' }}>
+                {currentTrack ? `${currentTrack.title} (${currentTrack.id})` : 'None'}
+              </div>
+            </div>
+            <button 
+              onClick={handleStop}
+              style={{ padding: '8px 16px', background: currentPlayingId ? '#e53935' : '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 'bold', transition: 'background 0.2s' }}
+            >
+              STOP
+            </button>
+          </div>
+        </div>
+
+        <div style={{ overflowY: 'auto', padding: '16px' }}>
+          {!isAudioEnabled && (
+            <div style={{ background: '#422', padding: '12px', marginBottom: '20px', borderRadius: '8px', color: '#f88', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #622' }}>
+              <span>音声がOFFのため、再生されません。</span>
+              <button onClick={onToggleAudio} style={{ padding: '6px 12px', background: THEME.starGold, color: THEME.textDark, border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }}>音をONにする</button>
+            </div>
+          )}
+
+        {/* BGM Section */}
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>BGM (Music)</h3>
+          
+          {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
+            <div key={category} style={{ marginBottom: '16px' }}>
+              <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{category}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => {
+                  const isPlaying = currentPlayingId === track.id;
+                  return (
+                    <button 
+                      key={track.id} 
+                      onClick={() => handlePlayTrack(track)}
+                      disabled={!isAudioEnabled}
+                      style={{ 
+                        background: isPlaying ? 'rgba(255, 204, 0, 0.15)' : '#2a2a2a', 
+                        padding: '10px 8px', 
+                        borderRadius: '6px', 
+                        border: `1px solid ${isPlaying ? THEME.starGold : '#3a3a3a'}`,
+                        textAlign: 'left',
+                        cursor: isAudioEnabled ? 'pointer' : 'default',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2px',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <div style={{ fontWeight: 'bold', fontSize: '0.7rem', color: isPlaying ? THEME.starGold : '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</div>
+                      <div style={{ fontSize: '0.6rem', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.id}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>SFX (Sound Effects)</h3>
+
+        {groups.map(group => (
+          <div key={group} style={{ marginBottom: '20px' }}>
+            <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{group}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+              {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => audioEngine.playSfxCandidate(c.id)}
+                  disabled={!isAudioEnabled}
+                  style={{ 
+                    background: '#2a2a2a', 
+                    padding: '8px 4px', 
+                    borderRadius: '6px', 
+                    border: '1px solid #3a3a3a',
+                    cursor: isAudioEnabled ? 'pointer' : 'default',
+                    textAlign: 'center'
+                  }}
+                >
+                  <div style={{ fontSize: '0.65rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.id}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
 

@@ -55,14 +55,51 @@ updatePublicIndexHtml(buildVersion);
 
 // 2. Generate main.canvas.jsx (Single file JSX with React externalized)
 try {
-    const appCode = fs.readFileSync(path.join('src', 'App.jsx'), 'utf-8');
+    let appCode = fs.readFileSync(path.join('src', 'App.jsx'), 'utf-8');
     const entryCode = fs.readFileSync(path.join('src', 'entry.canvas.jsx'), 'utf-8');
+
+    // UIコンポーネントのインライン化処理
+    const uiImportRegex = /import\s+(\w+)\s+from\s+['"]\.\/ui\/(\w+)['"];?\r?\n?/g;
+    let uiComponentsCode = '';
+    
+    // 全てのマッチを先に取得
+    const matches = [...appCode.matchAll(uiImportRegex)];
+    
+    for (const match of matches) {
+        const fullImportLine = match[0];
+        const componentName = match[1];
+        const fileName = match[2];
+        const filePath = path.join('src', 'ui', `${fileName}.jsx`);
+        
+        if (fs.existsSync(filePath)) {
+            console.log(`Inlining UI component: ${componentName} from ${filePath}`);
+            let compCode = fs.readFileSync(filePath, 'utf-8');
+            
+            // 不要なインポート/エクスポートを削除
+            compCode = compCode.replace(/^import\s+[\s\S]*?from\s+['"].*?['"];?\r?\n?/gm, '');
+            compCode = compCode.replace(/export\s+default\s+\w+;?\r?\n?$/, '');
+            compCode = compCode.replace(/export\s+default\s+/, '');
+            
+            // 相対パスの修正 (../ -> ./)
+            compCode = compCode.replace(/['"]\.\.\//g, "'./");
+            
+            uiComponentsCode += `\n// --- Inlined Component: ${componentName} ---\n${compCode}\n`;
+            
+            // App.jsx からこのインポート行を削除
+            appCode = appCode.replace(fullImportLine, '');
+        }
+    }
 
     // App.jsx から不要な import/export を削除して内部関数化
     // ※ import React は entry.canvas.jsx 側で保持するので削除
-    const appBody = appCode
+    // 括弧付きインポート (import React, { ... } from 'react') は定数定義に変換
+    let appBody = appCode
+        .replace(/import\s+React,\s*(\{[\s\S]*?\})\s+from\s+['"]react['"];?\r?\n?/, 'const $1 = React;\n')
         .replace(/import\s+React\s+from\s+['"]react['"];?\r?\n?/, '')
         .replace(/export\s+default\s+function\s+App/, 'function App');
+
+    // UIコンポーネントをApp関数の直前に挿入 (既存のimportの後になるように)
+    appBody = appBody.replace('function App', uiComponentsCode + '\nfunction App');
 
     // entry.canvas.jsx の import App を App の実体に差し替え
     const bundledCanvasCode = entryCode.replace(
