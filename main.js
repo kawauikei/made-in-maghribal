@@ -115,12 +115,27 @@ class SimpleAudioEngine {
     this.lastSfx = null;
     this.currentTrackId = null;
     this.isMuted = false;
+    this.isUnlocked = false;
     this.bgmVolume = 0.8;
     this.seVolume = 0.8;
     this.volume = this.bgmVolume;
     this.baseUrl = "https://kawauikei.github.io/made-in-maghribal/";
     if (typeof window !== "undefined") {
       window.__madeInMaghribalAudioEngine = this;
+      const unlock = () => {
+        if (this.isUnlocked) return;
+        this.isUnlocked = true;
+        if (this.audio && this.audio.paused && !this.isMuted) {
+          this.audio.play().catch(() => {
+          });
+        }
+        ["mousedown", "keydown", "touchstart"].forEach(
+          (e) => window.removeEventListener(e, unlock)
+        );
+      };
+      ["mousedown", "keydown", "touchstart"].forEach(
+        (e) => window.addEventListener(e, unlock)
+      );
     }
   }
   /**
@@ -132,7 +147,13 @@ class SimpleAudioEngine {
       this.stop();
       return;
     }
-    if (this.currentTrackId === track.id) return;
+    if (this.currentTrackId === track.id) {
+      if (this.audio && this.audio.paused && this.isUnlocked && !this.isMuted) {
+        this.audio.play().catch(() => {
+        });
+      }
+      return;
+    }
     this.stop();
     const fullSrc = `${this.baseUrl}${track.src}`.replace(/([^:])\/\//g, "$1/");
     try {
@@ -140,11 +161,18 @@ class SimpleAudioEngine {
       this.audio.loop = track.loop || false;
       this.audio.volume = this.bgmVolume;
       this.audio.muted = this.isMuted;
-      this.audio.play().catch((err) => {
-        console.warn(`Audio playback failed for ${track.id}:`, err.message);
-        this.stop();
-      });
       this.currentTrackId = track.id;
+      if (!this.isUnlocked || this.isMuted) {
+        return;
+      }
+      this.audio.play().catch((err) => {
+        if (err.name === "NotAllowedError") {
+          this.isUnlocked = false;
+        } else {
+          console.warn(`Audio playback failed for ${track.id}:`, err.message);
+          this.stop();
+        }
+      });
     } catch (err) {
       console.error(`Failed to create Audio object for ${track.id}:`, err);
     }
@@ -231,7 +259,9 @@ class SimpleAudioEngine {
         sfx.addEventListener("timeupdate", checkEnd);
       }
       sfx.play().catch((err) => {
-        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+        if (err.name !== "NotAllowedError") {
+          console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+        }
       });
       this.lastSfx = sfx;
     } catch (err) {
@@ -8119,12 +8149,12 @@ function App() {
         trackId = `${hPrefix}-06`;
       }
     }
-    if (trackId && TRACKS[trackId]) {
+    if (isAudioEnabled && trackId && TRACKS[trackId]) {
       audioEngine.playTrack(TRACKS[trackId]);
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
   const isInstantTextSpeed = textSpeed === "instant" || instantUnreadText;
