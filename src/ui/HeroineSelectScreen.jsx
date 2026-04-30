@@ -110,7 +110,7 @@ const HeroineSelectScreen = ({
               data-testid={`heroine-tab-${h.id}`}
               key={h.id}
               onClick={() => {
-                if (audioEngine) audioEngine.playSfx('uiTapBottle');
+                if (audioEngine) audioEngine.playSfx('uiHeroineTab');
                 if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
               }}
               style={{

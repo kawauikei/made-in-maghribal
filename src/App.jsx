@@ -605,8 +605,8 @@ export default function App() {
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
     
-    // 1. Play choice sound immediately
-    audioEngine.playSfx('quizChoicePick');
+    // 1. Play choice sound immediately (Removed as redundant)
+    // audioEngine.playSfx('quizChoicePick');
     
     const updatedSession = answerQuestion(session, itemId);
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];

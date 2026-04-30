@@ -1213,7 +1213,7 @@ const HeroineSelectScreen = ({
               data-testid={`heroine-tab-${h.id}`}
               key={h.id}
               onClick={() => {
-                if (audioEngine) audioEngine.playSfx('uiTapBottle');
+                if (audioEngine) audioEngine.playSfx('uiHeroineTab');
                 if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
               }}
               style={{
@@ -2163,8 +2163,8 @@ function App() {
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
     
-    // 1. Play choice sound immediately
-    audioEngine.playSfx('quizChoicePick');
+    // 1. Play choice sound immediately (Removed as redundant)
+    // audioEngine.playSfx('quizChoicePick');
     
     const updatedSession = answerQuestion(session, itemId);
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
