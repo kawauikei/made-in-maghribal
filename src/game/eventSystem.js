@@ -48,3 +48,18 @@ export function getEventPages(event, routeMode) {
   // 3. Fallback to single text property
   return [event.text || ""];
 }
+
+/**
+ * Returns text based on route mode with fallback to baseText.
+ * 
+ * @param {string} baseText - Default text if no route-specific text exists
+ * @param {Object} routeTexts - { normal?: string, long_history?: string }
+ * @param {string} routeMode - 'normal' or 'long_history'
+ * @returns {string}
+ */
+export function getRouteText(baseText, routeTexts, routeMode) {
+  if (routeTexts && routeTexts[routeMode]) {
+    return routeTexts[routeMode];
+  }
+  return baseText;
+}

@@ -60,3 +60,13 @@ export function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
   // 0 correct -> +0
   return Math.max(0, correctCount);
 }
+
+/**
+ * Returns the affection level for a heroine
+ * @param {Object} affectionState 
+ * @param {string} heroineId 
+ * @returns {number}
+ */
+export function getAffectionLevel(affectionState, heroineId) {
+  return (affectionState && affectionState[heroineId]) || 0;
+}

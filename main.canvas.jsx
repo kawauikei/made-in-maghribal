@@ -22,7 +22,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -31,10 +31,12 @@ import itemsData from './data/generated/items.json';
 
 const ROUTE_MODE_META = {
   normal: {
-    label: '現在から育つ縁'
+    label: '現在から育つ縁',
+    description: 'はじめて出会う今の縁'
   },
   long_history: {
-    label: '過去から続く縁'
+    label: '過去から続く縁',
+    description: 'もう一つの世界線の縁'
   }
 };
 
@@ -375,15 +377,31 @@ function App() {
       // On START screen: save settings into existing save file if it exists,
       // or create a default save with these settings if it doesn't.
       const currentData = loadSaveData();
-      saveGameData({
-        ...(currentData || {}),
-        textSpeed,
-        instantUnreadText,
-        bgmVolume,
-        seVolume,
-        isAudioEnabled
-      });
-      // Do NOT setHasSave(true) if it's just a settings-only save on START screen
+      
+      // Determine if we should save: 
+      // 1. If a save already exists
+      // 2. Or if any setting is non-default (meaning the user changed something)
+      const isDefaultSettings = 
+        routeMode === 'normal' && 
+        textSpeed === 'normal' && 
+        instantUnreadText === false && 
+        Math.abs(bgmVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && 
+        Math.abs(seVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && 
+        isAudioEnabled === false;
+
+      if (currentData || !isDefaultSettings) {
+        saveGameData({
+          ...(currentData || {}),
+          routeMode,
+          textSpeed,
+          instantUnreadText,
+          bgmVolume,
+          seVolume,
+          isAudioEnabled
+        });
+      }
+
+      // hasSave should only be true if it's a real game progress save
       if (currentData && currentData.screen !== 'START') {
         setHasSave(true);
       } else {
@@ -1197,7 +1215,7 @@ function App() {
 
         <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
           <div style={{ width: '100%', maxWidth: '260px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'stretch' }}>
-            <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁の流れ</div>
+            <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁のかたち</div>
             <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
               {Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
                 const isSelected = routeMode === mode;
@@ -1227,6 +1245,9 @@ function App() {
                   </button>
                 );
               })}
+            </div>
+            <div data-testid="route-mode-description" style={{ fontSize: '0.7em', color: THEME.parchment, opacity: 0.7, textAlign: 'center', marginTop: '2px', fontStyle: 'italic' }}>
+              {getRouteModeMeta(routeMode).description}
             </div>
             <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
               {renderRouteModeBadge()}
@@ -1887,7 +1908,7 @@ function App() {
             color: '#333',
             textAlign: 'left'
           }}>
-            {selectedHeroine.description}
+            {getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)}
           </div>
 
           <button 
