@@ -2,6 +2,7 @@ import { THEME } from './ui/theme';
 import './ui/modalStyles';
 import HelpModal from './ui/HelpModal';
 import LogModal from './ui/LogModal';
+import OptionsModal from './ui/OptionsModal';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -2039,7 +2040,24 @@ export default function App() {
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
-          {renderOptionsModal()}
+          <OptionsModal
+            isOpen={showOptions}
+            onClose={() => setShowOptions(false)}
+            onReturnTitle={() => { setShowOptions(false); setScreen('START'); }}
+            isAudioEnabled={isAudioEnabled}
+            setIsAudioEnabled={setIsAudioEnabled}
+            seVolume={seVolume}
+            setSeVolume={setSeVolume}
+            bgmVolume={bgmVolume}
+            setBgmVolume={setBgmVolume}
+            textSpeed={textSpeed}
+            setTextSpeed={setTextSpeed}
+            instantUnreadText={instantUnreadText}
+            setInstantUnreadText={setInstantUnreadText}
+            buttonStyle={buttonStyle}
+            defaultAudioVolume={DEFAULT_AUDIO_VOLUME}
+            textSpeedMeta={TEXT_SPEED_META}
+          />
           <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
