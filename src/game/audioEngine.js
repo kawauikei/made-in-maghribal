@@ -19,12 +19,29 @@ class SimpleAudioEngine {
     this.lastSfx = null;
     this.currentTrackId = null;
     this.isMuted = false;
+    this.isUnlocked = false; // Track if user has interacted
     this.bgmVolume = 0.8;
     this.seVolume = 0.8;
     this.volume = this.bgmVolume;
     this.baseUrl = import.meta.env.BASE_URL || "/";
     if (typeof window !== 'undefined') {
       window.__madeInMaghribalAudioEngine = this;
+      
+      // Auto-unlock on any user interaction if not already unlocked
+      const unlock = () => {
+        if (this.isUnlocked) return;
+        this.isUnlocked = true;
+        // Try to resume current track if it was blocked
+        if (this.audio && this.audio.paused && !this.isMuted) {
+          this.audio.play().catch(() => {});
+        }
+        ['mousedown', 'keydown', 'touchstart'].forEach(e => 
+          window.removeEventListener(e, unlock)
+        );
+      };
+      ['mousedown', 'keydown', 'touchstart'].forEach(e => 
+        window.addEventListener(e, unlock)
+      );
     }
   }
 
@@ -38,7 +55,13 @@ class SimpleAudioEngine {
       return;
     }
 
-    if (this.currentTrackId === track.id) return;
+    if (this.currentTrackId === track.id) {
+      // If already set to this track, ensure it's playing if unlocked
+      if (this.audio && this.audio.paused && this.isUnlocked && !this.isMuted) {
+        this.audio.play().catch(() => {});
+      }
+      return;
+    }
 
     this.stop();
 
@@ -50,13 +73,22 @@ class SimpleAudioEngine {
       this.audio.volume = this.bgmVolume;
       this.audio.muted = this.isMuted;
       
-      this.audio.play().catch(err => {
-        // Autoplay restriction or file not found
-        console.warn(`Audio playback failed for ${track.id}:`, err.message);
-        this.stop();
-      });
-
       this.currentTrackId = track.id;
+
+      if (!this.isUnlocked || this.isMuted) {
+        // Don't even try to play yet if locked or muted
+        return;
+      }
+
+      this.audio.play().catch(err => {
+        if (err.name === 'NotAllowedError') {
+          // Expected autoplay restriction
+          this.isUnlocked = false;
+        } else {
+          console.warn(`Audio playback failed for ${track.id}:`, err.message);
+          this.stop();
+        }
+      });
     } catch (err) {
       console.error(`Failed to create Audio object for ${track.id}:`, err);
     }
@@ -160,7 +192,9 @@ class SimpleAudioEngine {
       }
 
       sfx.play().catch(err => {
-        console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+        if (err.name !== 'NotAllowedError') {
+          console.warn(`SFX playback failed for candidate ${candidateId}:`, err.message);
+        }
       });
       this.lastSfx = sfx;
     } catch (err) {
