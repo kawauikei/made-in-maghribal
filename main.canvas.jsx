@@ -56,6 +56,17 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 
+const NADER = {
+  id: 'nader',
+  name: 'ナーディル',
+  themeColor: '#c5a059',
+  role: '星瓶堂 店主',
+  visualConfig: {
+    facePosition: "center 20%",
+    standingScale: 1.0
+  }
+};
+
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const [currentPlayingId, setCurrentPlayingId] = React.useState(audioEngine.currentTrackId);
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
@@ -222,6 +233,7 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
   const outerWrapperRef = useRef(null);
+  const vnRef = useRef(null);
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -306,6 +318,19 @@ function App() {
     Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
   );
   const isClipped = rawScale < MIN_SCALE;
+
+  const shouldIgnoreVnAdvanceClick = (e) => {
+    if (showOptions || showLog || showHelp || showSoundTest) return true;
+    if (e.target.closest('button, a, input, select, textarea, [data-no-vn-advance]')) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleVnAreaClick = (e) => {
+    if (shouldIgnoreVnAdvanceClick(e)) return;
+    vnRef.current?.advance();
+  };
 
   const outerWrapperStyle = {
     width: '100%',
@@ -1320,14 +1345,29 @@ function App() {
       "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
     ];
     mainContent = (
-      <div data-testid="prologue-screen" style={{ ...containerStyle, position: 'relative' }}>
+      <div 
+        data-testid="prologue-screen" 
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {renderBackground('START')}
+        
+        {/* Nadir Standing */}
+        <div style={{ 
+          position: 'absolute', bottom: 0, right: '5%', zIndex: 1, 
+          pointerEvents: 'none', opacity: 0.9,
+          transform: 'translateX(20%)'
+        }}>
+          <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        </div>
+
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderHudButtons()}
           <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox
+              ref={vnRef}
               speaker="ナーディル"
               pages={prologuePages}
               themeColor={THEME.brass}
@@ -1358,17 +1398,32 @@ function App() {
     );
   } else if (screen === 'INTRO') {
     mainContent = (
-      <div data-testid="intro-screen" style={{ ...containerStyle, position: 'relative' }}>
+      <div 
+        data-testid="intro-screen" 
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {renderBackground(screen)}
+
+        {/* Nadir Bustup */}
+        <div style={{ 
+          position: 'absolute', bottom: 0, left: '5%', zIndex: 1, 
+          pointerEvents: 'none', opacity: 0.85,
+          transform: 'translateX(-15%)'
+        }}>
+          <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        </div>
+
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderHudButtons()}
           <h1 style={{ ...titleStyle, marginBottom: '20px' }}>第{workshopState.day}回 営業開始</h1>
-          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
+          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px', zIndex: 3 }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
               <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
               <div style={{ flex: 1 }}>
                 <VNBox
+                  ref={vnRef}
                   speaker={activeHeroine.name}
                   text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
                   themeColor={activeHeroine.themeColor}
@@ -1404,7 +1459,11 @@ function App() {
     };
     
     mainContent = (
-      <div style={{ ...containerStyle, position: 'relative' }}>
+      <div 
+        data-testid="result-screen" 
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -1413,6 +1472,7 @@ function App() {
           <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
             <div style={{ marginBottom: '25px' }}>
               <VNBox 
+                ref={vnRef}
                 text={resultNarrations[correctCount]}
                 themeColor={THEME.brass}
                 speed={textSpeedMeta.delay}
@@ -1481,7 +1541,10 @@ function App() {
     const mgmt = getWorkshopResult(correctCount);
 
     mainContent = (
-      <div style={{ ...containerStyle, position: 'relative' }}>
+      <div 
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -1515,7 +1578,7 @@ function App() {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
     mainContent = (
-      <div style={containerStyle}>
+      <div style={containerStyle} onClick={handleVnAreaClick}>
         {renderThemeStyles()}
         {renderHudButtons()}
           <h1 style={titleStyle}>愛着の記録: {activeEvent.title}</h1>
@@ -1563,6 +1626,7 @@ function App() {
               </div>
             )}
             <VNBox 
+              ref={vnRef}
               speaker={activeEvent.speaker}
               pages={getEventPages(activeEvent, routeMode)}
               themeColor={activeHeroine.themeColor}
@@ -1940,7 +2004,11 @@ function App() {
     const finalReputation = workshopState.reputation;
     
     mainContent = (
-      <div style={containerStyle}>
+      <div 
+        data-testid="final-result-screen"
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {renderHudButtons()}
         <h1 style={titleStyle}>10回の営業総決算</h1>
@@ -2002,7 +2070,10 @@ function App() {
     );
 
     mainContent = (
-      <div style={{ ...containerStyle, position: 'relative' }}>
+      <div 
+        style={{ ...containerStyle, position: 'relative' }}
+        onClick={handleVnAreaClick}
+      >
         {renderThemeStyles()}
         {/* Special Ending Background */}
         <div style={{
@@ -2030,6 +2101,7 @@ function App() {
 
           <div style={{ width: '100%', padding: '10px' }}>
             <VNBox 
+              ref={vnRef}
               speaker={activeHeroine.name}
               pages={endingData.pages}
               themeColor={activeHeroine.themeColor}
@@ -2246,7 +2318,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
   );
 }
 
-function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }) {
+const VNBox = React.forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   
@@ -2306,10 +2378,16 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
+      audioEngine.playSfx('uiTapBottle');
     } else if (onComplete) {
+      audioEngine.playSfx('uiClickForward');
       onComplete();
     }
   };
+
+  React.useImperativeHandle(ref, () => ({
+    advance: () => handleClick()
+  }));
 
   return (
     <div 
@@ -2352,18 +2430,25 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: '2px solid #c5a059' }}>&nbsp;</span>}
       </div>
-      {isComplete && pageIndex < pageList.length - 1 && (
+      {isComplete && (
         <div style={{ 
           position: 'absolute', 
           bottom: '12px', 
           right: '20px', 
-          fontSize: '0.75em', 
-          opacity: 0.7,
+          fontSize: '0.8em', 
           color: themeColor || '#c5a059',
           fontWeight: 'bold',
-          animation: 'vn-bounce 1s infinite'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          animation: 'vn-bounce 1s infinite',
+          background: 'rgba(0,0,0,0.3)',
+          padding: '4px 10px',
+          borderRadius: '999px',
+          border: `1px solid ${themeColor || '#c5a059'}44`
         }}>
-          NEXT
+          <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
+          <span style={{ fontSize: '1.2em' }}>▼</span>
         </div>
       )}
       <style>{`
@@ -2372,7 +2457,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
       `}</style>
     </div>
   );
-}
+});
 
 // Minimal Styles
 
