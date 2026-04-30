@@ -63,6 +63,8 @@ const SELECTED_SFX = {
   uiTapBottle: "uiTapBottle03",
   uiConfirmChime: "uiConfirmChime03",
   uiClickForward: "uiTapBottle03",
+  uiHeroineSelect: "uiConfirmChime01",
+  uiGameStart: "uiConfirmChime04",
   quizChoicePick: "quizChoicePick03",
   quizCorrectStarChime: "quizCorrectStarChime01",
   quizWrongSandTap: "quizWrongSandTap03",
@@ -8126,7 +8128,7 @@ function App() {
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
   const isInstantTextSpeed = textSpeed === "instant" || instantUnreadText;
   const handleStartGame = () => {
-    audioEngine.playSfx("uiTapBottle");
+    audioEngine.playSfx("uiGameStart");
     clearSaveData();
     setHasSave(false);
     setActiveHeroineId("hakima");
@@ -8227,6 +8229,7 @@ function App() {
     await Promise.all(loadPromises);
   };
   const handleSelectHeroine = async (heroineId) => {
+    audioEngine.playSfx("uiHeroineSelect");
     setIsHeroineLoading(true);
     setLoadingProgress(0);
     const heroine = HEROINES.find((h) => h.id === heroineId);
