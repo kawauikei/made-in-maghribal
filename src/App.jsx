@@ -30,12 +30,12 @@ import itemsData from './data/generated/items.json';
 
 const ROUTE_MODE_META = {
   normal: {
-    label: '現在から育つ縁',
-    description: 'はじめて出会う今の縁'
+    label: '現在の縁',
+    description: 'はじめて出会う、現在から育つ縁'
   },
   long_history: {
-    label: '過去から続く縁',
-    description: 'もう一つの世界線の縁'
+    label: '過去の縁',
+    description: '通常ルートとは別の関係性で始まる、過去から続く縁'
   }
 };
 
@@ -1001,7 +1001,7 @@ export default function App() {
             <div data-testid="help-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '12px 2px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・正解すると工房評価と親密度が上がります。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・10日間の営業後、結果とエンディングに進みます。</p>
+              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・10回の営業を終えると、結果とエンディングに進みます。</p>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・親密度が上がるとイベントが発生します。</p>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Backlog から最近の会話を確認できます。</p>
               <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Options ではテキスト速度、音量、未読即時表示を変更できます。</p>
@@ -1251,6 +1251,13 @@ export default function App() {
             <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
               {renderRouteModeBadge()}
             </div>
+            <button 
+              data-testid="start-new" 
+              onClick={handleStartGame} 
+              style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: '100%', maxWidth: '260px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              <span style={{ fontSize: '1.2em' }}>☆</span> 星瓶堂を開く
+            </button>
           </div>
 
           {hasSave && (
@@ -1262,15 +1269,7 @@ export default function App() {
               つづきから            </button>
           )}
           
-          <button data-testid="start-new-game" onClick={handleStartGame} style={{ ...buttonStyle, width: '100%', maxWidth: '260px', margin: 0 }}>
-            {hasSave ? 'はじめから' : '店を開く'}
-          </button>
-
-          <button 
-            data-testid="memories-open"
-            onClick={() => setScreen('MEMORIES')} 
-            style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}
-          >
+          <button data-testid="memories-open" onClick={() => setScreen('MEMORIES')} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}>
             思い出の記録
           </button>
 
@@ -1321,9 +1320,9 @@ export default function App() {
   } else if (screen === 'PROLOGUE') {
     const prologuePages = [
       "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も店を開く。",
+      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
       "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-      "これからの10日間。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+      "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
       "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
     ];
     mainContent = (
@@ -1370,7 +1369,7 @@ export default function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>{workshopState.day}日目</h1>
+          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>第{workshopState.day}回 営業開始</h1>
           <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
               <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
@@ -1387,8 +1386,8 @@ export default function App() {
               </div>
             </div>
             <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の朝。ナーディルは店を開き、客を迎える準備を整えている。</p>
-              <p style={{ margin: 0, lineHeight: '1.6' }}>今日はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
+              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。</p>
+              <p style={{ margin: 0, lineHeight: '1.6' }}>今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
               <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
             </div>
             <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
@@ -1402,12 +1401,12 @@ export default function App() {
     const mgmt = getWorkshopResult(correctCount);
 
     const resultNarrations = {
-      5: "大成功。今日は星瓶堂の流れがよく見えていた。",
+      5: "大成功。今回の営業は、星瓶堂の流れがよく見えていた。",
       4: "よくやった。客の話を聞き取り、品を選ぶ手つきも安定している。",
       3: "まずまずだ。迷いはあるが、次の一手が見えている。",
       2: "もう少し。客の意図をつかめれば、品選びはもっと楽になる。",
       1: "惜しい。焦らず相手の話を聞くところから整えていこう。",
-      0: "今日はうまくいかなかった。だが、次の営業で取り戻せる。",
+      0: "今回はうまくいかなかった。だが、次の営業で取り戻せる。",
     };
     
     mainContent = (
@@ -1416,7 +1415,7 @@ export default function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           {renderAudioToggle()}
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>業務報告書</h1>
+          <h1 style={{ ...titleStyle, color: THEME.nightBlue, marginBottom: '20px' }}>今回の営業記録</h1>
           <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
             <div style={{ marginBottom: '25px' }}>
               <VNBox 
@@ -1478,7 +1477,7 @@ export default function App() {
             <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
               {rank.message}
             </div>
-            <button onClick={handleEndDay} style={{ ...buttonStyle, width: '100%', maxWidth: '240px' }}>次へ進む</button>
+            <button data-testid="day-end-next" onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
           </div>
         </div>
       </div>
@@ -1493,14 +1492,14 @@ export default function App() {
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ ...cardStyle, width: '90%', maxWidth: '300px', background: 'rgba(255,255,255,0.95)', padding: '20px' }}>
-            <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>本日の営業記録</h3>
+            <h3 style={{ margin: '0 0 15px 0', fontSize: '1em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>今回の営業記録</h3>
             <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '15px' }}>
                <div>売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{mgmt.sales}G</span></div>
                <div>評判: <span style={{ color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}</span></div>
             </div>
             
             <div style={{ textAlign: 'left', fontSize: '0.85em', color: '#444', borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-              <strong>現在の工房の状態({workshopState.day}日目終了)</strong>
+              <strong>現在の工房の状態(第{workshopState.day}回 営業終了)</strong>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
                  <div>総売上: <span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
                  <div>総評判: <span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
@@ -1511,7 +1510,7 @@ export default function App() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-            <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の日へ進む</button>
+            <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の営業へ</button>
             <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
           </div>
         </div>
@@ -1950,7 +1949,7 @@ export default function App() {
       <div style={containerStyle}>
         {renderThemeStyles()}
         {renderAudioToggle()}
-        <h1 style={titleStyle}>10日間の総決算</h1>
+        <h1 style={titleStyle}>10回の営業総決算</h1>
         <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
           <div style={{ marginBottom: '25px' }}>
             <HeroineDisplay heroine={activeHeroine} type="face" size="medium" />
@@ -1976,7 +1975,7 @@ export default function App() {
              </div>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10日間の営業を締めくくり、次の一歩へ進みます。</p>
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10回の営業を締めくくり、次の一歩へ進みます。</p>
 
           <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
         </div>

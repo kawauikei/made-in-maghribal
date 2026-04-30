@@ -27,14 +27,14 @@ export const HEROINES = [
     },
     routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
     musicMood: "軽やかで少し照れくさい旋律",
-    greeting: "おはよう、ナーディル。今日も星瓶堂らしい目利き、見せてよね。",
+    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "mira",
     fullName: "ミラサフワーン",
     name: "ミラ",
-    role: "錬金大学の先輩 / 相談相手",
+    role: "錬金大学の後輩 / 協力者",
     age: 16,
     themeColor: "#3d5afe",
     themeTrackId: "MIRA-01",
@@ -52,14 +52,14 @@ export const HEROINES = [
     },
     routeTheme: "知識と好奇心がつなぐ協力関係",
     musicMood: "知性的で透明感のある旋律",
-    greeting: "おはようございます、先輩。今日もいい品を見つけましょう。",
+    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
     assets: { standing: {}, face: {} }
   },
   {
     id: "dariya",
     fullName: "ダリヤザフラーン",
     name: "ダリヤ",
-    role: "王宮錬金局のエリート",
+    role: "王宮錬金局のエリート / 協力者",
     age: 23,
     themeColor: "#f44336",
     themeTrackId: "DARIYA-01",
@@ -70,7 +70,7 @@ export const HEROINES = [
     description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
     personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
     relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
-    greeting: "おはよう、ナーディル。今日は君の判断を見せてもらおう。",
+    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
     stats: {
       precision: 90,
       knowledge: 95,

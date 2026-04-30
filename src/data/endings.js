@@ -9,7 +9,7 @@ export const ENDINGS = {
       title: "星瓶堂の灯が、やさしく続く",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "今日までの積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また明日も星瓶堂を手伝うと言った。"
+      text: "これまでの営業の積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また次の営業でも付き合ってくれると言った。"
     },
     normal: {
       title: "いつもの一日が、少し特別になる",
@@ -29,7 +29,7 @@ export const ENDINGS = {
       title: "ひらめきが、未来を照らす",
       expression: "joy",
       bgId: "shopInteriorService",
-      text: "ミラは新しい発想を携えて、また星瓶堂にやってくる。次の相談が、もう楽しみだ。"
+      text: "ミラは新しい発想を携えて、また星瓶堂に足を運んでくれる。次の相談が、もう楽しみだ。"
     },
     normal: {
       title: "学びの途中で",

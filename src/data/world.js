@@ -25,5 +25,5 @@ export const PROTAGONIST = {
   role: "若き錬金術師 / 星瓶堂店主",
   background: "錬金大学を飛び級で卒業。実家の星瓶堂を継いだばかり。",
   personality: "穏やかで人当たりがよいが、根は真面目。",
-  goal: "自分の力で店を一人前にすること"
+  goal: "自分の力で工房を一人前にすること"
 };
