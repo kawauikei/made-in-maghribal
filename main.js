@@ -1760,6 +1760,88 @@ const PrologueScreen = ({
     ))))
   );
 };
+const IntroScreen = ({
+  activeHeroine,
+  screen,
+  routeMode,
+  textSpeedMeta,
+  isInstantTextSpeed,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  onVnAreaClick,
+  onPageComplete,
+  onBeginService,
+  renderThemeStyles,
+  renderBackground,
+  HeroineDisplay: HeroineDisplay2,
+  audioEngine: audioEngine2,
+  vnRef,
+  containerStyle: containerStyle2,
+  titleStyle: titleStyle2,
+  cardStyle: cardStyle2,
+  buttonStyle: buttonStyle2,
+  narrativeBoxStyle: narrativeBoxStyle2
+}) => {
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "intro-screen",
+      style: { ...containerStyle2, position: "relative" },
+      onClick: onVnAreaClick
+    },
+    renderThemeStyles(),
+    renderBackground(screen),
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: 0,
+      left: "5%",
+      zIndex: 1,
+      pointerEvents: "none",
+      opacity: 0.9,
+      transform: "translateX(-20%)"
+    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: 0,
+      right: "5%",
+      zIndex: 1,
+      pointerEvents: "none",
+      opacity: 0.9,
+      transform: "translateX(20%)"
+    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" })),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      GameHud,
+      {
+        screen,
+        routeMode,
+        onOpenLog,
+        onOpenOptions,
+        onOpenHelp
+      }
+    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "20px" } }, activeHeroine.name, "との語らい"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "rgba(26, 42, 58, 0.9)", color: THEME.parchment, padding: "24px", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px" } }, /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        ref: vnRef,
+        speaker: "ナーディル",
+        text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`,
+        themeColor: THEME.brass,
+        speed: textSpeedMeta.delay,
+        skip: shouldSkipTypewriter(isInstantTextSpeed),
+        onPageComplete,
+        onComplete: onBeginService
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle2, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。"), /* @__PURE__ */ React.createElement("p", { style: { margin: "10px 0 0 0", fontSize: "0.85em", color: THEME.oasisTeal } }, "※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。")), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        "data-testid": "intro-start",
+        onClick: onBeginService,
+        style: { ...buttonStyle2, width: "100%", maxWidth: "280px", marginTop: "10px" }
+      },
+      "営業を始める"
+    )))
+  );
+};
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -7993,7 +8075,6 @@ const TEXT_SPEED_META = {
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
-const NADER = PROTAGONIST;
 function App() {
   var _a, _b, _c;
   const [session, setSession] = useState(null);
@@ -8644,45 +8725,30 @@ function App() {
     );
   } else if (screen === "INTRO") {
     mainContent = /* @__PURE__ */ React.createElement(
-      "div",
+      IntroScreen,
       {
-        "data-testid": "intro-screen",
-        style: { ...containerStyle, position: "relative" },
-        onClick: handleVnAreaClick
-      },
-      renderThemeStyles(),
-      renderBackground(screen),
-      /* @__PURE__ */ React.createElement("div", { style: {
-        position: "absolute",
-        bottom: 0,
-        left: "5%",
-        zIndex: 1,
-        pointerEvents: "none",
-        opacity: 0.85,
-        transform: "translateX(-15%)"
-      } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: NADER, type: "standing", size: "large", expression: "normal" })),
-      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
-        GameHud,
-        {
-          screen,
-          routeMode,
-          onOpenLog: () => setShowLog(true),
-          onOpenOptions: () => setShowOptions(true),
-          onOpenHelp: () => setShowHelp(true)
-        }
-      ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "20px" } }, "第", workshopState.day, "回 営業開始"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "transparent", boxShadow: "none", padding: 0, marginTop: "10px", zIndex: 3 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "20px", alignItems: "flex-start", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "small", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
-        VNBox,
-        {
-          ref: vnRef,
-          speaker: activeHeroine.name,
-          text: activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`,
-          themeColor: activeHeroine.themeColor,
-          speed: textSpeedMeta.delay,
-          skip: shouldSkipTypewriter(isInstantTextSpeed),
-          onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
-          onComplete: handleBeginService
-        }
-      ))), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。"), /* @__PURE__ */ React.createElement("p", { style: { margin: "10px 0 0 0", fontSize: "0.85em", color: THEME.oasisTeal } }, "※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。")), /* @__PURE__ */ React.createElement("button", { "data-testid": "intro-start", onClick: handleBeginService, style: { ...buttonStyle, width: "100%", maxWidth: "280px", marginTop: "10px" } }, "営業を始める")))
+        activeHeroine,
+        screen,
+        routeMode,
+        textSpeedMeta,
+        isInstantTextSpeed,
+        onOpenLog: () => setShowLog(true),
+        onOpenOptions: () => setShowOptions(true),
+        onOpenHelp: () => setShowHelp(true),
+        onVnAreaClick: handleVnAreaClick,
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
+        onBeginService: handleBeginService,
+        renderThemeStyles,
+        renderBackground,
+        HeroineDisplay,
+        audioEngine,
+        vnRef,
+        containerStyle,
+        titleStyle,
+        cardStyle,
+        buttonStyle,
+        narrativeBoxStyle
+      }
     );
   } else if (screen === "RESULT" && session) {
     const correctCount = session.answers.filter((a) => a.isCorrect).length;
