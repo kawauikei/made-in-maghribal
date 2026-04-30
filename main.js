@@ -286,7 +286,7 @@ function HelpModal({ isOpen, onClose }) {
     },
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・お客さんの依頼を読み、合う商品を選びます。"),
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・正解すると工房評価と親密度が上がります。"),
-    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・10回の営業を終えると、結果とエンディングに進みます。"),
+    /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・10回の営業を終えると、結果とエンディングに進みます（エンディングは条件により変化します）。"),
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・親密度が上がるとイベントが発生します。"),
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上のログボタン（📖）から最近の会話を確認できます。"),
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。")
