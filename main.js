@@ -33,9 +33,10 @@ const hudModalCard = {
   boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
   border: `1px solid ${THEME.brass}`
 };
-const hudCloseX = (onClose) => React.createElement(
+const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
   "button",
   {
+    "data-testid": "modal-x-close",
     onClick: onClose,
     style: {
       position: "absolute",
@@ -53,7 +54,8 @@ const hudCloseX = (onClose) => React.createElement(
       alignItems: "center",
       justifyContent: "center",
       zIndex: 10
-    }
+    },
+    "aria-label": "Close"
   },
   "×"
 );
@@ -620,6 +622,22 @@ const GameHud = ({
     },
     "？"
   )));
+};
+const shouldIgnoreVnAdvanceClick = (e, { showOptions, showLog, showHelp, showSoundTest }) => {
+  if (showOptions || showLog || showHelp || showSoundTest) return true;
+  const target = e.target;
+  if (target.closest("button, a, input, select, textarea, [data-no-vn-advance]")) {
+    return true;
+  }
+  return false;
+};
+const safeAdvanceVnBox = (vnRef) => {
+  if (vnRef && vnRef.current && typeof vnRef.current.advance === "function") {
+    vnRef.current.advance();
+  }
+};
+const shouldSkipTypewriter = (isInstantTextSpeed, isSeen = false) => {
+  return isInstantTextSpeed || isSeen;
 };
 const GENRES = [
   { id: "ARM", name: "武具" },
@@ -7437,17 +7455,9 @@ function App() {
     Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
   );
   const isClipped = rawScale < MIN_SCALE;
-  const shouldIgnoreVnAdvanceClick = (e) => {
-    if (showOptions || showLog || showHelp || showSoundTest) return true;
-    if (e.target.closest("button, a, input, select, textarea, [data-no-vn-advance]")) {
-      return true;
-    }
-    return false;
-  };
   const handleVnAreaClick = (e) => {
-    var _a2;
-    if (shouldIgnoreVnAdvanceClick(e)) return;
-    (_a2 = vnRef.current) == null ? void 0 : _a2.advance();
+    if (shouldIgnoreVnAdvanceClick(e, { showOptions, showLog, showHelp, showSoundTest })) return;
+    safeAdvanceVnBox(vnRef);
   };
   const outerWrapperStyle = {
     width: "100%",
@@ -8068,7 +8078,7 @@ function App() {
           pages: prologuePages,
           themeColor: THEME.brass,
           speed: textSpeedMeta.delay,
-          skip: isInstantTextSpeed,
+          skip: shouldSkipTypewriter(isInstantTextSpeed),
           onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "PROLOGUE" }),
           onComplete: () => {
             setIsPrologueComplete(true);
@@ -8123,7 +8133,7 @@ function App() {
           text: activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`,
           themeColor: activeHeroine.themeColor,
           speed: textSpeedMeta.delay,
-          skip: isInstantTextSpeed,
+          skip: shouldSkipTypewriter(isInstantTextSpeed),
           onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
           onComplete: handleBeginService
         }
@@ -8166,7 +8176,7 @@ function App() {
           text: resultNarrations[correctCount],
           themeColor: THEME.brass,
           speed: textSpeedMeta.delay,
-          skip: isInstantTextSpeed,
+          skip: shouldSkipTypewriter(isInstantTextSpeed),
           onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
           onComplete: handleEndDay
         }
@@ -8258,7 +8268,7 @@ function App() {
         pages: getEventPages(activeEvent, routeMode),
         themeColor: activeHeroine.themeColor,
         speed: textSpeedMeta.delay,
-        skip: isInstantTextSpeed || seenEventIds.includes(activeEvent.id),
+        skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "EVENT" }),
         onComplete: handleCloseEvent
       }
@@ -8598,7 +8608,7 @@ function App() {
           pages: endingData.pages,
           themeColor: activeHeroine.themeColor,
           speed: textSpeedMeta.delay,
-          skip: isInstantTextSpeed,
+          skip: shouldSkipTypewriter(isInstantTextSpeed),
           onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "ENDING" }),
           onComplete: handleFinishGame
         }
