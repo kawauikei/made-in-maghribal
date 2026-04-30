@@ -9,6 +9,54 @@ const THEME = {
   textDark: "#2a2a2a",
   starGold: "#ffcc00"
 };
+const hudModalBackdrop = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(0,0,0,0.7)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 1e3,
+  backdropFilter: "blur(4px)"
+};
+const hudModalCard = {
+  background: THEME.parchment,
+  borderRadius: "16px",
+  width: "90%",
+  maxHeight: "85vh",
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+  border: `1px solid ${THEME.brass}`
+};
+const hudCloseX = (onClose) => React.createElement(
+  "button",
+  {
+    onClick,
+    style: {
+      position: "absolute",
+      top: "12px",
+      right: "12px",
+      width: "32px",
+      height: "32px",
+      borderRadius: "50%",
+      border: "none",
+      background: "rgba(0,0,0,0.1)",
+      color: THEME.nightBlue,
+      fontSize: "20px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10
+    }
+  },
+  "×"
+);
 const SELECTED_SFX = {
   uiTapBottle: "uiTapBottle01",
   uiConfirmChime: "uiConfirmChime01",
@@ -214,30 +262,6 @@ class SimpleAudioEngine {
   }
 }
 const audioEngine = new SimpleAudioEngine();
-const hudModalBackdrop = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: "rgba(0,0,0,0.7)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  zIndex: 1e3,
-  backdropFilter: "blur(4px)"
-};
-const hudModalCard = {
-  background: THEME.parchment,
-  borderRadius: "16px",
-  width: "90%",
-  maxHeight: "85vh",
-  display: "flex",
-  flexDirection: "column",
-  position: "relative",
-  boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-  border: `1px solid ${THEME.brass}`
-};
 const buttonStyle$1 = {
   padding: "12px 20px",
   borderRadius: "8px",
@@ -248,38 +272,13 @@ const buttonStyle$1 = {
   fontFamily: "inherit",
   boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
 };
-const hudCloseX = (onClose) => /* @__PURE__ */ React.createElement(
-  "button",
-  {
-    "data-testid": "help-modal-close-x",
-    onClick: onClose,
-    style: {
-      position: "absolute",
-      top: "12px",
-      right: "12px",
-      width: "32px",
-      height: "32px",
-      borderRadius: "50%",
-      border: "none",
-      background: "rgba(0,0,0,0.1)",
-      color: THEME.nightBlue,
-      fontSize: "20px",
-      cursor: "pointer",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 10
-    }
-  },
-  "×"
-);
 function HelpModal({ isOpen, onClose }) {
   if (!isOpen) return null;
   const handleClose = () => {
     audioEngine.playSfx("uiTapBottle");
     onClose();
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "340px", padding: "18px 16px 14px" } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "遊び方"), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "help-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "340px", padding: "18px 16px 14px" } }, hudCloseX(), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "遊び方"), /* @__PURE__ */ React.createElement(
     "div",
     {
       "data-testid": "help-scroll",
@@ -296,6 +295,56 @@ function HelpModal({ isOpen, onClose }) {
     {
       "data-testid": "help-close",
       style: { ...buttonStyle$1, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
+      onClick: handleClose
+    },
+    "閉じる"
+  ))));
+}
+const logButtonStyle = {
+  padding: "12px 20px",
+  borderRadius: "8px",
+  border: "none",
+  fontWeight: "bold",
+  cursor: "pointer",
+  transition: "all 0.2s",
+  fontFamily: "inherit",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
+};
+function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
+  if (!isOpen) return null;
+  const handleClose = () => {
+    audioEngine.playSfx("uiTapBottle");
+    onClose();
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "360px", padding: "16px 14px 14px" } }, hudCloseX(), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "ログ"), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      ref: scrollRef,
+      "data-testid": "backlog-scroll",
+      style: { flex: 1, overflowY: "auto", borderTop: "1px solid #e0d8cc", borderBottom: "1px solid #e0d8cc", padding: "4px 0" }
+    },
+    vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.88em", textAlign: "center", padding: "20px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
+      var _a;
+      const isNarration = !entry.speaker;
+      const displayText = typeof entry.text === "string" ? entry.text : ((_a = entry.text) == null ? void 0 : _a.text) || "";
+      if (!displayText) return null;
+      return /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          "data-testid": "backlog-entry",
+          "data-route-mode": entry.routeMode || "normal",
+          key: `${entry.sequence}-${idx}`,
+          style: { padding: "7px 10px", borderBottom: "1px solid #ede8df", textAlign: "left" }
+        },
+        !isNarration && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.78em", fontWeight: "bold", color: THEME.brassDark, display: "block", marginBottom: "3px" } }, entry.speaker),
+        /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.85em", color: "#333", lineHeight: "1.55", whiteSpace: "pre-wrap", wordBreak: "break-word" } }, displayText)
+      );
+    })
+  ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "backlog-close",
+      style: { ...logButtonStyle, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
       onClick: handleClose
     },
     "閉じる"
@@ -7850,46 +7899,6 @@ function App() {
       "閉じる"
     ))));
   };
-  const renderLogModal = () => {
-    if (!showLog) return null;
-    const closeLog = () => {
-      audioEngine.playSfx("uiTapBottle");
-      setShowLog(false);
-    };
-    return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop2 }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard2, maxWidth: "360px", padding: "16px 14px 14px" } }, hudCloseX2(closeLog), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "ログ"), /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        ref: backlogScrollRef,
-        "data-testid": "backlog-scroll",
-        style: { flex: 1, overflowY: "auto", borderTop: "1px solid #e0d8cc", borderBottom: "1px solid #e0d8cc", padding: "4px 0" }
-      },
-      vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.88em", textAlign: "center", padding: "20px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
-        var _a2;
-        const isNarration = !entry.speaker;
-        const displayText = typeof entry.text === "string" ? entry.text : ((_a2 = entry.text) == null ? void 0 : _a2.text) || "";
-        if (!displayText) return null;
-        return /* @__PURE__ */ React.createElement(
-          "div",
-          {
-            "data-testid": "backlog-entry",
-            "data-route-mode": entry.routeMode || "normal",
-            key: `${entry.sequence}-${idx}`,
-            style: { padding: "7px 10px", borderBottom: "1px solid #ede8df", textAlign: "left" }
-          },
-          !isNarration && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.78em", fontWeight: "bold", color: THEME.brassDark, display: "block", marginBottom: "3px" } }, entry.speaker),
-          /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.85em", color: "#333", lineHeight: "1.55", whiteSpace: "pre-wrap", wordBreak: "break-word" } }, displayText)
-        );
-      })
-    ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "backlog-close",
-        style: { ...buttonStyle, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
-        onClick: closeLog
-      },
-      "閉じる"
-    ))));
-  };
   const utilityHeaderStyle = {
     width: "100%",
     minHeight: "44px",
@@ -8619,7 +8628,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), renderOptionsModal(), renderLogModal(), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), renderOptionsModal(), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
