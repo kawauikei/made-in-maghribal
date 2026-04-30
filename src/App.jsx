@@ -1469,7 +1469,13 @@ export default function App() {
     mainContent = (
       <div data-testid="quiz-screen" style={containerStyle}>
         {renderThemeStyles()}
-        {renderHudButtons()}
+        <GameHud
+          screen={screen}
+          routeMode={routeMode}
+          onOpenLog={() => setShowLog(true)}
+          onOpenOptions={() => setShowOptions(true)}
+          onOpenHelp={() => setShowHelp(true)}
+        />
         <header style={{ 
           ...headerStyle, 
           background: THEME.nightBlue, 
