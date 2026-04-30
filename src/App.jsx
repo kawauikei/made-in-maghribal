@@ -10,6 +10,7 @@ import MemoriesScreen from './ui/MemoriesScreen';
 import StartScreen from './ui/StartScreen';
 import HeroineSelectScreen from './ui/HeroineSelectScreen';
 import PrologueScreen from './ui/PrologueScreen';
+import IntroScreen from './ui/IntroScreen';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -840,57 +841,29 @@ export default function App() {
     );
   } else if (screen === 'INTRO') {
     mainContent = (
-      <div 
-        data-testid="intro-screen" 
-        style={{ ...containerStyle, position: 'relative' }}
-        onClick={handleVnAreaClick}
-      >
-        {renderThemeStyles()}
-        {renderBackground(screen)}
-
-        {/* Nadir Bustup */}
-        <div style={{ 
-          position: 'absolute', bottom: 0, left: '5%', zIndex: 1, 
-          pointerEvents: 'none', opacity: 0.85,
-          transform: 'translateX(-15%)'
-        }}>
-          <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
-        </div>
-
-        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={() => setShowLog(true)} 
-          onOpenOptions={() => setShowOptions(true)} 
-          onOpenHelp={() => setShowHelp(true)} 
-        />
-          <h1 style={{ ...titleStyle, marginBottom: '20px' }}>第{workshopState.day}回 営業開始</h1>
-          <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px', zIndex: 3 }}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
-              <HeroineDisplay heroine={activeHeroine} type="face" size="small" expression="normal" />
-              <div style={{ flex: 1 }}>
-                <VNBox
-                  ref={vnRef}
-                  speaker={activeHeroine.name}
-                  text={activeHeroine.greeting || `${PROTAGONIST.shortName}、こんにちは。今日もよろしくお願いします。`}
-                  themeColor={activeHeroine.themeColor}
-                  speed={textSpeedMeta.delay}
-                  skip={shouldSkipTypewriter(isInstantTextSpeed)}
-                  onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
-                  onComplete={handleBeginService}
-                />
-              </div>
-            </div>
-            <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-              <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。</p>
-              <p style={{ margin: 0, lineHeight: '1.6' }}>今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
-              <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
-            </div>
-            <button data-testid="intro-start" onClick={handleBeginService} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}>営業を始める</button>
-          </div>
-        </div>
-      </div>
+      <IntroScreen
+        activeHeroine={activeHeroine}
+        screen={screen}
+        routeMode={routeMode}
+        textSpeedMeta={textSpeedMeta}
+        isInstantTextSpeed={isInstantTextSpeed}
+        onOpenLog={() => setShowLog(true)}
+        onOpenOptions={() => setShowOptions(true)}
+        onOpenHelp={() => setShowHelp(true)}
+        onVnAreaClick={handleVnAreaClick}
+        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
+        onBeginService={handleBeginService}
+        renderThemeStyles={renderThemeStyles}
+        renderBackground={renderBackground}
+        HeroineDisplay={HeroineDisplay}
+        audioEngine={audioEngine}
+        vnRef={vnRef}
+        containerStyle={containerStyle}
+        titleStyle={titleStyle}
+        cardStyle={cardStyle}
+        buttonStyle={buttonStyle}
+        narrativeBoxStyle={narrativeBoxStyle}
+      />
     );
   } else if (screen === 'RESULT' && session) {
     const correctCount = session.answers.filter(a => a.isCorrect).length;
