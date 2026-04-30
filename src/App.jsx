@@ -191,13 +191,16 @@ export default function App() {
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
-  const [menuView, setMenuView] = useState('main');
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState('normal');
   const [instantUnreadText, setInstantUnreadText] = useState(false);
   const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
+  // M10-UI-2: 3 independent modal states (Options / Log / Help)
+  const [showOptions, setShowOptions] = useState(false);
+  const [showLog, setShowLog] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -212,7 +215,6 @@ export default function App() {
   const [seenEventIds, setSeenEventIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -283,10 +285,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (isMenuOpen && menuView === 'log' && backlogScrollRef.current) {
+    if (showLog && backlogScrollRef.current) {
       backlogScrollRef.current.scrollTop = backlogScrollRef.current.scrollHeight;
     }
-  }, [isMenuOpen, menuView, vnBacklog]);
+  }, [showLog, vnBacklog]);
 
   const measuredSize = {
     width: hostSize.width || viewportSize.width,
@@ -670,7 +672,9 @@ export default function App() {
     // Keep internal states for Continue logic
     setScreen('START');
     setHasSave(hasSaveData());
-    setMenuView('main');
+    setShowOptions(false);
+    setShowLog(false);
+    setShowHelp(false);
   };
 
   const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
@@ -863,292 +867,281 @@ export default function App() {
     );
   };
 
-  const renderAudioToggle = () => {
+  // M10-UI-2: 3 parallel HUD buttons
+  const renderHudButtons = () => {
     const isHudVisible = !['ENDING', 'FINAL_RESULT', 'MEMORIES', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
     if (!isHudVisible) return null;
-    
+
+    const hudBtnStyle = {
+      background: 'rgba(255,255,255,0.92)',
+      border: `2px solid ${THEME.brass}`,
+      width: '36px',
+      height: '36px',
+      borderRadius: '50%',
+      fontSize: '18px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.18)',
+      padding: 0,
+      flexShrink: 0
+    };
+
     return (
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+      <div style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
         {renderRouteModeBadge(true)}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button 
+        <div style={{ display: 'flex', gap: '6px' }}>
+          <button
             data-testid="backlog-hud-open"
-            onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(true); setMenuView('log'); }}
-            style={{
-              background: 'white',
-              border: `2px solid ${THEME.brass}`,
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              fontSize: '22px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-            }}
-            aria-label="Backlog"
-          >
-            📖
-          </button>
-          <button 
+            onClick={() => { audioEngine.playSfx('uiTapBottle'); setShowLog(true); }}
+            style={hudBtnStyle}
+            aria-label="ログ"
+          >📖</button>
+          <button
             data-testid="options-open"
-            onClick={() => setIsMenuOpen(true)}
-            style={{
-              background: 'white',
-              border: `2px solid ${THEME.brass}`,
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              fontSize: '22px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-            }}
-            aria-label="Menu"
-          >
-            ⚙️
-          </button>
+            onClick={() => { audioEngine.playSfx('uiTapBottle'); setShowOptions(true); }}
+            style={hudBtnStyle}
+            aria-label="設定"
+          >⚙️</button>
+          <button
+            data-testid="help-hud-open"
+            onClick={() => { audioEngine.playSfx('uiTapBottle'); setShowHelp(true); }}
+            style={hudBtnStyle}
+            aria-label="ヘルプ"
+          >？</button>
         </div>
       </div>
     );
   };
 
-  const renderMenuModal = () => {
-    if (!isMenuOpen) return null;
+  // M10-UI-2: Shared modal backdrop + card style
+  const hudModalBackdrop = {
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+    background: 'rgba(0,0,0,0.6)', zIndex: 3000,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    backdropFilter: 'blur(4px)'
+  };
+  const hudModalCard = {
+    ...cardStyle,
+    background: '#fff', borderRadius: '14px',
+    maxHeight: '88vh', display: 'flex', flexDirection: 'column', position: 'relative',
+    width: '92%'
+  };
+  const hudCloseX = (onClose) => (
+    <button
+      data-testid="modal-x-close"
+      onClick={onClose}
+      style={{
+        position: 'absolute', top: '10px', right: '10px',
+        width: '30px', height: '30px', borderRadius: '50%',
+        background: '#eee', border: 'none', color: '#333',
+        fontSize: '18px', fontWeight: 'bold', cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 10, boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
+      }}
+      aria-label="Close"
+    >×</button>
+  );
 
-    const closeMenu = () => {
-      audioEngine.playSfx('uiTapBottle');
-      setIsMenuOpen(false);
-      setMenuView('main');
-    };
-
-    const CloseX = () => (
-      <button 
-        data-testid="modal-x-close"
-        onClick={closeMenu}
-        style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          background: '#eee',
-          border: 'none',
-          color: '#333',
-          fontSize: '18px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 10,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
-        }}
-        aria-label="Close"
-      >
-        ×
-      </button>
-    );
-
-    if (menuView === 'log') {
-      return (
-        <div data-testid="backlog-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div style={{ ...cardStyle, maxWidth: '320px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-            <CloseX />
-            <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>{'VN\u30ed\u30b0'}</h2>
-            <div ref={backlogScrollRef} data-testid="backlog-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {vnBacklog.length === 0 ? (
-                <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '24px 0' }}>{'\u307e\u3060\u30ed\u30b0\u306f\u3042\u308a\u307e\u305b\u3093'}</div>
-              ) : vnBacklog.slice().reverse().map((entry, idx) => {
-                const routeModeLabel = getBacklogRouteModeLabel(entry.routeMode);
-                const routeModeBadgeStyle = entry.routeMode === 'long_history'
-                  ? { background: '#fff5e0', color: THEME.brassDark, border: '1px solid #e6dcc3' }
-                  : { background: '#eef4f7', color: THEME.nightBlue, border: '1px solid #d9e4ea' };
-                const isNarration = !entry.speaker;
-                return (
-                  <div data-testid="backlog-entry" data-route-mode={entry.routeMode || 'normal'} key={`${entry.sequence}-${idx}`} style={{ background: '#faf7ef', border: '1px solid #e6dcc3', borderRadius: '10px', padding: '12px 13px', textAlign: 'left', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                      <div style={{ fontSize: '0.74em', color: '#8a6a2b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{entry.screen} / #{entry.sequence}</div>
-                      <div data-testid="backlog-route-mode" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.68em', fontWeight: 'bold', lineHeight: 1, padding: '3px 8px', borderRadius: '999px', whiteSpace: 'nowrap', ...routeModeBadgeStyle }}>
-                        {routeModeLabel}
-                      </div>
-                    </div>
-                    <div style={{ fontWeight: 'bold', fontSize: '0.92em', color: isNarration ? '#555' : THEME.textDark, marginBottom: '6px' }}>{entry.speaker || 'Narration'}</div>
-                    <div style={{ fontSize: '0.88em', color: '#444', lineHeight: '1.6', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{entry.text}</div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-              <button data-testid="backlog-back" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }} onClick={() => setMenuView('main')}>{'\u623b\u308b'}</button>
-              <button data-testid="backlog-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', flex: 1 }} onClick={closeMenu}>閉じる</button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (menuView === 'help') {
-      return (
-        <div data-testid="help-modal" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-          <div style={{ ...cardStyle, maxWidth: '340px', width: '92%', background: '#fff', padding: '20px', borderRadius: '12px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-            <CloseX />
-            <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em' }}>遊び方</h2>
-            <div data-testid="help-scroll" style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '12px 2px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・正解すると工房評価と親密度が上がります。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・10回の営業を終えると、結果とエンディングに進みます。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・親密度が上がるとイベントが発生します。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Backlog から最近の会話を確認できます。</p>
-              <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.92em' }}>・Options ではテキスト速度、音量、未読即時表示を変更できます。</p>
-            </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-              <button data-testid="help-back" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1 }} onClick={() => setMenuView('main')}>戻る</button>
-              <button data-testid="help-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', flex: 1 }} onClick={closeMenu}>閉じる</button>
-            </div>
-          </div>
-        </div>
-      );
-    }
+  // M10-UI-2: Options Modal (BGM/SE first, then volume, then text speed)
+  const renderOptionsModal = () => {
+    if (!showOptions) return null;
+    const closeOptions = () => { audioEngine.playSfx('uiTapBottle'); setShowOptions(false); };
 
     return (
-      <div 
-        data-testid="options-modal"
-        style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.6)', zIndex: 3000,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backdropFilter: 'blur(4px)'
-        }}
-      >
-        <div style={{ ...cardStyle, maxWidth: '300px', background: '#fff', padding: '25px', borderRadius: '12px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-          <CloseX />
-          <h2 style={{ margin: '0 0 20px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.4em' }}>設定</h2>
-          <div style={{ overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
-            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>テキスト速度</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
+      <div data-testid="options-modal" style={hudModalBackdrop}>
+        <div style={{ ...hudModalCard, maxWidth: '340px', padding: '20px 18px' }}>
+          {hudCloseX(closeOptions)}
+          <h2 style={{ margin: '0 0 14px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.3em', paddingRight: '30px' }}>設定</h2>
+
+          {/* BGM / SE ON/OFF — always visible at top */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ background: '#f5f5f5', borderRadius: '10px', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>BGM</span>
+              <button
+                data-testid="audio-enabled-toggle"
+                aria-pressed={isAudioEnabled}
+                onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }}
+                style={{
+                  background: isAudioEnabled ? THEME.starGold : '#aaa',
+                  color: isAudioEnabled ? THEME.textDark : '#fff',
+                  border: 'none', padding: '5px 12px', borderRadius: '16px',
+                  fontSize: '0.82em', fontWeight: 'bold', cursor: 'pointer'
+                }}
+              >{isAudioEnabled ? 'ON' : 'OFF'}</button>
+            </div>
+            <div style={{ background: '#f5f5f5', borderRadius: '10px', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>SE</span>
+              <button
+                data-testid="se-enabled-toggle"
+                aria-pressed={seVolume > 0}
+                onClick={() => { audioEngine.playSfx('uiTapBottle'); setSeVolume(prev => prev > 0 ? 0 : DEFAULT_AUDIO_VOLUME); }}
+                style={{
+                  background: seVolume > 0 ? THEME.starGold : '#aaa',
+                  color: seVolume > 0 ? THEME.textDark : '#fff',
+                  border: 'none', padding: '5px 12px', borderRadius: '16px',
+                  fontSize: '0.82em', fontWeight: 'bold', cursor: 'pointer'
+                }}
+              >{seVolume > 0 ? 'ON' : 'OFF'}</button>
+            </div>
+          </div>
+
+          {/* Scrollable body (volume + text speed) */}
+          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0' }}>
+            {/* BGM Volume */}
+            <div style={{ padding: '10px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '6px' }}>BGM音量</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input data-testid="bgm-volume-slider" aria-label="BGM音量" type="range" min="0" max="100" step="1"
+                  value={Math.round(bgmVolume * 100)}
+                  onChange={(e) => setBgmVolume(Number(e.target.value) / 100)}
+                  style={{ flex: 1, minWidth: 0 }} />
+                <span style={{ width: '44px', textAlign: 'right', fontSize: '0.82em', color: THEME.textDark, fontWeight: 'bold' }}>{Math.round(bgmVolume * 100)}%</span>
+              </div>
+            </div>
+            {/* SE Volume */}
+            <div style={{ padding: '10px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '6px' }}>SE音量</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input data-testid="se-volume-slider" aria-label="SE音量" type="range" min="0" max="100" step="1"
+                  value={Math.round(seVolume * 100)}
+                  onChange={(e) => setSeVolume(Number(e.target.value) / 100)}
+                  style={{ flex: 1, minWidth: 0 }} />
+                <span style={{ width: '44px', textAlign: 'right', fontSize: '0.82em', color: THEME.textDark, fontWeight: 'bold' }}>{Math.round(seVolume * 100)}%</span>
+              </div>
+            </div>
+            {/* Text Speed */}
+            <div style={{ padding: '10px 0', borderBottom: '1px solid #eee' }}>
+              <div style={{ fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '6px' }}>テキスト速度</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '6px' }}>
                 {Object.entries(TEXT_SPEED_META).map(([mode, meta]) => {
                   const isSelected = textSpeed === mode;
                   return (
-                    <button
-                      key={mode}
-                      data-testid={`text-speed-${mode}`}
-                      aria-pressed={isSelected}
-                      onClick={() => {
-                        audioEngine.playSfx('uiTapBottle');
-                        setTextSpeed(mode);
-                      }}
+                    <button key={mode} data-testid={`text-speed-${mode}`} aria-pressed={isSelected}
+                      onClick={() => { audioEngine.playSfx('uiTapBottle'); setTextSpeed(mode); }}
                       style={{
-                        ...buttonStyle,
-                        margin: 0,
-                        padding: '10px 8px',
-                        fontSize: '0.76em',
-                        lineHeight: 1.2,
+                        ...buttonStyle, margin: 0, padding: '8px 6px', fontSize: '0.74em', lineHeight: 1.2,
                         background: isSelected ? THEME.starGold : '#eef1f4',
                         color: isSelected ? THEME.textDark : '#445',
                         border: `1px solid ${isSelected ? THEME.starGold : '#ccd6dd'}`,
-                        boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.16)' : 'none'
+                        boxShadow: isSelected ? '0 0 0 2px rgba(255,204,0,0.16)' : 'none'
                       }}
-                    >
-                      {meta.label}
-                    </button>
+                    >{meta.label}</button>
                   );
                 })}
               </div>
             </div>
-            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>BGM音量</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input
-                  data-testid="bgm-volume-slider"
-                  aria-label="BGM音量"
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="1"
-                  value={Math.round(bgmVolume * 100)}
-                  onChange={(e) => setBgmVolume(Number(e.target.value) / 100)}
-                  style={{ flex: 1, minWidth: 0 }}
-                />
-                <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
-                  {Math.round(bgmVolume * 100)}%
-                </span>
+            {/* Instant unread */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+              <div>
+                <div style={{ fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>未読も瞬時表示</div>
+                <div style={{ fontSize: '0.72em', color: '#777', marginTop: '2px' }}>未読テキストも即時表示</div>
               </div>
-            </div>
-            <div style={{ padding: '14px 0', borderBottom: '1px solid #eee' }}>
-              <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold', marginBottom: '8px' }}>SE音量</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input
-                  data-testid="se-volume-slider"
-                  aria-label="SE音量"
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="1"
-                  value={Math.round(seVolume * 100)}
-                  onChange={(e) => setSeVolume(Number(e.target.value) / 100)}
-                  style={{ flex: 1, minWidth: 0 }}
-                />
-                <span style={{ width: '48px', textAlign: 'right', fontSize: '0.85em', color: THEME.textDark, fontWeight: 'bold' }}>
-                  {Math.round(seVolume * 100)}%
-                </span>
-              </div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: '0.92em', color: THEME.textDark, fontWeight: 'bold' }}>未読も瞬時表示</div>
-                <div style={{ fontSize: '0.75em', color: '#777', marginTop: '2px' }}>未読テキストも即時で表示する</div>
-              </div>
-              <button
-                data-testid="instant-unread-toggle"
-                aria-pressed={instantUnreadText}
-                onClick={() => {
-                  audioEngine.playSfx('uiTapBottle');
-                  setInstantUnreadText(prev => !prev);
-                }}
-                style={{
-                  ...buttonStyle,
-                  margin: 0,
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  fontSize: '0.9em',
-                  fontWeight: 'bold',
-                  background: instantUnreadText ? THEME.starGold : '#999',
-                  color: instantUnreadText ? THEME.textDark : '#fff',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }}
-              >
-                {instantUnreadText ? 'ON' : 'OFF'}
-              </button>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #eee' }}>
-              <span style={{ fontSize: '1em', color: THEME.textDark, fontWeight: 'bold' }}>BGM: {isAudioEnabled ? 'ON' : 'OFF'}</span>
-              <button data-testid="audio-enabled-toggle" onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsAudioEnabled(!isAudioEnabled); }} style={{ background: isAudioEnabled ? THEME.starGold : '#999', color: isAudioEnabled ? THEME.textDark : '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', fontSize: '0.9em', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                {isAudioEnabled ? 'ON' : 'OFF'}
-              </button>
+              <button data-testid="instant-unread-toggle" aria-pressed={instantUnreadText}
+                onClick={() => { audioEngine.playSfx('uiTapBottle'); setInstantUnreadText(prev => !prev); }}
+                style={{ background: instantUnreadText ? THEME.starGold : '#999', color: instantUnreadText ? THEME.textDark : '#fff', border: 'none', padding: '6px 14px', borderRadius: '16px', fontSize: '0.82em', fontWeight: 'bold', cursor: 'pointer', flexShrink: 0 }}
+              >{instantUnreadText ? 'ON' : 'OFF'}</button>
             </div>
           </div>
-          <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button data-testid="help-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.brass, color: THEME.textDark, flex: 1, fontSize: '0.9em' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); setMenuView('help'); }}>遊び方</button>
-              <button data-testid="backlog-open" style={{ ...buttonStyle, marginTop: 0, background: THEME.nightBlue, color: THEME.sand, flex: 1, fontSize: '0.9em' }} onClick={() => setMenuView('log')}>{'\u30ed\u30b0'}</button>
-            </div>
-            <button style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%', fontSize: '0.95em' }} onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm("タイトルに戻りますか？")) { setIsMenuOpen(false); setScreen('START'); } }}>
-              タイトルへ戻る
-            </button>
-            <button data-testid="options-close" style={{ ...buttonStyle, marginTop: 0, background: '#666', color: 'white', width: '100%', fontSize: '0.95em' }} onClick={closeMenu}>
-              閉じる
-            </button>
+
+          {/* Bottom actions */}
+          <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button
+              style={{ ...buttonStyle, marginTop: 0, background: '#ff5555', color: 'white', width: '100%', fontSize: '0.9em' }}
+              onClick={() => { audioEngine.playSfx('uiTapBottle'); if (window.confirm('タイトルに戻りますか？')) { setShowOptions(false); setScreen('START'); } }}
+            >タイトルへ戻る</button>
+            <button data-testid="options-close"
+              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.9em' }}
+              onClick={closeOptions}
+            >閉じる</button>
           </div>
         </div>
       </div>
     );
   };
+
+  // M10-UI-2: Log/Backlog Modal — simple list style
+  const renderLogModal = () => {
+    if (!showLog) return null;
+    const closeLog = () => { audioEngine.playSfx('uiTapBottle'); setShowLog(false); };
+
+    return (
+      <div data-testid="backlog-modal" style={hudModalBackdrop}>
+        <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
+          {hudCloseX(closeLog)}
+          <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
+          <div ref={backlogScrollRef} data-testid="backlog-scroll"
+            style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
+          >
+            {vnBacklog.length === 0 ? (
+              <div style={{ color: '#777', fontSize: '0.88em', textAlign: 'center', padding: '20px 0' }}>まだログはありません</div>
+            ) : vnBacklog.slice().reverse().map((entry, idx) => {
+              const isNarration = !entry.speaker;
+              const displayText = typeof entry.text === 'string' ? entry.text : (entry.text?.text || '');
+              if (!displayText) return null;
+              return (
+                <div
+                  data-testid="backlog-entry"
+                  data-route-mode={entry.routeMode || 'normal'}
+                  key={`${entry.sequence}-${idx}`}
+                  style={{ padding: '7px 10px', borderBottom: '1px solid #ede8df', textAlign: 'left' }}
+                >
+                  {!isNarration && (
+                    <span style={{ fontSize: '0.78em', fontWeight: 'bold', color: THEME.brassDark, display: 'block', marginBottom: '3px' }}>
+                      {entry.speaker}
+                    </span>
+                  )}
+                  <span style={{ fontSize: '0.85em', color: '#333', lineHeight: '1.55', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                    {displayText}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            <button data-testid="backlog-close"
+              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
+              onClick={closeLog}
+            >閉じる</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // M10-UI-2: Help Modal — independent, no navigation to Options/Log
+  const renderHelpModal = () => {
+    if (!showHelp) return null;
+    const closeHelp = () => { audioEngine.playSfx('uiTapBottle'); setShowHelp(false); };
+
+    return (
+      <div data-testid="help-modal" style={hudModalBackdrop}>
+        <div style={{ ...hudModalCard, maxWidth: '340px', padding: '18px 16px 14px' }}>
+          {hudCloseX(closeHelp)}
+          <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>遊び方</h2>
+          <div data-testid="help-scroll"
+            style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 4px', display: 'flex', flexDirection: 'column', gap: '8px' }}
+          >
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・正解すると工房評価と親密度が上がります。</p>
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・10回の営業を終えると、結果とエンディングに進みます。</p>
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・親密度が上がるとイベントが発生します。</p>
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上のログボタン（📖）から最近の会話を確認できます。</p>
+            <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・右上の設定ボタン（⚙️）からテキスト速度や音量を変更できます。</p>
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            <button data-testid="help-close"
+              style={{ ...buttonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
+              onClick={closeHelp}
+            >閉じる</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
 
   const utilityHeaderStyle = {
     width: '100%',
@@ -1204,7 +1197,7 @@ export default function App() {
     mainContent = (
       <div data-testid="start-screen" style={containerStyle}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
         
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
@@ -1276,7 +1269,7 @@ export default function App() {
           <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
             <button 
               data-testid="start-options"
-              onClick={() => { audioEngine.playSfx('uiTapBottle'); setIsMenuOpen(true); }}
+              onClick={() => { audioEngine.playSfx('uiTapBottle'); setShowOptions(true); }}
               style={{ ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: '0.85em', flex: 1, margin: 0 }}
             >
               設定
@@ -1330,7 +1323,7 @@ export default function App() {
         {renderThemeStyles()}
         {renderBackground('START')}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {renderAudioToggle()}
+          {renderHudButtons()}
           <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
           <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
             <VNBox
@@ -1368,7 +1361,7 @@ export default function App() {
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {renderAudioToggle()}
+          {renderHudButtons()}
           <h1 style={{ ...titleStyle, marginBottom: '20px' }}>第{workshopState.day}回 営業開始</h1>
           <div style={{ ...cardStyle, background: 'transparent', boxShadow: 'none', padding: 0, marginTop: '10px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', marginBottom: '30px' }}>
@@ -1414,7 +1407,7 @@ export default function App() {
         {renderThemeStyles()}
         {renderBackground(screen)}
         <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {renderAudioToggle()}
+          {renderHudButtons()}
           <h1 style={{ ...titleStyle, color: THEME.nightBlue, marginBottom: '20px' }}>今回の営業記録</h1>
           <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
             <div style={{ marginBottom: '25px' }}>
@@ -1523,7 +1516,7 @@ export default function App() {
     mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
           <h1 style={titleStyle}>愛着の記録: {activeEvent.title}</h1>
           <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
           {still && (
@@ -1725,7 +1718,7 @@ export default function App() {
     mainContent = (
       <div data-testid="memories-screen" style={{ ...containerStyle, padding: 0 }}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
         {renderUtilityHeader('Memories', handleBackToTitle, null, 'memories')}
         <h1 style={{ ...titleStyle, display: 'none' }}>思い出の記録</h1>
         <div style={{ ...cardStyle, maxWidth: '800px', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', margin: '0 8px 8px', width: 'calc(100% - 16px)', overflow: 'hidden' }}>
@@ -1798,7 +1791,7 @@ export default function App() {
     mainContent = (
       <div data-testid="heroine-select-screen" style={containerStyle}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
         
         <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
         
@@ -1948,7 +1941,7 @@ export default function App() {
     mainContent = (
       <div style={containerStyle}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
         <h1 style={titleStyle}>10回の営業総決算</h1>
         <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
           <div style={{ marginBottom: '25px' }}>
@@ -2055,7 +2048,7 @@ export default function App() {
     mainContent = (
       <div data-testid="quiz-screen" style={containerStyle}>
         {renderThemeStyles()}
-        {renderAudioToggle()}
+        {renderHudButtons()}
         <header style={{ 
           ...headerStyle, 
           background: THEME.nightBlue, 
@@ -2171,7 +2164,9 @@ export default function App() {
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
-          {renderMenuModal()}
+          {renderOptionsModal()}
+          {renderLogModal()}
+          {renderHelpModal()}
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (
             <div key={screen} className="screen-enter">
