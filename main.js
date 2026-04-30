@@ -6293,29 +6293,55 @@ const AFFECTION_EVENTS = {
       heroineId: "hakima",
       threshold: 5,
       title: "もう一度、隣に",
-      speaker: "ハキマ",
-      expression: "joy",
+      stillImageId: "hakimaMorningVisit01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01",
+        heroineExpressions: ["anger", "normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "sorrow"]
+      },
+      summary: "昔のライバル関係を思い出しながら、ハキマはナーディルを試しつつも、その成長を認める。",
       pages: [
-        "店先に立っていると、ハキマが薬草の束を抱えてやってきた。",
-        "「調子はどう？ 忙しそうだけど、無理はしてない？」",
-        "彼女は薬草の束を卓上に置き、棚の品を眺めながら、私の目利きを静かに見守っている。"
+        { speaker: "ハキマ", expression: "anger", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。\n「今日は、あんたの目利きを見せてもらうから」" },
+        { speaker: "", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nだが香りの奥に、乾いた土と甘い樹脂の違いがあった。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。\n「……ふうん。品だけじゃなく、使う人まで見るんだ」" },
+        { speaker: "ハキマ", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。\n「まあ、今日のところは合格。少しだけ、頼りにしてあげる」" }
       ],
       routePages: {
         long_history: [
-          "ナーディル、さっきの品選び……あんたが店を継いだ日のことを思い出したよ。",
-          "あの頃からずっと、あんたの隣で品を見立ててきたけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。"
+          { speaker: "ハキマ", expression: "normal", text: "ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。\n「こういう勝負、昔はよくやったよね」" },
+          { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。\nそれが少し誇らしくて、少しだけ悔しい。" },
+          { speaker: "ハキマ", expression: "sorrow", text: "「先に行くなら、置いていかないでよ」\nハキマは小さくつぶやき、すぐに耳まで赤くした。" },
+          { speaker: "ハキマ", expression: "joy", text: "「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」\nその声は、怒ったふりをするには優しすぎた。" }
         ]
-      },
-      stillImageId: "hakimaMorningVisit01"
+      }
     },
     {
       id: "hakima_10",
       heroineId: "hakima",
       threshold: 10,
       title: "狐の耳は嘘をつかない",
-      speaker: "ハキマ",
-      expression: "fun",
-      text: "……あ、あんまり耳をジロジロ見ないでよ！ ほら、次の鑑定依頼が来てるみたいだよ。……ったく、あんたのそういう真っ直ぐなところ、たまに困るんだから。（耳がピコピコと嬉しそうに動いている）"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01",
+        heroineExpressions: ["anger", "surprise", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "素直になれないハキマだが、ナーディルと同じ目線で品を選べたことに、深い喜びを感じている。",
+      pages: [
+        { speaker: "ハキマ", expression: "anger", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。\n「この配合、悪くないけど……客には少し強すぎるわね」" },
+        { speaker: "ハキマ", expression: "surprise", text: "ナーディルが薄める案を出すと、彼女は驚いた顔をした。\n「同じこと、考えてた。……先に言わないでよ」" },
+        { speaker: "ハキマ", expression: "sorrow", text: "「でも、そういうところは嫌いじゃない」\n言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。" },
+        { speaker: "ハキマ", expression: "joy", text: "彼女は慌てて背を向ける。\n「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ハキマ", expression: "surprise", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。\nハキマは目を丸くし、やがて呆れたように笑う。" },
+          { speaker: "ハキマ", expression: "normal", text: "「……昔は、あんたの方がいつも外してたのに」\n少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
+          { speaker: "ハキマ", expression: "joy", text: "「やっと追いついてきたってことね。なら、これからは対等だ」\n狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
+          { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
+        ]
+      }
     }
   ],
   mira: [
@@ -6324,25 +6350,55 @@ const AFFECTION_EVENTS = {
       heroineId: "mira",
       threshold: 5,
       title: "普通の女の子として",
-      speaker: "ミラ",
-      expression: "fun",
-      text: "……ふふっ。先輩とこうして品物を見つめていると、商会の義務も学園の課題も、すべて忘れてしまえそうです。ただの『私』でいられるこの場所が、少しずつ特別になってきました。",
+      stillImageId: "miraAfterSchool01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01",
+        heroineExpressions: ["student", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise"]
+      },
+      summary: "天才として常に正解を求められるミラが、星瓶堂でだけは「迷うこと」を許され、一人の少女に戻る。",
+      pages: [
+        { speaker: "ミラ", expression: "student", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
+        { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
+        { speaker: "", expression: "surprise", text: "ナーディルが「迷っていい」と言うと、ミラは目を丸くした。\n天才なら即答するべきだと、ずっと思っていたから。" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです」\n彼女は小さく笑う。\n「そんな言い方をされたら、私でいたくなります」" }
+      ],
       routePages: {
         long_history: [
-          "……ふふっ。先輩とこうしていると、子供の頃に路地裏を駆け回っていたのを思い出します。",
-          "今は立場こそ違いますが、先輩の隣が一番落ち着くのは……昔から変わりませんね。"
+          { speaker: "ミラ", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。\n「この式、先輩に何度も直してもらいましたね」" },
+          { speaker: "ミラ", expression: "sorrow", text: "「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」\n彼女の声は、少しだけ震えていた。" },
+          { speaker: "ミラ", expression: "surprise", text: "ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。\n「だから私は、またここに来たんです」" },
+          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」\nその笑顔は、少し照れくさそうだった。" }
         ]
-      },
-      stillImageId: "miraAfterSchool01"
+      }
     },
     {
       id: "mira_10",
       heroineId: "mira",
       threshold: 10,
       title: "商人の目利き",
-      speaker: "ミラ",
-      expression: "joy",
-      text: "先輩、今の品選び……実に見事でした。ただ価値を見るだけでなく、持ち主の心まで汲み取る。商人として、そして一人の人間として、深く尊敬してしまいます。……私も、負けていられませんね。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01",
+        heroineExpressions: ["normal", "fun", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。\n「この配合なら、もっと多くの人に届けられます」" },
+        { speaker: "", expression: "sorrow", text: "けれどナーディルは、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
+        { speaker: "ミラ", expression: "fun", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。\n「商人の目だけでは、見落とすものがありますね」" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩の隣でなら、正解を出す前の私でいられます」\nその言葉は、星明かりよりも静かに輝いていた。" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ミラ", expression: "normal", text: "星空の下、ミラは帳面を閉じた。\n「昔から、先輩は私の答えより、考えている顔を見ていました」" },
+          { speaker: "ミラ", expression: "fun", text: "「それが少し悔しくて、でも、とても嬉しかったんです」\n彼女は夜風に揺れる布を押さえ、小さく笑う。" },
+          { speaker: "ミラ", expression: "joy", text: "「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」\nその瞳は、もう迷っていなかった。" },
+          { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
+        ]
+      }
     }
   ],
   dariya: [
@@ -6351,25 +6407,55 @@ const AFFECTION_EVENTS = {
       heroineId: "dariya",
       threshold: 5,
       title: "安らぎの工房",
-      speaker: "ダリヤ",
-      expression: "joy",
-      text: "……ふぅ。王宮や研究所の喧騒を離れて、ここで君の話を聞いていると、不思議と心が凪いでいくのがわかるよ。この工房の空気は、どんな霊薬よりも私に効くらしい。感謝しているよ、ナーディル。",
+      stillImageId: "dariyaAfterHours01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-01",
+        heroineExpressions: ["normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "sorrow"]
+      },
+      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは鎧を下ろし、一人の人として息をつく。",
+      pages: [
+        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「公務の確認だ。……半分は、口実かもしれないが」" },
+        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。\nナーディルは黙って椅子を引き、温かい茶を置く。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは少しだけ目を伏せた。\n「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」" },
+        { speaker: "", expression: "joy", text: "その笑みは疲れていたが、初めて肩の力が抜けていた。\n星瓶堂の夜は、どんな霊薬より静かに彼女を休ませた。" }
+      ],
       routePages: {
         long_history: [
-          "……ふぅ。君がまだ薬草の区別もつかなかった頃からの付き合いだが……。",
-          "今や、私の最も信頼する鑑定士だ。君の工房の空気は、どんな霊薬よりも私を安らげてくれるよ。"
+          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。\n「君は相変わらず、追い出すのが下手だな」" },
+          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、強い先輩でいられない日がある」\nダリヤは苦笑し、視線を卓上の茶へ落とした。" },
+          { speaker: "ダリヤ", expression: "joy", text: "「それでも君は、昔から同じ顔で茶を出す」\nその声は、責めるにはあまりにも優しかった。" }
         ]
-      },
-      stillImageId: "dariyaAfterHours01"
+      }
     },
     {
       id: "dariya_10",
       heroineId: "dariya",
       threshold: 10,
       title: "共鳴する真理",
-      speaker: "ダリヤ",
-      expression: "fun",
-      text: "君の調合理論は、時に王立研究所の教授たちよりも核心を突いているね。真理を求める瞳……私はそれが大好きだ。……面白いな、君という人間を、もっと深く研究してみたくなったよ。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-01",
+        heroineExpressions: ["normal", "sorrow", "joy"],
+        naderExpressions: ["normal", "surprise", "joy"]
+      },
+      summary: "完璧でなければならないという呪縛から解き放たれ、ダリヤはナーディルの前でだけ弱さを共有する。",
+      pages: [
+        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、静かに眉を寄せる。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合だ。……だが、君の作ったものより冷たい」\n彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。" },
+        { speaker: "ダリヤ", expression: "joy", text: "「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」\nそれは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。" },
+        { speaker: "ダリヤ", expression: "joy", text: "「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」\n彼女の横顔は、昼間よりずっと穏やかだった。" }
+      ],
+      routePages: {
+        long_history: [
+          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたはずなのだが」" },
+          { speaker: "", expression: "normal", text: "ナーディルは答えを急かず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、特別でなくなるのが怖かった」\nダリヤの声は震えたが、逃げることはなかった。" },
+          { speaker: "ダリヤ", expression: "joy", text: "「だが君は、特別でない私にも茶を出すのだろう」\n彼女は泣きそうに笑い、ようやく前を向いた。" }
+        ]
+      }
     }
   ]
 };
@@ -6386,14 +6472,29 @@ function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
 }
 function getEventPages(event, routeMode) {
   var _a;
-  if (!event) return [""];
+  if (!event) return [{ speaker: "", expression: "normal", text: "" }];
+  let rawPages = [];
   if (routeMode === "long_history" && ((_a = event.routePages) == null ? void 0 : _a.long_history)) {
-    return event.routePages.long_history;
+    rawPages = event.routePages.long_history;
+  } else if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
+    rawPages = event.pages;
+  } else {
+    rawPages = [event.text || ""];
   }
-  if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
-    return event.pages;
-  }
-  return [event.text || ""];
+  return rawPages.map((page) => {
+    if (typeof page === "string") {
+      return {
+        speaker: "",
+        expression: "normal",
+        text: page
+      };
+    }
+    return {
+      speaker: page.speaker !== void 0 ? page.speaker : "",
+      expression: page.expression || "normal",
+      text: page.text || ""
+    };
+  });
 }
 function getRouteText(baseText, routeTexts, routeMode) {
   if (routeTexts && routeTexts[routeMode]) {
@@ -6441,61 +6542,124 @@ const ENDINGS = {
   hakima: {
     good: {
       title: "星瓶堂の灯が、やさしく続く",
-      expression: "joy",
-      bgId: "shopInteriorService",
-      text: "これまでの営業の積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また次の営業でも付き合ってくれると言った。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-04"
+      },
+      summary: "星瓶堂の再出発は無事に軌道に乗った。ハキマは少しだけ素直な言葉を口にし、これからも関わっていくことを予感させる。",
+      pages: [
+        { speaker: "", expression: "joy", text: "星瓶堂の棚に、ルハーン商会の香り袋が並ぶようになった。\n客はその香りを、若店主と狐の鑑定士の品だと噂した。" },
+        { speaker: "ハキマ", expression: "joy", text: "「少しはマシな店になったわね。……まあ、私のおかげだけど」\nハキマは得意げに笑い、カウンターに身を乗り出す。" },
+        { speaker: "", expression: "joy", text: "星瓶堂の灯の下、ふたりの影が並ぶ。\n競い合う声も、笑い声も、これからの商いに溶けていった。" }
+      ]
     },
     normal: {
       title: "いつもの一日が、少し特別になる",
-      expression: "normal",
-      bgId: "shopInteriorService",
-      text: "星瓶堂で重ねた会話は、静かに次の約束へつながっていく。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-02"
+      },
+      summary: "関係に大きな変化はないが、以前よりも確実に柔らかい空気が二人の間に流れている。",
+      pages: [
+        { speaker: "", expression: "normal", text: "営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。\nそれでも口ぶりは、相変わらず手厳しい。" },
+        { speaker: "ハキマ", expression: "normal", text: "「あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる」" },
+        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。\n星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
+      ]
     },
     bad: {
       title: "言えなかった言葉",
-      expression: "sad",
-      bgId: "shopInteriorService",
-      text: "少しすれ違いは残ったけれど、星瓶堂で過ごした時間が消えるわけではない。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MAIN-01"
+      },
+      summary: "すれ違いはあったものの、二人が過ごした時間とハキマの残した香材は確かに星瓶堂の礎となっている。",
+      pages: [
+        { speaker: "", expression: "sorrow", text: "ハキマは最後まで、素直な言葉を選べなかった。\nそれでも棚の一角には、彼女が選んだ香材が残っている。" },
+        { speaker: "", expression: "sorrow", text: "扉が閉まる前、白い尻尾が一度だけ揺れた。\nまた来る、とは言わない。でも来ないとも言わなかった。" }
+      ]
     }
   },
   mira: {
     good: {
       title: "ひらめきが、未来を照らす",
-      expression: "joy",
-      bgId: "shopInteriorService",
-      text: "ミラは新しい発想を携えて、また星瓶堂に足を運んでくれる。次の相談が、もう楽しみだ。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-04"
+      },
+      summary: "ミラは星瓶堂の商品企画に助言を続けるが、それは義務でも課題でもない。自分の夢としてナーディルの隣に立つ。",
+      pages: [
+        { speaker: "ミラ", expression: "joy", text: "ミラの提案で、星瓶堂の商品は少しずつ遠くの街へ届き始めた。\nそれでも彼女は、数字だけで喜ぶことはなかった。" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩、この品を受け取った人の顔まで想像しましょう」\nそう言う彼女は、もう正解だけを追っていない。" },
+        { speaker: "ミラ", expression: "joy", text: "「天才だから、ではありません。私が、ここで考えたいんです」\nミラは少し頬を染め、まっすぐに笑った。" },
+        { speaker: "", expression: "joy", text: "星瓶堂の灯と、夜空の星。\nふたりで選ぶ未来は、どんな答えよりも温かかった。" }
+      ]
     },
     normal: {
       title: "学びの途中で",
-      expression: "normal",
-      bgId: "shopInteriorService",
-      text: "まだまだ途中。でも、二人でなら次の一歩も見つけられる。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-02"
+      },
+      summary: "ミラはまだ商人としての「正解」を探し続けているが、星瓶堂を訪れること自体が彼女の喜びになっている。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "「今日の課題は終わりました。だから、明日の話をしましょう」\nミラは少しだけ背伸びをして、新しい帳面を開く。" },
+        { speaker: "", expression: "joy", text: "その声には、以前より少しだけ柔らかさがあった。\n答えより先に、話したい相手がいる。それだけで十分だった。" },
+        { speaker: "ミラ", expression: "fun", text: "「先輩、一緒に迷ってくださいね」\n彼女の笑顔は、どんな完璧な調合よりも明るかった。" }
+      ]
     },
     bad: {
       title: "少し遠回り",
-      expression: "sad",
-      bgId: "shopInteriorService",
-      text: "距離は少しだけ離れたまま。それでも、また会えば言葉を交わせるはずだ。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MAIN-01"
+      },
+      summary: "星瓶堂とミラの間に少し距離は残るが、彼女は再び答えを探しに来るはずだと確信できる。",
+      pages: [
+        { speaker: "", expression: "sorrow", text: "ミラは最後まで、完璧な答えを探そうとしていた。\nナーディルの前でさえ、少し肩の力が抜けなかった。" },
+        { speaker: "ミラ", expression: "sorrow", text: "「まだ、私の見立ては足りないみたいです」\nそう言って微笑む顔は、少しだけ寂しそうだった。" },
+        { speaker: "ミラ", expression: "normal", text: "「でも、また解き直せばいいんですよね」\n彼女は課題帳を抱え、それでもしっかりとした足取りで帰っていった。" }
+      ]
     }
   },
   dariya: {
     good: {
       title: "静かな信頼",
-      expression: "joy",
-      bgId: "shopInteriorService",
-      text: "ダリヤは星瓶堂に、気を抜ける場所を見つけた。そうしてまた、少しだけ笑った。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-04"
+      },
+      summary: "ダリヤは王宮の重圧から逃げるのではなく、星瓶堂で息を整えながら向き合う道を選ぶ。",
+      pages: [
+        { speaker: "", expression: "joy", text: "ダリヤは王宮を去らなかった。\nただし、もう一人で重さを抱え込むことはやめた。" },
+        { speaker: "ダリヤ", expression: "fun", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。\n茶を飲み、少し皮肉を言い、少しだけ笑う。" },
+        { speaker: "ダリヤ", expression: "joy", text: "「私はまだ完璧ではない」\nダリヤは静かに言った。\n「だが、それを君に見られるのは、もう怖くない」" },
+        { speaker: "", expression: "joy", text: "夜の工房に、柔らかな灯がともる。\nその明かりは、王宮へ戻る彼女の背中を静かに支えていた。" }
+      ]
     },
     normal: {
       title: "気配を残して",
-      expression: "normal",
-      bgId: "shopInteriorService",
-      text: "短い時間でも、言葉を重ねれば距離は変わる。星瓶堂には、その余韻が残る。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-02"
+      },
+      summary: "王宮での時間は相変わらず厳しいが、星瓶堂という「帰れる場所」ができたことで彼女の表情は和らいでいる。",
+      pages: [
+        { speaker: "", expression: "normal", text: "ダリヤは以前より少しだけ長く、星瓶堂に留まるようになった。\nそれでも本音は、まだ言葉になりきらない。" },
+        { speaker: "ダリヤ", expression: "normal", text: "「君の淹れる茶は、どうしてこうも香りが強いんだ」\n文句を言いながらも、彼女は空になった杯を置く。" },
+        { speaker: "ダリヤ", expression: "fun", text: "「……また明日、飲みに来てやる」\n言い残した言葉には、柔らかな約束が込められていた。" }
+      ]
     },
     bad: {
       title: "まだほどけない心",
-      expression: "sad",
-      bgId: "shopInteriorService",
-      text: "話し足りない気持ちはある。それでも、星瓶堂での記憶はここにある。"
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MAIN-01"
+      },
+      summary: "ダリヤは再び王宮の重責に戻っていくが、星瓶堂で過ごした時間が完全に消えたわけではない。",
+      pages: [
+        { speaker: "", expression: "sorrow", text: "ダリヤは最後まで、疲れた顔を隠そうとした。\n王宮錬金術師としての姿は、美しく、少し遠かった。" },
+        { speaker: "", expression: "sorrow", text: "けれど夜の店先で、彼女は一度だけ足を止める。\n星瓶堂の灯を見つめる横顔に、言えなかった弱音が残っていた。" }
+      ]
     }
   }
 };
@@ -6640,7 +6804,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   ))))))));
 }
 function App() {
-  var _a, _b;
+  var _a, _b, _c;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -7937,14 +8101,18 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const bg = endingData.bgId ? BACKGROUND_IMAGES[endingData.bgId] : BACKGROUND_IMAGES.shopInteriorService;
+    const endingBackgroundId = ((_b = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _b.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
+    const endingBackgroundSrc = getFullPath(
+      (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
+    );
     mainContent = /* @__PURE__ */ React.createElement("div", { style: { ...containerStyle, position: "relative" } }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundImage: `url(${getFullPath(bg.src)})`,
+      backgroundImage: `url(${endingBackgroundSrc})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       zIndex: 0
@@ -7962,13 +8130,13 @@ function App() {
         heroine: activeHeroine,
         type: "standing",
         size: "large",
-        expression: endingData.expression
+        expression: endingData.expression || "normal"
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         speaker: activeHeroine.name,
-        text: endingData.text,
+        pages: endingData.pages,
         themeColor: activeHeroine.themeColor,
         speed: textSpeedMeta.delay,
         skip: isInstantTextSpeed,
@@ -8062,7 +8230,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_b = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _b.name}を待っています...`), renderMenuModal(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), renderMenuModal(), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
   var _a;
@@ -8112,7 +8280,9 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
 function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }) {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
-  const currentText = pageList[pageIndex] || "";
+  const currentPage = pageList[pageIndex];
+  const currentText = typeof currentPage === "object" ? (currentPage == null ? void 0 : currentPage.text) || "" : currentPage || "";
+  const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8122,7 +8292,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
     const key = `${pageIndex}:${currentText}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete == null ? void 0 : onPageComplete({ speaker, text: currentText, pageIndex });
+    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, text: currentText, pageIndex });
   };
   useEffect(() => {
     if (skip) {
@@ -8189,14 +8359,14 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
         overflow: "hidden"
       }
     },
-    speaker && /* @__PURE__ */ React.createElement("div", { style: {
+    currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: "0.85em",
       color: themeColor || "#c5a059",
       fontWeight: "bold",
       marginBottom: "8px",
       letterSpacing: "0.08em",
       textShadow: "0 1px 2px rgba(0,0,0,0.5)"
-    } }, speaker),
+    } }, currentSpeaker),
     /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "4.8em", flex: 1 } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: "2px solid #c5a059" } }, " ")),
     isComplete && pageIndex < pageList.length - 1 && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
