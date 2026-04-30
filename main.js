@@ -8812,7 +8812,16 @@ function App() {
     );
   } else if (screen === "QUIZ" && session) {
     const currentQuestion = session.questions[session.currentIndex];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), renderHudButtons(), /* @__PURE__ */ React.createElement("header", { style: {
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
+      GameHud,
+      {
+        screen,
+        routeMode,
+        onOpenLog: () => setShowLog(true),
+        onOpenOptions: () => setShowOptions(true),
+        onOpenHelp: () => setShowHelp(true)
+      }
+    ), /* @__PURE__ */ React.createElement("header", { style: {
       ...headerStyle,
       background: THEME.nightBlue,
       color: THEME.sand,
