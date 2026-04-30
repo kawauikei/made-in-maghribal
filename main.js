@@ -913,7 +913,19 @@ const SHOP = {
   localName: "ダール・アル＝カワーキブ"
 };
 const PROTAGONIST = {
-  shortName: "ナーディル"
+  id: "nader",
+  name: "ナーディル・アル＝カーミル",
+  shortName: "ナーディル",
+  age: 20,
+  role: "若き錬金術師 / 星瓶堂店主",
+  background: "錬金大学を飛び級で卒業。実家の星瓶堂を継いだばかり。",
+  personality: "穏やかで人当たりがよいが、根は真面目。",
+  goal: "自分の力で工房を一人前にすること",
+  themeColor: "#c5a059",
+  visualConfig: {
+    facePosition: "center 20%",
+    standingScale: 1
+  }
 };
 const StartScreen = ({
   screen,
@@ -1548,6 +1560,205 @@ const HeroineSelectScreen = ({
     gap: "20px",
     opacity: 0.8
   } }));
+};
+const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
+  const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
+  const [pageIndex, setPageIndex] = useState(0);
+  const currentPage = pageList[pageIndex];
+  const currentText = typeof currentPage === "object" ? (currentPage == null ? void 0 : currentPage.text) || "" : currentPage || "";
+  const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
+  const [displayText, setDisplayText] = useState(skip ? currentText : "");
+  const [isComplete, setIsComplete] = useState(skip);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const loggedPagesRef = useRef(/* @__PURE__ */ new Set());
+  const markPageComplete = () => {
+    if (!currentText) return;
+    const key = `${pageIndex}:${currentText}`;
+    if (loggedPagesRef.current.has(key)) return;
+    loggedPagesRef.current.add(key);
+    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, text: currentText, pageIndex });
+  };
+  useEffect(() => {
+    if (skip) {
+      setDisplayText(currentText);
+      setIsComplete(true);
+      markPageComplete();
+      return;
+    }
+    setDisplayText("");
+    setIsComplete(false);
+    setCurrentIndex(0);
+  }, [currentText, skip]);
+  useEffect(() => {
+    if (isComplete || skip) return;
+    if (currentIndex < currentText.length) {
+      const timer = setTimeout(() => {
+        setDisplayText((prev) => prev + currentText[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    } else {
+      setIsComplete(true);
+      markPageComplete();
+    }
+  }, [currentIndex, currentText, isComplete, speed, skip]);
+  const handleClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isComplete) {
+      setDisplayText(currentText);
+      setIsComplete(true);
+      markPageComplete();
+    } else if (pageIndex < pageList.length - 1) {
+      setPageIndex((prev) => prev + 1);
+      setDisplayText("");
+      setIsComplete(false);
+      setCurrentIndex(0);
+      audioEngine.playSfx("uiTapBottle");
+    } else if (onComplete) {
+      audioEngine.playSfx("uiTapBottle");
+      onComplete();
+    }
+  };
+  useImperativeHandle(ref, () => ({
+    advance: () => handleClick()
+  }));
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "vn-box",
+      onClick: handleClick,
+      style: {
+        width: "100%",
+        boxSizing: "border-box",
+        height: "160px",
+        background: "rgba(26, 42, 58, 0.95)",
+        borderLeft: `4px solid ${themeColor || THEME.brass}`,
+        padding: "20px 24px",
+        borderRadius: "0 12px 12px 0",
+        cursor: "pointer",
+        color: THEME.parchment,
+        textAlign: "left",
+        position: "relative",
+        boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+        fontFamily: "'Outfit', 'Inter', sans-serif",
+        userSelect: "none",
+        lineHeight: "1.7",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden"
+      }
+    },
+    currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.85em",
+      color: themeColor || THEME.brass,
+      fontWeight: "bold",
+      marginBottom: "8px",
+      letterSpacing: "0.08em",
+      textShadow: "0 1px 2px rgba(0,0,0,0.5)"
+    } }, currentSpeaker),
+    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "4.8em", flex: 1 } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
+    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: "12px",
+      right: "20px",
+      fontSize: "0.8em",
+      color: themeColor || THEME.brass,
+      fontWeight: "bold",
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      animation: "vn-bounce 1s infinite",
+      background: "rgba(0,0,0,0.3)",
+      padding: "4px 10px",
+      borderRadius: "999px",
+      border: `1px solid ${themeColor || THEME.brass}44`
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼")),
+    /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+      `)
+  );
+});
+const prologuePages = [
+  "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
+  "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
+  "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
+  "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+  "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。"
+];
+const PrologueScreen = ({
+  screen,
+  routeMode,
+  textSpeedMeta,
+  isInstantTextSpeed,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  onVnAreaClick,
+  onPageComplete,
+  onAdvanceToHeroineSelect,
+  renderThemeStyles,
+  renderBackground,
+  HeroineDisplay: HeroineDisplay2,
+  audioEngine: audioEngine2,
+  vnRef,
+  containerStyle: containerStyle2,
+  titleStyle: titleStyle2,
+  cardStyle: cardStyle2,
+  buttonStyle: buttonStyle2
+}) => {
+  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "prologue-screen",
+      style: { ...containerStyle2, position: "relative" },
+      onClick: onVnAreaClick
+    },
+    renderThemeStyles(),
+    renderBackground("START"),
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: 0,
+      right: "5%",
+      zIndex: 1,
+      pointerEvents: "none",
+      opacity: 0.9,
+      transform: "translateX(20%)"
+    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      GameHud,
+      {
+        screen,
+        routeMode,
+        onOpenLog,
+        onOpenOptions,
+        onOpenHelp
+      }
+    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        ref: vnRef,
+        speaker: "ナーディル",
+        pages: prologuePages,
+        themeColor: THEME.brass,
+        speed: textSpeedMeta.delay,
+        skip: shouldSkipTypewriter(isInstantTextSpeed),
+        onPageComplete,
+        onComplete: () => {
+          setIsPrologueComplete(true);
+        }
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "54px", marginTop: "18px", display: "flex", justifyContent: "center", alignItems: "center" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        "data-testid": "prologue-next",
+        onClick: onAdvanceToHeroineSelect,
+        style: { ...buttonStyle2, width: "100%", maxWidth: "280px", margin: 0 }
+      },
+      "星瓶堂へ進む"
+    ))))
+  );
 };
 const GENRES = [
   { id: "ARM", name: "武具" },
@@ -7713,124 +7924,6 @@ const SFX = {
     description: "Wooden door latch or shop bell for day end"
   }
 };
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
-  const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
-  const [pageIndex, setPageIndex] = useState(0);
-  const currentPage = pageList[pageIndex];
-  const currentText = typeof currentPage === "object" ? (currentPage == null ? void 0 : currentPage.text) || "" : currentPage || "";
-  const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
-  const [displayText, setDisplayText] = useState(skip ? currentText : "");
-  const [isComplete, setIsComplete] = useState(skip);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const loggedPagesRef = useRef(/* @__PURE__ */ new Set());
-  const markPageComplete = () => {
-    if (!currentText) return;
-    const key = `${pageIndex}:${currentText}`;
-    if (loggedPagesRef.current.has(key)) return;
-    loggedPagesRef.current.add(key);
-    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, text: currentText, pageIndex });
-  };
-  useEffect(() => {
-    if (skip) {
-      setDisplayText(currentText);
-      setIsComplete(true);
-      markPageComplete();
-      return;
-    }
-    setDisplayText("");
-    setIsComplete(false);
-    setCurrentIndex(0);
-  }, [currentText, skip]);
-  useEffect(() => {
-    if (isComplete || skip) return;
-    if (currentIndex < currentText.length) {
-      const timer = setTimeout(() => {
-        setDisplayText((prev) => prev + currentText[currentIndex]);
-        setCurrentIndex((prev) => prev + 1);
-      }, speed);
-      return () => clearTimeout(timer);
-    } else {
-      setIsComplete(true);
-      markPageComplete();
-    }
-  }, [currentIndex, currentText, isComplete, speed, skip]);
-  const handleClick = (e) => {
-    if (e) e.stopPropagation();
-    if (!isComplete) {
-      setDisplayText(currentText);
-      setIsComplete(true);
-      markPageComplete();
-    } else if (pageIndex < pageList.length - 1) {
-      setPageIndex((prev) => prev + 1);
-      setDisplayText("");
-      setIsComplete(false);
-      setCurrentIndex(0);
-      audioEngine.playSfx("uiTapBottle");
-    } else if (onComplete) {
-      audioEngine.playSfx("uiTapBottle");
-      onComplete();
-    }
-  };
-  useImperativeHandle(ref, () => ({
-    advance: () => handleClick()
-  }));
-  return /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      "data-testid": "vn-box",
-      onClick: handleClick,
-      style: {
-        width: "100%",
-        boxSizing: "border-box",
-        height: "160px",
-        background: "rgba(26, 42, 58, 0.95)",
-        borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: "20px 24px",
-        borderRadius: "0 12px 12px 0",
-        cursor: "pointer",
-        color: THEME.parchment,
-        textAlign: "left",
-        position: "relative",
-        boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
-        fontFamily: "'Outfit', 'Inter', sans-serif",
-        userSelect: "none",
-        lineHeight: "1.7",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden"
-      }
-    },
-    currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.85em",
-      color: themeColor || THEME.brass,
-      fontWeight: "bold",
-      marginBottom: "8px",
-      letterSpacing: "0.08em",
-      textShadow: "0 1px 2px rgba(0,0,0,0.5)"
-    } }, currentSpeaker),
-    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "4.8em", flex: 1 } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
-    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      bottom: "12px",
-      right: "20px",
-      fontSize: "0.8em",
-      color: themeColor || THEME.brass,
-      fontWeight: "bold",
-      display: "flex",
-      alignItems: "center",
-      gap: "6px",
-      animation: "vn-bounce 1s infinite",
-      background: "rgba(0,0,0,0.3)",
-      padding: "4px 10px",
-      borderRadius: "999px",
-      border: `1px solid ${themeColor || THEME.brass}44`
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼")),
-    /* @__PURE__ */ React.createElement("style", null, `
-        @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-      `)
-  );
-});
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
@@ -7900,16 +7993,7 @@ const TEXT_SPEED_META = {
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
-const NADER = {
-  id: "nader",
-  name: "ナーディル",
-  themeColor: "#c5a059",
-  role: "星瓶堂 店主",
-  visualConfig: {
-    facePosition: "center 20%",
-    standingScale: 1
-  }
-};
+const NADER = PROTAGONIST;
 function App() {
   var _a, _b, _c;
   const [session, setSession] = useState(null);
@@ -7927,7 +8011,6 @@ function App() {
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState("background");
-  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState("normal");
   const [instantUnreadText, setInstantUnreadText] = useState(false);
@@ -8170,7 +8253,6 @@ function App() {
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
-    setIsPrologueComplete(false);
     setScreen("PROLOGUE");
   };
   const handleContinue = () => {
@@ -8533,66 +8615,32 @@ function App() {
       }
     );
   } else if (screen === "PROLOGUE") {
-    const prologuePages = [
-      "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-      "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-      "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-      "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。"
-    ];
     mainContent = /* @__PURE__ */ React.createElement(
-      "div",
+      PrologueScreen,
       {
-        "data-testid": "prologue-screen",
-        style: { ...containerStyle, position: "relative" },
-        onClick: handleVnAreaClick
-      },
-      renderThemeStyles(),
-      renderBackground("START"),
-      /* @__PURE__ */ React.createElement("div", { style: {
-        position: "absolute",
-        bottom: 0,
-        right: "5%",
-        zIndex: 1,
-        pointerEvents: "none",
-        opacity: 0.9,
-        transform: "translateX(20%)"
-      } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: NADER, type: "standing", size: "large", expression: "normal" })),
-      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
-        GameHud,
-        {
-          screen,
-          routeMode,
-          onOpenLog: () => setShowLog(true),
-          onOpenOptions: () => setShowOptions(true),
-          onOpenHelp: () => setShowHelp(true)
-        }
-      ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
-        VNBox,
-        {
-          ref: vnRef,
-          speaker: "ナーディル",
-          pages: prologuePages,
-          themeColor: THEME.brass,
-          speed: textSpeedMeta.delay,
-          skip: shouldSkipTypewriter(isInstantTextSpeed),
-          onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "PROLOGUE" }),
-          onComplete: () => {
-            setIsPrologueComplete(true);
-          }
-        }
-      ), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "54px", marginTop: "18px", display: "flex", justifyContent: "center", alignItems: "center" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
-        "button",
-        {
-          "data-testid": "prologue-next",
-          onClick: () => {
-            audioEngine.playSfx("uiClickForward");
-            setScreen("HEROINE_SELECT");
-          },
-          style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 }
+        screen,
+        routeMode,
+        textSpeedMeta,
+        isInstantTextSpeed,
+        onOpenLog: () => setShowLog(true),
+        onOpenOptions: () => setShowOptions(true),
+        onOpenHelp: () => setShowHelp(true),
+        onVnAreaClick: handleVnAreaClick,
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "PROLOGUE" }),
+        onAdvanceToHeroineSelect: () => {
+          audioEngine.playSfx("uiClickForward");
+          setScreen("HEROINE_SELECT");
         },
-        "星瓶堂へ進む"
-      ))))
+        renderThemeStyles,
+        renderBackground,
+        HeroineDisplay,
+        audioEngine,
+        vnRef,
+        containerStyle,
+        titleStyle,
+        cardStyle,
+        buttonStyle
+      }
     );
   } else if (screen === "INTRO") {
     mainContent = /* @__PURE__ */ React.createElement(
