@@ -568,7 +568,7 @@ const GameHud = ({
   onOpenOptions,
   onOpenHelp
 }) => {
-  const isHudVisible = !["ENDING", "FINAL_RESULT", "MEMORIES", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
+  const isHudVisible = !["ENDING", "FINAL_RESULT", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
   if (!isHudVisible) return null;
   const hudBtnStyle = {
     background: "rgba(255,255,255,0.92)",
@@ -774,6 +774,106 @@ const VisualTestScreen = ({
     },
     /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
   )))))));
+};
+const MemoriesScreen = ({
+  screen,
+  routeMode,
+  seenEventIds,
+  heroines,
+  affectionEvents,
+  onBackToTitle,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  onRecallEvent,
+  renderThemeStyles,
+  renderUtilityHeader
+}) => {
+  const allEvents = Object.values(affectionEvents).flat();
+  const seenEvents = allEvents.filter((e) => seenEventIds.includes(e.id));
+  const memoriesContainerStyle = {
+    width: "100%",
+    height: "100%",
+    padding: 0,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    overflow: "hidden",
+    position: "relative",
+    boxSizing: "border-box"
+  };
+  const memoriesTitleStyle = {
+    color: "#e2d1b1",
+    fontSize: "1.4em",
+    margin: "0 0 12px 0",
+    textAlign: "center",
+    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+    fontWeight: "bold"
+  };
+  const memoriesCardStyle = {
+    width: "calc(100% - 16px)",
+    maxWidth: "800px",
+    padding: "12px",
+    border: `1px solid ${THEME.brass}`,
+    borderRadius: "8px",
+    background: THEME.parchment,
+    color: THEME.textDark,
+    textAlign: "center",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+    position: "relative",
+    boxSizing: "border-box",
+    flex: 1,
+    minHeight: 0,
+    display: "flex",
+    flexDirection: "column",
+    margin: "0 8px 8px",
+    overflow: "hidden"
+  };
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "memories-screen", style: memoriesContainerStyle }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement(
+    GameHud,
+    {
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), renderUtilityHeader && renderUtilityHeader("Memories", onBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...memoriesTitleStyle, display: "none" } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: memoriesCardStyle }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, heroines.map((heroine) => {
+    const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
+    if (heroineSeenEvents.length === 0) return null;
+    return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      color: heroine.themeColor,
+      fontWeight: "bold",
+      borderBottom: `2px solid ${heroine.themeColor}`,
+      paddingBottom: "5px",
+      marginBottom: "15px",
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      fontSize: "1.1em"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { width: "8px", height: "8px", borderRadius: "50%", background: heroine.themeColor } }), heroine.name, "との思い出"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" } }, heroineSeenEvents.map((event) => /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: event.id,
+        className: "memory-item",
+        onClick: () => onRecallEvent && onRecallEvent(event),
+        style: {
+          background: "rgba(0,0,0,0.03)",
+          padding: "12px 15px",
+          borderRadius: "0 4px 4px 0",
+          border: "1px solid rgba(0,0,0,0.05)",
+          borderLeft: `4px solid ${heroine.themeColor}`,
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, event.title),
+      /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.8em", color: THEME.brassDark } }, "詳細を見る")
+    ))));
+  })))));
 };
 const GENRES = [
   { id: "ARM", name: "武具" },
@@ -7860,6 +7960,13 @@ function App() {
     setShowLog(false);
     setShowHelp(false);
   };
+  const handleRecallEventFromMemories = (event) => {
+    audioEngine.playSfx("uiConfirmChime");
+    setActiveEvent(event);
+    setIsRecallMode(true);
+    setActiveHeroineId(event.heroineId);
+    setScreen("EVENT");
+  };
   const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
     if (!text) return;
     setVnBacklog((prev) => {
@@ -8404,59 +8511,23 @@ function App() {
       }
     );
   } else if (screen === "MEMORIES") {
-    const allEvents = Object.values(AFFECTION_EVENTS).flat();
-    const seenEvents = allEvents.filter((e) => seenEventIds.includes(e.id));
-    const handleRecallEvent = (event) => {
-      audioEngine.playSfx("uiConfirmChime");
-      setActiveEvent(event);
-      setIsRecallMode(true);
-      setActiveHeroineId(event.heroineId);
-      setScreen("EVENT");
-    };
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "memories-screen", style: { ...containerStyle, padding: 0 } }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
-      GameHud,
+    mainContent = /* @__PURE__ */ React.createElement(
+      MemoriesScreen,
       {
         screen,
         routeMode,
+        seenEventIds,
+        heroines: HEROINES,
+        affectionEvents: AFFECTION_EVENTS,
+        onBackToTitle: handleBackToTitle,
         onOpenLog: () => setShowLog(true),
         onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true)
+        onOpenHelp: () => setShowHelp(true),
+        onRecallEvent: handleRecallEventFromMemories,
+        renderThemeStyles,
+        renderUtilityHeader
       }
-    ), renderUtilityHeader("Memories", handleBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, display: "none" } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", margin: "0 8px 8px", width: "calc(100% - 16px)", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, HEROINES.map((heroine) => {
-      const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
-      if (heroineSeenEvents.length === 0) return null;
-      return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
-        color: heroine.themeColor,
-        fontWeight: "bold",
-        borderBottom: `2px solid ${heroine.themeColor}`,
-        paddingBottom: "5px",
-        marginBottom: "15px",
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
-        fontSize: "1.1em"
-      } }, /* @__PURE__ */ React.createElement("div", { style: { width: "8px", height: "8px", borderRadius: "50%", background: heroine.themeColor } }), heroine.name, "との思い出"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" } }, heroineSeenEvents.map((event) => /* @__PURE__ */ React.createElement(
-        "div",
-        {
-          key: event.id,
-          className: "memory-item",
-          onClick: () => handleRecallEvent(event),
-          style: {
-            background: "rgba(0,0,0,0.03)",
-            padding: "12px 15px",
-            borderRadius: "0 4px 4px 0",
-            border: "1px solid rgba(0,0,0,0.05)",
-            borderLeft: `4px solid ${heroine.themeColor}`,
-            cursor: "pointer",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }
-        },
-        /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, event.title),
-        /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.8em", color: THEME.brassDark } }, "詳細を見る")
-      ))));
-    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "none" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "240px" } }, "記録を閉じる"))));
+    );
   } else if (screen === "HEROINE_SELECT") {
     const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
     mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
