@@ -1994,7 +1994,19 @@ function App() {
     }
 
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const bg = endingData.bgId ? BACKGROUND_IMAGES[endingData.bgId] : BACKGROUND_IMAGES.shopInteriorService;
+    
+    const endingBackgroundId =
+      endingData?.presentation?.backgroundId ||
+      endingData?.bgId ||
+      'shopInteriorService';
+
+    const endingBackground =
+      BACKGROUND_IMAGES[endingBackgroundId] ||
+      BACKGROUND_IMAGES.shopInteriorService;
+
+    const endingBackgroundSrc = getFullPath(
+      (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
+    );
 
     mainContent = (
       <div style={{ ...containerStyle, position: 'relative' }}>
@@ -2002,7 +2014,7 @@ function App() {
         {/* Special Ending Background */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: `url(${getFullPath(bg.src)})`,
+          backgroundImage: `url(${endingBackgroundSrc})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
           zIndex: 0
         }} />
@@ -2019,14 +2031,14 @@ function App() {
               heroine={activeHeroine} 
               type="standing" 
               size="large" 
-              expression={endingData.expression} 
+              expression={endingData.expression || "normal"} 
             />
           </div>
 
           <div style={{ width: '100%', padding: '10px' }}>
             <VNBox 
               speaker={activeHeroine.name}
-              text={endingData.text}
+              pages={endingData.pages}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
               skip={isInstantTextSpeed}
@@ -2242,7 +2254,11 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
 function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }) {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
-  const currentText = pageList[pageIndex] || "";
+  
+  const currentPage = pageList[pageIndex];
+  const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
+  const currentSpeaker = typeof currentPage === 'object' && currentPage?.speaker !== undefined ? currentPage.speaker : speaker;
+
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -2253,7 +2269,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
     const key = `${pageIndex}:${currentText}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker, text: currentText, pageIndex });
+    onPageComplete?.({ speaker: currentSpeaker, text: currentText, pageIndex });
   };
 
   useEffect(() => {
@@ -2325,7 +2341,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
         overflow: 'hidden'
       }}
     >
-      {speaker && (
+      {currentSpeaker && (
         <div style={{ 
           fontSize: '0.85em', 
           color: themeColor || '#c5a059', 
@@ -2334,7 +2350,7 @@ function VNBox({ text, pages, speaker, themeColor, onComplete, onPageComplete, s
           letterSpacing: '0.08em',
           textShadow: '0 1px 2px rgba(0,0,0,0.5)'
         }}>
-          {speaker}
+          {currentSpeaker}
         </div>
       )}
       <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>

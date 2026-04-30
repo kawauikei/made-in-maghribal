@@ -30,23 +30,42 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
  * 
  * @param {Object} event - The event object
  * @param {string} routeMode - 'normal' or 'long_history'
- * @returns {string[]} Array of strings (pages)
+ * @returns {Array} Array of page objects { speaker, expression, text }
  */
 export function getEventPages(event, routeMode) {
-  if (!event) return [""];
+  if (!event) return [{ speaker: "", expression: "normal", text: "" }];
+  
+  let rawPages = [];
   
   // 1. Try route-specific pages
   if (routeMode === 'long_history' && event.routePages?.long_history) {
-    return event.routePages.long_history;
+    rawPages = event.routePages.long_history;
   }
-  
   // 2. Try default pages array
-  if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
-    return event.pages;
+  else if (event.pages && Array.isArray(event.pages) && event.pages.length > 0) {
+    rawPages = event.pages;
   }
-  
   // 3. Fallback to single text property
-  return [event.text || ""];
+  else {
+    rawPages = [event.text || ""];
+  }
+
+  // Normalize array to handle both strings and objects
+  return rawPages.map(page => {
+    if (typeof page === 'string') {
+      return {
+        speaker: "",
+        expression: "normal",
+        text: page
+      };
+    }
+    // Return object page, ensuring fallbacks
+    return {
+      speaker: page.speaker !== undefined ? page.speaker : "",
+      expression: page.expression || "normal",
+      text: page.text || ""
+    };
+  });
 }
 
 /**

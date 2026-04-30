@@ -52,25 +52,31 @@ async function main() {
   };
 
   const p1 = getEventPages(mockEvent, 'normal');
-  assert.deepStrictEqual(p1, ['Normal text'], 'Normal route should return base text');
+  assert.deepStrictEqual(p1, [{ speaker: "", expression: "normal", text: 'Normal text' }], 'Normal route should return base text');
   console.log('PASSED: getEventPages normal route fallback');
 
   const p2 = getEventPages(mockEvent, 'long_history');
-  assert.deepStrictEqual(p2, ['IF page 1', 'IF page 2'], 'long_history should return IF pages');
+  assert.deepStrictEqual(p2, [
+    { speaker: "", expression: "normal", text: 'IF page 1' },
+    { speaker: "", expression: "normal", text: 'IF page 2' }
+  ], 'long_history should return IF pages');
   console.log('PASSED: getEventPages long_history route selection');
 
   const mockEventSimple = { text: 'Simple text' };
   const p3 = getEventPages(mockEventSimple, 'long_history');
-  assert.deepStrictEqual(p3, ['Simple text'], 'Should fallback if IF text is missing');
+  assert.deepStrictEqual(p3, [{ speaker: "", expression: "normal", text: 'Simple text' }], 'Should fallback if IF text is missing');
   console.log('PASSED: getEventPages fallback for missing IF text');
 
   const mockEventPages = { pages: ['Page 1', 'Page 2'] };
   const p4 = getEventPages(mockEventPages, 'normal');
-  assert.deepStrictEqual(p4, ['Page 1', 'Page 2'], 'Should return pages if provided');
+  assert.deepStrictEqual(p4, [
+    { speaker: "", expression: "normal", text: 'Page 1' },
+    { speaker: "", expression: "normal", text: 'Page 2' }
+  ], 'Should return pages if provided');
   console.log('PASSED: getEventPages using explicit pages');
 
   const p5 = getEventPages(mockEvent, undefined);
-  assert.deepStrictEqual(p5, ['Normal text'], 'Missing routeMode should fallback to normal text');
+  assert.deepStrictEqual(p5, [{ speaker: "", expression: "normal", text: 'Normal text' }], 'Missing routeMode should fallback to normal text');
   console.log('PASSED: getEventPages fallback for missing routeMode');
 
   // --- Story Definition Structure Checks ---
