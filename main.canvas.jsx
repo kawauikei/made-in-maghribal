@@ -35,16 +35,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 
-const NADER = {
-  id: 'nader',
-  name: 'ナーディル',
-  themeColor: '#c5a059',
-  role: '星瓶堂 店主',
-  visualConfig: {
-    facePosition: "center 20%",
-    standingScale: 1.0
-  }
-};
+const NADER = PROTAGONIST;
 
 
 
@@ -1336,6 +1327,98 @@ const HeroineSelectScreen = ({
 
 
 
+// --- Inlined: PrologueScreen ---
+
+const prologuePages = [
+  "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
+  "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
+  "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
+  "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
+  "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
+];
+
+const PrologueScreen = ({
+  screen,
+  routeMode,
+  textSpeedMeta,
+  isInstantTextSpeed,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  onVnAreaClick,
+  onPageComplete,
+  onAdvanceToHeroineSelect,
+  renderThemeStyles,
+  renderBackground,
+  HeroineDisplay,
+  audioEngine,
+  vnRef,
+  containerStyle,
+  titleStyle,
+  cardStyle,
+  buttonStyle
+}) => {
+  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
+
+  return (
+    <div 
+      data-testid="prologue-screen" 
+      style={{ ...containerStyle, position: 'relative' }}
+      onClick={onVnAreaClick}
+    >
+      {renderThemeStyles()}
+      {renderBackground('START')}
+      
+      {/* Nadir Standing */}
+      <div style={{ 
+        position: 'absolute', bottom: 0, right: '5%', zIndex: 1, 
+        pointerEvents: 'none', opacity: 0.9,
+        transform: 'translateX(20%)'
+      }}>
+        <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+      </div>
+
+      <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <GameHud 
+          screen={screen} 
+          routeMode={routeMode} 
+          onOpenLog={onOpenLog} 
+          onOpenOptions={onOpenOptions} 
+          onOpenHelp={onOpenHelp} 
+        />
+        <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
+        <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
+          <VNBox
+            ref={vnRef}
+            speaker="ナーディル"
+            pages={prologuePages}
+            themeColor={THEME.brass}
+            speed={textSpeedMeta.delay}
+            skip={shouldSkipTypewriter(isInstantTextSpeed)}
+            onPageComplete={onPageComplete}
+            onComplete={() => {
+              setIsPrologueComplete(true);
+            }}
+          />
+          <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {isPrologueComplete && (
+              <button
+                data-testid="prologue-next"
+                onClick={onAdvanceToHeroineSelect}
+                style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
+              >
+                星瓶堂へ進む
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
 // --- Inlined: VNBox ---
 
 /**
@@ -1634,7 +1717,6 @@ function App() {
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
-  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const [vnBacklog, setVnBacklog] = useState([]);
   const [textSpeed, setTextSpeed] = useState('normal');
   const [instantUnreadText, setInstantUnreadText] = useState(false);
@@ -1935,7 +2017,6 @@ function App() {
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
-    setIsPrologueComplete(false);
     
     setScreen('PROLOGUE');
   };
@@ -2381,62 +2462,30 @@ function App() {
       "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
     ];
     mainContent = (
-      <div 
-        data-testid="prologue-screen" 
-        style={{ ...containerStyle, position: 'relative' }}
-        onClick={handleVnAreaClick}
-      >
-        {renderThemeStyles()}
-        {renderBackground('START')}
-        
-        {/* Nadir Standing */}
-        <div style={{ 
-          position: 'absolute', bottom: 0, right: '5%', zIndex: 1, 
-          pointerEvents: 'none', opacity: 0.9,
-          transform: 'translateX(20%)'
-        }}>
-          <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
-        </div>
-
-        <div style={{ zIndex: 2, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={() => setShowLog(true)} 
-          onOpenOptions={() => setShowOptions(true)} 
-          onOpenHelp={() => setShowHelp(true)} 
-        />
-          <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
-          <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
-            <VNBox
-              ref={vnRef}
-              speaker="ナーディル"
-              pages={prologuePages}
-              themeColor={THEME.brass}
-              speed={textSpeedMeta.delay}
-              skip={shouldSkipTypewriter(isInstantTextSpeed)}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
-              onComplete={() => {
-                setIsPrologueComplete(true);
-              }}
-            />
-            <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {isPrologueComplete && (
-                <button
-                  data-testid="prologue-next"
-                  onClick={() => {
-                    audioEngine.playSfx('uiClickForward');
-                    setScreen('HEROINE_SELECT');
-                  }}
-                  style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
-                >
-                  星瓶堂へ進む
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      <PrologueScreen
+        screen={screen}
+        routeMode={routeMode}
+        textSpeedMeta={textSpeedMeta}
+        isInstantTextSpeed={isInstantTextSpeed}
+        onOpenLog={() => setShowLog(true)}
+        onOpenOptions={() => setShowOptions(true)}
+        onOpenHelp={() => setShowHelp(true)}
+        onVnAreaClick={handleVnAreaClick}
+        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
+        onAdvanceToHeroineSelect={() => {
+          audioEngine.playSfx('uiClickForward');
+          setScreen('HEROINE_SELECT');
+        }}
+        renderThemeStyles={renderThemeStyles}
+        renderBackground={renderBackground}
+        HeroineDisplay={HeroineDisplay}
+        audioEngine={audioEngine}
+        vnRef={vnRef}
+        containerStyle={containerStyle}
+        titleStyle={titleStyle}
+        cardStyle={cardStyle}
+        buttonStyle={buttonStyle}
+      />
     );
   } else if (screen === 'INTRO') {
     mainContent = (
