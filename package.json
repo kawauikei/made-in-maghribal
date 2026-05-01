@@ -9,7 +9,9 @@
     "test": "node tests/quizEngine.test.js && node tests/management.test.cjs && node tests/dataIntegrity.test.cjs && node tests/audioManifest.test.cjs && node tests/sfxManifest.test.cjs && node tests/saveData.test.cjs && node tests/eventSystem.test.cjs && node tests/imageAssets.test.cjs && node tests/dailyTalks.test.js",
     "test:e2e": "playwright test",
     "assets:characters": "node tools/character_asset_pipeline/process_character_assets.cjs",
-    "audit:narrative": "node tools/narrative_audit.js"
+    "audit:narrative": "node tools/narrative_audit.js",
+    "export:narrative-edit-pack": "node tools/export_narrative_edit_pack.js",
+    "import:narrative-edit-pack": "node tools/import_narrative_edit_pack.js"
   },
   "dependencies": {
     "react": "^18.3.1",
