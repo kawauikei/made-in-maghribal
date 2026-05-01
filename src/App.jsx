@@ -16,6 +16,7 @@ import ResultScreen from './ui/ResultScreen';
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
+import { resolveQuizCompletion, createPerfectQuizPayload } from './game/quizFlow';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
 import { HEROINES, getHeroineAsset } from './data/heroines';
 import { getResultExpression, getDayEndExpression } from './game/presentation';
@@ -284,9 +285,16 @@ export default function App() {
   useEffect(() => {
     if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
       debugAutoSkipAppliedRef.current = true;
-      // Force perfect score and proceed to result
+      // Force perfect score and proceed to result using shared logic
       const timer = setTimeout(() => {
-        finishQuizWithResult(session.questions.length); 
+        const totalCount = session.questions.length;
+        const result = createPerfectQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds
+        );
+        applyQuizResultState(result);
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -922,24 +930,36 @@ export default function App() {
     });
   };
 
-  // Encapsulated Quiz Completion Logic (M-DEBUG-AUTO-SKIP-QUIZ Fix)
+  // Encapsulated Quiz Completion Logic (M-APP-REFACTOR-Q1)
   const finishQuizWithResult = (correctCount) => {
     const totalCount = session?.questions?.length || 5;
-    
-    // Calculate and apply affection gain
-    const gain = calculateQuizAffectionGain(correctCount, totalCount);
-    const nextAffection = addAffection(affection, activeHeroineId, gain);
-    setAffection(nextAffection);
-    setLastAffectionGain(gain);
+    const result = resolveQuizCompletion({
+      correctCount,
+      totalCount,
+      activeHeroineId,
+      currentAffection: affection[activeHeroineId] || 0,
+      seenEventIds
+    });
 
-    // Check for Event Unlock
-    const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-    if (unlockedEvent) {
-      setActiveEvent(unlockedEvent);
+    applyQuizResultState(result);
+  };
+
+  // Helper to apply the calculated quiz results to React state
+  const applyQuizResultState = (result) => {
+    // 1. Update Affection
+    const nextAffection = addAffection(affection, activeHeroineId, result.affectionGain);
+    setAffection(nextAffection);
+    setLastAffectionGain(result.affectionGain);
+
+    // 2. Update Workshop State
+    setWorkshopState(prev => applyWorkshopResult(prev, result.workshopResult));
+
+    // 3. Handle Potential Event Unlock
+    if (result.unlockedEvent) {
+      setActiveEvent(result.unlockedEvent);
     }
-    
-    const result = getWorkshopResult(correctCount);
-    setWorkshopState(prev => applyWorkshopResult(prev, result));
+
+    // 4. Transition to Result Screen
     setScreen('RESULT');
   };
 
