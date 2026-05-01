@@ -947,7 +947,7 @@ const StartScreen = ({
 }) => {
   const containerStyle2 = {
     width: "100%",
-    height: "100%",
+    height: "var(--app-visible-height, 100%)",
     padding: "12px",
     display: "flex",
     flexDirection: "column",
@@ -1397,7 +1397,7 @@ const HeroineSelectScreen = ({
   const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
   const containerStyle2 = {
     width: "100%",
-    height: "100%",
+    height: "var(--app-visible-height, 100%)",
     padding: "12px",
     display: "flex",
     flexDirection: "column",
@@ -8289,6 +8289,28 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+  useEffect(() => {
+    function updateViewportVars() {
+      const vv = window.visualViewport;
+      const h = (vv == null ? void 0 : vv.height) ?? window.innerHeight;
+      const w = (vv == null ? void 0 : vv.width) ?? window.innerWidth;
+      document.documentElement.style.setProperty("--app-visible-height", `${Math.round(h)}px`);
+      document.documentElement.style.setProperty("--app-visible-width", `${Math.round(w)}px`);
+    }
+    updateViewportVars();
+    window.addEventListener("resize", updateViewportVars);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateViewportVars);
+      window.visualViewport.addEventListener("scroll", updateViewportVars);
+    }
+    return () => {
+      window.removeEventListener("resize", updateViewportVars);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", updateViewportVars);
+        window.visualViewport.removeEventListener("scroll", updateViewportVars);
+      }
+    };
+  }, []);
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
   const BASE_WIDTH = 390;
@@ -8308,6 +8330,8 @@ function App() {
       const doc = document.documentElement;
       const newWidth = Math.floor(Math.min((viewport == null ? void 0 : viewport.width) || window.innerWidth, (doc == null ? void 0 : doc.clientWidth) || window.innerWidth));
       const newHeight = Math.floor(Math.min((viewport == null ? void 0 : viewport.height) || window.innerHeight, (doc == null ? void 0 : doc.clientHeight) || window.innerHeight));
+      document.documentElement.style.setProperty("--app-visible-height", `${newHeight}px`);
+      document.documentElement.style.setProperty("--app-visible-width", `${newWidth}px`);
       setViewportSize((prev) => {
         if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
         return { width: newWidth, height: newHeight };
@@ -8370,8 +8394,8 @@ function App() {
   };
   const outerWrapperStyle = {
     width: "100%",
-    height: "100%",
-    minHeight: isClipped ? `${measuredSize.height}px` : "100dvh",
+    height: "var(--app-visible-height, 100vh)",
+    minHeight: isClipped ? `${measuredSize.height}px` : "var(--app-visible-height, 100dvh)",
     backgroundColor: "#000",
     display: "flex",
     justifyContent: "center",
@@ -9433,7 +9457,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 }
 const containerStyle = {
   width: "100%",
-  height: "100%",
+  height: "var(--app-visible-height, 100%)",
   padding: "12px",
   display: "flex",
   flexDirection: "column",
