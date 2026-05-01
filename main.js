@@ -10232,8 +10232,14 @@ function App() {
         from { opacity: 0; transform: translateY(15px) scale(0.98); }
         to { opacity: 1; transform: translateY(0) scale(1); }
       }
-      .quiz-option-0 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.15s; }
-      .quiz-option-1 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.3s; }
+      @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      .quiz-question-bubble { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+      .quiz-rhythm-lane { animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.2s; }
+      .quiz-option-0 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.4s; }
+      .quiz-option-1 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.55s; }
 
       .item-card {
         transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s, background 0.2s;
@@ -10808,7 +10814,7 @@ function App() {
       // Tighter padding
       zIndex: 5
       // Above counter, below header
-    } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       width: "90%",
       // Slightly wider
@@ -10826,7 +10832,7 @@ function App() {
       alignItems: "center",
       justifyContent: "flex-start",
       textAlign: "left"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor }), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: { width: "100%", margin: "10px 0" } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
       gap: "20px",
