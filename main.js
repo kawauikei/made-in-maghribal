@@ -750,13 +750,14 @@ const VisualTestScreen = ({
     margin: "10px 0",
     alignSelf: "flex-start"
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
     "img",
     {
       key: bg.id,
       src: getFullPath(bg.src),
       alt: bg.label,
       style: { width: "100%", height: "100%", objectFit: "contain" },
+      draggable: false,
       onError: (e) => {
         e.target.style.display = "none";
         e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
@@ -778,14 +779,15 @@ const VisualTestScreen = ({
         boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
       }
     },
-    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
-  ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" }, draggable: false })
+  ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", aspectRatio: "16/9", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
     "img",
     {
       key: still.id,
       src: getFullPath(still.src),
       alt: still.label,
       style: { width: "100%", height: "100%", objectFit: "contain" },
+      draggable: false,
       onError: (e) => {
         e.target.style.display = "none";
         e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
@@ -807,7 +809,7 @@ const VisualTestScreen = ({
         boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : "none"
       }
     },
-    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" } })
+    /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" }, draggable: false })
   )))))));
 };
 const MemoriesScreen = ({
@@ -1469,6 +1471,7 @@ const HeroineSelectScreen = ({
       {
         "data-testid": `heroine-tab-${h.id}`,
         key: h.id,
+        className: "heroine-card",
         onClick: () => {
           if (audioEngine2) audioEngine2.playSfx("uiHeroineTab");
           if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
@@ -1503,7 +1506,8 @@ const HeroineSelectScreen = ({
             display: "block",
             borderRadius: "50%",
             clipPath: "circle(50% at 50% 50%)"
-          }
+          },
+          draggable: false
         }
       ),
       isSelected && /* @__PURE__ */ React.createElement("div", { style: {
@@ -1632,6 +1636,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     "div",
     {
       "data-testid": "vn-box",
+      className: "vn-box",
       onClick: handleClick,
       style: {
         width: "100%",
@@ -1650,6 +1655,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         // Subtle top shadow only
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: "none",
+        touchAction: "manipulation",
+        WebkitTapHighlightColor: "transparent",
         lineHeight: "1.7",
         display: "flex",
         flexDirection: "column",
@@ -8850,8 +8857,10 @@ function App() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       zIndex: 0,
-      pointerEvents: "none"
-    } }), /* @__PURE__ */ React.createElement("div", { style: {
+      pointerEvents: "none",
+      userSelect: "none",
+      WebkitUserSelect: "none"
+    }, draggable: false }), /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       top: 0,
       left: 0,
@@ -8859,7 +8868,9 @@ function App() {
       bottom: 0,
       backgroundColor: "rgba(26, 42, 58, 0.5)",
       zIndex: 1,
-      pointerEvents: "none"
+      pointerEvents: "none",
+      userSelect: "none",
+      WebkitUserSelect: "none"
     } }));
   };
   const renderThemeStyles = () => /* @__PURE__ */ React.createElement("style", null, `
@@ -8882,16 +8893,17 @@ function App() {
       }
 
       /* Global interactive element tuning */
-      button, [role="button"], .interactive-card, .quiz-option-0, .quiz-option-1 {
+      button, [role="button"], .interactive-card, .item-card, .heroine-card, .vn-box, .quiz-option-0, .quiz-option-1 {
         touch-action: manipulation;
         cursor: pointer;
-        WebkitTapHighlightColor: transparent;
+        -webkit-tap-highlight-color: transparent;
       }
 
       img {
         -webkit-user-drag: none;
         user-drag: none;
         pointer-events: none;
+        user-select: none;
       }
 
       button:active, .item-card:active { transform: scale(0.96); transition: transform 0.1s; }
@@ -8915,7 +8927,7 @@ function App() {
       }
 
       /* Scrollable areas exception */
-      .scrollable-content, .log-content, .help-content {
+      .scrollable-content, .log-content, .help-content, .selectable-text {
         user-select: text;
         -webkit-user-select: text;
         touch-action: pan-y;
@@ -9392,6 +9404,7 @@ function App() {
             src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
             alt: item.name,
             style: { ...imageStyle, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
+            draggable: false,
             onError: (e) => {
               e.target.onerror = null;
               e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
