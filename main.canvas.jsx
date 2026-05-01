@@ -13,8 +13,8 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, getIntroTalks } from './game/eventSystem';
-import { getRandomGreeting } from './data/greetings';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk } from './game/eventSystem';
+import { prepareIntroSequence } from './game/introFlow';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -3962,28 +3962,16 @@ function App() {
     setActiveHeroineId(heroineId);
     setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
     
-    // NEW: Selection of Greeting and Multiple DailyTalks
-    const greeting = getRandomGreeting();
-    setActiveGreeting(greeting);
-
-    const talks = getIntroTalks(
+    const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
       heroineId,
-      affection[heroineId] || 0,
+      currentAffection: affection[heroineId] || 0,
       seenTalkIds,
-      routeMode
-    );
-
-    // Merge multiple talks into one activeDailyTalk for IntroScreen
-    if (talks.length > 0) {
-      const mergedTalk = {
-        id: `merged_${talks.map(t => t.id).join('_')}`,
-        pages: talks.flatMap(t => t.pages)
-      };
-      setActiveDailyTalk(mergedTalk);
-      // Mark as seen
-      setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
-    } else {
-      setActiveDailyTalk(null);
+      routeMode,
+    });
+    setActiveGreeting(greeting);
+    setActiveDailyTalk(mergedTalk);
+    if (newSeenTalkIds.length > 0) {
+      setSeenTalkIds(prev => [...prev, ...newSeenTalkIds]);
     }
 
     // Auto-save when starting a new session with a heroine
@@ -4023,28 +4011,16 @@ function App() {
       const nextDay = workshopState.day + 1;
       setWorkshopState(prev => ({ ...prev, day: nextDay }));
 
-      // DailyTalk Lottery (Timing: intro)
-      const greeting = getRandomGreeting();
-      setActiveGreeting(greeting);
-
-      const talks = getIntroTalks(
-        activeHeroineId,
-        affection[activeHeroineId] || 0,
+      const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+        heroineId: activeHeroineId,
+        currentAffection: affection[activeHeroineId] || 0,
         seenTalkIds,
-        routeMode
-      );
-
-      // Merge multiple talks into one activeDailyTalk for IntroScreen
-      if (talks.length > 0) {
-        const mergedTalk = {
-          id: `merged_${talks.map(t => t.id).join('_')}`,
-          pages: talks.flatMap(t => t.pages)
-        };
-        setActiveDailyTalk(mergedTalk);
-        // Mark as seen
-        setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
-      } else {
-        setActiveDailyTalk(null);
+        routeMode,
+      });
+      setActiveGreeting(greeting);
+      setActiveDailyTalk(mergedTalk);
+      if (newSeenTalkIds.length > 0) {
+        setSeenTalkIds(prev => [...prev, ...newSeenTalkIds]);
       }
 
       setScreen('INTRO');
