@@ -74,7 +74,7 @@ const ResultScreen = ({
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'RESULT' })}
             />
           </div>
 

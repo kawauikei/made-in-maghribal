@@ -338,7 +338,7 @@ const logButtonStyle = {
   boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
 };
 
-function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
+function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
   if (!isOpen) return null;
 
   const handleClose = () => {
@@ -348,40 +348,100 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
 
   return (
     <div data-testid="backlog-modal" style={hudModalBackdrop}>
-      <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
+      <div style={{ ...hudModalCard, maxWidth: '380px', padding: '16px 14px 14px', height: '85vh', display: 'flex', flexDirection: 'column' }}>
         {hudCloseX(handleClose)}
-        <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
+        <h2 style={{ margin: '0 0 15px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em', fontWeight: 'bold' }}>会話ログ</h2>
+        
         <div ref={scrollRef} data-testid="backlog-scroll" className="log-content"
-          style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
+          style={{ 
+            flex: 1, 
+            overflowY: 'auto', 
+            borderTop: `2px solid ${THEME.brass}44`, 
+            borderBottom: `2px solid ${THEME.brass}44`, 
+            padding: '10px 4px',
+            background: 'rgba(255,255,255,0.3)'
+          }}
         >
           {vnBacklog.length === 0 ? (
-            <div style={{ color: '#777', fontSize: '0.88em', textAlign: 'center', padding: '20px 0' }}>まだログはありません</div>
+            <div style={{ color: '#777', fontSize: '0.9em', textAlign: 'center', padding: '40px 0' }}>まだログはありません</div>
           ) : vnBacklog.slice().reverse().map((entry, idx) => {
-            const isNarration = !entry.speaker;
+            const isNarration = !entry.speaker || entry.speaker === 'ナーディル' && !entry.speakerId;
+            const speakerId = entry.speakerId || (entry.speaker === 'ナーディル' ? 'nader' : null);
+            const facePath = speakerId && getFaceIcon ? getFaceIcon(speakerId, 'face', entry.expression || 'normal') : null;
             const displayText = typeof entry.text === 'string' ? entry.text : (entry.text?.text || '');
+            
             if (!displayText) return null;
+
             return (
               <div
                 data-testid="backlog-entry"
-                data-route-mode={entry.routeMode || 'normal'}
                 key={`${entry.sequence}-${idx}`}
-                style={{ padding: '7px 10px', borderBottom: '1px solid #ede8df', textAlign: 'left' }}
+                style={{ 
+                  display: 'flex',
+                  gap: '12px',
+                  padding: '12px 8px', 
+                  borderBottom: `1px solid ${THEME.brass}22`, 
+                  textAlign: 'left',
+                  alignItems: 'flex-start'
+                }}
               >
-                {!isNarration && (
-                  <span style={{ fontSize: '0.78em', fontWeight: 'bold', color: THEME.brassDark, display: 'block', marginBottom: '3px' }}>
-                    {entry.speaker}
-                  </span>
-                )}
-                <span style={{ fontSize: '0.85em', color: '#333', lineHeight: '1.55', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                  {displayText}
-                </span>
+                {/* Icon Column */}
+                <div style={{ flexShrink: 0, width: '48px', height: '48px' }}>
+                  {facePath ? (
+                    <div style={{ 
+                      width: '48px', height: '48px', borderRadius: '8px', overflow: 'hidden', 
+                      border: `1px solid ${THEME.brass}88`, background: '#0c1926' 
+                    }}>
+                      <img src={facePath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ) : (
+                    <div style={{ 
+                      width: '48px', height: '48px', borderRadius: '8px', 
+                      background: isNarration ? 'transparent' : `${THEME.brass}22`,
+                      border: isNarration ? 'none' : `1px solid ${THEME.brass}44`
+                    }} />
+                  )}
+                </div>
+
+                {/* Text Column */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {!isNarration && (
+                    <div style={{ 
+                      fontSize: '0.75em', 
+                      fontWeight: '900', 
+                      color: THEME.brassDark, 
+                      marginBottom: '4px',
+                      letterSpacing: '0.05em'
+                    }}>
+                      {entry.speaker}
+                    </div>
+                  )}
+                  <div style={{ 
+                    fontSize: '0.88em', 
+                    color: isNarration ? '#666' : '#222', 
+                    lineHeight: '1.6', 
+                    whiteSpace: 'pre-wrap', 
+                    wordBreak: 'break-word',
+                    fontStyle: isNarration ? 'italic' : 'normal'
+                  }}>
+                    {displayText}
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
-        <div style={{ marginTop: '10px' }}>
+
+        <div style={{ marginTop: '12px' }}>
           <button data-testid="backlog-close"
-            style={{ ...logButtonStyle, marginTop: 0, background: '#555', color: 'white', width: '100%', fontSize: '0.88em' }}
+            style={{ 
+              ...logButtonStyle, 
+              background: THEME.nightBlue, 
+              color: 'white', 
+              width: '100%', 
+              fontSize: '0.9em',
+              border: `1px solid ${THEME.brass}`
+            }}
             onClick={handleClose}
           >閉じる</button>
         </div>
@@ -2000,7 +2060,7 @@ const ResultScreen = ({
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'RESULT' })}
             />
           </div>
 
@@ -2107,7 +2167,13 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     const key = `${index}:${text}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text, pageIndex: index });
+    onPageComplete?.({ 
+      speaker: currentSpeaker, 
+      speakerId: currentSpeakerId, 
+      expression: currentExpression,
+      text, 
+      pageIndex: index 
+    });
   };
 
   useEffect(() => {
@@ -3131,7 +3197,7 @@ function App() {
     setScreen('EVENT');
   };
 
-  const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
+  const appendVnBacklog = ({ speaker, speakerId, expression, text, screen: sourceScreen }) => {
     if (!text) return;
 
     setVnBacklog(prev => {
@@ -3144,6 +3210,8 @@ function App() {
         ...prev,
         {
           speaker: speaker || '',
+          speakerId: speakerId || null,
+          expression: expression || 'normal',
           text,
           screen: sourceScreen || screen,
           heroineId: activeHeroineId,
@@ -3505,7 +3573,7 @@ function App() {
         onOpenOptions={() => setShowOptions(true)}
         onOpenHelp={() => setShowHelp(true)}
         onVnAreaClick={handleVnAreaClick}
-        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
+        onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'PROLOGUE' })}
         onAdvanceToHeroineSelect={() => {
           audioEngine.playSfx('uiClickForward');
           setScreen('HEROINE_SELECT');
@@ -3536,7 +3604,7 @@ function App() {
         onOpenOptions={() => setShowOptions(true)}
         onOpenHelp={() => setShowHelp(true)}
         onVnAreaClick={handleVnAreaClick}
-        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
+        onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'INTRO' })}
         onBeginService={handleBeginService}
         renderThemeStyles={renderThemeStyles}
         renderBackground={renderBackground}
@@ -3707,7 +3775,7 @@ function App() {
                 }
                 setEventSpeakerId(page?.speakerId || null);
               }}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
             />
             <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
@@ -3904,7 +3972,7 @@ function App() {
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
               getFaceIcon={getFaceIcon}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />
           </div>
@@ -4110,7 +4178,7 @@ function App() {
             defaultAudioVolume={DEFAULT_AUDIO_VOLUME}
             textSpeedMeta={TEXT_SPEED_META}
           />
-          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} />
+          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} getFaceIcon={getFaceIcon} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (

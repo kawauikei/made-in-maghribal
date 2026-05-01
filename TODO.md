@@ -2,22 +2,23 @@
 
 ## 🟩 Recently Completed (Narrative Fidelity & UI Polish)
 
+### [UX] M-VN-SKIP-1: Narrative Skip Implementation (MVP)
+- [x] **Instant Block Skip**: Implemented 0.3s black-fade skip logic with safety input guards.
+- [x] **Header UI Standardization**: Symmetrical alignment of Nameplate and SKIP button with zero text overlap.
+- [x] **Character Display Priority**: Fixed standing image switching to prioritize heroine presence during dialogue.
+- [x] **Typewriter Completion**: Single tap/click reveals full text; second proceeds to next page.
+
 ### [Data] DailyTalk Expansion & Integrity
-- [x] Expansion Phase 1-3: Connective content, Affection 5/10, and Long History pilots (Total 55 talks).
-- [x] Technical Audit tool (`narrative_audit.js`) & technical specifications for writers.
-- [x] Registry Data Integrity: Resolved duplicate ID conflicts and synchronized with Expansion 3 draft.
+- [x] Expansion Phase 1-3 (55 talks total), Technical Audit Tool, Registry Sync.
 
 ---
 
-## 🟥 Top Priority: Narrative Skip / Fast-forward UX
+## 🟥 Top Priority: Conversation Accessibility
 
-### [UX] M-VN-SKIP-1: Narrative Skip Implementation
-- [ ] **VNBox Skip Button**: Add a "SKIP" button to the VNBox for fast-forwarding text.
-- [ ] **Typewriter Completion**: Single click/tap during typing reveals full text immediately.
-- [ ] **Navigation Flow**: Second click/tap proceeds to the next page.
-- [ ] **Scope**: Prologue, Intro, Events, and Endings.
-
----
+### [UX] M-VN-HISTORY-1: Backlog / Log Implementation
+- [ ] **Backlog Storage**: Capture and persist conversation history within the current session.
+- [ ] **Log Modal UI**: Refine the "Log" view to show speaker names, icons, and text history clearly.
+- [ ] **Accessibility**: Ensure the "Log" button is functional in all narrative-heavy screens (Prologue, Intro, Events).
 
 ## 🟦 In Progress / Next Steps
 

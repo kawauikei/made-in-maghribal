@@ -801,7 +801,7 @@ export default function App() {
     setScreen('EVENT');
   };
 
-  const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
+  const appendVnBacklog = ({ speaker, speakerId, expression, text, screen: sourceScreen }) => {
     if (!text) return;
 
     setVnBacklog(prev => {
@@ -814,6 +814,8 @@ export default function App() {
         ...prev,
         {
           speaker: speaker || '',
+          speakerId: speakerId || null,
+          expression: expression || 'normal',
           text,
           screen: sourceScreen || screen,
           heroineId: activeHeroineId,
@@ -1175,7 +1177,7 @@ export default function App() {
         onOpenOptions={() => setShowOptions(true)}
         onOpenHelp={() => setShowHelp(true)}
         onVnAreaClick={handleVnAreaClick}
-        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'PROLOGUE' })}
+        onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'PROLOGUE' })}
         onAdvanceToHeroineSelect={() => {
           audioEngine.playSfx('uiClickForward');
           setScreen('HEROINE_SELECT');
@@ -1206,7 +1208,7 @@ export default function App() {
         onOpenOptions={() => setShowOptions(true)}
         onOpenHelp={() => setShowHelp(true)}
         onVnAreaClick={handleVnAreaClick}
-        onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'INTRO' })}
+        onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'INTRO' })}
         onBeginService={handleBeginService}
         renderThemeStyles={renderThemeStyles}
         renderBackground={renderBackground}
@@ -1377,7 +1379,7 @@ export default function App() {
                 }
                 setEventSpeakerId(page?.speakerId || null);
               }}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
             />
             <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
@@ -1574,7 +1576,7 @@ export default function App() {
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
               getFaceIcon={getFaceIcon}
-              onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />
           </div>
@@ -1780,7 +1782,7 @@ export default function App() {
             defaultAudioVolume={DEFAULT_AUDIO_VOLUME}
             textSpeedMeta={TEXT_SPEED_META}
           />
-          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} />
+          <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} getFaceIcon={getFaceIcon} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
           {!isInitialLoading && (

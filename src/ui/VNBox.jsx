@@ -43,7 +43,13 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     const key = `${index}:${text}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text, pageIndex: index });
+    onPageComplete?.({ 
+      speaker: currentSpeaker, 
+      speakerId: currentSpeakerId, 
+      expression: currentExpression,
+      text, 
+      pageIndex: index 
+    });
   };
 
   useEffect(() => {
