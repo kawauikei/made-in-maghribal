@@ -108,7 +108,8 @@ const ResultScreen = ({
 
             {/* Speech Bubble */}
             <div style={{
-              marginTop: '8px',
+              marginTop: '20px',
+              marginLeft: '-28px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
@@ -156,7 +157,7 @@ const ResultScreen = ({
             border: `2px solid ${THEME.brass}`,
             background: 'rgba(244, 233, 213, 0.98)',
             padding: '12px 16px',
-            marginTop: '-16px',
+            marginTop: '-36px',
             width: '94%',
             maxWidth: '340px',
             textAlign: 'center'
