@@ -3142,14 +3142,7 @@ const ResultScreen = ({
     },
     renderThemeStyles && renderThemeStyles(),
     renderBackground && renderBackground(screen),
-    /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      inset: 0,
-      background: "rgba(10, 18, 30, 0.35)",
-      zIndex: 1,
-      pointerEvents: "none"
-    } }),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "0 4px" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 10, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "0 4px" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -3162,7 +3155,7 @@ const ResultScreen = ({
       ...titleStyle2,
       alignSelf: "flex-start",
       margin: "4px 0 0 8px",
-      color: THEME.nightBlue,
+      color: THEME.parchment,
       fontSize: "1.15em",
       textAlign: "left",
       zIndex: 10
@@ -3171,9 +3164,9 @@ const ResultScreen = ({
       display: "flex",
       justifyContent: "center",
       alignItems: "flex-end",
-      margin: "4px 0 0 0",
+      margin: "8px 0 0 0",
       height: "155px",
-      zIndex: 5
+      zIndex: 10
     } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
       {
