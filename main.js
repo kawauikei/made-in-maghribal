@@ -1561,12 +1561,14 @@ const HeroineSelectScreen = ({
     opacity: 0.8
   } }));
 };
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === "object" ? (currentPage == null ? void 0 : currentPage.text) || "" : currentPage || "";
   const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
+  const currentSpeakerId = typeof currentPage === "object" ? currentPage.speakerId : null;
+  const currentExpression = typeof currentPage === "object" ? currentPage.expression || "normal" : "normal";
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -1576,7 +1578,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     const key = `${pageIndex}:${currentText}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, text: currentText, pageIndex });
+    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: currentText, pageIndex });
   };
   useEffect(() => {
     if (skip) {
@@ -1622,6 +1624,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
   useImperativeHandle(ref, () => ({
     advance: () => handleClick()
   }));
+  const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, "face", currentExpression) : null;
   return /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -1631,32 +1634,62 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
         width: "100%",
         boxSizing: "border-box",
         height: "160px",
-        background: "rgba(26, 42, 58, 0.95)",
+        background: "rgba(20, 30, 45, 0.97)",
         borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: "20px 24px",
+        padding: currentSpeaker ? "16px 24px" : "24px 24px",
         borderRadius: "0 12px 12px 0",
         cursor: "pointer",
         color: THEME.parchment,
         textAlign: "left",
         position: "relative",
-        boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+        boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: "none",
         lineHeight: "1.7",
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden"
+        overflow: "hidden",
+        transition: "all 0.3s ease"
       }
     },
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.85em",
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      marginBottom: "10px"
+    } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
+      width: "36px",
+      height: "36px",
+      borderRadius: "50%",
+      overflow: "hidden",
+      border: `1.5px solid ${themeColor || THEME.brass}`,
+      background: "rgba(0,0,0,0.3)",
+      flexShrink: 0
+    } }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: facePath,
+        alt: currentSpeaker,
+        style: { width: "100%", height: "100%", objectFit: "cover" },
+        onError: (e) => {
+          e.target.style.display = "none";
+        }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.9em",
       color: themeColor || THEME.brass,
       fontWeight: "bold",
-      marginBottom: "8px",
       letterSpacing: "0.08em",
       textShadow: "0 1px 2px rgba(0,0,0,0.5)"
-    } }, currentSpeaker),
-    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.05em", lineHeight: "1.6", minHeight: "4.8em", flex: 1 } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
+    } }, currentSpeaker)),
+    /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: currentSpeaker ? "1.05em" : "1.1em",
+      lineHeight: "1.6",
+      minHeight: "4.2em",
+      flex: 1,
+      opacity: currentSpeaker ? 1 : 0.9,
+      fontStyle: currentSpeaker ? "normal" : "italic"
+    } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
     isComplete && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: "12px",
@@ -1680,11 +1713,12 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
   );
 });
 const prologuePages = [
-  "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-  "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-  "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-  "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-  "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。"
+  { text: "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。" },
+  { text: "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。" },
+  { text: "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。" },
+  { text: "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。" },
+  { text: "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。" },
+  { speakerId: "nader", speaker: "ナーディル", text: "さあ、今日も星瓶堂を開けよう。いい縁に出会えるといいな。" }
 ];
 const PrologueScreen = ({
   screen,
@@ -1702,6 +1736,7 @@ const PrologueScreen = ({
   HeroineDisplay: HeroineDisplay2,
   audioEngine: audioEngine2,
   vnRef,
+  getFaceIcon,
   containerStyle: containerStyle2,
   titleStyle: titleStyle2,
   cardStyle: cardStyle2,
@@ -1716,17 +1751,30 @@ const PrologueScreen = ({
       onClick: onVnAreaClick
     },
     renderThemeStyles(),
-    renderBackground("START"),
+    renderBackground("PROLOGUE"),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      bottom: "-6%",
-      right: "-8%",
+      bottom: "15%",
+      right: "0%",
       zIndex: 2,
       pointerEvents: "none",
-      opacity: 0.3,
-      filter: "grayscale(0.1) contrast(0.9)"
-    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      opacity: 1,
+      height: "66%",
+      display: "flex",
+      alignItems: "flex-end",
+      filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
+    } }, /* @__PURE__ */ React.createElement(
+      HeroineDisplay2,
+      {
+        heroine: PROTAGONIST,
+        type: "standing",
+        size: "large",
+        expression: "normal",
+        noBorder: true,
+        style: { height: "100%", width: "auto", boxShadow: "none" }
+      }
+    )),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -1735,26 +1783,53 @@ const PrologueScreen = ({
         onOpenOptions,
         onOpenHelp
       }
-    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "30px" } }, "星瓶堂の始まり"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "rgba(26, 42, 58, 0.95)", color: THEME.parchment, padding: "24px", maxWidth: "100%", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.6em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "星瓶堂の始まり")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } }), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "0 0 auto",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingBottom: "15px",
+      background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)"
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      ...cardStyle2,
+      background: "rgba(20, 30, 45, 0.96)",
+      color: THEME.parchment,
+      padding: "16px 20px",
+      width: "94%",
+      boxSizing: "border-box",
+      boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
+      border: `1px solid ${THEME.brass}33`,
+      borderRadius: "12px",
+      marginBottom: "8px"
+    } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         ref: vnRef,
-        speaker: "ナーディル",
         pages: prologuePages,
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed),
+        getFaceIcon,
         onPageComplete,
         onComplete: () => {
           setIsPrologueComplete(true);
         }
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "54px", marginTop: "18px", display: "flex", justifyContent: "center", alignItems: "center" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "50px", display: "flex", justifyContent: "center", alignItems: "center", width: "94%" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "prologue-next",
         onClick: onAdvanceToHeroineSelect,
-        style: { ...buttonStyle2, width: "100%", maxWidth: "280px", margin: 0 }
+        style: {
+          ...buttonStyle2,
+          width: "100%",
+          maxWidth: "340px",
+          margin: 0,
+          height: "46px",
+          fontSize: "1.1em",
+          boxShadow: `0 4px 15px ${THEME.brass}33`
+        }
       },
       "星瓶堂へ進む"
     ))))
@@ -1777,12 +1852,25 @@ const IntroScreen = ({
   HeroineDisplay: HeroineDisplay2,
   audioEngine: audioEngine2,
   vnRef,
+  getFaceIcon,
   containerStyle: containerStyle2,
   titleStyle: titleStyle2,
   cardStyle: cardStyle2,
   buttonStyle: buttonStyle2,
   narrativeBoxStyle: narrativeBoxStyle2
 }) => {
+  const introPages = [
+    {
+      speakerId: "nader",
+      speaker: "ナーディル",
+      text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`
+    },
+    {
+      speakerId: activeHeroine.id,
+      speaker: activeHeroine.name,
+      text: activeHeroine.greeting || "ええ、相談に乗ってくれるかしら。"
+    }
+  ];
   return /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -1794,21 +1882,27 @@ const IntroScreen = ({
     renderBackground(screen),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      bottom: 0,
-      left: "2%",
+      bottom: "15%",
+      right: "0%",
       zIndex: 2,
       pointerEvents: "none",
-      opacity: 0.4
-    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: PROTAGONIST, type: "standing", size: "large", expression: "normal" })),
-    /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      bottom: 0,
-      right: "2%",
-      zIndex: 2,
-      pointerEvents: "none",
-      opacity: 0.55
-    } }, /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: activeHeroine, type: "standing", size: "large", expression: "normal" })),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      opacity: 1,
+      height: "68%",
+      display: "flex",
+      alignItems: "flex-end",
+      filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
+    } }, /* @__PURE__ */ React.createElement(
+      HeroineDisplay2,
+      {
+        heroine: activeHeroine,
+        type: "standing",
+        size: "large",
+        expression: "normal",
+        noBorder: true,
+        style: { height: "100%", width: "auto", boxShadow: "none" }
+      }
+    )),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -1817,27 +1911,62 @@ const IntroScreen = ({
         onOpenOptions,
         onOpenHelp
       }
-    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "20px" } }, activeHeroine.name, "との語らい"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "rgba(26, 42, 58, 0.9)", color: THEME.parchment, padding: "24px", width: "92%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px" } }, /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.4em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, activeHeroine.name, "との語らい")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } }), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "0 0 auto",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingBottom: "12px",
+      background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)"
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      ...cardStyle2,
+      background: "rgba(20, 30, 45, 0.96)",
+      color: THEME.parchment,
+      padding: "16px 20px",
+      width: "94%",
+      boxSizing: "border-box",
+      boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
+      border: `1px solid ${THEME.brass}33`,
+      borderRadius: "12px",
+      marginBottom: "8px"
+    } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         ref: vnRef,
-        speaker: "ナーディル",
-        text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`,
+        pages: introPages,
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed),
+        getFaceIcon,
         onPageComplete,
         onComplete: onBeginService
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { ...narrativeBoxStyle2, background: "rgba(0,0,0,0.6)", color: "#fff", borderLeft: `4px solid ${THEME.brass}`, padding: "20px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("p", { style: { margin: "0 0 10px 0", lineHeight: "1.6" } }, "星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。"), /* @__PURE__ */ React.createElement("p", { style: { margin: 0, lineHeight: "1.6" } }, "今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。"), /* @__PURE__ */ React.createElement("p", { style: { margin: "10px 0 0 0", fontSize: "0.85em", color: THEME.oasisTeal } }, "※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。")), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { style: { width: "94%", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      background: "rgba(0,0,0,0.5)",
+      fontSize: "0.75em",
+      padding: "4px 12px",
+      borderRadius: "20px",
+      border: `1px solid ${THEME.oasisTeal}44`,
+      color: THEME.oasisTeal,
+      backdropFilter: "blur(4px)"
+    } }, "💡 客の好みに合わせて素材を選ぼう"), /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "intro-start",
         onClick: onBeginService,
-        style: { ...buttonStyle2, width: "100%", maxWidth: "280px", marginTop: "10px" }
+        style: {
+          ...buttonStyle2,
+          width: "100%",
+          maxWidth: "340px",
+          margin: 0,
+          height: "46px",
+          fontSize: "1.1em",
+          boxShadow: `0 4px 15px ${THEME.brass}33`
+        }
       },
       "営業を始める"
-    )))
+    ))))
   );
 };
 const GENRES = [
@@ -8551,13 +8680,14 @@ function App() {
   };
   const getFullPath = (src) => `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/");
   const getFileName = (path) => (path == null ? void 0 : path.split("/").pop()) || "";
-  const renderBackground = (screen2) => {
+  const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
       INTRO: "shopExteriorDay",
       RESULT: "shopInteriorWorkshop",
-      DAY_END: "shopExteriorNight"
+      DAY_END: "shopExteriorNight",
+      PROLOGUE: "shopExteriorNight"
     };
-    const bgId = SCREEN_BACKGROUNDS[screen2];
+    const bgId = SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
     if (!bg) return null;
@@ -8672,6 +8802,10 @@ function App() {
     whiteSpace: "nowrap",
     textOverflow: "ellipsis"
   } }, title), /* @__PURE__ */ React.createElement("div", { style: { minWidth: "72px", display: "flex", justifyContent: "flex-end" } }, right));
+  const getFaceIcon = (id, type, expression) => {
+    const assetPath = getHeroineAsset(id, type, expression);
+    return assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
+  };
   let mainContent = null;
   if (screen === "START") {
     mainContent = /* @__PURE__ */ React.createElement(
@@ -8715,6 +8849,7 @@ function App() {
         HeroineDisplay,
         audioEngine,
         vnRef,
+        getFaceIcon,
         containerStyle,
         titleStyle,
         cardStyle,
@@ -8741,6 +8876,7 @@ function App() {
         HeroineDisplay,
         audioEngine,
         vnRef,
+        getFaceIcon,
         containerStyle,
         titleStyle,
         cardStyle,
@@ -9158,7 +9294,7 @@ function App() {
     }
   ), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
-function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   var _a;
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
@@ -9170,14 +9306,15 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
     height: `${displaySize}px`,
     borderRadius: isStanding ? "16px" : "50%",
     overflow: "hidden",
-    backgroundColor: (heroine.themeColor || "#444") + "33",
+    backgroundColor: noBorder ? "transparent" : (heroine.themeColor || "#444") + "33",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: `2px solid ${heroine.themeColor || "#ffcc00"}`,
-    boxShadow: isStanding ? "0 12px 30px rgba(0,0,0,0.5)" : "0 4px 15px rgba(0,0,0,0.3)",
+    border: noBorder ? "none" : `2px solid ${heroine.themeColor || "#ffcc00"}`,
+    boxShadow: noBorder ? "none" : isStanding ? "0 12px 30px rgba(0,0,0,0.5)" : "0 4px 15px rgba(0,0,0,0.3)",
     flexShrink: 0,
-    position: "relative"
+    position: "relative",
+    ...style
   };
   const imgStyle = {
     width: "100%",
