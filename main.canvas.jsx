@@ -2774,11 +2774,11 @@ function App() {
     }, 500); // Small buffer for smoothness
   };
 
-  // Go to INTRO (Next Day) or FINAL_RESULT
   const handleNextDay = () => {
     audioEngine.playSfx('uiTapBottle');
     if (workshopState.day >= 10) {
       setScreen('FINAL_RESULT');
+    } else {
       const nextDay = workshopState.day + 1;
       setWorkshopState(prev => ({ ...prev, day: nextDay }));
 
