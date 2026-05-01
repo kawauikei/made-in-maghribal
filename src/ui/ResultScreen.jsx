@@ -68,13 +68,14 @@ const ResultScreen = ({
         <h1 style={{ 
           ...titleStyle, 
           position: 'absolute',
-          top: '24px',
-          left: '24px',
+          top: '8px',
+          left: '12px',
           margin: 0,
           color: THEME.nightBlue, 
           fontSize: '1.2em',
           maxWidth: '70%',
-          textAlign: 'left'
+          textAlign: 'left',
+          zIndex: 10
         }}>
           今回の営業記録
         </h1>

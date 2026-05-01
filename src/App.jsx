@@ -1342,11 +1342,20 @@ export default function App() {
               onOpenOptions={() => setShowOptions(true)} 
               onOpenHelp={() => setShowHelp(true)} 
             />
-            <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
-              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)', textAlign: 'left' }}>
-                愛着の記録: {activeEvent.title}
-              </h1>
-            </div>
+            <h1 style={{ 
+              ...titleStyle, 
+              position: 'absolute',
+              top: '8px',
+              left: '12px',
+              margin: 0, 
+              fontSize: '1.2em', 
+              textShadow: '0 2px 4px rgba(0,0,0,0.5)', 
+              textAlign: 'left',
+              maxWidth: '70%',
+              zIndex: 10
+            }}>
+              愛着の記録: {activeEvent.title}
+            </h1>
             <div style={{ flex: '1 1 auto' }} />
           </div>
 
@@ -1402,12 +1411,22 @@ export default function App() {
             onOpenOptions={() => setShowOptions(true)} 
             onOpenHelp={() => setShowHelp(true)} 
           />
-          <div style={{ width: '100%', textAlign: 'left', padding: '24px 0 10px 24px', boxSizing: 'border-box' }}>
-            <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)', textAlign: 'left' }}>
-              愛着の記録: {activeEvent.title}
-            </h1>
-          </div>
-          <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
+          <h1 style={{ 
+            ...titleStyle, 
+            position: 'absolute',
+            top: '8px',
+            left: '12px',
+            margin: 0, 
+            fontSize: '1.2em', 
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)', 
+            textAlign: 'left',
+            maxWidth: '70%',
+            zIndex: 10
+          }}>
+            愛着の記録: {activeEvent.title}
+          </h1>
+          <div style={{ marginTop: '40px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
             <div style={{ 
               width: '100%', 
               aspectRatio: '16 / 9',
@@ -1481,7 +1500,8 @@ export default function App() {
             </div>
           </div>
         </div>
-      );
+      </div>
+    );
     }
   } else if (screen === 'VISUAL_TEST') {
     mainContent = (

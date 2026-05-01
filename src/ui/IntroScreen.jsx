@@ -261,12 +261,21 @@ const IntroScreen = ({
           onOpenHelp={onOpenHelp} 
         />
         
-        {/* Top: Title (Top-Left Aligned for A-4) */}
-        <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
-          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)', textAlign: 'left' }}>
-            {activeHeroine.name}との語らい
-          </h1>
-        </div>
+        {/* Top: Title (Absolute Top-Left for A-4) */}
+        <h1 style={{ 
+          ...titleStyle, 
+          position: 'absolute',
+          top: '8px',
+          left: '12px',
+          margin: 0, 
+          fontSize: '1.2em', 
+          textShadow: '0 2px 4px rgba(0,0,0,0.5)', 
+          textAlign: 'left',
+          maxWidth: '70%',
+          zIndex: 10
+        }}>
+          {activeHeroine.name}との語らい
+        </h1>
 
         {/* Middle: Spacer */}
         <div style={{ flex: '1 1 auto' }} />
