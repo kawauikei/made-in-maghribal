@@ -30,7 +30,9 @@
 ## 🟦 In Progress / Next Steps
 
 ### [UI/UX] Still Event Refinement
-- [ ] **Still Face-Aware Full Implementation**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` after verifying prototype framing.
+- [ ] **Full Still Event Cropping**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` to ensure optimal framing for all story moments.
+- [ ] **StillCrop Audit Report**: Create a tool or list to quickly verify the framing of all stills across different aspect ratios.
+- [ ] **Face Detection Assistant (Future)**: Research/implement a script to suggest `stillCrop` values based on face detection coordinates (no asset generation required).
 
 ### [Content] DailyTalk Phase 1 Expansion
 - [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
