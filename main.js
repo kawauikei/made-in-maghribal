@@ -9515,7 +9515,20 @@ function App() {
     );
   } else if (screen === "QUIZ" && session) {
     const currentQuestion = session.questions[session.currentIndex];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
+    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: "38%",
+      backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center 80%",
+      zIndex: 1,
+      borderTop: `4px solid ${THEME.brassDark}`,
+      boxShadow: "0 -10px 20px rgba(0,0,0,0.3)",
+      opacity: 0.8
+    } }), /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -9532,8 +9545,24 @@ function App() {
       padding: "12px 20px",
       boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
       justifyContent: "flex-start",
-      gap: "20px"
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "35px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      gap: "20px",
+      zIndex: 10
+      // Above everything
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: {
+      ...cardStyle,
+      maxWidth: "800px",
+      marginTop: "10px",
+      flexGrow: 1,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      background: "transparent",
+      border: "none",
+      boxShadow: "none",
+      backdropFilter: "none",
+      zIndex: 5
+      // Above counter, below header
+    } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "20px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       width: "85%",
       // Fix width to ensure consistent starting position
@@ -9542,9 +9571,11 @@ function App() {
       // Static dark text for readability on white bubble
       border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
-      padding: "20px 28px",
-      fontSize: "1.1em",
-      lineHeight: "1.6",
+      padding: "18px 24px",
+      // Slightly tighter padding
+      fontSize: "1.05em",
+      // Slightly smaller for better fit
+      lineHeight: "1.5",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
       transition: "all 0.3s",
       display: "flex",
@@ -9557,7 +9588,8 @@ function App() {
       gap: "24px",
       width: "100%",
       marginTop: "auto",
-      padding: "10px 0"
+      padding: "20px 0 40px"
+      // Space for counter feeling
     } }, currentQuestion.choices.map((item, index) => {
       const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
       const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
