@@ -364,7 +364,8 @@ console.log(`- Avg pages per talk: ${(results.totalPages / results.total).toFixe
 generateHtmlReport(results, DAILY_TALKS);
 
 if (results.errors.length > 0) {
-  console.error(`\n❌ AUDIT FAILED: ${results.errors.length} errors found.`);
+  console.error(`\n❌ AUDIT FAILED: ${results.errors.length} errors found:`);
+  results.errors.forEach(e => console.error(`  - ${e}`));
   process.exit(1);
 } else {
   console.log(`\n✅ AUDIT PASSED: All DailyTalks follow the rules.`);

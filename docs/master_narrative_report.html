@@ -22,6 +22,7 @@
         .nav { position: sticky; top: 20px; background: rgba(15, 23, 42, 0.9); padding: 10px; border-radius: 8px; margin-bottom: 20px; z-index: 100; display: flex; gap: 10px; backdrop-filter: blur(4px); border: 1px solid #334155; }
         .nav a { color: #94a3b8; text-decoration: none; font-size: 0.8em; }
         .nav a:hover { color: #f59e0b; }
+        .page-item { border-left: 4px solid #38bdf8; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 4px; margin-bottom: 8px; font-size: 0.9em; }
     </style>
 </head>
 <body>
@@ -62,12 +63,12 @@
                 </div>
                 <div>
                     <h3 style="color: #f59e0b; font-size: 1em;">2. デイリートークの構造</h3>
-                    <p style="font-size: 0.85em; color: #94a3b8; margin-bottom: 10px;">以下の4フェーズで構成されます。1と4はシステム側で自動挿入されます。</p>
+                    <p style="font-size: 0.85em; color: #94a3b8; margin-bottom: 10px;">DailyTalk は以下の4フェーズで構成されます。1と4はシステム側で自動挿入されます。</p>
                     <ol style="font-size: 0.85em; padding-left: 20px;">
-                        <li><strong>Monologue (独り言)</strong>: ナーディルの内心。()で括る。</li>
-                        <li><strong>Greeting (挨拶)</strong>: ヒロイン来訪時の会話。</li>
+                        <li><strong>Monologue (独り言)</strong>: ナーディルの内心。店・天気・素材・営業前の気配を示す。</li>
+                        <li><strong>Greeting (挨拶)</strong>: ヒロイン来訪時の短い挨拶。出勤・常駐に見えないようにする。</li>
                         <li><strong>DailyTalk (本編)</strong>: 本レポートに記載されているメイン会話。</li>
-                        <li><strong>Farewell (別れ)</strong>: ヒロイン退出時の挨拶。</li>
+                        <li><strong>Farewell (別れ)</strong>: ヒロイン退出時、または会話を切り上げる一言。</li>
                     </ol>
                 </div>
             </div>
@@ -76,8 +77,9 @@
                 <h3 style="color: #f59e0b; font-size: 1em;">3. 視覚的制約とIFルート</h3>
                 <ul style="font-size: 0.85em;">
                     <li><strong>立ち絵表示</strong>: 常に一人まで（中央固定）。ヒロインがいる間、ナーディルは表示されません。</li>
-                    <li><strong>Route Mode (IF)</strong>: <code>long_history</code> ルートは、前世や「もしも」の記憶を示唆する特殊会話です。</li>
-                    <li><strong>禁則事項</strong>: 借金再建、店番、父の遺品など、旧設定（リファクタリング前）を彷彿とさせるワードは禁止されています。</li>
+                    <li><strong>Route Mode (IF)</strong>: <code>long_history</code> ルートは、過去から関係が続いていた別世界線IFです。</li>
+                    <li><strong>禁則事項</strong>: 借金再建、店番、働く、雇う、スタッフ、店員など、旧設定や従業員感のある表現は禁止です。</li>
+                    <li><strong>キャラクター設定</strong>: ヒロインは星瓶堂の従業員ではなく、客・協力者・訪問者として関わります。</li>
                 </ul>
             </div>
         </section>
@@ -88,82 +90,58 @@
             <div class="card-header">
                 <span class="badge">GREET</span>
                 <span class="id">greet_1</span>
-                
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-                
-                
-                    <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （今日もいい天気だ。この日差しなら、ガラスの輝きも一段と増すだろうな……）</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Greeting:</strong> 「おはよう。朝から熱心ね。その顔、何か良い品でも入ったのかしら？」</div>
-                    <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「いらっしゃい。ええ、ちょうど朝日に透かして見ていたところです」</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Farewell:</strong> 「ふふ、職人の目ね。それじゃ、私はこれで。今日も良い縁があるといいわね」</div>
-                
+                <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （今日もいい天気だ。この日差しなら、ガラス瓶の輝きも一段と増すだろうな……）</div>
+                <div class="page-item"><strong>Greeting:</strong> 「こんにちは。店先の瓶、今日はずいぶん綺麗に光っているわね」</div>
+                <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「いらっしゃい。ちょうど光に透かして、色の出方を見ていたところです」</div>
+                <div class="page-item"><strong>Farewell:</strong> 「ふふ、職人の目ね。それじゃ、営業前の邪魔はこのくらいにしておくわ」</div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">GREET</span>
                 <span class="id">greet_2</span>
-                
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-                
-                
-                    <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Greeting:</strong> 「おはよう。あら、あなたもバテ気味？ 砂の熱に負けてちゃ、商売にならないわよ」</div>
-                    <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「……おはようございます。面目ない。しっかり水分を摂って、シャキッとしないと」</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Farewell:</strong> 「そうよ。はい、これ。……それじゃ、私も仕事に戻るわ。無理しすぎないようにね」</div>
-                
+                <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）</div>
+                <div class="page-item"><strong>Greeting:</strong> 「あら、少し顔が赤いわね。砂の熱に負けていたら、目利きも鈍るわよ」</div>
+                <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「面目ない。水を足して、香草の冷茶でも用意しておきます」</div>
+                <div class="page-item"><strong>Farewell:</strong> 「それがいいわ。無理をする店主より、涼しい顔で品を選ぶ店主の方が頼れるもの」</div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">GREET</span>
                 <span class="id">greet_3</span>
-                
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-                
-                
-                    <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、開店の準備だ）</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Greeting:</strong> 「いらっしゃい。今日は珍しく静かな朝ね。あなたの店も、心なしか落ち着いて見えるわ」</div>
-                    <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「ええ、心地よい静寂です。たまにはこういう、ゆったりとした時間も悪くないですね」</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Farewell:</strong> 「ええ、同感よ。さて、私も行くわ。いい品ができるのを楽しみにしてる」</div>
-                
+                <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、営業の準備だ）</div>
+                <div class="page-item"><strong>Greeting:</strong> 「いらっしゃい。今日は珍しく静かね。星瓶堂の棚まで、少し落ち着いて見えるわ」</div>
+                <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「ええ。こういう日は、香りも音もいつもよりよく分かる気がします」</div>
+                <div class="page-item"><strong>Farewell:</strong> 「いい品が見つかりそうね。それじゃ、また後で顔を出すわ」</div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">GREET</span>
                 <span class="id">greet_4</span>
-                
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-                
-                
-                    <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Greeting:</strong> 「お疲れ様。熱心に素材を眺めて……何か新しいインスピレーションでも湧いた？」</div>
-                    <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「いらっしゃい。ええ、曇天の下での輝きも、また一興だと思って見ていたんです」</div>
-                    <div class="page-item" style="border-left-color: null;"><strong>Farewell:</strong> 「流石は星瓶堂の店主ね。それじゃ、開店の邪魔はしないわ。また後でね」</div>
-                
+                <div class="page-item" style="border-left-color: #555;"><strong>Monologue:</strong> （曇りか……。だが、こういう日の方が影が言えて、宝石の地色がよく見えるんだよな）</div>
+                <div class="page-item"><strong>Greeting:</strong> 「熱心に素材を眺めているわね。曇り空でも、何か見えるものがあるの？」</div>
+                <div class="page-item" style="border-left-color: #555;"><strong>Response:</strong> 「ええ。強い光がない日ほど、石や瓶の地色が素直に見えるんです」</div>
+                <div class="page-item"><strong>Farewell:</strong> 「なるほどね。星瓶堂の店主らしい見方だわ。今日の目利き、少し楽しみにしている」</div>
                 
             </div>
         </div>
-    
 
         <h2 id="daily">DailyTalks</h2>
         
@@ -176,22 +154,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">父さんの錬金カメラ事業は順調みたいだ。世界中から珍しい景色が届くよ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">でも俺は、この場所で誰かの日常を支える星瓶堂の仕事が好きだ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 父さんの錬金カメラ事業は順調みたいだ。世界中から珍しい景色が届くよ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> でも俺は、この場所で誰かの日常を支える星瓶堂の仕事が好きだ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -201,22 +172,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">開店前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">俺もいつか、この道具に恥ずかしくない店主になりたいな。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 営業前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 俺もいつか、この道具に恥ずかしくない店主になりたいな。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -226,22 +190,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星瓶堂って名前、父さんが若い頃につけたんだ。星を閉じ込めた瓶みたいな店にしたいって。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">少し大げさだけど、子どもの頃の俺には本当にそう見えてたよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 星瓶堂って名前、父さんが若い頃につけたんだ。星を閉じ込めた瓶みたいな店にしたいって。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 少し大げさだけど、子どもの頃の俺には本当にそう見えてたよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -251,22 +208,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">この青い陶器は、王都の職人が焼いたものだよ。薬瓶にも茶器にも使える。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">砂の色が多い街だからかな。棚に青があるだけで、少し涼しく見えるんだ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> この青い陶器は、王都の職人が焼いたものだよ。薬瓶にも茶器にも使える。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 砂の色が多い街だからかな。棚に青があるだけで、少し涼しく見えるんだ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -276,22 +226,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">この天秤、父さんが店を継ぐ前から使っているらしい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">針の揺れを見るたびに、店って人より長く覚えているんだなと思うよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> この天秤、父さんが店を継ぐ前から使っているらしい。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [sorrow]:</strong> 針の揺れを見るたびに、店って人より長く覚えているんだなと思うよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -301,22 +244,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星瓶堂の周りは交易街区だから、朝からいろんな匂いが混ざる。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">香料、焼き菓子、革袋、たまに怪しい薬草。鼻だけで道案内できそうだ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 星瓶堂の周りは交易街区だから、朝からいろんな匂いが混ざる。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 香料、焼き菓子、革袋、たまに怪しい薬草。鼻だけで道案内できそうだ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -326,22 +262,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">父さんからまた写真が届いた。今度は海港都市ミナートの朝焼けだって。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">遠い景色を瓶の中みたいに残せるんだから、錬金カメラって不思議だよな。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 父さんからまた写真が届いた。今度は海港都市ミナートの朝焼けだって。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 遠い景色を瓶の中みたいに残せるんだから、錬金カメラって不思議だよな。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -351,22 +280,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">棚の奥から、古い保存瓶が出てきた。祖父の代から使っている型らしい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">派手な品じゃないけど、こういう瓶が暮らしを支えてきたんだと思うと悪くない。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 棚の奥から、古い保存瓶が出てきた。祖父の代から使っている型らしい。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 派手な品じゃないけど、こういう瓶が暮らしを支えてきたんだと思うと悪くない。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -376,22 +298,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">交易街区は、風向きで匂いが変わる。今日は香料市と焼き菓子の屋台が近いな。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">腹が減る香りの隣で薬草を売るのは、なかなか難しい商いだよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 交易街区は、風向きで匂いが変わる。今日は香料市と焼き菓子の屋台が近いな。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 腹が減る香りの隣で薬草を売るのは、なかなか難しい商いだよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -401,22 +316,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">父さんの錬金カメラを目当てに来る客は、今でも少なくない。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">でも今日は、星瓶堂の若店主を頼って来たと言われた。……少し、胸を張っていいかな。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [sorrow]:</strong> 父さんの錬金カメラを目当てに来る客は、今でも少なくない。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> でも今日は、星瓶堂の若店主を頼って来たと言われた。……少し、胸を張っていいかな。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -426,22 +334,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">雨上がりの店先は、石畳と薬草の匂いが少しだけ濃くなる。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #555; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #aaa; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">こういう日は、香り袋よりも温かい茶の調合がよく出るんだ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 雨上がりの店先は、石畳と薬草の匂いが少しだけ濃くなる。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> こういう日は、香り袋よりも温かい茶の調合がよく出るんだ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -451,22 +352,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">今日の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ありがとう、ハキマ。君がそうやって釘を刺してくれるから、俺も気を引き締められるよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 今日の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> ありがとう、ハキマ。君がそうやって釘を刺してくれるから、俺も気を引き締められるよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -476,22 +370,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [anger]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [anger]:</strong> だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -501,22 +388,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">弟がね、星瓶堂の光る瓶を欲しがってるの。まったく、子どもって派手なものが好きよね。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……まあ、安全な小瓶なら一つくらい選んであげてもいいけど。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [fun]:</strong> 弟がね、星瓶堂の光る瓶を欲しがってるの。まったく、子どもって派手なものが好きよね。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> ……まあ、安全な小瓶なら一つくらい選んであげてもいいけど。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -526,22 +406,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">香りって不思議よね。少し嗅いだだけで、昔の市場や家の台所まで思い出す。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">だから雑に扱う人を見ると、腹が立つの。香材には、暮らしが染みてるんだから。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 香りって不思議よね。少し嗅いだだけで、昔の市場や家の台所まで思い出す。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [sorrow]:</strong> だから雑に扱う人を見ると、腹が立つの。香材には、暮らしが染みてるんだから。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -551,27 +424,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [anger]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">助かるよ。君の鼻があると、棚の品まで背筋が伸びる気がする。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [anger]:</strong> この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 助かるよ。君の鼻があると、棚の品まで背筋が伸びる気がする。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [surprise]:</strong> なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -581,27 +445,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">弟が、星瓶堂の小さな発光瓶を気に入ってるの。危なくない品、選べる？</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">子ども用なら、光量を落として瓶も厚めにしよう。転がしても割れにくい方がいい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……そういうところは細かいのね。まあ、少しだけ見直したわ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [fun]:</strong> 弟が、星瓶堂の小さな発光瓶を気に入ってるの。危なくない品、選べる？
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 子ども用なら、光量を落として瓶も厚めにしよう。転がしても割れにくい方がいい。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [joy]:</strong> ……そういうところは細かいのね。まあ、少しだけ見直したわ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -611,27 +466,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">今日は難しい依頼が来そうな匂いがする。……何よ、勘じゃなくて経験よ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">なら、隣で見ていてくれると心強いな。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">仕方ないわね。あんた一人に任せると、少しだけ心配だから。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 今日は難しい依頼が来そうな匂いがする。……何よ、勘じゃなくて経験よ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> なら、隣で見ていてくれると心強いな。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [joy]:</strong> 仕方ないわね。あんた一人に任せると、少しだけ心配だから。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -641,27 +487,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">負けた時だけ、君は今よりずっと静かだった気がする。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [anger]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 負けた時だけ、君は今よりずっと静かだった気がする。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [anger]:</strong> 余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -671,27 +508,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">あんたは昔から、気づくと少し先にいるのよね。目利きも、調合も、店主の顔も。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ナーディル [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">置いていったつもりはなかった。でも、そう見えていたならごめん。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">謝るより、隣を空けておきなさいよ。今度は私が、そこに立つんだから。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [sorrow]:</strong> あんたは昔から、気づくと少し先にいるのよね。目利きも、調合も、店主の顔も。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [sorrow]:</strong> 置いていったつもりはなかった。でも、そう見えていたならごめん。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [joy]:</strong> 謝るより、隣を空けておきなさいよ。今度は私が、そこに立つんだから。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -701,22 +529,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">先輩、聞いてください。大学で新しい抽出法が発見されたんです。まだ実験段階ですが……。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">それは興味深いね。いつか星瓶堂の品作りにも活かせるかもしれない。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 先輩、聞いてください。大学で新しい抽出法が発見されたんです。まだ実験段階ですが……。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> それは興味深いね。いつか星瓶堂の品作りにも活かせるかもしれない。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -726,22 +547,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">昨日の課題、計算は合っていたのに、実験では沈殿が出ました。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">理論上は正しい、だけでは足りないんですね。……少し悔しいです。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 昨日の課題、計算は合っていたのに、実験では沈殿が出ました。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [sorrow]:</strong> 理論上は正しい、だけでは足りないんですね。……少し悔しいです。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -751,22 +565,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">高品質な素材を使えば、良い品は作れます。でも、それだけでは商売になりません。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">必要な人に届く価格にする。そこまで考えて、初めて商品なんです。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 高品質な素材を使えば、良い品は作れます。でも、それだけでは商売になりません。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> 必要な人に届く価格にする。そこまで考えて、初めて商品なんです。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -776,22 +583,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……意外ですか？ こういう迷い方くらい、私にもあります。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [fun]:</strong> 実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [surprise]:</strong> ……意外ですか？ こういう迷い方くらい、私にもあります。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -801,27 +601,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……そういう考え方、先輩らしいです。少し、悔しいくらいに。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [surprise]:</strong> ……そういう考え方、先輩らしいです。少し、悔しいくらいに。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -831,27 +622,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">商会から試作品を預かってきました。性能は良いのですが、少し高価すぎます。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">良い品でも、必要な人に届かなければ意味が薄いからね。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">はい。先輩なら、そう言ってくださると思っていました。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 商会から試作品を預かってきました。性能は良いのですが、少し高価すぎます。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 良い品でも、必要な人に届かなければ意味が薄いからね。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> はい。先輩なら、そう言ってくださると思っていました。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -861,27 +643,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ありがとうございます。そう言われると、天才でいるより嬉しいです。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [fun]:</strong> 今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [surprise]:</strong> それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> ありがとうございます。そう言われると、天才でいるより嬉しいです。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -891,27 +664,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">昔、私の計算式に先輩が赤を入れてくれたこと、まだ覚えています。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">褒めるところより、直すところを探してくれって言われたからね。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">はい。先輩だけは、私を天才ではなく後輩として見てくれました。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 昔、私の計算式に先輩が赤を入れてくれたこと、まだ覚えています。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 褒めるところより、直すところを探してくれって言われたからね。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> はい。先輩だけは、私を天才ではなく後輩として見てくれました。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -921,27 +685,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">昔は、先輩の隣の席だけが少し静かでした。誰も私を急かさない席でした。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">今も急がなくていい。答えが出るまで、ここで一緒に考えよう。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……はい。やっぱり私は、この席が一番落ち着きます。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [sorrow]:</strong> 昔は、先輩の隣の席だけが少し静かでした。誰も私を急かさない席でした。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 今も急がなくていい。答えが出るまで、ここで一緒に考えよう。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> ……はい。やっぱり私は、この席が一番落ち着きます。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -951,22 +706,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りの方が落ち着く。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りは悪くない。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -976,22 +724,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">王宮の検証書類は、瓶の中身より重いことがある。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">中身を一滴調べるために、紙を十枚書く。優雅な仕事だろう？</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 王宮の検証書類は、瓶の中身より重いことがある。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> 中身を一滴調べるために、紙を十枚書く。優雅な仕事だろう？
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1001,22 +742,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ここは、王宮ほど静かではないのに落ち着くな。瓶の音も、人の声もある。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">完璧に整っていないから、かえって息がしやすいのかもしれない。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> ここは、王宮ほど静かではないのに落ち着くな。瓶の音も、人の声もある。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> 完璧に整っていないから、かえって息がしやすいのかもしれない。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1026,22 +760,15 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">鬼族の里では、私は少し細すぎると言われる。王都では逆のことを言われるがね。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">美しさの基準など、場所が変わればすぐ変わる。実に頼りない真理だ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 鬼族の里では、私は少し細すぎると言われる。王都では逆のことを言われるがね。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> 美しさの基準など、場所が変わればすぐ変わる。実に頼りない真理だ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1051,27 +778,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">王宮から検証用の小瓶を預かってきた。正式な依頼ではない、少し厄介な確認だ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">厄介な確認を持ち込まれるくらいには、信用されたと思っておきます。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">前向きだな。そういう若さは、王宮の空気に少し分けてやりたいよ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 王宮から検証用の小瓶を預かってきた。正式な依頼ではない、少し厄介な確認だ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 厄介な確認を持ち込まれるくらいには、信用されたと思っておきます。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> 前向きだな。そういう若さは、王宮の空気に少し分けてやりたいよ。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1081,27 +799,60 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">この棚は、瓶の高さが微妙に揃っていないな。王宮なら直される。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">すみません。気を抜くと、よく使う瓶だけ前に出てくるんです。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">謝ることはない。使われている棚の方が、飾られた棚より私は好きだ。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> この棚は、瓶の高さが微妙に揃っていないな。王宮なら直される。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> すみません。気を抜くと、よく使う瓶だけ前に出てくるんです。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> 謝ることはない。使われている棚の方が、飾られた棚より私は好きだ。
+                </div>
                 
             </div>
         </div>
-    
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">dariya_dress_choice</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> 今日の装い、どうかしら？ 交易商の会合だから、少し「武装」してきたの。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [blush]:</strong> ……武装、ですか。確かに、いつにもまして隙がないように見えます。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> あら、嬉しい。隙を作るときは、場所を選ぶつもりよ。ふふ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">dariya_tea_leaf</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> ナーディル、新しい茶葉が入ったの。後で淹れてあげるわ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りが素晴らしいですから。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> ええ。あなたと過ごす時間を、一番贅沢に彩ってくれるものを選んだわ。
+                </div>
+                
+            </div>
+        </div>
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1111,27 +862,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">今日は少し、王宮錬金術師らしくない顔をしているかもしれない。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ここでは、肩書きより先にダリヤさんが座ってくれれば十分です。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……君は時々、こちらが困るほど自然に逃げ道を作るな。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [sorrow]:</strong> 今日は少し、王宮錬金術師らしくない顔をしているかもしれない。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [sorrow]:</strong> ここでは、肩書きより先にダリヤさんが座ってくれれば十分です。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> ……君は時々、こちらが困るほど自然に逃げ道を作るな。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1141,27 +883,18 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">この椅子、昔より座り心地がよくなっていないか。ますます立ち上がれなくなる。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">昔から長居していたのは、椅子のせいだけじゃないでしょう。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……そうだな。君の店は昔から、私が少し黙っていられる場所だった。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> この椅子、昔より座り心地がよくなっていないか。ますます立ち上がれなくなる。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 昔から長居していたのは、椅子のせいだけじゃないでしょう。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [sorrow]:</strong> ……そうだな。君の店は昔から、私が少し黙っていられる場所だった。
+                </div>
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">DAILY</span>
@@ -1171,409 +904,460 @@
             </div>
             <div class="card-body">
                 
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [cry]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">君は昔から、私が平気な顔をしている時ほど、何も聞かずに茶を出す。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ナーディル [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。</div>
-        </div>
-    
-                
-                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [cry]:</strong> 君は昔から、私が平気な顔をしている時ほど、何も聞かずに茶を出す。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていい。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> ……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。
+                </div>
                 
             </div>
         </div>
-    
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_market_snack</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 市場で焼き菓子を買ってきたんだ。ここのデーツパイは絶品でね。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 営業中に小腹が空いたら、こっそり頂くことにしよう。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_fountain_rest</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 広場の噴水に、白い鳩が集まっていたよ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 水音を聞いていると、砂漠の熱さも一瞬だけ忘れられる気がするな。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_morning_mist</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 今朝は珍しく霧が出ていた。マグレバルでは珍しい光景だ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [surprise]:</strong> 瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_mother_postcard</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 母さんから絵葉書が届いた。父さんの写真より、旅先の菓子の話の方が長い。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> あの二人らしいよ。世界を見に行っても、結局は茶と甘い物の話になる。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_sister_camera_shop</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 姉さんのカメラ会社は、また支店を増やすらしい。手紙の文字まで忙しそうだった。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> すごいと思う。でも俺は、この棚の前で客と話す時間も悪くないと思ってる。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">common_customer_gift</span>
+                
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 品を選ぶのは、物を当てることじゃない。誰かの時間に合う形を探すことなんだ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">hakima_forest_resin</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [fun]:</strong> 誰かさんみたい？ ……違うわよ。私はもっと扱いやすいでしょ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">hakima_customer_habit</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> 君の目利きは、香りだけじゃないんだな。俺も見習わないと。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [surprise]:</strong> 素直に褒めないで。……調子が狂うでしょ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">hakima_long_family_table</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [normal]:</strong> 昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [surprise]:</strong> あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。
+                </div>
+                <div class="page-item" style="border-left-color: #ffcc00">
+                    <strong>ハキマ [joy]:</strong> 無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">mira_preservation_bottle</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [normal]:</strong> 先輩、この保存瓶の封止、少しだけ改良できそうです。輸送中の香り抜けを抑えられます。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [joy]:</strong> それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">mira_small_failure</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [sorrow]:</strong> 昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 個性的で済むなら、まだ商品名でごまかせるかもしれない。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> ふふ。先輩、失敗の扱い方が少し優しいです。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">mira_long_after_class</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [student]:</strong> 放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [fun]:</strong> 少し？ ずいぶん難しい課題を持ってきていた気がするけど。
+                </div>
+                <div class="page-item" style="border-left-color: #3d5afe">
+                    <strong>ミラ [joy]:</strong> 先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">dariya_palace_window</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 王宮の窓は美しいよ。磨かれすぎて、外の光まで少し緊張して見える。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [fun]:</strong> ここは少し埃っぽいが、そのぶん光がやわらかい。悪くない違いだ。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">dariya_royal_safety</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [normal]:</strong> 王宮の調合品は、効能より先に安全証明を求められる。美しいが、息の詰まる仕事だ。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 暮らしに届く品ほど、安心して使えることが大事ですからね。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> そうだな。君は、王宮が時々忘れる当たり前を覚えている。
+                </div>
+                
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <span class="badge">DAILY</span>
+                <span class="id">dariya_long_first_weakness</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="status-pass">PASS</span>
+            </div>
+            <div class="card-body">
+                
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [sorrow]:</strong> 昔、君に一度だけ失敗した実験を見られたな。あれは、今でも少し悔しい。
+                </div>
+                <div class="page-item" style="border-left-color: #555">
+                    <strong>ナーディル [normal]:</strong> 俺は、失敗よりも、その後で何度も検証し直していた姿を覚えています。
+                </div>
+                <div class="page-item" style="border-left-color: #f44336">
+                    <strong>ダリヤ [joy]:</strong> ……そういう覚え方をするから、君の前では格好をつけにくいんだ。
+                </div>
+                
+            </div>
+        </div>
 
-        <h2 id="affection">Affection Events (Stills)</h2>
+        <h2 id="affection">Affection Events</h2>
         
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">hakima_5</span>
-                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima (T:5)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [anger]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。
-「今日は、あんたの目利きを見せてもらうから」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">卓上に並んだ香草は、どれも似た色をしている。
-だが香りの奥に、乾いた土と甘い樹脂の違いがあった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。
-「……ふうん。品だけじゃなく、使う人まで見るんだ」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">彼女は悔しそうに目をそらし、それでも小さく笑った。
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。
+「今日は、あんたの目利きを見せてもらうから」</div><div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> 卓上に並んだ香草は、どれも似た色をしている。
+だが香りの奥に、乾いた土と甘い樹脂の違いがあった。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。
+「……ふうん。品だけじゃなく、使う人まで見るんだ」</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 彼女は悔しそうに目をそらし、それでも小さく笑った。
 「まあ、今日のところは合格。少しだけ、頼りにしてあげる」</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。
-「こういう勝負、昔はよくやったよね」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。
-それが少し誇らしくて、少しだけ悔しい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先に行くなら、置いていかないでよ」
-ハキマは小さくつぶやき、すぐに耳まで赤くした。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。
+「こういう勝負、昔はよくやったよね」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。
+それが少し誇らしくて、少しだけ悔しい。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 「先に行くなら、置いていかないでよ」
+ハキマは小さくつぶやき、すぐに耳まで赤くした。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」
 その声は、怒ったふりをするには優しすぎた。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">hakima_10</span>
-                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima (T:10)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [anger]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">市場の香料瓶を前に、ハキマは腕を組んでうなった。
-「この配合、悪くないけど……客には少し強すぎるわね」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルが薄める案を出すと、彼女は驚いた顔をした。
-「同じこと、考えてた。……先に言わないでよ」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「でも、そういうところは嫌いじゃない」
-言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">彼女は慌てて背を向ける。
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 市場の香料瓶を前に、ハキマは腕を組んでうなった。
+「この配合、悪くないけど……客には少し強すぎるわね」</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> ナーディルが薄める案を出すと、彼女は驚いた顔をした。
+「同じこと、考えてた。……先に言わないでよ」</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 「でも、そういうところは嫌いじゃない」
+言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 彼女は慌てて背を向ける。
 「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。
-ハキマは目を丸くし、やがて呆れたように笑う。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「……昔は、あんたの方がいつも外してたのに」
-少しだけ寂しそうに、でも誇らしげに彼女は言う。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「やっと追いついてきたってことね。なら、これからは対等だ」
-狐の耳が、嬉しさを隠しきれずにぴんと立っていた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「言っとくけど、まだまだ負けないからね」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。
+ハキマは目を丸くし、やがて呆れたように笑う。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 「……昔は、あんたの方がいつも外してたのに」
+少しだけ寂しそうに、でも誇らしげに彼女は言う。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 「やっと追いついてきたってことね。なら、これからは対等だ」
+狐の耳が、嬉しさを隠しきれずにぴんと立っていた。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ハキマ:</strong> 「言っとくけど、まだまだ負けないからね」
 その顔は、市場のどの灯りよりも眩しかった。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">mira_5</span>
-                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira (T:5)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [student]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。
-「先輩、今日は正解を選びに来たわけではないんです」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">彼女は瓶を二つ並べ、困ったように眉を寄せる。
-「どちらも正しい。だから、どちらを選ぶべきか迷っています」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">(Narration) [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルが「迷っていい」と言うと、ミラは目を丸くした。
-天才なら即答するべきだと、ずっと思っていたから。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先輩は、少しずるいです」
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。
+「先輩、今日は正解を選びに来たわけではないんです」</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 彼女は瓶を二つ並べ、困ったように眉を寄せる。
+「どちらも正しい。だから、どちらを選ぶべきか迷っています」</div><div class="page-item" style="border-left-color: #3d5afe"><strong>:</strong> ナーディルが「迷っていい」と言うと、ミラは目を丸くした。
+天才なら即答するべきだと、ずっと思っていたから。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「先輩は、少しずるいです」
 彼女は小さく笑う。
 「そんな言い方をされたら、私でいたくなります」</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ミラは古い課題帳を開き、懐かしそうに指でなぞった。
-「この式、先輩に何度も直してもらいましたね」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」
-彼女の声は、少しだけ震えていた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [surprise]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。
-「だから私は、またここに来たんです」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> ミラは古い課題帳を開き、懐かしそうに指でなぞった。
+「この式、先輩に何度も直してもらいましたね」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」
+彼女の声は、少しだけ震えていた。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。
+「だから私は、またここに来たんです」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」
 その笑顔は、少し照れくさそうだった。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">mira_10</span>
-                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira (T:10)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。
-「この配合なら、もっと多くの人に届けられます」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">けれどナーディルは、最後に客の手紙を読み返した。
-効率だけでは測れない願いが、そこには残っていた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ミラは少し悔しそうに、そして嬉しそうに笑った。
-「商人の目だけでは、見落とすものがありますね」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先輩の隣でなら、正解を出す前の私でいられます」
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。
+「この配合なら、もっと多くの人に届けられます」</div><div class="page-item" style="border-left-color: #3d5afe"><strong>:</strong> けれどナーディルは、最後に客の手紙を読み返した。
+効率だけでは測れない願いが、そこには残っていた。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> ミラは少し悔しそうに、そして嬉しそうに笑った。
+「商人の目だけでは、見落とすものがありますね」</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「先輩の隣でなら、正解を出す前の私でいられます」
 その言葉は、星明かりよりも静かに輝いていた。</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星空の下、ミラは帳面を閉じた。
-「昔から、先輩は私の答えより、考えている顔を見ていました」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「それが少し悔しくて、でも、とても嬉しかったんです」
-彼女は夜風に揺れる布を押さえ、小さく笑う。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」
-その瞳は、もう迷っていなかった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先輩。これからも、私が答えを急ぎそうになったら止めてください」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 星空の下、ミラは帳面を閉じた。
+「昔から、先輩は私の答えより、考えている顔を見ていました」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 「それが少し悔しくて、でも、とても嬉しかったんです」
+彼女は夜風に揺れる布を押さえ、小さく笑う。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」
+その瞳は、もう迷っていなかった。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ミラ:</strong> 「先輩。これからも、私が答えを急ぎそうになったら止めてください」
 ミラは照れながら、そっと隣に並んだ。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">dariya_5</span>
-                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya (T:5)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。
-「公務の確認だ。……半分は、口実かもしれないが」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。
-ナーディルは黙って椅子を引き、温かい茶を置く。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ダリヤは少しだけ目を伏せた。
-「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">その笑みは疲れていたが、初めて肩の力が抜けていた。
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。
+「公務の確認だ。……半分は、口実かもしれないが」</div><div class="page-item" style="border-left-color: #f44336"><strong>:</strong> 王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。
+ナーディルは黙って椅子を引き、温かい茶を置く。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> ダリヤは少しだけ目を伏せた。
+「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」</div><div class="page-item" style="border-left-color: #f44336"><strong>:</strong> その笑みは疲れていたが、初めて肩の力が抜けていた。
 星瓶堂の夜は、どんな霊薬より静かに彼女を休ませた。</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。
-「君は相変わらず、追い出すのが下手だな」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">学生の頃も、王宮に入った後も。
-彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「私は、強い先輩でいられない日がある」
-ダリヤは苦笑し、視線を卓上の茶へ落とした。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「それでも君は、昔から同じ顔で茶を出す」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。
+「君は相変わらず、追い出すのが下手だな」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>:</strong> 学生の頃も、王宮に入った後も。
+彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> 「私は、強い先輩でいられない日がある」
+ダリヤは苦笑し、視線を卓上の茶へ落とした。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> 「それでも君は、昔から同じ顔で茶を出す」
 その声は、責めるにはあまりにも優しかった。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">EVENT</span>
                 <span class="id">dariya_10</span>
-                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya (T:10)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">王宮錬金局の検証室は、音まで整いすぎていた。
-ダリヤは手順書を閉じ、静かに眉を寄せる。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「完璧な配合だ。……だが、君の作ったものより冷たい」
-彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」
-それは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」
+                <p style="font-size: 0.8em; color: #94a3b8;">Base Pages:</p>
+                <div class="page-item" style="border-left-color: #f44336"><strong>:</strong> 王宮錬金局の検証室は、音まで整いすぎていた。
+ダリヤは手順書を閉じ、静かに眉を寄せる。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「完璧な配合だ。……だが、君の作ったものより冷たい」
+彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」
+それは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」
 彼女の横顔は、昼間よりずっと穏やかだった。</div>
-        </div>
-    
-                <div style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 10px;"><strong style="color: #38bdf8; font-size: 0.8em;">[Long History Route]</strong>
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">夜の検証室で、ダリヤはついに筆を置いた。
-「昔なら、もう少し上手に隠せたはずなのだが」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ナーディルは答えを急かず、ただ隣に立った。
-その沈黙が、昔から彼女には何よりありがたかった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「私は、特別でなくなるのが怖かった」
-ダリヤの声は震えたが、逃げることはなかった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「だが君は、特別でない私にも茶を出すのだろう」
+                
+                <p style="font-size: 0.8em; color: #f59e0b; margin-top: 15px;">IF Route (Long History):</p>
+                <div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> 夜の検証室で、ダリヤはついに筆を置いた。
+「昔なら、もう少し上手に隠せたはずなのだが」</div><div class="page-item" style="border-left-color: #f59e0b"><strong>:</strong> ナーディルは答えを急かず、ただ隣に立った。
+その沈黙が、昔から彼女には何よりありがたかった。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> 「私は、特別でなくなるのが怖かった」
+ダリヤの声は震えたが、逃げることはなかった。</div><div class="page-item" style="border-left-color: #f59e0b"><strong>ダリヤ:</strong> 「だが君は、特別でない私にも茶を出すのだろう」
 彼女は泣きそうに笑い、ようやく前を向いた。</div>
-        </div>
-    </div>
                 
                 
             </div>
         </div>
-    
 
         <h2 id="endings">Endings</h2>
         
@@ -1581,300 +1365,138 @@
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">hakima_good</span>
-                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima (good)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星瓶堂の棚に、ルハーン商会の香り袋が並ぶようになった。
-客はその香りを、若店主と狐の鑑定士の品だと噂した。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「少しはマシな店になったわね。……まあ、私のおかげだけど」
-ハキマは得意げに笑い、カウンターに身を乗り出す。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星瓶堂の灯の下、ふたりの影が並ぶ。
+                <div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> 星瓶堂の棚に、ルハーン商会の香り袋が並ぶようになった。
+客はその香りを、若店主と狐の鑑定士の品だと噂した。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 「少しはマシな店になったわね。……まあ、私のおかげだけど」
+ハキマは得意げに笑い、カウンターに身を乗り出す。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> 星瓶堂の灯の下、ふたりの影が並ぶ。
 競い合う声も、笑い声も、これからの商いに溶けていった。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">hakima_normal</span>
-                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima (normal)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。
-それでも口ぶりは、相変わらず手厳しい。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「あんたの目利き、今日は少し甘かったわよ。
-……だから、明日も私が確かめてあげる」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">ハキマ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">彼女は耳を揺らし、少しだけ照れたように笑う。
+                <div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> 営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。
+それでも口ぶりは、相変わらず手厳しい。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 「あんたの目利き、今日は少し甘かったわよ。
+……だから、明日も私が確かめてあげる」</div><div class="page-item" style="border-left-color: #ffcc00"><strong>ハキマ:</strong> 彼女は耳を揺らし、少しだけ照れたように笑う。
 星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">hakima_bad</span>
-                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima</span>
+                <span class="badge" style="background: #ffcc0022; color: #ffcc00">hakima (bad)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ハキマは最後まで、素直な言葉を選べなかった。
-それでも棚の一角には、彼女が選んだ香材が残っている。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #ffcc00; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #ffcc00; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">扉が閉まる前、白い尻尾が一度だけ揺れた。
+                <div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> ハキマは最後まで、素直な言葉を選べなかった。
+それでも棚の一角には、彼女が選んだ香材が残っている。</div><div class="page-item" style="border-left-color: #ffcc00"><strong>:</strong> 扉が閉まる前、白い尻尾が一度だけ揺れた。
 また来る、とは言わない。でも来ないとも言わなかった。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">mira_good</span>
-                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira (good)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ミラの提案で、星瓶堂の商品は少しずつ遠くの街へ届き始めた。
-それでも彼女は、数字だけで喜ぶことはなかった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先輩、この品を受け取った人の顔まで想像しましょう」
-そう言う彼女は、もう正解だけを追っていない。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「天才だから、ではありません。私が、ここで考えたいんです」
-ミラは少し頬を染め、まっすぐに笑った。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">星瓶堂の灯と、夜空の星。
+                <div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> ミラの提案で、星瓶堂の商品は少しずつ遠くの街へ届き始めた。
+それでも彼女は、数字だけで喜ぶことはなかった。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「先輩、この品を受け取った人の顔まで想像しましょう」
+そう言う彼女は、もう正解だけを追っていない。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「天才だから、ではありません。私が、ここで考えたいんです」
+ミラは少し頬を染め、まっすぐに笑った。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>:</strong> 星瓶堂の灯と、夜空の星。
 ふたりで選ぶ未来は、どんな答えよりも温かかった。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">mira_normal</span>
-                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira (normal)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「今日の課題は終わりました。だから、明日の話をしましょう」
-ミラは少しだけ背伸びをして、新しい帳面を開く。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">その声には、以前より少しだけ柔らかさがあった。
-答えより先に、話したい相手がいる。それだけで十分だった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「先輩、一緒に迷ってくださいね」
+                <div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「今日の課題は終わりました。だから、明日の話をしましょう」
+ミラは少しだけ背伸びをして、新しい帳面を開く。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>:</strong> その声には、以前より少しだけ柔らかさがあった。
+答えより先に、話したい相手がいる。それだけで十分だった。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「先輩、一緒に迷ってくださいね」
 彼女の笑顔は、どんな完璧な調合よりも明るかった。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">mira_bad</span>
-                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira</span>
+                <span class="badge" style="background: #3d5afe22; color: #3d5afe">mira (bad)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ミラは最後まで、完璧な答えを探そうとしていた。
-ナーディルの前でさえ、少し肩の力が抜けなかった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「まだ、私の見立ては足りないみたいです」
-そう言って微笑む顔は、少しだけ寂しそうだった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #3d5afe; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #3d5afe; font-size: 0.85em;">ミラ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「でも、また解き直せばいいんですよね」
+                <div class="page-item" style="border-left-color: #3d5afe"><strong>:</strong> ミラは最後まで、完璧な答えを探そうとしていた。
+ナーディルの前でさえ、少し肩の力が抜けなかった。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「まだ、私の見立ては足りないみたいです」
+そう言って微笑む顔は、少しだけ寂しそうだった。</div><div class="page-item" style="border-left-color: #3d5afe"><strong>ミラ:</strong> 「でも、また解き直せばいいんですよね」
 彼女は課題帳を抱え、それでもしっかりとした足取りで帰っていった。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">dariya_good</span>
-                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya (good)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ダリヤは王宮を去らなかった。
-ただし、もう一人で重さを抱え込むことはやめた。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">検証品の相談という名目で、彼女は時折星瓶堂を訪れる。
-茶を飲み、少し皮肉を言い、少しだけ笑う。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「私はまだ完璧ではない」
+                <div class="page-item" style="border-left-color: #f44336"><strong>:</strong> ダリヤは王宮を去らなかった。
+ただし、もう一人で重さを抱え込むことはやめた。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 検証品の相談という名目で、彼女は時折星瓶堂を訪れる。
+茶を飲み、少し皮肉を言い、少しだけ笑う。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「私はまだ完璧ではない」
 ダリヤは静かに言った。
-「だが、それを君に見られるのは、もう怖くない」</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [joy]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">夜の工房に、柔らかな灯がともる。
+「だが、それを君に見られるのは、もう怖くない」</div><div class="page-item" style="border-left-color: #f44336"><strong>:</strong> 夜の工房に、柔らかな灯がともる。
 その明かりは、王宮へ戻る彼女の背中を静かに支えていた。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">dariya_normal</span>
-                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya (normal)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ダリヤは以前より少しだけ長く、星瓶堂に留まるようになった。
-それでも本音は、まだ言葉になりきらない。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [normal]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「君の淹れる茶は、どうしてこうも香りが強いんだ」
-文句を言いながらも、彼女は空になった杯を置く。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">ダリヤ [fun]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">「……また明日、飲みに来てやる」
+                <div class="page-item" style="border-left-color: #f44336"><strong>:</strong> ダリヤは以前より少しだけ長く、星瓶堂に留まるようになった。
+それでも本音は、まだ言葉になりきらない。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「君の淹れる茶は、どうしてこうも香りが強いんだ」
+文句を言いながらも、彼女は空になった杯を置く。</div><div class="page-item" style="border-left-color: #f44336"><strong>ダリヤ:</strong> 「……また明日、飲みに来てやる」
 言い残した言葉には、柔らかな約束が込められていた。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
         <div class="card ">
             <div class="card-header">
                 <span class="badge">ENDING</span>
                 <span class="id">dariya_bad</span>
-                <span class="badge" style="background: #f4433622; color: #f44336">dariya</span>
+                <span class="badge" style="background: #f4433622; color: #f44336">dariya (bad)</span>
                 <span class="status-pass">PASS</span>
             </div>
             <div class="card-body">
-                
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">ダリヤは最後まで、疲れた顔を隠そうとした。
-王宮錬金術師としての姿は、美しく、少し遠かった。</div>
-        </div>
-    
-        <div class="page-item" style="border-left: 4px solid #f44336; background: rgba(0,0,0,0.1); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
-            <div style="font-weight: bold; color: #f44336; font-size: 0.85em;">(Narration) [sorrow]</div>
-            <div style="margin-top: 4px; white-space: pre-wrap;">けれど夜の店先で、彼女は一度だけ足を止める。
+                <div class="page-item" style="border-left-color: #f44336"><strong>:</strong> ダリヤは最後まで、疲れた顔を隠そうとした。
+王宮錬金術師としての姿は、美しく、少し遠かった。</div><div class="page-item" style="border-left-color: #f44336"><strong>:</strong> けれど夜の店先で、彼女は一度だけ足を止める。
 星瓶堂の灯を見つめる横顔に、言えなかった弱音が残っていた。</div>
-        </div>
-    
-                
-                
                 
             </div>
         </div>
-    
     </div>
 </body>
 </html>

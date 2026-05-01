@@ -29,7 +29,7 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "開店前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
+      { speaker: "ナーディル", expression: "normal", text: "営業前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
       { speaker: "ナーディル", expression: "joy", text: "俺もいつか、この道具に恥ずかしくない店主になりたいな。" }
     ]
   },
@@ -409,7 +409,7 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りの方が落ち着く。" },
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りは悪くない。" },
       { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。" }
     ]
   },
@@ -481,6 +481,34 @@ export const DAILY_TALKS = [
     ]
   },
   {
+    id: "dariya_dress_choice",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "fun", text: "今日の装い、どうかしら？ 交易商の会合だから、少し「武装」してきたの。" },
+      { speaker: "ナーディル", expression: "blush", text: "……武装、ですか。確かに、いつにもまして隙がないように見えます。" },
+      { speaker: "ダリヤ", expression: "joy", text: "あら、嬉しい。隙を作るときは、場所を選ぶつもりよ。ふふ。" }
+    ]
+  },
+  {
+    id: "dariya_tea_leaf",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉が入ったの。後で淹れてあげるわ。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りが素晴らしいですから。" },
+      { speaker: "ダリヤ", expression: "joy", text: "ええ。あなたと過ごす時間を、一番贅沢に彩ってくれるものを選んだわ。" }
+    ]
+  },
+  {
     id: "dariya_not_perfect",
     scope: "heroine",
     heroineId: "dariya",
@@ -520,6 +548,211 @@ export const DAILY_TALKS = [
       { speaker: "ダリヤ", expression: "cry", text: "君は昔から、私が平気な顔をしている時ほど、何も聞かずに茶を出す。" },
       { speaker: "ナーディル", expression: "normal", text: "聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていい。" },
       { speaker: "ダリヤ", expression: "joy", text: "……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。" }
+    ]
+  },
+
+  // --- Miscellaneous / Connective ---
+  {
+    id: "common_market_snack",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきたんだ。ここのデーツパイは絶品でね。" },
+      { speaker: "ナーディル", expression: "fun", text: "営業中に小腹が空いたら、こっそり頂くことにしよう。" }
+    ]
+  },
+  {
+    id: "common_fountain_rest",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "広場の噴水に、白い鳩が集まっていたよ。" },
+      { speaker: "ナーディル", expression: "joy", text: "水音を聞いていると、砂漠の熱さも一瞬だけ忘れられる気がするな。" }
+    ]
+  },
+  {
+    id: "common_morning_mist",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグレバルでは珍しい光景だ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。" }
+    ]
+  },
+
+  // --- Expansion 3: New Candidates ---
+  {
+    id: "common_mother_postcard",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "母さんから絵葉書が届いた。父さんの写真より、旅先の菓子の話の方が長い。" },
+      { speaker: "ナーディル", expression: "fun", text: "あの二人らしいよ。世界を見に行っても、結局は茶と甘い物の話になる。" }
+    ]
+  },
+  {
+    id: "common_sister_camera_shop",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "姉さんのカメラ会社は、また支店を増やすらしい。手紙の文字まで忙しそうだった。" },
+      { speaker: "ナーディル", expression: "joy", text: "すごいと思う。でも俺は、この棚の前で客と話す時間も悪くないと思ってる。" }
+    ]
+  },
+  {
+    id: "common_customer_gift",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。" },
+      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に合う形を探すことなんだ。" }
+    ]
+  },
+  {
+    id: "hakima_forest_resin",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
+      { speaker: "ハキマ", expression: "fun", text: "誰かさんみたい？ ……違うわよ。私はもっと扱いやすいでしょ。" }
+    ]
+  },
+  {
+    id: "hakima_customer_habit",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
+      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。俺も見習わないと。" },
+      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。" }
+    ]
+  },
+  {
+    id: "hakima_long_family_table",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。" },
+      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。" }
+    ]
+  },
+  {
+    id: "mira_preservation_bottle",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩、この保存瓶の封止、少しだけ改良できそうです。輸送中の香り抜けを抑えられます。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" }
+    ]
+  },
+  {
+    id: "mira_small_failure",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "sorrow", text: "昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。" },
+      { speaker: "ナーディル", expression: "fun", text: "個性的で済むなら、まだ商品名でごまかせるかもしれない。" },
+      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。" }
+    ]
+  },
+  {
+    id: "mira_long_after_class",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "student", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
+      { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
+      { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
+    ]
+  },
+  {
+    id: "dariya_palace_window",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は美しいよ。磨かれすぎて、外の光まで少し緊張して見える。" },
+      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいが、そのぶん光がやわらかい。悪くない違いだ。" }
+    ]
+  },
+  {
+    id: "dariya_royal_safety",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の調合品は、効能より先に安全証明を求められる。美しいが、息の詰まる仕事だ。" },
+      { speaker: "ナーディル", expression: "normal", text: "暮らしに届く品ほど、安心して使えることが大事ですからね。" },
+      { speaker: "ダリヤ", expression: "joy", text: "そうだな。君は、王宮が時々忘れる当たり前を覚えている。" }
+    ]
+  },
+  {
+    id: "dariya_long_first_weakness",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたな。あれは、今でも少し悔しい。" },
+      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度も検証し直していた姿を覚えています。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……そういう覚え方をするから、君の前では格好をつけにくいんだ。" }
     ]
   }
 ];

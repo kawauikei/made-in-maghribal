@@ -170,6 +170,7 @@ try {
   console.log("PASSED: clearSaveData");
 
   // Test: Corrupted JSON
+  console.log("(Note: The following SyntaxError is expected for the negative test case)");
   mockStorage.setItem(STORAGE_KEY, "invalid json {");
   const corrupted = loadSaveData();
   assert.strictEqual(corrupted, null);

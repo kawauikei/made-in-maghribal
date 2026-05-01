@@ -14,20 +14,21 @@
 - [x] **Narrative Flow Fix**: Implemented 4-part structure: Monologue -> Greeting -> Conversation -> Farewell.
 - [x] **Audit Registry Update**: Enhanced `dailyTalks.test.js` to support new metadata and types.
 - [x] **HTML Audit Report**: Automated report generation for narrative quality control.
-- [x] **Master Narrative Audit**: Consolidated audit tool (`tools/narrative_audit.js`) covering Greetings, Events, and Endings.
-- [x] **Writer Technical Specs**: Integrated system constraints (expression keys, narrative flow, display rules) into the audit report.
+- [x] Master Narrative Audit tool implementation (`tools/narrative_audit.js`)
+- [x] Technical specifications for writers (`docs/master_narrative_report.html`)
+- [x] Standardization of character roles (Visitor vs Employee)
+- [x] Refinement of System Greetings
+- [x] Expansion Phase 1: Connective content (market snacks, resin, preservation bottles)
+- [x] Expansion Phase 2: Affection 5/10 short dialogues
+- [x] Expansion Phase 3: Parallel world IF (long_history) pilot dialogues
+- [x] DailyTalk Registry Data Integrity: Resolved duplicate ID conflicts and synchronized with Expansion 3 draft.
 
 ---
 
 ## 🟦 In Progress / Next Steps
 
-### [Content] DailyTalk Phase 1 Expansion
-- [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
-- [ ] **Long History Introduction**: Add 1 parallel-world dialogue per heroine as a pilot for the IF route.
-- [ ] **Transition Dialogues**: Refine "monologue" and "response" variations to improve daily flavor.
-
 ### [Maintenance] Technical Debt & Polish
-- [ ] **Test Output Cleanup**: Refactor `saveData.test.cjs` to suppress/clarify the `SyntaxError` logs during corrupted JSON test cases (currently PASSING, but confusing).
+- [x] **Test Output Cleanup**: Refactor `saveData.test.cjs` to clarify the `SyntaxError` logs (Done: added log note).
 - [ ] **Asset Preloading**: Ensure large standing images are cached/preloaded before transitions to prevent flicker.
 
 ---
