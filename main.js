@@ -10428,11 +10428,15 @@ function App() {
     localStorage.setItem("made_in_maghribal_auto_skip_quiz", autoSkipQuiz);
   }, [autoSkipQuiz]);
   useEffect(() => {
-    if (screen === "QUIZ" && autoSkipQuiz && session) {
+    if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+      debugAutoSkipAppliedRef.current = true;
       const timer = setTimeout(() => {
-        handleFinishQuiz(session.questions.length);
+        finishQuizWithResult(session.questions.length);
       }, 500);
       return () => clearTimeout(timer);
+    }
+    if (screen !== "QUIZ") {
+      debugAutoSkipAppliedRef.current = false;
     }
   }, [screen, autoSkipQuiz, session]);
   const [affection, setAffection] = useState(
@@ -10454,6 +10458,7 @@ function App() {
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
+  const debugAutoSkipAppliedRef = useRef(false);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
@@ -10943,6 +10948,21 @@ function App() {
       ];
     });
   };
+  const finishQuizWithResult = (correctCount) => {
+    var _a2;
+    const totalCount = ((_a2 = session == null ? void 0 : session.questions) == null ? void 0 : _a2.length) || 5;
+    const gain = calculateQuizAffectionGain(correctCount, totalCount);
+    const nextAffection = addAffection(affection, activeHeroineId, gain);
+    setAffection(nextAffection);
+    setLastAffectionGain(gain);
+    const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+    if (unlockedEvent) {
+      setActiveEvent(unlockedEvent);
+    }
+    const result = getWorkshopResult(correctCount);
+    setWorkshopState((prev) => applyWorkshopResult(prev, result));
+    setScreen("RESULT");
+  };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
     const updatedSession = answerQuestion(session, itemId);
@@ -10960,17 +10980,7 @@ function App() {
         setSession(updatedSession);
         if (updatedSession.isFinished) {
           const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
-          const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
-          const nextAffection = addAffection(affection, activeHeroineId, gain);
-          setAffection(nextAffection);
-          setLastAffectionGain(gain);
-          const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-          if (unlockedEvent) {
-            setActiveEvent(unlockedEvent);
-          }
-          const result = getWorkshopResult(correctCount);
-          setWorkshopState((prev) => applyWorkshopResult(prev, result));
-          setScreen("RESULT");
+          finishQuizWithResult(correctCount);
         }
       }, 650);
     }, 150);
