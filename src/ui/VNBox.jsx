@@ -15,7 +15,7 @@ import { THEME } from './theme';
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, hideSkip = false, hideNext = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   
@@ -279,21 +279,23 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         </div>
 
         {/* Right Side: Operations */}
-        <div 
-          onClick={handleSkipBlock}
-          onMouseEnter={() => setHoverSkip(true)}
-          onMouseLeave={() => setHoverSkip(false)}
-          style={{
-            ...headerButtonStyle,
-            background: hoverSkip ? (themeColor || THEME.brass) : 'rgba(12, 25, 38, 0.95)',
-            color: hoverSkip ? '#0c1926' : (themeColor || THEME.brass),
-            border: `1px solid ${hoverSkip ? (themeColor || THEME.brass) : (themeColor || THEME.brass) + '77'}`,
-            cursor: 'pointer',
-            pointerEvents: 'auto'
-          }}
-        >
-          SKIP
-        </div>
+        {!hideSkip && (
+          <div 
+            onClick={handleSkipBlock}
+            onMouseEnter={() => setHoverSkip(true)}
+            onMouseLeave={() => setHoverSkip(false)}
+            style={{
+              ...headerButtonStyle,
+              background: hoverSkip ? (themeColor || THEME.brass) : 'rgba(12, 25, 38, 0.95)',
+              color: hoverSkip ? '#0c1926' : (themeColor || THEME.brass),
+              border: `1px solid ${hoverSkip ? (themeColor || THEME.brass) : (themeColor || THEME.brass) + '77'}`,
+              cursor: 'pointer',
+              pointerEvents: 'auto'
+            }}
+          >
+            SKIP
+          </div>
+        )}
       </div>
 
       {/* Instant Skip Fade Overlay */}
@@ -352,7 +354,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       </div>
 
       {/* Progression Indicator (Bottom Right) */}
-      {isComplete && (
+      {isComplete && !hideNext && (
         <div style={{ 
           position: 'absolute',
           bottom: '14px',
