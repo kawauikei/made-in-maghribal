@@ -1669,7 +1669,15 @@ const IntroScreen = ({
     }
   ];
 
-  const talkPages = activeDailyTalk?.pages || [];
+  // Fix: Ensure speakerId is present for icons in DailyTalk pages
+  const talkPages = (activeDailyTalk?.pages || []).map(page => {
+    if (page.speakerId) return page;
+    let inferredId = null;
+    if (page.speaker === 'ナーディル') inferredId = 'nader';
+    else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+    return { ...page, speakerId: inferredId };
+  });
+
   const combinedPages = [...talkPages, ...baseIntroPages];
 
   const handleAreaClick = (e) => {
