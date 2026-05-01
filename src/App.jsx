@@ -1521,7 +1521,6 @@ export default function App() {
                 if (category === 'DAY') displayChoiceName = `一般雑貨の${displayChoiceName}`;
                 if (category === 'TRD') displayChoiceName = `貿易品の${displayChoiceName}`;
                 if (category === 'RIT') displayChoiceName = `厳かな${displayChoiceName}`;
-                if (category === 'ADN') displayChoiceName = `アクセサリーの${displayChoiceName}`;
               }
 
               return (
