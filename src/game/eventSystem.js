@@ -16,6 +16,7 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
   // For MVP, we'll just return the first one found that is eligible.
   const eligibleEvents = events.filter(event => 
     event.kind !== 'flashback_intro' && 
+    event.kind !== 'route_climax' && 
     currentAffection >= event.threshold && 
     !seenEventIds.includes(event.id)
   );

@@ -105,6 +105,43 @@ export const AFFECTION_EVENTS = {
           { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
         ]
       }
+    },
+    {
+      id: "hakima_20",
+      heroineId: "hakima",
+      threshold: 20,
+      title: "重なる目利き",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "ルハーン商会からの大口相談を巡り、ハキマはナーディルの目利きを認め、素直になれないながらも信頼を口にする。",
+      pages: [
+        { "speaker": "ハキマ", "expression": "normal", "text": "ルハーン商会から、大口の香材相談が来たの。星瓶堂の目利きも借りたいって。" },
+        { "speaker": "ナーディル", "expression": "surprise", "text": "君の商会から正式に？ それは責任重大だな。" },
+        { "speaker": "ハキマ", "expression": "anger", "text": "勘違いしないで。あんたが少しは信用できるって、私が報告しただけよ。" },
+        { "speaker": "ナーディル", "expression": "joy", "text": "それなら、なおさら嬉しいよ。ハキマが見てくれた星瓶堂の信用だ。" },
+        { "speaker": "ハキマ", "expression": "surprise", "text": "……そういう言い方、ずるい。怒る準備をしてたのに、調子が狂うじゃない。" }
+      ]
+    },
+    {
+      id: "hakima_climax",
+      heroineId: "hakima",
+      threshold: 30,
+      kind: "route_climax",
+      title: "隣に並ぶ覚悟",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "成長するナーディルに焦りを感じるハキマに対し、ナーディルは共に歩む決意を伝え、二人は対等なパートナーとしての絆を深める。",
+      pages: [
+        { "speaker": "ハキマ", "expression": "sorrow", "text": "あんたが星瓶堂の店主らしくなるほど、少しだけ遠く見える時があるの。" },
+        { "speaker": "ナーディル", "expression": "sorrow", "text": "遠くへ行きたいわけじゃない。俺は、この店で誰かと向き合える店主になりたいんだ。" },
+        { "speaker": "ハキマ", "expression": "anger", "text": "だったら、隣を空けておきなさいよ。勝手に一人で格好つけないで。" },
+        { "speaker": "ナーディル", "expression": "joy", "text": "分かった。難しい香材も、厄介な客も、君と一緒に見立てたい。" },
+        { "speaker": "ハキマ", "expression": "joy", "text": "……最初からそう言えばいいのよ。まったく、手のかかる若店主なんだから。" }
+      ]
     }
   ],
   mira: [
@@ -206,6 +243,43 @@ export const AFFECTION_EVENTS = {
           { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
         ]
       }
+    },
+    {
+      id: "mira_20",
+      heroineId: "mira",
+      threshold: 20,
+      title: "暮らしの錬金術",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "MIRA-01"
+      },
+      summary: "ミラは大学の発表題材に星瓶堂を選び、ナーディルの「使う人の顔が見える品」という姿勢に自身の理想を重ねる。",
+      pages: [
+        { "speaker": "ミラ", "expression": "normal", "text": "先輩、星瓶堂の商品を学外発表の題材にしてもいいでしょうか。" },
+        { "speaker": "ナーディル", "expression": "surprise", "text": "うちの商品を？ もっと派手な研究の方が、評価されるんじゃないか。" },
+        { "speaker": "ミラ", "expression": "sorrow", "text": "派手さだけなら、そうかもしれません。でも私は、暮らしに届く錬金術を発表したいんです。" },
+        { "speaker": "ナーディル", "expression": "joy", "text": "それなら、星瓶堂はぴったりだ。使う人の顔が見える品ばかりだから。" },
+        { "speaker": "ミラ", "expression": "joy", "text": "はい. 先輩がそう見ているから、私もこの店で学びたいと思えたんです。" }
+      ]
+    },
+    {
+      id: "mira_climax",
+      heroineId: "mira",
+      threshold: 30,
+      kind: "route_climax",
+      title: "正解の前の私",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01"
+      },
+      summary: "天才ゆえの失敗への恐怖を吐露するミラに対し、ナーディルはその過程すべてを肯定し、彼女が「ただの自分」でいられる場所であることを示す。",
+      pages: [
+        { "speaker": "ミラ", "expression": "sorrow", "text": "天才だと言われるほど、間違えるのが怖くなります。期待を裏切るのが怖いんです。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "ミラが迷って、試して、失敗して、それでも考えるところを俺は見てきた。" },
+        { "speaker": "ミラ", "expression": "surprise", "text": "答えだけではなく、そこまで見てくれるんですね。" },
+        { "speaker": "ナーディル", "expression": "joy", "text": "もちろん。俺が信じているのは、天才の看板じゃなくて、目の前のミラだから。" },
+        { "speaker": "ミラ", "expression": "joy", "text": "……先輩の前では、正解の前の私でいてもいいんですね。" }
+      ]
     }
   ],
   dariya: [
@@ -307,6 +381,43 @@ export const AFFECTION_EVENTS = {
           { speaker: "ダリヤ", expression: "joy", text: "「だが君は、特別でない私にも茶を出すのだろう」\n彼女は泣きそうに笑い、ようやく前を向いた。" }
         ]
       }
+    },
+    {
+      id: "dariya_20",
+      heroineId: "dariya",
+      threshold: 20,
+      title: "当たり前の重み",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "DARIYA-01"
+      },
+      summary: "王宮の案件をナーディルに相談するダリヤ。王宮が忘れがちな「当たり前」を大切にするナーディルの視点を高く評価する。",
+      pages: [
+        { "speaker": "ダリヤ", "expression": "normal", "text": "王宮の検証案件を、星瓶堂にも相談したい。君の目は、研究所と少し違う。" },
+        { "speaker": "ナーディル", "expression": "surprise", "text": "王宮の案件を俺に？ 光栄ですけど、少し緊張しますね。" },
+        { "speaker": "ダリヤ", "expression": "fun", "text": "緊張くらいでちょうどいい。王宮には、緊張しすぎて息を忘れる者も多いからね。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "俺は、使う人が息をしやすい品かどうかを見たいです。" },
+        { "speaker": "ダリヤ", "expression": "joy", "text": "だから君に頼みたい。私が忘れかける当たり前を、君はまだ覚えている。" }
+      ]
+    },
+    {
+      id: "dariya_climax",
+      heroineId: "dariya",
+      threshold: 30,
+      kind: "route_climax",
+      title: "座らせてくれる場所",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "DARIYA-01"
+      },
+      summary: "完璧であることを自らに強いるダリヤに対し、ナーディルは弱さも受け入れる安らぎの場を供し、二人の関係は公務を超えたものへと昇華する。",
+      pages: [
+        { "speaker": "ダリヤ", "expression": "sorrow", "text": "王宮では、優秀でいることに慣れすぎた。できない私を, 私自身が許せない。" },
+        { "speaker": "ナーディル", "expression": "sorrow", "text": "できない日があっても、ダリヤさんが積み重ねてきたものは消えません。" },
+        { "speaker": "ダリヤ", "expression": "cry", "text": "君は簡単に言うな。……いや、簡単に聞こえるほど自然に言うから困る。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "ここでは、王宮錬金術師である前に、ダリヤさんとして座ってくれればいい。" },
+        { "speaker": "ダリヤ", "expression": "joy", "text": "……なら、少しだけ座らせてもらおう。立ち上がる時は、君の茶を一杯もらってからだ。" }
+      ]
     }
   ]
 };

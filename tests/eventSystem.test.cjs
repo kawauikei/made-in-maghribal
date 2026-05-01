@@ -85,7 +85,11 @@ async function main() {
 
   for (const heroineId of ['hakima', 'mira', 'dariya']) {
     const heroineEvents = getEventsByHeroine(heroineId);
-    assert.strictEqual(heroineEvents.length, 3, `Expected exactly three events for ${heroineId}`);
+    assert.strictEqual(heroineEvents.length, 5, `Expected exactly five events for ${heroineId}`);
+    
+    // Ensure climax is NOT auto-unlocked by threshold
+    const climax = checkNewEventUnlock(heroineId, 100, []);
+    assert.ok(climax.id !== `${heroineId}_climax`, `Climax event ${heroineId}_climax should not be unlocked by threshold`);
   }
 
   for (const event of allEvents) {
@@ -93,7 +97,7 @@ async function main() {
     assert.ok(event.heroineId, `Event ${event.id} requires heroineId`);
     assert.ok(Number.isFinite(event.threshold), `Event ${event.id} requires threshold`);
     assert.ok(event.title, `Event ${event.id} requires title`);
-    assert.ok(event.text || Array.isArray(event.pages), `Event ${event.id} requires normal text or pages`);
+    assert.ok(event.pages || event.text, `Event ${event.id} requires text or pages`);
 
     if (event.routePages?.long_history) {
       assert.ok(Array.isArray(event.routePages.long_history), `Event ${event.id} long_history must be an array`);
@@ -107,12 +111,18 @@ async function main() {
   assert.ok(seenIds.has('hakima_0'));
   assert.ok(seenIds.has('hakima_5'));
   assert.ok(seenIds.has('hakima_10'));
+  assert.ok(seenIds.has('hakima_20'));
+  assert.ok(seenIds.has('hakima_climax'));
   assert.ok(seenIds.has('mira_0'));
   assert.ok(seenIds.has('mira_5'));
   assert.ok(seenIds.has('mira_10'));
+  assert.ok(seenIds.has('mira_20'));
+  assert.ok(seenIds.has('mira_climax'));
   assert.ok(seenIds.has('dariya_0'));
   assert.ok(seenIds.has('dariya_5'));
   assert.ok(seenIds.has('dariya_10'));
+  assert.ok(seenIds.has('dariya_20'));
+  assert.ok(seenIds.has('dariya_climax'));
 
   console.log('\n--- All event system tests completed successfully! ---');
 }
