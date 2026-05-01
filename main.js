@@ -9482,8 +9482,10 @@ function App() {
       boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
       justifyContent: "flex-start",
       gap: "20px"
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "35px" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "35px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
+      width: "85%",
+      // Fix width to ensure consistent starting position
       background: "#fff",
       color: "#333",
       // Static dark text for readability on white bubble
