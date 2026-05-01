@@ -2229,9 +2229,6 @@ const ResultScreen = ({
 
 // --- Inlined: QuizScreen ---
 
-/**
- * Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON)
- */
 const CustomerSilhouette = ({ customer }) => {
   if (!customer) return null;
   return (
@@ -2241,9 +2238,6 @@ const CustomerSilhouette = ({ customer }) => {
   );
 };
 
-/**
- * Rhythm Lane Mock (Visual Only)
- */
 const RhythmMock = ({ heroineId, themeColor }) => {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
@@ -2269,7 +2263,6 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         zIndex: 0
       }} />
 
-      {/* Left: Nader */}
       <div style={{ 
         width: '44px', 
         height: '44px', 
@@ -2286,7 +2279,6 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         <img src={naderFace} alt="N" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
 
-      {/* Center: Beat Lane */}
       <div style={{
         flex: 1,
         maxWidth: '420px',
@@ -2361,7 +2353,6 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         </div>
       </div>
 
-      {/* Right: Heroine */}
       <div style={{ 
         width: '44px', 
         height: '44px', 
@@ -2379,6 +2370,180 @@ const RhythmMock = ({ heroineId, themeColor }) => {
     </div>
   );
 };
+
+function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle, session }) {
+  return (
+    <>
+      <GameHud
+        screen={screen}
+        routeMode={routeMode}
+        onOpenLog={onOpenLog}
+        onOpenOptions={onOpenOptions}
+        onOpenHelp={onOpenHelp}
+      />
+      <header style={{ 
+        ...headerStyle, 
+        background: THEME.nightBlue, 
+        color: THEME.sand, 
+        borderBottom: `2px solid ${THEME.brass}`,
+        padding: '12px 20px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+        justifyContent: 'flex-start',
+        gap: '20px',
+        zIndex: 10
+      }}>
+        <span style={{ fontSize: '0.9em' }}>依頼件数 {session.currentIndex + 1} / {session.questions.length}</span>
+        <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
+      </header>
+    </>
+  );
+}
+
+function ConditionBadges({ criteria }) {
+  const badges = [];
+  
+  if (criteria.colorId) {
+    const color = COLOR_BY_ID[criteria.colorId];
+    const label = color?.label?.split(' (')[0] || color?.name;
+    badges.push({ text: `✧${label}`, color: THEME.starGold, bg: 'rgba(218, 180, 96, 0.15)' });
+  }
+  
+  if (criteria.genre) {
+    const genre = GENRE_BY_ID[criteria.genre];
+    badges.push({ text: `[${genre?.name || criteria.genre}]`, color: '#666', bg: '#f5f5f5' });
+  }
+  
+  if (criteria.itemTypeId) {
+    const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
+    badges.push({ text: `[${type?.name || criteria.itemTypeId}]`, color: '#666', bg: '#f5f5f5' });
+  }
+  
+  return badges.map((b, i) => (
+    <span key={i} style={{
+      fontSize: '0.75em',
+      padding: '2px 8px',
+      borderRadius: '4px',
+      background: b.bg,
+      color: b.color,
+      border: `1px solid ${b.color}33`,
+      fontWeight: 'bold',
+      letterSpacing: '0.05em'
+    }}>
+      {b.text}
+    </span>
+  ));
+}
+
+function QuizRequestCard({ currentQuestion, customerStyle, bubbleStyle }) {
+  return (
+    <div className="quiz-question-bubble" style={{ ...customerStyle, marginBottom: '10px', justifyContent: 'flex-start' }}>
+      <div style={{ 
+        ...bubbleStyle, 
+        width: '90%', 
+        height: '110px',
+        background: '#fff', 
+        color: '#333',
+        border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
+        borderRadius: '15px 15px 15px 0',
+        padding: '12px 16px', 
+        fontSize: '0.95em', 
+        lineHeight: '1.4',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
+        transition: 'all 0.3s',
+        display: 'flex',
+        flexDirection: 'row', 
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        textAlign: 'left',
+        overflow: 'hidden'
+      }}>
+        <CustomerSilhouette customer={currentQuestion.request.customer} />
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          flex: 1, 
+          height: '100%', 
+          justifyContent: 'space-between' 
+        }}>
+          <div style={{ fontWeight: 500, flex: 1, display: 'flex', alignItems: 'center' }}>
+            <span>{currentQuestion.request.text}</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingBottom: '2px' }}>
+            <ConditionBadges criteria={currentQuestion.request.criteria} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle, imageStyle, itemNameStyle, requestType }) {
+  const isSelected = quizFeedback?.itemId === item.id;
+  const feedbackClass = isSelected ? (quizFeedback.isCorrect ? 'feedback-correct' : 'feedback-wrong') : '';
+  const staggerClass = `quiz-option-${index}`;
+  
+  let displayChoiceName = item.name;
+  if (requestType === 'genre') {
+    const category = item.id.split('_')[1]; 
+    if (category === 'DAY') displayChoiceName = `一般雑貨の${displayChoiceName}`;
+    if (category === 'TRD') displayChoiceName = `貿易品の${displayChoiceName}`;
+    if (category === 'RIT') displayChoiceName = `厳かな${displayChoiceName}`;
+  }
+
+  return (
+    <div 
+      data-testid="quiz-choice"
+      key={item.id} 
+      onClick={() => onSelectChoice(item.id)}
+      className={`item-card ${staggerClass} ${feedbackClass}`}
+      style={{
+        ...itemCardStyle,
+        pointerEvents: quizFeedback ? 'none' : 'auto'
+      }}
+    >
+      <img 
+        src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
+        alt={item.name} 
+        style={{ ...imageStyle, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}
+        draggable={false}
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+        }}
+      />
+      <div style={itemNameStyle}>
+        {displayChoiceName}
+      </div>
+    </div>
+  );
+}
+
+function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle, imageStyle, itemNameStyle, requestType }) {
+  return (
+    <div className="choice-container" style={{ 
+      display: 'grid', 
+      gridTemplateColumns: '1fr 1fr', 
+      gap: '20px', 
+      width: '100%',
+      marginTop: '20px', 
+      paddingBottom: '20px'
+    }}>
+      {choices.map((item, index) => (
+        <QuizChoiceCard
+          key={item.id}
+          item={item}
+          index={index}
+          quizFeedback={quizFeedback}
+          onSelectChoice={onSelectChoice}
+          itemCardStyle={itemCardStyle}
+          imageStyle={imageStyle}
+          itemNameStyle={itemNameStyle}
+          requestType={requestType}
+        />
+      ))}
+    </div>
+  );
+}
 
 function QuizScreen({
   quizState,
@@ -2425,7 +2590,6 @@ function QuizScreen({
     <div data-testid="quiz-screen" style={containerStyle}>
       {renderThemeStyles()}
       
-      {/* Full-screen Background (B-1) */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -2448,27 +2612,15 @@ function QuizScreen({
         zIndex: 2
       }} />
 
-      <GameHud
+      <QuizHeader
         screen={screen}
         routeMode={routeMode}
         onOpenLog={onOpenLog}
         onOpenOptions={onOpenOptions}
         onOpenHelp={onOpenHelp}
+        headerStyle={headerStyle}
+        session={session}
       />
-      <header style={{ 
-        ...headerStyle, 
-        background: THEME.nightBlue, 
-        color: THEME.sand, 
-        borderBottom: `2px solid ${THEME.brass}`,
-        padding: '12px 20px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-        justifyContent: 'flex-start',
-        gap: '20px',
-        zIndex: 10
-      }}>
-        <span style={{ fontSize: '0.9em' }}>依頼件数 {session.currentIndex + 1} / {session.questions.length}</span>
-        <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
-      </header>
 
       <div style={{ 
         ...cardStyle, 
@@ -2485,78 +2637,11 @@ function QuizScreen({
         padding: '0 20px 20px 20px', 
         zIndex: 5 
       }}>
-        <div className="quiz-question-bubble" style={{ ...customerStyle, marginBottom: '10px', justifyContent: 'flex-start' }}>
-          <div style={{ 
-            ...bubbleStyle, 
-            width: '90%', 
-            height: '110px',
-            background: '#fff', 
-            color: '#333',
-            border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
-            borderRadius: '15px 15px 15px 0',
-            padding: '12px 16px', 
-            fontSize: '0.95em', 
-            lineHeight: '1.4',
-            boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
-            transition: 'all 0.3s',
-            display: 'flex',
-            flexDirection: 'row', 
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            textAlign: 'left',
-            overflow: 'hidden'
-          }}>
-            <CustomerSilhouette customer={currentQuestion.request.customer} />
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              flex: 1, 
-              height: '100%', 
-              justifyContent: 'space-between' 
-            }}>
-              <div style={{ fontWeight: 500, flex: 1, display: 'flex', alignItems: 'center' }}>
-                <span>{currentQuestion.request.text}</span>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingBottom: '2px' }}>
-                {(() => {
-                  const criteria = currentQuestion.request.criteria;
-                  const badges = [];
-                  
-                  if (criteria.colorId) {
-                    const color = COLOR_BY_ID[criteria.colorId];
-                    const label = color?.label?.split(' (')[0] || color?.name;
-                    badges.push({ text: `✧${label}`, color: THEME.starGold, bg: 'rgba(218, 180, 96, 0.15)' });
-                  }
-                  
-                  if (criteria.genre) {
-                    const genre = GENRE_BY_ID[criteria.genre];
-                    badges.push({ text: `[${genre?.name || criteria.genre}]`, color: '#666', bg: '#f5f5f5' });
-                  }
-                  
-                  if (criteria.itemTypeId) {
-                    const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
-                    badges.push({ text: `[${type?.name || criteria.itemTypeId}]`, color: '#666', bg: '#f5f5f5' });
-                  }
-                  
-                  return badges.map((b, i) => (
-                    <span key={i} style={{
-                      fontSize: '0.75em',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                      background: b.bg,
-                      color: b.color,
-                      border: `1px solid ${b.color}33`,
-                      fontWeight: 'bold',
-                      letterSpacing: '0.05em'
-                    }}>
-                      {b.text}
-                    </span>
-                  ));
-                })()}
-              </div>
-            </div>
-          </div>
-        </div>
+        <QuizRequestCard
+          currentQuestion={currentQuestion}
+          customerStyle={customerStyle}
+          bubbleStyle={bubbleStyle}
+        />
         
         <div className="quiz-rhythm-lane" style={{ 
           width: 'calc(100% + 40px)', 
@@ -2569,55 +2654,15 @@ function QuizScreen({
           <RhythmMock heroineId={activeHeroineId} themeColor={activeHeroine?.themeColor} />
         </div>
 
-        <div className="choice-container" style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
-          gap: '20px', 
-          width: '100%',
-          marginTop: '20px', 
-          paddingBottom: '20px'
-        }}>
-          {currentQuestion.choices.map((item, index) => {
-            const isSelected = quizFeedback?.itemId === item.id;
-            const feedbackClass = isSelected ? (quizFeedback.isCorrect ? 'feedback-correct' : 'feedback-wrong') : '';
-            const staggerClass = `quiz-option-${index}`;
-            
-            let displayChoiceName = item.name;
-            if (currentQuestion.request.type === 'genre') {
-              const category = item.id.split('_')[1]; 
-              if (category === 'DAY') displayChoiceName = `一般雑貨の${displayChoiceName}`;
-              if (category === 'TRD') displayChoiceName = `貿易品の${displayChoiceName}`;
-              if (category === 'RIT') displayChoiceName = `厳かな${displayChoiceName}`;
-            }
-
-            return (
-              <div 
-                data-testid="quiz-choice"
-                key={item.id} 
-                onClick={() => onSelectChoice(item.id)}
-                className={`item-card ${staggerClass} ${feedbackClass}`}
-                style={{
-                  ...itemCardStyle,
-                  pointerEvents: quizFeedback ? 'none' : 'auto'
-                }}
-              >
-                <img 
-                  src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
-                  alt={item.name} 
-                  style={{ ...imageStyle, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}
-                  draggable={false}
-                  onError={(e) => {
-                    e.target.onerror = null; 
-                    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
-                  }}
-                />
-                <div style={itemNameStyle}>
-                  {displayChoiceName}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <QuizChoiceList
+          choices={currentQuestion.choices}
+          quizFeedback={quizFeedback}
+          onSelectChoice={onSelectChoice}
+          itemCardStyle={itemCardStyle}
+          imageStyle={imageStyle}
+          itemNameStyle={itemNameStyle}
+          requestType={currentQuestion.request.type}
+        />
       </div>
     </div>
   );
