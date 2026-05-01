@@ -317,6 +317,7 @@ function HelpModal({ isOpen, onClose }) {
     "div",
     {
       "data-testid": "help-scroll",
+      className: "help-content",
       style: { flex: 1, overflowY: "auto", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "10px 4px", display: "flex", flexDirection: "column", gap: "8px" }
     },
     /* @__PURE__ */ React.createElement("p", { style: { margin: 0, color: "#444", lineHeight: 1.7, fontSize: "0.9em" } }, "・お客さんの依頼を読み、合う商品を選びます。"),
@@ -356,6 +357,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
     {
       ref: scrollRef,
       "data-testid": "backlog-scroll",
+      className: "log-content",
       style: { flex: 1, overflowY: "auto", borderTop: "1px solid #e0d8cc", borderBottom: "1px solid #e0d8cc", padding: "4px 0" }
     },
     vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.88em", textAlign: "center", padding: "20px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
@@ -1676,7 +1678,14 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       {
         src: facePath,
         alt: currentSpeaker,
-        style: { width: "100%", height: "100%", objectFit: "cover" },
+        style: {
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          WebkitUserDrag: "none",
+          userSelect: "none"
+        },
+        draggable: false,
         onError: (e) => {
           e.target.style.display = "none";
         }
@@ -8746,6 +8755,37 @@ function App() {
     } }));
   };
   const renderThemeStyles = () => /* @__PURE__ */ React.createElement("style", null, `
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
+      
+      .game-root {
+        font-family: 'Outfit', 'Inter', sans-serif;
+        color: ${THEME.parchment};
+        background-color: ${THEME.midnight};
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        /* Selection Prevention */
+        user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        /* Image Drag Prevention */
+        -webkit-user-drag: none;
+      }
+
+      /* Global interactive element tuning */
+      button, [role="button"], .interactive-card, .quiz-option-0, .quiz-option-1 {
+        touch-action: manipulation;
+        cursor: pointer;
+        WebkitTapHighlightColor: transparent;
+      }
+
+      img {
+        -webkit-user-drag: none;
+        user-drag: none;
+        pointer-events: none;
+      }
+
       button:active, .item-card:active { transform: scale(0.96); transition: transform 0.1s; }
       button:focus-visible { outline: 3px solid ${THEME.starGold}; outline-offset: 2px; }
       .heroine-card { transition: transform 0.2s; border: 2px solid ${THEME.brassDark}; }
@@ -8764,6 +8804,13 @@ function App() {
         display: flex;
         flex-direction: column;
         alignItems: center;
+      }
+
+      /* Scrollable areas exception */
+      .scrollable-content, .log-content, .help-content {
+        user-select: text;
+        -webkit-user-select: text;
+        touch-action: pan-y;
       }
 
       /* Quiz Animations (M9-3) */
@@ -9301,7 +9348,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, style: outerWrapperStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
@@ -9353,7 +9400,9 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     height: "100%",
     objectFit: "cover",
     objectPosition: isStanding ? "top center" : ((_a = heroine.visualConfig) == null ? void 0 : _a.facePosition) || "center 20%",
-    display: imgError ? "none" : "block"
+    display: imgError ? "none" : "block",
+    userSelect: "none",
+    WebkitUserDrag: "none"
   };
   if (!fullPath || imgError) {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement("span", { style: {
@@ -9368,6 +9417,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
       src: fullPath,
       alt: heroine.name,
       style: imgStyle,
+      draggable: false,
       onError: () => setImgError(true)
     }
   ));
