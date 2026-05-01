@@ -3159,20 +3159,18 @@ const ResultScreen = ({
       textAlign: "left",
       zIndex: 10
     } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: "0 0 auto",
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      minWidth: 0
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       alignItems: "flex-start",
-      marginTop: "4px",
-      minHeight: "210px",
-      zIndex: 10
-    } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement("div", { style: {
-      flex: "0 0 auto",
-      display: "flex",
-      alignItems: "flex-end",
-      height: "210px",
-      overflow: "hidden",
-      zIndex: 5
-    } }, /* @__PURE__ */ React.createElement(
+      gap: "8px"
+    } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
       {
         heroine: activeHeroine,
@@ -3182,9 +3180,7 @@ const ResultScreen = ({
         noBorder: true,
         style: { filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: "1 1 auto",
-      marginLeft: "8px",
+    ), /* @__PURE__ */ React.createElement("div", { style: {
       marginTop: "16px",
       background: "rgba(244, 233, 213, 0.92)",
       border: `1.5px solid ${THEME.brass}`,
@@ -3222,13 +3218,9 @@ const ResultScreen = ({
       border: `2px solid ${THEME.brass}`,
       background: "rgba(244, 233, 213, 0.98)",
       padding: "12px 16px",
-      marginTop: "-24px",
-      marginBottom: "4px",
       width: "94%",
       maxWidth: "340px",
-      alignSelf: "center",
-      textAlign: "center",
-      zIndex: 15
+      textAlign: "center"
     } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.4em", fontWeight: "900", color: THEME.brassDark, lineHeight: 1.2 } }, session.score, " 点"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#666", marginBottom: "6px" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
@@ -3254,13 +3246,11 @@ const ResultScreen = ({
         style: {
           ...buttonStyle2,
           width: "80%",
-          maxWidth: "240px",
-          margin: "auto 0 8px 0",
-          zIndex: 15
+          maxWidth: "240px"
         }
       },
       "次の営業へ"
-    ))
+    )))
   );
 };
 const GENRES = [
