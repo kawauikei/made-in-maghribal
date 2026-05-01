@@ -1405,10 +1405,40 @@ const PrologueScreen = ({
           </h1>
         </div>
 
-        {/* Middle: Clear space for Character face */}
-        <div style={{ flex: '1 1 auto' }}></div>
+        {/* Middle: Choice / Action Area */}
+        <div style={{ 
+          flex: '1 1 auto', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'flex-end', 
+          alignItems: 'center',
+          paddingBottom: '20px' 
+        }}>
+          {/* Action Row (Future Choice Area) */}
+          <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
+            {isPrologueComplete && (
+              <button
+                data-testid="prologue-next"
+                onClick={onAdvanceToHeroineSelect}
+                style={{ 
+                  ...buttonStyle, 
+                  width: '100%', 
+                  maxWidth: '340px', 
+                  margin: 0, 
+                  height: '48px',
+                  fontSize: '1.1em',
+                  background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+                  boxShadow: `0 6px 20px ${THEME.brass}44`,
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}
+              >
+                星瓶堂へ進む
+              </button>
+            )}
+          </div>
+        </div>
 
-        {/* Bottom Dock: UI Stack */}
+        {/* Bottom Dock: VN Box */}
         <div style={{ 
           flex: '0 0 auto', 
           width: '100%', 
@@ -1416,7 +1446,7 @@ const PrologueScreen = ({
           flexDirection: 'column', 
           alignItems: 'center', 
           paddingBottom: '15px',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box */}
           <div style={{ 
@@ -1428,8 +1458,7 @@ const PrologueScreen = ({
             boxSizing: 'border-box',
             boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
             border: `1px solid ${THEME.brass}33`,
-            borderRadius: '12px',
-            marginBottom: '12px'
+            borderRadius: '12px'
           }}>
             <VNBox
               ref={vnRef}
@@ -1443,27 +1472,6 @@ const PrologueScreen = ({
                 setIsPrologueComplete(true);
               }}
             />
-          </div>
-
-          {/* Action Row */}
-          <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
-            {isPrologueComplete && (
-              <button
-                data-testid="prologue-next"
-                onClick={onAdvanceToHeroineSelect}
-                style={{ 
-                  ...buttonStyle, 
-                  width: '100%', 
-                  maxWidth: '340px', 
-                  margin: 0, 
-                  height: '48px',
-                  fontSize: '1.1em',
-                  boxShadow: `0 4px 15px ${THEME.brass}33`
-                }}
-              >
-                星瓶堂へ進む
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -1556,10 +1564,38 @@ const IntroScreen = ({
           </h1>
         </div>
 
-        {/* Middle: Clear space for Character face */}
-        <div style={{ flex: '1 1 auto' }}></div>
+        {/* Middle: Choice / Action Area */}
+        <div style={{ 
+          flex: '1 1 auto', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'flex-end', 
+          alignItems: 'center',
+          paddingBottom: '20px' 
+        }}>
+          {/* Action Row (Future Choice Area) */}
+          <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
+            <button 
+              data-testid="intro-start" 
+              onClick={onBeginService} 
+              style={{ 
+                ...buttonStyle, 
+                width: '100%', 
+                maxWidth: '340px', 
+                margin: 0, 
+                height: '48px',
+                fontSize: '1.1em',
+                background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+                boxShadow: `0 6px 20px ${THEME.brass}44`,
+                border: '1px solid rgba(255,255,255,0.2)'
+              }}
+            >
+              営業を始める
+            </button>
+          </div>
+        </div>
 
-        {/* Bottom Dock: UI Stack */}
+        {/* Bottom Dock: VN Box */}
         <div style={{ 
           flex: '0 0 auto', 
           width: '100%', 
@@ -1567,7 +1603,7 @@ const IntroScreen = ({
           flexDirection: 'column', 
           alignItems: 'center', 
           paddingBottom: '12px',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box */}
           <div style={{ 
@@ -1579,8 +1615,7 @@ const IntroScreen = ({
             boxSizing: 'border-box',
             boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
             border: `1px solid ${THEME.brass}33`,
-            borderRadius: '12px',
-            marginBottom: '12px'
+            borderRadius: '12px'
           }}>
             <VNBox
               ref={vnRef}
@@ -1593,25 +1628,6 @@ const IntroScreen = ({
               onPageComplete={onPageComplete}
               onComplete={onBeginService}
             />
-          </div>
-
-          {/* Action Row */}
-          <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
-            <button 
-              data-testid="intro-start" 
-              onClick={onBeginService} 
-              style={{ 
-                ...buttonStyle, 
-                width: '100%', 
-                maxWidth: '340px', 
-                margin: 0, 
-                height: '48px',
-                fontSize: '1.1em',
-                boxShadow: `0 4px 15px ${THEME.brass}33`
-              }}
-            >
-              営業を始める
-            </button>
           </div>
         </div>
       </div>
