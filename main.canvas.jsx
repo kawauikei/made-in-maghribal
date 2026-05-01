@@ -2097,14 +2097,14 @@ const ResultScreen = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '8px',
+          gap: '4px',
           minWidth: 0
         }}>
           {/* Heroine Standing + Speech Bubble */}
           <div style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '8px'
+            gap: '2px'
           }}>
             {HeroineDisplay && (
               <HeroineDisplay
@@ -2119,7 +2119,7 @@ const ResultScreen = ({
 
             {/* Speech Bubble */}
             <div style={{
-              marginTop: '16px',
+              marginTop: '8px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
@@ -2167,6 +2167,7 @@ const ResultScreen = ({
             border: `2px solid ${THEME.brass}`,
             background: 'rgba(244, 233, 213, 0.98)',
             padding: '12px 16px',
+            marginTop: '-16px',
             width: '94%',
             maxWidth: '340px',
             textAlign: 'center'
