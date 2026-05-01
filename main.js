@@ -9449,9 +9449,9 @@ function App() {
       let displayChoiceName = item.name;
       if (currentQuestion.request.type === "genre") {
         const category = item.id.split("_")[1];
-        if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
-        if (category === "TRD") displayChoiceName = `渡来品の${displayChoiceName}`;
-        if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+        if (category === "DAY") displayChoiceName = `【一般雑貨】${displayChoiceName}`;
+        if (category === "TRD") displayChoiceName = `【渡来品】${displayChoiceName}`;
+        if (category === "RIT") displayChoiceName = `【儀式】${displayChoiceName}`;
       }
       return /* @__PURE__ */ React.createElement(
         "div",
