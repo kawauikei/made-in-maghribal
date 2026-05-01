@@ -52,14 +52,8 @@ const IntroScreen = ({
     }
   ];
 
-  const [isIntroComplete, setIsIntroComplete] = React.useState(false);
-
   const handleAreaClick = (e) => {
-    if (isIntroComplete) {
-      onBeginService();
-    } else {
-      onVnAreaClick(e);
-    }
+    onVnAreaClick(e);
   };
   return (
     <div 
@@ -136,7 +130,7 @@ const IntroScreen = ({
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
             onPageComplete={onPageComplete}
-            onComplete={() => setIsIntroComplete(true)}
+            onComplete={onBeginService}
           />
         </div>
       </div>

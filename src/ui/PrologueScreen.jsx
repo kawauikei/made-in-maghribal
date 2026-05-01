@@ -36,14 +36,8 @@ const PrologueScreen = ({
   cardStyle,
   buttonStyle
 }) => {
-  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
-
   const handleAreaClick = (e) => {
-    if (isPrologueComplete) {
-      onAdvanceToHeroineSelect();
-    } else {
-      onVnAreaClick(e);
-    }
+    onVnAreaClick(e);
   };
 
   return (
@@ -120,9 +114,7 @@ const PrologueScreen = ({
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
             onPageComplete={onPageComplete}
-            onComplete={() => {
-              setIsPrologueComplete(true);
-            }}
+            onComplete={onAdvanceToHeroineSelect}
           />
         </div>
       </div>
