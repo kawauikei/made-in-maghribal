@@ -1612,19 +1612,22 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     }
   }, [currentIndex, currentText, isComplete, speed, skip]);
   const handleClick = (e) => {
-    if (e) e.stopPropagation();
-    if (!isComplete) {
+    const isLastPage = pageIndex >= pageList.length - 1;
+    const isTyping = !isComplete;
+    if (isTyping || !isLastPage) {
+      if (e) e.stopPropagation();
+    }
+    if (isTyping) {
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
-    } else if (pageIndex < pageList.length - 1) {
+    } else if (!isLastPage) {
       setPageIndex((prev) => prev + 1);
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
       audioEngine.playSfx("uiTapBottle");
     } else if (onComplete) {
-      audioEngine.playSfx("uiTapBottle");
       onComplete();
     }
   };
@@ -2049,8 +2052,7 @@ const ResultScreen = ({
     "div",
     {
       "data-testid": "result-screen",
-      style: { ...containerStyle2, position: "relative" },
-      onClick: handleVnAreaClick
+      style: { ...containerStyle2, position: "relative" }
     },
     renderThemeStyles && renderThemeStyles(),
     renderBackground && renderBackground(screen),
@@ -2071,8 +2073,7 @@ const ResultScreen = ({
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter2(isInstantTextSpeed),
-        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
-        onComplete: handleEndDay
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" })
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
@@ -2091,7 +2092,7 @@ const ResultScreen = ({
       padding: "15px",
       borderRadius: "4px",
       border: `1px solid ${THEME.brassDark}`
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleNextDay, className: "vn-button-reveal", style: { ...buttonStyle2, width: "100%", maxWidth: "280px" } }, "次の営業へ")))
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleEndDay, className: "vn-button-reveal", style: { ...buttonStyle2, width: "100%", maxWidth: "280px" } }, "次の営業へ")))
   );
 };
 const GENRES = [
