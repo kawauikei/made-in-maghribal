@@ -124,17 +124,11 @@ const PrologueScreen = ({
           paddingBottom: '8px',
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
-          {/* Main VN Box */}
+          {/* Main VN Box Container */}
           <div style={{ 
-            ...cardStyle, 
-            background: 'rgba(20, 30, 45, 0.96)', 
-            color: THEME.parchment, 
-            padding: '16px 20px', 
             width: '94%', 
             boxSizing: 'border-box',
-            boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
-            border: `1px solid ${THEME.brass}33`,
-            borderRadius: '12px'
+            position: 'relative' // Ensure absolute plate has anchor
           }}>
             <VNBox
               ref={vnRef}
