@@ -1298,22 +1298,112 @@ export default function App() {
       </div>
     );
   } else if (screen === 'EVENT' && activeEvent) {
-
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    mainContent = (
-      <div style={containerStyle} onClick={handleVnAreaClick}>
-        {renderThemeStyles()}
-        <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={() => setShowLog(true)} 
-          onOpenOptions={() => setShowOptions(true)} 
-          onOpenHelp={() => setShowHelp(true)} 
-        />
+    if (!still) {
+      // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
+      mainContent = (
+        <div 
+          data-testid="event-screen-normal" 
+          style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
+          onClick={handleVnAreaClick}
+        >
+          {renderThemeStyles()}
+          {renderBackground(screen)}
+          
+          <div style={{ 
+            position: 'absolute', 
+            bottom: '8%', 
+            left: 0,
+            width: '100%',
+            zIndex: 2, 
+            pointerEvents: 'none', 
+            height: '77%',
+            display: 'flex', 
+            alignItems: 'flex-end', 
+            justifyContent: 'center',
+            filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
+          }}>
+             <HeroineDisplay 
+                heroine={activeHeroine} 
+                type="standing" 
+                size="large" 
+                expression={eventHeroineExpression} 
+                noBorder={true}
+                style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+              />
+          </div>
+
+          <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <GameHud 
+              screen={screen} 
+              routeMode={routeMode} 
+              onOpenLog={() => setShowLog(true)} 
+              onOpenOptions={() => setShowOptions(true)} 
+              onOpenHelp={() => setShowHelp(true)} 
+            />
+            <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
+              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                愛着の記録: {activeEvent.title}
+              </h1>
+            </div>
+            <div style={{ flex: '1 1 auto' }} />
+          </div>
+
+          <div style={{ 
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 6,
+            width: '100%', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
+          }}>
+            <div style={{ width: '100%', boxSizing: 'border-box', position: 'relative' }}>
+              <VNBox 
+                ref={vnRef}
+                speaker={activeEvent.speaker}
+                pages={getEventPages(activeEvent, routeMode).map(page => {
+                  if (page.speakerId) return page;
+                  let inferredId = null;
+                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                  return { ...page, speakerId: inferredId };
+                })}
+                themeColor={activeHeroine.themeColor}
+                speed={textSpeedMeta.delay}
+                skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+                getFaceIcon={getFaceIcon}
+                onPageChange={(index) => {
+                  const pages = getEventPages(activeEvent, routeMode);
+                  const page = pages[index];
+                  if (page?.expression) setEventHeroineExpression(page.expression);
+                  setEventSpeakerId(page?.speakerId || null);
+                }}
+                onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
+                onComplete={handleCloseEvent}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      // Still Event: Current Framed Style (Keep for now as per instructions)
+      mainContent = (
+        <div style={containerStyle} onClick={handleVnAreaClick}>
+          {renderThemeStyles()}
+          <GameHud 
+            screen={screen} 
+            routeMode={routeMode} 
+            onOpenLog={() => setShowLog(true)} 
+            onOpenOptions={() => setShowOptions(true)} 
+            onOpenHelp={() => setShowHelp(true)} 
+          />
           <h1 style={titleStyle}>愛着の記録: {activeEvent.title}</h1>
           <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
-          {still && (
             <div style={{ 
               width: '100%', 
               aspectRatio: '16 / 9',
@@ -1343,26 +1433,7 @@ export default function App() {
                 }}
               />
             </div>
-          )}
-          
-            {!still && (
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'flex-end',
-                height: '450px',
-                marginBottom: '20px',
-                pointerEvents: 'none',
-                filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.4))'
-              }}>
-                <HeroineDisplay 
-                  heroine={activeHeroine} 
-                  type="standing" 
-                  size="large" 
-                  expression={eventHeroineExpression} 
-                />
-              </div>
-            )}
+            
             <VNBox 
               ref={vnRef}
               speaker={activeEvent.speaker}
@@ -1380,9 +1451,7 @@ export default function App() {
               onPageChange={(index) => {
                 const pages = getEventPages(activeEvent, routeMode);
                 const page = pages[index];
-                if (page?.expression) {
-                  setEventHeroineExpression(page.expression);
-                }
+                if (page?.expression) setEventHeroineExpression(page.expression);
                 setEventSpeakerId(page?.speakerId || null);
               }}
               onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
@@ -1406,9 +1475,10 @@ export default function App() {
                 </button>
               )}
             </div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   } else if (screen === 'VISUAL_TEST') {
     mainContent = (
       <VisualTestScreen
