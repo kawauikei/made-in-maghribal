@@ -35,7 +35,24 @@ function testImageAssets() {
   assert.strictEqual(allIds.length, uniqueIds.size, "All asset IDs should be unique");
   console.log("✅ PASSED: Unique Asset IDs");
 
-  // Test Case 5: Event Linkage (M8-18)
+  // Test Case 5: Still crop metadata
+  Object.values(STILL_IMAGES).forEach(still => {
+    if (!still.stillCrop) return;
+
+    const crop = still.stillCrop;
+    assert.ok(!crop.objectFit || ['cover', 'contain'].includes(crop.objectFit), `Still ${still.id} should use a supported objectFit`);
+
+    if (crop.mode === 'heroine_pan') {
+      assert.ok(crop.startPosition, `Still ${still.id} heroine_pan should define startPosition`);
+      assert.ok(crop.endPosition, `Still ${still.id} heroine_pan should define endPosition`);
+      assert.ok(Number.isFinite(crop.durationMs) && crop.durationMs > 0, `Still ${still.id} heroine_pan should define a positive durationMs`);
+    } else {
+      assert.ok(!crop.mode, `Still ${still.id} has unsupported stillCrop mode: ${crop.mode}`);
+    }
+  });
+  console.log("✅ PASSED: Still crop metadata");
+
+  // Test Case 6: Event Linkage (M8-18)
   const { AFFECTION_EVENTS } = require('../src/data/affectionEvents.js');
   
   Object.keys(AFFECTION_EVENTS).forEach(heroineId => {

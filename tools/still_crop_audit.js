@@ -46,15 +46,35 @@ let html = `
 `;
 
 Object.values(STILL_IMAGES).forEach(still => {
+    const crop = still.stillCrop || {};
     const isProto = !!still.stillCrop;
-    const objectFit = still.stillCrop?.objectFit || 'cover';
-    const objectPosition = still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`;
+    const isHeroinePan = crop.mode === 'heroine_pan';
+    const objectFit = crop.objectFit || 'cover';
+    const defaultPosition = `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`;
+    const startPosition = crop.startPosition || crop.objectPosition || defaultPosition;
+    const endPosition = crop.endPosition || startPosition;
+    const objectPosition = isHeroinePan ? endPosition : crop.objectPosition || defaultPosition;
+    const durationMs = crop.durationMs || 1200;
+    const animationName = `still-pan-${still.id}`;
+    const animationStyle = isHeroinePan ? ` animation: ${animationName} ${durationMs}ms ease-out forwards;` : '';
+    const keyframeStyle = isHeroinePan ? `
+            <style>
+                @keyframes ${animationName} {
+                    from { object-position: ${startPosition}; }
+                    to { object-position: ${endPosition}; }
+                }
+            </style>` : '';
+    const heroinePanTag = isHeroinePan ? `
+                    <span class="tag tag-proto">heroine_pan</span>` : '';
+    const heroinePanMeta = isHeroinePan ? `
+                    <br>Start: <code>${startPosition}</code><br>End: <code>${endPosition}</code><br>Duration: <code>${durationMs}ms</code>` : '';
     const imgSrc = still.src.startsWith('http') ? still.src : publicPrefix + still.src;
 
     html += `
         <div class="card">
+            ${keyframeStyle}
             <div class="preview-container">
-                <img src="${imgSrc}" class="preview-img" style="object-fit: ${objectFit}; object-position: ${objectPosition};" alt="${still.id}">
+                <img src="${imgSrc}" class="preview-img" style="object-fit: ${objectFit}; object-position: ${isHeroinePan ? startPosition : objectPosition};${animationStyle}" alt="${still.id}">
             </div>
             <div class="info">
                 <div class="id">${still.title || still.id}</div>
@@ -62,11 +82,13 @@ Object.values(STILL_IMAGES).forEach(still => {
                     ID: <code>${still.id}</code><br>
                     Heroine: ${still.heroineId || 'Group'}<br>
                     ${isProto ? '<span class="tag tag-proto">stillCrop Defined</span>' : '<span class="tag tag-default">Default Focus</span>'}
+                    ${heroinePanTag}
                 </div>
                 <div class="meta">
                     <strong>Current Settings:</strong><br>
                     Object-Fit: <code>${objectFit}</code><br>
                     Object-Position: <code>${objectPosition}</code>
+                    ${heroinePanMeta}
                 </div>
                 
                 <div class="meta">
