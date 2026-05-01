@@ -3844,13 +3844,152 @@ const RhythmMock = ({ heroineId, themeColor }) => {
     transition: "transform 0.3s"
   } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
 };
+function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+    GameHud,
+    {
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), /* @__PURE__ */ React.createElement("header", { style: {
+    ...headerStyle2,
+    background: THEME.nightBlue,
+    color: THEME.sand,
+    borderBottom: `2px solid ${THEME.brass}`,
+    padding: "12px 20px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+    justifyContent: "flex-start",
+    gap: "20px",
+    zIndex: 10
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")));
+}
+function ConditionBadges({ criteria }) {
+  var _a;
+  const badges = [];
+  if (criteria.colorId) {
+    const color = COLOR_BY_ID[criteria.colorId];
+    const label = ((_a = color == null ? void 0 : color.label) == null ? void 0 : _a.split(" (")[0]) || (color == null ? void 0 : color.name);
+    badges.push({ text: `✧${label}`, color: THEME.starGold, bg: "rgba(218, 180, 96, 0.15)" });
+  }
+  if (criteria.genre) {
+    const genre = GENRE_BY_ID[criteria.genre];
+    badges.push({ text: `[${(genre == null ? void 0 : genre.name) || criteria.genre}]`, color: "#666", bg: "#f5f5f5" });
+  }
+  if (criteria.itemTypeId) {
+    const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
+    badges.push({ text: `[${(type == null ? void 0 : type.name) || criteria.itemTypeId}]`, color: "#666", bg: "#f5f5f5" });
+  }
+  return badges.map((b, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: {
+    fontSize: "0.75em",
+    padding: "2px 8px",
+    borderRadius: "4px",
+    background: b.bg,
+    color: b.color,
+    border: `1px solid ${b.color}33`,
+    fontWeight: "bold",
+    letterSpacing: "0.05em"
+  } }, b.text));
+}
+function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbleStyle: bubbleStyle2 }) {
+  var _a;
+  return /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle2, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    ...bubbleStyle2,
+    width: "90%",
+    height: "110px",
+    background: "#fff",
+    color: "#333",
+    border: `2px solid ${((_a = currentQuestion.request.customer) == null ? void 0 : _a.color) || THEME.brassDark}`,
+    borderRadius: "15px 15px 15px 0",
+    padding: "12px 16px",
+    fontSize: "0.95em",
+    lineHeight: "1.4",
+    boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
+    transition: "all 0.3s",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    textAlign: "left",
+    overflow: "hidden"
+  } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    height: "100%",
+    justifyContent: "space-between"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria })))));
+}
+function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
+  const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
+  const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
+  const staggerClass = `quiz-option-${index}`;
+  let displayChoiceName = item.name;
+  if (requestType === "genre") {
+    const category = item.id.split("_")[1];
+    if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
+    if (category === "TRD") displayChoiceName = `貿易品の${displayChoiceName}`;
+    if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+  }
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "quiz-choice",
+      key: item.id,
+      onClick: () => onSelectChoice(item.id),
+      className: `item-card ${staggerClass} ${feedbackClass}`,
+      style: {
+        ...itemCardStyle2,
+        pointerEvents: quizFeedback ? "none" : "auto"
+      }
+    },
+    /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
+        alt: item.name,
+        style: { ...imageStyle2, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
+        draggable: false,
+        onError: (e) => {
+          e.target.onerror = null;
+          e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+        }
+      }
+    ),
+    /* @__PURE__ */ React.createElement("div", { style: itemNameStyle2 }, displayChoiceName)
+  );
+}
+function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
+  return /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "20px",
+    width: "100%",
+    marginTop: "20px",
+    paddingBottom: "20px"
+  } }, choices.map((item, index) => /* @__PURE__ */ React.createElement(
+    QuizChoiceCard,
+    {
+      key: item.id,
+      item,
+      index,
+      quizFeedback,
+      onSelectChoice,
+      itemCardStyle: itemCardStyle2,
+      imageStyle: imageStyle2,
+      itemNameStyle: itemNameStyle2,
+      requestType
+    }
+  )));
+}
 function QuizScreen({
   quizState,
   quizActions,
   quizHelpers,
   quizStyles
 }) {
-  var _a;
   const {
     session,
     activeHeroineId,
@@ -3901,25 +4040,17 @@ function QuizScreen({
     background: "rgba(0,0,0,0.2)",
     zIndex: 2
   } }), /* @__PURE__ */ React.createElement(
-    GameHud,
+    QuizHeader,
     {
       screen,
       routeMode,
       onOpenLog,
       onOpenOptions,
-      onOpenHelp
+      onOpenHelp,
+      headerStyle: headerStyle2,
+      session
     }
-  ), /* @__PURE__ */ React.createElement("header", { style: {
-    ...headerStyle2,
-    background: THEME.nightBlue,
-    color: THEME.sand,
-    borderBottom: `2px solid ${THEME.brass}`,
-    padding: "12px 20px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-    justifyContent: "flex-start",
-    gap: "20px",
-    zIndex: 10
-  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: {
+  ), /* @__PURE__ */ React.createElement("div", { style: {
     ...cardStyle2,
     maxWidth: "800px",
     marginTop: "5px",
@@ -3933,111 +4064,32 @@ function QuizScreen({
     backdropFilter: "none",
     padding: "0 20px 20px 20px",
     zIndex: 5
-  } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle2, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
-    ...bubbleStyle2,
-    width: "90%",
-    height: "110px",
-    background: "#fff",
-    color: "#333",
-    border: `2px solid ${((_a = currentQuestion.request.customer) == null ? void 0 : _a.color) || THEME.brassDark}`,
-    borderRadius: "15px 15px 15px 0",
-    padding: "12px 16px",
-    fontSize: "0.95em",
-    lineHeight: "1.4",
-    boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
-    transition: "all 0.3s",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    textAlign: "left",
-    overflow: "hidden"
-  } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    height: "100%",
-    justifyContent: "space-between"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, (() => {
-    var _a2;
-    const criteria = currentQuestion.request.criteria;
-    const badges = [];
-    if (criteria.colorId) {
-      const color = COLOR_BY_ID[criteria.colorId];
-      const label = ((_a2 = color == null ? void 0 : color.label) == null ? void 0 : _a2.split(" (")[0]) || (color == null ? void 0 : color.name);
-      badges.push({ text: `✧${label}`, color: THEME.starGold, bg: "rgba(218, 180, 96, 0.15)" });
+  } }, /* @__PURE__ */ React.createElement(
+    QuizRequestCard,
+    {
+      currentQuestion,
+      customerStyle: customerStyle2,
+      bubbleStyle: bubbleStyle2
     }
-    if (criteria.genre) {
-      const genre = GENRE_BY_ID[criteria.genre];
-      badges.push({ text: `[${(genre == null ? void 0 : genre.name) || criteria.genre}]`, color: "#666", bg: "#f5f5f5" });
-    }
-    if (criteria.itemTypeId) {
-      const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
-      badges.push({ text: `[${(type == null ? void 0 : type.name) || criteria.itemTypeId}]`, color: "#666", bg: "#f5f5f5" });
-    }
-    return badges.map((b, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: {
-      fontSize: "0.75em",
-      padding: "2px 8px",
-      borderRadius: "4px",
-      background: b.bg,
-      color: b.color,
-      border: `1px solid ${b.color}33`,
-      fontWeight: "bold",
-      letterSpacing: "0.05em"
-    } }, b.text));
-  })())))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+  ), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
     width: "calc(100% + 40px)",
     margin: "15px -20px",
     background: "rgba(26, 42, 58, 0.6)",
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
     padding: "5px 0"
-  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "20px",
-    width: "100%",
-    marginTop: "20px",
-    paddingBottom: "20px"
-  } }, currentQuestion.choices.map((item, index) => {
-    const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
-    const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
-    const staggerClass = `quiz-option-${index}`;
-    let displayChoiceName = item.name;
-    if (currentQuestion.request.type === "genre") {
-      const category = item.id.split("_")[1];
-      if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
-      if (category === "TRD") displayChoiceName = `貿易品の${displayChoiceName}`;
-      if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement(
+    QuizChoiceList,
+    {
+      choices: currentQuestion.choices,
+      quizFeedback,
+      onSelectChoice,
+      itemCardStyle: itemCardStyle2,
+      imageStyle: imageStyle2,
+      itemNameStyle: itemNameStyle2,
+      requestType: currentQuestion.request.type
     }
-    return /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        "data-testid": "quiz-choice",
-        key: item.id,
-        onClick: () => onSelectChoice(item.id),
-        className: `item-card ${staggerClass} ${feedbackClass}`,
-        style: {
-          ...itemCardStyle2,
-          pointerEvents: quizFeedback ? "none" : "auto"
-        }
-      },
-      /* @__PURE__ */ React.createElement(
-        "img",
-        {
-          src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
-          alt: item.name,
-          style: { ...imageStyle2, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
-          draggable: false,
-          onError: (e) => {
-            e.target.onerror = null;
-            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
-          }
-        }
-      ),
-      /* @__PURE__ */ React.createElement("div", { style: itemNameStyle2 }, displayChoiceName)
-    );
-  }))));
+  )));
 }
 const REQUEST_TEMPLATES = [
   {
