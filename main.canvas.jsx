@@ -1738,7 +1738,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         height: '166px', // Slightly taller for stability
         background: 'rgba(18, 28, 42, 0.98)',
         borderLeft: `5px solid ${themeColor || THEME.brass}`, // Stronger accent
-        padding: currentSpeaker ? '24px 24px 28px 24px' : '18px 24px 28px 24px',
+        padding: currentSpeaker ? '22px 24px 28px 24px' : '18px 24px 28px 24px',
         borderRadius: '0 16px 16px 0',
         cursor: 'pointer',
         color: THEME.parchment,
@@ -1755,32 +1755,32 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         border: '1px solid rgba(255,255,255,0.05)'
       }}
     >
-      {/* Speaker Plate (Floating Top-Left - Refined Small Tag) */}
+      {/* Speaker Plate (Floating Top-Left - Small Corner Tag) */}
       {currentSpeaker && (
         <div style={{ 
           position: 'absolute',
-          left: '16px',
-          top: '-13px',
+          left: '12px',
+          top: '-7px',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          padding: '3px 10px 3px 4px',
-          height: '32px',
+          padding: '2px 10px 2px 2px',
+          height: '28px',
           boxSizing: 'border-box',
           borderRadius: '999px',
-          background: 'rgba(12, 25, 38, 0.94)',
-          border: `1px solid ${themeColor || THEME.brass}77`,
+          background: '#0c1926', // Opaque to hide VNBox border behind
+          border: `1px solid ${themeColor || THEME.brass}66`,
           zIndex: 10,
-          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
           backdropFilter: 'blur(4px)'
         }}>
           {facePath && (
             <div style={{
-              width: '26px',
-              height: '26px',
+              width: '24px',
+              height: '24px',
               borderRadius: '50%',
               overflow: 'hidden',
-              border: `1px solid ${themeColor || THEME.brass}88`,
+              border: `1px solid ${themeColor || THEME.brass}66`,
               background: 'rgba(0,0,0,0.4)',
               flexShrink: 0
             }}>
@@ -1800,10 +1800,10 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
             </div>
           )}
           <div style={{ 
-            fontSize: '0.85em', 
+            fontSize: '0.8em', 
             color: themeColor || THEME.brass, 
-            fontWeight: 'bold', 
-            letterSpacing: '0.05em',
+            fontWeight: '700', 
+            letterSpacing: '0.04em',
             textShadow: '0 1px 2px rgba(0,0,0,0.5)'
           }}>
             {currentSpeaker}
