@@ -1341,6 +1341,74 @@ const AFFECTION_EVENTS = {
 function getEventsByHeroine(heroineId) {
   return AFFECTION_EVENTS[heroineId] || [];
 }
+const DAILY_TALKS = [
+  // --- Common Topics ---
+  {
+    id: "common_father_camera_biz",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "父さんの錬金カメラ事業は順調みたいだ。世界中から珍しい景色が届くよ。" },
+      { speaker: "ナーディル", expression: "joy", text: "でも僕は、この場所で誰かの日常を支える星瓶堂の仕事が好きだ。" }
+    ]
+  },
+  {
+    id: "common_shop_dust",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "開店前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" }
+    ]
+  },
+  // --- Heroine Specific ---
+  {
+    id: "hakima_morning_check",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "今日の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。" },
+      { speaker: "ナーディル", expression: "normal", text: "ありがとう、ハキマ。君がそうやって釘を刺してくれるから、僕も気を引き締められるよ。" }
+    ]
+  },
+  {
+    id: "mira_university_news",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩、聞いてください。大学で新しい抽出法が発見されたんです。まだ実験段階ですが……。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは興味深いね。いつか星瓶堂の品作りにも活かせるかもしれない。" }
+    ]
+  },
+  {
+    id: "dariya_palace_tea",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りの方が落ち着く。" },
+      { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。ダリヤさんには、ここでは鎧を下ろしてほしいですから。" }
+    ]
+  }
+];
 function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
   const events = getEventsByHeroine(heroineId);
   const eligibleEvents = events.filter(
@@ -1380,6 +1448,17 @@ function getRouteText(baseText, routeTexts, routeMode) {
     return routeTexts[routeMode];
   }
   return baseText;
+}
+function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode) {
+  const eligible = DAILY_TALKS.filter((talk) => {
+    if (talk.timing !== timing) return false;
+    if (talk.scope === "heroine" && talk.heroineId !== heroineId) return false;
+    if (talk.routeMode !== "both" && talk.routeMode !== routeMode) return false;
+    if (talk.minAffection > currentAffection) return false;
+    if (seenTalkIds.includes(talk.id)) return false;
+    return true;
+  });
+  return eligible.length > 0 ? eligible[0] : null;
 }
 const HeroineSelectScreen = ({
   previewHeroineId,
@@ -1881,6 +1960,7 @@ const PrologueScreen = ({
 };
 const IntroScreen = ({
   activeHeroine,
+  activeDailyTalk,
   screen,
   routeMode,
   textSpeedMeta,
@@ -1903,7 +1983,7 @@ const IntroScreen = ({
   buttonStyle: buttonStyle2,
   narrativeBoxStyle: narrativeBoxStyle2
 }) => {
-  const introPages = [
+  const baseIntroPages = [
     {
       speakerId: "nader",
       speaker: "ナーディル",
@@ -1925,6 +2005,8 @@ const IntroScreen = ({
       text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
     }
   ];
+  const talkPages = (activeDailyTalk == null ? void 0 : activeDailyTalk.pages) || [];
+  const combinedPages = [...talkPages, ...baseIntroPages];
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
   };
@@ -1988,14 +2070,14 @@ const IntroScreen = ({
       VNBox,
       {
         ref: vnRef,
-        pages: introPages,
+        pages: combinedPages,
         hint: "客の好みに合わせて素材を選ぼう",
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed),
         getFaceIcon,
         onPageComplete,
-        onComplete: onBeginService
+        onComplete: () => onBeginService((activeDailyTalk == null ? void 0 : activeDailyTalk.id) || null)
       }
     )))
   );
@@ -8071,6 +8153,7 @@ function createDefaultSaveData() {
     seenEventIds: [],
     activeEvent: null,
     vnBacklog: [],
+    seenTalkIds: [],
     textSpeed: "normal",
     instantUnreadText: false,
     bgmVolume: DEFAULT_AUDIO_VOLUME$1,
@@ -8116,6 +8199,11 @@ function normalizeSaveData(raw) {
   normalized.seVolume = clampVolume(normalized.seVolume);
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
+  }
+  if (!Array.isArray(normalized.seenTalkIds)) {
+    normalized.seenTalkIds = [];
+  } else {
+    normalized.seenTalkIds = [...new Set(normalized.seenTalkIds.filter((id) => typeof id === "string"))];
   }
   if (normalized.activeEvent && typeof normalized.activeEvent !== "object") {
     normalized.activeEvent = null;
@@ -8580,7 +8668,9 @@ function App() {
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
   const [quizFeedback, setQuizFeedback] = useState(null);
   const [seenEventIds, setSeenEventIds] = useState([]);
+  const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
+  const [activeDailyTalk, setActiveDailyTalk] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -8704,6 +8794,7 @@ function App() {
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
       setSeenEventIds(data.seenEventIds || []);
+      setSeenTalkIds(data.seenTalkIds || []);
     }
   }, []);
   useEffect(() => {
@@ -8726,6 +8817,7 @@ function App() {
         seVolume,
         isAudioEnabled,
         seenEventIds,
+        seenTalkIds,
         activeEvent,
         vnBacklog
       });
@@ -8750,7 +8842,7 @@ function App() {
         setHasSave(false);
       }
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, seenTalkIds, activeEvent, vnBacklog]);
   useEffect(() => {
     audioEngine.setBgmVolume(bgmVolume);
   }, [bgmVolume]);
@@ -8917,6 +9009,14 @@ function App() {
     await preloadAssets(heroineAssets, setLoadingProgress);
     setActiveHeroineId(heroineId);
     setWorkshopState((prev) => ({ ...prev, activeHeroineId: heroineId }));
+    const talk = getNextDailyTalk(
+      heroineId,
+      "intro",
+      affection[heroineId] || 0,
+      seenTalkIds,
+      routeMode
+    );
+    setActiveDailyTalk(talk);
     saveGameData({
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
@@ -8926,6 +9026,7 @@ function App() {
       bgmVolume,
       seVolume,
       seenEventIds,
+      seenTalkIds,
       vnBacklog
     });
     setTimeout(() => {
@@ -8937,8 +9038,16 @@ function App() {
     audioEngine.playSfx("uiTapBottle");
     if (workshopState.day >= 10) {
       setScreen("FINAL_RESULT");
-    } else {
-      setWorkshopState((prev) => ({ ...prev, day: prev.day + 1 }));
+      const nextDay = workshopState.day + 1;
+      setWorkshopState((prev) => ({ ...prev, day: nextDay }));
+      const talk = getNextDailyTalk(
+        activeHeroineId,
+        "intro",
+        affection[activeHeroineId] || 0,
+        seenTalkIds,
+        routeMode
+      );
+      setActiveDailyTalk(talk);
       setScreen("INTRO");
     }
   };
@@ -8952,8 +9061,20 @@ function App() {
     setHasSave(false);
     setScreen("START");
   };
-  const handleBeginService = () => {
+  const handleBeginService = (talkId = null) => {
     audioEngine.playSfx("uiTapBottle");
+    if (talkId) {
+      setSeenTalkIds((prev) => {
+        if (prev.includes(talkId)) return prev;
+        const next = [...prev, talkId];
+        saveGameData({
+          ...loadSaveData(),
+          seenTalkIds: next
+        });
+        return next;
+      });
+    }
+    setActiveDailyTalk(null);
     setSession(createQuizSession({ questionCount: 5 }));
     setScreen("QUIZ");
   };
@@ -9338,6 +9459,7 @@ function App() {
       IntroScreen,
       {
         activeHeroine,
+        activeDailyTalk,
         screen,
         routeMode,
         textSpeedMeta,
