@@ -27,7 +27,7 @@ function HelpModal({ isOpen, onClose }) {
       <div style={{ ...hudModalCard, maxWidth: '340px', padding: '18px 16px 14px' }}>
         {hudCloseX(handleClose)}
         <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>遊び方</h2>
-        <div data-testid="help-scroll"
+        <div data-testid="help-scroll" className="help-content"
           style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 4px', display: 'flex', flexDirection: 'column', gap: '8px' }}
         >
           <p style={{ margin: 0, color: '#444', lineHeight: 1.7, fontSize: '0.9em' }}>・お客さんの依頼を読み、合う商品を選びます。</p>

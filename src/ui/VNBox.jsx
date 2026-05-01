@@ -139,7 +139,14 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               <img 
                 src={facePath} 
                 alt={currentSpeaker} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  WebkitUserDrag: 'none',
+                  userSelect: 'none'
+                }}
+                draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>

@@ -27,7 +27,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
       <div style={{ ...hudModalCard, maxWidth: '360px', padding: '16px 14px 14px' }}>
         {hudCloseX(handleClose)}
         <h2 style={{ margin: '0 0 10px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.1em', paddingRight: '30px' }}>ログ</h2>
-        <div ref={scrollRef} data-testid="backlog-scroll"
+        <div ref={scrollRef} data-testid="backlog-scroll" className="log-content"
           style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #e0d8cc', borderBottom: '1px solid #e0d8cc', padding: '4px 0' }}
         >
           {vnBacklog.length === 0 ? (
