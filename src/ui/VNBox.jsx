@@ -35,6 +35,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoverSkip, setHoverSkip] = useState(false);
   const [isSkippingBlock, setIsSkippingBlock] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const loggedPagesRef = useRef(new Set());
 
   const markPageComplete = (index = pageIndex, text = currentText) => {
@@ -75,6 +76,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   }, [currentIndex, currentText, isComplete, speed, skip, isSkippingBlock]);
 
   const handleClick = (e) => {
+    if (isFadingOut) return; // Prevent clicks during skip fade
+
     // Prevent event bubbling if we're not at the absolute end
     const isLastPage = pageIndex >= pageList.length - 1;
     const isTyping = !isComplete;
@@ -103,28 +106,18 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
 
   const handleSkipBlock = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    
-    const lastIndex = pageList.length - 1;
-    
-    // If already at the last page
-    if (pageIndex === lastIndex) {
-      if (isComplete) {
-        // Case A: Last page already finished -> Close/Proceed
-        onComplete?.();
-      } else {
-        // Case B: Typing on last page -> Show full text immediately
-        setDisplayText(currentText);
-        setIsComplete(true);
-        markPageComplete();
-        audioEngine.playSfx('uiTapBottle');
-      }
-      return;
-    }
+    if (isFadingOut) return;
 
-    // Case C: Before last page -> Jump to last page and make it instant
-    setIsSkippingBlock(true);
-    setPageIndex(lastIndex);
+    // Instant Skip with Black Fade
+    setIsFadingOut(true);
     audioEngine.playSfx('uiTapBottle');
+    
+    // Immediate completion after short fade
+    setTimeout(() => {
+      onComplete?.();
+      // We don't reset isFadingOut here as the component will likely be unmounted 
+      // or the scene will change. If it persists, the parent should handle it.
+    }, 300);
   };
 
   useImperativeHandle(ref, () => ({
@@ -150,6 +143,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
+        bottom: '12px', // Pushed up slightly
         boxShadow: '0 -4px 15px rgba(0,0,0,0.3)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
@@ -171,7 +165,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         onMouseLeave={() => setHoverSkip(false)}
         style={{
           position: 'absolute',
-          top: '-38px', // Floating above the box, consistent with nameplate
+          top: '-42px', // Floating higher, header-like
           right: '24px',
           padding: '6px 20px',
           borderRadius: '999px',
@@ -193,21 +187,22 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         SKIP
       </div>
 
-      {/* Speaker Tag (Floating Top-Left) */}
+      {/* Speaker Tag (Floating Top-Left, Half-Overlap) */}
       {currentSpeaker && (
         <div style={{ 
           position: 'absolute',
           left: '12px',
-          top: '-65px', // Lifted higher to avoid VNBox overlap
+          top: '-32px', // Half-overlap (Face icon is 60px)
           display: 'flex',
-          alignItems: 'flex-end',
+          alignItems: 'center',
           gap: '12px',
           zIndex: 10,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          transition: 'all 0.2s ease' // Requirement 3: Fade/Transition
         }}>
           {facePath && (
             <div style={{
-              width: '60px', // 2/3 of previous 90px
+              width: '60px',
               height: '60px',
               borderRadius: '12px',
               overflow: 'hidden',
@@ -215,14 +210,16 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               background: 'rgba(12, 25, 38, 0.95)',
               flexShrink: 0,
               boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
-              transform: 'rotate(-2deg)', // Slight tilt for flair
-              position: 'relative'
+              transform: 'rotate(-2deg)',
+              position: 'relative',
+              transition: 'all 0.2s ease'
             }}>
               <img 
+                key={facePath} // Force fade-in on expression change
                 src={facePath} 
                 alt={currentSpeaker} 
                 style={{ 
-                  width: '110%', // Slight zoom for better focus
+                  width: '110%', 
                   height: '110%', 
                   objectFit: 'cover',
                   objectPosition: 'center 20%',
@@ -230,7 +227,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                   userSelect: 'none',
                   position: 'absolute',
                   top: '-5%',
-                  left: '-5%'
+                  left: '-5%',
+                  animation: 'vn-fade-in 0.2s ease'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -257,12 +255,25 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
             letterSpacing: '0.06em',
             textShadow: '0 2px 4px rgba(0,0,0,0.8)',
             boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
-            marginBottom: '8px',
-            backdropFilter: 'blur(8px)'
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.2s ease',
+            animation: 'vn-fade-in 0.2s ease'
           }}>
             {currentSpeaker}
           </div>
         </div>
+      )}
+
+      {/* Instant Skip Fade Overlay */}
+      {isFadingOut && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'black',
+          zIndex: 9999,
+          animation: 'vn-fade-in 0.3s forwards',
+          pointerEvents: 'all'
+        }} />
       )}
 
       <div style={{ 
@@ -337,6 +348,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       <style>{`
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes vn-fade-in { from { opacity: 0; } to { opacity: 1; } }
       `}</style>
     </div>
   );

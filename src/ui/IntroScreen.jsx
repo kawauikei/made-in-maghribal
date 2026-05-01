@@ -212,7 +212,7 @@ const IntroScreen = ({
               height: '100%', width: 'auto', boxShadow: 'none',
               position: 'absolute',
               opacity: 1 - heroineOpacity, 
-              transition: 'opacity 0.6s ease-in-out'
+              transition: 'opacity 0.3s ease-in-out'
             }}
           />
           {/* Heroine (Priority) */}
@@ -226,7 +226,7 @@ const IntroScreen = ({
               height: '100%', width: 'auto', boxShadow: 'none',
               position: 'absolute',
               opacity: heroineOpacity,
-              transition: 'opacity 0.6s ease-in-out'
+              transition: 'opacity 0.3s ease-in-out'
             }}
           />
         </div>
