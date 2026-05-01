@@ -87,26 +87,20 @@
 
 ## M-UI-VNBOX-POLISH: VNBox Speaker / Narration Display Polish
 
-- **ステータス**: TODO（未着手）
+- **ステータス**: 実施済み
 - **優先度**: 中〜高（可読性向上）
 - **追加日**: 2026-05-01
+- **完了日**: 2026-05-01
 
 ### 目的
 
 VNBox内の話者表示を整理し、ナレーション・キャラ台詞・選択肢UIに適した表示にする。
 
-### 方針
+### 成果
 
-- **ナレーションは無記名**: `speaker: ''` または `null` の場合、話者名欄を出さず本文を上に詰める。
-- **キャラ台詞は顔アイコン + 名前**: `speakerId` を用いて、小さな顔アイコンと名前を表示。キャラテーマ色のアクセントを付与。
-- **データ形式の拡張**: `page` オブジェクトに `speakerId`, `expression` 等を持たせ、宣言的な演出を可能にする。
-
-### 参照
-
-- `src/ui/VNBox.jsx`
-- `src/ui/PrologueScreen.jsx`
-- `src/ui/IntroScreen.jsx`
-- `docs/current_design.md` — 会話劇の立ち絵演出方針
+- ナレーション無記名化、テキスト上詰めイタリック表示の実装。
+- キャラ台詞時の顔アイコン表示サポート（`speakerId` 連動）。
+- `VNBox` 内部での `getFaceIcon` 解決。
 
 ---
 
@@ -137,19 +131,45 @@ VNBox内の話者表示を整理し、ナレーション・キャラ台詞・選
 
 ## M-UI-VNBOX-LOWER-DOCK: VNBox Lower Dock Polish
 
-- **ステータス**: TODO（一部実施済み・全体最適化待ち）
+- **ステータス**: 実施済み
 - **優先度**: 中〜高（可視性向上）
 - **追加日**: 2026-05-01
+- **完了日**: 2026-05-01
 
 ### 目的
 
 INTRO / PROLOGUE などのVN画面で、VNBoxを下部に半固定し、キャラクター立ち絵を見せる領域とテキストUI領域を明確に分ける。
 
+### 成果
+
+- ヒント表示を VNBox 内部（左下）に統合し、画面下部の縦積みを整理。
+- 下部ドックのレイアウト（マージン、ボタンサイズ）の統一。
+- 390px幅での表示安定化。
+
+---
+
+## M-UI-SELECTION-PREVENTION: Touch Interaction / Selection Prevention Polish
+
+- **ステータス**: TODO（未着手）
+- **優先度**: 中〜高（基本品質）
+- **追加日**: 2026-05-01
+
+### 目的
+
+ゲーム中に、クリック・タップしたつもりがテキスト選択や画像ドラッグになってしまう問題を防ぐ。
+
 ### 方針
 
-- **レイアウトの分離**: VNBoxを下部寄せにし、キャラの顔〜上半身を隠さない配置を徹底する。
-- **UI整理**: 説明文やヒント、開始ボタンの配置をドック領域に集約する。
-- **ヒント表示の統合**: ヒントは将来的にVNBox内の空きスペース（左下など）に添える案を検討。
+- **テキスト選択禁止**: `.game-root` 全体または `VNBox` / `Button` 等に `user-select: none` を適用。
+- **画像ドラッグ禁止**: `HeroineDisplay` 等の画像要素に `draggable={false}` および `-webkit-user-drag: none` を適用。
+- **タッチ操作の最適化**: ボタンやカードに `touch-action: manipulation` を指定し、ズーム遅延を抑制。
+- **例外管理**: ログ画面や開発パネルなど、コピーが必要な箇所は選択可能のまま維持。
+
+### 参照
+
+- `src/ui/theme.js` または `renderThemeStyles`
+- `src/ui/VNBox.jsx`
+- `src/App.jsx` (HeroineDisplay)
 
 ---
 
