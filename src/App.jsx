@@ -453,7 +453,7 @@ export default function App() {
     const day = workshopState.day || 1;
     const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
 
-    if (screen === 'START' || screen === 'HEROINE_SELECT' || screen === 'MEMORIES') {
+    if (screen === 'START' || screen === 'HEROINE_SELECT' || screen === 'MEMORIES' || screen === 'PROLOGUE') {
       trackId = 'MAIN-01';
     } else if (screen === 'QUIZ') {
       if (day <= 2) {
