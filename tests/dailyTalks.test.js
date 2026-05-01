@@ -19,7 +19,7 @@ const VALID_HEROINES = ["hakima", "mira", "dariya"];
 const VALID_TIMINGS = ["intro", "after_result", "day_end"];
 const VALID_MODES = ["normal", "long_history", "both"];
 const VALID_SPEAKERS = ["ナーディル", "ハキマ", "ミラ", "ダリヤ", ""];
-const VALID_EXPRESSIONS = ["normal", "joy", "fun", "sorrow", "cry", "angry", "surprised", "blush"];
+const VALID_EXPRESSIONS = ["normal", "joy", "fun", "sorrow", "cry", "anger", "surprise", "blush", "student", "social", "maid"];
 
 console.log("--- Made in Maghribal: DailyTalk Registry Audit ---");
 

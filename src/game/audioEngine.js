@@ -156,8 +156,9 @@ class SimpleAudioEngine {
   /**
    * Play an SFX candidate (used in Sound Test)
    * @param {string} candidateId 
+   * @param {number} volumeScale - Optional multiplier (default 1.0)
    */
-  playSfxCandidate(candidateId) {
+  playSfxCandidate(candidateId, volumeScale = 1.0) {
     if (this.isMuted) return;
 
     const candidate = SFX_CANDIDATES.find(c => c.id === candidateId);
@@ -173,7 +174,7 @@ class SimpleAudioEngine {
       
       // Candidate specific volume scaled by global volume
       // SFX often need slightly higher weight to be audible over BGM
-      const targetVol = (candidate.volume || 1.0) * this.seVolume * 1.5; 
+      const targetVol = (candidate.volume || 1.0) * this.seVolume * 1.5 * volumeScale; 
       sfx.volume = Math.max(0, Math.min(1, targetVol));
       
       if (candidate.start) {
@@ -220,8 +221,9 @@ class SimpleAudioEngine {
   /**
    * Play a production-selected SFX by its functional key
    * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
+   * @param {number} volumeScale - Optional multiplier (default 1.0)
    */
-  playSfx(sfxKey) {
+  playSfx(sfxKey, volumeScale = 1.0) {
     if (this.isMuted) return;
     
     const candidateId = SELECTED_SFX[sfxKey];
@@ -230,7 +232,7 @@ class SimpleAudioEngine {
       return;
     }
 
-    this.playSfxCandidate(candidateId);
+    this.playSfxCandidate(candidateId, volumeScale);
   }
 }
 

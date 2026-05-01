@@ -15,9 +15,13 @@ import { THEME } from './theme';
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
+  
+  useEffect(() => {
+    onPageChange?.(pageIndex);
+  }, [pageIndex]);
   
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
@@ -133,56 +137,72 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: 'none' // Tightly docked to bottom
       }}
     >
-      {/* Speaker Tag (Small Corner Hook) */}
+      {/* Speaker Tag (Floating Top-Left) */}
       {currentSpeaker && (
         <div style={{ 
           position: 'absolute',
-          left: '10px',
-          top: '-8px',
+          left: '12px',
+          top: '-65px', // Lifted higher to avoid VNBox overlap
           display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '2px 10px 2px 2px',
-          height: '30px',
-          boxSizing: 'border-box',
-          borderRadius: '999px',
-          background: '#0c1926', // Opaque to cleanly overlap corner
-          border: `1px solid ${themeColor || THEME.brass}77`,
+          alignItems: 'flex-end',
+          gap: '12px',
           zIndex: 10,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
-          backdropFilter: 'blur(4px)'
+          pointerEvents: 'none'
         }}>
           {facePath && (
             <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
+              width: '60px', // 2/3 of previous 90px
+              height: '60px',
+              borderRadius: '12px',
               overflow: 'hidden',
-              border: `1px solid ${themeColor || THEME.brass}88`,
-              background: 'rgba(0,0,0,0.4)',
-              flexShrink: 0
+              border: `2px solid ${themeColor || THEME.brass}`,
+              background: 'rgba(12, 25, 38, 0.95)',
+              flexShrink: 0,
+              boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
+              transform: 'rotate(-2deg)', // Slight tilt for flair
+              position: 'relative'
             }}>
               <img 
                 src={facePath} 
                 alt={currentSpeaker} 
                 style={{ 
-                  width: '100%', 
-                  height: '100%', 
+                  width: '110%', // Slight zoom for better focus
+                  height: '110%', 
                   objectFit: 'cover',
+                  objectPosition: 'center 20%',
                   WebkitUserDrag: 'none',
-                  userSelect: 'none'
+                  userSelect: 'none',
+                  position: 'absolute',
+                  top: '-5%',
+                  left: '-5%'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
+              {/* Inner bezel */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '14px',
+                pointerEvents: 'none'
+              }} />
             </div>
           )}
+          
           <div style={{ 
-            fontSize: '0.82em', 
+            padding: '4px 16px',
+            borderRadius: '999px',
+            background: '#0c1926',
+            border: `1px solid ${themeColor || THEME.brass}77`,
+            fontSize: '0.9em', 
             color: themeColor || THEME.brass, 
-            fontWeight: '700', 
-            letterSpacing: '0.04em',
-            textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+            fontWeight: '800', 
+            letterSpacing: '0.06em',
+            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+            marginBottom: '8px',
+            backdropFilter: 'blur(8px)'
           }}>
             {currentSpeaker}
           </div>

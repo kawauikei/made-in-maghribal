@@ -175,7 +175,7 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。" },
-      { speaker: "ハキマ", expression: "angry", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
+      { speaker: "ハキマ", expression: "anger", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
     ]
   },
   {
@@ -213,9 +213,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "angry", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
+      { speaker: "ハキマ", expression: "anger", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
       { speaker: "ナーディル", expression: "joy", text: "助かるよ。君の鼻があると、棚の品まで背筋が伸びる気がする。" },
-      { speaker: "ハキマ", expression: "surprised", text: "なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。" }
+      { speaker: "ハキマ", expression: "surprise", text: "なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。" }
     ]
   },
   {
@@ -257,7 +257,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。" },
       { speaker: "ナーディル", expression: "fun", text: "負けた時だけ、君は今よりずっと静かだった気がする。" },
-      { speaker: "ハキマ", expression: "angry", text: "余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。" }
+      { speaker: "ハキマ", expression: "anger", text: "余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。" }
     ]
   },
   {
@@ -325,7 +325,7 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "fun", text: "実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。" },
-      { speaker: "ミラ", expression: "surprised", text: "……意外ですか？ こういう迷い方くらい、私にもあります。" }
+      { speaker: "ミラ", expression: "surprise", text: "……意外ですか？ こういう迷い方くらい、私にもあります。" }
     ]
   },
   {
@@ -339,7 +339,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。" },
       { speaker: "ナーディル", expression: "normal", text: "なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。" },
-      { speaker: "ミラ", expression: "surprised", text: "……そういう考え方、先輩らしいです。少し、悔しいくらいに。" }
+      { speaker: "ミラ", expression: "surprise", text: "……そういう考え方、先輩らしいです。少し、悔しいくらいに。" }
     ]
   },
   {
@@ -366,7 +366,7 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "fun", text: "今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。" },
-      { speaker: "ナーディル", expression: "surprised", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
       { speaker: "ミラ", expression: "joy", text: "ありがとうございます。そう言われると、天才でいるより嬉しいです。" }
     ]
   },

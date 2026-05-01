@@ -263,6 +263,8 @@ export default function App() {
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
+  const [eventHeroineExpression, setEventHeroineExpression] = useState('normal');
+  const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
   // --- Asset Loading State (M8-28) ---
@@ -417,6 +419,13 @@ export default function App() {
       setIsAudioGated(false);
     }
   }, [screen]);
+
+  // Reset expression when activeEvent changes
+  useEffect(() => {
+    if (activeEvent) {
+      setEventHeroineExpression(activeEvent.expression || 'normal');
+    }
+  }, [activeEvent]);
 
   // Auto-Save
   useEffect(() => {
@@ -1188,6 +1197,7 @@ export default function App() {
       <IntroScreen
         activeHeroine={activeHeroine}
         activeDailyTalk={activeDailyTalk}
+        day={workshopState.day}
         screen={screen}
         routeMode={routeMode}
         textSpeedMeta={textSpeedMeta}
@@ -1328,22 +1338,45 @@ export default function App() {
           )}
           
             {!still && (
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'flex-end',
+                height: '450px',
+                marginBottom: '20px',
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.4))'
+              }}>
                 <HeroineDisplay 
                   heroine={activeHeroine} 
                   type="standing" 
                   size="large" 
-                  expression={activeEvent.expression} 
+                  expression={eventHeroineExpression} 
                 />
               </div>
             )}
             <VNBox 
               ref={vnRef}
               speaker={activeEvent.speaker}
-              pages={getEventPages(activeEvent, routeMode)}
+              pages={getEventPages(activeEvent, routeMode).map(page => {
+                if (page.speakerId) return page;
+                let inferredId = null;
+                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                return { ...page, speakerId: inferredId };
+              })}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+              getFaceIcon={getFaceIcon}
+              onPageChange={(index) => {
+                const pages = getEventPages(activeEvent, routeMode);
+                const page = pages[index];
+                if (page?.expression) {
+                  setEventHeroineExpression(page.expression);
+                }
+                setEventSpeakerId(page?.speakerId || null);
+              }}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
             />
@@ -1530,10 +1563,17 @@ export default function App() {
             <VNBox 
               ref={vnRef}
               speaker={activeHeroine.name}
-              pages={endingData.pages}
+              pages={endingData.pages.map(page => {
+                if (page.speakerId) return page;
+                let inferredId = null;
+                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                return { ...page, speakerId: inferredId };
+              })}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />
