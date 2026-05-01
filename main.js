@@ -9324,6 +9324,33 @@ function shuffleArray(array) {
   }
   return result;
 }
+const AFFECTION_LIMITS = {
+  MIN: 0,
+  MAX: 100
+};
+function createInitialAffection(heroineIds) {
+  const state = {};
+  heroineIds.forEach((id) => {
+    state[id] = 0;
+  });
+  return state;
+}
+function clampAffection(value) {
+  return Math.max(AFFECTION_LIMITS.MIN, Math.min(AFFECTION_LIMITS.MAX, value));
+}
+function addAffection(affectionState, heroineId, amount) {
+  if (!(heroineId in affectionState)) {
+    console.warn(`Attempted to add affection to unknown heroineId: ${heroineId}`);
+    return affectionState;
+  }
+  return {
+    ...affectionState,
+    [heroineId]: clampAffection(affectionState[heroineId] + amount)
+  };
+}
+function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
+  return Math.max(0, correctCount);
+}
 function getWorkshopResult(correctCount) {
   if (correctCount >= 5) {
     return { reputation: 3, sales: 120, satisfaction: 3 };
@@ -9355,6 +9382,39 @@ function applyWorkshopResult(state, result) {
     sales: state.sales + result.sales,
     satisfaction: state.satisfaction + result.satisfaction
   };
+}
+function resolveQuizCompletion({
+  correctCount,
+  totalCount,
+  activeHeroineId,
+  currentAffection,
+  seenEventIds
+}) {
+  const rank = getRankInfo(correctCount);
+  const affectionGain = calculateQuizAffectionGain(correctCount, totalCount);
+  const workshopResult = getWorkshopResult(correctCount);
+  const nextAffectionValue = currentAffection + affectionGain;
+  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds);
+  return {
+    correctCount,
+    totalCount,
+    rank,
+    affectionGain,
+    workshopResult,
+    // { sales, reputation, satisfaction }
+    unlockedEvent,
+    // Event object or null
+    isPerfect: correctCount === totalCount
+  };
+}
+function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds) {
+  return resolveQuizCompletion({
+    correctCount: totalCount,
+    totalCount,
+    activeHeroineId,
+    currentAffection,
+    seenEventIds
+  });
 }
 function getResultExpression(correctCount) {
   if (correctCount >= 5) return "fun";
@@ -9610,33 +9670,6 @@ const TRACKS = {
 };
 function getTrackById(id) {
   return TRACKS[id] || null;
-}
-const AFFECTION_LIMITS = {
-  MIN: 0,
-  MAX: 100
-};
-function createInitialAffection(heroineIds) {
-  const state = {};
-  heroineIds.forEach((id) => {
-    state[id] = 0;
-  });
-  return state;
-}
-function clampAffection(value) {
-  return Math.max(AFFECTION_LIMITS.MIN, Math.min(AFFECTION_LIMITS.MAX, value));
-}
-function addAffection(affectionState, heroineId, amount) {
-  if (!(heroineId in affectionState)) {
-    console.warn(`Attempted to add affection to unknown heroineId: ${heroineId}`);
-    return affectionState;
-  }
-  return {
-    ...affectionState,
-    [heroineId]: clampAffection(affectionState[heroineId] + amount)
-  };
-}
-function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
-  return Math.max(0, correctCount);
 }
 const SAVE_DATA_VERSION = "1.0";
 const STORAGE_KEY = "made_in_maghribal_save";
@@ -10434,7 +10467,14 @@ function App() {
     if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
       debugAutoSkipAppliedRef.current = true;
       const timer = setTimeout(() => {
-        finishQuizWithResult(session.questions.length);
+        const totalCount = session.questions.length;
+        const result = createPerfectQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds
+        );
+        applyQuizResultState(result);
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -10954,16 +10994,23 @@ function App() {
   const finishQuizWithResult = (correctCount) => {
     var _a2;
     const totalCount = ((_a2 = session == null ? void 0 : session.questions) == null ? void 0 : _a2.length) || 5;
-    const gain = calculateQuizAffectionGain(correctCount, totalCount);
-    const nextAffection = addAffection(affection, activeHeroineId, gain);
+    const result = resolveQuizCompletion({
+      correctCount,
+      totalCount,
+      activeHeroineId,
+      currentAffection: affection[activeHeroineId] || 0,
+      seenEventIds
+    });
+    applyQuizResultState(result);
+  };
+  const applyQuizResultState = (result) => {
+    const nextAffection = addAffection(affection, activeHeroineId, result.affectionGain);
     setAffection(nextAffection);
-    setLastAffectionGain(gain);
-    const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-    if (unlockedEvent) {
-      setActiveEvent(unlockedEvent);
+    setLastAffectionGain(result.affectionGain);
+    setWorkshopState((prev) => applyWorkshopResult(prev, result.workshopResult));
+    if (result.unlockedEvent) {
+      setActiveEvent(result.unlockedEvent);
     }
-    const result = getWorkshopResult(correctCount);
-    setWorkshopState((prev) => applyWorkshopResult(prev, result));
     setScreen("RESULT");
   };
   const handleSelect = (itemId) => {
