@@ -8484,7 +8484,18 @@ const RhythmMock = ({ heroineId, themeColor }) => {
     background: THEME.brass,
     boxShadow: `0 0 4px ${THEME.brass}88`,
     opacity: 0.4
-  } })), /* @__PURE__ */ React.createElement(
+  } })), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: 0,
+    top: "-12px",
+    bottom: "-12px",
+    width: "2px",
+    background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
+    boxShadow: `0 0 8px ${THEME.starGold}`,
+    opacity: 0.8,
+    zIndex: 2,
+    animation: "beat-scanline 2s linear infinite"
+  } }), /* @__PURE__ */ React.createElement(
     "div",
     {
       className: "beat-pulse",
@@ -8502,7 +8513,14 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         zIndex: 3
       }
     },
-    /* @__PURE__ */ React.createElement("div", { className: "beat-halo" })
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
+      zIndex: -1
+    } })
   )), /* @__PURE__ */ React.createElement("div", { style: {
     width: "44px",
     height: "44px",
@@ -8514,7 +8532,20 @@ const RhythmMock = ({ heroineId, themeColor }) => {
     flexShrink: 0,
     zIndex: 2,
     transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
+  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes beat-pulse {
+          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
+          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+        }
+        @keyframes beat-scanline {
+          0% { left: 0%; opacity: 0; }
+          10% { opacity: 0.8; }
+          90% { opacity: 0.8; }
+          100% { left: 100%; opacity: 0; }
+        }
+        .beat-pulse { animation: beat-pulse 0.5s ease-in-out infinite; }
+      `));
 };
 function App() {
   var _a, _b, _c, _d;
