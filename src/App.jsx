@@ -34,6 +34,7 @@ import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
 import VNBox from './ui/VNBox';
 import SoundTest from './ui/SoundTest';
+import DebugPanel from './ui/DebugPanel';
 
 
 
@@ -256,6 +257,37 @@ export default function App() {
     const val = localStorage.getItem('made_in_maghribal_debug_unlock_all');
     return val !== 'false'; // Default to true unless explicitly 'false'
   });
+
+  // Persistent Debug/Assist Mode (M-DEBUG-PANEL-PERSISTENCE)
+  const [debugModeEnabled, setDebugModeEnabled] = useState(() => {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem('made_in_maghribal_debug_mode') === 'true';
+  });
+
+  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem('made_in_maghribal_auto_skip_quiz') === 'true';
+  });
+
+  // Sync debug states to localStorage
+  useEffect(() => {
+    localStorage.setItem('made_in_maghribal_debug_mode', debugModeEnabled);
+  }, [debugModeEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('made_in_maghribal_auto_skip_quiz', autoSkipQuiz);
+  }, [autoSkipQuiz]);
+
+  // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
+  useEffect(() => {
+    if (screen === 'QUIZ' && autoSkipQuiz && session) {
+      // Force perfect score and proceed to result
+      const timer = setTimeout(() => {
+        handleFinishQuiz(session.questions.length); 
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [screen, autoSkipQuiz, session]);
   
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
@@ -1231,6 +1263,8 @@ export default function App() {
         onOpenLog={() => setShowLog(true)}
         onOpenHelp={() => setShowHelp(true)}
         renderThemeStyles={renderThemeStyles}
+        debugModeEnabled={debugModeEnabled}
+        onToggleDebug={() => setDebugModeEnabled(!debugModeEnabled)}
       />
     );
   } else if (screen === 'PROLOGUE') {
@@ -2012,6 +2046,23 @@ export default function App() {
           <LogModal isOpen={showLog} onClose={() => setShowLog(false)} vnBacklog={vnBacklog} scrollRef={backlogScrollRef} getFaceIcon={getFaceIcon} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
           {showSoundTest && <SoundTest onClose={() => setShowSoundTest(false)} isAudioEnabled={isAudioEnabled} onToggleAudio={() => setIsAudioEnabled(!isAudioEnabled)} />}
+          {(import.meta.env.DEV || debugModeEnabled) && (
+            <DebugPanel 
+              routeMode={routeMode}
+              setRouteMode={setRouteMode}
+              affection={affection}
+              setAffection={setAffection}
+              seenEventIds={seenEventIds}
+              setSeenEventIds={setSeenEventIds}
+              autoSkipQuiz={autoSkipQuiz}
+              setAutoSkipQuiz={setAutoSkipQuiz}
+              onTriggerEvent={(ev) => {
+                setScreen('EVENT');
+                setActiveEvent(ev);
+                setEventHeroineExpression('normal');
+              }}
+            />
+          )}
           {!isInitialLoading && (
             <div key={screen} className="screen-enter">
               {mainContent || (

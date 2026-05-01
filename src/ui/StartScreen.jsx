@@ -26,8 +26,27 @@ const StartScreen = ({
   onClearSaveData,
   onOpenLog,
   onOpenHelp,
-  renderThemeStyles
+  renderThemeStyles,
+  debugModeEnabled,
+  onToggleDebug
 }) => {
+  const [logoTaps, setLogoTaps] = React.useState(0);
+  const logoTapTimer = React.useRef(null);
+
+  const handleLogoTap = () => {
+    setLogoTaps(prev => {
+      const next = prev + 1;
+      if (next >= 5) {
+        onToggleDebug();
+        audioEngine.playSfx('uiConfirmChime');
+        return 0;
+      }
+      return next;
+    });
+
+    if (logoTapTimer.current) clearTimeout(logoTapTimer.current);
+    logoTapTimer.current = setTimeout(() => setLogoTaps(0), 1000);
+  };
   // Replicating styles from App.jsx to minimize prop passing
   const containerStyle = {
     width: '100%',
@@ -85,7 +104,15 @@ const StartScreen = ({
       />
       
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <h1 style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0' }}>{SHOP.name}</h1>
+        <h1 
+          onClick={handleLogoTap}
+          style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0', cursor: 'pointer', userSelect: 'none' }}
+        >
+          {SHOP.name}
+          {debugModeEnabled && (
+            <span style={{ fontSize: '10px', color: THEME.starGold, verticalAlign: 'middle', marginLeft: '5px' }}>[DEBUG]</span>
+          )}
+        </h1>
         <div style={{ color: THEME.sand, fontSize: '0.9em', letterSpacing: '0.1em', opacity: 0.8 }}>
           — {SHOP.localName} —
         </div>
