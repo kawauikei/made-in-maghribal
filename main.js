@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
+import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 const THEME = {
   sand: "#e2d1b1",
   parchment: "#f4e9d5",
@@ -10196,13 +10196,34 @@ function loadSaveData() {
     return null;
   }
 }
-function hasSaveData() {
-  if (!isStorageAvailable$1()) return false;
-  return localStorage.getItem(STORAGE_KEY) !== null;
-}
 function clearSaveData() {
   if (!isStorageAvailable$1()) return;
   localStorage.removeItem(STORAGE_KEY);
+}
+function useGameSaveStatus() {
+  const [hasSave, setHasSaveState] = useState(() => {
+    const data = loadSaveData();
+    return !!(data && data.screen !== "START");
+  });
+  const refreshHasSave = useCallback(() => {
+    const data = loadSaveData();
+    const exists = !!(data && data.screen !== "START");
+    setHasSaveState(exists);
+    return exists;
+  }, []);
+  const clearSaveAndRefresh = useCallback(() => {
+    clearSaveData();
+    setHasSaveState(false);
+  }, []);
+  const setHasSave = useCallback((value) => {
+    setHasSaveState(Boolean(value));
+  }, []);
+  return {
+    hasSave,
+    setHasSave,
+    refreshHasSave,
+    clearSaveAndRefresh
+  };
 }
 const DEBUG_MODE_KEY = "made_in_maghribal_debug_mode";
 const AUTO_SKIP_QUIZ_KEY = "made_in_maghribal_auto_skip_quiz";
@@ -10752,10 +10773,7 @@ function App() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [isAudioGated, setIsAudioGated] = useState(true);
   const [showSoundTest, setShowSoundTest] = useState(false);
-  const [hasSave, setHasSave] = useState(() => {
-    const data = loadSaveData();
-    return !!(data && data.screen !== "START");
-  });
+  const { hasSave, setHasSave, refreshHasSave, clearSaveAndRefresh } = useGameSaveStatus();
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState("background");
@@ -11040,8 +11058,7 @@ function App() {
   const handleStartGame = () => {
     setIsAudioGated(false);
     audioEngine.playSfx("uiGameStart");
-    clearSaveData();
-    setHasSave(false);
+    clearSaveAndRefresh();
     setActiveHeroineId("hakima");
     setPreviewHeroineId("hakima");
     setWorkshopState(createInitialWorkshopState());
@@ -11074,8 +11091,7 @@ function App() {
   };
   const handleResetSave = () => {
     if (window.confirm("セーブデータを削除しますか？")) {
-      clearSaveData();
-      setHasSave(false);
+      clearSaveAndRefresh();
       setSeenEventIds([]);
       setActiveEvent(null);
     }
@@ -11223,8 +11239,7 @@ function App() {
   };
   const handleFinishGame = () => {
     audioEngine.playSfx("uiTapBottle");
-    clearSaveData();
-    setHasSave(false);
+    clearSaveAndRefresh();
     setScreen("START");
   };
   const handleBeginService = (talkId = null) => {
@@ -11255,7 +11270,7 @@ function App() {
   const handleBackToTitle = () => {
     audioEngine.playSfx("uiTapBottle");
     setScreen("START");
-    setHasSave(hasSaveData());
+    refreshHasSave();
     setEventBackgroundOverride(null);
     setShowOptions(false);
     setShowLog(false);
