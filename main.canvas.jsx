@@ -2842,6 +2842,7 @@ function App() {
   const [eventHeroineExpression, setEventHeroineExpression] = useState('normal');
   const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
+  const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -3179,12 +3180,21 @@ function App() {
     if (isRecallMode) {
       setActiveEvent(null);
       setIsRecallMode(false);
+      setEventBackgroundOverride(null);
       setScreen('MEMORIES');
     } else {
-      setSeenEventIds(prev => [...prev, activeEvent.id]);
+      const finishedEventId = activeEvent.id;
+      const finishedEventKind = activeEvent.kind;
+      setSeenEventIds(prev => [...prev, finishedEventId]);
       setActiveEvent(null);
-      audioEngine.playSfx('workshopDayEnd');
-      setScreen('DAY_END');
+      setEventBackgroundOverride(null);
+      
+      if (finishedEventKind === 'flashback_intro') {
+        setScreen('INTRO');
+      } else {
+        audioEngine.playSfx('workshopDayEnd');
+        setScreen('DAY_END');
+      }
     }
   };
 
@@ -3284,9 +3294,18 @@ function App() {
       vnBacklog
     });
     
+    // NEW: Check for flashback_intro
+    const introEventId = `${heroineId}_0`;
+    const introEvent = (AFFECTION_EVENTS[heroineId] || []).find(e => e.id === introEventId);
+    
     setTimeout(() => {
       setIsHeroineLoading(false);
-      setScreen('INTRO');
+      if (introEvent && !seenEventIds.includes(introEventId)) {
+        setActiveEvent(introEvent);
+        setScreen('EVENT');
+      } else {
+        setScreen('INTRO');
+      }
     }, 500); // Small buffer for smoothness
   };
 
@@ -3464,7 +3483,7 @@ function App() {
       DAY_END: 'shopExteriorNight',
       PROLOGUE: 'shopExteriorNight'
     };
-    const bgId = SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
+    const bgId = eventBackgroundOverride || SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
     if (!bg) return null;
@@ -3971,6 +3990,9 @@ function App() {
                   const page = pages[index];
                   if (page?.expression) setEventHeroineExpression(page.expression);
                   setEventSpeakerId(page?.speakerId || null);
+                  if (page?.backgroundId) {
+                    setEventBackgroundOverride(page.backgroundId);
+                  }
                 }}
                 onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
                 onComplete={handleCloseEvent}
@@ -4115,6 +4137,9 @@ function App() {
                   const page = pages[index];
                   if (page?.expression) setEventHeroineExpression(page.expression);
                   setEventSpeakerId(page?.speakerId || null);
+                  if (page?.backgroundId) {
+                    setEventBackgroundOverride(page.backgroundId);
+                  }
                 }}
                 onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
                 onComplete={handleCloseEvent}
