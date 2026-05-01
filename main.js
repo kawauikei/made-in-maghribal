@@ -10246,6 +10246,16 @@ function getRandomGreeting(excludeIds = []) {
   const pool = eligible.length > 0 ? eligible : GREETING_VARIATIONS;
   return pool[Math.floor(Math.random() * pool.length)];
 }
+function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
+  const greeting = getRandomGreeting();
+  const talks = getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode);
+  const mergedTalk = talks.length > 0 ? {
+    id: `merged_${talks.map((t) => t.id).join("_")}`,
+    pages: talks.flatMap((t) => t.pages)
+  } : null;
+  const newSeenTalkIds = talks.map((t) => t.id);
+  return { greeting, mergedTalk, newSeenTalkIds };
+}
 const ENDINGS = {
   hakima: {
     good: {
@@ -11078,23 +11088,16 @@ function App() {
     await preloadAssets(heroineAssets, setLoadingProgress);
     setActiveHeroineId(heroineId);
     setWorkshopState((prev) => ({ ...prev, activeHeroineId: heroineId }));
-    const greeting = getRandomGreeting();
-    setActiveGreeting(greeting);
-    const talks = getIntroTalks(
+    const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
       heroineId,
-      affection[heroineId] || 0,
+      currentAffection: affection[heroineId] || 0,
       seenTalkIds,
       routeMode
-    );
-    if (talks.length > 0) {
-      const mergedTalk = {
-        id: `merged_${talks.map((t) => t.id).join("_")}`,
-        pages: talks.flatMap((t) => t.pages)
-      };
-      setActiveDailyTalk(mergedTalk);
-      setSeenTalkIds((prev) => [...prev, ...talks.map((t) => t.id)]);
-    } else {
-      setActiveDailyTalk(null);
+    });
+    setActiveGreeting(greeting);
+    setActiveDailyTalk(mergedTalk);
+    if (newSeenTalkIds.length > 0) {
+      setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
     }
     saveGameData({
       routeMode,
@@ -11127,23 +11130,16 @@ function App() {
     } else {
       const nextDay = workshopState.day + 1;
       setWorkshopState((prev) => ({ ...prev, day: nextDay }));
-      const greeting = getRandomGreeting();
-      setActiveGreeting(greeting);
-      const talks = getIntroTalks(
-        activeHeroineId,
-        affection[activeHeroineId] || 0,
+      const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+        heroineId: activeHeroineId,
+        currentAffection: affection[activeHeroineId] || 0,
         seenTalkIds,
         routeMode
-      );
-      if (talks.length > 0) {
-        const mergedTalk = {
-          id: `merged_${talks.map((t) => t.id).join("_")}`,
-          pages: talks.flatMap((t) => t.pages)
-        };
-        setActiveDailyTalk(mergedTalk);
-        setSeenTalkIds((prev) => [...prev, ...talks.map((t) => t.id)]);
-      } else {
-        setActiveDailyTalk(null);
+      });
+      setActiveGreeting(greeting);
+      setActiveDailyTalk(mergedTalk);
+      if (newSeenTalkIds.length > 0) {
+        setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
       }
       setScreen("INTRO");
     }
