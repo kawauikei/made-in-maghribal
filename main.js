@@ -9962,6 +9962,7 @@ function App() {
   const [eventHeroineExpression, setEventHeroineExpression] = useState("normal");
   const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
+  const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -10236,12 +10237,20 @@ function App() {
     if (isRecallMode) {
       setActiveEvent(null);
       setIsRecallMode(false);
+      setEventBackgroundOverride(null);
       setScreen("MEMORIES");
     } else {
-      setSeenEventIds((prev) => [...prev, activeEvent.id]);
+      const finishedEventId = activeEvent.id;
+      const finishedEventKind = activeEvent.kind;
+      setSeenEventIds((prev) => [...prev, finishedEventId]);
       setActiveEvent(null);
-      audioEngine.playSfx("workshopDayEnd");
-      setScreen("DAY_END");
+      setEventBackgroundOverride(null);
+      if (finishedEventKind === "flashback_intro") {
+        setScreen("INTRO");
+      } else {
+        audioEngine.playSfx("workshopDayEnd");
+        setScreen("DAY_END");
+      }
     }
   };
   useEffect(() => {
@@ -10324,9 +10333,16 @@ function App() {
       seenTalkIds,
       vnBacklog
     });
+    const introEventId = `${heroineId}_0`;
+    const introEvent = (AFFECTION_EVENTS[heroineId] || []).find((e) => e.id === introEventId);
     setTimeout(() => {
       setIsHeroineLoading(false);
-      setScreen("INTRO");
+      if (introEvent && !seenEventIds.includes(introEventId)) {
+        setActiveEvent(introEvent);
+        setScreen("EVENT");
+      } else {
+        setScreen("INTRO");
+      }
     }, 500);
   };
   const handleNextDay = () => {
@@ -10460,7 +10476,7 @@ function App() {
       DAY_END: "shopExteriorNight",
       PROLOGUE: "shopExteriorNight"
     };
-    const bgId = SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
+    const bgId = eventBackgroundOverride || SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
     if (!bg) return null;
@@ -10925,6 +10941,9 @@ function App() {
               const page = pages[index];
               if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+              if (page == null ? void 0 : page.backgroundId) {
+                setEventBackgroundOverride(page.backgroundId);
+              }
             },
             onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
             onComplete: handleCloseEvent
@@ -11051,6 +11070,9 @@ function App() {
               const page = pages[index];
               if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+              if (page == null ? void 0 : page.backgroundId) {
+                setEventBackgroundOverride(page.backgroundId);
+              }
             },
             onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
             onComplete: handleCloseEvent
