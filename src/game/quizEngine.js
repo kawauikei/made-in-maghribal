@@ -5,16 +5,66 @@ import { calculateScore } from "./scoring.js";
 import itemsData from "../data/generated/items.json" with { type: "json" };
 
 // Map Master Data to engine format
-const MASTER_ITEMS = itemsData.items.map(item => ({
-  id: item.id,
-  typeId: `${item.category}_${item.index}`,
-  colorId: item.principle,
-  name: item.variants.normal.description.split("。")[0] || item.id,
-  image: item.image,
-  variants: item.variants
-}));
+const MASTER_ITEMS = itemsData.items.map(item => {
+  const typeId = `${item.category}_${item.index}`;
+  const type = ITEM_TYPE_BY_ID[typeId];
+  const colorId = item.principle;
+  
+  // M-QUIZ-PROMPT-TUNING-1: Shortened Name Logic
+  const colorPrefixMap = {
+    AS: "星明かりの",
+    EL: "青緑の",
+    LI: "生命の",
+    SA: "黄金の",
+    ME: "鋼鉄の"
+  };
+  
+  const typeName = type ? type.name : "";
+  const prefix = colorPrefixMap[colorId] || "";
+  const displayName = `${prefix}${typeName}`;
+
+  return {
+    id: item.id,
+    typeId,
+    colorId,
+    name: displayName, // Shortened name for quiz
+    fullName: item.variants.normal.description.split("。")[0] || item.id,
+    image: item.image,
+    variants: item.variants
+  };
+});
 
 const ITEMS_TO_USE = MASTER_ITEMS;
+
+// M-QUIZ-PROMPT-TUNING-1: Customer Types
+const CUSTOMER_TYPES = [
+  { id: 'old_man', icon: '👴', tone: 'elder', color: '#ffcc66' },
+  { id: 'woman', icon: '👩', tone: 'polite', color: '#ff99cc' },
+  { id: 'man', icon: '🧔', tone: 'plain', color: '#d1d1d1' },
+  { id: 'girl', icon: '👧', tone: 'casual', color: '#ffb3ba' },
+];
+
+/**
+ * Applies customer tone to the prompt text.
+ */
+function applyCustomerTone(text, tone) {
+  let result = text;
+  if (tone === 'elder') {
+    result = result.replace("見せてくれ。", "見せてくれんか。")
+                 .replace("ある？", "あるかの？")
+                 .replace("探している。", "探しておるんじゃ。");
+  } else if (tone === 'polite') {
+    result = result.replace("見せてくれ。", "見せていただけますか？")
+                 .replace("ある？", "ありますか？")
+                 .replace("探している。", "探しているんです。");
+  } else if (tone === 'casual') {
+    result = result.replace("見せてくれ。", "見せて！")
+                 .replace("ある？", "あるかな？")
+                 .replace("探している。", "探してるの。");
+  }
+  // 'plain' tone uses the default template
+  return result;
+}
 
 /**
  * Checks if an item matches the given criteria.
@@ -61,9 +111,6 @@ export function createQuizSession({ questionCount = 20 } = {}) {
 
 /**
  * Generates a single random question.
- * @param {string} id - Question ID.
- * @param {string} [forcedType=null] - Optional forced request type ID.
- * @param {Set<string>} [excludeItemIds=new Set()] - Set of item IDs to avoid for correct answer.
  */
 function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(), retryCount = 0) {
   const MAX_RETRIES = 10;
@@ -75,17 +122,37 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
   const criteria = {};
   let text = "";
 
+  // M-QUIZ-PROMPT-TUNING-1: Select Customer
+  const customer = CUSTOMER_TYPES[Math.floor(Math.random() * CUSTOMER_TYPES.length)];
+
   // Fill criteria based on template type
   if (requestTemplate.id === "color") {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     criteria.colorId = color.id;
+    
+    // M-QUIZ-PROMPT-TUNING-1: Metal/Purple Adjustment
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      const metalPhrases = ["ずっしりとした", "重厚感のある", "鉄の術理を帯びた"];
+      colorName = metalPhrases[Math.floor(Math.random() * metalPhrases.length)];
+      target = "{color}の"; // Replace the whole "{color}の" with the adjective
+    }
+    
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{color}", color.name);
+      .replace(target, colorName);
   } else if (requestTemplate.id === "genre") {
     const genre = GENRES[Math.floor(Math.random() * GENRES.length)];
     criteria.genre = genre.id;
+    
+    // M-QUIZ-PROMPT-TUNING-1: Genre Prefix Adjustment
+    let genreName = genre.name;
+    if (genre.id === "DAY") genreName = "一般雑貨の品";
+    if (genre.id === "TRD") genreName = "渡来品";
+    if (genre.id === "RIT") genreName = "厳かな儀式具";
+    
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{genre}", genre.name);
+      .replace("{genre}", genreName);
   } else if (requestTemplate.id === "itemType") {
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.itemTypeId = type.id;
@@ -96,43 +163,56 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.colorId = color.id;
     criteria.itemTypeId = type.id;
+    
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      colorName = "鋼鉄の";
+    }
+
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{color}", color.name)
+      .replace(target, colorName)
       .replace("{type}", type.name);
   }
+
+  // Apply Customer Cues
+  text = `${customer.icon} ${applyCustomerTone(text, customer.tone)}`;
 
   // Find valid correct items
   let correctItems = ITEMS_TO_USE.filter(item => isItemMatchingCriteria(item, criteria));
   
-  // M7b-2: Duplicate prevention - try to find items not used yet
+  // Duplicate prevention
   const nonDuplicateItems = correctItems.filter(item => !excludeItemIds.has(item.id));
-
-  // If no unused items for this criteria, but total items matching criteria > 0, 
-  // and we haven't hit retry limit, retry with different random criteria.
   if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
     return generateRandomQuestion(id, forcedType, excludeItemIds, retryCount + 1);
   }
-
   if (nonDuplicateItems.length > 0) {
     correctItems = nonDuplicateItems;
   }
-  // Fallback: if all matching items were already used and retries exhausted, we accept duplicates.
   
+  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
+
   // Strategy-based dummy selection
   let incorrectItems = [];
   
   if (requestTemplate.id === "color") {
     // Strategy: Same genre, different color
-    const correctSample = correctItems[0];
-    if (correctSample) {
-      const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
+    // M-QUIZ-PROMPT-TUNING-1: Life/Red priority
+    if (correctItem.colorId === 'LI') {
+      // Prioritize same type for Red comparison
+      incorrectItems = ITEMS_TO_USE.filter(item => 
+        item.typeId === correctItem.typeId && item.colorId !== 'LI'
+      );
+    }
+    
+    if (incorrectItems.length === 0) {
+      const genreId = ITEM_TYPE_BY_ID[correctItem.typeId].genre;
       incorrectItems = ITEMS_TO_USE.filter(item => 
         !isItemMatchingCriteria(item, criteria) && 
         ITEM_TYPE_BY_ID[item.typeId].genre === genreId
       );
     }
   } else if (requestTemplate.id === "genre") {
-    // Strategy: Different genre, but prefer similar group
     const groups = {
       ARM: "gear", CLT: "gear", ADN: "gear", RIT: "gear",
       FOD: "cons", MED: "cons", WRK: "cons",
@@ -145,7 +225,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
       return groups[itemGenre] === targetGroup;
     });
   } else if (requestTemplate.id === "itemType") {
-    // Strategy: Same genre, different type
     const typeId = criteria.itemTypeId || "";
     const targetGenre = typeId.includes("_") ? typeId.split("_")[0] : typeId;
     incorrectItems = ITEMS_TO_USE.filter(item => 
@@ -153,7 +232,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
       item.typeId.startsWith(targetGenre)
     );
   } else if (requestTemplate.id === "colorAndItemType") {
-    // Strategy: Same type different color, or same genre different type
     incorrectItems = ITEMS_TO_USE.filter(item => 
       !isItemMatchingCriteria(item, criteria) && 
       item.typeId === criteria.itemTypeId
@@ -168,7 +246,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     }
   }
 
-  // Final fallback if strategy failed
   if (incorrectItems.length === 0) {
     incorrectItems = ITEMS_TO_USE.filter(item => !isItemMatchingCriteria(item, criteria));
   }
@@ -177,13 +254,10 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     if (retryCount < MAX_RETRIES) {
       return generateRandomQuestion(id, null, excludeItemIds, retryCount + 1); 
     }
-    return null; // Should not happen with 250 items
+    return null;
   }
 
-  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   const incorrectItem = incorrectItems[Math.floor(Math.random() * incorrectItems.length)];
-
-  // Shuffle choices
   const choices = Math.random() > 0.5 ? [correctItem, incorrectItem] : [incorrectItem, correctItem];
 
   return {
@@ -192,6 +266,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
       id: requestTemplate.id,
       type: requestTemplate.id,
       text,
+      customer,
       criteria: { ...criteria }
     },
     criteria: { ...criteria },
@@ -239,14 +314,15 @@ export function answerQuestion(session, selectedItemId) {
 
 /**
  * Builds a plan of request types to ensure variety.
- * Currently only implements a fixed plan for 5 questions.
  */
 function buildRequestTypePlan(count) {
-  if (count !== 5) return null;
+  if (count < 4) return null;
 
   const baseTypes = ["color", "genre", "itemType", "colorAndItemType"];
-  const randomExtra = baseTypes[Math.floor(Math.random() * baseTypes.length)];
-  const plan = [...baseTypes, randomExtra];
+  const plan = [];
+  for (let i = 0; i < count; i++) {
+    plan.push(baseTypes[i % baseTypes.length]);
+  }
   
   return shuffleArray(plan);
 }

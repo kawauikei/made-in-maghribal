@@ -1269,13 +1269,14 @@ export default function App() {
             <div style={{ 
               ...bubbleStyle, 
               background: '#fff', 
-              color: '#333', 
-              border: `2px solid ${THEME.brassDark}`,
+              color: currentQuestion.request.customer?.color || '#333', 
+              border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
               borderRadius: '15px 15px 15px 0',
               padding: '20px',
               fontSize: '1.1em',
               lineHeight: '1.6',
-              boxShadow: '4px 4px 0 rgba(0,0,0,0.1)'
+              boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
+              transition: 'all 0.3s'
             }}>
               {currentQuestion.request.text}
             </div>
@@ -1294,6 +1295,15 @@ export default function App() {
               const feedbackClass = isSelected ? (quizFeedback.isCorrect ? 'feedback-correct' : 'feedback-wrong') : '';
               const staggerClass = `quiz-option-${index}`;
               
+              // M-QUIZ-PROMPT-TUNING-1: Genre Prefix for choice names
+              let displayChoiceName = item.name;
+              if (currentQuestion.request.type === 'genre') {
+                const category = item.id.split('_')[1]; // e.g. DAY from IT_DAY_SA_01
+                if (category === 'DAY') displayChoiceName = `一般雑貨の${displayChoiceName}`;
+                if (category === 'TRD') displayChoiceName = `渡来品の${displayChoiceName}`;
+                if (category === 'RIT') displayChoiceName = `厳かな${displayChoiceName}`;
+              }
+
               return (
                 <div 
                   data-testid="quiz-choice"
@@ -1315,8 +1325,8 @@ export default function App() {
                       e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
                     }}
                   />
-                  <div style={{ ...itemNameStyle, color: THEME.textDark, borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '10px' }}>
-                    {item.name}
+                  <div style={{ ...itemNameStyle, color: THEME.textDark, borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '10px', fontSize: '0.9em' }}>
+                    {displayChoiceName}
                   </div>
                 </div>
               );

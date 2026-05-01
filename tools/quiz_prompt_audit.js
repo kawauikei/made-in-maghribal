@@ -6,17 +6,36 @@ import { REQUEST_TEMPLATES } from '../src/data/requestTemplates.js';
 import itemsData from '../src/data/generated/items.json' with { type: 'json' };
 
 // Map Master Data to engine format (same as quizEngine.js)
-const MASTER_ITEMS = itemsData.items.map(item => ({
-  id: item.id,
-  typeId: `${item.category}_${item.index}`,
-  colorId: item.principle,
-  name: item.variants.normal.description.split("。")[0] || item.id,
-  image: item.image,
-  category: item.category,
-  principle: item.principle,
-  index: item.index,
-  description: item.variants.normal.description
-}));
+const MASTER_ITEMS = itemsData.items.map(item => {
+  const typeId = `${item.category}_${item.index}`;
+  const type = ITEM_TYPE_BY_ID[typeId];
+  const colorId = item.principle;
+  
+  const colorPrefixMap = {
+    AS: "星明かりの",
+    EL: "青緑の",
+    LI: "生命の",
+    SA: "黄金の",
+    ME: "鋼鉄の"
+  };
+  
+  const typeName = type ? type.name : "";
+  const prefix = colorPrefixMap[colorId] || "";
+  const displayName = `${prefix}${typeName}`;
+
+  return {
+    id: item.id,
+    typeId,
+    colorId,
+    name: displayName,
+    fullName: item.variants.normal.description.split("。")[0] || item.id,
+    image: item.image,
+    category: item.category,
+    principle: item.principle,
+    index: item.index,
+    description: item.variants.normal.description
+  };
+});
 
 const DOCS_DIR = './docs';
 if (!fs.existsSync(DOCS_DIR)) {
@@ -281,8 +300,21 @@ function generateHtmlReport(items, questions) {
             gap: 24px;
         }
 
-        .sample-prompt { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; }
-        .sample-type { font-size: 0.8rem; color: var(--accent); text-transform: uppercase; font-weight: 600; }
+        .sample-prompt { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            color: var(--text); 
+            line-height: 1.6;
+        }
+
+        .sample-customer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
 
         .choices { display: flex; gap: 12px; margin-top: 16px; }
         .choice {
@@ -368,7 +400,12 @@ function generateHtmlReport(items, questions) {
                 <div class="sample-card">
                     <div>
                         <div class="sample-type">${q.requestType}</div>
-                        <div class="sample-prompt">${q.promptText}</div>
+                        <div class="sample-customer" style="color: ${q.customer?.color || 'inherit'};">
+                            <span>${q.customer?.id || 'Unknown'}</span>
+                        </div>
+                        <div class="sample-prompt" style="border-left: 4px solid ${q.customer?.color || 'transparent'}; padding-left: 12px;">
+                            ${q.promptText}
+                        </div>
                         <div class="logic-tag">Logic: ${q.logic}</div>
                     </div>
                     <div class="choices">
@@ -423,6 +460,7 @@ function generateHtmlReport(items, questions) {
                                         <span>•</span>
                                         <span>${genre?.name || item.category}</span>
                                     </div>
+                                    <div style="font-size: 0.7rem; opacity: 0.5; margin-top: 2px;">${item.fullName}</div>
                                 </div>
                             </div>
                             <div class="category-icon">
@@ -468,43 +506,86 @@ function generateHtmlReport(items, questions) {
 /**
  * Simplified simulator based on quizEngine.js
  */
+const CUSTOMER_TYPES = [
+  { id: 'old_man', icon: '👴', tone: 'elder', color: '#ffcc66' },
+  { id: 'woman', icon: '👩', tone: 'polite', color: '#ff99cc' },
+  { id: 'man', icon: '🧔', tone: 'plain', color: '#d1d1d1' },
+  { id: 'girl', icon: '👧', tone: 'casual', color: '#ffb3ba' },
+];
+
+function applyCustomerTone(text, tone) {
+  let result = text;
+  if (tone === 'elder') {
+    result = result.replace("見せてくれ。", "見せてくれんか。")
+                 .replace("ある？", "あるかの？")
+                 .replace("探している。", "探しておるんじゃ。");
+  } else if (tone === 'polite') {
+    result = result.replace("見せてくれ。", "見せていただけますか？")
+                 .replace("ある？", "ありますか？")
+                 .replace("探している。", "探しているんです。");
+  } else if (tone === 'casual') {
+    result = result.replace("見せてくれ。", "見せて！")
+                 .replace("ある？", "あるかな？")
+                 .replace("探している。", "探してるの。");
+  }
+  return result;
+}
+
 function simulateQuestionGeneration(forcedType = null) {
   const requestTemplate = forcedType 
     ? REQUEST_TEMPLATES.find(t => t.id === forcedType)
     : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   
+  const customer = CUSTOMER_TYPES[Math.floor(Math.random() * CUSTOMER_TYPES.length)];
   const criteria = {};
   let promptText = "";
-  let logic = "";
+  let logic = "default";
 
   if (requestTemplate.id === "color") {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     criteria.colorId = color.id;
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      const metalPhrases = ["ずっしりとした", "重厚感のある", "鉄の術理を帯びた"];
+      colorName = metalPhrases[Math.floor(Math.random() * metalPhrases.length)];
+      target = "{color}の";
+      logic = "ME special phrasing";
+    }
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{color}", color.name);
-    logic = `Match Color: ${color.name}`;
+      .replace(target, colorName);
   } else if (requestTemplate.id === "genre") {
     const genre = GENRES[Math.floor(Math.random() * GENRES.length)];
     criteria.genre = genre.id;
+    let genreName = genre.name;
+    if (genre.id === "DAY") genreName = "一般雑貨の品";
+    if (genre.id === "TRD") genreName = "渡来品";
+    if (genre.id === "RIT") genreName = "厳かな儀式具";
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{genre}", genre.name);
-    logic = `Match Genre: ${genre.name}`;
+      .replace("{genre}", genreName);
   } else if (requestTemplate.id === "itemType") {
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.itemTypeId = type.id;
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
       .replace("{type}", type.name);
-    logic = `Match Type: ${type.name}`;
   } else if (requestTemplate.id === "colorAndItemType") {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.colorId = color.id;
     criteria.itemTypeId = type.id;
+    
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      colorName = "鋼鉄の";
+    }
+
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
-      .replace("{color}", color.name)
+      .replace(target, colorName)
       .replace("{type}", type.name);
-    logic = `Match Color: ${color.name} AND Type: ${type.name}`;
   }
+
+  promptText = `${customer.icon} ${applyCustomerTone(promptText, customer.tone)}`;
 
   const isMatching = (item, c) => {
     const itemType = ITEM_TYPE_BY_ID[item.typeId];
@@ -517,26 +598,18 @@ function simulateQuestionGeneration(forcedType = null) {
 
   const correctItems = MASTER_ITEMS.filter(item => isMatching(item, criteria));
   if (correctItems.length === 0) return null;
+  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
 
-  // Simple incorrect item selection logic (replicating strategies)
   let incorrectItems = [];
-  if (requestTemplate.id === "color") {
-    const genreId = ITEM_TYPE_BY_ID[correctItems[0].typeId].genre;
-    incorrectItems = MASTER_ITEMS.filter(item => !isMatching(item, criteria) && ITEM_TYPE_BY_ID[item.typeId].genre === genreId);
-  } else if (requestTemplate.id === "genre") {
-    incorrectItems = MASTER_ITEMS.filter(item => !isMatching(item, criteria));
-  } else if (requestTemplate.id === "itemType") {
-    const targetGenre = criteria.itemTypeId.split("_")[0];
-    incorrectItems = MASTER_ITEMS.filter(item => !isMatching(item, criteria) && item.typeId.startsWith(targetGenre));
-  } else if (requestTemplate.id === "colorAndItemType") {
-    incorrectItems = MASTER_ITEMS.filter(item => !isMatching(item, criteria) && item.typeId === criteria.itemTypeId);
+  if (correctItem.colorId === 'LI' && requestTemplate.id === "color") {
+    incorrectItems = MASTER_ITEMS.filter(item => item.typeId === correctItem.typeId && item.colorId !== 'LI');
+    logic = "LI same-type priority";
   }
 
   if (incorrectItems.length === 0) {
     incorrectItems = MASTER_ITEMS.filter(item => !isMatching(item, criteria));
   }
 
-  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   const wrongItem = incorrectItems[Math.floor(Math.random() * incorrectItems.length)];
 
   const colorMap = id => COLOR_BY_ID[id]?.name || id;
@@ -546,6 +619,7 @@ function simulateQuestionGeneration(forcedType = null) {
     requestType: requestTemplate.id,
     promptText,
     logic,
+    customer,
     correctItem: {
       name: correctItem.name,
       image: correctItem.image,

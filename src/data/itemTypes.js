@@ -6,7 +6,7 @@ export const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
   { id: "MED", name: "薬品" },
-  { id: "ADN", name: "装身具" },
+  { id: "ADN", name: "アクセサリー" },
   { id: "CLT", name: "衣服" },
   { id: "DAY", name: "日用" },
   { id: "WRK", name: "道具" },
