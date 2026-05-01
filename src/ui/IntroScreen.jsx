@@ -33,19 +33,39 @@ const IntroScreen = ({
     { 
       speakerId: 'nader', 
       speaker: 'ナーディル', 
-      text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？` 
+      text: `${activeHeroine.name}さん、いらっしゃい。今日も店に寄ってくれたのですね。` 
     },
     { 
       speakerId: activeHeroine.id, 
       speaker: activeHeroine.name, 
-      text: activeHeroine.greeting || "ええ、相談に乗ってくれるかしら。" 
+      text: activeHeroine.greeting || "ええ、あなたの目利きを見せてもらおうと思って。" 
+    },
+    {
+      speakerId: activeHeroine.id,
+      speaker: activeHeroine.name,
+      text: "それじゃ、私はこれで。今日も良い縁があるといいわね。頑張って。"
+    },
+    {
+      speakerId: 'nader',
+      speaker: 'ナーディル',
+      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
     }
   ];
+
+  const [isIntroComplete, setIsIntroComplete] = React.useState(false);
+
+  const handleAreaClick = (e) => {
+    if (isIntroComplete) {
+      onBeginService();
+    } else {
+      onVnAreaClick(e);
+    }
+  };
   return (
     <div 
       data-testid="intro-screen" 
       style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
-      onClick={onVnAreaClick}
+      onClick={handleAreaClick}
     >
       {renderThemeStyles()}
       {renderBackground(screen)}
@@ -89,35 +109,37 @@ const IntroScreen = ({
       </div>
 
       {/* Action Button: Absolutely positioned above the VNBox dock */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '185px', 
-        left: '50%', 
-        transform: 'translateX(-50%)', 
-        zIndex: 7,
-        width: '94%',
-        display: 'flex',
-        justifyContent: 'center'
-      }}>
-        <button 
-          data-testid="intro-start" 
-          onClick={onBeginService} 
-          className="vn-button-reveal"
-          style={{ 
-            ...buttonStyle, 
-            width: '100%', 
-            maxWidth: '340px', 
-            margin: 0, 
-            height: '48px',
-            fontSize: '1.1em',
-            background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
-            boxShadow: `0 6px 20px ${THEME.brass}44`,
-            border: '1px solid rgba(255,255,255,0.2)'
-          }}
-        >
-          営業を始める
-        </button>
-      </div>
+      {isIntroComplete && (
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '185px', 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          zIndex: 7,
+          width: '94%',
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <button 
+            data-testid="intro-start" 
+            onClick={onBeginService} 
+            className="vn-button-reveal"
+            style={{ 
+              ...buttonStyle, 
+              width: '100%', 
+              maxWidth: '340px', 
+              margin: 0, 
+              height: '48px',
+              fontSize: '1.1em',
+              background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+              boxShadow: `0 6px 20px ${THEME.brass}44`,
+              border: '1px solid rgba(255,255,255,0.2)'
+            }}
+          >
+            星瓶堂を開ける
+          </button>
+        </div>
+      )}
 
       {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
       <div style={{ 
@@ -147,7 +169,7 @@ const IntroScreen = ({
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
             onPageComplete={onPageComplete}
-            onComplete={onBeginService}
+            onComplete={() => setIsIntroComplete(true)}
           />
         </div>
       </div>

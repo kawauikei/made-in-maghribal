@@ -38,11 +38,19 @@ const PrologueScreen = ({
 }) => {
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
 
+  const handleAreaClick = (e) => {
+    if (isPrologueComplete) {
+      onAdvanceToHeroineSelect();
+    } else {
+      onVnAreaClick(e);
+    }
+  };
+
   return (
     <div 
       data-testid="prologue-screen" 
       style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
-      onClick={onVnAreaClick}
+      onClick={handleAreaClick}
     >
       {renderThemeStyles()}
       {renderBackground('PROLOGUE')}

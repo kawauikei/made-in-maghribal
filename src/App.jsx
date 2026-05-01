@@ -738,7 +738,7 @@ export default function App() {
 
   const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
-      INTRO: 'shopExteriorDay',
+      INTRO: 'shopInteriorService',
       RESULT: 'shopInteriorWorkshop',
       DAY_END: 'shopExteriorNight',
       PROLOGUE: 'shopExteriorNight'
