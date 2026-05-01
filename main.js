@@ -8471,9 +8471,14 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         borderRadius: "50%",
         border: `2px solid ${THEME.brass}`,
         background: "rgba(255,255,255,0.1)",
-        boxShadow: `0 0 8px ${THEME.brass}88`
+        boxShadow: `0 0 8px ${THEME.brass}88`,
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
       }
-    }
+    },
+    /* @__PURE__ */ React.createElement("div", { className: "beat-halo" })
   ), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "40%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "20%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } })), /* @__PURE__ */ React.createElement("div", { style: {
     width: "42px",
     height: "42px",
@@ -9086,14 +9091,28 @@ function App() {
         animation: vn-button-reveal 0.25s ease-out forwards;
       }
 
-      /* Beat Lane Pulse (M-RHYTHM-UI-1) */
+      /* Beat Lane Pulse & Halo (M-RHYTHM-UI-1-POLISH) */
       @keyframes beat-lane-pulse {
-        0% { transform: scale(1); box-shadow: 0 0 8px ${THEME.brass}88; }
-        50% { transform: scale(1.2); box-shadow: 0 0 16px ${THEME.brass}; }
-        100% { transform: scale(1); box-shadow: 0 0 8px ${THEME.brass}88; }
+        0%, 100% { transform: scale(1); filter: brightness(1); box-shadow: 0 0 8px ${THEME.brass}88; }
+        50% { transform: scale(1.15); filter: brightness(1.4); box-shadow: 0 0 20px ${THEME.brass}; }
+      }
+      @keyframes beat-halo-expand {
+        0% { transform: scale(0.8); opacity: 0.9; }
+        100% { transform: scale(2.8); opacity: 0; }
       }
       .beat-pulse {
         animation: beat-lane-pulse 2s infinite ease-in-out;
+      }
+      .beat-halo {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 1px solid ${THEME.brass};
+        box-shadow: 0 0 10px ${THEME.brass};
+        animation: beat-halo-expand 2s infinite ease-out;
+        pointer-events: none;
+        z-index: -1;
       }
 
       /* Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON) */
