@@ -2238,40 +2238,29 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: 'none'
       }}
     >
-      {/* M-VN-SKIP-1: Floating Skip Button (Header Position, Half-Overlap) */}
-      <div 
-        onClick={handleSkipBlock}
-        onMouseEnter={() => setHoverSkip(true)}
-        onMouseLeave={() => setHoverSkip(false)}
-        style={{
-          ...headerButtonStyle,
-          position: 'absolute',
-          top: '-32px', // Align with speaker tag
-          right: '24px',
-          background: hoverSkip ? (themeColor || THEME.brass) : 'rgba(12, 25, 38, 0.95)',
-          color: hoverSkip ? '#0c1926' : (themeColor || THEME.brass),
-          border: `1px solid ${hoverSkip ? (themeColor || THEME.brass) : (themeColor || THEME.brass) + '77'}`,
-          cursor: 'pointer',
-          zIndex: 20
-        }}
-      >
-        SKIP
-      </div>
-
-      {/* Speaker Tag (Floating Top-Left, Half-Overlap) */}
-      {currentSpeaker && (
+      {/* VNBox Header Row (Ensures perfect symmetry between Nameplate and SKIP) */}
+      <div style={{
+        position: 'absolute',
+        top: '-45px', // Fixed header position
+        left: 0,
+        width: '100%',
+        height: '60px', // Matches Face Icon height
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        boxSizing: 'border-box',
+        pointerEvents: 'none',
+        zIndex: 20
+      }}>
+        {/* Left Side: Speaker Info */}
         <div style={{ 
-          position: 'absolute',
-          left: '12px',
-          top: '-32px', // Half-overlap (Face icon is 60px)
-          display: 'flex',
-          alignItems: 'center',
+          display: 'flex', 
+          alignItems: 'center', 
           gap: '12px',
-          zIndex: 10,
-          pointerEvents: 'none',
-          transition: 'all 0.2s ease'
+          pointerEvents: 'none'
         }}>
-          {facePath && (
+          {currentSpeaker && facePath && (
             <div style={{
               width: '60px',
               height: '60px',
@@ -2283,7 +2272,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
               transform: 'rotate(-2deg)',
               position: 'relative',
-              transition: 'all 0.2s ease'
+              pointerEvents: 'auto'
             }}>
               <img 
                 key={facePath} 
@@ -2304,7 +2293,6 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
-              {/* Inner bezel */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
@@ -2315,15 +2303,34 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
             </div>
           )}
           
-          <div style={{ 
-            ...headerButtonStyle,
-            border: `1px solid ${themeColor || THEME.brass}77`,
-            animation: 'vn-fade-in 0.2s ease'
-          }}>
-            {currentSpeaker}
-          </div>
+          {currentSpeaker && (
+            <div style={{ 
+              ...headerButtonStyle,
+              pointerEvents: 'auto',
+              animation: 'vn-fade-in 0.2s ease'
+            }}>
+              {currentSpeaker}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Right Side: Operations */}
+        <div 
+          onClick={handleSkipBlock}
+          onMouseEnter={() => setHoverSkip(true)}
+          onMouseLeave={() => setHoverSkip(false)}
+          style={{
+            ...headerButtonStyle,
+            background: hoverSkip ? (themeColor || THEME.brass) : 'rgba(12, 25, 38, 0.95)',
+            color: hoverSkip ? '#0c1926' : (themeColor || THEME.brass),
+            border: `1px solid ${hoverSkip ? (themeColor || THEME.brass) : (themeColor || THEME.brass) + '77'}`,
+            cursor: 'pointer',
+            pointerEvents: 'auto'
+          }}
+        >
+          SKIP
+        </div>
+      </div>
 
       {/* Instant Skip Fade Overlay */}
       {isFadingOut && (
