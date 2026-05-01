@@ -4,7 +4,7 @@
 const assert = require('assert');
 const path = require('path');
 const { pathToFileURL } = require('url');
-const { checkNewEventUnlock, getEventPages } = require('../src/game/eventSystem.js');
+const { checkNewEventUnlock, getEventPages, resolveHeroineSelectionEvent, resolveEventReturnScreen } = require('../src/game/eventSystem.js');
 
 console.log('\n--- Made in Maghribal: Event System Tests ---');
 
@@ -123,6 +123,49 @@ async function main() {
   assert.ok(seenIds.has('dariya_10'));
   assert.ok(seenIds.has('dariya_20'));
   assert.ok(seenIds.has('dariya_climax'));
+
+  // --- resolveHeroineSelectionEvent Tests ---
+  console.log('\nTesting resolveHeroineSelectionEvent...');
+
+  const fb1 = resolveHeroineSelectionEvent({ heroineId: 'hakima', seenEventIds: [] });
+  assert.ok(fb1 !== null, 'Should return flashback_intro for hakima when not seen');
+  assert.strictEqual(fb1.id, 'hakima_0');
+  assert.strictEqual(fb1.kind, 'flashback_intro');
+  console.log('PASSED: resolveHeroineSelectionEvent returns _0 for unread hakima');
+
+  const fb2 = resolveHeroineSelectionEvent({ heroineId: 'hakima', seenEventIds: ['hakima_0'] });
+  assert.strictEqual(fb2, null, 'Should return null when _0 is already seen');
+  console.log('PASSED: resolveHeroineSelectionEvent returns null for seen _0');
+
+  const fb3 = resolveHeroineSelectionEvent({ heroineId: 'unknown', seenEventIds: [] });
+  assert.strictEqual(fb3, null, 'Should return null for unknown heroine');
+  console.log('PASSED: resolveHeroineSelectionEvent returns null for unknown heroine');
+
+  for (const hId of ['hakima', 'mira', 'dariya']) {
+    const fb = resolveHeroineSelectionEvent({ heroineId: hId, seenEventIds: [] });
+    assert.ok(fb !== null, `Should return flashback_intro for ${hId}`);
+    assert.strictEqual(fb.id, `${hId}_0`);
+  }
+  console.log('PASSED: resolveHeroineSelectionEvent works for all heroines');
+
+  // --- resolveEventReturnScreen Tests ---
+  console.log('\nTesting resolveEventReturnScreen...');
+
+  const r1 = resolveEventReturnScreen({ eventKind: 'flashback_intro', isRecallMode: false });
+  assert.strictEqual(r1, 'INTRO', 'flashback_intro should return to INTRO');
+  console.log('PASSED: resolveEventReturnScreen returns INTRO for flashback_intro');
+
+  const r2 = resolveEventReturnScreen({ eventKind: 'hakima_5', isRecallMode: false });
+  assert.strictEqual(r2, 'DAY_END', 'Normal event should return to DAY_END');
+  console.log('PASSED: resolveEventReturnScreen returns DAY_END for normal event');
+
+  const r3 = resolveEventReturnScreen({ eventKind: 'hakima_5', isRecallMode: true });
+  assert.strictEqual(r3, 'MEMORIES', 'Recall mode should return to MEMORIES');
+  console.log('PASSED: resolveEventReturnScreen returns MEMORIES for recall mode');
+
+  const r4 = resolveEventReturnScreen({ eventKind: 'flashback_intro', isRecallMode: true });
+  assert.strictEqual(r4, 'MEMORIES', 'Recall mode takes priority over flashback_intro');
+  console.log('PASSED: resolveEventReturnScreen recall mode takes priority');
 
   console.log('\n--- All event system tests completed successfully! ---');
 }

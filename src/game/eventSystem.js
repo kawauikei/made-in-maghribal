@@ -154,3 +154,42 @@ export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkId
   // MVP: Return the first one found in definition order
   return eligible.length > 0 ? eligible[0] : null;
 }
+
+/**
+ * Resolves whether a flashback_intro event should be triggered when selecting a heroine.
+ * Pure function: no side effects.
+ * 
+ * @param {Object} params
+ * @param {string} params.heroineId - The selected heroine ID
+ * @param {string[]} params.seenEventIds - List of event IDs already seen
+ * @returns {Object|null} The flashback_intro event object, or null if not eligible
+ */
+export function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
+  const introEventId = `${heroineId}_0`;
+  const events = getEventsByHeroine(heroineId);
+  const introEvent = events.find(e => e.id === introEventId);
+
+  if (introEvent && !seenEventIds.includes(introEventId)) {
+    return introEvent;
+  }
+  return null;
+}
+
+/**
+ * Resolves the screen to return to after an event closes.
+ * Pure function: no side effects.
+ * 
+ * @param {Object} params
+ * @param {string} params.eventKind - The kind of the finished event ('flashback_intro', etc.)
+ * @param {boolean} params.isRecallMode - Whether the event was viewed in recall/memories mode
+ * @returns {string} The target screen ID ('MEMORIES', 'INTRO', or 'DAY_END')
+ */
+export function resolveEventReturnScreen({ eventKind, isRecallMode }) {
+  if (isRecallMode) {
+    return 'MEMORIES';
+  }
+  if (eventKind === 'flashback_intro') {
+    return 'INTRO';
+  }
+  return 'DAY_END';
+}

@@ -13,7 +13,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventReturnScreen } from './game/eventSystem';
 import { prepareIntroSequence } from './game/introFlow';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
@@ -3881,7 +3881,8 @@ function App() {
       setActiveEvent(null);
       setEventBackgroundOverride(null);
       
-      if (finishedEventKind === 'flashback_intro') {
+      const returnScreen = resolveEventReturnScreen({ eventKind: finishedEventKind, isRecallMode: false });
+      if (returnScreen === 'INTRO') {
         setScreen('INTRO');
       } else {
         audioEngine.playSfx('workshopDayEnd');
@@ -3988,14 +3989,13 @@ function App() {
       vnBacklog
     });
     
-    // NEW: Check for flashback_intro
-    const introEventId = `${heroineId}_0`;
-    const introEvent = (AFFECTION_EVENTS[heroineId] || []).find(e => e.id === introEventId);
+    // Check for flashback_intro
+    const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
     
     setTimeout(() => {
       setIsHeroineLoading(false);
-      if (introEvent && !seenEventIds.includes(introEventId)) {
-        setActiveEvent(introEvent);
+      if (flashbackEvent) {
+        setActiveEvent(flashbackEvent);
         setScreen('EVENT');
       } else {
         setScreen('INTRO');
