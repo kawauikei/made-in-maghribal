@@ -2300,6 +2300,21 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
 
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, 'face', currentExpression) : null;
 
+  // B-2: Face Icon transition logic
+  const [displayFace, setDisplayFace] = useState(facePath);
+  const [prevFace, setPrevFace] = useState(null);
+  const [isFaceLoaded, setIsFaceLoaded] = useState(false);
+
+  useEffect(() => {
+    if (facePath !== displayFace) {
+      setPrevFace(displayFace);
+      setDisplayFace(facePath);
+      setIsFaceLoaded(false); // Reset load state
+      const timer = setTimeout(() => setPrevFace(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [facePath]);
+
   const headerButtonStyle = {
     padding: '6px 20px',
     borderRadius: '999px',
@@ -2372,7 +2387,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           gap: '12px',
           pointerEvents: 'none'
         }}>
-          {currentSpeaker && facePath && (
+          {currentSpeaker && displayFace && (
             <div style={{
               width: '60px',
               height: '60px',
@@ -2386,10 +2401,30 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               position: 'relative',
               pointerEvents: 'auto'
             }}>
+              {/* Prev Face (Fade Out) */}
+              {prevFace && (
+                <img 
+                  src={prevFace} 
+                  alt="prev face" 
+                  style={{ 
+                    width: '110%', 
+                    height: '110%', 
+                    objectFit: 'cover',
+                    objectPosition: 'center 20%',
+                    position: 'absolute',
+                    top: '-5%',
+                    left: '-5%',
+                    zIndex: 1,
+                    animation: 'vn-fade-out 0.2s forwards'
+                  }}
+                />
+              )}
+              {/* Current Face (Fade In) */}
               <img 
-                key={facePath} 
-                src={facePath} 
+                key={displayFace} 
+                src={displayFace} 
                 alt={currentSpeaker} 
+                onLoad={() => setIsFaceLoaded(true)}
                 style={{ 
                   width: '110%', 
                   height: '110%', 
@@ -2400,7 +2435,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                   position: 'absolute',
                   top: '-5%',
                   left: '-5%',
-                  animation: 'vn-fade-in 0.2s ease'
+                  zIndex: 2,
+                  opacity: isFaceLoaded ? 1 : 0,
+                  animation: isFaceLoaded ? 'vn-fade-in 0.2s ease' : 'none'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -2410,17 +2447,21 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                 inset: 0,
                 border: '1px solid rgba(255,255,255,0.1)',
                 borderRadius: '14px',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 3
               }} />
             </div>
           )}
           
           {currentSpeaker && (
-            <div style={{ 
-              ...headerButtonStyle,
-              pointerEvents: 'auto',
-              animation: 'vn-fade-in 0.2s ease'
-            }}>
+            <div 
+              key={currentSpeaker}
+              style={{ 
+                ...headerButtonStyle,
+                pointerEvents: 'auto',
+                animation: 'vn-fade-in 0.2s ease'
+              }}
+            >
               {currentSpeaker}
             </div>
           )}
@@ -3445,6 +3486,10 @@ function App() {
         animation: vn-button-reveal 0.25s ease-out forwards;
       }
 
+      /* VN Global Fade Animations (B-2) */
+      @keyframes vn-fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes vn-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
       /* Beat Lane Pulse & Halo (M-RHYTHM-UI-1-POLISH) */
       @keyframes beat-lane-pulse {
         0%, 100% { transform: scale(1); filter: brightness(1); box-shadow: 0 0 8px ${THEME.brass}88; }
@@ -4363,8 +4408,27 @@ function App() {
 
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   const [imgError, setImgError] = useState(false);
-  const assetPath = getHeroineAsset(heroine.id, type, expression);
+  const [displayExpr, setDisplayExpr] = useState(expression);
+  const [prevExpr, setPrevExpr] = useState(null);
+  const [isCurrentLoaded, setIsCurrentLoaded] = useState(false);
+  
+  // B-2: Expression transition logic
+  useEffect(() => {
+    if (expression !== displayExpr) {
+      setPrevExpr(displayExpr);
+      setDisplayExpr(expression);
+      setIsCurrentLoaded(false); // Reset load state for new expression
+      const timer = setTimeout(() => setPrevExpr(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [expression]);
+
+  const assetPath = getHeroineAsset(heroine.id, type, displayExpr);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+
+  const prevAssetPath = prevExpr ? getHeroineAsset(heroine.id, type, prevExpr) : null;
+  const prevFullPath = prevAssetPath ? `${import.meta.env.BASE_URL}${prevAssetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+
   const isStanding = type === 'standing';
   
   const displaySize = size === 'large' 
@@ -4413,10 +4477,31 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 
   return (
     <div style={containerStyle}>
+      {/* Prev Expression (Fade Out) */}
+      {prevFullPath && (
+        <img 
+          src={prevFullPath} 
+          alt="previous expression"
+          style={{ 
+            ...imgStyle, 
+            position: 'absolute', 
+            zIndex: 1,
+            animation: 'vn-fade-out 0.2s forwards' 
+          }} 
+        />
+      )}
+      {/* Current Expression (Fade In) */}
       <img 
+        key={displayExpr}
         src={fullPath} 
         alt={heroine.name} 
-        style={imgStyle}
+        onLoad={() => setIsCurrentLoaded(true)}
+        style={{ 
+          ...imgStyle, 
+          zIndex: 2,
+          opacity: isCurrentLoaded ? 1 : 0,
+          animation: isCurrentLoaded ? 'vn-fade-in 0.2s forwards' : 'none' 
+        }}
         draggable={false}
         onError={() => setImgError(true)}
       />
