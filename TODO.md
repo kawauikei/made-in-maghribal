@@ -3,50 +3,50 @@
 ## 🟩 Recently Completed (Narrative Fidelity & UI Polish)
 
 ### [UI/UX] Interaction Visuals
-- [x] **Still Event Face-Aware Centering (Prototype)**: Added `stillCrop` metadata to `STILL_IMAGES` and updated `App.jsx` to support manual framing overrides for better character focus.
-- [x] **Still Event UI Refine (C-1)**: Replaced cramped framed layout with cinematic full-screen presentation. Removed redundant buttons and integrated with VNBox bottom-dock.
-- [x] **Expression Cross-fade (B-2)**: Implemented 0.2s cross-fade for standing images and face icons during expression changes. Added image load detection to prevent flickering.
-- [x] **StillCrop Audit Report**: Created `tools/still_crop_audit.js` to generate visual reports (`docs/still_crop_audit_report.html`) showing current framing across aspect ratios.
-- [x] **QUIZ Screen Redesign (B-1)**: Full-screen background and full-width rhythm lane band for better immersion.
-- [x] **Header Alignment (A-4)**: Headings in INTRO, EVENT, and RESULT screens are now anchored top-left (8px/12px) for a cleaner ADV look.
-- [x] **HUD Simplification (A-3)**: Removed "Current Bond" label; route mode is now indicated by button background colors (Normal: White, LongHistory: Pink).
-- [x] **Centered Character Standing**: Character assets are now perfectly centered for better cinematic focus.
-- [x] **Speaker Priority System**: Implemented logic where Heroine takes priority over Nadir during interactions.
-- [x] **Smooth Transitions**: 0.6s cross-fade implemented for character arrivals/departures in `IntroScreen`.
-- [x] **Floating Face Icon**: Redesigned `VNBox` nameplate with a scaled-down (60px) floating icon at the top-left corner.
-- [x] **SFX Integration**: Added volume-scaled SFX (`quiz_wrong_sand_tap_01`) for character transitions.
+- [x] **RESULT UI Reconstruction (M-RESULT-UI-RECONSTRUCTION)**: Rebuilt result screen as a full-screen UI with large heroine standing images and centralized score panels.
+- [x] **Still Event Face-Aware Centering (Infrastructure)**: Added `stillCrop` metadata support and audit tools. (Note: Infrastructure remains but expansion is superseded by 3:4 asset policy).
+- [x] **Still Event UI Refine (C-1)**: Replaced cramped framed layout with cinematic full-screen presentation.
+- [x] **Expression Cross-fade (B-2)**: 0.2s cross-fade for standing images and face icons.
+- [x] **StillCrop Audit Report**: `tools/still_crop_audit.js` for visual verification.
+- [x] **QUIZ Screen Redesign (B-1)**: Full-screen background and full-width rhythm lane band.
+- [x] **Header Alignment (A-4)**: Headings anchored top-left.
+- [x] **HUD Simplification (A-3)**: Removed "Current Bond" label; color-coded route indicators.
 
-### [QA/Debug] M-GALLERY-TESTING
-- [x] **Typewriter Behavior Check**: Verified typewriter effect works correctly during Gallery/Memories recall for both Normal and Still events.
-- [x] **Debug Unlock Mode (M-GALLERY-TEST-UNLOCK-ALL)**: Implemented a safe `isUnlockAllDebug` toggle (default: true) for development/testing.
-
-### [Data] DailyTalk Standardization
-- [x] **Expression Asset Sync**: Standardized all expression keys (`anger`, `surprise`, etc.) to match manifest.
-- [x] **Narrative Flow Fix**: Implemented 4-part structure: Monologue -> Greeting -> Conversation -> Farewell.
-- [x] **Audit Registry Update**: Enhanced `dailyTalks.test.js` to support new metadata and types.
-- [x] **HTML Audit Report**: Automated report generation for narrative quality control.
+### [Data/Logic] Core Systems
+- [x] **DailyTalk Registry & Pool**: Standardized narrative flow and implemented registry for randomized talks.
+- [x] **Audio Start Gate**: Fixed BGM triggering to ensure user interaction before audio starts.
+- [x] **VNBox Layout Stability**: Anchored hint icons and indicators to prevent layout shifts.
 
 ---
 
 ## 🟦 In Progress / Next Steps
 
-### [UI/UX] Still Event Refinement
-- [ ] **Full Still Event Cropping**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` using the audit report for visual verification.
-- [ ] **Face Detection Assistant (Future)**: Research/implement a script to suggest `stillCrop` values based on face detection coordinates (no asset generation required).
+1. **3:4 Asset Final Verification**
+   - Verify BG / STILL / Gallery / Event displays after 3:4 asset replacement.
+   - Maintain `audit:stills` reports to ensure no broken references.
 
-### [Content] DailyTalk Phase 1 Expansion
-- [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
-- [ ] **Long History Introduction**: Add 1 parallel-world dialogue per heroine as a pilot for the IF route.
-- [ ] **Transition Dialogues**: Refine "monologue" and "response" variations to improve daily flavor.
+2. **Narrative Edit Pack Operation**
+   - Continue workflow with World-Building AI for script refinement.
+   - Run integrity tests (`dailyTalks.test`) after imports.
 
-### [Maintenance] Technical Debt & Polish
-- [ ] **Test Output Cleanup**: Refactor `saveData.test.cjs` to suppress/clarify the `SyntaxError` logs during corrupted JSON test cases (currently PASSING, but confusing).
-- [ ] **Dynamic Preloading**: Expand current preloading to handle expression changes ahead of time.
+3. **SaveData expected-error log cleanup**
+   - Refactor `saveData.test.cjs` to suppress/clarify expected `SyntaxError` logs.
+
+---
+
+## 🟥 Superseded / Cancelled
+
+### [UI/UX] Still Event Cropping (Wide-to-Tall)
+- [ ] **Full Still Event Cropping**: CANCELLED.
+- [ ] **Face Detection Assistant**: CANCELLED.
+- **Reason**: The project has shifted to a **3:4 Asset Replacement Policy**. Instead of trying to crop wide 16:9 images for a 3:4 screen, we are replacing assets with native 3:4 compositions.
+- **Status of Infrastructure**: `stillCrop` metadata, `heroine_pan` logic, and `audit:stills` tools remain in the codebase for maintenance and backward compatibility, but will not be expanded.
 
 ---
 
 ## 🟧 Future Goals
-- [ ] **Rhythm Game Implementation**: Visual prototype and core engine based on `docs/rhythm_ui_plan.md`.
-- [ ] **Advanced Expression Library**: Adding more nuanced expressions (e.g., `blush`, `determined`).
-- [ ] **Environmental Effects**: Subtle particles or lighting changes based on the time of day in Intro/Result screens.
-- [ ] **Protagonist Customization**: Minor visual cues or choices that impact Nadir's starting monologues.
+- [ ] **M-UI-VN-HEROINE-FADE**: Add heroine departure animations (Priority B).
+- [ ] **M-QUIZ-PROMPT-TUNING**: Ongoing wording and difficulty balance.
+- [ ] **Rhythm Game Implementation**: Visual prototype and core engine (Deferred).
+- [ ] **Advanced Expression Library**: Nuanced expressions like `blush`.
+- [ ] **Environmental Effects**: Subtle particles or lighting changes.
