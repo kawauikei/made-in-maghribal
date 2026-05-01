@@ -85,16 +85,17 @@ const ResultScreen = ({
           display: 'flex',
           alignItems: 'flex-start',
           marginTop: '4px',
-          minHeight: '200px',
+          minHeight: '210px',
           zIndex: 10
         }}>
-          {/* Heroine Standing (left) */}
+          {/* Heroine Standing (left) - clipped at bottom, hidden behind score panel */}
           {HeroineDisplay && (
             <div style={{
               flex: '0 0 auto',
               display: 'flex',
               alignItems: 'flex-end',
-              height: '220px',
+              height: '210px',
+              overflow: 'hidden',
               zIndex: 5
             }}>
               <HeroineDisplay
@@ -153,14 +154,14 @@ const ResultScreen = ({
           </div>
         </div>
 
-        {/* Score Panel (overlaps standing bottom) */}
+        {/* Score Panel (overlaps standing bottom - opaque top hides clip edge) */}
         <div style={{
           ...cardStyle,
           borderRadius: '10px',
           border: `2px solid ${THEME.brass}`,
-          background: 'rgba(244, 233, 213, 0.95)',
+          background: 'rgba(244, 233, 213, 0.98)',
           padding: '12px 16px',
-          marginTop: '-16px',
+          marginTop: '-24px',
           marginBottom: '4px',
           width: '94%',
           maxWidth: '340px',
