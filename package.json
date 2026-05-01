@@ -10,6 +10,7 @@
     "test:e2e": "playwright test",
     "assets:characters": "node tools/character_asset_pipeline/process_character_assets.cjs",
     "audit:narrative": "node tools/narrative_audit.js",
+    "audit:stills": "node tools/still_crop_audit.js",
     "export:narrative-edit-pack": "node tools/export_narrative_edit_pack.js",
     "import:narrative-edit-pack": "node tools/import_narrative_edit_pack.js"
   },

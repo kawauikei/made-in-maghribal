@@ -1,0 +1,470 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Still Crop Audit Report - Made in Maghribal</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; margin: 0; padding: 20px; color: #333; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .preview-container { height: 400px; background: #000; position: relative; }
+        .preview-img { width: 100%; height: 100%; }
+        .info { padding: 15px; font-size: 0.9em; }
+        .id { font-weight: bold; font-size: 1.1em; margin-bottom: 5px; color: #d4af37; }
+        .meta { margin-bottom: 10px; line-height: 1.4; }
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 5px; }
+        .tag-proto { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .tag-default { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
+        .aspect-ratios { display: flex; gap: 10px; margin-top: 10px; }
+        .aspect-preview { width: 60px; height: 120px; border: 1px solid #ccc; background: #000; overflow: hidden; }
+        .aspect-img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+    <h1>Still Crop Audit Report</h1>
+    <p>Total Stills: 14</p>
+    
+    <div class="grid">
+
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_hakima_morning_visit_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 35%;" alt="hakimaMorningVisit01">
+            </div>
+            <div class="info">
+                <div class="id">朝の来訪</div>
+                <div class="meta">
+                    ID: <code>hakimaMorningVisit01</code><br>
+                    Heroine: hakima<br>
+                    <span class="tag tag-proto">stillCrop Defined</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 35%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_hakima_morning_visit_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 35%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_hakima_morning_visit_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 35%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_hakima_festival_night_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="hakimaFestivalNight01">
+            </div>
+            <div class="info">
+                <div class="id">祭りの夜</div>
+                <div class="meta">
+                    ID: <code>hakimaFestivalNight01</code><br>
+                    Heroine: hakima<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_hakima_festival_night_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_hakima_festival_night_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_hakima_market_argument_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="hakimaMarketArgument01">
+            </div>
+            <div class="info">
+                <div class="id">市場の小競り合い</div>
+                <div class="meta">
+                    ID: <code>hakimaMarketArgument01</code><br>
+                    Heroine: hakima<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_hakima_market_argument_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_hakima_market_argument_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_hakima_rain_shelter_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="hakimaRainShelter01">
+            </div>
+            <div class="info">
+                <div class="id">雨宿り</div>
+                <div class="meta">
+                    ID: <code>hakimaRainShelter01</code><br>
+                    Heroine: hakima<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_hakima_rain_shelter_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_hakima_rain_shelter_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_mira_after_school_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 40%;" alt="miraAfterSchool01">
+            </div>
+            <div class="info">
+                <div class="id">放課後</div>
+                <div class="meta">
+                    ID: <code>miraAfterSchool01</code><br>
+                    Heroine: mira<br>
+                    <span class="tag tag-proto">stillCrop Defined</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 40%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_mira_after_school_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 40%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_mira_after_school_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 40%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_mira_assignment_consult_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="miraAssignmentConsult01">
+            </div>
+            <div class="info">
+                <div class="id">課題相談</div>
+                <div class="meta">
+                    ID: <code>miraAssignmentConsult01</code><br>
+                    Heroine: mira<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_mira_assignment_consult_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_mira_assignment_consult_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_mira_starry_rooftop_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="miraStarryRooftop01">
+            </div>
+            <div class="info">
+                <div class="id">星見の屋上</div>
+                <div class="meta">
+                    ID: <code>miraStarryRooftop01</code><br>
+                    Heroine: mira<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_mira_starry_rooftop_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_mira_starry_rooftop_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_mira_visit_sick_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="miraVisitSick01">
+            </div>
+            <div class="info">
+                <div class="id">見舞い</div>
+                <div class="meta">
+                    ID: <code>miraVisitSick01</code><br>
+                    Heroine: mira<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_mira_visit_sick_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_mira_visit_sick_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_dariya_after_hours_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 40%;" alt="dariyaAfterHours01">
+            </div>
+            <div class="info">
+                <div class="id">夜更けの訪問</div>
+                <div class="meta">
+                    ID: <code>dariyaAfterHours01</code><br>
+                    Heroine: dariya<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 40%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_dariya_after_hours_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 40%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_dariya_after_hours_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 40%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_dariya_limit_night_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="dariyaLimitNight01">
+            </div>
+            <div class="info">
+                <div class="id">限界の夜</div>
+                <div class="meta">
+                    ID: <code>dariyaLimitNight01</code><br>
+                    Heroine: dariya<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_dariya_limit_night_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_dariya_limit_night_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_dariya_palace_collaboration_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="dariyaPalaceCollaboration01">
+            </div>
+            <div class="info">
+                <div class="id">王宮との協力</div>
+                <div class="meta">
+                    ID: <code>dariyaPalaceCollaboration01</code><br>
+                    Heroine: dariya<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_dariya_palace_collaboration_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_dariya_palace_collaboration_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_dariya_rain_corridor_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="dariyaRainCorridor01">
+            </div>
+            <div class="info">
+                <div class="id">雨の回廊</div>
+                <div class="meta">
+                    ID: <code>dariyaRainCorridor01</code><br>
+                    Heroine: dariya<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_dariya_rain_corridor_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_dariya_rain_corridor_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_group_shopping_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="groupShopping01">
+            </div>
+            <div class="info">
+                <div class="id">買い出し</div>
+                <div class="meta">
+                    ID: <code>groupShopping01</code><br>
+                    Heroine: Group<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_group_shopping_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_group_shopping_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="preview-container">
+                <img src="../public/images/still/still_group_celebration_01.jpg" class="preview-img" style="object-fit: cover; object-position: 50% 50%;" alt="groupCelebration01">
+            </div>
+            <div class="info">
+                <div class="id">ささやかな祝宴</div>
+                <div class="meta">
+                    ID: <code>groupCelebration01</code><br>
+                    Heroine: Group<br>
+                    <span class="tag tag-default">Default Focus</span>
+                </div>
+                <div class="meta">
+                    <strong>Current Settings:</strong><br>
+                    Object-Fit: <code>cover</code><br>
+                    Object-Position: <code>50% 50%</code>
+                </div>
+                
+                <div class="meta">
+                    <strong>Mobile Aspect (9:18 approx):</strong>
+                    <div class="aspect-ratios">
+                        <div class="aspect-preview" title="390x780 logic">
+                            <img src="../public/images/still/still_group_celebration_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                        <div class="aspect-preview" style="width: 100px; height: 100px;" title="1:1 square">
+                            <img src="../public/images/still/still_group_celebration_01.jpg" class="aspect-img" style="object-fit: cover; object-position: 50% 50%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <script>
+        console.log("Audit Report Loaded");
+    </script>
+</body>
+</html>
