@@ -1367,7 +1367,7 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "開店前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
+      { speaker: "ナーディル", expression: "normal", text: "営業前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
       { speaker: "ナーディル", expression: "joy", text: "俺もいつか、この道具に恥ずかしくない店主になりたいな。" }
     ]
   },
@@ -1744,7 +1744,7 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りの方が落ち着く。" },
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りは悪くない。" },
       { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。" }
     ]
   },
@@ -1816,6 +1816,34 @@ const DAILY_TALKS = [
     ]
   },
   {
+    id: "dariya_dress_choice",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "fun", text: "今日の装い、どうかしら？ 交易商の会合だから、少し「武装」してきたの。" },
+      { speaker: "ナーディル", expression: "blush", text: "……武装、ですか。確かに、いつにもまして隙がないように見えます。" },
+      { speaker: "ダリヤ", expression: "joy", text: "あら、嬉しい。隙を作るときは、場所を選ぶつもりよ。ふふ。" }
+    ]
+  },
+  {
+    id: "dariya_tea_leaf",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉が入ったの。後で淹れてあげるわ。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りが素晴らしいですから。" },
+      { speaker: "ダリヤ", expression: "joy", text: "ええ。あなたと過ごす時間を、一番贅沢に彩ってくれるものを選んだわ。" }
+    ]
+  },
+  {
     id: "dariya_not_perfect",
     scope: "heroine",
     heroineId: "dariya",
@@ -1855,6 +1883,209 @@ const DAILY_TALKS = [
       { speaker: "ダリヤ", expression: "cry", text: "君は昔から、私が平気な顔をしている時ほど、何も聞かずに茶を出す。" },
       { speaker: "ナーディル", expression: "normal", text: "聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていい。" },
       { speaker: "ダリヤ", expression: "joy", text: "……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。" }
+    ]
+  },
+  // --- Miscellaneous / Connective ---
+  {
+    id: "common_market_snack",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきたんだ。ここのデーツパイは絶品でね。" },
+      { speaker: "ナーディル", expression: "fun", text: "営業中に小腹が空いたら、こっそり頂くことにしよう。" }
+    ]
+  },
+  {
+    id: "common_fountain_rest",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "広場の噴水に、白い鳩が集まっていたよ。" },
+      { speaker: "ナーディル", expression: "joy", text: "水音を聞いていると、砂漠の熱さも一瞬だけ忘れられる気がするな。" }
+    ]
+  },
+  {
+    id: "common_morning_mist",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグレバルでは珍しい光景だ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。" }
+    ]
+  },
+  // --- Expansion 3: New Candidates ---
+  {
+    id: "common_mother_postcard",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "母さんから絵葉書が届いた。父さんの写真より、旅先の菓子の話の方が長い。" },
+      { speaker: "ナーディル", expression: "fun", text: "あの二人らしいよ。世界を見に行っても、結局は茶と甘い物の話になる。" }
+    ]
+  },
+  {
+    id: "common_sister_camera_shop",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "姉さんのカメラ会社は、また支店を増やすらしい。手紙の文字まで忙しそうだった。" },
+      { speaker: "ナーディル", expression: "joy", text: "すごいと思う。でも俺は、この棚の前で客と話す時間も悪くないと思ってる。" }
+    ]
+  },
+  {
+    id: "common_customer_gift",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。" },
+      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に合う形を探すことなんだ。" }
+    ]
+  },
+  {
+    id: "hakima_forest_resin",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
+      { speaker: "ハキマ", expression: "fun", text: "誰かさんみたい？ ……違うわよ。私はもっと扱いやすいでしょ。" }
+    ]
+  },
+  {
+    id: "hakima_customer_habit",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
+      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。俺も見習わないと。" },
+      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。" }
+    ]
+  },
+  {
+    id: "hakima_long_family_table",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。" },
+      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。" }
+    ]
+  },
+  {
+    id: "mira_preservation_bottle",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩、この保存瓶の封止、少しだけ改良できそうです。輸送中の香り抜けを抑えられます。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" }
+    ]
+  },
+  {
+    id: "mira_small_failure",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "sorrow", text: "昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。" },
+      { speaker: "ナーディル", expression: "fun", text: "個性的で済むなら、まだ商品名でごまかせるかもしれない。" },
+      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。" }
+    ]
+  },
+  {
+    id: "mira_long_after_class",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "student", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
+      { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
+      { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
+    ]
+  },
+  {
+    id: "dariya_palace_window",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は美しいよ。磨かれすぎて、外の光まで少し緊張して見える。" },
+      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいが、そのぶん光がやわらかい。悪くない違いだ。" }
+    ]
+  },
+  {
+    id: "dariya_royal_safety",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の調合品は、効能より先に安全証明を求められる。美しいが、息の詰まる仕事だ。" },
+      { speaker: "ナーディル", expression: "normal", text: "暮らしに届く品ほど、安心して使えることが大事ですからね。" },
+      { speaker: "ダリヤ", expression: "joy", text: "そうだな。君は、王宮が時々忘れる当たり前を覚えている。" }
+    ]
+  },
+  {
+    id: "dariya_long_first_weakness",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたな。あれは、今でも少し悔しい。" },
+      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度も検証し直していた姿を覚えています。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……そういう覚え方をするから、君の前では格好をつけにくいんだ。" }
     ]
   }
 ];
@@ -2110,27 +2341,31 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoverSkip, setHoverSkip] = useState(false);
+  const [isSkippingBlock, setIsSkippingBlock] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const loggedPagesRef = useRef(/* @__PURE__ */ new Set());
-  const markPageComplete = () => {
-    if (!currentText) return;
-    const key = `${pageIndex}:${currentText}`;
+  const markPageComplete = (index = pageIndex, text2 = currentText) => {
+    if (!text2) return;
+    const key = `${index}:${text2}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: currentText, pageIndex });
+    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: text2, pageIndex: index });
   };
   useEffect(() => {
-    if (skip) {
+    if (skip || isSkippingBlock) {
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
+      if (isSkippingBlock) setIsSkippingBlock(false);
       return;
     }
     setDisplayText("");
     setIsComplete(false);
     setCurrentIndex(0);
-  }, [currentText, skip]);
+  }, [currentText, skip, isSkippingBlock]);
   useEffect(() => {
-    if (isComplete || skip) return;
+    if (isComplete || skip || isSkippingBlock) return;
     if (currentIndex < currentText.length) {
       const timer = setTimeout(() => {
         setDisplayText((prev) => prev + currentText[currentIndex]);
@@ -2141,12 +2376,13 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       setIsComplete(true);
       markPageComplete();
     }
-  }, [currentIndex, currentText, isComplete, speed, skip]);
+  }, [currentIndex, currentText, isComplete, speed, skip, isSkippingBlock]);
   const handleClick = (e) => {
+    if (isFadingOut) return;
     const isLastPage = pageIndex >= pageList.length - 1;
     const isTyping = !isComplete;
     if (isTyping || !isLastPage) {
-      if (e) e.stopPropagation();
+      if (e && e.stopPropagation) e.stopPropagation();
     }
     if (isTyping) {
       setDisplayText(currentText);
@@ -2162,8 +2398,18 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       onComplete();
     }
   };
+  const handleSkipBlock = (e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (isFadingOut) return;
+    setIsFadingOut(true);
+    audioEngine.playSfx("uiTapBottle");
+    setTimeout(() => {
+      onComplete == null ? void 0 : onComplete();
+    }, 300);
+  };
   useImperativeHandle(ref, () => ({
-    advance: () => handleClick()
+    advance: () => handleClick(),
+    skip: () => handleSkipBlock()
   }));
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, "face", currentExpression) : null;
   return /* @__PURE__ */ React.createElement(
@@ -2176,17 +2422,16 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         width: "100%",
         boxSizing: "border-box",
         height: "166px",
-        // Slightly taller for stability
         background: "rgba(18, 28, 42, 0.98)",
         padding: currentSpeaker ? "22px 24px 28px 24px" : "18px 24px 28px 24px",
         borderRadius: "12px 12px 0 0",
-        // Docked feel: top corners only
         cursor: "pointer",
         color: THEME.parchment,
         textAlign: "left",
         position: "relative",
+        bottom: "12px",
+        // Pushed up slightly
         boxShadow: "0 -4px 15px rgba(0,0,0,0.3)",
-        // Subtle top shadow only
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: "none",
         touchAction: "manipulation",
@@ -2195,26 +2440,55 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         display: "flex",
         flexDirection: "column",
         overflow: "visible",
-        // Allow speaker tag to hook onto corner
         transition: "all 0.3s ease",
         border: "1px solid rgba(255,255,255,0.1)",
         borderBottom: "none"
-        // Tightly docked to bottom
       }
     },
+    /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        onClick: handleSkipBlock,
+        onMouseEnter: () => setHoverSkip(true),
+        onMouseLeave: () => setHoverSkip(false),
+        style: {
+          position: "absolute",
+          top: "-42px",
+          // Floating higher, header-like
+          right: "24px",
+          padding: "6px 20px",
+          borderRadius: "999px",
+          background: hoverSkip ? THEME.brass : "rgba(12, 25, 38, 0.9)",
+          border: `1px solid ${hoverSkip ? THEME.brass : THEME.brass + "77"}`,
+          color: hoverSkip ? "#0c1926" : THEME.brass,
+          fontSize: "0.82em",
+          fontWeight: "900",
+          cursor: "pointer",
+          zIndex: 20,
+          transition: "all 0.2s ease",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+          letterSpacing: "0.15em",
+          backdropFilter: "blur(8px)",
+          textTransform: "uppercase",
+          userSelect: "none"
+        }
+      },
+      "SKIP"
+    ),
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       left: "12px",
-      top: "-65px",
-      // Lifted higher to avoid VNBox overlap
+      top: "-32px",
+      // Half-overlap (Face icon is 60px)
       display: "flex",
-      alignItems: "flex-end",
+      alignItems: "center",
       gap: "12px",
       zIndex: 10,
-      pointerEvents: "none"
+      pointerEvents: "none",
+      transition: "all 0.2s ease"
+      // Requirement 3: Fade/Transition
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
       width: "60px",
-      // 2/3 of previous 90px
       height: "60px",
       borderRadius: "12px",
       overflow: "hidden",
@@ -2223,16 +2497,16 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       flexShrink: 0,
       boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
       transform: "rotate(-2deg)",
-      // Slight tilt for flair
-      position: "relative"
+      position: "relative",
+      transition: "all 0.2s ease"
     } }, /* @__PURE__ */ React.createElement(
       "img",
       {
+        key: facePath,
         src: facePath,
         alt: currentSpeaker,
         style: {
           width: "110%",
-          // Slight zoom for better focus
           height: "110%",
           objectFit: "cover",
           objectPosition: "center 20%",
@@ -2240,7 +2514,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           userSelect: "none",
           position: "absolute",
           top: "-5%",
-          left: "-5%"
+          left: "-5%",
+          animation: "vn-fade-in 0.2s ease"
         },
         draggable: false,
         onError: (e) => {
@@ -2264,9 +2539,18 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       letterSpacing: "0.06em",
       textShadow: "0 2px 4px rgba(0,0,0,0.8)",
       boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
-      marginBottom: "8px",
-      backdropFilter: "blur(8px)"
+      backdropFilter: "blur(8px)",
+      transition: "all 0.2s ease",
+      animation: "vn-fade-in 0.2s ease"
     } }, currentSpeaker)),
+    isFadingOut && /* @__PURE__ */ React.createElement("div", { style: {
+      position: "fixed",
+      inset: 0,
+      background: "black",
+      zIndex: 9999,
+      animation: "vn-fade-in 0.3s forwards",
+      pointerEvents: "all"
+    } }),
     /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: currentSpeaker ? "1.05em" : "1.1em",
       lineHeight: "1.6",
@@ -2319,6 +2603,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     /* @__PURE__ */ React.createElement("style", null, `
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        @keyframes vn-fade-in { from { opacity: 0; } to { opacity: 1; } }
       `)
   );
 });
@@ -2428,28 +2713,32 @@ const PrologueScreen = ({
 };
 const GREETING_VARIATIONS = [
   {
-    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラスの輝きも一段と増すだろうな……）`,
-    greeting: (h) => `「おはよう。朝から熱心ね。その顔、何か良い品でも入ったのかしら？」`,
-    response: (h) => `「いらっしゃい。ええ、ちょうど朝日に透かして見ていたところです」`,
-    farewell: `「ふふ、職人の目ね。それじゃ、私はこれで。今日も良い縁があるといいわね」`
+    id: "greet_1",
+    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラス瓶の輝きも一段と増すだろうな……）`,
+    greeting: (h) => `「こんにちは。店先の瓶、今日はずいぶん綺麗に光っているわね」`,
+    response: (h) => `「いらっしゃい。ちょうど光に透かして、色の出方を見ていたところです」`,
+    farewell: `「ふふ、職人の目ね。それじゃ、営業前の邪魔はこのくらいにしておくわ」`
   },
   {
+    id: "greet_2",
     monologue: (h) => `（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）`,
-    greeting: (h) => `「おはよう。あら、あなたもバテ気味？ 砂の熱に負けてちゃ、商売にならないわよ」`,
-    response: (h) => `「……おはようございます。面目ない。しっかり水分を摂って、シャキッとしないと」`,
-    farewell: `「そうよ。はい、これ。……それじゃ、私も仕事に戻るわ。無理しすぎないようにね」`
+    greeting: (h) => `「あら、少し顔が赤いわね。砂の熱に負けていたら、目利きも鈍るわよ」`,
+    response: (h) => `「面目ない。水を足して、香草の冷茶でも用意しておきます」`,
+    farewell: `「それがいいわ。無理をする店主より、涼しい顔で品を選ぶ店主の方が頼れるもの」`
   },
   {
-    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、開店の準備だ）`,
-    greeting: (h) => `「いらっしゃい。今日は珍しく静かな朝ね。あなたの店も、心なしか落ち着いて見えるわ」`,
-    response: (h) => `「ええ、心地よい静寂です。たまにはこういう、ゆったりとした時間も悪くないですね」`,
-    farewell: `「ええ、同感よ。さて、私も行くわ。いい品ができるのを楽しみにしてる」`
+    id: "greet_3",
+    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、営業の準備だ）`,
+    greeting: (h) => `「いらっしゃい。今日は珍しく静かね。星瓶堂の棚まで、少し落ち着いて見えるわ」`,
+    response: (h) => `「ええ。こういう日は、香りも音もいつもよりよく分かる気がします」`,
+    farewell: `「いい品が見つかりそうね。それじゃ、また後で顔を出すわ」`
   },
   {
+    id: "greet_4",
     monologue: (h) => `（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）`,
-    greeting: (h) => `「お疲れ様。熱心に素材を眺めて……何か新しいインスピレーションでも湧いた？」`,
-    response: (h) => `「いらっしゃい。ええ、曇天の下での輝きも、また一興だと思って見ていたんです」`,
-    farewell: `「流石は星瓶堂の店主ね。それじゃ、開店の邪魔はしないわ。また後でね」`
+    greeting: (h) => `「熱心に素材を眺めているわね。曇り空でも、何か見えるものがあるの？」`,
+    response: (h) => `「ええ。強い光がない日ほど、石や瓶の地色が素直に見えるんです」`,
+    farewell: `「なるほどね。星瓶堂の店主らしい見方だわ。今日の目利き、少し楽しみにしている」`
   }
 ];
 const IntroScreen = ({
@@ -2606,7 +2895,7 @@ const IntroScreen = ({
           boxShadow: "none",
           position: "absolute",
           opacity: 1 - heroineOpacity,
-          transition: "opacity 0.6s ease-in-out"
+          transition: "opacity 0.3s ease-in-out"
         }
       }
     ), /* @__PURE__ */ React.createElement(
@@ -2623,7 +2912,7 @@ const IntroScreen = ({
           boxShadow: "none",
           position: "absolute",
           opacity: heroineOpacity,
-          transition: "opacity 0.6s ease-in-out"
+          transition: "opacity 0.3s ease-in-out"
         }
       }
     ))),
