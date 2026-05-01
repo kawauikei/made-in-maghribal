@@ -248,4 +248,32 @@ INTRO / PROLOGUE などのVN画面で、VNBoxを下部に半固定し、キャ�
 
 ---
 
+## M-UI-MOBILE-SAFE-HEIGHT: Mobile Canvas Safe Height Layout Standard
+
+- **ステータス**: TODO（未着手）
+- **優先度**: 高（アクセシビリティ）
+- **追加日**: 2026-05-01
+
+### 目的
+
+Gemini Canvas のスマホ表示では、外枠UIにより利用可能な縦幅が短くなるため、UIが下端で切れないように安全基準（セーフエリア）を策定・適用する。
+
+### 基準
+
+1. 通常基準: 390 x 780
+2. Gemini Canvas安全基準: 390 x 700 / 390 x 650
+
+### 方針
+
+- **Safe Bottom Padding**: 下部UIに十分な余白を持たせ、重要ボタンや `VNBox` のインジケータが見切れないようにする。
+- **No-Scroll 原則**: 主要なゲーム画面ではスクロールを発生させず、限定的な縦幅でも全ての操作が完結するようにレイアウトを調整。
+- **対象画面**: `PrologueScreen`, `IntroScreen`, `HeroineSelectScreen`, `Quiz` 等、物語進行に関わる全画面。
+
+### 参照
+
+- `src/App.jsx` (renderThemeStyles / containerStyle)
+- 各 Screen コンポーネントの下部ドック部分
+
+---
+
 > 新規エントリを追加する場合は、上記と同じフォーマットで `## <ID>: <タイトル>` セクションを追加してください。
