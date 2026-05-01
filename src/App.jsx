@@ -106,7 +106,7 @@ export default function App() {
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
-  const MIN_SCALE = 0.68;
+  const MIN_SCALE = 0.1; // (M-UI-MOBILE-VIEWPORT-1: Scale-to-Fit Fix)
   const MAX_SCALE = 1.25;
 
   const [viewportSize, setViewportSize] = useState({
@@ -184,7 +184,7 @@ export default function App() {
     MAX_LOGICAL_WIDTH,
     Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
   );
-  const isClipped = rawScale < MIN_SCALE;
+  const isClipped = false; // Core Game UI No-Scroll Rule (M-UI-MOBILE-VIEWPORT-1: Scale-to-Fit Fix)
 
   const handleVnAreaClick = (e) => {
     if (shouldIgnoreVnAdvanceClick(e, { showOptions, showLog, showHelp, showSoundTest })) return;
@@ -193,13 +193,12 @@ export default function App() {
 
   const outerWrapperStyle = {
     width: '100%',
-    height: '100%',
-    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
+    height: '100dvh', // Use viewport height for the host container
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: isClipped ? 'flex-start' : 'center',
-    overflow: isClipped ? 'auto' : 'hidden',
+    alignItems: 'center', // Center the scaled canvas
+    overflow: 'hidden',
     position: 'relative'
   };
 

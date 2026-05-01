@@ -1412,7 +1412,7 @@ const PrologueScreen = ({
           flexDirection: 'column', 
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          paddingBottom: '12px' 
+          paddingBottom: '178px' // Space for VNBox (166px) + margin
         }}>
           {/* Action Row (Future Choice Area) */}
           <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
@@ -1438,19 +1438,22 @@ const PrologueScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Logical Dock) */}
         <div style={{ 
-          flex: '0 0 auto', 
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 5,
           width: '100%', 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -1565,7 +1568,7 @@ const IntroScreen = ({
           flexDirection: 'column', 
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          paddingBottom: '12px' 
+          paddingBottom: '178px' // Space for VNBox (166px) + margin
         }}>
           {/* Action Row (Future Choice Area) */}
           <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
@@ -1589,19 +1592,22 @@ const IntroScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Logical Dock) */}
         <div style={{ 
-          flex: '0 0 auto', 
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 5,
           width: '100%', 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -2054,7 +2060,7 @@ function App() {
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
-  const MIN_SCALE = 0.68;
+  const MIN_SCALE = 0.1; // (M-UI-MOBILE-VIEWPORT-1: Scale-to-Fit Fix)
   const MAX_SCALE = 1.25;
 
   const [viewportSize, setViewportSize] = useState({
@@ -2132,7 +2138,7 @@ function App() {
     MAX_LOGICAL_WIDTH,
     Math.max(BASE_WIDTH, Math.floor(measuredSize.width / scale))
   );
-  const isClipped = rawScale < MIN_SCALE;
+  const isClipped = false; // Core Game UI No-Scroll Rule (M-UI-MOBILE-VIEWPORT-1: Scale-to-Fit Fix)
 
   const handleVnAreaClick = (e) => {
     if (shouldIgnoreVnAdvanceClick(e, { showOptions, showLog, showHelp, showSoundTest })) return;
@@ -2141,13 +2147,12 @@ function App() {
 
   const outerWrapperStyle = {
     width: '100%',
-    height: '100%',
-    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
+    height: '100dvh', // Use viewport height for the host container
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: isClipped ? 'flex-start' : 'center',
-    overflow: isClipped ? 'auto' : 'hidden',
+    alignItems: 'center', // Center the scaled canvas
+    overflow: 'hidden',
     position: 'relative'
   };
 

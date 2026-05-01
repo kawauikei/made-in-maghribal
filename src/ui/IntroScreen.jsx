@@ -93,7 +93,7 @@ const IntroScreen = ({
           flexDirection: 'column', 
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          paddingBottom: '12px' 
+          paddingBottom: '178px' // Space for VNBox (166px) + margin
         }}>
           {/* Action Row (Future Choice Area) */}
           <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
@@ -117,19 +117,22 @@ const IntroScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Logical Dock) */}
         <div style={{ 
-          flex: '0 0 auto', 
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 5,
           width: '100%', 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>
