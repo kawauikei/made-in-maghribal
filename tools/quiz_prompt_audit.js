@@ -12,11 +12,11 @@ const MASTER_ITEMS = itemsData.items.map(item => {
   const colorId = item.principle;
   
   const colorPrefixMap = {
-    AS: "星明かりの",
-    EL: "青緑の",
-    LI: "生命の",
-    SA: "黄金の",
-    ME: "鋼鉄の"
+    AS: "星明かり",
+    EL: "青緑",
+    LI: "生命",
+    SA: "黄金",
+    ME: "鋼鉄"
   };
   
   const typeName = type ? type.name : "";
@@ -119,7 +119,22 @@ function generateQuestionSamples() {
     mdContent += '| Prompt Text | Correct Item | Wrong Item | Logic |\n';
     mdContent += '| :--- | :--- | :--- | :--- |\n';
     grouped[typeId].forEach(q => {
-      mdContent += `| ${q.promptText} | **${q.correctItem.name}** (${q.correctItem.colorName}/${q.correctItem.typeName}) | ${q.wrongItem.name} (${q.wrongItem.colorName}/${q.wrongItem.typeName}) | ${q.logic} |\n`;
+      let correctName = q.correctItem.name;
+      let wrongName = q.wrongItem.name;
+      if (q.requestType === 'genre') {
+        const cat = q.correctItem.id.split('_')[1];
+        if (cat === 'DAY') correctName = `一般雑貨の${correctName}`;
+        if (cat === 'TRD') correctName = `貿易品の${correctName}`;
+        if (cat === 'RIT') correctName = `厳かな${correctName}`;
+        if (cat === 'ADN') correctName = `アクセサリーの${correctName}`;
+        
+        const wCat = q.wrongItem.id.split('_')[1];
+        if (wCat === 'DAY') wrongName = `一般雑貨の${wrongName}`;
+        if (wCat === 'TRD') wrongName = `貿易品の${wrongName}`;
+        if (wCat === 'RIT') wrongName = `厳かな${wrongName}`;
+        if (wCat === 'ADN') wrongName = `アクセサリーの${wrongName}`;
+      }
+      mdContent += `| ${q.promptText} | **${correctName}** (${q.correctItem.colorName}/${q.correctItem.typeName}) | ${wrongName} (${q.wrongItem.colorName}/${q.wrongItem.typeName}) | ${q.logic} |\n`;
     });
     mdContent += '\n';
   }
@@ -402,42 +417,56 @@ function generateHtmlReport(items, questions) {
         <section>
             <h2><i data-lucide="help-circle"></i> Prompt Samples</h2>
             <div class="samples">
-                ${questions.map(q => `
-                <div class="sample-card">
-                    <div>
-                        <div class="sample-type">${q.requestType}</div>
-                        <div class="sample-customer" style="color: ${q.customer?.color || 'inherit'};">
-                            <span>${q.customer?.id || 'Unknown'}</span>
-                        </div>
-                        <div class="sample-prompt" style="border-left: 4px solid ${q.customer?.color || 'transparent'}; padding-left: 12px;">
-                            ${q.promptText}
-                        </div>
-                        <div class="logic-tag">Logic: ${q.logic}</div>
-                    </div>
-                    <div class="choices">
-                        <div class="choice correct">
-                            <i data-lucide="check-circle"></i>
-                            <div class="sample-item-info">
-                                <img src="../public/${q.correctItem.image}" class="item-img" alt="">
-                                <div>
-                                    <strong>${q.correctItem.name}</strong><br>
-                                    <span style="font-size: 0.8rem; opacity: 0.8;">${q.correctItem.colorName} / ${q.correctItem.typeName}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="choice wrong">
-                            <i data-lucide="x-circle"></i>
-                            <div class="sample-item-info">
-                                <img src="../public/${q.wrongItem.image}" class="item-img" alt="">
-                                <div>
-                                    <strong>${q.wrongItem.name}</strong><br>
-                                    <span style="font-size: 0.8rem; opacity: 0.8;">${q.wrongItem.colorName} / ${q.wrongItem.typeName}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `).join('')}
+                ${questions.map(q => {
+                  const getPrefixedName = (item, reqType) => {
+                    let name = item.name;
+                    if (reqType === 'genre') {
+                      const cat = item.id.split('_')[1];
+                      if (cat === 'DAY') name = `一般雑貨の${name}`;
+                      if (cat === 'TRD') name = `貿易品の${name}`;
+                      if (cat === 'RIT') name = `厳かな${name}`;
+                      if (cat === 'ADN') name = `アクセサリーの${name}`;
+                    }
+                    return name;
+                  };
+
+                  return `
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">${q.requestType}</div>
+                          <div class="sample-customer" style="color: ${q.customer?.color || 'inherit'};">
+                              <span>${q.customer?.id || 'Unknown'}</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid ${q.customer?.color || 'transparent'}; padding-left: 12px;">
+                              ${q.promptText}
+                          </div>
+                          <div class="logic-tag">Logic: ${q.logic}</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/${q.correctItem.image}" class="item-img" alt="">
+                                  <div>
+                                      <strong>${getPrefixedName(q.correctItem, q.requestType)}</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">${q.correctItem.colorName} / ${q.correctItem.typeName}</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/${q.wrongItem.image}" class="item-img" alt="">
+                                  <div>
+                                      <strong>${getPrefixedName(q.wrongItem, q.requestType)}</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">${q.wrongItem.colorName} / ${q.wrongItem.typeName}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  `;
+                }).join('')}
             </div>
         </section>
 
@@ -564,9 +593,21 @@ function simulateQuestionGeneration(forcedType = null) {
     const genre = GENRES[Math.floor(Math.random() * GENRES.length)];
     criteria.genre = genre.id;
     let genreName = genre.name;
-    if (genre.id === "DAY") genreName = "一般雑貨の品";
-    if (genre.id === "TRD") genreName = "渡来品";
-    if (genre.id === "RIT") genreName = "厳かな儀式具";
+    if (genre.id === "DAY") {
+      const dayPhrases = ["日用品", "普段使いの品"];
+      genreName = dayPhrases[Math.floor(Math.random() * dayPhrases.length)];
+    }
+    if (genre.id === "TRD") {
+      const trdPhrases = ["渡来品", "遠方から入った品"];
+      genreName = trdPhrases[Math.floor(Math.random() * trdPhrases.length)];
+    }
+    if (genre.id === "RIT") {
+      const ritPhrases = ["儀式用の品", "儀礼の品"];
+      genreName = ritPhrases[Math.floor(Math.random() * ritPhrases.length)];
+    }
+    if (genre.id === "ADN") {
+      genreName = "アクセサリー";
+    }
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
       .replace("{genre}", genreName);
   } else if (requestTemplate.id === "itemType") {
@@ -628,12 +669,14 @@ function simulateQuestionGeneration(forcedType = null) {
     logic,
     customer,
     correctItem: {
+      id: correctItem.id,
       name: correctItem.name,
       image: correctItem.image,
       colorName: colorMap(correctItem.colorId),
       typeName: typeMap(correctItem.typeId)
     },
     wrongItem: {
+      id: wrongItem.id,
       name: wrongItem.name,
       image: wrongItem.image,
       colorName: colorMap(wrongItem.colorId),
