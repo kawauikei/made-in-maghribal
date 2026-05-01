@@ -1806,14 +1806,39 @@ const PrologueScreen = ({
         onOpenOptions,
         onOpenHelp
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.6em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "星瓶堂の始まり")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } }), /* @__PURE__ */ React.createElement("div", { style: {
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.6em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "星瓶堂の始まり")), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "1 1 auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      paddingBottom: "20px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { minHeight: "50px", display: "flex", justifyContent: "center", alignItems: "center", width: "94%" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        "data-testid": "prologue-next",
+        onClick: onAdvanceToHeroineSelect,
+        style: {
+          ...buttonStyle2,
+          width: "100%",
+          maxWidth: "340px",
+          margin: 0,
+          height: "48px",
+          fontSize: "1.1em",
+          background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+          boxShadow: `0 6px 20px ${THEME.brass}44`,
+          border: "1px solid rgba(255,255,255,0.2)"
+        }
+      },
+      "星瓶堂へ進む"
+    ))), /* @__PURE__ */ React.createElement("div", { style: {
       flex: "0 0 auto",
       width: "100%",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       paddingBottom: "15px",
-      background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)"
+      background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle2,
       background: "rgba(20, 30, 45, 0.96)",
@@ -1823,8 +1848,7 @@ const PrologueScreen = ({
       boxSizing: "border-box",
       boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
       border: `1px solid ${THEME.brass}33`,
-      borderRadius: "12px",
-      marginBottom: "12px"
+      borderRadius: "12px"
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
@@ -1839,22 +1863,6 @@ const PrologueScreen = ({
           setIsPrologueComplete(true);
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { minHeight: "50px", display: "flex", justifyContent: "center", alignItems: "center", width: "94%" } }, isPrologueComplete && /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "prologue-next",
-        onClick: onAdvanceToHeroineSelect,
-        style: {
-          ...buttonStyle2,
-          width: "100%",
-          maxWidth: "340px",
-          margin: 0,
-          height: "48px",
-          fontSize: "1.1em",
-          boxShadow: `0 4px 15px ${THEME.brass}33`
-        }
-      },
-      "星瓶堂へ進む"
     ))))
   );
 };
@@ -1934,14 +1942,39 @@ const IntroScreen = ({
         onOpenOptions,
         onOpenHelp
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.4em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, activeHeroine.name, "との語らい")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } }), /* @__PURE__ */ React.createElement("div", { style: {
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "25px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.4em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, activeHeroine.name, "との語らい")), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "1 1 auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      paddingBottom: "20px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { width: "94%", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        "data-testid": "intro-start",
+        onClick: onBeginService,
+        style: {
+          ...buttonStyle2,
+          width: "100%",
+          maxWidth: "340px",
+          margin: 0,
+          height: "48px",
+          fontSize: "1.1em",
+          background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+          boxShadow: `0 6px 20px ${THEME.brass}44`,
+          border: "1px solid rgba(255,255,255,0.2)"
+        }
+      },
+      "営業を始める"
+    ))), /* @__PURE__ */ React.createElement("div", { style: {
       flex: "0 0 auto",
       width: "100%",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       paddingBottom: "12px",
-      background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)"
+      background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle2,
       background: "rgba(20, 30, 45, 0.96)",
@@ -1951,8 +1984,7 @@ const IntroScreen = ({
       boxSizing: "border-box",
       boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
       border: `1px solid ${THEME.brass}33`,
-      borderRadius: "12px",
-      marginBottom: "12px"
+      borderRadius: "12px"
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
@@ -1966,22 +1998,6 @@ const IntroScreen = ({
         onPageComplete,
         onComplete: onBeginService
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { width: "94%", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "intro-start",
-        onClick: onBeginService,
-        style: {
-          ...buttonStyle2,
-          width: "100%",
-          maxWidth: "340px",
-          margin: 0,
-          height: "48px",
-          fontSize: "1.1em",
-          boxShadow: `0 4px 15px ${THEME.brass}33`
-        }
-      },
-      "営業を始める"
     ))))
   );
 };
