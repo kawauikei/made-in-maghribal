@@ -2190,7 +2190,13 @@ const IntroScreen = ({
       text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
     }
   ];
-  const talkPages = (activeDailyTalk == null ? void 0 : activeDailyTalk.pages) || [];
+  const talkPages = ((activeDailyTalk == null ? void 0 : activeDailyTalk.pages) || []).map((page) => {
+    if (page.speakerId) return page;
+    let inferredId = null;
+    if (page.speaker === "ナーディル") inferredId = "nader";
+    else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+    return { ...page, speakerId: inferredId };
+  });
   const combinedPages = [...talkPages, ...baseIntroPages];
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
