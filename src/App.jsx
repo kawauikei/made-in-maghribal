@@ -25,7 +25,8 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, getIntroTalks } from './game/eventSystem';
+import { getRandomGreeting } from './data/greetings';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -274,6 +275,7 @@ export default function App() {
   const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
+  const [activeGreeting, setActiveGreeting] = useState(null);
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -701,15 +703,29 @@ export default function App() {
     setActiveHeroineId(heroineId);
     setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
     
-    // DailyTalk Lottery (Timing: intro)
-    const talk = getNextDailyTalk(
+    // NEW: Selection of Greeting and Multiple DailyTalks
+    const greeting = getRandomGreeting();
+    setActiveGreeting(greeting);
+
+    const talks = getIntroTalks(
       heroineId,
-      'intro',
       affection[heroineId] || 0,
       seenTalkIds,
       routeMode
     );
-    setActiveDailyTalk(talk);
+
+    // Merge multiple talks into one activeDailyTalk for IntroScreen
+    if (talks.length > 0) {
+      const mergedTalk = {
+        id: `merged_${talks.map(t => t.id).join('_')}`,
+        pages: talks.flatMap(t => t.pages)
+      };
+      setActiveDailyTalk(mergedTalk);
+      // Mark as seen
+      setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
+    } else {
+      setActiveDailyTalk(null);
+    }
 
     // Auto-save when starting a new session with a heroine
     saveGameData({
@@ -1236,6 +1252,7 @@ export default function App() {
       <IntroScreen
         activeHeroine={activeHeroine}
         activeDailyTalk={activeDailyTalk}
+        activeGreeting={activeGreeting}
         day={workshopState.day}
         screen={screen}
         routeMode={routeMode}

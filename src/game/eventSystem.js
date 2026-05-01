@@ -86,6 +86,39 @@ export function getRouteText(baseText, routeTexts, routeMode) {
 }
 
 /**
+ * Returns a set of talks for the morning (intro) sequence.
+ * Should ideally return one 'work' talk and one 'personal' talk.
+ * 
+ * @param {string} heroineId 
+ * @param {number} currentAffection 
+ * @param {string[]} seenTalkIds 
+ * @param {string} routeMode 
+ * @returns {Object[]} Array of talk objects
+ */
+export function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
+  const getEligible = (category) => {
+    return DAILY_TALKS.filter(talk => {
+      if (talk.timing !== 'intro') return false;
+      if (talk.category !== category) return false;
+      if (talk.scope === 'heroine' && talk.heroineId !== heroineId) return false;
+      if (talk.routeMode !== 'both' && talk.routeMode !== routeMode) return false;
+      if (talk.minAffection > currentAffection) return false;
+      if (seenTalkIds.includes(talk.id)) return false;
+      return true;
+    }).sort((a, b) => (b.priority || 1) - (a.priority || 1));
+  };
+
+  const workTalks = getEligible('work');
+  const personalTalks = getEligible('personal');
+
+  const selected = [];
+  if (workTalks.length > 0) selected.push(workTalks[0]);
+  if (personalTalks.length > 0) selected.push(personalTalks[0]);
+
+  return selected;
+}
+
+/**
  * Returns the next available daily talk for the given parameters.
  * MVP Version: Returns the first eligible unread talk by definition order.
  * 
