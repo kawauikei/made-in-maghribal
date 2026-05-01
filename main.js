@@ -2455,6 +2455,23 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const handleSkipBlock = (e) => {
     if (e && e.stopPropagation) e.stopPropagation();
     if (isFadingOut) return;
+    pageList.slice(pageIndex).forEach((page, offset) => {
+      const idx = pageIndex + offset;
+      const text2 = typeof page === "object" ? (page == null ? void 0 : page.text) || "" : page || "";
+      const speakerLabel = typeof page === "object" && (page == null ? void 0 : page.speaker) !== void 0 ? page.speaker : speaker;
+      const speakerId = typeof page === "object" ? page == null ? void 0 : page.speakerId : null;
+      const expr = typeof page === "object" ? (page == null ? void 0 : page.expression) || "normal" : "normal";
+      const key = `${idx}:${text2}`;
+      if (!text2 || loggedPagesRef.current.has(key)) return;
+      loggedPagesRef.current.add(key);
+      onPageComplete == null ? void 0 : onPageComplete({
+        speaker: speakerLabel || "",
+        speakerId: speakerId || null,
+        expression: expr,
+        text: text2,
+        pageIndex: idx
+      });
+    });
     setIsFadingOut(true);
     audioEngine.playSfx("uiTapBottle");
     setTimeout(() => {
