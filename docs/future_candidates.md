@@ -225,4 +225,27 @@ INTRO / PROLOGUE などのVN画面で、VNBoxを下部に半固定し、キャ�
 
 ---
 
+## M-UI-MOBILE-BG-FRAMING: Mobile Canvas Background Framing Polish
+
+- **ステータス**: TODO（未着手）
+- **優先度**: 中（視覚品質）
+- **追加日**: 2026-05-01
+
+### 目的
+
+スマホ版 Gemini Canvas で、背景画像の見せたい位置（看板、入口など）が外側UIや縦横比によってズレる問題を調整する。
+
+### 方針
+
+- **背景ごとのメタデータ化**: `BACKGROUND_IMAGES` に `position` / `mobilePosition` 等のメタデータを持たせる。
+- **動的適用**: `renderBackground` 側で画面幅や logicalWidth に応じて `background-position` を切り替える。
+- **優先対象**: PROLOGUE / INTRO で使用する `shopExteriorNight`, `shopExteriorDay` を優先。
+
+### 参照
+
+- `src/data/imageAssets.js` (BACKGROUND_IMAGES)
+- `src/App.jsx` (renderBackground)
+
+---
+
 > 新規エントリを追加する場合は、上記と同じフォーマットで `## <ID>: <タイトル>` セクションを追加してください。
