@@ -793,7 +793,7 @@ const VisualTestScreen = ({
     margin: "10px 0",
     alignSelf: "flex-start"
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "390px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "330px", maxHeight: "440px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px auto" } }, /* @__PURE__ */ React.createElement(
     "img",
     {
       key: bg.id,
@@ -806,15 +806,15 @@ const VisualTestScreen = ({
         e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
       }
     }
-  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 120px)", gridAutoColumns: "90px", gap: "10px", alignContent: "start", width: "max-content" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "140px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "max-content" } }, bgList.map((item, idx) => /* @__PURE__ */ React.createElement(
     "div",
     {
       "data-testid": "visual-test-thumbnail",
       key: item.id,
       onClick: () => setBgTestIndex(idx),
       style: {
-        width: "90px",
-        height: "120px",
+        width: "84px",
+        height: "112px",
         borderRadius: "8px",
         overflow: "hidden",
         border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : "#333"}`,
@@ -823,7 +823,7 @@ const VisualTestScreen = ({
       }
     },
     /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" }, draggable: false })
-  ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "390px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+  ))))) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, still.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: `${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}` }, "ID: ", still.id, " | Path: ", getFileName(still.src), " | Focus: ", still.focusX, ", ", still.focusY)), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "330px", maxHeight: "440px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px auto" } }, /* @__PURE__ */ React.createElement(
     "img",
     {
       key: still.id,
@@ -836,15 +836,15 @@ const VisualTestScreen = ({
         e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
       }
     }
-  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "180px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(2, 120px)", gridAutoColumns: "90px", gap: "10px", alignContent: "start", width: "max-content" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px", height: "140px", overflowX: "auto", overflowY: "hidden", padding: "8px 0", scrollbarWidth: "thin" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "max-content" } }, stillList.map((item, idx) => /* @__PURE__ */ React.createElement(
     "div",
     {
       "data-testid": "visual-test-thumbnail",
       key: item.id,
       onClick: () => setStillTestIndex(idx),
       style: {
-        width: "90px",
-        height: "120px",
+        width: "84px",
+        height: "112px",
         borderRadius: "8px",
         overflow: "hidden",
         border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : "#333"}`,
