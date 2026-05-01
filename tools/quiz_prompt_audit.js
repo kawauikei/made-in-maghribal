@@ -548,11 +548,13 @@ function simulateQuestionGeneration(forcedType = null) {
     logic,
     correctItem: {
       name: correctItem.name,
+      image: correctItem.image,
       colorName: colorMap(correctItem.colorId),
       typeName: typeMap(correctItem.typeId)
     },
     wrongItem: {
       name: wrongItem.name,
+      image: wrongItem.image,
       colorName: colorMap(wrongItem.colorId),
       typeName: typeMap(wrongItem.typeId)
     }
