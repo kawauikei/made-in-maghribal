@@ -3686,7 +3686,7 @@ const GENRES = [
   { id: "RIT", name: "儀式" },
   { id: "TRD", name: "貿易" }
 ];
-GENRES.reduce((acc, g) => {
+const GENRE_BY_ID = GENRES.reduce((acc, g) => {
   acc[g.id] = g;
   return acc;
 }, {});
@@ -3725,7 +3725,7 @@ const COLORS = [
   { id: "SA", name: "金色", label: "砂・聖 (Sacred/Sand)" },
   { id: "ME", name: "紫色", label: "精神・鉄 (Mental/Metal)" }
 ];
-COLORS.reduce((acc, c) => {
+const COLOR_BY_ID = COLORS.reduce((acc, c) => {
   acc[c.id] = c;
   return acc;
 }, {});
@@ -3733,37 +3733,37 @@ const REQUEST_TEMPLATES = [
   {
     id: "color",
     templates: [
-      "{color}のものが欲しいな。",
-      "{color}のアイテムを探しているんだ。",
-      "{color}の品を頼むよ。",
-      "何か{color}のものはないかな？"
+      "夜の砂漠を歩くには、足元を照らす{color}の導きが必要でね。",
+      "祝祭に相応しい、{color}に輝く品を探しているんだ。",
+      "旅の夜を共にする、{color}の術理を宿した品を頼むよ。",
+      "工房の棚に映える、{color}のものが欲しくてね。"
     ]
   },
   {
     id: "genre",
     templates: [
-      "{genre}が必要なんだ。",
-      "{genre}の在庫はあるかい？",
-      "{genre}を一つ見せてくれ。",
-      "良い{genre}を探している。"
+      "旅支度の{genre}が心許なくてね。信頼できる品を一つ頼む。",
+      "市場ではなかなか見つからなくて。良い{genre}はあるかい？",
+      "大学へ届ける{genre}を探している。確かな品を見立ててくれ。",
+      "長旅になる。砂嵐の中でも保存の利く{genre}を選んでほしい。"
     ]
   },
   {
     id: "itemType",
     templates: [
-      "{type}を買いに来たよ。",
-      "{type}を探しているんだが。",
-      "手頃な{type}を頼む。",
-      "この店に{type}は置いてるかい？"
+      "手馴染みのいい{type}を一つ見立ててくれ。",
+      "星瓶堂の{type}は質が良いと聞いてね。一つ頼むよ。",
+      "儀礼に使う{type}の予備が欲しくてね。良い品はあるかい？",
+      "この店で一番の{type}を見せてほしいんだが。"
     ]
   },
   {
     id: "colorAndItemType",
     templates: [
-      "{color}の{type}が欲しいな。",
-      "{color}の{type}を探しているんだ。",
-      "{color}の{type}を頼むよ。",
-      "何か{color}の{type}はないかな？"
+      "王宮へ届ける{color}の{type}を探している。用途を間違えないでくれ。",
+      "旅の守りに、{color}の{type}が欲しいな。",
+      "砂漠の市場で見かけた{color}の{type}が忘れられなくてね。",
+      "何か{color}の{type}はないかな？ 特別な一品を探しているんだ。"
     ]
   }
 ];
@@ -11826,7 +11826,34 @@ function App() {
       alignItems: "center",
       justifyContent: "flex-start",
       textAlign: "left"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", flex: 1, gap: "6px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 500 } }, currentQuestion.request.text), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px" } }, (() => {
+      var _a2;
+      const criteria = currentQuestion.request.criteria;
+      const badges = [];
+      if (criteria.colorId) {
+        const color = COLOR_BY_ID[criteria.colorId];
+        const label = ((_a2 = color == null ? void 0 : color.label) == null ? void 0 : _a2.split(" (")[0]) || (color == null ? void 0 : color.name);
+        badges.push({ text: `✧${label}`, color: THEME.starGold, bg: "rgba(218, 180, 96, 0.15)" });
+      }
+      if (criteria.genre) {
+        const genre = GENRE_BY_ID[criteria.genre];
+        badges.push({ text: `[${(genre == null ? void 0 : genre.name) || criteria.genre}]`, color: "#666", bg: "#f5f5f5" });
+      }
+      if (criteria.itemTypeId) {
+        const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
+        badges.push({ text: `[${(type == null ? void 0 : type.name) || criteria.itemTypeId}]`, color: "#666", bg: "#f5f5f5" });
+      }
+      return badges.map((b, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: {
+        fontSize: "0.75em",
+        padding: "2px 8px",
+        borderRadius: "4px",
+        background: b.bg,
+        color: b.color,
+        border: `1px solid ${b.color}33`,
+        fontWeight: "bold",
+        letterSpacing: "0.05em"
+      } }, b.text));
+    })())))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
       width: "calc(100% + 40px)",
       margin: "15px -20px",
       background: "rgba(26, 42, 58, 0.6)",
