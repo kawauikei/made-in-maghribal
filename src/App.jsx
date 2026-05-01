@@ -1343,7 +1343,7 @@ export default function App() {
               onOpenHelp={() => setShowHelp(true)} 
             />
             <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
-              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)', textAlign: 'left' }}>
                 愛着の記録: {activeEvent.title}
               </h1>
             </div>
@@ -1403,7 +1403,7 @@ export default function App() {
             onOpenHelp={() => setShowHelp(true)} 
           />
           <div style={{ width: '100%', textAlign: 'left', padding: '24px 0 10px 24px', boxSizing: 'border-box' }}>
-            <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)', textAlign: 'left' }}>
               愛着の記録: {activeEvent.title}
             </h1>
           </div>
