@@ -28,6 +28,7 @@ export function createDefaultSaveData() {
     seenEventIds: [],
     activeEvent: null,
     vnBacklog: [],
+    seenTalkIds: [],
     textSpeed: 'normal',
     instantUnreadText: false,
     bgmVolume: DEFAULT_AUDIO_VOLUME,
@@ -97,6 +98,12 @@ export function normalizeSaveData(raw) {
 
   if (!Array.isArray(normalized.seenEventIds)) {
     normalized.seenEventIds = [];
+  }
+
+  if (!Array.isArray(normalized.seenTalkIds)) {
+    normalized.seenTalkIds = [];
+  } else {
+    normalized.seenTalkIds = [...new Set(normalized.seenTalkIds.filter(id => typeof id === 'string'))];
   }
 
   // Active event safety

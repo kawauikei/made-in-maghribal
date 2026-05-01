@@ -7,6 +7,7 @@ import { PROTAGONIST as NADER } from '../data/world';
 
 const IntroScreen = ({
   activeHeroine,
+  activeDailyTalk,
   screen,
   routeMode,
   textSpeedMeta,
@@ -29,7 +30,7 @@ const IntroScreen = ({
   buttonStyle,
   narrativeBoxStyle
 }) => {
-  const introPages = [
+  const baseIntroPages = [
     { 
       speakerId: 'nader', 
       speaker: 'ナーディル', 
@@ -52,9 +53,13 @@ const IntroScreen = ({
     }
   ];
 
+  const talkPages = activeDailyTalk?.pages || [];
+  const combinedPages = [...talkPages, ...baseIntroPages];
+
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
   };
+
   return (
     <div 
       data-testid="intro-screen" 
@@ -123,14 +128,14 @@ const IntroScreen = ({
         }}>
           <VNBox
             ref={vnRef}
-            pages={introPages}
+            pages={combinedPages}
             hint="客の好みに合わせて素材を選ぼう"
             themeColor={THEME.brass}
             speed={textSpeedMeta.delay}
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
             onPageComplete={onPageComplete}
-            onComplete={onBeginService}
+            onComplete={() => onBeginService(activeDailyTalk?.id || null)}
           />
         </div>
       </div>

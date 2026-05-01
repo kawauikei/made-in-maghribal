@@ -12,7 +12,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk } from './game/eventSystem';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -1623,6 +1623,7 @@ const PrologueScreen = ({
 
 const IntroScreen = ({
   activeHeroine,
+  activeDailyTalk,
   screen,
   routeMode,
   textSpeedMeta,
@@ -1645,7 +1646,7 @@ const IntroScreen = ({
   buttonStyle,
   narrativeBoxStyle
 }) => {
-  const introPages = [
+  const baseIntroPages = [
     { 
       speakerId: 'nader', 
       speaker: 'ナーディル', 
@@ -1668,9 +1669,13 @@ const IntroScreen = ({
     }
   ];
 
+  const talkPages = activeDailyTalk?.pages || [];
+  const combinedPages = [...talkPages, ...baseIntroPages];
+
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
   };
+
   return (
     <div 
       data-testid="intro-screen" 
@@ -1739,14 +1744,14 @@ const IntroScreen = ({
         }}>
           <VNBox
             ref={vnRef}
-            pages={introPages}
+            pages={combinedPages}
             hint="客の好みに合わせて素材を選ぼう"
             themeColor={THEME.brass}
             speed={textSpeedMeta.delay}
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
             onPageComplete={onPageComplete}
-            onComplete={onBeginService}
+            onComplete={() => onBeginService(activeDailyTalk?.id || null)}
           />
         </div>
       </div>
@@ -2324,7 +2329,9 @@ function App() {
 
   // Event State
   const [seenEventIds, setSeenEventIds] = useState([]);
+  const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
+  const [activeDailyTalk, setActiveDailyTalk] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
   // --- Asset Loading State (M8-28) ---
@@ -2469,6 +2476,7 @@ function App() {
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
       setSeenEventIds(data.seenEventIds || []);
+      setSeenTalkIds(data.seenTalkIds || []);
     }
   }, []);
 
@@ -2494,6 +2502,7 @@ function App() {
         seVolume,
         isAudioEnabled,
         seenEventIds,
+        seenTalkIds,
         activeEvent,
         vnBacklog
       });
@@ -2533,7 +2542,7 @@ function App() {
         setHasSave(false);
       }
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, seenTalkIds, activeEvent, vnBacklog]);
 
   useEffect(() => {
     audioEngine.setBgmVolume(bgmVolume);
@@ -2735,6 +2744,16 @@ function App() {
     setActiveHeroineId(heroineId);
     setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
     
+    // DailyTalk Lottery (Timing: intro)
+    const talk = getNextDailyTalk(
+      heroineId,
+      'intro',
+      affection[heroineId] || 0,
+      seenTalkIds,
+      routeMode
+    );
+    setActiveDailyTalk(talk);
+
     // Auto-save when starting a new session with a heroine
     saveGameData({
       routeMode,
@@ -2745,6 +2764,7 @@ function App() {
       bgmVolume,
       seVolume,
       seenEventIds,
+      seenTalkIds,
       vnBacklog
     });
     
@@ -2759,8 +2779,19 @@ function App() {
     audioEngine.playSfx('uiTapBottle');
     if (workshopState.day >= 10) {
       setScreen('FINAL_RESULT');
-    } else {
-      setWorkshopState(prev => ({ ...prev, day: prev.day + 1 }));
+      const nextDay = workshopState.day + 1;
+      setWorkshopState(prev => ({ ...prev, day: nextDay }));
+
+      // DailyTalk Lottery (Timing: intro)
+      const talk = getNextDailyTalk(
+        activeHeroineId,
+        'intro',
+        affection[activeHeroineId] || 0,
+        seenTalkIds,
+        routeMode
+      );
+      setActiveDailyTalk(talk);
+
       setScreen('INTRO');
     }
   };
@@ -2779,8 +2810,24 @@ function App() {
   };
 
   // Generate quiz and start service
-  const handleBeginService = () => {
+  const handleBeginService = (talkId = null) => {
     audioEngine.playSfx('uiTapBottle');
+    
+    // Mark DailyTalk as read if applicable
+    if (talkId) {
+      setSeenTalkIds(prev => {
+        if (prev.includes(talkId)) return prev;
+        const next = [...prev, talkId];
+        // Persistent save for seenTalkIds
+        saveGameData({
+          ...loadSaveData(),
+          seenTalkIds: next
+        });
+        return next;
+      });
+    }
+    setActiveDailyTalk(null);
+
     setSession(createQuizSession({ questionCount: 5 }));
     setScreen('QUIZ');
   };
@@ -3209,6 +3256,7 @@ function App() {
     mainContent = (
       <IntroScreen
         activeHeroine={activeHeroine}
+        activeDailyTalk={activeDailyTalk}
         screen={screen}
         routeMode={routeMode}
         textSpeedMeta={textSpeedMeta}
