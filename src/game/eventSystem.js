@@ -193,3 +193,58 @@ export function resolveEventReturnScreen({ eventKind, isRecallMode }) {
   }
   return 'DAY_END';
 }
+
+/**
+ * Resolves all actions that should occur when an event closes.
+ * Pure function: no side effects.
+ * 
+ * @param {Object} params
+ * @param {Object|null} params.event - The event object that just finished
+ * @param {boolean} params.isRecallMode - Whether the event was viewed in recall/memories mode
+ * @returns {{
+ *   shouldMarkSeen: boolean,
+ *   nextScreen: string,
+ *   shouldClearBackgroundOverride: boolean,
+ *   shouldPlayDayEndSfx: boolean
+ * }}
+ */
+export function resolveEventCloseActions({ event, isRecallMode }) {
+  // Default safe behavior for null/undefined event
+  if (!event) {
+    return {
+      shouldMarkSeen: false,
+      nextScreen: isRecallMode ? 'MEMORIES' : 'DAY_END',
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false,
+    };
+  }
+
+  // Recall mode: never mark seen, always return to MEMORIES
+  if (isRecallMode) {
+    return {
+      shouldMarkSeen: false,
+      nextScreen: 'MEMORIES',
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false,
+    };
+  }
+
+  // flashback_intro: mark seen, return to INTRO, no day-end SFX
+  if (event.kind === 'flashback_intro') {
+    return {
+      shouldMarkSeen: true,
+      nextScreen: 'INTRO',
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false,
+    };
+  }
+
+  // Normal affection events (_5, _10, _20) and route_climax:
+  // mark seen, return to DAY_END, play day-end SFX
+  return {
+    shouldMarkSeen: true,
+    nextScreen: 'DAY_END',
+    shouldClearBackgroundOverride: true,
+    shouldPlayDayEndSfx: true,
+  };
+}

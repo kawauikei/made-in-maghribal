@@ -4,7 +4,7 @@
 const assert = require('assert');
 const path = require('path');
 const { pathToFileURL } = require('url');
-const { checkNewEventUnlock, getEventPages, resolveHeroineSelectionEvent, resolveEventReturnScreen } = require('../src/game/eventSystem.js');
+const { checkNewEventUnlock, getEventPages, resolveHeroineSelectionEvent, resolveEventReturnScreen, resolveEventCloseActions } = require('../src/game/eventSystem.js');
 
 console.log('\n--- Made in Maghribal: Event System Tests ---');
 
@@ -166,6 +166,65 @@ async function main() {
   const r4 = resolveEventReturnScreen({ eventKind: 'flashback_intro', isRecallMode: true });
   assert.strictEqual(r4, 'MEMORIES', 'Recall mode takes priority over flashback_intro');
   console.log('PASSED: resolveEventReturnScreen recall mode takes priority');
+
+  // --- resolveEventCloseActions Tests ---
+  console.log('\nTesting resolveEventCloseActions...');
+
+  // Normal event close
+  const normalEvent = { id: 'hakima_5', kind: 'affection_event', threshold: 5 };
+  const n1 = resolveEventCloseActions({ event: normalEvent, isRecallMode: false });
+  assert.strictEqual(n1.shouldMarkSeen, true, 'Normal event should mark seen');
+  assert.strictEqual(n1.nextScreen, 'DAY_END', 'Normal event should go to DAY_END');
+  assert.strictEqual(n1.shouldClearBackgroundOverride, true, 'Normal event should clear background');
+  assert.strictEqual(n1.shouldPlayDayEndSfx, true, 'Normal event should play day-end SFX');
+  console.log('PASSED: resolveEventCloseActions for normal event');
+
+  // flashback_intro close
+  const fbEvent = { id: 'hakima_0', kind: 'flashback_intro', threshold: 0 };
+  const f1 = resolveEventCloseActions({ event: fbEvent, isRecallMode: false });
+  assert.strictEqual(f1.shouldMarkSeen, true, 'flashback_intro should mark seen');
+  assert.strictEqual(f1.nextScreen, 'INTRO', 'flashback_intro should go to INTRO');
+  assert.strictEqual(f1.shouldClearBackgroundOverride, true, 'flashback_intro should clear background');
+  assert.strictEqual(f1.shouldPlayDayEndSfx, false, 'flashback_intro should NOT play day-end SFX');
+  console.log('PASSED: resolveEventCloseActions for flashback_intro');
+
+  // Recall mode close
+  const r1a = resolveEventCloseActions({ event: normalEvent, isRecallMode: true });
+  assert.strictEqual(r1a.shouldMarkSeen, false, 'Recall mode should NOT mark seen');
+  assert.strictEqual(r1a.nextScreen, 'MEMORIES', 'Recall mode should go to MEMORIES');
+  assert.strictEqual(r1a.shouldClearBackgroundOverride, true, 'Recall mode should clear background');
+  assert.strictEqual(r1a.shouldPlayDayEndSfx, false, 'Recall mode should NOT play day-end SFX');
+  console.log('PASSED: resolveEventCloseActions for recall mode');
+
+  // route_climax close (same as normal event)
+  const climaxEvent = { id: 'hakima_climax', kind: 'route_climax', threshold: 100 };
+  const c1 = resolveEventCloseActions({ event: climaxEvent, isRecallMode: false });
+  assert.strictEqual(c1.shouldMarkSeen, true, 'route_climax should mark seen');
+  assert.strictEqual(c1.nextScreen, 'DAY_END', 'route_climax should go to DAY_END');
+  assert.strictEqual(c1.shouldPlayDayEndSfx, true, 'route_climax should play day-end SFX');
+  console.log('PASSED: resolveEventCloseActions for route_climax');
+
+  // Null event close
+  const n2 = resolveEventCloseActions({ event: null, isRecallMode: false });
+  assert.strictEqual(n2.shouldMarkSeen, false, 'Null event should NOT mark seen');
+  assert.strictEqual(n2.nextScreen, 'DAY_END', 'Null event should go to DAY_END');
+  assert.strictEqual(n2.shouldClearBackgroundOverride, true, 'Null event should clear background');
+  assert.strictEqual(n2.shouldPlayDayEndSfx, false, 'Null event should NOT play day-end SFX');
+  console.log('PASSED: resolveEventCloseActions for null event');
+
+  // Null event in recall mode
+  const n3 = resolveEventCloseActions({ event: null, isRecallMode: true });
+  assert.strictEqual(n3.nextScreen, 'MEMORIES', 'Null event in recall should go to MEMORIES');
+  console.log('PASSED: resolveEventCloseActions for null event in recall mode');
+
+  // Consistency check: resolveEventCloseActions nextScreen should match resolveEventReturnScreen
+  for (const kind of ['flashback_intro', 'affection_event', 'route_climax']) {
+    const evt = { id: `test_${kind}`, kind };
+    const actions = resolveEventCloseActions({ event: evt, isRecallMode: false });
+    const screen = resolveEventReturnScreen({ eventKind: kind, isRecallMode: false });
+    assert.strictEqual(actions.nextScreen, screen, `nextScreen should match resolveEventReturnScreen for ${kind}`);
+  }
+  console.log('PASSED: resolveEventCloseActions nextScreen consistency with resolveEventReturnScreen');
 
   console.log('\n--- All event system tests completed successfully! ---');
 }

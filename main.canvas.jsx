@@ -13,7 +13,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventReturnScreen } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence } from './game/introFlow';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
@@ -3869,25 +3869,25 @@ function App() {
   const handleCloseEvent = () => {
     audioEngine.playSfx('uiTapBottle');
     
-    if (isRecallMode) {
-      setActiveEvent(null);
+    const actions = resolveEventCloseActions({ event: activeEvent, isRecallMode });
+    
+    if (actions.shouldMarkSeen) {
+      setSeenEventIds(prev => [...prev, activeEvent.id]);
+    }
+    setActiveEvent(null);
+    if (actions.shouldClearBackgroundOverride) {
+      setEventBackgroundOverride(null);
+    }
+    if (actions.nextScreen === 'MEMORIES') {
       setIsRecallMode(false);
-      setEventBackgroundOverride(null);
       setScreen('MEMORIES');
+    } else if (actions.nextScreen === 'INTRO') {
+      setScreen('INTRO');
     } else {
-      const finishedEventId = activeEvent.id;
-      const finishedEventKind = activeEvent.kind;
-      setSeenEventIds(prev => [...prev, finishedEventId]);
-      setActiveEvent(null);
-      setEventBackgroundOverride(null);
-      
-      const returnScreen = resolveEventReturnScreen({ eventKind: finishedEventKind, isRecallMode: false });
-      if (returnScreen === 'INTRO') {
-        setScreen('INTRO');
-      } else {
+      if (actions.shouldPlayDayEndSfx) {
         audioEngine.playSfx('workshopDayEnd');
-        setScreen('DAY_END');
       }
+      setScreen('DAY_END');
     }
   };
 
