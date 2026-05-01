@@ -3715,68 +3715,13 @@ const ResultScreen = ({
     )))
   );
 };
-const COLORS = [
-  { id: "AS", name: "青色", label: "星明かり (Astral)" },
-  { id: "EL", name: "青緑色", label: "元素 (Elemental)" },
-  { id: "LI", name: "赤色", label: "生命 (Life)" },
-  { id: "SA", name: "金色", label: "砂・聖 (Sacred/Sand)" },
-  { id: "ME", name: "紫色", label: "精神・鉄 (Mental/Metal)" }
-];
-const COLOR_BY_ID = COLORS.reduce((acc, c) => {
-  acc[c.id] = c;
-  return acc;
-}, {});
-const GENRES = [
-  { id: "ARM", name: "武具" },
-  { id: "FOD", name: "食糧" },
-  { id: "MED", name: "薬品" },
-  { id: "ADN", name: "アクセサリー" },
-  { id: "CLT", name: "衣服" },
-  { id: "DAY", name: "日用" },
-  { id: "WRK", name: "道具" },
-  { id: "TRV", name: "旅具" },
-  { id: "RIT", name: "儀式" },
-  { id: "TRD", name: "貿易" }
-];
-const GENRE_BY_ID = GENRES.reduce((acc, g) => {
-  acc[g.id] = g;
-  return acc;
-}, {});
-const ITEM_NAME_MAP = {
-  ARM: ["短剣", "直剣", "小槍", "丸盾", "魔導杖"],
-  FOD: ["旅パン", "干し果物", "香辛料瓶", "茶杯", "水筒"],
-  MED: ["薬瓶", "霊薬瓶", "軟膏壺", "粉薬瓶", "丸薬箱"],
-  ADN: ["指輪", "耳飾り", "首飾り", "腕輪", "留め具"],
-  CLT: ["外套", "スカーフ", "旅靴", "革帯", "頭巾"],
-  DAY: ["油灯", "方位磁針", "手帳", "寝袋", "小鍵"],
-  WRK: ["乳鉢", "トング", "るつぼ", "計量匙", "フラスコ"],
-  TRV: ["地図筒", "携帯水筒", "縄束", "旅袋", "小ランタン"],
-  RIT: ["香炉", "護符飾り", "儀礼小刀", "小鈴", "香木箱"],
-  TRD: ["硬貨袋", "商人秤", "封蝋印", "帳簿", "小宝箱"]
-};
-const ITEM_TYPES = [];
-GENRES.forEach((genre) => {
-  const names = ITEM_NAME_MAP[genre.id] || [];
-  names.forEach((name, i) => {
-    const index = (i + 1).toString().padStart(2, "0");
-    ITEM_TYPES.push({
-      id: `${genre.id}_${index}`,
-      name,
-      genre: genre.id
-    });
-  });
-});
-const ITEM_TYPE_BY_ID = ITEM_TYPES.reduce((acc, t) => {
-  acc[t.id] = t;
-  return acc;
-}, {});
-const CustomerSilhouette = ({ customer }) => {
+function CustomerSilhouette({ customer }) {
   if (!customer) return null;
   return /* @__PURE__ */ React.createElement("div", { className: "customer-silhouette", style: {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
-};
-const RhythmMock = ({ heroineId, themeColor }) => {
+}
+function RhythmMock({ heroineId, themeColor }) {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
   return /* @__PURE__ */ React.createElement("div", { style: {
@@ -3884,7 +3829,7 @@ const RhythmMock = ({ heroineId, themeColor }) => {
     zIndex: 2,
     transition: "transform 0.3s"
   } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
-};
+}
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
     GameHud,
@@ -3907,6 +3852,61 @@ function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, h
     zIndex: 10
   } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")));
 }
+const COLORS = [
+  { id: "AS", name: "青色", label: "星明かり (Astral)" },
+  { id: "EL", name: "青緑色", label: "元素 (Elemental)" },
+  { id: "LI", name: "赤色", label: "生命 (Life)" },
+  { id: "SA", name: "金色", label: "砂・聖 (Sacred/Sand)" },
+  { id: "ME", name: "紫色", label: "精神・鉄 (Mental/Metal)" }
+];
+const COLOR_BY_ID = COLORS.reduce((acc, c) => {
+  acc[c.id] = c;
+  return acc;
+}, {});
+const GENRES = [
+  { id: "ARM", name: "武具" },
+  { id: "FOD", name: "食糧" },
+  { id: "MED", name: "薬品" },
+  { id: "ADN", name: "アクセサリー" },
+  { id: "CLT", name: "衣服" },
+  { id: "DAY", name: "日用" },
+  { id: "WRK", name: "道具" },
+  { id: "TRV", name: "旅具" },
+  { id: "RIT", name: "儀式" },
+  { id: "TRD", name: "貿易" }
+];
+const GENRE_BY_ID = GENRES.reduce((acc, g) => {
+  acc[g.id] = g;
+  return acc;
+}, {});
+const ITEM_NAME_MAP = {
+  ARM: ["短剣", "直剣", "小槍", "丸盾", "魔導杖"],
+  FOD: ["旅パン", "干し果物", "香辛料瓶", "茶杯", "水筒"],
+  MED: ["薬瓶", "霊薬瓶", "軟膏壺", "粉薬瓶", "丸薬箱"],
+  ADN: ["指輪", "耳飾り", "首飾り", "腕輪", "留め具"],
+  CLT: ["外套", "スカーフ", "旅靴", "革帯", "頭巾"],
+  DAY: ["油灯", "方位磁針", "手帳", "寝袋", "小鍵"],
+  WRK: ["乳鉢", "トング", "るつぼ", "計量匙", "フラスコ"],
+  TRV: ["地図筒", "携帯水筒", "縄束", "旅袋", "小ランタン"],
+  RIT: ["香炉", "護符飾り", "儀礼小刀", "小鈴", "香木箱"],
+  TRD: ["硬貨袋", "商人秤", "封蝋印", "帳簿", "小宝箱"]
+};
+const ITEM_TYPES = [];
+GENRES.forEach((genre) => {
+  const names = ITEM_NAME_MAP[genre.id] || [];
+  names.forEach((name, i) => {
+    const index = (i + 1).toString().padStart(2, "0");
+    ITEM_TYPES.push({
+      id: `${genre.id}_${index}`,
+      name,
+      genre: genre.id
+    });
+  });
+});
+const ITEM_TYPE_BY_ID = ITEM_TYPES.reduce((acc, t) => {
+  acc[t.id] = t;
+  return acc;
+}, {});
 function ConditionBadges({ criteria }) {
   var _a;
   const badges = [];
@@ -10163,7 +10163,7 @@ function normalizeSaveData(raw) {
   }
   return normalized;
 }
-function isStorageAvailable() {
+function isStorageAvailable$1() {
   try {
     return typeof localStorage !== "undefined";
   } catch (e) {
@@ -10171,7 +10171,7 @@ function isStorageAvailable() {
   }
 }
 function saveGameData(data) {
-  if (!isStorageAvailable()) return false;
+  if (!isStorageAvailable$1()) return false;
   try {
     const serialized = JSON.stringify({
       ...data,
@@ -10185,7 +10185,7 @@ function saveGameData(data) {
   }
 }
 function loadSaveData() {
-  if (!isStorageAvailable()) return null;
+  if (!isStorageAvailable$1()) return null;
   try {
     const serialized = localStorage.getItem(STORAGE_KEY);
     if (!serialized) return null;
@@ -10197,12 +10197,54 @@ function loadSaveData() {
   }
 }
 function hasSaveData() {
-  if (!isStorageAvailable()) return false;
+  if (!isStorageAvailable$1()) return false;
   return localStorage.getItem(STORAGE_KEY) !== null;
 }
 function clearSaveData() {
-  if (!isStorageAvailable()) return;
+  if (!isStorageAvailable$1()) return;
   localStorage.removeItem(STORAGE_KEY);
+}
+const DEBUG_MODE_KEY = "made_in_maghribal_debug_mode";
+const AUTO_SKIP_QUIZ_KEY = "made_in_maghribal_auto_skip_quiz";
+const DEBUG_UNLOCK_ALL_KEY = "made_in_maghribal_debug_unlock_all";
+function isStorageAvailable() {
+  try {
+    return typeof localStorage !== "undefined";
+  } catch {
+    return false;
+  }
+}
+function loadBooleanFlag(key, defaultValue = false) {
+  if (!isStorageAvailable()) return defaultValue;
+  try {
+    const val = localStorage.getItem(key);
+    if (val === null) return defaultValue;
+    return val === "true";
+  } catch {
+    return defaultValue;
+  }
+}
+function saveBooleanFlag(key, value) {
+  if (!isStorageAvailable()) return;
+  try {
+    localStorage.setItem(key, String(Boolean(value)));
+  } catch {
+  }
+}
+function loadDebugModeEnabled() {
+  return loadBooleanFlag(DEBUG_MODE_KEY, false);
+}
+function saveDebugModeEnabled(value) {
+  saveBooleanFlag(DEBUG_MODE_KEY, value);
+}
+function loadAutoSkipQuizEnabled() {
+  return loadBooleanFlag(AUTO_SKIP_QUIZ_KEY, false);
+}
+function saveAutoSkipQuizEnabled(value) {
+  saveBooleanFlag(AUTO_SKIP_QUIZ_KEY, value);
+}
+function loadDebugUnlockAllEnabled() {
+  return loadBooleanFlag(DEBUG_UNLOCK_ALL_KEY, true);
 }
 const GREETING_VARIATIONS = [
   {
@@ -10726,24 +10768,14 @@ function App() {
   const [showOptions, setShowOptions] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [isUnlockAllDebug] = useState(() => {
-    if (typeof localStorage === "undefined") return true;
-    const val = localStorage.getItem("made_in_maghribal_debug_unlock_all");
-    return val !== "false";
-  });
-  const [debugModeEnabled, setDebugModeEnabled] = useState(() => {
-    if (typeof localStorage === "undefined") return false;
-    return localStorage.getItem("made_in_maghribal_debug_mode") === "true";
-  });
-  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => {
-    if (typeof localStorage === "undefined") return false;
-    return localStorage.getItem("made_in_maghribal_auto_skip_quiz") === "true";
-  });
+  const [isUnlockAllDebug] = useState(() => loadDebugUnlockAllEnabled());
+  const [debugModeEnabled, setDebugModeEnabled] = useState(() => loadDebugModeEnabled());
+  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => loadAutoSkipQuizEnabled());
   useEffect(() => {
-    localStorage.setItem("made_in_maghribal_debug_mode", debugModeEnabled);
+    saveDebugModeEnabled(debugModeEnabled);
   }, [debugModeEnabled]);
   useEffect(() => {
-    localStorage.setItem("made_in_maghribal_auto_skip_quiz", autoSkipQuiz);
+    saveAutoSkipQuizEnabled(autoSkipQuiz);
   }, [autoSkipQuiz]);
   useEffect(() => {
     if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
