@@ -2,55 +2,45 @@
 
 ## 🟩 Recently Completed (Narrative Fidelity & UI Polish)
 
-### [UX] M-VN-SKIP-1: Narrative Skip Implementation (MVP)
-- [x] **Instant Block Skip**: Implemented 0.3s black-fade skip logic with safety input guards.
-- [x] **Header UI Standardization**: Symmetrical alignment of Nameplate and SKIP button.
-- [x] **Character Display Priority**: Prioritize heroine presence during dialogue.
-- [x] **Typewriter Completion**: Single tap reveals full text; second proceeds.
+### [UI/UX] Interaction Visuals
+- [x] **Still Event UI Refine (C-1)**: Replaced cramped framed layout with cinematic full-screen presentation. Removed redundant buttons and integrated with VNBox bottom-dock.
+- [x] **Expression Cross-fade (B-2)**: Implemented 0.2s cross-fade for standing images and face icons during expression changes. Added image load detection to prevent flickering.
+- [x] **QUIZ Screen Redesign (B-1)**: Full-screen background and full-width rhythm lane band for better immersion.
+- [x] **Header Alignment (A-4)**: Headings in INTRO, EVENT, and RESULT screens are now anchored top-left (8px/12px) for a cleaner ADV look.
+- [x] **HUD Simplification (A-3)**: Removed "Current Bond" label; route mode is now indicated by button background colors (Normal: White, LongHistory: Pink).
+- [x] **Centered Character Standing**: Character assets are now perfectly centered for better cinematic focus.
+- [x] **Speaker Priority System**: Implemented logic where Heroine takes priority over Nadir during interactions.
+- [x] **Smooth Transitions**: 0.6s cross-fade implemented for character arrivals/departures in `IntroScreen`.
+- [x] **Floating Face Icon**: Redesigned `VNBox` nameplate with a scaled-down (60px) floating icon at the top-left corner.
+- [x] **SFX Integration**: Added volume-scaled SFX (`quiz_wrong_sand_tap_01`) for character transitions.
 
-### [Data] Narrative Edit Pack (M-NARRATIVE-EDIT-PACK-1)
-- [x] **Export/Import MVP**: CLI tools for safe narrative editing via Markdown.
-- [x] **Validation Layer**: Guard against ID/Metadata breakage during import.
+### [Data] DailyTalk Standardization
+- [x] **Expression Asset Sync**: Standardized all expression keys (`anger`, `surprise`, etc.) to match manifest.
+- [x] **Narrative Flow Fix**: Implemented 4-part structure: Monologue -> Greeting -> Conversation -> Farewell.
+- [x] **Audit Registry Update**: Enhanced `dailyTalks.test.js` to support new metadata and types.
+- [x] **HTML Audit Report**: Automated report generation for narrative quality control.
+
+---
+
+## 🟦 In Progress / Next Steps
+
+### [QA/Debug] M-GALLERY-TESTING
+- [ ] **Typewriter Behavior Check**: Verify if typewriter effect works correctly during Gallery/Memories recall. Investigate potential logic difference between normal play and recall mode.
+- [ ] **Debug Unlock Mode**: Implement a safe `M-GALLERY-TEST-UNLOCK-ALL` toggle for development/testing without corrupting user seenEventIds.
+
+### [Content] DailyTalk Phase 1 Expansion
+- [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
+- [ ] **Long History Introduction**: Add 1 parallel-world dialogue per heroine as a pilot for the IF route.
+- [ ] **Transition Dialogues**: Refine "monologue" and "response" variations to improve daily flavor.
 
 ### [Maintenance] Technical Debt & Polish
-- [x] **M-UI-TRANSITION-POLISH**: Staggered entrance sequence for Quiz screen.
+- [ ] **Test Output Cleanup**: Refactor `saveData.test.cjs` to suppress/clarify the `SyntaxError` logs during corrupted JSON test cases (currently PASSING, but confusing).
+- [ ] **Dynamic Preloading**: Expand current preloading to handle expression changes ahead of time.
 
 ---
 
-## 🟥 Top Priority: UI Polish & Accessibility (Phase A)
-
-### [UX] M-VN-HISTORY-1: Backlog / Log Implementation
-- [ ] **Backlog Storage**: Capture and persist conversation history.
-- [ ] **Log Modal UI**: Show speaker names, icons, and text history.
-- [ ] **Accessibility**: Ensure "Log" button is functional in all narrative screens.
-
-### [Polish] UI Consistency & Cleanup (Priority A)
-- [ ] **[RESULT] Clean UI**: Remove SKIP / FINISH buttons from score screens.
-- [ ] **[EVENT] Standardize UI**: Use Standing Image + VNBox for regular events (consistent with Intro).
-- [ ] **[UI] Route Indicator**: Remove text "Current Bond" label; use button background colors (Normal: White, Long: Pink).
-- [ ] **[UI] Top-Left Alignment**: Align all screen headers (INTRO, EVENT, RESULT, QUIZ, ENDING) to top-left.
-
----
-
-## 🟦 Next Steps: Visual & Experience Depth (Phase B)
-
-### [Polish] Layout & Animation (Priority B)
-- [ ] **[QUIZ] Background Expansion**: Shop background to full screen (Rhythm lane as horizontal band).
-- [ ] **[RESULT] UI Overhaul**: Full-screen layout, Nadir/Heroine on flanks, center-aligned stats.
-- [ ] **[VN] Expression Fade**: Implement 0.2s cross-fade for expression changes.
-
-### [Maintenance]
-- [ ] **Asset Preloading**: Preload large character images to prevent transition flicker.
-
----
-
-## ⬛ Later / Future (Phase C+)
-
-### [Still] Still Event Improvements (Priority C)
-- [ ] **Larger Display**: Maximize still image area.
-- [ ] **Optimal Cropping**: Use CSS object-position/fit or manual metadata for better framing.
-
-### [Rhythm] Game Foundation
-- [ ] **M-RHYTHM-UI-1**: Visual beat pulse and animated note markers.
-- [ ] **Advanced Expressions**: Blush, determined, etc.
-- [ ] **Environmental Effects**: Lighting/particles based on time of day.
+## 🟧 Future Goals
+- [ ] **Rhythm Game Implementation**: Visual prototype and core engine based on `docs/rhythm_ui_plan.md`.
+- [ ] **Advanced Expression Library**: Adding more nuanced expressions (e.g., `blush`, `determined`).
+- [ ] **Environmental Effects**: Subtle particles or lighting changes based on the time of day in Intro/Result screens.
+- [ ] **Protagonist Customization**: Minor visual cues or choices that impact Nadir's starting monologues.
