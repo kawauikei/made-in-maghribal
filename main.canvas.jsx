@@ -1738,7 +1738,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         height: '166px', // Slightly taller for stability
         background: 'rgba(18, 28, 42, 0.98)',
         borderLeft: `5px solid ${themeColor || THEME.brass}`, // Stronger accent
-        padding: currentSpeaker ? '18px 24px 28px 24px' : '28px 24px 28px 24px',
+        padding: currentSpeaker ? '28px 24px 28px 24px' : '18px 24px 28px 24px',
         borderRadius: '0 16px 16px 0',
         cursor: 'pointer',
         color: THEME.parchment,
@@ -1750,28 +1750,37 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: 'visible', // Allow speaker plate to overflow top
         transition: 'all 0.3s ease',
         border: '1px solid rgba(255,255,255,0.05)'
       }}
     >
+      {/* Speaker Plate (Floating Top-Left) */}
       {currentSpeaker && (
         <div style={{ 
+          position: 'absolute',
+          left: '20px',
+          top: '-18px',
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
-          marginBottom: '10px',
+          gap: '10px',
+          padding: '6px 16px',
+          borderRadius: '999px',
+          background: 'rgba(12, 25, 38, 0.98)',
+          border: `1px solid ${themeColor || THEME.brass}88`,
+          zIndex: 10,
+          boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(4px)'
         }}>
           {facePath && (
             <div style={{
-              width: '40px', // Slightly larger face
-              height: '40px',
+              width: '34px',
+              height: '34px',
               borderRadius: '50%',
               overflow: 'hidden',
-              border: `2px solid ${themeColor || THEME.brass}`,
+              border: `1.5px solid ${themeColor || THEME.brass}`,
               background: 'rgba(0,0,0,0.4)',
-              flexShrink: 0,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+              flexShrink: 0
             }}>
               <img 
                 src={facePath} 
@@ -1789,7 +1798,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
             </div>
           )}
           <div style={{ 
-            fontSize: '0.95em', 
+            fontSize: '0.88em', 
             color: themeColor || THEME.brass, 
             fontWeight: 'bold', 
             letterSpacing: '0.08em',
@@ -1799,6 +1808,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           </div>
         </div>
       )}
+
       <div style={{ 
         fontSize: currentSpeaker ? '1.05em' : '1.1em', 
         lineHeight: '1.6', 
