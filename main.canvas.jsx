@@ -2807,8 +2807,8 @@ function DebugPanel({
         onClick={() => setExpanded(true)}
         style={{
           position: 'absolute',
-          top: '10px',
-          right: '10px',
+          bottom: '10px',
+          left: '10px',
           background: 'rgba(0,0,0,0.8)',
           color: THEME.starGold,
           padding: '4px 8px',
@@ -2832,19 +2832,42 @@ function DebugPanel({
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'rgba(0,0,0,0.85)',
+      background: 'rgba(0,0,0,0.95)',
       color: '#fff',
-      padding: '20px',
+      padding: '16px',
       zIndex: 9999,
       overflowY: 'auto',
       fontFamily: 'monospace',
       display: 'flex',
       flexDirection: 'column',
-      gap: '15px'
+      gap: '15px',
+      boxSizing: 'border-box'
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${THEME.brass}`, paddingBottom: '10px' }}>
-        <h2 style={{ color: THEME.starGold, margin: 0 }}>DEBUG / STORY ASSIST</h2>
-        <button onClick={() => setExpanded(false)} style={{ background: THEME.brass, border: 'none', padding: '5px 10px', borderRadius: '3px', cursor: 'pointer' }}>MINIMIZE</button>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        borderBottom: `1px solid ${THEME.brass}`, 
+        paddingBottom: '8px',
+        flexShrink: 0
+      }}>
+        <h2 style={{ color: THEME.starGold, margin: 0, fontSize: '0.9em', letterSpacing: '0.05em' }}>DEBUG / ASSIST</h2>
+        <button 
+          onClick={() => setExpanded(false)} 
+          style={{ 
+            background: THEME.brass, 
+            color: THEME.textDark,
+            border: 'none', 
+            padding: '4px 8px', 
+            borderRadius: '3px', 
+            cursor: 'pointer',
+            fontSize: '10px',
+            fontWeight: 'bold',
+            flexShrink: 0
+          }}
+        >
+          MINIMIZE
+        </button>
       </div>
 
       {/* Global Mode */}
