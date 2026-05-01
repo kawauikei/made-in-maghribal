@@ -9489,13 +9489,15 @@ function App() {
       // Static dark text for readability on white bubble
       border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
-      padding: "20px",
+      padding: "20px 28px",
       fontSize: "1.1em",
       lineHeight: "1.6",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
       transition: "all 0.3s",
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+      justifyContent: "flex-start",
+      textAlign: "left"
     } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
