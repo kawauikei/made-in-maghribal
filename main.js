@@ -2478,6 +2478,18 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     skip: () => handleSkipBlock()
   }));
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, "face", currentExpression) : null;
+  const [displayFace, setDisplayFace] = useState(facePath);
+  const [prevFace, setPrevFace] = useState(null);
+  const [isFaceLoaded, setIsFaceLoaded] = useState(false);
+  useEffect(() => {
+    if (facePath !== displayFace) {
+      setPrevFace(displayFace);
+      setDisplayFace(facePath);
+      setIsFaceLoaded(false);
+      const timer = setTimeout(() => setPrevFace(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [facePath]);
   const headerButtonStyle = {
     padding: "6px 20px",
     borderRadius: "999px",
@@ -2549,7 +2561,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       alignItems: "center",
       gap: "12px",
       pointerEvents: "none"
-    } }, currentSpeaker && facePath && /* @__PURE__ */ React.createElement("div", { style: {
+    } }, currentSpeaker && displayFace && /* @__PURE__ */ React.createElement("div", { style: {
       width: "60px",
       height: "60px",
       borderRadius: "12px",
@@ -2561,12 +2573,30 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       transform: "rotate(-2deg)",
       position: "relative",
       pointerEvents: "auto"
-    } }, /* @__PURE__ */ React.createElement(
+    } }, prevFace && /* @__PURE__ */ React.createElement(
       "img",
       {
-        key: facePath,
-        src: facePath,
+        src: prevFace,
+        alt: "prev face",
+        style: {
+          width: "110%",
+          height: "110%",
+          objectFit: "cover",
+          objectPosition: "center 20%",
+          position: "absolute",
+          top: "-5%",
+          left: "-5%",
+          zIndex: 1,
+          animation: "vn-fade-out 0.2s forwards"
+        }
+      }
+    ), /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        key: displayFace,
+        src: displayFace,
         alt: currentSpeaker,
+        onLoad: () => setIsFaceLoaded(true),
         style: {
           width: "110%",
           height: "110%",
@@ -2577,7 +2607,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           position: "absolute",
           top: "-5%",
           left: "-5%",
-          animation: "vn-fade-in 0.2s ease"
+          zIndex: 2,
+          opacity: isFaceLoaded ? 1 : 0,
+          animation: isFaceLoaded ? "vn-fade-in 0.2s ease" : "none"
         },
         draggable: false,
         onError: (e) => {
@@ -2589,12 +2621,20 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       inset: 0,
       border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: "14px",
-      pointerEvents: "none"
-    } })), currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
-      ...headerButtonStyle,
-      pointerEvents: "auto",
-      animation: "vn-fade-in 0.2s ease"
-    } }, currentSpeaker)), !hideSkip && /* @__PURE__ */ React.createElement(
+      pointerEvents: "none",
+      zIndex: 3
+    } })), currentSpeaker && /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: currentSpeaker,
+        style: {
+          ...headerButtonStyle,
+          pointerEvents: "auto",
+          animation: "vn-fade-in 0.2s ease"
+        }
+      },
+      currentSpeaker
+    )), !hideSkip && /* @__PURE__ */ React.createElement(
       "div",
       {
         onClick: handleSkipBlock,
@@ -10277,6 +10317,10 @@ function App() {
         animation: vn-button-reveal 0.25s ease-out forwards;
       }
 
+      /* VN Global Fade Animations (B-2) */
+      @keyframes vn-fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes vn-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
       /* Beat Lane Pulse & Halo (M-RHYTHM-UI-1-POLISH) */
       @keyframes beat-lane-pulse {
         0%, 100% { transform: scale(1); filter: brightness(1); box-shadow: 0 0 8px ${THEME.brass}88; }
@@ -11047,8 +11091,22 @@ function App() {
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   var _a;
   const [imgError, setImgError] = useState(false);
-  const assetPath = getHeroineAsset(heroine.id, type, expression);
+  const [displayExpr, setDisplayExpr] = useState(expression);
+  const [prevExpr, setPrevExpr] = useState(null);
+  const [isCurrentLoaded, setIsCurrentLoaded] = useState(false);
+  useEffect(() => {
+    if (expression !== displayExpr) {
+      setPrevExpr(displayExpr);
+      setDisplayExpr(expression);
+      setIsCurrentLoaded(false);
+      const timer = setTimeout(() => setPrevExpr(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [expression]);
+  const assetPath = getHeroineAsset(heroine.id, type, displayExpr);
   const fullPath = assetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${assetPath}`.replace(/([^:])\/\//g, "$1/") : null;
+  const prevAssetPath = prevExpr ? getHeroineAsset(heroine.id, type, prevExpr) : null;
+  const prevFullPath = prevAssetPath ? `${"https://kawauikei.github.io/made-in-maghribal/"}${prevAssetPath}`.replace(/([^:])\/\//g, "$1/") : null;
   const isStanding = type === "standing";
   const displaySize = size === "large" ? isStanding ? 320 : 120 : size === "medium" ? isStanding ? 180 : 80 : isStanding ? 120 : 60;
   const containerStyle2 = {
@@ -11082,12 +11140,31 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
       color: heroine.themeColor || "#111"
     } }, heroine.name ? heroine.name[0] : "?"));
   }
-  return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, prevFullPath && /* @__PURE__ */ React.createElement(
     "img",
     {
+      src: prevFullPath,
+      alt: "previous expression",
+      style: {
+        ...imgStyle,
+        position: "absolute",
+        zIndex: 1,
+        animation: "vn-fade-out 0.2s forwards"
+      }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      key: displayExpr,
       src: fullPath,
       alt: heroine.name,
-      style: imgStyle,
+      onLoad: () => setIsCurrentLoaded(true),
+      style: {
+        ...imgStyle,
+        zIndex: 2,
+        opacity: isCurrentLoaded ? 1 : 0,
+        animation: isCurrentLoaded ? "vn-fade-in 0.2s forwards" : "none"
+      },
       draggable: false,
       onError: () => setImgError(true)
     }
