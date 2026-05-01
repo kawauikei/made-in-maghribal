@@ -2576,6 +2576,21 @@ function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
   if (personalTalks.length > 0) selected.push(personalTalks[0]);
   return selected;
 }
+function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
+  const introEventId = `${heroineId}_0`;
+  const events = getEventsByHeroine(heroineId);
+  const introEvent = events.find((e) => e.id === introEventId);
+  if (introEvent && !seenEventIds.includes(introEventId)) {
+    return introEvent;
+  }
+  return null;
+}
+function resolveEventReturnScreen({ eventKind, isRecallMode }) {
+  if (eventKind === "flashback_intro") {
+    return "INTRO";
+  }
+  return "DAY_END";
+}
 const HeroineSelectScreen = ({
   previewHeroineId,
   onPreviewHeroineChange,
@@ -11020,7 +11035,8 @@ function App() {
       setSeenEventIds((prev) => [...prev, finishedEventId]);
       setActiveEvent(null);
       setEventBackgroundOverride(null);
-      if (finishedEventKind === "flashback_intro") {
+      const returnScreen = resolveEventReturnScreen({ eventKind: finishedEventKind, isRecallMode: false });
+      if (returnScreen === "INTRO") {
         setScreen("INTRO");
       } else {
         audioEngine.playSfx("workshopDayEnd");
@@ -11111,12 +11127,11 @@ function App() {
       seenTalkIds,
       vnBacklog
     });
-    const introEventId = `${heroineId}_0`;
-    const introEvent = (AFFECTION_EVENTS[heroineId] || []).find((e) => e.id === introEventId);
+    const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
     setTimeout(() => {
       setIsHeroineLoading(false);
-      if (introEvent && !seenEventIds.includes(introEventId)) {
-        setActiveEvent(introEvent);
+      if (flashbackEvent) {
+        setActiveEvent(flashbackEvent);
         setScreen("EVENT");
       } else {
         setScreen("INTRO");
