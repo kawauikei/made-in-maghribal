@@ -249,7 +249,6 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               background: 'rgba(12, 25, 38, 0.95)',
               flexShrink: 0,
               boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
-              transform: 'rotate(-2deg)',
               position: 'relative',
               pointerEvents: 'auto'
             }}>
