@@ -23,12 +23,12 @@
 ## 🟦 In Progress / Next Steps
 
 ### [Maintenance] Technical Debt & Polish
+- [x] **M-UI-TRANSITION-POLISH**: Implemented staggered entrance sequence for Quiz screen (Bubble -> Beat Lane -> Choices).
 - [ ] **Asset Preloading**: Implement preloading for large character standing images to prevent transition flicker.
 
----
-
-## 🟧 Future Goals
-- [ ] **Rhythm Game Implementation**: Visual prototype and core engine based on `docs/rhythm_ui_plan.md`.
+### [Rhythm] Game Foundation (M-RHYTHM-UI-1)
+- [ ] **M-RHYTHM-UI-1**: Visual beat display (Pulse enhancements) and animated note-like markers in the lane.
+- [ ] **M-RHYTHM-UI-CONT**: Layout/Margin adjustments for various aspect ratios.
 - [ ] **Advanced Expression Library**: Adding more nuanced expressions (e.g., `blush`, `determined`).
 - [ ] **Environmental Effects**: Subtle particles or lighting changes based on the time of day.
 - [ ] **Protagonist Customization**: Visual cues or choices that impact Nadir's starting monologues.
