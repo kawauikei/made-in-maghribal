@@ -2238,6 +2238,27 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     if (e && e.stopPropagation) e.stopPropagation();
     if (isFadingOut) return;
 
+    // Log all remaining pages in this block before skipping to ensure history integrity
+    pageList.slice(pageIndex).forEach((page, offset) => {
+      const idx = pageIndex + offset;
+      const text = typeof page === 'object' ? (page?.text || "") : (page || "");
+      const speakerLabel = typeof page === 'object' && page?.speaker !== undefined ? page.speaker : speaker;
+      const speakerId = typeof page === 'object' ? page?.speakerId : null;
+      const expr = typeof page === 'object' ? (page?.expression || 'normal') : 'normal';
+
+      const key = `${idx}:${text}`;
+      if (!text || loggedPagesRef.current.has(key)) return;
+      loggedPagesRef.current.add(key);
+
+      onPageComplete?.({ 
+        speaker: speakerLabel || "", 
+        speakerId: speakerId || null, 
+        expression: expr || 'normal',
+        text, 
+        pageIndex: idx 
+      });
+    });
+
     // Instant Skip with Black Fade
     setIsFadingOut(true);
     audioEngine.playSfx('uiTapBottle');
@@ -2245,8 +2266,6 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     // Immediate completion after short fade
     setTimeout(() => {
       onComplete?.();
-      // We don't reset isFadingOut here as the component will likely be unmounted 
-      // or the scene will change. If it persists, the parent should handle it.
     }, 300);
   };
 
