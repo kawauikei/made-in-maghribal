@@ -10508,104 +10508,169 @@ function App() {
     );
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
-    mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle, onClick: handleVnAreaClick }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
-      GameHud,
-      {
-        screen,
-        routeMode,
-        onOpenLog: () => setShowLog(true),
-        onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true)
-      }
-    ), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: THEME.nightBlue, color: THEME.parchment } }, still && /* @__PURE__ */ React.createElement("div", { style: {
-      width: "100%",
-      aspectRatio: "16 / 9",
-      background: "#000",
-      borderRadius: "8px",
-      overflow: "hidden",
-      border: `1px solid ${THEME.brass}`,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      marginBottom: "24px",
-      boxShadow: "0 8px 25px rgba(0,0,0,0.6)",
-      position: "relative"
-    } }, /* @__PURE__ */ React.createElement(
-      "img",
-      {
-        src: getFullPath(still.src),
-        alt: still.label,
-        style: {
+    if (!still) {
+      mainContent = /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          "data-testid": "event-screen-normal",
+          style: { ...containerStyle, position: "relative", overflow: "hidden" },
+          onClick: handleVnAreaClick
+        },
+        renderThemeStyles(),
+        renderBackground(screen),
+        /* @__PURE__ */ React.createElement("div", { style: {
+          position: "absolute",
+          bottom: "8%",
+          left: 0,
           width: "100%",
-          height: "100%",
-          objectFit: isRecallMode ? "contain" : "cover",
-          objectPosition: `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
-        },
-        onError: (e) => {
-          e.target.style.display = "none";
-          e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
-        }
-      }
-    )), !still && /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-end",
-      height: "450px",
-      marginBottom: "20px",
-      pointerEvents: "none",
-      filter: "drop-shadow(0 0 20px rgba(0,0,0,0.4))"
-    } }, /* @__PURE__ */ React.createElement(
-      HeroineDisplay,
-      {
-        heroine: activeHeroine,
-        type: "standing",
-        size: "large",
-        expression: eventHeroineExpression
-      }
-    )), /* @__PURE__ */ React.createElement(
-      VNBox,
-      {
-        ref: vnRef,
-        speaker: activeEvent.speaker,
-        pages: getEventPages(activeEvent, routeMode).map((page) => {
-          if (page.speakerId) return page;
-          let inferredId = null;
-          if (page.speaker === "ナーディル") inferredId = "nader";
-          else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-          return { ...page, speakerId: inferredId };
-        }),
-        themeColor: activeHeroine.themeColor,
-        speed: textSpeedMeta.delay,
-        skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
-        getFaceIcon,
-        onPageChange: (index) => {
-          const pages = getEventPages(activeEvent, routeMode);
-          const page = pages[index];
-          if (page == null ? void 0 : page.expression) {
-            setEventHeroineExpression(page.expression);
+          zIndex: 2,
+          pointerEvents: "none",
+          height: "77%",
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
+        } }, /* @__PURE__ */ React.createElement(
+          HeroineDisplay,
+          {
+            heroine: activeHeroine,
+            type: "standing",
+            size: "large",
+            expression: eventHeroineExpression,
+            noBorder: true,
+            style: { height: "100%", width: "auto", boxShadow: "none" }
           }
-          setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+        )),
+        /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
+          GameHud,
+          {
+            screen,
+            routeMode,
+            onOpenLog: () => setShowLog(true),
+            onOpenOptions: () => setShowOptions(true),
+            onOpenHelp: () => setShowHelp(true)
+          }
+        ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "10px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, margin: 0, fontSize: "1.4em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "愛着の記録: ", activeEvent.title)), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+        /* @__PURE__ */ React.createElement("div", { style: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 6,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
+        } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", boxSizing: "border-box", position: "relative" } }, /* @__PURE__ */ React.createElement(
+          VNBox,
+          {
+            ref: vnRef,
+            speaker: activeEvent.speaker,
+            pages: getEventPages(activeEvent, routeMode).map((page) => {
+              if (page.speakerId) return page;
+              let inferredId = null;
+              if (page.speaker === "ナーディル") inferredId = "nader";
+              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+              return { ...page, speakerId: inferredId };
+            }),
+            themeColor: activeHeroine.themeColor,
+            speed: textSpeedMeta.delay,
+            skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
+            getFaceIcon,
+            onPageChange: (index) => {
+              const pages = getEventPages(activeEvent, routeMode);
+              const page = pages[index];
+              if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
+              setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+            },
+            onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
+            onComplete: handleCloseEvent
+          }
+        )))
+      );
+    } else {
+      mainContent = /* @__PURE__ */ React.createElement("div", { style: containerStyle, onClick: handleVnAreaClick }, renderThemeStyles(), /* @__PURE__ */ React.createElement(
+        GameHud,
+        {
+          screen,
+          routeMode,
+          onOpenLog: () => setShowLog(true),
+          onOpenOptions: () => setShowOptions(true),
+          onOpenHelp: () => setShowHelp(true)
+        }
+      ), /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: THEME.nightBlue, color: THEME.parchment } }, /* @__PURE__ */ React.createElement("div", { style: {
+        width: "100%",
+        aspectRatio: "16 / 9",
+        background: "#000",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: `1px solid ${THEME.brass}`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: "24px",
+        boxShadow: "0 8px 25px rgba(0,0,0,0.6)",
+        position: "relative"
+      } }, /* @__PURE__ */ React.createElement(
+        "img",
+        {
+          src: getFullPath(still.src),
+          alt: still.label,
+          style: {
+            width: "100%",
+            height: "100%",
+            objectFit: isRecallMode ? "contain" : "cover",
+            objectPosition: `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+          },
+          onError: (e) => {
+            e.target.style.display = "none";
+            e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
+          }
+        }
+      )), /* @__PURE__ */ React.createElement(
+        VNBox,
+        {
+          ref: vnRef,
+          speaker: activeEvent.speaker,
+          pages: getEventPages(activeEvent, routeMode).map((page) => {
+            if (page.speakerId) return page;
+            let inferredId = null;
+            if (page.speaker === "ナーディル") inferredId = "nader";
+            else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+            return { ...page, speakerId: inferredId };
+          }),
+          themeColor: activeHeroine.themeColor,
+          speed: textSpeedMeta.delay,
+          skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
+          getFaceIcon,
+          onPageChange: (index) => {
+            const pages = getEventPages(activeEvent, routeMode);
+            const page = pages[index];
+            if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
+            setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+          },
+          onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
+          onComplete: handleCloseEvent
+        }
+      ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "100%", maxWidth: "300px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: handleCloseEvent,
+          className: "vn-button-reveal",
+          style: { ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }
         },
-        onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
-        onComplete: handleCloseEvent
-      }
-    ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "100%", maxWidth: "300px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        onClick: handleCloseEvent,
-        className: "vn-button-reveal",
-        style: { ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }
-      },
-      "次へ"
-    ), seenEventIds.includes(activeEvent.id) && /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        onClick: handleCloseEvent,
-        className: "vn-button-reveal",
-        style: { ...buttonStyle, flex: 1, margin: 0, background: "#444", color: "#ccc", fontSize: "0.8em" }
-      },
-      "SKIP"
-    ))));
+        "次へ"
+      ), seenEventIds.includes(activeEvent.id) && /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: handleCloseEvent,
+          className: "vn-button-reveal",
+          style: { ...buttonStyle, flex: 1, margin: 0, background: "#444", color: "#ccc", fontSize: "0.8em" }
+        },
+        "SKIP"
+      ))));
+    }
   } else if (screen === "VISUAL_TEST") {
     mainContent = /* @__PURE__ */ React.createElement(
       VisualTestScreen,
