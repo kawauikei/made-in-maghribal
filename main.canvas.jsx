@@ -3471,6 +3471,23 @@ function App() {
     mainContent = (
       <div data-testid="quiz-screen" style={containerStyle}>
         {renderThemeStyles()}
+        
+        {/* Counter Background (M-RHYTHM-UI-0B follow-up) */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '38%',
+          backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 80%',
+          zIndex: 1,
+          borderTop: `4px solid ${THEME.brassDark}`,
+          boxShadow: '0 -10px 20px rgba(0,0,0,0.3)',
+          opacity: 0.8
+        }} />
+
         <GameHud
           screen={screen}
           routeMode={routeMode}
@@ -3486,14 +3503,28 @@ function App() {
           padding: '12px 20px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
           justifyContent: 'flex-start',
-          gap: '20px'
+          gap: '20px',
+          zIndex: 10 // Above everything
         }}>
           <span style={{ fontSize: '0.9em' }}>依頼件数 {session.currentIndex + 1} / {session.questions.length}</span>
           <span style={{ fontWeight: 'bold', color: THEME.brass }}>報酬見込: {session.score} G</span>
         </header>
 
-        <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ ...customerStyle, marginBottom: '35px', justifyContent: 'flex-start' }}>
+        <div style={{ 
+          ...cardStyle, 
+          maxWidth: '800px', 
+          marginTop: '10px', 
+          flexGrow: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'flex-start',
+          background: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+          backdropFilter: 'none',
+          zIndex: 5 // Above counter, below header
+        }}>
+          <div style={{ ...customerStyle, marginBottom: '20px', justifyContent: 'flex-start' }}>
             <div style={{ 
               ...bubbleStyle, 
               width: '85%', // Fix width to ensure consistent starting position
@@ -3501,9 +3532,9 @@ function App() {
               color: '#333', // Static dark text for readability on white bubble
               border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
               borderRadius: '15px 15px 15px 0',
-              padding: '20px 28px',
-              fontSize: '1.1em',
-              lineHeight: '1.6',
+              padding: '18px 24px', // Slightly tighter padding
+              fontSize: '1.05em', // Slightly smaller for better fit
+              lineHeight: '1.5',
               boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
               transition: 'all 0.3s',
               display: 'flex',
@@ -3524,7 +3555,7 @@ function App() {
             gap: '24px', 
             width: '100%',
             marginTop: 'auto',
-            padding: '10px 0'
+            padding: '20px 0 40px' // Space for counter feeling
           }}>
             {currentQuestion.choices.map((item, index) => {
               const isSelected = quizFeedback?.itemId === item.id;
