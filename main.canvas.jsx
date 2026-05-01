@@ -3414,9 +3414,10 @@ function App() {
         </header>
 
         <div style={{ ...cardStyle, maxWidth: '800px', marginTop: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ ...customerStyle, marginBottom: '35px' }}>
+          <div style={{ ...customerStyle, marginBottom: '35px', justifyContent: 'flex-start' }}>
             <div style={{ 
               ...bubbleStyle, 
+              width: '85%', // Fix width to ensure consistent starting position
               background: '#fff', 
               color: '#333', // Static dark text for readability on white bubble
               border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
