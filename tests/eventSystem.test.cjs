@@ -85,7 +85,7 @@ async function main() {
 
   for (const heroineId of ['hakima', 'mira', 'dariya']) {
     const heroineEvents = getEventsByHeroine(heroineId);
-    assert.strictEqual(heroineEvents.length, 2, `Expected exactly two events for ${heroineId}`);
+    assert.strictEqual(heroineEvents.length, 3, `Expected exactly three events for ${heroineId}`);
   }
 
   for (const event of allEvents) {
@@ -104,10 +104,13 @@ async function main() {
     seenIds.add(event.id);
   }
 
+  assert.ok(seenIds.has('hakima_0'));
   assert.ok(seenIds.has('hakima_5'));
   assert.ok(seenIds.has('hakima_10'));
+  assert.ok(seenIds.has('mira_0'));
   assert.ok(seenIds.has('mira_5'));
   assert.ok(seenIds.has('mira_10'));
+  assert.ok(seenIds.has('dariya_0'));
   assert.ok(seenIds.has('dariya_5'));
   assert.ok(seenIds.has('dariya_10'));
 
