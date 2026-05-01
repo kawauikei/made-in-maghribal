@@ -3733,37 +3733,37 @@ const REQUEST_TEMPLATES = [
   {
     id: "color",
     templates: [
-      "夜の砂漠を歩くには、足元を照らす{color}の導きが必要でね。",
-      "祝祭に相応しい、{color}に輝く品を探しているんだ。",
-      "旅の夜を共にする、{color}の術理を宿した品を頼むよ。",
-      "工房の棚に映える、{color}のものが欲しくてね。"
+      "夜の砂漠を照らす、{color}の導きが要る。",
+      "祝祭を彩る、{color}の品を頼むよ。",
+      "旅の夜を共にする、{color}の術理を頼む。",
+      "工房の棚に映える、{color}のものが要る。"
     ]
   },
   {
     id: "genre",
     templates: [
-      "旅支度の{genre}が心許なくてね。信頼できる品を一つ頼む。",
-      "市場ではなかなか見つからなくて。良い{genre}はあるかい？",
-      "大学へ届ける{genre}を探している。確かな品を見立ててくれ。",
-      "長旅になる。砂嵐の中でも保存の利く{genre}を選んでほしい。"
+      "旅支度の{genre}を一つ見立ててくれ。",
+      "市場では得られない、上質な{genre}が要る。",
+      "大学へ届ける、確かな{genre}を頼む。",
+      "砂嵐の中でも保存の利く{genre}が要る。"
     ]
   },
   {
     id: "itemType",
     templates: [
       "手馴染みのいい{type}を一つ見立ててくれ。",
-      "星瓶堂の{type}は質が良いと聞いてね。一つ頼むよ。",
-      "儀礼に使う{type}の予備が欲しくてね。良い品はあるかい？",
-      "この店で一番の{type}を見せてほしいんだが。"
+      "星瓶堂の{type}は質が良いと聞いてね。",
+      "儀礼に使う{type}の予備が欲しくてね。",
+      "この店で一番の{type}を見せてほしい。"
     ]
   },
   {
     id: "colorAndItemType",
     templates: [
-      "王宮へ届ける{color}の{type}を探している。用途を間違えないでくれ。",
-      "旅の守りに、{color}の{type}が欲しいな。",
-      "砂漠の市場で見かけた{color}の{type}が忘れられなくてね。",
-      "何か{color}の{type}はないかな？ 特別な一品を探しているんだ。"
+      "王宮へ届ける、{color}の{type}が要る。",
+      "旅の守りに、{color}の{type}を頼む。",
+      "市場で見かけた{color}の{type}が忘れられなくて。",
+      "何か{color}の{type}はないかな？"
     ]
   }
 ];
@@ -11813,20 +11813,33 @@ function App() {
     } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       width: "90%",
+      height: "110px",
+      // Fixed height to prevent layout shift
       background: "#fff",
       color: "#333",
       border: `2px solid ${((_h = currentQuestion.request.customer) == null ? void 0 : _h.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
-      padding: "16px 20px",
-      fontSize: "1em",
+      padding: "12px 16px",
+      fontSize: "0.95em",
+      // Slightly smaller font to fit fixed height
       lineHeight: "1.4",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
       transition: "all 0.3s",
       display: "flex",
-      alignItems: "center",
+      flexDirection: "row",
+      // Silhouette on left, content column on right
+      alignItems: "flex-start",
       justifyContent: "flex-start",
-      textAlign: "left"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", flex: 1, gap: "6px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 500 } }, currentQuestion.request.text), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px" } }, (() => {
+      textAlign: "left",
+      overflow: "hidden"
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      flexDirection: "column",
+      flex: 1,
+      height: "100%",
+      justifyContent: "space-between"
+      // Anchor badges to bottom
+    } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, (() => {
       var _a2;
       const criteria = currentQuestion.request.criteria;
       const badges = [];
