@@ -109,6 +109,7 @@ const HeroineSelectScreen = ({
             <div 
               data-testid={`heroine-tab-${h.id}`}
               key={h.id}
+              className="heroine-card"
               onClick={() => {
                 if (audioEngine) audioEngine.playSfx('uiHeroineTab');
                 if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
@@ -142,6 +143,7 @@ const HeroineSelectScreen = ({
                   borderRadius: '50%',
                   clipPath: 'circle(50% at 50% 50%)'
                 }}
+                draggable={false}
               />
               {isSelected && (
                 <div style={{

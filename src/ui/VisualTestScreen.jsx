@@ -68,7 +68,7 @@ const VisualTestScreen = ({
       <div style={{ flex: 1, width: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 16px' }}>
         {visualTestMode === 'background' ? (
           <div style={{ width: '100%', maxWidth: '800px' }}>
-            <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }}>
+            <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }} className="selectable-text">
               <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{bg.label}</div>
               <div style={{ fontSize: '0.75em', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }} title={bg.src}>ID: {bg.id} | Path: {getFileName(bg.src)}</div>
             </div>
@@ -80,6 +80,7 @@ const VisualTestScreen = ({
                 src={getFullPath(bg.src)} 
                 alt={bg.label} 
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                draggable={false}
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.parentNode.innerHTML = '<span style="color:#f44">Background Load Failed</span>';
@@ -105,7 +106,7 @@ const VisualTestScreen = ({
                       boxShadow: idx === bgTestIndex % bgList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
                     }}
                   >
-                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} draggable={false} />
                   </div>
                 ))}
               </div>
@@ -113,7 +114,7 @@ const VisualTestScreen = ({
           </div>
         ) : (
           <div style={{ width: '100%', maxWidth: '800px' }}>
-            <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }}>
+            <div style={{ marginBottom: '15px', textAlign: 'left', minHeight: '46px' }} className="selectable-text">
               <div style={{ fontSize: '1.1em', fontWeight: 'bold', color: THEME.brass, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{still.label}</div>
               <div style={{ fontSize: '0.75em', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }} title={`${still.id} | ${still.src} | focus ${still.focusX}, ${still.focusY}`}>ID: {still.id} | Path: {getFileName(still.src)} | Focus: {still.focusX}, {still.focusY}</div>
             </div>
@@ -125,6 +126,7 @@ const VisualTestScreen = ({
                 src={getFullPath(still.src)} 
                 alt={still.label} 
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                draggable={false}
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
@@ -150,7 +152,7 @@ const VisualTestScreen = ({
                       boxShadow: idx === stillTestIndex % stillList.length ? `0 0 0 2px ${THEME.brass}44, 0 0 18px ${THEME.brass}55` : 'none'
                     }}
                   >
-                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={getFullPath(item.src)} alt={item.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} draggable={false} />
                   </div>
                 ))}
               </div>

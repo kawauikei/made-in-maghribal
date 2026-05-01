@@ -94,6 +94,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   return (
     <div 
       data-testid="vn-box"
+      className="vn-box"
       onClick={handleClick}
       style={{
         width: '100%',
@@ -109,6 +110,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         boxShadow: '0 -4px 15px rgba(0,0,0,0.3)', // Subtle top shadow only
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',

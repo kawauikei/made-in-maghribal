@@ -666,12 +666,14 @@ export default function App() {
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           backgroundImage: `url(${getFullPath(bg.src)})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
-          zIndex: 0, pointerEvents: 'none'
-        }} />
+          zIndex: 0, pointerEvents: 'none',
+          userSelect: 'none', WebkitUserSelect: 'none'
+        }} draggable={false} />
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           backgroundColor: 'rgba(26, 42, 58, 0.5)',
-          zIndex: 1, pointerEvents: 'none'
+          zIndex: 1, pointerEvents: 'none',
+          userSelect: 'none', WebkitUserSelect: 'none'
         }} />
       </>
     );
@@ -698,16 +700,17 @@ export default function App() {
       }
 
       /* Global interactive element tuning */
-      button, [role="button"], .interactive-card, .quiz-option-0, .quiz-option-1 {
+      button, [role="button"], .interactive-card, .item-card, .heroine-card, .vn-box, .quiz-option-0, .quiz-option-1 {
         touch-action: manipulation;
         cursor: pointer;
-        WebkitTapHighlightColor: transparent;
+        -webkit-tap-highlight-color: transparent;
       }
 
       img {
         -webkit-user-drag: none;
         user-drag: none;
         pointer-events: none;
+        user-select: none;
       }
 
       button:active, .item-card:active { transform: scale(0.96); transition: transform 0.1s; }
@@ -731,7 +734,7 @@ export default function App() {
       }
 
       /* Scrollable areas exception */
-      .scrollable-content, .log-content, .help-content {
+      .scrollable-content, .log-content, .help-content, .selectable-text {
         user-select: text;
         -webkit-user-select: text;
         touch-action: pan-y;
@@ -1306,6 +1309,7 @@ export default function App() {
                     src={`${import.meta.env.BASE_URL}${item.image}`.replace(/([^:])\/\//g, '$1/')} 
                     alt={item.name} 
                     style={{ ...imageStyle, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}
+                    draggable={false}
                     onError={(e) => {
                       e.target.onerror = null; 
                       e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
