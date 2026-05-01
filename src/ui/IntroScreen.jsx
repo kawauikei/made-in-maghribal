@@ -157,10 +157,13 @@ const IntroScreen = ({
     const isNadirPage = page?.speakerId === 'nader';
     
     if (isNadirPage) {
-      setNadirOpacity(1);
-      setHeroineOpacity(0);
-      visibleRef.current = false;
+      // Only show Nadir if heroine is NOT present
+      if (!visibleRef.current) {
+        setNadirOpacity(1);
+        setHeroineOpacity(0);
+      }
     } else if (isHeroinePage) {
+      // Hide Nadir when heroine is present
       setNadirOpacity(0);
     }
 
