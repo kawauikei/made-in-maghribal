@@ -2078,31 +2078,33 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoverSkip, setHoverSkip] = useState(false);
+  const [isSkippingBlock, setIsSkippingBlock] = useState(false);
   const loggedPagesRef = useRef(new Set());
 
-  const markPageComplete = () => {
-    if (!currentText) return;
-    const key = `${pageIndex}:${currentText}`;
+  const markPageComplete = (index = pageIndex, text = currentText) => {
+    if (!text) return;
+    const key = `${index}:${text}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: currentText, pageIndex });
+    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text, pageIndex: index });
   };
 
   useEffect(() => {
-    if (skip) {
+    if (skip || isSkippingBlock) {
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
+      if (isSkippingBlock) setIsSkippingBlock(false);
       return;
     }
 
     setDisplayText("");
     setIsComplete(false);
     setCurrentIndex(0);
-  }, [currentText, skip]);
+  }, [currentText, skip, isSkippingBlock]);
 
   useEffect(() => {
-    if (isComplete || skip) return;
+    if (isComplete || skip || isSkippingBlock) return;
 
     if (currentIndex < currentText.length) {
       const timer = setTimeout(() => {
@@ -2114,7 +2116,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       setIsComplete(true);
       markPageComplete();
     }
-  }, [currentIndex, currentText, isComplete, speed, skip]);
+  }, [currentIndex, currentText, isComplete, speed, skip, isSkippingBlock]);
 
   const handleClick = (e) => {
     // Prevent event bubbling if we're not at the absolute end
@@ -2126,7 +2128,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     }
 
     if (isTyping) {
-      // Typewriter Click-to-Complete
+      // Typewriter Click-to-Complete (Single Page)
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
@@ -2143,8 +2145,25 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     }
   };
 
+  const handleSkipBlock = (e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    
+    const lastIndex = pageList.length - 1;
+    if (pageIndex === lastIndex && isComplete) {
+      // Already at the end and complete, just finish
+      onComplete?.();
+      return;
+    }
+
+    // Fast-forward to the end of the current block
+    setIsSkippingBlock(true);
+    setPageIndex(lastIndex);
+    audioEngine.playSfx('uiTapBottle');
+  };
+
   useImperativeHandle(ref, () => ({
-    advance: () => handleClick()
+    advance: () => handleClick(),
+    skip: () => handleSkipBlock()
   }));
 
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, 'face', currentExpression) : null;
@@ -2181,7 +2200,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     >
       {/* M-VN-SKIP-1: Small Skip Button */}
       <div 
-        onClick={(e) => { e.stopPropagation(); handleClick(e); }}
+        onClick={handleSkipBlock}
         onMouseEnter={() => setHoverSkip(true)}
         onMouseLeave={() => setHoverSkip(false)}
         style={{
@@ -2203,7 +2222,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           backdropFilter: hoverSkip ? 'blur(4px)' : 'none'
         }}
       >
-        {isComplete ? (pageIndex >= pageList.length - 1 ? 'FINISH' : 'SKIP') : 'SKIP'}
+        SKIP
       </div>
 
       {/* Speaker Tag (Floating Top-Left) */}
