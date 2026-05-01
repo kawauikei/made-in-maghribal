@@ -765,14 +765,28 @@ export default function App() {
       setWorkshopState(prev => ({ ...prev, day: nextDay }));
 
       // DailyTalk Lottery (Timing: intro)
-      const talk = getNextDailyTalk(
+      const greeting = getRandomGreeting();
+      setActiveGreeting(greeting);
+
+      const talks = getIntroTalks(
         activeHeroineId,
-        'intro',
         affection[activeHeroineId] || 0,
         seenTalkIds,
         routeMode
       );
-      setActiveDailyTalk(talk);
+
+      // Merge multiple talks into one activeDailyTalk for IntroScreen
+      if (talks.length > 0) {
+        const mergedTalk = {
+          id: `merged_${talks.map(t => t.id).join('_')}`,
+          pages: talks.flatMap(t => t.pages)
+        };
+        setActiveDailyTalk(mergedTalk);
+        // Mark as seen
+        setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
+      } else {
+        setActiveDailyTalk(null);
+      }
 
       setScreen('INTRO');
     }

@@ -1,106 +1,16 @@
 /**
- * Daily Talks for Made in Maghribal
+ * Daily Talks (Gossips) Data
  * 
- * Categories:
- * - work: Shop management, materials, alchemy (Initiated by context/Nader)
- * - personal: Relationship, gossip, date promises (Initiated by Heroine)
- * 
- * Flow:
- * Morning sequence should pick ONE 'work' talk and ONE 'personal' talk.
+ * Each talk has a 'category' field:
+ * - 'work': Shop environment, ingredients, customer service, crafting.
+ * - 'personal': Family, memories, personal feelings, date promises.
  */
-
 export const DAILY_TALKS = [
-  // --- Common (Nader Context / Work) ---
-  {
-    id: "common_father_camera_biz",
-    scope: "common",
-    category: "work",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父さんの錬金カメラ事業は順調みたいだ。世界中から珍しい景色が届くよ。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも俺は、この場所で誰かの日常を支える星瓶堂の仕事が好きだ。" }
-    ]
-  },
-  {
-    id: "common_shop_dust",
-    scope: "common",
-    category: "work",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "営業前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
-      { speaker: "ナーディル", expression: "joy", text: "俺もいつか、この道具に恥ずかしくない店主になりたいな。" }
-    ]
-  },
-  {
-    id: "common_shop_name_origin",
-    scope: "common",
-    category: "work",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "星瓶堂って名前、父さんが若い頃につけたんだ。星を閉じ込めた瓶みたいな店にしたいって。" },
-      { speaker: "ナーディル", expression: "joy", text: "少し大げさだけど、子どもの頃の俺には本当にそう見えてたよ。" }
-    ]
-  },
-  {
-    id: "common_blue_ceramics",
-    scope: "common",
-    category: "work",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "この青い陶器は、王都の職人が焼いたものだよ。薬瓶にも茶器にも使える。" },
-      { speaker: "ナーディル", expression: "joy", text: "砂の色が多い街だからかな。棚に青があるだけで、少し涼しく見えるんだ。" }
-    ]
-  },
-  {
-    id: "common_old_scale",
-    scope: "common",
-    category: "work",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "この天秤、父さんが店を継ぐ前から使っているらしい。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "針の揺れを見るたびに、店って人より長く覚えているんだなと思うよ。" }
-    ]
-  },
-
-  // --- Common (Personal) ---
-  {
-    id: "common_market_snack",
-    scope: "common",
-    category: "personal",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきた。ここのデーツパイは、香草茶と相性がいいんだ。" },
-      { speaker: "ナーディル", expression: "fun", text: "営業の合間に少しつまめば、目利きにも甘さが戻る……気がする。" }
-    ]
-  },
+  // --- Common (Nader's Monologues) ---
   {
     id: "common_fountain_rest",
     scope: "common",
-    category: "personal",
+    category: "work", // Shop surroundings
     heroineId: null,
     timing: "intro",
     routeMode: "both",
@@ -111,10 +21,66 @@ export const DAILY_TALKS = [
       { speaker: "ナーディル", expression: "joy", text: "水音を聞いていると、砂漠の熱さも一瞬だけ忘れられる気がするな。" }
     ]
   },
-
-  // --- Hakima (Work) ---
   {
-    id: "hakima_morning_check",
+    id: "common_morning_mist",
+    scope: "common",
+    category: "work",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグリバルでは珍しい光景だ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。" }
+    ]
+  },
+  {
+    id: "common_mother_postcard",
+    scope: "common",
+    category: "personal",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "母さんから絵葉書が届いた。父さんの写真より、旅先の菓子の話の方が長い。" },
+      { speaker: "ナーディル", expression: "fun", text: "あの二人らしいよ。世界を見に行っても、結局は茶と甘い物の話になる。" }
+    ]
+  },
+  {
+    id: "common_sister_camera_shop",
+    scope: "common",
+    category: "personal",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "姉さんのカメラ会社は、また支店を増やすらしい。手紙の文字まで忙しそうだった。" },
+      { speaker: "ナーディル", expression: "joy", text: "すごいと思う。でも俺は、この棚の前で客と話す時間も悪くないと思ってる。" }
+    ]
+  },
+  {
+    id: "common_customer_gift",
+    scope: "common",
+    category: "work",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。" },
+      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に、きちんと届く形を探すことなんだ。" }
+    ]
+  },
+
+  // --- Hakima ---
+  {
+    id: "hakima_forest_resin",
     scope: "heroine",
     category: "work",
     heroineId: "hakima",
@@ -123,38 +89,38 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "最近の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。" },
-      { speaker: "ナーディル", expression: "normal", text: "ありがとう、ハキマ。君がそうやって釘を刺してくれるから、俺も気を引き締められるよ。" }
+      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
+      { speaker: "ハキマ", expression: "fun", text: "誰かさんみたい？ ……違うわよ。私はもっと扱いやすいでしょ。" }
     ]
   },
   {
-    id: "hakima_spice_fake",
+    id: "hakima_customer_habit",
     scope: "heroine",
     category: "work",
     heroineId: "hakima",
     timing: "intro",
     routeMode: "both",
-    minAffection: 0,
+    minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。" },
-      { speaker: "ハキマ", expression: "anger", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
+      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
+      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。俺も見習わないと。" },
+      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。" }
     ]
   },
-
-  // --- Hakima (Personal) ---
   {
-    id: "hakima_little_brother",
+    id: "hakima_long_family_table",
     scope: "heroine",
     category: "personal",
     heroineId: "hakima",
     timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
+    routeMode: "long_history",
+    minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "fun", text: "弟がね、星瓶堂の光る瓶を欲しがってるの。まったく、子どもって派手なものが好きよね。" },
-      { speaker: "ハキマ", expression: "normal", text: "……まあ、安全な小瓶なら一つくらい選んであげてもいいけど。" }
+      { speaker: "ハキマ", expression: "normal", text: "昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。" },
+      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。" }
     ]
   },
   {
@@ -165,28 +131,14 @@ export const DAILY_TALKS = [
     timing: "intro",
     routeMode: "both",
     minAffection: 5,
-    priority: 2, // Higher priority for date promises
+    priority: 2,
     pages: [
-      { speaker: "ハキマ", expression: "blush", text: "今日の仕事が終わったら、市場の新しいカフェに行かない？ ……別にあんたと行きたいわけじゃないけど、一人じゃ入りにくい店なのよ。" },
-      { speaker: "ナーディル", expression: "joy", text: "いいよ、ハキマ。楽しみにしてる。" }
+      { speaker: "ハキマ", expression: "fun", text: "ねえ、今夜少し時間ある？ ……新しい香料の試作に付き合ってほしいの。あんたの意見、参考になるし。" },
+      { speaker: "ナーディル", expression: "joy", text: "ああ、もちろん。ハキマの新作なら喜んで協力するよ。" }
     ]
   },
 
-  // --- Mira (Work) ---
-  {
-    id: "mira_university_news",
-    scope: "heroine",
-    category: "work",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、聞いてください。大学で新しい抽出法が発見されたんです。まだ実験段階ですが……。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは興味深いね。いつか星瓶堂の品作りにも活かせるかもしれない。" }
-    ]
-  },
+  // --- Mira ---
   {
     id: "mira_preservation_bottle",
     scope: "heroine",
@@ -201,20 +153,34 @@ export const DAILY_TALKS = [
       { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" }
     ]
   },
-
-  // --- Mira (Personal) ---
   {
-    id: "mira_failed_formula",
+    id: "mira_small_failure",
+    scope: "heroine",
+    category: "work",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "sorrow", text: "昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。" },
+      { speaker: "ナーディル", expression: "fun", text: "個性的で済むなら、まだ商品名でごまかせるかもしれない。" },
+      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。" }
+    ]
+  },
+  {
+    id: "mira_long_after_class",
     scope: "heroine",
     category: "personal",
     heroineId: "mira",
     timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
+    routeMode: "long_history",
+    minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "昨日の課題、計算は合っていたのに、実験では沈殿が出ました。" },
-      { speaker: "ミラ", expression: "sorrow", text: "理論上は正しい、だけでは足りないんですね。……少し悔しいです。" }
+      { speaker: "ミラ", expression: "student", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
+      { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
+      { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
     ]
   },
   {
@@ -227,24 +193,24 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 2,
     pages: [
-      { speaker: "ミラ", expression: "blush", text: "先輩、今夜お時間ありますか？ 噴水広場で星が綺麗に見えるそうなんです。……一緒に、見ませんか？" },
-      { speaker: "ナーディル", expression: "joy", text: "もちろん。ミラの解説付きなら、星も一段と輝きそうだな。" }
+      { speaker: "ミラ", expression: "joy", text: "先輩、今夜もし空いていたら……一緒に街の市場を見に行きませんか？ 珍しいスパイスが入荷したって聞いたんです。" },
+      { speaker: "ナーディル", expression: "joy", text: "市場か、いいね。ミラと一緒なら、面白い発見がありそうだ。" }
     ]
   },
 
-  // --- Dariya (Work) ---
+  // --- Dariya ---
   {
-    id: "dariya_palace_protocol",
+    id: "dariya_palace_window",
     scope: "heroine",
-    category: "work",
+    category: "personal",
     heroineId: "dariya",
     timing: "intro",
     routeMode: "both",
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の検証書類は、瓶の中身より重いことがある。" },
-      { speaker: "ダリヤ", expression: "fun", text: "中身を一滴調べるために、紙を十枚書く。優雅な仕事だろう？" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は美しいよ。磨かれすぎて、外の光まで少し緊張して見える。" },
+      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいが、そのぶん光がやわらかい. 悪くない違いだ。" }
     ]
   },
   {
@@ -262,20 +228,19 @@ export const DAILY_TALKS = [
       { speaker: "ダリヤ", expression: "joy", text: "そうだな。君は、王宮が時々忘れる当たり前を覚えている。" }
     ]
   },
-
-  // --- Dariya (Personal) ---
   {
-    id: "dariya_palace_tea",
+    id: "dariya_long_first_weakness",
     scope: "heroine",
     category: "personal",
     heroineId: "dariya",
     timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
+    routeMode: "long_history",
+    minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りは悪くない。" },
-      { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。" }
+      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたな。あれは、今でも少し悔しい。" },
+      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度も検証し直していた姿を覚えています。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……そういう覚え方をするから、君の前では格好をつけにくいんだ。" }
     ]
   },
   {

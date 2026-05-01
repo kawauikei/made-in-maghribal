@@ -12,7 +12,8 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
-import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk } from './game/eventSystem';
+import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, getIntroTalks } from './game/eventSystem';
+import { getRandomGreeting } from './data/greetings';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -1696,40 +1697,10 @@ const PrologueScreen = ({
 
 // --- Inlined: IntroScreen ---
 
-const GREETING_VARIATIONS = [
-  {
-    id: "greet_1",
-    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラス瓶の輝きも一段と増すだろうな……）`,
-    greeting: (h) => `「こんにちは。店先の瓶、今日はずいぶん綺麗に光っているわね」`,
-    response: (h) => `「いらっしゃい。ちょうど光に透かして、色の出方を見ていたところです」`,
-    farewell: `「ふふ、職人の目ね。それじゃ、営業前の邪魔はこのくらいにしておくわ」`
-  },
-  {
-    id: "greet_2",
-    monologue: (h) => `（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）`,
-    greeting: (h) => `「あら、少し顔が赤いわね。砂の熱に負けていたら、目利きも鈍るわよ」`,
-    response: (h) => `「面目ない。水を足して、香草の冷茶でも用意しておきます」`,
-    farewell: `「それがいいわ。無理をする店主より、涼しい顔で品を選ぶ店主の方が頼れるもの」`
-  },
-  {
-    id: "greet_3",
-    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、営業の準備だ）`,
-    greeting: (h) => `「いらっしゃい。今日は珍しく静かね。星瓶堂の棚まで、少し落ち着いて見えるわ」`,
-    response: (h) => `「ええ。こういう日は、香りも音もいつもよりよく分かる気がします」`,
-    farewell: `「いい品が見つかりそうね。それじゃ、また後で顔を出すわ」`
-  },
-  {
-    id: "greet_4",
-    monologue: (h) => `（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）`,
-    greeting: (h) => `「熱心に素材を眺めているわね。曇り空でも、何か見えるものがあるの？」`,
-    response: (h) => `「ええ。強い光がない日ほど、石や瓶の地色が素直に見えるんです」`,
-    farewell: `「なるほどね。星瓶堂の店主らしい見方だわ。今日の目利き、少し楽しみにしている」`
-  }
-];
-
 const IntroScreen = ({
   activeHeroine,
   activeDailyTalk,
+  activeGreeting,
   day = 1,
   screen,
   routeMode,
@@ -1755,10 +1726,9 @@ const IntroScreen = ({
 }) => {
   const [heroineOpacity, setHeroineOpacity] = React.useState(0);
   const [heroineExpression, setHeroineExpression] = React.useState('normal');
-  const [nadirOpacity, setNadirOpacity] = React.useState(0); // Will be synced in handlePageChange or effect
+  const [nadirOpacity, setNadirOpacity] = React.useState(0);
   const visibleRef = React.useRef(false);
 
-  // Transition management (generalizable wait & volume)
   const TRANSITION_CONFIG = {
     arrival: { delay: 0, sfx: 'quizWrongSandTap', volumeScale: 0.5 },
     departure: { delay: 500, sfx: 'quizWrongSandTap', volumeScale: 0.5 }
@@ -1781,61 +1751,66 @@ const IntroScreen = ({
     }, config.delay);
   };
 
-  const greetingIndex = (day - 1) % GREETING_VARIATIONS.length;
-  const variation = GREETING_VARIATIONS[greetingIndex];
+  // Build the unified narrative flow
+  const buildPages = () => {
+    const pages = [];
+    const hId = activeHeroine.id;
+    const greet = activeGreeting || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
+    const reactions = greet.heroineReactions[hId] || { arrival: "こんにちは", response: "いらっしゃい" };
 
-  const baseGreetingPage = {
-    speakerId: 'nader',
-    speaker: 'ナーディル',
-    text: variation.monologue(activeHeroine)
-  };
-
-  const arrivalPage = {
-    speakerId: activeHeroine.id,
-    speaker: activeHeroine.name,
-    text: variation.greeting(activeHeroine)
-  };
-
-  const farewellPage = {
-    speakerId: activeHeroine.id,
-    speaker: activeHeroine.name,
-    text: variation.farewell
-  };
-
-  const startBusinessPage = {
-    speakerId: 'nader',
-    speaker: 'ナーディル',
-    text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
-  };
-
-  // Fix: Ensure speakerId is present for icons in DailyTalk pages
-  const talkPages = (activeDailyTalk?.pages || []).map(page => {
-    if (page.speakerId) return page;
-    let inferredId = null;
-    if (page.speaker === 'ナーディル') inferredId = 'nader';
-    else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-    return { ...page, speakerId: inferredId };
-  });
-
-  // If no specific DailyTalk, use the generic response from variation
-  let conversationPages = talkPages;
-  if (conversationPages.length === 0) {
-    conversationPages = [{
+    // 1. Monologue (Nader)
+    pages.push({
       speakerId: 'nader',
       speaker: 'ナーディル',
-      text: variation.response(activeHeroine)
-    }];
-  }
+      text: typeof greet.monologue === 'function' ? greet.monologue(activeHeroine) : greet.monologue
+    });
 
-  const combinedPages = [
-    baseGreetingPage,
-    arrivalPage,
-    ...conversationPages,
-    farewellPage,
-    startBusinessPage
-  ];
+    // 2. Arrival (Heroine)
+    pages.push({
+      speakerId: hId,
+      speaker: activeHeroine.name,
+      text: typeof reactions.arrival === 'function' ? reactions.arrival(activeHeroine) : reactions.arrival
+    });
 
-  // Sync initial nadir visibility
+    // 3. Initial Response (Nader)
+    pages.push({
+      speakerId: 'nader',
+      speaker: 'ナーディル',
+      text: typeof reactions.response === 'function' ? reactions.response(activeHeroine) : reactions.response
+    });
+
+    // 4. Daily Talks (Merged work + personal topics)
+    if (activeDailyTalk && activeDailyTalk.pages) {
+      activeDailyTalk.pages.forEach(page => {
+        // Ensure speakerId is mapped correctly
+        let inferredId = page.speakerId;
+        if (!inferredId) {
+          if (page.speaker === 'ナーディル') inferredId = 'nader';
+          else if (page.speaker === activeHeroine.name) inferredId = hId;
+        }
+        pages.push({ ...page, speakerId: inferredId });
+      });
+    }
+
+    // 5. Farewell (Heroine)
+    pages.push({
+      speakerId: hId,
+      speaker: activeHeroine.name,
+      text: "「それじゃ、また営業が終わった頃に。今日の商い、期待しているわね」"
+    });
+
+    // 6. Start Business (Nader)
+    pages.push({
+      speakerId: 'nader',
+      speaker: 'ナーディル',
+      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+    });
+
+    return pages;
+  };
+
+  const combinedPages = buildPages();
+
   React.useEffect(() => {
     if (combinedPages[0]?.speakerId === 'nader') {
       setNadirOpacity(1);
@@ -1848,17 +1823,14 @@ const IntroScreen = ({
     const isNadirPage = page?.speakerId === 'nader';
     
     if (isNadirPage) {
-      // Only show Nadir if heroine is NOT present
       if (!visibleRef.current) {
         setNadirOpacity(1);
         setHeroineOpacity(0);
       }
     } else if (isHeroinePage) {
-      // Hide Nadir when heroine is present
       setNadirOpacity(0);
     }
 
-    // Sync standing image expression with VNBox icon
     if (isHeroinePage && page?.expression) {
       setHeroineExpression(page.expression);
     }
@@ -1873,8 +1845,6 @@ const IntroScreen = ({
 
   const handleInternalPageComplete = (data) => {
     onPageComplete(data);
-    
-    // Departure: If it's the second-to-last page (Heroine's Farewell), and it's completed:
     const isFarewellPage = data.pageIndex === combinedPages.length - 2;
     if (isFarewellPage && visibleRef.current) {
        triggerTransition('departure', () => {
@@ -1884,23 +1854,18 @@ const IntroScreen = ({
     }
   };
 
-  const handleAreaClick = (e) => {
-    onVnAreaClick(e);
-  };
-
   return (
     <div 
       data-testid="intro-screen" 
       style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
-      onClick={handleAreaClick}
+      onClick={onVnAreaClick}
     >
       {renderThemeStyles()}
       {renderBackground(screen)}
       
-      {/* Character Standing (Centered, Cross-fade Priority) */}
       <div style={{ 
         position: 'absolute', 
-        bottom: '8%', // Slightly lower for better grounding
+        bottom: '8%', 
         left: 0,
         width: '100%',
         zIndex: 2, 
@@ -1912,7 +1877,6 @@ const IntroScreen = ({
         filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
         <div style={{ position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-          {/* Nadir (Base/Fallback) */}
           <HeroineDisplay 
             heroine={NADER} 
             type="standing" 
@@ -1926,7 +1890,6 @@ const IntroScreen = ({
               transition: 'opacity 0.3s ease-in-out'
             }}
           />
-          {/* Heroine (Priority) */}
           <HeroineDisplay 
             heroine={activeHeroine} 
             type="standing" 
@@ -1952,7 +1915,6 @@ const IntroScreen = ({
           onOpenHelp={onOpenHelp} 
         />
         
-        {/* Top: Title (Absolute Top-Left for A-4) */}
         <h1 style={{ 
           ...titleStyle, 
           position: 'absolute',
@@ -1967,12 +1929,9 @@ const IntroScreen = ({
         }}>
           {activeHeroine.name}との語らい
         </h1>
-
-        {/* Middle: Spacer */}
         <div style={{ flex: '1 1 auto' }} />
       </div>
 
-      {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
       <div style={{ 
         position: 'absolute',
         bottom: 0,
@@ -1985,7 +1944,6 @@ const IntroScreen = ({
         alignItems: 'center', 
         background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
       }}>
-        {/* Main VN Box Container */}
         <div style={{ 
           width: '100%', 
           boxSizing: 'border-box',
@@ -2843,6 +2801,7 @@ function App() {
   const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
+  const [activeGreeting, setActiveGreeting] = useState(null);
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -3270,15 +3229,29 @@ function App() {
     setActiveHeroineId(heroineId);
     setWorkshopState(prev => ({ ...prev, activeHeroineId: heroineId }));
     
-    // DailyTalk Lottery (Timing: intro)
-    const talk = getNextDailyTalk(
+    // NEW: Selection of Greeting and Multiple DailyTalks
+    const greeting = getRandomGreeting();
+    setActiveGreeting(greeting);
+
+    const talks = getIntroTalks(
       heroineId,
-      'intro',
       affection[heroineId] || 0,
       seenTalkIds,
       routeMode
     );
-    setActiveDailyTalk(talk);
+
+    // Merge multiple talks into one activeDailyTalk for IntroScreen
+    if (talks.length > 0) {
+      const mergedTalk = {
+        id: `merged_${talks.map(t => t.id).join('_')}`,
+        pages: talks.flatMap(t => t.pages)
+      };
+      setActiveDailyTalk(mergedTalk);
+      // Mark as seen
+      setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
+    } else {
+      setActiveDailyTalk(null);
+    }
 
     // Auto-save when starting a new session with a heroine
     saveGameData({
@@ -3318,14 +3291,28 @@ function App() {
       setWorkshopState(prev => ({ ...prev, day: nextDay }));
 
       // DailyTalk Lottery (Timing: intro)
-      const talk = getNextDailyTalk(
+      const greeting = getRandomGreeting();
+      setActiveGreeting(greeting);
+
+      const talks = getIntroTalks(
         activeHeroineId,
-        'intro',
         affection[activeHeroineId] || 0,
         seenTalkIds,
         routeMode
       );
-      setActiveDailyTalk(talk);
+
+      // Merge multiple talks into one activeDailyTalk for IntroScreen
+      if (talks.length > 0) {
+        const mergedTalk = {
+          id: `merged_${talks.map(t => t.id).join('_')}`,
+          pages: talks.flatMap(t => t.pages)
+        };
+        setActiveDailyTalk(mergedTalk);
+        // Mark as seen
+        setSeenTalkIds(prev => [...prev, ...talks.map(t => t.id)]);
+      } else {
+        setActiveDailyTalk(null);
+      }
 
       setScreen('INTRO');
     }
@@ -3805,6 +3792,7 @@ function App() {
       <IntroScreen
         activeHeroine={activeHeroine}
         activeDailyTalk={activeDailyTalk}
+        activeGreeting={activeGreeting}
         day={workshopState.day}
         screen={screen}
         routeMode={routeMode}
