@@ -1421,6 +1421,7 @@ export default function App() {
           border: 'none',
           boxShadow: 'none',
           backdropFilter: 'none',
+          padding: '0 20px 40px 20px', // Tighter padding, enough bottom space
           zIndex: 5 // Above counter, below header
         }}>
           <div style={{ ...customerStyle, marginBottom: '20px', justifyContent: 'flex-start' }}>
@@ -1453,8 +1454,8 @@ export default function App() {
             gridTemplateColumns: '1fr 1fr', 
             gap: '24px', 
             width: '100%',
-            marginTop: 'auto',
-            padding: '20px 0 40px' // Space for counter feeling
+            marginTop: '35px', // Tighten gap from beat lane
+            padding: '10px 0' 
           }}>
             {currentQuestion.choices.map((item, index) => {
               const isSelected = quizFeedback?.itemId === item.id;
