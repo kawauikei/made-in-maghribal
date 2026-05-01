@@ -75,7 +75,7 @@ const PrologueScreen = ({
         />
         
         {/* Top: Title */}
-        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+        <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
           <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.6em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             星瓶堂の始まり
           </h1>
@@ -88,7 +88,7 @@ const PrologueScreen = ({
           flexDirection: 'column', 
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          paddingBottom: '20px' 
+          paddingBottom: '12px' 
         }}>
           {/* Action Row (Future Choice Area) */}
           <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
@@ -121,7 +121,7 @@ const PrologueScreen = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '15px',
+          paddingBottom: '8px',
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box */}

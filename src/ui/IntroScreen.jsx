@@ -80,7 +80,7 @@ const IntroScreen = ({
         />
         
         {/* Top: Title */}
-        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+        <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
           <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             {activeHeroine.name}との語らい
           </h1>
@@ -93,7 +93,7 @@ const IntroScreen = ({
           flexDirection: 'column', 
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          paddingBottom: '20px' 
+          paddingBottom: '12px' 
         }}>
           {/* Action Row (Future Choice Area) */}
           <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
@@ -124,7 +124,7 @@ const IntroScreen = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '12px',
+          paddingBottom: '8px',
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box */}
