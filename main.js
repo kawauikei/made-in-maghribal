@@ -1799,12 +1799,19 @@ const PrologueScreen = ({
   buttonStyle: buttonStyle2
 }) => {
   const [isPrologueComplete, setIsPrologueComplete] = useState(false);
+  const handleAreaClick = (e) => {
+    if (isPrologueComplete) {
+      onAdvanceToHeroineSelect();
+    } else {
+      onVnAreaClick(e);
+    }
+  };
   return /* @__PURE__ */ React.createElement(
     "div",
     {
       "data-testid": "prologue-screen",
       style: { ...containerStyle2, position: "relative", overflow: "hidden" },
-      onClick: onVnAreaClick
+      onClick: handleAreaClick
     },
     renderThemeStyles(),
     renderBackground("PROLOGUE"),
@@ -1929,20 +1936,38 @@ const IntroScreen = ({
     {
       speakerId: "nader",
       speaker: "ナーディル",
-      text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`
+      text: `${activeHeroine.name}さん、いらっしゃい。今日も店に寄ってくれたのですね。`
     },
     {
       speakerId: activeHeroine.id,
       speaker: activeHeroine.name,
-      text: activeHeroine.greeting || "ええ、相談に乗ってくれるかしら。"
+      text: activeHeroine.greeting || "ええ、あなたの目利きを見せてもらおうと思って。"
+    },
+    {
+      speakerId: activeHeroine.id,
+      speaker: activeHeroine.name,
+      text: "それじゃ、私はこれで。今日も良い縁があるといいわね。頑張って。"
+    },
+    {
+      speakerId: "nader",
+      speaker: "ナーディル",
+      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
     }
   ];
+  const [isIntroComplete, setIsIntroComplete] = React.useState(false);
+  const handleAreaClick = (e) => {
+    if (isIntroComplete) {
+      onBeginService();
+    } else {
+      onVnAreaClick(e);
+    }
+  };
   return /* @__PURE__ */ React.createElement(
     "div",
     {
       "data-testid": "intro-screen",
       style: { ...containerStyle2, position: "relative", overflow: "hidden" },
-      onClick: onVnAreaClick
+      onClick: handleAreaClick
     },
     renderThemeStyles(),
     renderBackground(screen),
@@ -1978,7 +2003,7 @@ const IntroScreen = ({
         onOpenHelp
       }
     ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "10px 0 5px 0", textAlign: "center" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.4em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, activeHeroine.name, "との語らい")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
-    /* @__PURE__ */ React.createElement("div", { style: {
+    isIntroComplete && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: "185px",
       left: "50%",
@@ -2005,7 +2030,7 @@ const IntroScreen = ({
           border: "1px solid rgba(255,255,255,0.2)"
         }
       },
-      "営業を始める"
+      "星瓶堂を開ける"
     )),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
@@ -2033,7 +2058,7 @@ const IntroScreen = ({
         skip: shouldSkipTypewriter(isInstantTextSpeed),
         getFaceIcon,
         onPageComplete,
-        onComplete: onBeginService
+        onComplete: () => setIsIntroComplete(true)
       }
     )))
   );
@@ -8969,7 +8994,7 @@ function App() {
   const getFileName = (path) => (path == null ? void 0 : path.split("/").pop()) || "";
   const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
-      INTRO: "shopExteriorDay",
+      INTRO: "shopInteriorService",
       RESULT: "shopInteriorWorkshop",
       DAY_END: "shopExteriorNight",
       PROLOGUE: "shopExteriorNight"
