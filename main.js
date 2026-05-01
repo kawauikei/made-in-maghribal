@@ -3674,6 +3674,17 @@ const ResultScreen = ({
     )))
   );
 };
+const COLORS = [
+  { id: "AS", name: "青色", label: "星明かり (Astral)" },
+  { id: "EL", name: "青緑色", label: "元素 (Elemental)" },
+  { id: "LI", name: "赤色", label: "生命 (Life)" },
+  { id: "SA", name: "金色", label: "砂・聖 (Sacred/Sand)" },
+  { id: "ME", name: "紫色", label: "精神・鉄 (Mental/Metal)" }
+];
+const COLOR_BY_ID = COLORS.reduce((acc, c) => {
+  acc[c.id] = c;
+  return acc;
+}, {});
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -3718,17 +3729,304 @@ const ITEM_TYPE_BY_ID = ITEM_TYPES.reduce((acc, t) => {
   acc[t.id] = t;
   return acc;
 }, {});
-const COLORS = [
-  { id: "AS", name: "青色", label: "星明かり (Astral)" },
-  { id: "EL", name: "青緑色", label: "元素 (Elemental)" },
-  { id: "LI", name: "赤色", label: "生命 (Life)" },
-  { id: "SA", name: "金色", label: "砂・聖 (Sacred/Sand)" },
-  { id: "ME", name: "紫色", label: "精神・鉄 (Mental/Metal)" }
-];
-const COLOR_BY_ID = COLORS.reduce((acc, c) => {
-  acc[c.id] = c;
-  return acc;
-}, {});
+const CustomerSilhouette = ({ customer }) => {
+  if (!customer) return null;
+  return /* @__PURE__ */ React.createElement("div", { className: "customer-silhouette", style: {
+    borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
+  } });
+};
+const RhythmMock = ({ heroineId, themeColor }) => {
+  const naderFace = `./characters/nader/face_proc/normal.png`;
+  const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    width: "100%",
+    height: "64px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "12px",
+    margin: "15px 0",
+    pointerEvents: "none",
+    userSelect: "none",
+    position: "relative"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    width: "70%",
+    height: "100%",
+    background: `radial-gradient(ellipse at center, ${THEME.brass}11 0%, transparent 70%)`,
+    zIndex: 0
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "44px",
+    height: "44px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `2px solid ${THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    opacity: 0.8,
+    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
+  } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    flex: 1,
+    maxWidth: "420px",
+    height: "4px",
+    background: `rgba(255,255,255,0.05)`,
+    borderRadius: "2px",
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    width: "100%",
+    height: "1px",
+    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
+    top: "50%",
+    transform: "translateY(-50%)"
+  } }), [20, 35, 65, 80].map((pos) => /* @__PURE__ */ React.createElement("div", { key: pos, style: {
+    position: "absolute",
+    left: `${pos}%`,
+    width: "6px",
+    height: "6px",
+    transform: "rotate(45deg)",
+    background: THEME.brass,
+    boxShadow: `0 0 4px ${THEME.brass}88`,
+    opacity: 0.4
+  } })), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: 0,
+    top: "-12px",
+    bottom: "-12px",
+    width: "2px",
+    background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
+    boxShadow: `0 0 8px ${THEME.starGold}`,
+    opacity: 0.8,
+    zIndex: 2,
+    animation: "beat-scanline 2s linear infinite"
+  } }), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      className: "beat-pulse",
+      style: {
+        width: "24px",
+        height: "24px",
+        borderRadius: "50%",
+        border: `2px solid ${THEME.starGold}`,
+        background: "rgba(255,255,255,0.2)",
+        boxShadow: `0 0 15px ${THEME.starGold}aa`,
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 3
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
+      zIndex: -1
+    } })
+  )), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "44px",
+    height: "44px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `2px solid ${themeColor || THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    boxShadow: `0 0 12px ${themeColor || THEME.brass}88`,
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
+  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
+};
+function QuizScreen({
+  session,
+  activeHeroineId,
+  activeHeroine,
+  quizFeedback,
+  routeMode,
+  screen,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  onSelectChoice,
+  renderThemeStyles,
+  getFullPath,
+  containerStyle: containerStyle2,
+  headerStyle: headerStyle2,
+  cardStyle: cardStyle2,
+  customerStyle: customerStyle2,
+  bubbleStyle: bubbleStyle2,
+  itemCardStyle: itemCardStyle2,
+  imageStyle: imageStyle2,
+  itemNameStyle: itemNameStyle2
+}) {
+  var _a;
+  if (!session) return null;
+  const currentQuestion = session.questions[session.currentIndex];
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle2 }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    zIndex: 1,
+    opacity: 0.8
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0,0,0,0.2)",
+    zIndex: 2
+  } }), /* @__PURE__ */ React.createElement(
+    GameHud,
+    {
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), /* @__PURE__ */ React.createElement("header", { style: {
+    ...headerStyle2,
+    background: THEME.nightBlue,
+    color: THEME.sand,
+    borderBottom: `2px solid ${THEME.brass}`,
+    padding: "12px 20px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+    justifyContent: "flex-start",
+    gap: "20px",
+    zIndex: 10
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: {
+    ...cardStyle2,
+    maxWidth: "800px",
+    marginTop: "5px",
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none",
+    backdropFilter: "none",
+    padding: "0 20px 20px 20px",
+    zIndex: 5
+  } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle2, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    ...bubbleStyle2,
+    width: "90%",
+    height: "110px",
+    background: "#fff",
+    color: "#333",
+    border: `2px solid ${((_a = currentQuestion.request.customer) == null ? void 0 : _a.color) || THEME.brassDark}`,
+    borderRadius: "15px 15px 15px 0",
+    padding: "12px 16px",
+    fontSize: "0.95em",
+    lineHeight: "1.4",
+    boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
+    transition: "all 0.3s",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    textAlign: "left",
+    overflow: "hidden"
+  } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    height: "100%",
+    justifyContent: "space-between"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, (() => {
+    var _a2;
+    const criteria = currentQuestion.request.criteria;
+    const badges = [];
+    if (criteria.colorId) {
+      const color = COLOR_BY_ID[criteria.colorId];
+      const label = ((_a2 = color == null ? void 0 : color.label) == null ? void 0 : _a2.split(" (")[0]) || (color == null ? void 0 : color.name);
+      badges.push({ text: `✧${label}`, color: THEME.starGold, bg: "rgba(218, 180, 96, 0.15)" });
+    }
+    if (criteria.genre) {
+      const genre = GENRE_BY_ID[criteria.genre];
+      badges.push({ text: `[${(genre == null ? void 0 : genre.name) || criteria.genre}]`, color: "#666", bg: "#f5f5f5" });
+    }
+    if (criteria.itemTypeId) {
+      const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
+      badges.push({ text: `[${(type == null ? void 0 : type.name) || criteria.itemTypeId}]`, color: "#666", bg: "#f5f5f5" });
+    }
+    return badges.map((b, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: {
+      fontSize: "0.75em",
+      padding: "2px 8px",
+      borderRadius: "4px",
+      background: b.bg,
+      color: b.color,
+      border: `1px solid ${b.color}33`,
+      fontWeight: "bold",
+      letterSpacing: "0.05em"
+    } }, b.text));
+  })())))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+    width: "calc(100% + 40px)",
+    margin: "15px -20px",
+    background: "rgba(26, 42, 58, 0.6)",
+    borderTop: `1px solid ${THEME.brass}44`,
+    borderBottom: `1px solid ${THEME.brass}44`,
+    padding: "5px 0"
+  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "20px",
+    width: "100%",
+    marginTop: "20px",
+    paddingBottom: "20px"
+  } }, currentQuestion.choices.map((item, index) => {
+    const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
+    const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
+    const staggerClass = `quiz-option-${index}`;
+    let displayChoiceName = item.name;
+    if (currentQuestion.request.type === "genre") {
+      const category = item.id.split("_")[1];
+      if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
+      if (category === "TRD") displayChoiceName = `貿易品の${displayChoiceName}`;
+      if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        "data-testid": "quiz-choice",
+        key: item.id,
+        onClick: () => onSelectChoice(item.id),
+        className: `item-card ${staggerClass} ${feedbackClass}`,
+        style: {
+          ...itemCardStyle2,
+          pointerEvents: quizFeedback ? "none" : "auto"
+        }
+      },
+      /* @__PURE__ */ React.createElement(
+        "img",
+        {
+          src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
+          alt: item.name,
+          style: { ...imageStyle2, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
+          draggable: false,
+          onError: (e) => {
+            e.target.onerror = null;
+            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+          }
+        }
+      ),
+      /* @__PURE__ */ React.createElement("div", { style: itemNameStyle2 }, displayChoiceName)
+    );
+  }))));
+}
 const REQUEST_TEMPLATES = [
   {
     id: "color",
@@ -10286,139 +10584,8 @@ const TEXT_SPEED_META = {
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
-const CustomerSilhouette = ({ customer }) => {
-  if (!customer) return null;
-  return /* @__PURE__ */ React.createElement("div", { className: "customer-silhouette", style: {
-    borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
-  } });
-};
-const RhythmMock = ({ heroineId, themeColor }) => {
-  const naderFace = `./characters/nader/face_proc/normal.png`;
-  const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
-  return /* @__PURE__ */ React.createElement("div", { style: {
-    width: "100%",
-    height: "64px",
-    // Slightly taller for better presence
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "12px",
-    margin: "15px 0",
-    pointerEvents: "none",
-    userSelect: "none",
-    position: "relative"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    width: "70%",
-    height: "100%",
-    background: `radial-gradient(ellipse at center, ${THEME.brass}11 0%, transparent 70%)`,
-    zIndex: 0
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    width: "44px",
-    height: "44px",
-    borderRadius: "50%",
-    overflow: "hidden",
-    border: `2px solid ${THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.9)",
-    opacity: 0.8,
-    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
-    flexShrink: 0,
-    zIndex: 2,
-    transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
-    flex: 1,
-    maxWidth: "420px",
-    height: "4px",
-    // Slightly thicker for visibility
-    background: `rgba(255,255,255,0.05)`,
-    // Subtle track base
-    borderRadius: "2px",
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    width: "100%",
-    height: "1px",
-    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
-    top: "50%",
-    transform: "translateY(-50%)"
-  } }), [20, 35, 65, 80].map((pos) => /* @__PURE__ */ React.createElement("div", { key: pos, style: {
-    position: "absolute",
-    left: `${pos}%`,
-    width: "6px",
-    height: "6px",
-    transform: "rotate(45deg)",
-    background: THEME.brass,
-    boxShadow: `0 0 4px ${THEME.brass}88`,
-    opacity: 0.4
-  } })), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: 0,
-    top: "-12px",
-    bottom: "-12px",
-    width: "2px",
-    background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
-    boxShadow: `0 0 8px ${THEME.starGold}`,
-    opacity: 0.8,
-    zIndex: 2,
-    animation: "beat-scanline 2s linear infinite"
-  } }), /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      className: "beat-pulse",
-      style: {
-        width: "24px",
-        height: "24px",
-        borderRadius: "50%",
-        border: `2px solid ${THEME.starGold}`,
-        background: "rgba(255,255,255,0.2)",
-        boxShadow: `0 0 15px ${THEME.starGold}aa`,
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 3
-      }
-    },
-    /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
-      zIndex: -1
-    } })
-  )), /* @__PURE__ */ React.createElement("div", { style: {
-    width: "44px",
-    height: "44px",
-    borderRadius: "50%",
-    overflow: "hidden",
-    border: `2px solid ${themeColor || THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.9)",
-    boxShadow: `0 0 12px ${themeColor || THEME.brass}88`,
-    flexShrink: 0,
-    zIndex: 2,
-    transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("style", null, `
-        @keyframes beat-pulse {
-          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
-          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-        }
-        @keyframes beat-scanline {
-          0% { left: 0%; opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.8; }
-          100% { left: 100%; opacity: 0; }
-        }
-        .beat-pulse { animation: beat-pulse 0.5s ease-in-out infinite; }
-      `));
-};
 function App() {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+  var _a, _b, _c, _d, _e, _f, _g, _h;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -11802,172 +11969,31 @@ function App() {
       )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
     );
   } else if (screen === "QUIZ" && session) {
-    const currentQuestion = session.questions[session.currentIndex];
-    mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      zIndex: 1,
-      opacity: 0.8
-    } }), /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "rgba(0,0,0,0.2)",
-      // Subtle darkening for readability
-      zIndex: 2
-    } }), /* @__PURE__ */ React.createElement(
-      GameHud,
+    mainContent = /* @__PURE__ */ React.createElement(
+      QuizScreen,
       {
-        screen,
+        session,
+        activeHeroineId,
+        activeHeroine,
+        quizFeedback,
         routeMode,
+        screen,
         onOpenLog: () => setShowLog(true),
         onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true)
+        onOpenHelp: () => setShowHelp(true),
+        onSelectChoice: handleSelect,
+        renderThemeStyles,
+        getFullPath,
+        containerStyle,
+        headerStyle,
+        cardStyle,
+        customerStyle,
+        bubbleStyle,
+        itemCardStyle,
+        imageStyle,
+        itemNameStyle
       }
-    ), /* @__PURE__ */ React.createElement("header", { style: {
-      ...headerStyle,
-      background: THEME.nightBlue,
-      color: THEME.sand,
-      borderBottom: `2px solid ${THEME.brass}`,
-      padding: "12px 20px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-      justifyContent: "flex-start",
-      gap: "20px",
-      zIndex: 10
-      // Above everything
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: {
-      ...cardStyle,
-      maxWidth: "800px",
-      marginTop: "5px",
-      flexGrow: 1,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      background: "transparent",
-      border: "none",
-      boxShadow: "none",
-      backdropFilter: "none",
-      padding: "0 20px 20px 20px",
-      zIndex: 5
-    } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
-      ...bubbleStyle,
-      width: "90%",
-      height: "110px",
-      // Fixed height to prevent layout shift
-      background: "#fff",
-      color: "#333",
-      border: `2px solid ${((_h = currentQuestion.request.customer) == null ? void 0 : _h.color) || THEME.brassDark}`,
-      borderRadius: "15px 15px 15px 0",
-      padding: "12px 16px",
-      fontSize: "0.95em",
-      // Slightly smaller font to fit fixed height
-      lineHeight: "1.4",
-      boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
-      transition: "all 0.3s",
-      display: "flex",
-      flexDirection: "row",
-      // Silhouette on left, content column on right
-      alignItems: "flex-start",
-      justifyContent: "flex-start",
-      textAlign: "left",
-      overflow: "hidden"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      flexDirection: "column",
-      flex: 1,
-      height: "100%",
-      justifyContent: "space-between"
-      // Anchor badges to bottom
-    } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, (() => {
-      var _a2;
-      const criteria = currentQuestion.request.criteria;
-      const badges = [];
-      if (criteria.colorId) {
-        const color = COLOR_BY_ID[criteria.colorId];
-        const label = ((_a2 = color == null ? void 0 : color.label) == null ? void 0 : _a2.split(" (")[0]) || (color == null ? void 0 : color.name);
-        badges.push({ text: `✧${label}`, color: THEME.starGold, bg: "rgba(218, 180, 96, 0.15)" });
-      }
-      if (criteria.genre) {
-        const genre = GENRE_BY_ID[criteria.genre];
-        badges.push({ text: `[${(genre == null ? void 0 : genre.name) || criteria.genre}]`, color: "#666", bg: "#f5f5f5" });
-      }
-      if (criteria.itemTypeId) {
-        const type = ITEM_TYPE_BY_ID[criteria.itemTypeId];
-        badges.push({ text: `[${(type == null ? void 0 : type.name) || criteria.itemTypeId}]`, color: "#666", bg: "#f5f5f5" });
-      }
-      return badges.map((b, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: {
-        fontSize: "0.75em",
-        padding: "2px 8px",
-        borderRadius: "4px",
-        background: b.bg,
-        color: b.color,
-        border: `1px solid ${b.color}33`,
-        fontWeight: "bold",
-        letterSpacing: "0.05em"
-      } }, b.text));
-    })())))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
-      width: "calc(100% + 40px)",
-      margin: "15px -20px",
-      background: "rgba(26, 42, 58, 0.6)",
-      // nightBlue with transparency
-      borderTop: `1px solid ${THEME.brass}44`,
-      borderBottom: `1px solid ${THEME.brass}44`,
-      padding: "5px 0"
-    } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: "20px",
-      width: "100%",
-      marginTop: "20px",
-      // Tighter gap from beat lane
-      paddingBottom: "20px"
-    } }, currentQuestion.choices.map((item, index) => {
-      const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
-      const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
-      const staggerClass = `quiz-option-${index}`;
-      let displayChoiceName = item.name;
-      if (currentQuestion.request.type === "genre") {
-        const category = item.id.split("_")[1];
-        if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
-        if (category === "TRD") displayChoiceName = `貿易品の${displayChoiceName}`;
-        if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
-      }
-      return /* @__PURE__ */ React.createElement(
-        "div",
-        {
-          "data-testid": "quiz-choice",
-          key: item.id,
-          onClick: () => handleSelect(item.id),
-          className: `item-card ${staggerClass} ${feedbackClass}`,
-          style: {
-            ...itemCardStyle,
-            pointerEvents: quizFeedback ? "none" : "auto"
-          }
-        },
-        /* @__PURE__ */ React.createElement(
-          "img",
-          {
-            src: `${"https://kawauikei.github.io/made-in-maghribal/"}${item.image}`.replace(/([^:])\/\//g, "$1/"),
-            alt: item.name,
-            style: { ...imageStyle, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" },
-            draggable: false,
-            onError: (e) => {
-              e.target.onerror = null;
-              e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-family='sans-serif' font-size='10'%3EImage Not Found%3C/text%3E%3C/svg%3E";
-            }
-          }
-        ),
-        /* @__PURE__ */ React.createElement("div", { style: itemNameStyle }, displayChoiceName)
-      );
-    }))));
+    );
   }
   const renderLoadingOverlay = (message = "Loading...") => /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
@@ -11995,7 +12021,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_i = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _i.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_h = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _h.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
