@@ -3845,28 +3845,40 @@ const RhythmMock = ({ heroineId, themeColor }) => {
   } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
 };
 function QuizScreen({
-  session,
-  activeHeroineId,
-  activeHeroine,
-  quizFeedback,
-  routeMode,
-  screen,
-  onOpenLog,
-  onOpenOptions,
-  onOpenHelp,
-  onSelectChoice,
-  renderThemeStyles,
-  getFullPath,
-  containerStyle: containerStyle2,
-  headerStyle: headerStyle2,
-  cardStyle: cardStyle2,
-  customerStyle: customerStyle2,
-  bubbleStyle: bubbleStyle2,
-  itemCardStyle: itemCardStyle2,
-  imageStyle: imageStyle2,
-  itemNameStyle: itemNameStyle2
+  quizState,
+  quizActions,
+  quizHelpers,
+  quizStyles
 }) {
   var _a;
+  const {
+    session,
+    activeHeroineId,
+    activeHeroine,
+    quizFeedback,
+    routeMode,
+    screen
+  } = quizState;
+  const {
+    onOpenLog,
+    onOpenOptions,
+    onOpenHelp,
+    onSelectChoice
+  } = quizActions;
+  const {
+    renderThemeStyles,
+    getFullPath
+  } = quizHelpers;
+  const {
+    containerStyle: containerStyle2,
+    headerStyle: headerStyle2,
+    cardStyle: cardStyle2,
+    customerStyle: customerStyle2,
+    bubbleStyle: bubbleStyle2,
+    itemCardStyle: itemCardStyle2,
+    imageStyle: imageStyle2,
+    itemNameStyle: itemNameStyle2
+  } = quizStyles;
   if (!session) return null;
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle2 }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
@@ -11969,29 +11981,41 @@ function App() {
       )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
     );
   } else if (screen === "QUIZ" && session) {
+    const quizState = {
+      session,
+      activeHeroineId,
+      activeHeroine,
+      quizFeedback,
+      routeMode,
+      screen
+    };
+    const quizActions = {
+      onOpenLog: () => setShowLog(true),
+      onOpenOptions: () => setShowOptions(true),
+      onOpenHelp: () => setShowHelp(true),
+      onSelectChoice: handleSelect
+    };
+    const quizHelpers = {
+      renderThemeStyles,
+      getFullPath
+    };
+    const quizStyles = {
+      containerStyle,
+      headerStyle,
+      cardStyle,
+      customerStyle,
+      bubbleStyle,
+      itemCardStyle,
+      imageStyle,
+      itemNameStyle
+    };
     mainContent = /* @__PURE__ */ React.createElement(
       QuizScreen,
       {
-        session,
-        activeHeroineId,
-        activeHeroine,
-        quizFeedback,
-        routeMode,
-        screen,
-        onOpenLog: () => setShowLog(true),
-        onOpenOptions: () => setShowOptions(true),
-        onOpenHelp: () => setShowHelp(true),
-        onSelectChoice: handleSelect,
-        renderThemeStyles,
-        getFullPath,
-        containerStyle,
-        headerStyle,
-        cardStyle,
-        customerStyle,
-        bubbleStyle,
-        itemCardStyle,
-        imageStyle,
-        itemNameStyle
+        quizState,
+        quizActions,
+        quizHelpers,
+        quizStyles
       }
     );
   }
