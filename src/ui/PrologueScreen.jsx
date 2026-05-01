@@ -105,7 +105,7 @@ const PrologueScreen = ({
             boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
             border: `1px solid ${THEME.brass}33`,
             borderRadius: '12px',
-            marginBottom: '8px'
+            marginBottom: '12px'
           }}>
             <VNBox
               ref={vnRef}
@@ -132,7 +132,7 @@ const PrologueScreen = ({
                   width: '100%', 
                   maxWidth: '340px', 
                   margin: 0, 
-                  height: '46px',
+                  height: '48px',
                   fontSize: '1.1em',
                   boxShadow: `0 4px 15px ${THEME.brass}33`
                 }}

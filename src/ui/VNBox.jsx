@@ -15,7 +15,7 @@ import { THEME } from './theme';
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   
@@ -24,6 +24,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
   const currentSpeaker = typeof currentPage === 'object' && currentPage?.speaker !== undefined ? currentPage.speaker : speaker;
   const currentSpeakerId = typeof currentPage === 'object' ? currentPage.speakerId : null;
   const currentExpression = typeof currentPage === 'object' ? (currentPage.expression || 'normal') : 'normal';
+  const currentHint = typeof currentPage === 'object' ? (currentPage.hint || hint) : hint;
 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
@@ -97,41 +98,43 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       style={{
         width: '100%',
         boxSizing: 'border-box',
-        height: '160px',
-        background: 'rgba(20, 30, 45, 0.97)',
-        borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: currentSpeaker ? '16px 24px' : '24px 24px',
-        borderRadius: '0 12px 12px 0',
+        height: '166px', // Slightly taller for stability
+        background: 'rgba(18, 28, 42, 0.98)',
+        borderLeft: `5px solid ${themeColor || THEME.brass}`, // Stronger accent
+        padding: currentSpeaker ? '18px 24px 28px 24px' : '28px 24px 28px 24px',
+        borderRadius: '0 16px 16px 0',
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 6px 20px rgba(0,0,0,0.5)',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        transition: 'all 0.3s ease'
+        transition: 'all 0.3s ease',
+        border: '1px solid rgba(255,255,255,0.05)'
       }}
     >
       {currentSpeaker && (
         <div style={{ 
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
+          gap: '12px',
           marginBottom: '10px',
         }}>
           {facePath && (
             <div style={{
-              width: '36px',
-              height: '36px',
+              width: '40px', // Slightly larger face
+              height: '40px',
               borderRadius: '50%',
               overflow: 'hidden',
-              border: `1.5px solid ${themeColor || THEME.brass}`,
-              background: 'rgba(0,0,0,0.3)',
-              flexShrink: 0
+              border: `2px solid ${themeColor || THEME.brass}`,
+              background: 'rgba(0,0,0,0.4)',
+              flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
             }}>
               <img 
                 src={facePath} 
@@ -142,7 +145,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
             </div>
           )}
           <div style={{ 
-            fontSize: '0.9em', 
+            fontSize: '0.95em', 
             color: themeColor || THEME.brass, 
             fontWeight: 'bold', 
             letterSpacing: '0.08em',
@@ -155,35 +158,67 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       <div style={{ 
         fontSize: currentSpeaker ? '1.05em' : '1.1em', 
         lineHeight: '1.6', 
-        minHeight: '4.2em', 
+        minHeight: '3.6em', // Adjusted for extra padding
         flex: 1,
-        opacity: currentSpeaker ? 1 : 0.9,
+        opacity: currentSpeaker ? 1 : 0.95,
         fontStyle: currentSpeaker ? 'normal' : 'italic'
       }}>
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: `2px solid ${THEME.brass}` }}>&nbsp;</span>}
       </div>
-      {isComplete && (
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '12px', 
-          right: '20px', 
-          fontSize: '0.8em', 
-          color: themeColor || THEME.brass,
-          fontWeight: 'bold',
+
+      {/* Footer Info Area */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginTop: '8px',
+        minHeight: '24px'
+      }}>
+        {/* Hint (Bottom Left) */}
+        <div style={{
+          fontSize: '0.72em',
+          color: THEME.oasisTeal,
+          opacity: 0.8,
+          fontWeight: '500',
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
-          animation: 'vn-bounce 1s infinite',
-          background: 'rgba(0,0,0,0.3)',
-          padding: '4px 10px',
-          borderRadius: '999px',
-          border: `1px solid ${themeColor || THEME.brass}44`
+          background: 'rgba(0,0,0,0.2)',
+          padding: currentHint ? '2px 10px' : '0',
+          borderRadius: '4px',
+          visibility: currentHint ? 'visible' : 'hidden'
         }}>
-          <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
-          <span style={{ fontSize: '1.2em' }}>▼</span>
+          {currentHint && (
+            <>
+              <span style={{ fontSize: '1.1em' }}>💡</span>
+              {currentHint}
+            </>
+          )}
         </div>
-      )}
+
+        {/* Progression Indicator (Bottom Right) */}
+        {isComplete && (
+          <div style={{ 
+            fontSize: '0.8em', 
+            color: themeColor || THEME.brass,
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            animation: 'vn-bounce 1s infinite',
+            background: 'rgba(0,0,0,0.4)',
+            padding: '4px 12px',
+            borderRadius: '999px',
+            border: `1px solid ${themeColor || THEME.brass}44`,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+          }}>
+            <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
+            <span style={{ fontSize: '1.2em' }}>▼</span>
+          </div>
+        )}
+      </div>
+
       <style>{`
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }

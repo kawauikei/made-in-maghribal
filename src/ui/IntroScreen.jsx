@@ -110,11 +110,12 @@ const IntroScreen = ({
             boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
             border: `1px solid ${THEME.brass}33`,
             borderRadius: '12px',
-            marginBottom: '8px'
+            marginBottom: '12px'
           }}>
             <VNBox
               ref={vnRef}
               pages={introPages}
+              hint="客の好みに合わせて素材を選ぼう"
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
@@ -124,20 +125,8 @@ const IntroScreen = ({
             />
           </div>
 
-          {/* Hint Chip & Start Button Row */}
-          <div style={{ width: '94%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-            <div style={{ 
-              background: 'rgba(0,0,0,0.5)', 
-              fontSize: '0.75em', 
-              padding: '4px 12px', 
-              borderRadius: '20px',
-              border: `1px solid ${THEME.oasisTeal}44`,
-              color: THEME.oasisTeal,
-              backdropFilter: 'blur(4px)'
-            }}>
-              💡 客の好みに合わせて素材を選ぼう
-            </div>
-            
+          {/* Action Row */}
+          <div style={{ width: '94%', display: 'flex', justifyContent: 'center' }}>
             <button 
               data-testid="intro-start" 
               onClick={onBeginService} 
@@ -146,7 +135,7 @@ const IntroScreen = ({
                 width: '100%', 
                 maxWidth: '340px', 
                 margin: 0, 
-                height: '46px',
+                height: '48px',
                 fontSize: '1.1em',
                 boxShadow: `0 4px 15px ${THEME.brass}33`
               }}
