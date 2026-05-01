@@ -1392,7 +1392,6 @@ function getEventsByHeroine(heroineId) {
   return AFFECTION_EVENTS[heroineId] || [];
 }
 const DAILY_TALKS = [
-  // --- Common Topics ---
   {
     id: "common_father_camera_biz",
     scope: "common",
@@ -1536,7 +1535,6 @@ const DAILY_TALKS = [
       { speaker: "ナーディル", expression: "joy", text: "こういう日は、香り袋よりも温かい茶の調合がよく出るんだ。" }
     ]
   },
-  // --- Heroine Specific: Hakima ---
   {
     id: "hakima_morning_check",
     scope: "heroine",
@@ -1546,7 +1544,7 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今日の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。" },
+      { speaker: "ハキマ", expression: "normal", text: "最近の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。" },
       { speaker: "ナーディル", expression: "normal", text: "ありがとう、ハキマ。君がそうやって釘を刺してくれるから、俺も気を引き締められるよ。" }
     ]
   },
@@ -1659,7 +1657,6 @@ const DAILY_TALKS = [
       { speaker: "ハキマ", expression: "joy", text: "謝るより、隣を空けておきなさいよ。今度は私が、そこに立つんだから。" }
     ]
   },
-  // --- Heroine Specific: Mira ---
   {
     id: "mira_university_news",
     scope: "heroine",
@@ -1782,7 +1779,6 @@ const DAILY_TALKS = [
       { speaker: "ミラ", expression: "joy", text: "……はい。やっぱり私は、この席が一番落ち着きます。" }
     ]
   },
-  // --- Heroine Specific: Dariya ---
   {
     id: "dariya_palace_tea",
     scope: "heroine",
@@ -1818,8 +1814,8 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ここは、王宮ほど静かではないのに落ち着くな。瓶の音も、人の声もある。" },
-      { speaker: "ダリヤ", expression: "joy", text: "完璧に整っていないから、かえって息がしやすいのかもしれない。" }
+      { speaker: "ダリヤ", expression: "normal", text: "ここは、王宮ほど静かではないのに妙に落ち着くな。瓶の音も、人の声もある。" },
+      { speaker: "ダリヤ", expression: "fun", text: "完璧に整っていないからだろうか。少なくとも、息苦しさは少ない。" }
     ]
   },
   {
@@ -1873,8 +1869,8 @@ const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ダリヤ", expression: "fun", text: "今日の装い、どうかしら？ 交易商の会合だから、少し「武装」してきたの。" },
-      { speaker: "ナーディル", expression: "blush", text: "……武装、ですか。確かに、いつにもまして隙がないように見えます。" },
-      { speaker: "ダリヤ", expression: "joy", text: "あら、嬉しい。隙を作るときは、場所を選ぶつもりよ。ふふ。" }
+      { speaker: "ナーディル", expression: "surprise", text: "……武装、ですか。確かに、いつにもまして隙がないように見えます。" },
+      { speaker: "ダリヤ", expression: "joy", text: "なら上々だ。隙を見せる相手くらい、自分で選びたいのでね。" }
     ]
   },
   {
@@ -1886,9 +1882,9 @@ const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉が入ったの。後で淹れてあげるわ。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りが素晴らしいですから。" },
-      { speaker: "ダリヤ", expression: "joy", text: "ええ。あなたと過ごす時間を、一番贅沢に彩ってくれるものを選んだわ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉を見つけた。香りの層が面白い。後で試してみるか。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りの理由まで面白いですから。" },
+      { speaker: "ダリヤ", expression: "joy", text: "いい答えだ。では、君の感想も検証材料に加えさせてもらおう。" }
     ]
   },
   {
@@ -1933,7 +1929,6 @@ const DAILY_TALKS = [
       { speaker: "ダリヤ", expression: "joy", text: "……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。" }
     ]
   },
-  // --- Miscellaneous / Connective ---
   {
     id: "common_market_snack",
     scope: "common",
@@ -1943,8 +1938,8 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきたんだ。ここのデーツパイは絶品でね。" },
-      { speaker: "ナーディル", expression: "fun", text: "営業中に小腹が空いたら、こっそり頂くことにしよう。" }
+      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきた。ここのデーツパイは、香草茶と相性がいいんだ。" },
+      { speaker: "ナーディル", expression: "fun", text: "営業の合間に少しつまめば、目利きにも甘さが戻る……気がする。" }
     ]
   },
   {
@@ -1969,11 +1964,10 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグレバルでは珍しい光景だ。" },
+      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグリバルでは珍しい光景だ。" },
       { speaker: "ナーディル", expression: "surprise", text: "瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。" }
     ]
   },
-  // --- Expansion 3: New Candidates ---
   {
     id: "common_mother_postcard",
     scope: "common",
@@ -2010,7 +2004,7 @@ const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。" },
-      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に合う形を探すことなんだ。" }
+      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に、きちんと届く形を探すことなんだ。" }
     ]
   },
   {
@@ -2374,7 +2368,7 @@ const HeroineSelectScreen = ({
     opacity: 0.8
   } }));
 };
-const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, hideSkip = false, hideNext = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   useEffect(() => {
@@ -2599,7 +2593,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       ...headerButtonStyle,
       pointerEvents: "auto",
       animation: "vn-fade-in 0.2s ease"
-    } }, currentSpeaker)), /* @__PURE__ */ React.createElement(
+    } }, currentSpeaker)), !hideSkip && /* @__PURE__ */ React.createElement(
       "div",
       {
         onClick: handleSkipBlock,
@@ -2654,7 +2648,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       backdropFilter: "blur(2px)",
       pointerEvents: "none"
     } }, currentHint && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em" } }, "💡"), currentHint)),
-    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
+    isComplete && !hideNext && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: "14px",
       right: "24px",
@@ -3112,6 +3106,8 @@ const ResultScreen = ({
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter2(isInstantTextSpeed),
+        hideSkip: true,
+        hideNext: true,
         onPageComplete: (data) => appendVnBacklog({ ...data, screen: "RESULT" })
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
