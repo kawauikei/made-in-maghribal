@@ -1623,28 +1623,32 @@ const PrologueScreen = ({
 
 const GREETING_VARIATIONS = [
   {
-    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラスの輝きも一段と増すだろうな……）`,
-    greeting: (h) => `「おはよう。朝から熱心ね。その顔、何か良い品でも入ったのかしら？」`,
-    response: (h) => `「いらっしゃい。ええ、ちょうど朝日に透かして見ていたところです」`,
-    farewell: `「ふふ、職人の目ね。それじゃ、私はこれで。今日も良い縁があるといいわね」`
+    id: "greet_1",
+    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラス瓶の輝きも一段と増すだろうな……）`,
+    greeting: (h) => `「こんにちは。店先の瓶、今日はずいぶん綺麗に光っているわね」`,
+    response: (h) => `「いらっしゃい。ちょうど光に透かして、色の出方を見ていたところです」`,
+    farewell: `「ふふ、職人の目ね。それじゃ、営業前の邪魔はこのくらいにしておくわ」`
   },
   {
+    id: "greet_2",
     monologue: (h) => `（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）`,
-    greeting: (h) => `「おはよう。あら、あなたもバテ気味？ 砂の熱に負けてちゃ、商売にならないわよ」`,
-    response: (h) => `「……おはようございます。面目ない。しっかり水分を摂って、シャキッとしないと」`,
-    farewell: `「そうよ。はい、これ。……それじゃ、私も仕事に戻るわ。無理しすぎないようにね」`
+    greeting: (h) => `「あら、少し顔が赤いわね。砂の熱に負けていたら、目利きも鈍るわよ」`,
+    response: (h) => `「面目ない。水を足して、香草の冷茶でも用意しておきます」`,
+    farewell: `「それがいいわ。無理をする店主より、涼しい顔で品を選ぶ店主の方が頼れるもの」`
   },
   {
-    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、開店の準備だ）`,
-    greeting: (h) => `「いらっしゃい。今日は珍しく静かな朝ね。あなたの店も、心なしか落ち着いて見えるわ」`,
-    response: (h) => `「ええ、心地よい静寂です。たまにはこういう、ゆったりとした時間も悪くないですね」`,
-    farewell: `「ええ、同感よ。さて、私も行くわ。いい品ができるのを楽しみにしてる」`
+    id: "greet_3",
+    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、営業の準備だ）`,
+    greeting: (h) => `「いらっしゃい。今日は珍しく静かね。星瓶堂の棚まで、少し落ち着いて見えるわ」`,
+    response: (h) => `「ええ。こういう日は、香りも音もいつもよりよく分かる気がします」`,
+    farewell: `「いい品が見つかりそうね。それじゃ、また後で顔を出すわ」`
   },
   {
+    id: "greet_4",
     monologue: (h) => `（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）`,
-    greeting: (h) => `「お疲れ様。熱心に素材を眺めて……何か新しいインスピレーションでも湧いた？」`,
-    response: (h) => `「いらっしゃい。ええ、曇天の下での輝きも、また一興だと思って見ていたんです」`,
-    farewell: `「流石は星瓶堂の店主ね。それじゃ、開店の邪魔はしないわ。また後でね」`
+    greeting: (h) => `「熱心に素材を眺めているわね。曇り空でも、何か見えるものがあるの？」`,
+    response: (h) => `「ええ。強い光がない日ほど、石や瓶の地色が素直に見えるんです」`,
+    farewell: `「なるほどね。星瓶堂の店主らしい見方だわ。今日の目利き、少し楽しみにしている」`
   }
 ];
 
@@ -2073,6 +2077,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoverSkip, setHoverSkip] = useState(false);
   const loggedPagesRef = useRef(new Set());
 
   const markPageComplete = () => {
@@ -2112,31 +2117,28 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   }, [currentIndex, currentText, isComplete, speed, skip]);
 
   const handleClick = (e) => {
-    // M-UI-VNBOX-CLICK-FIX: Only stop propagation if we are actually 
-    // advancing internal VNBox state (typing or moving to next page).
-    // If we are on the last page and typing is done, let it bubble 
-    // so the parent scene container can handle the "advance to next scene" click.
+    // Prevent event bubbling if we're not at the absolute end
     const isLastPage = pageIndex >= pageList.length - 1;
     const isTyping = !isComplete;
     
     if (isTyping || !isLastPage) {
-      if (e) e.stopPropagation();
+      if (e && e.stopPropagation) e.stopPropagation();
     }
 
     if (isTyping) {
+      // Typewriter Click-to-Complete
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
     } else if (!isLastPage) {
+      // Advance to next page
       setPageIndex(prev => prev + 1);
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
       audioEngine.playSfx('uiTapBottle');
     } else if (onComplete) {
-      // Last page and complete: notify parent
-      // Note: We don't play SFX here if it bubbles, to avoid double sound 
-      // if the parent also plays a sound.
+      // Finished all pages
       onComplete();
     }
   };
@@ -2155,15 +2157,15 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       style={{
         width: '100%',
         boxSizing: 'border-box',
-        height: '166px', // Slightly taller for stability
+        height: '166px',
         background: 'rgba(18, 28, 42, 0.98)',
         padding: currentSpeaker ? '22px 24px 28px 24px' : '18px 24px 28px 24px',
-        borderRadius: '12px 12px 0 0', // Docked feel: top corners only
+        borderRadius: '12px 12px 0 0',
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 -4px 15px rgba(0,0,0,0.3)', // Subtle top shadow only
+        boxShadow: '0 -4px 15px rgba(0,0,0,0.3)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         touchAction: 'manipulation',
@@ -2171,12 +2173,39 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'visible', // Allow speaker tag to hook onto corner
+        overflow: 'visible',
         transition: 'all 0.3s ease',
         border: '1px solid rgba(255,255,255,0.1)',
-        borderBottom: 'none' // Tightly docked to bottom
+        borderBottom: 'none'
       }}
     >
+      {/* M-VN-SKIP-1: Small Skip Button */}
+      <div 
+        onClick={(e) => { e.stopPropagation(); handleClick(e); }}
+        onMouseEnter={() => setHoverSkip(true)}
+        onMouseLeave={() => setHoverSkip(false)}
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '16px',
+          fontSize: '0.65em',
+          color: hoverSkip ? THEME.brass : 'rgba(255,255,255,0.4)',
+          border: `1px solid ${hoverSkip ? THEME.brass : 'rgba(255,255,255,0.15)'}`,
+          padding: '2px 8px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          zIndex: 15,
+          transition: 'all 0.2s ease',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          fontWeight: '800',
+          background: hoverSkip ? 'rgba(0,0,0,0.4)' : 'transparent',
+          backdropFilter: hoverSkip ? 'blur(4px)' : 'none'
+        }}
+      >
+        {isComplete ? (pageIndex >= pageList.length - 1 ? 'FINISH' : 'SKIP') : 'SKIP'}
+      </div>
+
       {/* Speaker Tag (Floating Top-Left) */}
       {currentSpeaker && (
         <div style={{ 

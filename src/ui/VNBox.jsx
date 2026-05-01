@@ -33,6 +33,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoverSkip, setHoverSkip] = useState(false);
   const loggedPagesRef = useRef(new Set());
 
   const markPageComplete = () => {
@@ -72,31 +73,28 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   }, [currentIndex, currentText, isComplete, speed, skip]);
 
   const handleClick = (e) => {
-    // M-UI-VNBOX-CLICK-FIX: Only stop propagation if we are actually 
-    // advancing internal VNBox state (typing or moving to next page).
-    // If we are on the last page and typing is done, let it bubble 
-    // so the parent scene container can handle the "advance to next scene" click.
+    // Prevent event bubbling if we're not at the absolute end
     const isLastPage = pageIndex >= pageList.length - 1;
     const isTyping = !isComplete;
     
     if (isTyping || !isLastPage) {
-      if (e) e.stopPropagation();
+      if (e && e.stopPropagation) e.stopPropagation();
     }
 
     if (isTyping) {
+      // Typewriter Click-to-Complete
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
     } else if (!isLastPage) {
+      // Advance to next page
       setPageIndex(prev => prev + 1);
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
       audioEngine.playSfx('uiTapBottle');
     } else if (onComplete) {
-      // Last page and complete: notify parent
-      // Note: We don't play SFX here if it bubbles, to avoid double sound 
-      // if the parent also plays a sound.
+      // Finished all pages
       onComplete();
     }
   };
@@ -115,15 +113,15 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       style={{
         width: '100%',
         boxSizing: 'border-box',
-        height: '166px', // Slightly taller for stability
+        height: '166px',
         background: 'rgba(18, 28, 42, 0.98)',
         padding: currentSpeaker ? '22px 24px 28px 24px' : '18px 24px 28px 24px',
-        borderRadius: '12px 12px 0 0', // Docked feel: top corners only
+        borderRadius: '12px 12px 0 0',
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 -4px 15px rgba(0,0,0,0.3)', // Subtle top shadow only
+        boxShadow: '0 -4px 15px rgba(0,0,0,0.3)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         touchAction: 'manipulation',
@@ -131,12 +129,39 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'visible', // Allow speaker tag to hook onto corner
+        overflow: 'visible',
         transition: 'all 0.3s ease',
         border: '1px solid rgba(255,255,255,0.1)',
-        borderBottom: 'none' // Tightly docked to bottom
+        borderBottom: 'none'
       }}
     >
+      {/* M-VN-SKIP-1: Small Skip Button */}
+      <div 
+        onClick={(e) => { e.stopPropagation(); handleClick(e); }}
+        onMouseEnter={() => setHoverSkip(true)}
+        onMouseLeave={() => setHoverSkip(false)}
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '16px',
+          fontSize: '0.65em',
+          color: hoverSkip ? THEME.brass : 'rgba(255,255,255,0.4)',
+          border: `1px solid ${hoverSkip ? THEME.brass : 'rgba(255,255,255,0.15)'}`,
+          padding: '2px 8px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          zIndex: 15,
+          transition: 'all 0.2s ease',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          fontWeight: '800',
+          background: hoverSkip ? 'rgba(0,0,0,0.4)' : 'transparent',
+          backdropFilter: hoverSkip ? 'blur(4px)' : 'none'
+        }}
+      >
+        {isComplete ? (pageIndex >= pageList.length - 1 ? 'FINISH' : 'SKIP') : 'SKIP'}
+      </div>
+
       {/* Speaker Tag (Floating Top-Left) */}
       {currentSpeaker && (
         <div style={{ 
