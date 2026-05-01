@@ -38,6 +38,15 @@ const DEFAULT_AUDIO_VOLUME = 0.8;
 const NADER = PROTAGONIST;
 
 
+const CustomerSilhouette = ({ customer }) => {
+  if (!customer) return null;
+  return (
+    <div className="customer-silhouette" style={{ 
+      borderColor: customer.color || 'rgba(218, 180, 96, 0.45)'
+    }} />
+  );
+};
+
 
 
 // --- Inlined: theme ---
@@ -2849,6 +2858,45 @@ function App() {
       .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
       .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
 
+      /* Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON) */
+      .customer-silhouette {
+        position: relative;
+        display: inline-block;
+        width: 1.8em;
+        height: 1.8em;
+        border-radius: 999px;
+        background: rgba(35, 25, 18, 0.9);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: 2px solid rgba(218, 180, 96, 0.45);
+        flex: 0 0 auto;
+        vertical-align: middle;
+        margin-right: 12px;
+      }
+
+      .customer-silhouette::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 25%;
+        width: 0.52em;
+        height: 0.52em;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #f4e9d5;
+      }
+
+      .customer-silhouette::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 20%;
+        width: 1.0em;
+        height: 0.55em;
+        transform: translateX(-50%);
+        border-radius: 999px 999px 0.25em 0.25em;
+        background: #f4e9d5;
+      }
+
       @keyframes goldFlash {
         0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); border-color: ${THEME.brass}; }
         50% { box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0.8); border-color: #ffcc00; background: #fffdf0; }
@@ -3370,16 +3418,19 @@ function App() {
             <div style={{ 
               ...bubbleStyle, 
               background: '#fff', 
-              color: currentQuestion.request.customer?.color || '#333', 
+              color: '#333', // Static dark text for readability on white bubble
               border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
               borderRadius: '15px 15px 15px 0',
               padding: '20px',
               fontSize: '1.1em',
               lineHeight: '1.6',
               boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
-              transition: 'all 0.3s'
+              transition: 'all 0.3s',
+              display: 'flex',
+              alignItems: 'center'
             }}>
-              {currentQuestion.request.text}
+              <CustomerSilhouette customer={currentQuestion.request.customer} />
+              <span>{currentQuestion.request.text}</span>
             </div>
           </div>
 

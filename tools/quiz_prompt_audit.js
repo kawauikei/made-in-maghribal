@@ -329,9 +329,44 @@ function generateHtmlReport(items, questions) {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 0.85rem;
             opacity: 0.8;
+        }
+
+        .customer-silhouette {
+            position: relative;
+            display: inline-block;
+            width: 1.45em;
+            height: 1.45em;
+            border-radius: 999px;
+            background: #231912;
+            border: 1px solid #dab460;
+            flex: 0 0 auto;
+        }
+
+        .customer-silhouette::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 25%;
+            width: 0.42em;
+            height: 0.42em;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #f4e9d5;
+        }
+
+        .customer-silhouette::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 22%;
+            width: 0.82em;
+            height: 0.42em;
+            transform: translateX(-50%);
+            border-radius: 999px 999px 0.25em 0.25em;
+            background: #f4e9d5;
         }
 
         .choices { display: flex; gap: 12px; margin-top: 16px; }
@@ -434,10 +469,11 @@ function generateHtmlReport(items, questions) {
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">${q.requestType}</div>
-                          <div class="sample-customer" style="color: ${q.customer?.color || 'inherit'};">
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: ${q.customer?.color || '#dab460'};"></div>
                               <span>${q.customer?.id || 'Unknown'}</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid ${q.customer?.color || 'transparent'}; padding-left: 12px;">
+                          <div class="sample-prompt" style="border-left: 4px solid ${q.customer?.color || 'transparent'}; padding-left: 12px; display: flex; align-items: center;">
                               ${q.promptText}
                           </div>
                           <div class="logic-tag">Logic: ${q.logic}</div>

@@ -188,8 +188,8 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
       .replace("{type}", type.name);
   }
 
-  // Apply Customer Cues
-  text = `${customer.icon} ${applyCustomerTone(text, customer.tone)}`;
+  // Apply Customer Cues (Logic now only applies tone, icon is handled by UI)
+  text = applyCustomerTone(text, customer.tone);
 
   // Find valid correct items
   let correctItems = ITEMS_TO_USE.filter(item => isItemMatchingCriteria(item, criteria));

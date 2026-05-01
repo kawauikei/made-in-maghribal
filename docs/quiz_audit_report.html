@@ -137,9 +137,44 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 0.85rem;
             opacity: 0.8;
+        }
+
+        .customer-silhouette {
+            position: relative;
+            display: inline-block;
+            width: 1.45em;
+            height: 1.45em;
+            border-radius: 999px;
+            background: #231912;
+            border: 1px solid #dab460;
+            flex: 0 0 auto;
+        }
+
+        .customer-silhouette::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 25%;
+            width: 0.42em;
+            height: 0.42em;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #f4e9d5;
+        }
+
+        .customer-silhouette::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 22%;
+            width: 0.82em;
+            height: 0.42em;
+            transform: translateX(-50%);
+            border-radius: 999px 999px 0.25em 0.25em;
+            background: #f4e9d5;
         }
 
         .choices { display: flex; gap: 12px; margin-top: 16px; }
@@ -212,7 +247,7 @@
             <div style="margin-top: 20px; padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 8px; color: var(--accent); font-weight: 700;">
                 ⚠️ HUMAN REVIEW REQUIRED / 人力確認対象
             </div>
-            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Generated: 2026/5/1 11:32:32</p>
+            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Generated: 2026/5/1 11:40:02</p>
         </header>
 
         <div class="stats">
@@ -229,223 +264,14 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
                               <span>woman</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 青色の品を頼むよ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_AS_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり旅パン</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 旅パン</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_EL_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑香炉</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香炉</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 青色のものが欲しいな。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_AS_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり薬瓶</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 薬瓶</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_ME_03.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄手帳</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 手帳</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
                               👩 何か赤色のものはないかな？
                           </div>
                           <div class="logic-tag">Logic: LI same-type priority</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_LI_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命護符飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 護符飾り</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_EL_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑護符飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 護符飾り</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 青緑色のものが欲しいな。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_EL_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑計量匙</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 計量匙</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRV_ME_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄旅袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 旅袋</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 何か赤色のものはないかな？
-                          </div>
-                          <div class="logic-tag">Logic: LI same-type priority</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_LI_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命香木箱</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 香木箱</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_ME_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄香木箱</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 香木箱</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 アクセサリーが必要なんだ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_SA_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>アクセサリーの黄金指輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 指輪</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_AS_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり霊薬瓶</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 霊薬瓶</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 日用品の在庫はあるかい？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
                       </div>
                       <div class="choices">
                           <div class="choice correct">
@@ -453,7 +279,7 @@
                               <div class="sample-item-info">
                                   <img src="../public/items/IT_DAY_LI_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>一般雑貨の生命方位磁針</strong><br>
+                                      <strong>生命方位磁針</strong><br>
                                       <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 方位磁針</span>
                                   </div>
                               </div>
@@ -461,10 +287,10 @@
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_EL_02.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_DAY_SA_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>アクセサリーの青緑耳飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 耳飾り</span>
+                                      <strong>黄金方位磁針</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 方位磁針</span>
                                   </div>
                               </div>
                           </div>
@@ -473,103 +299,34 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
-                              <span>old_man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 良い旅具を探しておるんじゃ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRV_AS_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり小ランタン</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 小ランタン</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_EL_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>厳かな青緑香炉</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香炉</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
-                              <span>old_man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 儀式用の品の在庫はあるかい？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_SA_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>厳かな黄金小鈴</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 小鈴</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_AS_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かりスカーフ</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / スカーフ</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
+                          <div class="sample-type">color</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
                               <span>girl</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 渡来品の在庫はあるかい？
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 赤色の品を頼むよ。
                           </div>
-                          <div class="logic-tag">Logic: default</div>
+                          <div class="logic-tag">Logic: LI same-type priority</div>
                       </div>
                       <div class="choices">
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRD_ME_01.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_DAY_LI_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>貿易品の鋼鉄硬貨袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 硬貨袋</span>
+                                      <strong>生命方位磁針</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 方位磁針</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_LI_05.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_DAY_ME_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>生命魔導杖</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 魔導杖</span>
+                                      <strong>鋼鉄方位磁針</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 方位磁針</span>
                                   </div>
                               </div>
                           </div>
@@ -578,257 +335,13 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
+                          <div class="sample-type">color</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #d1d1d1;"></div>
                               <span>man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 小鍵を探しているんだが。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_SA_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金小鍵</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 小鍵</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_LI_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命腕輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 腕輪</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 この店に硬貨袋は置いてるかい？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRD_LI_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命硬貨袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 硬貨袋</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_LI_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命短剣</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 短剣</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 頭巾を探しているんだが。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_SA_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金頭巾</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 頭巾</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRD_AS_03.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり封蝋印</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 封蝋印</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 この店に粉薬瓶は置いてるかい？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_EL_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑粉薬瓶</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 粉薬瓶</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_ME_03.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄るつぼ</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / るつぼ</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 腕輪を買いに来たよ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_ME_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄腕輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 腕輪</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_LI_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命寝袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 寝袋</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 何か金色の小ランタンはないかな？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRV_SA_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金小ランタン</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 小ランタン</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_SA_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金耳飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 耳飾り</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 金色の香木箱を探しているんだ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_SA_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金香木箱</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 香木箱</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_EL_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑外套</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 外套</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
-                              <span>old_man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 金色の小槍を探しているんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px; display: flex; align-items: center;">
+                              🧔 金色のアイテムを探しているんだ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -846,10 +359,10 @@
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_ME_03.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_TRV_EL_03.png" class="item-img" alt="">
                                   <div>
-                                      <strong>鋼鉄軟膏壺</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 軟膏壺</span>
+                                      <strong>青緑縄束</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 縄束</span>
                                   </div>
                               </div>
                           </div>
@@ -858,33 +371,34 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
+                          <div class="sample-type">color</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
                               <span>woman</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 金色の封蝋印を探しているんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 ずっしりとした品を頼むよ。
                           </div>
-                          <div class="logic-tag">Logic: default</div>
+                          <div class="logic-tag">Logic: ME special phrasing</div>
                       </div>
                       <div class="choices">
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRD_SA_03.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_ARM_ME_05.png" class="item-img" alt="">
                                   <div>
-                                      <strong>黄金封蝋印</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 封蝋印</span>
+                                      <strong>鋼鉄魔導杖</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 魔導杖</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_LI_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_ADN_AS_03.png" class="item-img" alt="">
                                   <div>
-                                      <strong>生命丸盾</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 丸盾</span>
+                                      <strong>星明かり首飾り</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 首飾り</span>
                                   </div>
                               </div>
                           </div>
@@ -893,12 +407,49 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
+                          <div class="sample-type">color</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 金色の香木箱が欲しいな。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 鉄の術理を帯びたアイテムを探しているんだ。
+                          </div>
+                          <div class="logic-tag">Logic: ME special phrasing</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_ME_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄丸薬箱</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 丸薬箱</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_DAY_LI_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命小鍵</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 小鍵</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 アクセサリーの在庫はあるかい？
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -906,10 +457,334 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_SA_05.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_ADN_SA_05.png" class="item-img" alt="">
                                   <div>
-                                      <strong>黄金香木箱</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 香木箱</span>
+                                      <strong>アクセサリーの黄金留め具</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 留め具</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ARM_AS_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり直剣</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 直剣</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 衣服の在庫はあるかい？
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_CLT_LI_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命外套</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 外套</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRV_SA_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金旅袋</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 旅袋</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 道具が必要なんだ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_EL_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑フラスコ</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / フラスコ</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_AS_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり水筒</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 水筒</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 渡来品が必要なんだ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_SA_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>貿易品の黄金帳簿</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 帳簿</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ARM_AS_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり丸盾</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 丸盾</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 旅具が必要なんだ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRV_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄縄束</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 縄束</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_AS_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 薬瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 手頃な乳鉢を頼む。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_EL_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑乳鉢</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 乳鉢</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_CLT_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄旅靴</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 旅靴</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 指輪を買いに来たよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ADN_ME_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄指輪</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 指輪</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRV_AS_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり地図筒</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 地図筒</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 計量匙を買いに来たよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_SA_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金計量匙</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 計量匙</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_LI_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命干し果物</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 干し果物</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 手頃なスカーフを頼む。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_CLT_LI_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命スカーフ</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / スカーフ</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_LI_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命るつぼ</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / るつぼ</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 香木箱を買いに来たよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_RIT_EL_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑香木箱</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香木箱</span>
                                   </div>
                               </div>
                           </div>
@@ -928,12 +803,13 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 この店に短剣は置いてるかい？
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 鋼鉄の茶杯を頼むよ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -941,55 +817,20 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_EL_01.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_FOD_ME_04.png" class="item-img" alt="">
                                   <div>
-                                      <strong>青緑短剣</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 短剣</span>
+                                      <strong>鋼鉄茶杯</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 茶杯</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_AS_05.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_WRK_LI_03.png" class="item-img" alt="">
                                   <div>
-                                      <strong>星明かり魔導杖</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 魔導杖</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 鉄の術理を帯びた品を頼むよ。
-                          </div>
-                          <div class="logic-tag">Logic: ME special phrasing</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_ME_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄腕輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 腕輪</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_EL_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑腕輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 腕輪</span>
+                                      <strong>生命るつぼ</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / るつぼ</span>
                                   </div>
                               </div>
                           </div>
@@ -999,116 +840,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
+                              <span>old_man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 鋼鉄の手帳が欲しいな。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_ME_03.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄手帳</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 手帳</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_AS_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり乳鉢</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 乳鉢</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 赤色のものが欲しいな。
-                          </div>
-                          <div class="logic-tag">Logic: LI same-type priority</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_LI_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命茶杯</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 茶杯</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_SA_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>黄金茶杯</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 茶杯</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 赤色の品を頼むよ。
-                          </div>
-                          <div class="logic-tag">Logic: LI same-type priority</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_LI_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命外套</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 外套</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_AS_01.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり外套</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 外套</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 丸盾を探しているんだが。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 赤色の護符飾りを探しているんだ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1116,10 +853,82 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ARM_SA_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_RIT_LI_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>黄金丸盾</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 丸盾</span>
+                                      <strong>生命護符飾り</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 護符飾り</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_LI_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命粉薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 粉薬瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
+                              <span>old_man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 鋼鉄の商人秤が欲しいな。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_ME_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄商人秤</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 商人秤</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_RIT_LI_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命護符飾り</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 護符飾り</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 青緑色の軟膏壺を頼むよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_EL_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑軟膏壺</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 軟膏壺</span>
                                   </div>
                               </div>
                           </div>
@@ -1139,11 +948,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
                               <span>girl</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 青緑色の計量匙を頼むよ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 青緑色の地図筒を探しているんだ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1151,150 +961,10 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_EL_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_TRV_EL_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>青緑計量匙</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 計量匙</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_AS_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり留め具</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 留め具</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
-                              <span>old_man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 鋼鉄の干し果物を頼むよ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_ME_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄干し果物</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 干し果物</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_EL_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑茶杯</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 茶杯</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
-                              <span>old_man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 アクセサリーの在庫はあるかい？
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_LI_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>アクセサリーの生命腕輪</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 腕輪</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_ME_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>鋼鉄フラスコ</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / フラスコ</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 良い食糧を探してるの。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_EL_02.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑干し果物</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 干し果物</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_EL_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>厳かな青緑小鈴</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 小鈴</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 小鈴を買いに来たよ。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_AS_04.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり小鈴</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 小鈴</span>
+                                      <strong>青緑地図筒</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 地図筒</span>
                                   </div>
                               </div>
                           </div>
@@ -1314,11 +984,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #d1d1d1;"></div>
                               <span>man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 良い食糧を探している。
+                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px; display: flex; align-items: center;">
+                              🧔 旅具が必要なんだ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1326,20 +997,20 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_ME_05.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_TRV_ME_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>鋼鉄水筒</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 水筒</span>
+                                      <strong>鋼鉄地図筒</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 地図筒</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_ME_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_CLT_LI_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>厳かな鋼鉄小鈴</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 小鈴</span>
+                                      <strong>生命外套</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 外套</span>
                                   </div>
                               </div>
                           </div>
@@ -1349,46 +1020,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 赤色の品を頼むよ。
-                          </div>
-                          <div class="logic-tag">Logic: LI same-type priority</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_LI_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>生命水筒</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 水筒</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_FOD_AS_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>星明かり水筒</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 水筒</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 青緑色のアイテムを探しているんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 金色の品を頼むよ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1396,20 +1033,20 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_EL_01.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_ARM_SA_05.png" class="item-img" alt="">
                                   <div>
-                                      <strong>青緑香炉</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香炉</span>
+                                      <strong>黄金魔導杖</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 魔導杖</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_RIT_LI_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_FOD_EL_02.png" class="item-img" alt="">
                                   <div>
-                                      <strong>生命小鈴</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 小鈴</span>
+                                      <strong>青緑干し果物</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 干し果物</span>
                                   </div>
                               </div>
                           </div>
@@ -1419,32 +1056,213 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #d1d1d1;"></div>
+                              <span>man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px; display: flex; align-items: center;">
+                              🧔 金色のものが欲しいな。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_SA_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金香辛料瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 香辛料瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_AS_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり茶杯</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 茶杯</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 この店に護符飾りは置いてるかい？
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_RIT_LI_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命護符飾り</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 護符飾り</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_EL_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑丸薬箱</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 丸薬箱</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
                               <span>old_man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 何か重厚感のあるものはないかな？
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 青色の粉薬瓶を頼むよ。
                           </div>
-                          <div class="logic-tag">Logic: ME special phrasing</div>
+                          <div class="logic-tag">Logic: default</div>
                       </div>
                       <div class="choices">
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_ME_03.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_MED_AS_04.png" class="item-img" alt="">
                                   <div>
-                                      <strong>鋼鉄首飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 首飾り</span>
+                                      <strong>星明かり粉薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 粉薬瓶</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_AS_02.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_MED_SA_03.png" class="item-img" alt="">
                                   <div>
-                                      <strong>星明かり霊薬瓶</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 霊薬瓶</span>
+                                      <strong>黄金軟膏壺</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 軟膏壺</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #d1d1d1;"></div>
+                              <span>man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px; display: flex; align-items: center;">
+                              🧔 何か金色の旅靴はないかな？
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_CLT_SA_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金旅靴</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 旅靴</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_DAY_SA_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金手帳</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 手帳</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 鋼鉄の軟膏壺を頼むよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄軟膏壺</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 軟膏壺</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ADN_SA_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金指輪</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 指輪</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #d1d1d1;"></div>
+                              <span>man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px; display: flex; align-items: center;">
+                              🧔 手頃な封蝋印を頼む。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄封蝋印</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 封蝋印</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_ME_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄硬貨袋</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 硬貨袋</span>
                                   </div>
                               </div>
                           </div>
@@ -1454,11 +1272,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">genre</div>
-                          <div class="sample-customer" style="color: #d1d1d1;">
-                              <span>man</span>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
+                              <span>old_man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #d1d1d1; padding-left: 12px;">
-                              🧔 衣服が必要なんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 道具が必要なんだ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1466,20 +1285,20 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_CLT_LI_02.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_WRK_EL_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>生命スカーフ</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / スカーフ</span>
+                                      <strong>青緑乳鉢</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 乳鉢</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_EL_02.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_TRV_AS_04.png" class="item-img" alt="">
                                   <div>
-                                      <strong>青緑霊薬瓶</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 霊薬瓶</span>
+                                      <strong>星明かり旅袋</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 旅袋</span>
                                   </div>
                               </div>
                           </div>
@@ -1488,23 +1307,96 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">color</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
                               <span>woman</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 ずっしりとしたアイテムを探しているんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 赤色の香木箱が欲しいな。
                           </div>
-                          <div class="logic-tag">Logic: ME special phrasing</div>
+                          <div class="logic-tag">Logic: default</div>
                       </div>
                       <div class="choices">
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_WRK_ME_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_RIT_LI_05.png" class="item-img" alt="">
                                   <div>
-                                      <strong>鋼鉄計量匙</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 計量匙</span>
+                                      <strong>生命香木箱</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 香木箱</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_DAY_AS_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり手帳</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 手帳</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 薬品を一つ見せて！
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄軟膏壺</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 軟膏壺</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_LI_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>生命トング</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / トング</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">itemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
+                              <span>old_man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 帳簿を買いに来たよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_EL_04.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑帳簿</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 帳簿</span>
                                   </div>
                               </div>
                           </div>
@@ -1523,47 +1415,13 @@
                   
                   <div class="sample-card">
                       <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ffb3ba;">
-                              <span>girl</span>
-                          </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px;">
-                              👧 手頃な小鍵を頼む。
-                          </div>
-                          <div class="logic-tag">Logic: default</div>
-                      </div>
-                      <div class="choices">
-                          <div class="choice correct">
-                              <i data-lucide="check-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_EL_05.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑小鍵</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 小鍵</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="choice wrong">
-                              <i data-lucide="x-circle"></i>
-                              <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_EL_03.png" class="item-img" alt="">
-                                  <div>
-                                      <strong>青緑手帳</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 手帳</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="sample-card">
-                      <div>
-                          <div class="sample-type">itemType</div>
-                          <div class="sample-customer" style="color: #ffcc66;">
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
                               <span>old_man</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px;">
-                              👴 手頃な旅袋を頼む。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 良い道具を探しておるんじゃ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1571,20 +1429,20 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_TRV_SA_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_WRK_LI_04.png" class="item-img" alt="">
                                   <div>
-                                      <strong>黄金旅袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 旅袋</span>
+                                      <strong>生命計量匙</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 計量匙</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_MED_AS_03.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_RIT_AS_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>星明かり軟膏壺</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 軟膏壺</span>
+                                      <strong>厳かな星明かり香炉</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 香炉</span>
                                   </div>
                               </div>
                           </div>
@@ -1594,11 +1452,12 @@
                   <div class="sample-card">
                       <div>
                           <div class="sample-type">colorAndItemType</div>
-                          <div class="sample-customer" style="color: #ff99cc;">
-                              <span>woman</span>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
                           </div>
-                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px;">
-                              👩 青色の首飾りを探しているんだ。
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 青緑色の小ランタンを頼むよ。
                           </div>
                           <div class="logic-tag">Logic: default</div>
                       </div>
@@ -1606,20 +1465,236 @@
                           <div class="choice correct">
                               <i data-lucide="check-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_ADN_AS_03.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_TRV_EL_05.png" class="item-img" alt="">
                                   <div>
-                                      <strong>星明かり首飾り</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 首飾り</span>
+                                      <strong>青緑小ランタン</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 小ランタン</span>
                                   </div>
                               </div>
                           </div>
                           <div class="choice wrong">
                               <i data-lucide="x-circle"></i>
                               <div class="sample-item-info">
-                                  <img src="../public/items/IT_DAY_ME_04.png" class="item-img" alt="">
+                                  <img src="../public/items/IT_ADN_LI_01.png" class="item-img" alt="">
                                   <div>
-                                      <strong>鋼鉄寝袋</strong><br>
-                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 寝袋</span>
+                                      <strong>生命指輪</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">赤色 / 指輪</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">color</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffb3ba;"></div>
+                              <span>girl</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffb3ba; padding-left: 12px; display: flex; align-items: center;">
+                              👧 青色の品を頼むよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_AS_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 薬瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ARM_SA_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金直剣</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 直剣</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 儀礼の品の在庫はあるかい？
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_RIT_EL_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>厳かな青緑香木箱</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香木箱</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_WRK_SA_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金るつぼ</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / るつぼ</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">colorAndItemType</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 青緑色の香辛料瓶を頼むよ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_EL_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑香辛料瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 香辛料瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRV_ME_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄小ランタン</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 小ランタン</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ffcc66;"></div>
+                              <span>old_man</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ffcc66; padding-left: 12px; display: flex; align-items: center;">
+                              👴 武具を一つ見せてくれんか。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_ARM_ME_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>鋼鉄小槍</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">紫色 / 小槍</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_TRD_SA_03.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>貿易品の黄金封蝋印</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 封蝋印</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 良い薬品を探しているんです。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_AS_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>星明かり薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青色 / 薬瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_CLT_SA_05.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金頭巾</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 頭巾</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="sample-card">
+                      <div>
+                          <div class="sample-type">genre</div>
+                          <div class="sample-customer">
+                              <div class="customer-silhouette" style="border-color: #ff99cc;"></div>
+                              <span>woman</span>
+                          </div>
+                          <div class="sample-prompt" style="border-left: 4px solid #ff99cc; padding-left: 12px; display: flex; align-items: center;">
+                              👩 薬品が必要なんだ。
+                          </div>
+                          <div class="logic-tag">Logic: default</div>
+                      </div>
+                      <div class="choices">
+                          <div class="choice correct">
+                              <i data-lucide="check-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_MED_SA_02.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>黄金霊薬瓶</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">金色 / 霊薬瓶</span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="choice wrong">
+                              <i data-lucide="x-circle"></i>
+                              <div class="sample-item-info">
+                                  <img src="../public/items/IT_FOD_EL_01.png" class="item-img" alt="">
+                                  <div>
+                                      <strong>青緑旅パン</strong><br>
+                                      <span style="font-size: 0.8rem; opacity: 0.8;">青緑色 / 旅パン</span>
                                   </div>
                               </div>
                           </div>
