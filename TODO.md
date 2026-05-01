@@ -6,6 +6,7 @@
 - [x] **Still Event Face-Aware Centering (Prototype)**: Added `stillCrop` metadata to `STILL_IMAGES` and updated `App.jsx` to support manual framing overrides for better character focus.
 - [x] **Still Event UI Refine (C-1)**: Replaced cramped framed layout with cinematic full-screen presentation. Removed redundant buttons and integrated with VNBox bottom-dock.
 - [x] **Expression Cross-fade (B-2)**: Implemented 0.2s cross-fade for standing images and face icons during expression changes. Added image load detection to prevent flickering.
+- [x] **StillCrop Audit Report**: Created `tools/still_crop_audit.js` to generate visual reports (`docs/still_crop_audit_report.html`) showing current framing across aspect ratios.
 - [x] **QUIZ Screen Redesign (B-1)**: Full-screen background and full-width rhythm lane band for better immersion.
 - [x] **Header Alignment (A-4)**: Headings in INTRO, EVENT, and RESULT screens are now anchored top-left (8px/12px) for a cleaner ADV look.
 - [x] **HUD Simplification (A-3)**: Removed "Current Bond" label; route mode is now indicated by button background colors (Normal: White, LongHistory: Pink).
@@ -30,8 +31,7 @@
 ## 🟦 In Progress / Next Steps
 
 ### [UI/UX] Still Event Refinement
-- [ ] **Full Still Event Cropping**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` to ensure optimal framing for all story moments.
-- [ ] **StillCrop Audit Report**: Create a tool or list to quickly verify the framing of all stills across different aspect ratios.
+- [ ] **Full Still Event Cropping**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` using the audit report for visual verification.
 - [ ] **Face Detection Assistant (Future)**: Research/implement a script to suggest `stillCrop` values based on face detection coordinates (no asset generation required).
 
 ### [Content] DailyTalk Phase 1 Expansion
