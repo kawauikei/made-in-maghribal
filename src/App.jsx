@@ -1436,8 +1436,8 @@ export default function App() {
               style={{ 
                 width: '100%', 
                 height: '100%', 
-                objectFit: 'cover',
-                objectPosition: `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+                objectFit: still.stillCrop?.objectFit || 'cover',
+                objectPosition: still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
               }}
               onError={(e) => {
                 e.target.style.display = 'none';
