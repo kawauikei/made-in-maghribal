@@ -2256,6 +2256,7 @@ function App() {
   const [previewHeroineId, setPreviewHeroineId] = useState('hakima');
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [isAudioGated, setIsAudioGated] = useState(true);
   const [showSoundTest, setShowSoundTest] = useState(false);
   const [hasSave, setHasSave] = useState(() => {
     const data = loadSaveData();
@@ -2434,6 +2435,13 @@ function App() {
     }
   }, []);
 
+  // M-UI-AUDIO-START-GATE: Ensure gate is open if we start on a non-START screen
+  useEffect(() => {
+    if (screen !== 'START') {
+      setIsAudioGated(false);
+    }
+  }, [screen]);
+
   // Auto-Save
   useEffect(() => {
     if (screen !== 'START') {
@@ -2537,12 +2545,15 @@ function App() {
       }
     }
 
-    if (isAudioEnabled && trackId && TRACKS[trackId]) {
+    // M-UI-AUDIO-START-GATE: Gate BGM playback on START screen until user takes a start action
+    const isGatedOnStart = screen === 'START' && isAudioGated;
+    
+    if (isAudioEnabled && !isGatedOnStart && trackId && TRACKS[trackId]) {
       audioEngine.playTrack(TRACKS[trackId]);
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
 
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
@@ -2551,6 +2562,7 @@ function App() {
 
   // Go to Heroine Select (New Game)
   const handleStartGame = () => {
+    setIsAudioGated(false);
     audioEngine.playSfx('uiGameStart');
     clearSaveData();
     setHasSave(false);
@@ -2570,6 +2582,7 @@ function App() {
 
   // Continue from Save
   const handleContinue = () => {
+    setIsAudioGated(false);
     const data = loadSaveData();
     if (data) {
       audioEngine.playSfx('uiConfirmChime');
