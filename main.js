@@ -7608,6 +7608,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     let target = "{color}";
     if (color.id === "ME") {
       colorName = "鋼鉄の";
+      target = "{color}の";
     }
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace(target, colorName).replace("{type}", type.name);
   }
