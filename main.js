@@ -1723,7 +1723,11 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       background: "rgba(0,0,0,0.2)",
       padding: currentHint ? "2px 10px" : "0",
       borderRadius: "4px",
-      visibility: currentHint ? "visible" : "hidden"
+      visibility: currentHint ? "visible" : "hidden",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      maxWidth: "calc(100% - 140px)"
     } }, currentHint && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em" } }, "💡"), currentHint)), isComplete && /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: "0.8em",
       color: themeColor || THEME.brass,
