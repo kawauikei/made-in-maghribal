@@ -1801,13 +1801,8 @@ const PrologueScreen = ({
   cardStyle: cardStyle2,
   buttonStyle: buttonStyle2
 }) => {
-  const [isPrologueComplete, setIsPrologueComplete] = useState(false);
   const handleAreaClick = (e) => {
-    if (isPrologueComplete) {
-      onAdvanceToHeroineSelect();
-    } else {
-      onVnAreaClick(e);
-    }
+    onVnAreaClick(e);
   };
   return /* @__PURE__ */ React.createElement(
     "div",
@@ -1875,9 +1870,7 @@ const PrologueScreen = ({
         skip: shouldSkipTypewriter(isInstantTextSpeed),
         getFaceIcon,
         onPageComplete,
-        onComplete: () => {
-          setIsPrologueComplete(true);
-        }
+        onComplete: onAdvanceToHeroineSelect
       }
     )))
   );
@@ -1928,13 +1921,8 @@ const IntroScreen = ({
       text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
     }
   ];
-  const [isIntroComplete, setIsIntroComplete] = React.useState(false);
   const handleAreaClick = (e) => {
-    if (isIntroComplete) {
-      onBeginService();
-    } else {
-      onVnAreaClick(e);
-    }
+    onVnAreaClick(e);
   };
   return /* @__PURE__ */ React.createElement(
     "div",
@@ -2003,7 +1991,7 @@ const IntroScreen = ({
         skip: shouldSkipTypewriter(isInstantTextSpeed),
         getFaceIcon,
         onPageComplete,
-        onComplete: () => setIsIntroComplete(true)
+        onComplete: onBeginService
       }
     )))
   );
