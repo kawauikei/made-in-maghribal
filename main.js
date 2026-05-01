@@ -10101,8 +10101,8 @@ function DebugPanel({
         onClick: () => setExpanded(true),
         style: {
           position: "absolute",
-          top: "10px",
-          right: "10px",
+          bottom: "10px",
+          left: "10px",
           background: "rgba(0,0,0,0.8)",
           color: THEME.starGold,
           padding: "4px 8px",
