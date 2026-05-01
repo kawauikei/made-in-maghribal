@@ -95,14 +95,17 @@ const RhythmMock = ({ heroineId, themeColor }) => {
         <div style={{ position: 'absolute', left: '40%', width: '6px', height: '6px', borderRadius: '50%', background: THEME.brass, opacity: 0.4 }} />
         
         {/* Center Indicator */}
-        <div style={{ 
-          width: '16px', 
-          height: '16px', 
-          borderRadius: '50%', 
-          border: `2px solid ${THEME.brass}`, 
-          background: 'rgba(255,255,255,0.1)',
-          boxShadow: `0 0 8px ${THEME.brass}88`
-        }} />
+        <div 
+          className="beat-pulse"
+          style={{ 
+            width: '16px', 
+            height: '16px', 
+            borderRadius: '50%', 
+            border: `2px solid ${THEME.brass}`, 
+            background: 'rgba(255,255,255,0.1)',
+            boxShadow: `0 0 8px ${THEME.brass}88`
+          }} 
+        />
 
         <div style={{ position: 'absolute', right: '40%', width: '6px', height: '6px', borderRadius: '50%', background: THEME.brass, opacity: 0.4 }} />
         <div style={{ position: 'absolute', right: '20%', width: '6px', height: '6px', borderRadius: '50%', background: THEME.brass, opacity: 0.4 }} />
@@ -1509,39 +1512,6 @@ const PrologueScreen = ({
         <div style={{ flex: '1 1 auto' }} />
       </div>
 
-      {/* Action Button: Absolutely positioned above the VNBox dock */}
-      {isPrologueComplete && (
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '185px', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          zIndex: 7,
-          width: '94%',
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <button
-            data-testid="prologue-next"
-            onClick={onAdvanceToHeroineSelect}
-            className="vn-button-reveal"
-            style={{ 
-              ...buttonStyle, 
-              width: '100%', 
-              maxWidth: '340px', 
-              margin: 0, 
-              height: '48px',
-              fontSize: '1.1em',
-              background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
-              boxShadow: `0 6px 20px ${THEME.brass}44`,
-              border: '1px solid rgba(255,255,255,0.2)'
-            }}
-          >
-            星瓶堂へ進む
-          </button>
-        </div>
-      )}
-
       {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
       <div style={{ 
         position: 'absolute',
@@ -1685,39 +1655,6 @@ const IntroScreen = ({
         {/* Middle: Spacer */}
         <div style={{ flex: '1 1 auto' }} />
       </div>
-
-      {/* Action Button: Absolutely positioned above the VNBox dock */}
-      {isIntroComplete && (
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '185px', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          zIndex: 7,
-          width: '94%',
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <button 
-            data-testid="intro-start" 
-            onClick={onBeginService} 
-            className="vn-button-reveal"
-            style={{ 
-              ...buttonStyle, 
-              width: '100%', 
-              maxWidth: '340px', 
-              margin: 0, 
-              height: '48px',
-              fontSize: '1.1em',
-              background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
-              boxShadow: `0 6px 20px ${THEME.brass}44`,
-              border: '1px solid rgba(255,255,255,0.2)'
-            }}
-          >
-            星瓶堂を開ける
-          </button>
-        </div>
-      )}
 
       {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
       <div style={{ 
@@ -2961,13 +2898,21 @@ function App() {
         touch-action: pan-y;
       }
 
-      /* Quiz Animations (M9-3) */
+      /* Quiz Animations (M9-3 / M-UI-TRANSITION-POLISH) */
       @keyframes staggerIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(15px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
       }
-      .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
-      .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
+      .quiz-option-0 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.15s; }
+      .quiz-option-1 { animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.3s; }
+
+      .item-card {
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s, background 0.2s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
+      .item-card:hover {
+        box-shadow: 0 8px 25px rgba(197, 160, 89, 0.25);
+      }
 
       /* Story/VN Button Reveal (M-UI-TRANSITION-POLISH) */
       @keyframes vn-button-reveal {
@@ -2976,6 +2921,16 @@ function App() {
       }
       .vn-button-reveal {
         animation: vn-button-reveal 0.25s ease-out forwards;
+      }
+
+      /* Beat Lane Pulse (M-RHYTHM-UI-1) */
+      @keyframes beat-lane-pulse {
+        0% { transform: scale(1); box-shadow: 0 0 8px ${THEME.brass}88; }
+        50% { transform: scale(1.2); box-shadow: 0 0 16px ${THEME.brass}; }
+        100% { transform: scale(1); box-shadow: 0 0 8px ${THEME.brass}88; }
+      }
+      .beat-pulse {
+        animation: beat-lane-pulse 2s infinite ease-in-out;
       }
 
       /* Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON) */

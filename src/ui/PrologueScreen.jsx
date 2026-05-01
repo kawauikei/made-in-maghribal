@@ -93,39 +93,6 @@ const PrologueScreen = ({
         <div style={{ flex: '1 1 auto' }} />
       </div>
 
-      {/* Action Button: Absolutely positioned above the VNBox dock */}
-      {isPrologueComplete && (
-        <div style={{ 
-          position: 'absolute', 
-          bottom: '185px', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          zIndex: 7,
-          width: '94%',
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <button
-            data-testid="prologue-next"
-            onClick={onAdvanceToHeroineSelect}
-            className="vn-button-reveal"
-            style={{ 
-              ...buttonStyle, 
-              width: '100%', 
-              maxWidth: '340px', 
-              margin: 0, 
-              height: '48px',
-              fontSize: '1.1em',
-              background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
-              boxShadow: `0 6px 20px ${THEME.brass}44`,
-              border: '1px solid rgba(255,255,255,0.2)'
-            }}
-          >
-            星瓶堂へ進む
-          </button>
-        </div>
-      )}
-
       {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
       <div style={{ 
         position: 'absolute',
