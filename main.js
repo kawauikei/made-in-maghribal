@@ -7530,7 +7530,8 @@ const MASTER_ITEMS = itemsData.items.map((item) => {
   const colorId = item.principle;
   const colorPrefixMap = {
     AS: "星明かり",
-    EL: "青緑",
+    EL: "星霊",
+    // Changed from "青緑" for better flavor (M-QUIZ-PROMPT-TUNING-CONT)
     LI: "生命",
     SA: "黄金",
     ME: "鋼鉄"
@@ -7538,6 +7539,21 @@ const MASTER_ITEMS = itemsData.items.map((item) => {
   const typeName = type ? type.name : "";
   const prefix = colorPrefixMap[colorId] || "";
   const displayName = `${prefix}${typeName}`;
+  const EXCLUDE_FROM_RED_IDS = [
+    "IT_WRK_LI_02",
+    // 生命トング (Explicitly green)
+    "IT_ARM_LI_03",
+    // 生命の小槍 (植物の蔓)
+    "IT_ARM_LI_05",
+    // 生命の魔導杖 (若葉)
+    "IT_ADN_LI_01",
+    // 生命の指輪 (蔦)
+    "IT_ADN_LI_04",
+    // 生命の腕輪 (蔦)
+    "IT_TRV_LI_03"
+    // 生命の縄束 (蔦)
+  ];
+  const visuallyExcludesColor = colorId === "LI" && EXCLUDE_FROM_RED_IDS.includes(item.id);
   return {
     id: item.id,
     typeId,
@@ -7546,7 +7562,9 @@ const MASTER_ITEMS = itemsData.items.map((item) => {
     // Shortened name for quiz
     fullName: item.variants.normal.description.split("。")[0] || item.id,
     image: item.image,
-    variants: item.variants
+    variants: item.variants,
+    visuallyExcludesColor
+    // M-QUIZ-PROMPT-TUNING-CONT
   };
 });
 const ITEMS_TO_USE = MASTER_ITEMS;
@@ -7571,7 +7589,10 @@ function isItemMatchingCriteria(item, criteria) {
   if (!criteria || Object.keys(criteria).length === 0) return false;
   const itemType = ITEM_TYPE_BY_ID[item.typeId];
   if (!itemType) return false;
-  if (criteria.colorId && item.colorId !== criteria.colorId) return false;
+  if (criteria.colorId) {
+    if (item.colorId !== criteria.colorId) return false;
+    if (item.visuallyExcludesColor) return false;
+  }
   if (criteria.genre && itemType.genre !== criteria.genre) return false;
   if (criteria.itemTypeId && item.typeId !== criteria.itemTypeId) return false;
   return true;
@@ -7653,6 +7674,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
   }
   text = applyCustomerTone(text, customer.tone);
   let correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
+  if (correctItems.length === 0 && retryCount < MAX_RETRIES) {
+    return generateRandomQuestion(id, forcedType, excludeItemIds, retryCount + 1);
+  }
   const nonDuplicateItems = correctItems.filter((item) => !excludeItemIds.has(item.id));
   if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
     return generateRandomQuestion(id, forcedType, excludeItemIds, retryCount + 1);
