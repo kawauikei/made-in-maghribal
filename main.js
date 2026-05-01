@@ -10402,12 +10402,14 @@ function App() {
     audioEngine.playSfx("uiTapBottle");
     setScreen("START");
     setHasSave(hasSaveData());
+    setEventBackgroundOverride(null);
     setShowOptions(false);
     setShowLog(false);
     setShowHelp(false);
   };
   const handleRecallEventFromMemories = (event) => {
     audioEngine.playSfx("uiConfirmChime");
+    setEventBackgroundOverride(null);
     setActiveEvent(event);
     setIsRecallMode(true);
     setActiveHeroineId(event.heroineId);
