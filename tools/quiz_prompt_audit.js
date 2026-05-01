@@ -94,8 +94,11 @@ function generateQuestionSamples() {
 
   // Export Markdown
   const mdPath = path.join(DOCS_DIR, 'quiz_prompt_audit.md');
-  let mdContent = '# Quiz Prompt & Classification Audit Report\n\n';
+  let mdContent = '# Quiz Prompt & Classification Audit Report (Human Review Required)\n\n';
   mdContent += `Generated at: ${new Date().toISOString()}\n\n`;
+  mdContent += '> [!IMPORTANT]\n';
+  mdContent += '> このレポートは開発者およびユーザーによる人力確認用です。\n';
+  mdContent += '> クイズの問題文、客の口調、アイテム名の短縮が自然かどうかを確認してください。\n\n';
   
   mdContent += '## Summary\n';
   mdContent += `- Total items: ${MASTER_ITEMS.length}\n`;
@@ -383,6 +386,9 @@ function generateHtmlReport(items, questions) {
         <header>
             <h1>Made in Maghribal</h1>
             <p class="subtitle">Quiz Prompt & Classification Audit Report</p>
+            <div style="margin-top: 20px; padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 8px; color: var(--accent); font-weight: 700;">
+                ⚠️ HUMAN REVIEW REQUIRED / 人力確認対象
+            </div>
             <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Generated: ${new Date().toLocaleString()}</p>
         </header>
 
