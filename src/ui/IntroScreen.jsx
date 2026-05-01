@@ -124,14 +124,14 @@ const IntroScreen = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '8px',
+          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '94%', 
+            width: '100%', // Full width dock
             boxSizing: 'border-box',
-            position: 'relative' // Ensure absolute plate has anchor
+            position: 'relative'
           }}>
             <VNBox
               ref={vnRef}

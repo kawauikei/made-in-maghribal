@@ -1445,14 +1445,14 @@ const PrologueScreen = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '8px',
+          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '94%', 
+            width: '100%', // Full width dock
             boxSizing: 'border-box',
-            position: 'relative' // Ensure absolute plate has anchor
+            position: 'relative'
           }}>
             <VNBox
               ref={vnRef}
@@ -1596,14 +1596,14 @@ const IntroScreen = ({
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center', 
-          paddingBottom: '8px',
+          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '94%', 
+            width: '100%', // Full width dock
             boxSizing: 'border-box',
-            position: 'relative' // Ensure absolute plate has anchor
+            position: 'relative'
           }}>
             <VNBox
               ref={vnRef}
@@ -1726,12 +1726,12 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         height: '166px', // Slightly taller for stability
         background: 'rgba(18, 28, 42, 0.98)',
         padding: currentSpeaker ? '22px 24px 28px 24px' : '18px 24px 28px 24px',
-        borderRadius: '12px', // Single card feel
+        borderRadius: '12px 12px 0 0', // Docked feel: top corners only
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
+        boxShadow: '0 -4px 15px rgba(0,0,0,0.3)', // Subtle top shadow only
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         lineHeight: '1.7',
@@ -1739,7 +1739,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         flexDirection: 'column',
         overflow: 'visible', // Allow speaker tag to hook onto corner
         transition: 'all 0.3s ease',
-        border: '1px solid rgba(255,255,255,0.08)'
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderBottom: 'none' // Tightly docked to bottom
       }}
     >
       {/* Speaker Tag (Small Corner Hook) */}
@@ -3231,7 +3232,7 @@ function App() {
             />
           </div>
 
-          <div style={{ width: '100%', padding: '10px' }}>
+          <div style={{ width: '100%', padding: '0' }}>
             <VNBox 
               ref={vnRef}
               speaker={activeHeroine.name}

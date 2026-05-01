@@ -1284,7 +1284,7 @@ export default function App() {
             />
           </div>
 
-          <div style={{ width: '100%', padding: '10px' }}>
+          <div style={{ width: '100%', padding: '0' }}>
             <VNBox 
               ref={vnRef}
               speaker={activeHeroine.name}
