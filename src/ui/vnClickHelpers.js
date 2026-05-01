@@ -41,7 +41,7 @@ export const safeAdvanceVnBox = (vnRef) => {
  * @returns {boolean}
  */
 export const isVnAdvanceScreen = (screen) => {
-  return ['PROLOGUE', 'INTRO', 'RESULT', 'EVENT', 'ENDING'].includes(screen);
+  return ['PROLOGUE', 'INTRO', 'EVENT', 'ENDING'].includes(screen);
 };
 
 /**

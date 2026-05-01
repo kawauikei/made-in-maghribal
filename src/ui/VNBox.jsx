@@ -68,19 +68,31 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   }, [currentIndex, currentText, isComplete, speed, skip]);
 
   const handleClick = (e) => {
-    if (e) e.stopPropagation();
-    if (!isComplete) {
+    // M-UI-VNBOX-CLICK-FIX: Only stop propagation if we are actually 
+    // advancing internal VNBox state (typing or moving to next page).
+    // If we are on the last page and typing is done, let it bubble 
+    // so the parent scene container can handle the "advance to next scene" click.
+    const isLastPage = pageIndex >= pageList.length - 1;
+    const isTyping = !isComplete;
+    
+    if (isTyping || !isLastPage) {
+      if (e) e.stopPropagation();
+    }
+
+    if (isTyping) {
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
-    } else if (pageIndex < pageList.length - 1) {
+    } else if (!isLastPage) {
       setPageIndex(prev => prev + 1);
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
       audioEngine.playSfx('uiTapBottle');
     } else if (onComplete) {
-      audioEngine.playSfx('uiTapBottle');
+      // Last page and complete: notify parent
+      // Note: We don't play SFX here if it bubbles, to avoid double sound 
+      // if the parent also plays a sound.
       onComplete();
     }
   };

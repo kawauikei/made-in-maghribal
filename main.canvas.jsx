@@ -708,7 +708,7 @@ const safeAdvanceVnBox = (vnRef) => {
  * @returns {boolean}
  */
 const isVnAdvanceScreen = (screen) => {
-  return ['PROLOGUE', 'INTRO', 'RESULT', 'EVENT', 'ENDING'].includes(screen);
+  return ['PROLOGUE', 'INTRO', 'EVENT', 'ENDING'].includes(screen);
 };
 
 /**
@@ -1786,7 +1786,6 @@ const ResultScreen = ({
     <div 
       data-testid="result-screen" 
       style={{ ...containerStyle, position: 'relative' }}
-      onClick={handleVnAreaClick}
     >
       {renderThemeStyles && renderThemeStyles()}
       {renderBackground && renderBackground(screen)}
@@ -1808,7 +1807,6 @@ const ResultScreen = ({
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'RESULT' })}
-              onComplete={handleEndDay}
             />
           </div>
 
@@ -1863,7 +1861,7 @@ const ResultScreen = ({
           <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
             {rank.message}
           </div>
-          <button data-testid="day-end-next" onClick={handleNextDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
+          <button data-testid="day-end-next" onClick={handleEndDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
         </div>
       </div>
     </div>
@@ -1940,19 +1938,31 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
   }, [currentIndex, currentText, isComplete, speed, skip]);
 
   const handleClick = (e) => {
-    if (e) e.stopPropagation();
-    if (!isComplete) {
+    // M-UI-VNBOX-CLICK-FIX: Only stop propagation if we are actually 
+    // advancing internal VNBox state (typing or moving to next page).
+    // If we are on the last page and typing is done, let it bubble 
+    // so the parent scene container can handle the "advance to next scene" click.
+    const isLastPage = pageIndex >= pageList.length - 1;
+    const isTyping = !isComplete;
+    
+    if (isTyping || !isLastPage) {
+      if (e) e.stopPropagation();
+    }
+
+    if (isTyping) {
       setDisplayText(currentText);
       setIsComplete(true);
       markPageComplete();
-    } else if (pageIndex < pageList.length - 1) {
+    } else if (!isLastPage) {
       setPageIndex(prev => prev + 1);
       setDisplayText("");
       setIsComplete(false);
       setCurrentIndex(0);
       audioEngine.playSfx('uiTapBottle');
     } else if (onComplete) {
-      audioEngine.playSfx('uiTapBottle');
+      // Last page and complete: notify parent
+      // Note: We don't play SFX here if it bubbles, to avoid double sound 
+      // if the parent also plays a sound.
       onComplete();
     }
   };
