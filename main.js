@@ -875,10 +875,11 @@ const MemoriesScreen = ({
   onOpenHelp,
   onRecallEvent,
   renderThemeStyles,
-  renderUtilityHeader
+  renderUtilityHeader,
+  unlockAll = false
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
-  const seenEvents = allEvents.filter((e) => seenEventIds.includes(e.id));
+  const seenEvents = unlockAll ? allEvents : allEvents.filter((e) => seenEventIds.includes(e.id));
   const memoriesContainerStyle = {
     width: "100%",
     height: "100%",
@@ -927,7 +928,16 @@ const MemoriesScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), renderUtilityHeader && renderUtilityHeader("Memories", onBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...memoriesTitleStyle, display: "none" } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: memoriesCardStyle }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, heroines.map((heroine) => {
+  ), renderUtilityHeader && renderUtilityHeader("Memories", onBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...memoriesTitleStyle, display: "none" } }, "思い出の記録"), unlockAll && /* @__PURE__ */ React.createElement("div", { style: {
+    background: THEME.starGold,
+    color: "#000",
+    padding: "4px 10px",
+    fontSize: "0.7em",
+    fontWeight: "bold",
+    borderRadius: "4px",
+    marginBottom: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+  } }, "DEBUG: UNLOCK ALL MODE ACTIVE"), /* @__PURE__ */ React.createElement("div", { style: memoriesCardStyle }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, heroines.map((heroine) => {
     const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
     if (heroineSeenEvents.length === 0) return null;
     return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
@@ -9686,6 +9696,11 @@ function App() {
   const [showOptions, setShowOptions] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [isUnlockAllDebug] = useState(() => {
+    if (typeof localStorage === "undefined") return true;
+    const val = localStorage.getItem("made_in_maghribal_debug_unlock_all");
+    return val !== "false";
+  });
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
@@ -10801,6 +10816,7 @@ function App() {
         screen,
         routeMode,
         seenEventIds,
+        unlockAll: isUnlockAllDebug,
         heroines: HEROINES,
         affectionEvents: AFFECTION_EVENTS,
         onBackToTitle: handleBackToTitle,
