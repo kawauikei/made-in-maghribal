@@ -10123,16 +10123,41 @@ function DebugPanel({
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0,0,0,0.85)",
+    background: "rgba(0,0,0,0.95)",
     color: "#fff",
-    padding: "20px",
+    padding: "16px",
     zIndex: 9999,
     overflowY: "auto",
     fontFamily: "monospace",
     display: "flex",
     flexDirection: "column",
-    gap: "15px"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${THEME.brass}`, paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("h2", { style: { color: THEME.starGold, margin: 0 } }, "DEBUG / STORY ASSIST"), /* @__PURE__ */ React.createElement("button", { onClick: () => setExpanded(false), style: { background: THEME.brass, border: "none", padding: "5px 10px", borderRadius: "3px", cursor: "pointer" } }, "MINIMIZE")), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ GLOBAL MODE ]"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px" } }, /* @__PURE__ */ React.createElement(
+    gap: "15px",
+    boxSizing: "border-box"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottom: `1px solid ${THEME.brass}`,
+    paddingBottom: "8px",
+    flexShrink: 0
+  } }, /* @__PURE__ */ React.createElement("h2", { style: { color: THEME.starGold, margin: 0, fontSize: "0.9em", letterSpacing: "0.05em" } }, "DEBUG / ASSIST"), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setExpanded(false),
+      style: {
+        background: THEME.brass,
+        color: THEME.textDark,
+        border: "none",
+        padding: "4px 8px",
+        borderRadius: "3px",
+        cursor: "pointer",
+        fontSize: "10px",
+        fontWeight: "bold",
+        flexShrink: 0
+      }
+    },
+    "MINIMIZE"
+  )), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ GLOBAL MODE ]"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => setRouteMode("normal"),
