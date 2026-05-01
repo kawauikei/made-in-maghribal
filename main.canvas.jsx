@@ -1772,8 +1772,13 @@ const IntroScreen = ({
     const isHeroinePage = page?.speakerId === activeHeroine.id;
     const isNadirPage = page?.speakerId === 'nader';
     
-    if (isNadirPage) setNadirOpacity(1);
-    else if (isHeroinePage) setNadirOpacity(0);
+    if (isNadirPage) {
+      setNadirOpacity(1);
+      setHeroineOpacity(0);
+      visibleRef.current = false;
+    } else if (isHeroinePage) {
+      setNadirOpacity(0);
+    }
 
     // Sync standing image expression with VNBox icon
     if (isHeroinePage && page?.expression) {
