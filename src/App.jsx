@@ -647,13 +647,14 @@ export default function App() {
   const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
   const getFileName = (path) => path?.split('/').pop() || '';
 
-  const renderBackground = (screen) => {
+  const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
       INTRO: 'shopExteriorDay',
       RESULT: 'shopInteriorWorkshop',
-      DAY_END: 'shopExteriorNight'
+      DAY_END: 'shopExteriorNight',
+      PROLOGUE: 'shopExteriorNight'
     };
-    const bgId = SCREEN_BACKGROUNDS[screen];
+    const bgId = SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
     if (!bg) return null;
@@ -784,6 +785,11 @@ export default function App() {
     </div>
   );
 
+  const getFaceIcon = (id, type, expression) => {
+    const assetPath = getHeroineAsset(id, type, expression);
+    return assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+  };
+
   let mainContent = null;
 
   if (screen === 'START') {
@@ -806,13 +812,6 @@ export default function App() {
       />
     );
   } else if (screen === 'PROLOGUE') {
-    const prologuePages = [
-      "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-      "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-      "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-      "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
-    ];
     mainContent = (
       <PrologueScreen
         screen={screen}
@@ -833,6 +832,7 @@ export default function App() {
         HeroineDisplay={HeroineDisplay}
         audioEngine={audioEngine}
         vnRef={vnRef}
+        getFaceIcon={getFaceIcon}
         containerStyle={containerStyle}
         titleStyle={titleStyle}
         cardStyle={cardStyle}
@@ -858,6 +858,7 @@ export default function App() {
         HeroineDisplay={HeroineDisplay}
         audioEngine={audioEngine}
         vnRef={vnRef}
+        getFaceIcon={getFaceIcon}
         containerStyle={containerStyle}
         titleStyle={titleStyle}
         cardStyle={cardStyle}
@@ -1428,7 +1429,7 @@ export default function App() {
 
 // --- SUB COMPONENTS ---
 
-function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
@@ -1443,14 +1444,15 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
     height: `${displaySize}px`,
     borderRadius: isStanding ? '16px' : '50%',
     overflow: 'hidden',
-    backgroundColor: (heroine.themeColor || '#444') + '33',
+    backgroundColor: noBorder ? 'transparent' : ((heroine.themeColor || '#444') + '33'),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: `2px solid ${heroine.themeColor || '#ffcc00'}`,
-    boxShadow: isStanding ? '0 12px 30px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.3)',
+    border: noBorder ? 'none' : `2px solid ${heroine.themeColor || '#ffcc00'}`,
+    boxShadow: noBorder ? 'none' : (isStanding ? '0 12px 30px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.3)'),
     flexShrink: 0,
-    position: 'relative'
+    position: 'relative',
+    ...style
   };
 
   const imgStyle = {

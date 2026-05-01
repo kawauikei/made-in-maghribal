@@ -6,11 +6,12 @@ import { shouldSkipTypewriter } from './vnClickHelpers';
 import { PROTAGONIST as NADER } from '../data/world';
 
 const prologuePages = [
-  "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-  "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-  "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-  "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-  "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
+  { text: "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。" },
+  { text: "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。" },
+  { text: "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。" },
+  { text: "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。" },
+  { text: "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。" },
+  { speakerId: 'nader', speaker: 'ナーディル', text: "さあ、今日も星瓶堂を開けよう。いい縁に出会えるといいな。" }
 ];
 
 const PrologueScreen = ({
@@ -29,6 +30,7 @@ const PrologueScreen = ({
   HeroineDisplay,
   audioEngine,
   vnRef,
+  getFaceIcon,
   containerStyle,
   titleStyle,
   cardStyle,
@@ -43,18 +45,27 @@ const PrologueScreen = ({
       onClick={onVnAreaClick}
     >
       {renderThemeStyles()}
-      {renderBackground('START')}
+      {renderBackground('PROLOGUE')}
       
-      {/* Nadir Standing (Background Guide Layer) */}
+      {/* Nadir Standing (Guide Layer - Positioned to peek above dock) */}
       <div style={{ 
-        position: 'absolute', bottom: '-6%', right: '-8%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.3,
-        filter: 'grayscale(0.1) contrast(0.9)'
+        position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 1,
+        height: '66%',
+        display: 'flex', alignItems: 'flex-end',
+        filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
-        <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        <HeroineDisplay 
+          heroine={NADER} 
+          type="standing" 
+          size="large" 
+          expression="normal" 
+          noBorder={true}
+          style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+        />
       </div>
 
-      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 
@@ -62,26 +73,69 @@ const PrologueScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
-        <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
-          <VNBox
-            ref={vnRef}
-            speaker="ナーディル"
-            pages={prologuePages}
-            themeColor={THEME.brass}
-            speed={textSpeedMeta.delay}
-            skip={shouldSkipTypewriter(isInstantTextSpeed)}
-            onPageComplete={onPageComplete}
-            onComplete={() => {
-              setIsPrologueComplete(true);
-            }}
-          />
-          <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        
+        {/* Top: Title */}
+        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.6em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            星瓶堂の始まり
+          </h1>
+        </div>
+
+        {/* Middle: Clear space for Character face */}
+        <div style={{ flex: '1 1 auto' }}></div>
+
+        {/* Bottom Dock: UI Stack */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '15px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+        }}>
+          {/* Main VN Box */}
+          <div style={{ 
+            ...cardStyle, 
+            background: 'rgba(20, 30, 45, 0.96)', 
+            color: THEME.parchment, 
+            padding: '16px 20px', 
+            width: '94%', 
+            boxSizing: 'border-box',
+            boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
+            border: `1px solid ${THEME.brass}33`,
+            borderRadius: '12px',
+            marginBottom: '8px'
+          }}>
+            <VNBox
+              ref={vnRef}
+              pages={prologuePages}
+              themeColor={THEME.brass}
+              speed={textSpeedMeta.delay}
+              skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
+              onPageComplete={onPageComplete}
+              onComplete={() => {
+                setIsPrologueComplete(true);
+              }}
+            />
+          </div>
+
+          {/* Action Row */}
+          <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
             {isPrologueComplete && (
               <button
                 data-testid="prologue-next"
                 onClick={onAdvanceToHeroineSelect}
-                style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
+                style={{ 
+                  ...buttonStyle, 
+                  width: '100%', 
+                  maxWidth: '340px', 
+                  margin: 0, 
+                  height: '46px',
+                  fontSize: '1.1em',
+                  boxShadow: `0 4px 15px ${THEME.brass}33`
+                }}
               >
                 星瓶堂へ進む
               </button>

@@ -15,13 +15,15 @@ import { THEME } from './theme';
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
   const currentSpeaker = typeof currentPage === 'object' && currentPage?.speaker !== undefined ? currentPage.speaker : speaker;
+  const currentSpeakerId = typeof currentPage === 'object' ? currentPage.speakerId : null;
+  const currentExpression = typeof currentPage === 'object' ? (currentPage.expression || 'normal') : 'normal';
 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
@@ -33,7 +35,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     const key = `${pageIndex}:${currentText}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker: currentSpeaker, text: currentText, pageIndex });
+    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: currentText, pageIndex });
   };
 
   useEffect(() => {
@@ -86,6 +88,8 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     advance: () => handleClick()
   }));
 
+  const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, 'face', currentExpression) : null;
+
   return (
     <div 
       data-testid="vn-box"
@@ -94,36 +98,68 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
         width: '100%',
         boxSizing: 'border-box',
         height: '160px',
-        background: 'rgba(26, 42, 58, 0.95)',
+        background: 'rgba(20, 30, 45, 0.97)',
         borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: '20px 24px',
+        padding: currentSpeaker ? '16px 24px' : '24px 24px',
         borderRadius: '0 12px 12px 0',
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+        boxShadow: '0 6px 20px rgba(0,0,0,0.5)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'all 0.3s ease'
       }}
     >
       {currentSpeaker && (
         <div style={{ 
-          fontSize: '0.85em', 
-          color: themeColor || THEME.brass, 
-          fontWeight: 'bold', 
-          marginBottom: '8px',
-          letterSpacing: '0.08em',
-          textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginBottom: '10px',
         }}>
-          {currentSpeaker}
+          {facePath && (
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: `1.5px solid ${themeColor || THEME.brass}`,
+              background: 'rgba(0,0,0,0.3)',
+              flexShrink: 0
+            }}>
+              <img 
+                src={facePath} 
+                alt={currentSpeaker} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            </div>
+          )}
+          <div style={{ 
+            fontSize: '0.9em', 
+            color: themeColor || THEME.brass, 
+            fontWeight: 'bold', 
+            letterSpacing: '0.08em',
+            textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+          }}>
+            {currentSpeaker}
+          </div>
         </div>
       )}
-      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
+      <div style={{ 
+        fontSize: currentSpeaker ? '1.05em' : '1.1em', 
+        lineHeight: '1.6', 
+        minHeight: '4.2em', 
+        flex: 1,
+        opacity: currentSpeaker ? 1 : 0.9,
+        fontStyle: currentSpeaker ? 'normal' : 'italic'
+      }}>
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: `2px solid ${THEME.brass}` }}>&nbsp;</span>}
       </div>

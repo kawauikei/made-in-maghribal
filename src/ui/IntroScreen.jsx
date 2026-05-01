@@ -22,12 +22,25 @@ const IntroScreen = ({
   HeroineDisplay,
   audioEngine,
   vnRef,
+  getFaceIcon,
   containerStyle,
   titleStyle,
   cardStyle,
   buttonStyle,
   narrativeBoxStyle
 }) => {
+  const introPages = [
+    { 
+      speakerId: 'nader', 
+      speaker: 'ナーディル', 
+      text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？` 
+    },
+    { 
+      speakerId: activeHeroine.id, 
+      speaker: activeHeroine.name, 
+      text: activeHeroine.greeting || "ええ、相談に乗ってくれるかしら。" 
+    }
+  ];
   return (
     <div 
       data-testid="intro-screen" 
@@ -37,23 +50,27 @@ const IntroScreen = ({
       {renderThemeStyles()}
       {renderBackground(screen)}
       
-      {/* Nadir Standing (Conversation Layer - Left) */}
+      {/* Nadir Standing (Hidden in INTRO to focus on customer) */}
+
+      {/* Heroine Standing (Conversation Partner - Positioned to peek above dock) */}
       <div style={{ 
-        position: 'absolute', bottom: 0, left: '2%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.4,
+        position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 1,
+        height: '68%',
+        display: 'flex', alignItems: 'flex-end',
+        filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
-        <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        <HeroineDisplay 
+          heroine={activeHeroine} 
+          type="standing" 
+          size="large" 
+          expression="normal" 
+          noBorder={true}
+          style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+        />
       </div>
 
-      {/* Heroine Standing (Conversation Layer - Right) */}
-      <div style={{ 
-        position: 'absolute', bottom: 0, right: '2%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.55,
-      }}>
-        <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
-      </div>
-
-      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 
@@ -61,34 +78,82 @@ const IntroScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>
-          {activeHeroine.name}との語らい
-        </h1>
-        <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.9)', color: THEME.parchment, padding: '24px', width: '92%', boxSizing: 'border-box' }}>
-          <div style={{ marginBottom: '15px' }}>
+        
+        {/* Top: Title */}
+        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            {activeHeroine.name}との語らい
+          </h1>
+        </div>
+
+        {/* Middle: Clear space for Character face */}
+        <div style={{ flex: '1 1 auto' }}></div>
+
+        {/* Bottom Dock: UI Stack */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '12px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+        }}>
+          {/* Main VN Box */}
+          <div style={{ 
+            ...cardStyle, 
+            background: 'rgba(20, 30, 45, 0.96)', 
+            color: THEME.parchment, 
+            padding: '16px 20px', 
+            width: '94%', 
+            boxSizing: 'border-box',
+            boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
+            border: `1px solid ${THEME.brass}33`,
+            borderRadius: '12px',
+            marginBottom: '8px'
+          }}>
             <VNBox
               ref={vnRef}
-              speaker="ナーディル"
-              text={`${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`}
+              pages={introPages}
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
               onPageComplete={onPageComplete}
               onComplete={onBeginService}
             />
           </div>
-          <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-            <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。</p>
-            <p style={{ margin: 0, lineHeight: '1.6' }}>今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
-            <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
+
+          {/* Hint Chip & Start Button Row */}
+          <div style={{ width: '94%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+            <div style={{ 
+              background: 'rgba(0,0,0,0.5)', 
+              fontSize: '0.75em', 
+              padding: '4px 12px', 
+              borderRadius: '20px',
+              border: `1px solid ${THEME.oasisTeal}44`,
+              color: THEME.oasisTeal,
+              backdropFilter: 'blur(4px)'
+            }}>
+              💡 客の好みに合わせて素材を選ぼう
+            </div>
+            
+            <button 
+              data-testid="intro-start" 
+              onClick={onBeginService} 
+              style={{ 
+                ...buttonStyle, 
+                width: '100%', 
+                maxWidth: '340px', 
+                margin: 0, 
+                height: '46px',
+                fontSize: '1.1em',
+                boxShadow: `0 4px 15px ${THEME.brass}33`
+              }}
+            >
+              営業を始める
+            </button>
           </div>
-          <button 
-            data-testid="intro-start" 
-            onClick={onBeginService} 
-            style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}
-          >
-            営業を始める
-          </button>
         </div>
       </div>
     </div>

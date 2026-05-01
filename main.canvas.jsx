@@ -1330,11 +1330,12 @@ const HeroineSelectScreen = ({
 // --- Inlined: PrologueScreen ---
 
 const prologuePages = [
-  "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-  "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-  "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-  "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-  "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
+  { text: "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。" },
+  { text: "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。" },
+  { text: "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。" },
+  { text: "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。" },
+  { text: "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。" },
+  { speakerId: 'nader', speaker: 'ナーディル', text: "さあ、今日も星瓶堂を開けよう。いい縁に出会えるといいな。" }
 ];
 
 const PrologueScreen = ({
@@ -1353,6 +1354,7 @@ const PrologueScreen = ({
   HeroineDisplay,
   audioEngine,
   vnRef,
+  getFaceIcon,
   containerStyle,
   titleStyle,
   cardStyle,
@@ -1367,18 +1369,27 @@ const PrologueScreen = ({
       onClick={onVnAreaClick}
     >
       {renderThemeStyles()}
-      {renderBackground('START')}
+      {renderBackground('PROLOGUE')}
       
-      {/* Nadir Standing (Background Guide Layer) */}
+      {/* Nadir Standing (Guide Layer - Positioned to peek above dock) */}
       <div style={{ 
-        position: 'absolute', bottom: '-6%', right: '-8%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.3,
-        filter: 'grayscale(0.1) contrast(0.9)'
+        position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 1,
+        height: '66%',
+        display: 'flex', alignItems: 'flex-end',
+        filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
-        <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        <HeroineDisplay 
+          heroine={NADER} 
+          type="standing" 
+          size="large" 
+          expression="normal" 
+          noBorder={true}
+          style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+        />
       </div>
 
-      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 
@@ -1386,26 +1397,69 @@ const PrologueScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, marginBottom: '30px' }}>星瓶堂の始まり</h1>
-        <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.95)', color: THEME.parchment, padding: '24px', maxWidth: '100%', width: '92%', boxSizing: 'border-box' }}>
-          <VNBox
-            ref={vnRef}
-            speaker="ナーディル"
-            pages={prologuePages}
-            themeColor={THEME.brass}
-            speed={textSpeedMeta.delay}
-            skip={shouldSkipTypewriter(isInstantTextSpeed)}
-            onPageComplete={onPageComplete}
-            onComplete={() => {
-              setIsPrologueComplete(true);
-            }}
-          />
-          <div style={{ minHeight: '54px', marginTop: '18px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        
+        {/* Top: Title */}
+        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.6em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            星瓶堂の始まり
+          </h1>
+        </div>
+
+        {/* Middle: Clear space for Character face */}
+        <div style={{ flex: '1 1 auto' }}></div>
+
+        {/* Bottom Dock: UI Stack */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '15px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+        }}>
+          {/* Main VN Box */}
+          <div style={{ 
+            ...cardStyle, 
+            background: 'rgba(20, 30, 45, 0.96)', 
+            color: THEME.parchment, 
+            padding: '16px 20px', 
+            width: '94%', 
+            boxSizing: 'border-box',
+            boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
+            border: `1px solid ${THEME.brass}33`,
+            borderRadius: '12px',
+            marginBottom: '8px'
+          }}>
+            <VNBox
+              ref={vnRef}
+              pages={prologuePages}
+              themeColor={THEME.brass}
+              speed={textSpeedMeta.delay}
+              skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
+              onPageComplete={onPageComplete}
+              onComplete={() => {
+                setIsPrologueComplete(true);
+              }}
+            />
+          </div>
+
+          {/* Action Row */}
+          <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
             {isPrologueComplete && (
               <button
                 data-testid="prologue-next"
                 onClick={onAdvanceToHeroineSelect}
-                style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}
+                style={{ 
+                  ...buttonStyle, 
+                  width: '100%', 
+                  maxWidth: '340px', 
+                  margin: 0, 
+                  height: '46px',
+                  fontSize: '1.1em',
+                  boxShadow: `0 4px 15px ${THEME.brass}33`
+                }}
               >
                 星瓶堂へ進む
               </button>
@@ -1438,12 +1492,25 @@ const IntroScreen = ({
   HeroineDisplay,
   audioEngine,
   vnRef,
+  getFaceIcon,
   containerStyle,
   titleStyle,
   cardStyle,
   buttonStyle,
   narrativeBoxStyle
 }) => {
+  const introPages = [
+    { 
+      speakerId: 'nader', 
+      speaker: 'ナーディル', 
+      text: `${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？` 
+    },
+    { 
+      speakerId: activeHeroine.id, 
+      speaker: activeHeroine.name, 
+      text: activeHeroine.greeting || "ええ、相談に乗ってくれるかしら。" 
+    }
+  ];
   return (
     <div 
       data-testid="intro-screen" 
@@ -1453,23 +1520,27 @@ const IntroScreen = ({
       {renderThemeStyles()}
       {renderBackground(screen)}
       
-      {/* Nadir Standing (Conversation Layer - Left) */}
+      {/* Nadir Standing (Hidden in INTRO to focus on customer) */}
+
+      {/* Heroine Standing (Conversation Partner - Positioned to peek above dock) */}
       <div style={{ 
-        position: 'absolute', bottom: 0, left: '2%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.4,
+        position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
+        pointerEvents: 'none', opacity: 1,
+        height: '68%',
+        display: 'flex', alignItems: 'flex-end',
+        filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
-        <HeroineDisplay heroine={NADER} type="standing" size="large" expression="normal" />
+        <HeroineDisplay 
+          heroine={activeHeroine} 
+          type="standing" 
+          size="large" 
+          expression="normal" 
+          noBorder={true}
+          style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+        />
       </div>
 
-      {/* Heroine Standing (Conversation Layer - Right) */}
-      <div style={{ 
-        position: 'absolute', bottom: 0, right: '2%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 0.55,
-      }}>
-        <HeroineDisplay heroine={activeHeroine} type="standing" size="large" expression="normal" />
-      </div>
-
-      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
         <GameHud 
           screen={screen} 
           routeMode={routeMode} 
@@ -1477,34 +1548,82 @@ const IntroScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, marginBottom: '20px' }}>
-          {activeHeroine.name}との語らい
-        </h1>
-        <div style={{ ...cardStyle, background: 'rgba(26, 42, 58, 0.9)', color: THEME.parchment, padding: '24px', width: '92%', boxSizing: 'border-box' }}>
-          <div style={{ marginBottom: '15px' }}>
+        
+        {/* Top: Title */}
+        <div style={{ flex: '0 0 auto', padding: '25px 0 5px 0', textAlign: 'center' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            {activeHeroine.name}との語らい
+          </h1>
+        </div>
+
+        {/* Middle: Clear space for Character face */}
+        <div style={{ flex: '1 1 auto' }}></div>
+
+        {/* Bottom Dock: UI Stack */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '12px',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
+        }}>
+          {/* Main VN Box */}
+          <div style={{ 
+            ...cardStyle, 
+            background: 'rgba(20, 30, 45, 0.96)', 
+            color: THEME.parchment, 
+            padding: '16px 20px', 
+            width: '94%', 
+            boxSizing: 'border-box',
+            boxShadow: '0 -8px 25px rgba(0,0,0,0.6)',
+            border: `1px solid ${THEME.brass}33`,
+            borderRadius: '12px',
+            marginBottom: '8px'
+          }}>
             <VNBox
               ref={vnRef}
-              speaker="ナーディル"
-              text={`${activeHeroine.name}さん、いらっしゃい。今日はどのような品をお探しですか？`}
+              pages={introPages}
               themeColor={THEME.brass}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
               onPageComplete={onPageComplete}
               onComplete={onBeginService}
             />
           </div>
-          <div style={{ ...narrativeBoxStyle, background: 'rgba(0,0,0,0.6)', color: '#fff', borderLeft: `4px solid ${THEME.brass}`, padding: '20px', marginBottom: '30px' }}>
-            <p style={{ margin: '0 0 10px 0', lineHeight: '1.6' }}>星瓶堂の営業が始まる。ナーディルは品を見立て、客を迎える準備を整えている。</p>
-            <p style={{ margin: 0, lineHeight: '1.6' }}>今回はどんな品が求められるのか。まずは相手の話を聞くところから始まる。</p>
-            <p style={{ margin: '10px 0 0 0', fontSize: '0.85em', color: THEME.oasisTeal }}>※ヒント：客の好みに合わせて素材や色を選ぶと、信頼が深まります。</p>
+
+          {/* Hint Chip & Start Button Row */}
+          <div style={{ width: '94%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+            <div style={{ 
+              background: 'rgba(0,0,0,0.5)', 
+              fontSize: '0.75em', 
+              padding: '4px 12px', 
+              borderRadius: '20px',
+              border: `1px solid ${THEME.oasisTeal}44`,
+              color: THEME.oasisTeal,
+              backdropFilter: 'blur(4px)'
+            }}>
+              💡 客の好みに合わせて素材を選ぼう
+            </div>
+            
+            <button 
+              data-testid="intro-start" 
+              onClick={onBeginService} 
+              style={{ 
+                ...buttonStyle, 
+                width: '100%', 
+                maxWidth: '340px', 
+                margin: 0, 
+                height: '46px',
+                fontSize: '1.1em',
+                boxShadow: `0 4px 15px ${THEME.brass}33`
+              }}
+            >
+              営業を始める
+            </button>
           </div>
-          <button 
-            data-testid="intro-start" 
-            onClick={onBeginService} 
-            style={{ ...buttonStyle, width: '100%', maxWidth: '280px', marginTop: '10px' }}
-          >
-            営業を始める
-          </button>
         </div>
       </div>
     </div>
@@ -1528,13 +1647,15 @@ const IntroScreen = ({
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
   const currentSpeaker = typeof currentPage === 'object' && currentPage?.speaker !== undefined ? currentPage.speaker : speaker;
+  const currentSpeakerId = typeof currentPage === 'object' ? currentPage.speakerId : null;
+  const currentExpression = typeof currentPage === 'object' ? (currentPage.expression || 'normal') : 'normal';
 
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
@@ -1546,7 +1667,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     const key = `${pageIndex}:${currentText}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete?.({ speaker: currentSpeaker, text: currentText, pageIndex });
+    onPageComplete?.({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: currentText, pageIndex });
   };
 
   useEffect(() => {
@@ -1599,6 +1720,8 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     advance: () => handleClick()
   }));
 
+  const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, 'face', currentExpression) : null;
+
   return (
     <div 
       data-testid="vn-box"
@@ -1607,36 +1730,68 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
         width: '100%',
         boxSizing: 'border-box',
         height: '160px',
-        background: 'rgba(26, 42, 58, 0.95)',
+        background: 'rgba(20, 30, 45, 0.97)',
         borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: '20px 24px',
+        padding: currentSpeaker ? '16px 24px' : '24px 24px',
         borderRadius: '0 12px 12px 0',
         cursor: 'pointer',
         color: THEME.parchment,
         textAlign: 'left',
         position: 'relative',
-        boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+        boxShadow: '0 6px 20px rgba(0,0,0,0.5)',
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: 'none',
         lineHeight: '1.7',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'all 0.3s ease'
       }}
     >
       {currentSpeaker && (
         <div style={{ 
-          fontSize: '0.85em', 
-          color: themeColor || THEME.brass, 
-          fontWeight: 'bold', 
-          marginBottom: '8px',
-          letterSpacing: '0.08em',
-          textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          marginBottom: '10px',
         }}>
-          {currentSpeaker}
+          {facePath && (
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: `1.5px solid ${themeColor || THEME.brass}`,
+              background: 'rgba(0,0,0,0.3)',
+              flexShrink: 0
+            }}>
+              <img 
+                src={facePath} 
+                alt={currentSpeaker} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            </div>
+          )}
+          <div style={{ 
+            fontSize: '0.9em', 
+            color: themeColor || THEME.brass, 
+            fontWeight: 'bold', 
+            letterSpacing: '0.08em',
+            textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+          }}>
+            {currentSpeaker}
+          </div>
         </div>
       )}
-      <div style={{ fontSize: '1.05em', lineHeight: '1.6', minHeight: '4.8em', flex: 1 }}>
+      <div style={{ 
+        fontSize: currentSpeaker ? '1.05em' : '1.1em', 
+        lineHeight: '1.6', 
+        minHeight: '4.2em', 
+        flex: 1,
+        opacity: currentSpeaker ? 1 : 0.9,
+        fontStyle: currentSpeaker ? 'normal' : 'italic'
+      }}>
         {displayText}
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: `2px solid ${THEME.brass}` }}>&nbsp;</span>}
       </div>
@@ -2389,13 +2544,14 @@ function App() {
   const getFullPath = (src) => `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/');
   const getFileName = (path) => path?.split('/').pop() || '';
 
-  const renderBackground = (screen) => {
+  const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
       INTRO: 'shopExteriorDay',
       RESULT: 'shopInteriorWorkshop',
-      DAY_END: 'shopExteriorNight'
+      DAY_END: 'shopExteriorNight',
+      PROLOGUE: 'shopExteriorNight'
     };
-    const bgId = SCREEN_BACKGROUNDS[screen];
+    const bgId = SCREEN_BACKGROUNDS[screenOrId] || screenOrId;
     if (!bgId) return null;
     const bg = BACKGROUND_IMAGES[bgId];
     if (!bg) return null;
@@ -2526,6 +2682,11 @@ function App() {
     </div>
   );
 
+  const getFaceIcon = (id, type, expression) => {
+    const assetPath = getHeroineAsset(id, type, expression);
+    return assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+  };
+
   let mainContent = null;
 
   if (screen === 'START') {
@@ -2548,13 +2709,6 @@ function App() {
       />
     );
   } else if (screen === 'PROLOGUE') {
-    const prologuePages = [
-      "砂漠の街マグリバル。路地の一角に、小さな鍛金術店「星瓶堂」がある。",
-      "若店主ナーディルは、客の依頼に合う品を選びながら、今日も星瓶堂の営業を始める。",
-      "砂漠の風は時に厳しいが、星々はいつも職人の手元を優しく照らしている。ここでは古くから鍛金術が物語を紡いできた。",
-      "これからの10回の営業。商いを重ねる中で、協力者たちとの縁も少しずつ育っていく。",
-      "あなたの手から生み出される品々が、誰かの未来を少しだけ輝かせることを願って。",
-    ];
     mainContent = (
       <PrologueScreen
         screen={screen}
@@ -2575,6 +2729,7 @@ function App() {
         HeroineDisplay={HeroineDisplay}
         audioEngine={audioEngine}
         vnRef={vnRef}
+        getFaceIcon={getFaceIcon}
         containerStyle={containerStyle}
         titleStyle={titleStyle}
         cardStyle={cardStyle}
@@ -2600,6 +2755,7 @@ function App() {
         HeroineDisplay={HeroineDisplay}
         audioEngine={audioEngine}
         vnRef={vnRef}
+        getFaceIcon={getFaceIcon}
         containerStyle={containerStyle}
         titleStyle={titleStyle}
         cardStyle={cardStyle}
@@ -3170,7 +3326,7 @@ function App() {
 
 // --- SUB COMPONENTS ---
 
-function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   const [imgError, setImgError] = useState(false);
   const assetPath = getHeroineAsset(heroine.id, type, expression);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
@@ -3185,14 +3341,15 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal" }
     height: `${displaySize}px`,
     borderRadius: isStanding ? '16px' : '50%',
     overflow: 'hidden',
-    backgroundColor: (heroine.themeColor || '#444') + '33',
+    backgroundColor: noBorder ? 'transparent' : ((heroine.themeColor || '#444') + '33'),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: `2px solid ${heroine.themeColor || '#ffcc00'}`,
-    boxShadow: isStanding ? '0 12px 30px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.3)',
+    border: noBorder ? 'none' : `2px solid ${heroine.themeColor || '#ffcc00'}`,
+    boxShadow: noBorder ? 'none' : (isStanding ? '0 12px 30px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.3)'),
     flexShrink: 0,
-    position: 'relative'
+    position: 'relative',
+    ...style
   };
 
   const imgStyle = {
