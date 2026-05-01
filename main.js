@@ -348,42 +348,90 @@ const logButtonStyle = {
   fontFamily: "inherit",
   boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
 };
-function LogModal({ isOpen, onClose, vnBacklog, scrollRef }) {
+function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
   if (!isOpen) return null;
   const handleClose = () => {
     audioEngine.playSfx("uiTapBottle");
     onClose();
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "360px", padding: "16px 14px 14px" } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 10px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.1em", paddingRight: "30px" } }, "ログ"), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "380px", padding: "16px 14px 14px", height: "85vh", display: "flex", flexDirection: "column" } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 15px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em", fontWeight: "bold" } }, "会話ログ"), /* @__PURE__ */ React.createElement(
     "div",
     {
       ref: scrollRef,
       "data-testid": "backlog-scroll",
       className: "log-content",
-      style: { flex: 1, overflowY: "auto", borderTop: "1px solid #e0d8cc", borderBottom: "1px solid #e0d8cc", padding: "4px 0" }
+      style: {
+        flex: 1,
+        overflowY: "auto",
+        borderTop: `2px solid ${THEME.brass}44`,
+        borderBottom: `2px solid ${THEME.brass}44`,
+        padding: "10px 4px",
+        background: "rgba(255,255,255,0.3)"
+      }
     },
-    vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.88em", textAlign: "center", padding: "20px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
+    vnBacklog.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.9em", textAlign: "center", padding: "40px 0" } }, "まだログはありません") : vnBacklog.slice().reverse().map((entry, idx) => {
       var _a;
-      const isNarration = !entry.speaker;
+      const isNarration = !entry.speaker || entry.speaker === "ナーディル" && !entry.speakerId;
+      const speakerId = entry.speakerId || (entry.speaker === "ナーディル" ? "nader" : null);
+      const facePath = speakerId && getFaceIcon ? getFaceIcon(speakerId, "face", entry.expression || "normal") : null;
       const displayText = typeof entry.text === "string" ? entry.text : ((_a = entry.text) == null ? void 0 : _a.text) || "";
       if (!displayText) return null;
       return /* @__PURE__ */ React.createElement(
         "div",
         {
           "data-testid": "backlog-entry",
-          "data-route-mode": entry.routeMode || "normal",
           key: `${entry.sequence}-${idx}`,
-          style: { padding: "7px 10px", borderBottom: "1px solid #ede8df", textAlign: "left" }
+          style: {
+            display: "flex",
+            gap: "12px",
+            padding: "12px 8px",
+            borderBottom: `1px solid ${THEME.brass}22`,
+            textAlign: "left",
+            alignItems: "flex-start"
+          }
         },
-        !isNarration && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.78em", fontWeight: "bold", color: THEME.brassDark, display: "block", marginBottom: "3px" } }, entry.speaker),
-        /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.85em", color: "#333", lineHeight: "1.55", whiteSpace: "pre-wrap", wordBreak: "break-word" } }, displayText)
+        /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, width: "48px", height: "48px" } }, facePath ? /* @__PURE__ */ React.createElement("div", { style: {
+          width: "48px",
+          height: "48px",
+          borderRadius: "8px",
+          overflow: "hidden",
+          border: `1px solid ${THEME.brass}88`,
+          background: "#0c1926"
+        } }, /* @__PURE__ */ React.createElement("img", { src: facePath, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })) : /* @__PURE__ */ React.createElement("div", { style: {
+          width: "48px",
+          height: "48px",
+          borderRadius: "8px",
+          background: isNarration ? "transparent" : `${THEME.brass}22`,
+          border: isNarration ? "none" : `1px solid ${THEME.brass}44`
+        } })),
+        /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, !isNarration && /* @__PURE__ */ React.createElement("div", { style: {
+          fontSize: "0.75em",
+          fontWeight: "900",
+          color: THEME.brassDark,
+          marginBottom: "4px",
+          letterSpacing: "0.05em"
+        } }, entry.speaker), /* @__PURE__ */ React.createElement("div", { style: {
+          fontSize: "0.88em",
+          color: isNarration ? "#666" : "#222",
+          lineHeight: "1.6",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+          fontStyle: isNarration ? "italic" : "normal"
+        } }, displayText))
       );
     })
-  ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "12px" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "backlog-close",
-      style: { ...logButtonStyle, marginTop: 0, background: "#555", color: "white", width: "100%", fontSize: "0.88em" },
+      style: {
+        ...logButtonStyle,
+        background: THEME.nightBlue,
+        color: "white",
+        width: "100%",
+        fontSize: "0.9em",
+        border: `1px solid ${THEME.brass}`
+      },
       onClick: handleClose
     },
     "閉じる"
@@ -2350,7 +2398,13 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     const key = `${index}:${text2}`;
     if (loggedPagesRef.current.has(key)) return;
     loggedPagesRef.current.add(key);
-    onPageComplete == null ? void 0 : onPageComplete({ speaker: currentSpeaker, speakerId: currentSpeakerId, text: text2, pageIndex: index });
+    onPageComplete == null ? void 0 : onPageComplete({
+      speaker: currentSpeaker,
+      speakerId: currentSpeakerId,
+      expression: currentExpression,
+      text: text2,
+      pageIndex: index
+    });
   };
   useEffect(() => {
     if (skip || isSkippingBlock) {
@@ -3041,7 +3095,7 @@ const ResultScreen = ({
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter2(isInstantTextSpeed),
-        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" })
+        onPageComplete: (data) => appendVnBacklog({ ...data, screen: "RESULT" })
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
@@ -10003,7 +10057,7 @@ function App() {
     setActiveHeroineId(event.heroineId);
     setScreen("EVENT");
   };
-  const appendVnBacklog = ({ speaker, text, screen: sourceScreen }) => {
+  const appendVnBacklog = ({ speaker, speakerId, expression, text, screen: sourceScreen }) => {
     if (!text) return;
     setVnBacklog((prev) => {
       const last = prev[prev.length - 1];
@@ -10014,6 +10068,8 @@ function App() {
         ...prev,
         {
           speaker: speaker || "",
+          speakerId: speakerId || null,
+          expression: expression || "normal",
           text,
           screen: sourceScreen || screen,
           heroineId: activeHeroineId,
@@ -10339,7 +10395,7 @@ function App() {
         onOpenOptions: () => setShowOptions(true),
         onOpenHelp: () => setShowHelp(true),
         onVnAreaClick: handleVnAreaClick,
-        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "PROLOGUE" }),
+        onPageComplete: (data) => appendVnBacklog({ ...data, screen: "PROLOGUE" }),
         onAdvanceToHeroineSelect: () => {
           audioEngine.playSfx("uiClickForward");
           setScreen("HEROINE_SELECT");
@@ -10371,7 +10427,7 @@ function App() {
         onOpenOptions: () => setShowOptions(true),
         onOpenHelp: () => setShowHelp(true),
         onVnAreaClick: handleVnAreaClick,
-        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "INTRO" }),
+        onPageComplete: (data) => appendVnBacklog({ ...data, screen: "INTRO" }),
         onBeginService: handleBeginService,
         renderThemeStyles,
         renderBackground,
@@ -10511,7 +10567,7 @@ function App() {
           }
           setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
         },
-        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "EVENT" }),
+        onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
         onComplete: handleCloseEvent
       }
     ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", width: "100%", maxWidth: "300px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
@@ -10675,7 +10731,7 @@ function App() {
           speed: textSpeedMeta.delay,
           skip: shouldSkipTypewriter(isInstantTextSpeed),
           getFaceIcon,
-          onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "ENDING" }),
+          onPageComplete: (data) => appendVnBacklog({ ...data, screen: "ENDING" }),
           onComplete: handleFinishGame
         }
       )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
@@ -10850,7 +10906,7 @@ function App() {
       defaultAudioVolume: DEFAULT_AUDIO_VOLUME,
       textSpeedMeta: TEXT_SPEED_META
     }
-  ), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  ), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef, getFaceIcon }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   var _a;
