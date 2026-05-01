@@ -151,7 +151,6 @@ const IntroScreen = ({
         </div>
       </div>
     </div>
-    </div>
   );
 };
 

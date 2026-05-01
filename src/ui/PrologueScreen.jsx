@@ -151,7 +151,6 @@ const PrologueScreen = ({
         </div>
       </div>
     </div>
-    </div>
   );
 };
 
