@@ -2463,39 +2463,27 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: "none"
       }
     },
-    /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        onClick: handleSkipBlock,
-        onMouseEnter: () => setHoverSkip(true),
-        onMouseLeave: () => setHoverSkip(false),
-        style: {
-          ...headerButtonStyle,
-          position: "absolute",
-          top: "-32px",
-          // Align with speaker tag
-          right: "24px",
-          background: hoverSkip ? themeColor || THEME.brass : "rgba(12, 25, 38, 0.95)",
-          color: hoverSkip ? "#0c1926" : themeColor || THEME.brass,
-          border: `1px solid ${hoverSkip ? themeColor || THEME.brass : (themeColor || THEME.brass) + "77"}`,
-          cursor: "pointer",
-          zIndex: 20
-        }
-      },
-      "SKIP"
-    ),
-    currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
+    /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      left: "12px",
-      top: "-32px",
-      // Half-overlap (Face icon is 60px)
+      top: "-45px",
+      // Fixed header position
+      left: 0,
+      width: "100%",
+      height: "60px",
+      // Matches Face Icon height
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "0 24px",
+      boxSizing: "border-box",
+      pointerEvents: "none",
+      zIndex: 20
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       alignItems: "center",
       gap: "12px",
-      zIndex: 10,
-      pointerEvents: "none",
-      transition: "all 0.2s ease"
-    } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
+      pointerEvents: "none"
+    } }, currentSpeaker && facePath && /* @__PURE__ */ React.createElement("div", { style: {
       width: "60px",
       height: "60px",
       borderRadius: "12px",
@@ -2506,7 +2494,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
       transform: "rotate(-2deg)",
       position: "relative",
-      transition: "all 0.2s ease"
+      pointerEvents: "auto"
     } }, /* @__PURE__ */ React.createElement(
       "img",
       {
@@ -2536,11 +2524,27 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: "14px",
       pointerEvents: "none"
-    } })), /* @__PURE__ */ React.createElement("div", { style: {
+    } })), currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       ...headerButtonStyle,
-      border: `1px solid ${themeColor || THEME.brass}77`,
+      pointerEvents: "auto",
       animation: "vn-fade-in 0.2s ease"
-    } }, currentSpeaker)),
+    } }, currentSpeaker)), /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        onClick: handleSkipBlock,
+        onMouseEnter: () => setHoverSkip(true),
+        onMouseLeave: () => setHoverSkip(false),
+        style: {
+          ...headerButtonStyle,
+          background: hoverSkip ? themeColor || THEME.brass : "rgba(12, 25, 38, 0.95)",
+          color: hoverSkip ? "#0c1926" : themeColor || THEME.brass,
+          border: `1px solid ${hoverSkip ? themeColor || THEME.brass : (themeColor || THEME.brass) + "77"}`,
+          cursor: "pointer",
+          pointerEvents: "auto"
+        }
+      },
+      "SKIP"
+    )),
     isFadingOut && /* @__PURE__ */ React.createElement("div", { style: {
       position: "fixed",
       inset: 0,
