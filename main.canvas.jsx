@@ -4132,20 +4132,27 @@ function App() {
       <div data-testid="quiz-screen" style={containerStyle}>
         {renderThemeStyles()}
         
-        {/* Counter Background (M-RHYTHM-UI-0B follow-up / M-RHYTHM-UI-CONT) */}
+        {/* Full-screen Background (B-1) */}
         <div style={{
           position: 'absolute',
-          bottom: 0,
+          top: 0,
           left: 0,
           right: 0,
-          height: '42%', // Slightly taller for better card grounding
+          bottom: 0,
           backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center 75%',
+          backgroundPosition: 'center',
           zIndex: 1,
-          borderTop: `2px solid ${THEME.brass}`,
-          boxShadow: '0 -8px 25px rgba(0,0,0,0.4)',
-          opacity: 0.9 // Higher opacity for more 'grounded' feel
+          opacity: 0.8
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.2)', // Subtle darkening for readability
+          zIndex: 2
         }} />
 
         <GameHud
@@ -4173,27 +4180,27 @@ function App() {
         <div style={{ 
           ...cardStyle, 
           maxWidth: '800px', 
-          marginTop: '5px', // Tighter top margin
+          marginTop: '5px', 
           flexGrow: 1, 
           display: 'flex', 
           flexDirection: 'column', 
-          justifyContent: 'center', // Center vertically for better balance
+          justifyContent: 'center', 
           background: 'transparent',
           border: 'none',
           boxShadow: 'none',
           backdropFilter: 'none',
-          padding: '0 20px 20px 20px', // Tighter padding
-          zIndex: 5 // Above counter, below header
+          padding: '0 20px 20px 20px', 
+          zIndex: 5 
         }}>
           <div className="quiz-question-bubble" style={{ ...customerStyle, marginBottom: '10px', justifyContent: 'flex-start' }}>
             <div style={{ 
               ...bubbleStyle, 
-              width: '90%', // Slightly wider
+              width: '90%', 
               background: '#fff', 
               color: '#333',
               border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
               borderRadius: '15px 15px 15px 0',
-              padding: '16px 20px', // Tighter padding
+              padding: '16px 20px', 
               fontSize: '1em',
               lineHeight: '1.4',
               boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
@@ -4208,7 +4215,15 @@ function App() {
             </div>
           </div>
           
-          <div className="quiz-rhythm-lane" style={{ width: '100%', margin: '10px 0' }}>
+          {/* Full-width band for Notes lane (B-1) */}
+          <div className="quiz-rhythm-lane" style={{ 
+            width: 'calc(100% + 40px)', 
+            margin: '15px -20px', 
+            background: 'rgba(26, 42, 58, 0.6)', // nightBlue with transparency
+            borderTop: `1px solid ${THEME.brass}44`,
+            borderBottom: `1px solid ${THEME.brass}44`,
+            padding: '5px 0'
+          }}>
             <RhythmMock heroineId={activeHeroineId} themeColor={activeHeroine?.themeColor} />
           </div>
 
