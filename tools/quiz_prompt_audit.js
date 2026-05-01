@@ -122,6 +122,323 @@ function generateQuestionSamples() {
   
   fs.writeFileSync(csvPath, [headers.join(','), ...rows].join('\n'), 'utf8');
   console.log(`Generated: ${csvPath}`);
+  
+  generateHtmlReport(MASTER_ITEMS, questions);
+}
+
+/**
+ * 3. HTML Report (Premium Visual)
+ */
+function generateHtmlReport(items, questions) {
+  const filePath = path.join(DOCS_DIR, 'quiz_audit_report.html');
+  
+  const iconMap = {
+    ARM: 'sword',
+    ADN: 'gem',
+    MED: 'flask-conical',
+    FOD: 'utensils',
+    CLT: 'shirt',
+    DAY: 'lamp',
+    WRK: 'hammer',
+    TRV: 'map',
+    TRD: 'coins',
+    RIT: 'flame'
+  };
+
+  const colorMap = {
+    ME: '#9b59b6', // Purple
+    EL: '#1abc9c', // Cyan/Teal
+    SA: '#f1c40f', // Gold/Yellow
+    AS: '#3498db', // Blue
+    LI: '#e74c3c'  // Red
+  };
+
+  const htmlContent = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Made in Maghribal - Quiz Audit Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #38bdf8;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; color: var(--accent); }
+        .subtitle { color: var(--text-dim); font-size: 1.1rem; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-card .value { display: block; font-size: 2rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        section { margin-bottom: 60px; }
+        h2 { font-size: 2rem; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        h2 i { color: var(--accent); }
+
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .item-title { font-weight: 700; font-size: 1.1rem; }
+        .item-meta { font-size: 0.8rem; color: var(--text-dim); display: flex; gap: 8px; align-items: center; }
+
+        .category-icon {
+            background: var(--border);
+            padding: 8px;
+            border-radius: 10px;
+            color: var(--accent);
+        }
+
+        .color-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .description { font-size: 0.85rem; color: var(--text-dim); margin-top: 12px; }
+
+        /* Sample Questions */
+        .samples {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sample-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+        }
+
+        .sample-prompt { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; }
+        .sample-type { font-size: 0.8rem; color: var(--accent); text-transform: uppercase; font-weight: 600; }
+
+        .choices { display: flex; gap: 12px; margin-top: 16px; }
+        .choice {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .choice.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--correct); color: var(--correct); }
+        .choice.wrong { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--wrong); color: var(--wrong); }
+
+        .logic-tag {
+            font-size: 0.75rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 12px;
+        }
+
+        .controls {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        input[type="text"] {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: 12px;
+            width: 300px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .sample-card { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Made in Maghribal</h1>
+            <p class="subtitle">Quiz Prompt & Classification Audit Report</p>
+            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Generated: ${new Date().toLocaleString()}</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card"><span class="value">${MASTER_ITEMS.length}</span><span class="label">Total Items</span></div>
+            <div class="stat-card"><span class="value">${GENRES.length}</span><span class="label">Genres</span></div>
+            <div class="stat-card"><span class="value">${ITEM_TYPES.length}</span><span class="label">Item Types</span></div>
+            <div class="stat-card"><span class="value">${COLORS.length}</span><span class="label">Colors</span></div>
+        </div>
+
+        <section>
+            <h2><i data-lucide="help-circle"></i> Prompt Samples</h2>
+            <div class="samples">
+                ${questions.map(q => `
+                <div class="sample-card">
+                    <div>
+                        <div class="sample-type">${q.requestType}</div>
+                        <div class="sample-prompt">${q.promptText}</div>
+                        <div class="logic-tag">Logic: ${q.logic}</div>
+                    </div>
+                    <div class="choices">
+                        <div class="choice correct">
+                            <i data-lucide="check-circle"></i>
+                            <div>
+                                <strong>${q.correctItem.name}</strong><br>
+                                <span style="font-size: 0.8rem; opacity: 0.8;">${q.correctItem.colorName} / ${q.correctItem.typeName}</span>
+                            </div>
+                        </div>
+                        <div class="choice wrong">
+                            <i data-lucide="x-circle"></i>
+                            <div>
+                                <strong>${q.wrongItem.name}</strong><br>
+                                <span style="font-size: 0.8rem; opacity: 0.8;">${q.wrongItem.colorName} / ${q.wrongItem.typeName}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `).join('')}
+            </div>
+        </section>
+
+        <section id="items-section">
+            <h2><i data-lucide="package"></i> Item Classification</h2>
+            <div class="controls">
+                <input type="text" id="itemSearch" placeholder="Search items by name or type..." onkeyup="filterItems()">
+            </div>
+            <div class="items-grid" id="itemsGrid">
+                ${items.map(item => {
+                    const genre = GENRE_BY_ID[item.category];
+                    const type = ITEM_TYPE_BY_ID[item.typeId];
+                    const color = COLOR_BY_ID[item.colorId];
+                    const icon = iconMap[item.category] || 'box';
+                    const colorHex = colorMap[item.colorId] || '#ccc';
+
+                    return `
+                    <div class="item-card" data-search="${item.name.toLowerCase()} ${type?.name.toLowerCase() || ''}">
+                        <div class="item-header">
+                            <div>
+                                <div class="item-title">${item.name}</div>
+                                <div class="item-meta">
+                                    <span>${item.id}</span>
+                                    <span>•</span>
+                                    <span>${genre?.name || item.category}</span>
+                                </div>
+                            </div>
+                            <div class="category-icon">
+                                <i data-lucide="${icon}"></i>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.85rem; font-weight: 600;">${type?.name || item.typeId}</div>
+                        <div class="color-badge" style="background: ${colorHex}22; color: ${colorHex}; border: 1px solid ${colorHex}55;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: ${colorHex};"></span>
+                            ${color?.name || item.colorId} (${color?.label || ''})
+                        </div>
+                        <div class="description">${item.description}</div>
+                    </div>
+                    `;
+                }).join('')}
+            </div>
+        </section>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function filterItems() {
+            const query = document.getElementById('itemSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.item-card');
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-search');
+                if (searchData.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>`;
+
+  fs.writeFileSync(filePath, htmlContent, 'utf8');
+  console.log(`Generated: ${filePath}`);
 }
 
 /**
