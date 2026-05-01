@@ -2585,11 +2585,37 @@ function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
   }
   return null;
 }
-function resolveEventReturnScreen({ eventKind, isRecallMode }) {
-  if (eventKind === "flashback_intro") {
-    return "INTRO";
+function resolveEventCloseActions({ event, isRecallMode }) {
+  if (!event) {
+    return {
+      shouldMarkSeen: false,
+      nextScreen: isRecallMode ? "MEMORIES" : "DAY_END",
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false
+    };
   }
-  return "DAY_END";
+  if (isRecallMode) {
+    return {
+      shouldMarkSeen: false,
+      nextScreen: "MEMORIES",
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false
+    };
+  }
+  if (event.kind === "flashback_intro") {
+    return {
+      shouldMarkSeen: true,
+      nextScreen: "INTRO",
+      shouldClearBackgroundOverride: true,
+      shouldPlayDayEndSfx: false
+    };
+  }
+  return {
+    shouldMarkSeen: true,
+    nextScreen: "DAY_END",
+    shouldClearBackgroundOverride: true,
+    shouldPlayDayEndSfx: true
+  };
 }
 const HeroineSelectScreen = ({
   previewHeroineId,
@@ -11024,24 +11050,24 @@ function App() {
   };
   const handleCloseEvent = () => {
     audioEngine.playSfx("uiTapBottle");
-    if (isRecallMode) {
-      setActiveEvent(null);
+    const actions = resolveEventCloseActions({ event: activeEvent, isRecallMode });
+    if (actions.shouldMarkSeen) {
+      setSeenEventIds((prev) => [...prev, activeEvent.id]);
+    }
+    setActiveEvent(null);
+    if (actions.shouldClearBackgroundOverride) {
+      setEventBackgroundOverride(null);
+    }
+    if (actions.nextScreen === "MEMORIES") {
       setIsRecallMode(false);
-      setEventBackgroundOverride(null);
       setScreen("MEMORIES");
+    } else if (actions.nextScreen === "INTRO") {
+      setScreen("INTRO");
     } else {
-      const finishedEventId = activeEvent.id;
-      const finishedEventKind = activeEvent.kind;
-      setSeenEventIds((prev) => [...prev, finishedEventId]);
-      setActiveEvent(null);
-      setEventBackgroundOverride(null);
-      const returnScreen = resolveEventReturnScreen({ eventKind: finishedEventKind, isRecallMode: false });
-      if (returnScreen === "INTRO") {
-        setScreen("INTRO");
-      } else {
+      if (actions.shouldPlayDayEndSfx) {
         audioEngine.playSfx("workshopDayEnd");
-        setScreen("DAY_END");
       }
+      setScreen("DAY_END");
     }
   };
   useEffect(() => {
