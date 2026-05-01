@@ -998,8 +998,25 @@ const StartScreen = ({
   onClearSaveData,
   onOpenLog,
   onOpenHelp,
-  renderThemeStyles
+  renderThemeStyles,
+  debugModeEnabled,
+  onToggleDebug
 }) => {
+  const [logoTaps, setLogoTaps] = React.useState(0);
+  const logoTapTimer = React.useRef(null);
+  const handleLogoTap = () => {
+    setLogoTaps((prev) => {
+      const next = prev + 1;
+      if (next >= 5) {
+        onToggleDebug();
+        audioEngine.playSfx("uiConfirmChime");
+        return 0;
+      }
+      return next;
+    });
+    if (logoTapTimer.current) clearTimeout(logoTapTimer.current);
+    logoTapTimer.current = setTimeout(() => setLogoTaps(0), 1e3);
+  };
   const containerStyle2 = {
     width: "100%",
     height: "100%",
@@ -1049,7 +1066,15 @@ const StartScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, fontSize: "2.2em", margin: "0 0 5px 0" } }, SHOP.name), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    "h1",
+    {
+      onClick: handleLogoTap,
+      style: { ...titleStyle2, fontSize: "2.2em", margin: "0 0 5px 0", cursor: "pointer", userSelect: "none" }
+    },
+    SHOP.name,
+    debugModeEnabled && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "10px", color: THEME.starGold, verticalAlign: "middle", marginLeft: "5px" } }, "[DEBUG]")
+  ), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
     const isSelected = routeMode === mode;
     return /* @__PURE__ */ React.createElement(
       "button",
@@ -10056,6 +10081,142 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
     /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, c.id)
   ))))))));
 }
+function DebugPanel({
+  routeMode,
+  setRouteMode,
+  affection,
+  setAffection,
+  seenEventIds,
+  setSeenEventIds,
+  onTriggerEvent,
+  autoSkipQuiz,
+  setAutoSkipQuiz,
+  onClose
+}) {
+  const [expanded, setExpanded] = useState(false);
+  if (!expanded) {
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        onClick: () => setExpanded(true),
+        style: {
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          background: "rgba(0,0,0,0.8)",
+          color: THEME.starGold,
+          padding: "4px 8px",
+          borderRadius: "4px",
+          border: `1px solid ${THEME.starGold}`,
+          fontSize: "10px",
+          cursor: "pointer",
+          zIndex: 9999,
+          fontFamily: "monospace"
+        }
+      },
+      "DEBUG / ASSIST"
+    );
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.85)",
+    color: "#fff",
+    padding: "20px",
+    zIndex: 9999,
+    overflowY: "auto",
+    fontFamily: "monospace",
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${THEME.brass}`, paddingBottom: "10px" } }, /* @__PURE__ */ React.createElement("h2", { style: { color: THEME.starGold, margin: 0 } }, "DEBUG / STORY ASSIST"), /* @__PURE__ */ React.createElement("button", { onClick: () => setExpanded(false), style: { background: THEME.brass, border: "none", padding: "5px 10px", borderRadius: "3px", cursor: "pointer" } }, "MINIMIZE")), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ GLOBAL MODE ]"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setRouteMode("normal"),
+      style: {
+        flex: 1,
+        padding: "8px",
+        background: routeMode === "normal" ? THEME.brass : "#333",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }
+    },
+    "NORMAL"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setRouteMode("long_history"),
+      style: {
+        flex: 1,
+        padding: "8px",
+        background: routeMode === "long_history" ? THEME.starGold : "#333",
+        color: "#000",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }
+    },
+    "LONG HISTORY"
+  ))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ STORY ASSIST ]"), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: autoSkipQuiz,
+      onChange: (e) => setAutoSkipQuiz(e.target.checked)
+    }
+  ), /* @__PURE__ */ React.createElement("span", null, "Auto Complete Quiz (Story Focus)"))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ HEROINE & EVENTS ]"), HEROINES.map((h) => /* @__PURE__ */ React.createElement("div", { key: h.id, style: { marginBottom: "15px", padding: "10px", border: "1px solid #444", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", marginBottom: "8px" } }, h.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("span", null, "Aff: ", affection[h.id]), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "range",
+      min: "0",
+      max: "100",
+      value: affection[h.id],
+      onChange: (e) => setAffection((prev) => ({ ...prev, [h.id]: parseInt(e.target.value) })),
+      style: { flex: 1 }
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "5px" } }, ["_20", "_climax"].map((suffix) => {
+    const eventId = `${h.id}${suffix}`;
+    const ev = (AFFECTION_EVENTS[h.id] || []).find((e) => e.id === eventId);
+    if (!ev) return null;
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: eventId,
+        onClick: () => onTriggerEvent(ev),
+        style: {
+          fontSize: "10px",
+          padding: "4px 8px",
+          background: "#444",
+          color: "#fff",
+          border: "none",
+          borderRadius: "2px",
+          cursor: "pointer"
+        }
+      },
+      "Jump ",
+      suffix
+    );
+  }))))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ FLAGS ]"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "10px", background: "#222", padding: "5px", maxHeight: "100px", overflowY: "auto", marginBottom: "5px" } }, "Seen: ", seenEventIds.join(", ") || "(none)"), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setSeenEventIds([]),
+      style: { width: "100%", padding: "5px", background: "#622", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }
+    },
+    "RESET SEEN FLAGS"
+  )), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setExpanded(false),
+      style: { marginTop: "auto", padding: "12px", background: "#333", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }
+    },
+    "BACK TO GAME"
+  ));
+}
 const TEXT_SPEED_META = {
   slow: { label: "遅い", delay: 45 },
   normal: { label: "標準", delay: 30 },
@@ -10227,6 +10388,28 @@ function App() {
     const val = localStorage.getItem("made_in_maghribal_debug_unlock_all");
     return val !== "false";
   });
+  const [debugModeEnabled, setDebugModeEnabled] = useState(() => {
+    if (typeof localStorage === "undefined") return false;
+    return localStorage.getItem("made_in_maghribal_debug_mode") === "true";
+  });
+  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => {
+    if (typeof localStorage === "undefined") return false;
+    return localStorage.getItem("made_in_maghribal_auto_skip_quiz") === "true";
+  });
+  useEffect(() => {
+    localStorage.setItem("made_in_maghribal_debug_mode", debugModeEnabled);
+  }, [debugModeEnabled]);
+  useEffect(() => {
+    localStorage.setItem("made_in_maghribal_auto_skip_quiz", autoSkipQuiz);
+  }, [autoSkipQuiz]);
+  useEffect(() => {
+    if (screen === "QUIZ" && autoSkipQuiz && session) {
+      const timer = setTimeout(() => {
+        handleFinishQuiz(session.questions.length);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [screen, autoSkipQuiz, session]);
   const [affection, setAffection] = useState(
     () => createInitialAffection(HEROINES.map((h) => h.id))
   );
@@ -11046,7 +11229,9 @@ function App() {
         onClearSaveData: handleResetSave,
         onOpenLog: () => setShowLog(true),
         onOpenHelp: () => setShowHelp(true),
-        renderThemeStyles
+        renderThemeStyles,
+        debugModeEnabled,
+        onToggleDebug: () => setDebugModeEnabled(!debugModeEnabled)
       }
     );
   } else if (screen === "PROLOGUE") {
@@ -11708,7 +11893,24 @@ function App() {
       defaultAudioVolume: DEFAULT_AUDIO_VOLUME,
       textSpeedMeta: TEXT_SPEED_META
     }
-  ), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef, getFaceIcon }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  ), /* @__PURE__ */ React.createElement(LogModal, { isOpen: showLog, onClose: () => setShowLog(false), vnBacklog, scrollRef: backlogScrollRef, getFaceIcon }), /* @__PURE__ */ React.createElement(HelpModal, { isOpen: showHelp, onClose: () => setShowHelp(false) }), showSoundTest && /* @__PURE__ */ React.createElement(SoundTest, { onClose: () => setShowSoundTest(false), isAudioEnabled, onToggleAudio: () => setIsAudioEnabled(!isAudioEnabled) }), debugModeEnabled && /* @__PURE__ */ React.createElement(
+    DebugPanel,
+    {
+      routeMode,
+      setRouteMode,
+      affection,
+      setAffection,
+      seenEventIds,
+      setSeenEventIds,
+      autoSkipQuiz,
+      setAutoSkipQuiz,
+      onTriggerEvent: (ev) => {
+        setScreen("EVENT");
+        setActiveEvent(ev);
+        setEventHeroineExpression("normal");
+      }
+    }
+  ), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   var _a;
