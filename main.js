@@ -746,11 +746,11 @@ const BACKGROUND_IMAGES = {
   spotStarView: { id: "spotStarView", label: "spot star view", src: "images/background/bg_spot_star_view.jpg" }
 };
 const STILL_IMAGES = {
-  hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4 },
+  hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4, stillCrop: { objectPosition: "50% 35%", objectFit: "cover" } },
   hakimaFestivalNight01: { id: "hakimaFestivalNight01", title: "祭りの夜", label: "祭りの夜", heroineId: "hakima", src: "images/still/still_hakima_festival_night_01.jpg", focusX: 0.5, focusY: 0.5 },
   hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5 },
   hakimaRainShelter01: { id: "hakimaRainShelter01", title: "雨宿り", label: "雨宿り", heroineId: "hakima", src: "images/still/still_hakima_rain_shelter_01.jpg", focusX: 0.5, focusY: 0.5 },
-  miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45 },
+  miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45, stillCrop: { objectPosition: "50% 40%", objectFit: "cover" } },
   miraAssignmentConsult01: { id: "miraAssignmentConsult01", title: "課題相談", label: "課題相談", heroineId: "mira", src: "images/still/still_mira_assignment_consult_01.jpg", focusX: 0.5, focusY: 0.5 },
   miraStarryRooftop01: { id: "miraStarryRooftop01", title: "星見の屋上", label: "星見の屋上", heroineId: "mira", src: "images/still/still_mira_starry_rooftop_01.jpg", focusX: 0.5, focusY: 0.5 },
   miraVisitSick01: { id: "miraVisitSick01", title: "見舞い", label: "見舞い", heroineId: "mira", src: "images/still/still_mira_visit_sick_01.jpg", focusX: 0.5, focusY: 0.5 },
@@ -9670,7 +9670,7 @@ const RhythmMock = ({ heroineId, themeColor }) => {
       `));
 };
 function App() {
-  var _a, _b, _c, _d;
+  var _a, _b, _c, _d, _e, _f;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -10707,8 +10707,8 @@ function App() {
             style: {
               width: "100%",
               height: "100%",
-              objectFit: "cover",
-              objectPosition: `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+              objectFit: ((_b = still.stillCrop) == null ? void 0 : _b.objectFit) || "cover",
+              objectPosition: ((_c = still.stillCrop) == null ? void 0 : _c.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
             },
             onError: (e) => {
               e.target.style.display = "none";
@@ -10882,7 +10882,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_b = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _b.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_d = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _d.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -11004,7 +11004,7 @@ function App() {
       width: "90%",
       background: "#fff",
       color: "#333",
-      border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
+      border: `2px solid ${((_e = currentQuestion.request.customer) == null ? void 0 : _e.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
       padding: "16px 20px",
       fontSize: "1em",
@@ -11097,7 +11097,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_d = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _d.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_f = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _f.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
