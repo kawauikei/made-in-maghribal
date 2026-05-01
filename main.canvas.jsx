@@ -3388,7 +3388,7 @@ function App() {
   const renderBackground = (screenOrId) => {
     const SCREEN_BACKGROUNDS = {
       INTRO: 'shopInteriorService',
-      RESULT: 'shopInteriorWorkshop',
+      RESULT: 'shopInteriorService',
       DAY_END: 'shopExteriorNight',
       PROLOGUE: 'shopExteriorNight'
     };
