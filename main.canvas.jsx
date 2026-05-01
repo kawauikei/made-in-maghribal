@@ -3047,12 +3047,16 @@ function App() {
 
   // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
   useEffect(() => {
-    if (screen === 'QUIZ' && autoSkipQuiz && session) {
+    if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+      debugAutoSkipAppliedRef.current = true;
       // Force perfect score and proceed to result
       const timer = setTimeout(() => {
-        handleFinishQuiz(session.questions.length); 
+        finishQuizWithResult(session.questions.length); 
       }, 500);
       return () => clearTimeout(timer);
+    }
+    if (screen !== 'QUIZ') {
+      debugAutoSkipAppliedRef.current = false;
     }
   }, [screen, autoSkipQuiz, session]);
   
@@ -3083,6 +3087,7 @@ function App() {
 
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
+  const debugAutoSkipAppliedRef = useRef(false);
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -3682,21 +3687,39 @@ function App() {
     });
   };
 
+  // Encapsulated Quiz Completion Logic (M-DEBUG-AUTO-SKIP-QUIZ Fix)
+  const finishQuizWithResult = (correctCount) => {
+    const totalCount = session?.questions?.length || 5;
+    
+    // Calculate and apply affection gain
+    const gain = calculateQuizAffectionGain(correctCount, totalCount);
+    const nextAffection = addAffection(affection, activeHeroineId, gain);
+    setAffection(nextAffection);
+    setLastAffectionGain(gain);
+
+    // Check for Event Unlock
+    const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
+    if (unlockedEvent) {
+      setActiveEvent(unlockedEvent);
+    }
+    
+    const result = getWorkshopResult(correctCount);
+    setWorkshopState(prev => applyWorkshopResult(prev, result));
+    setScreen('RESULT');
+  };
+
   // Handle answer selection (Improved in M9-3)
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    
-    // 1. Play choice sound immediately (Removed as redundant)
-    // audioEngine.playSfx('quizChoicePick');
     
     const updatedSession = answerQuestion(session, itemId);
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
 
-    // 2. Trigger visual feedback
+    // Trigger visual feedback
     setQuizFeedback({ itemId, isCorrect });
 
-    // 3. Delay result sound slightly to avoid harsh overlap
+    // Delay result sound slightly
     setTimeout(() => {
       if (isCorrect) {
         audioEngine.playSfx('quizCorrectStarChime');
@@ -3704,32 +3727,17 @@ function App() {
         audioEngine.playSfx('quizWrongSandTap');
       }
 
-      // 4. Wait for animation to finish before proceeding
+      // Wait for animation to finish
       setTimeout(() => {
         setQuizFeedback(null);
         setSession(updatedSession);
 
-        // If quiz just finished, accumulate results
         if (updatedSession.isFinished) {
           const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
-          
-          // Calculate and apply affection gain
-          const gain = calculateQuizAffectionGain(correctCount, updatedSession.questions.length);
-          const nextAffection = addAffection(affection, activeHeroineId, gain);
-          setAffection(nextAffection);
-          setLastAffectionGain(gain);
-
-          // Check for Event Unlock
-          const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffection[activeHeroineId], seenEventIds);
-          if (unlockedEvent) {
-            setActiveEvent(unlockedEvent);
-          }
-          const result = getWorkshopResult(correctCount);
-          setWorkshopState(prev => applyWorkshopResult(prev, result));
-          setScreen('RESULT');
+          finishQuizWithResult(correctCount);
         }
-      }, 650); // Feedback display duration
-    }, 150); // Gap between tap and result sound
+      }, 650);
+    }, 150);
   };
 
   // --- RENDER HELPERS ---
