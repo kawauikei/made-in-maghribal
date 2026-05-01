@@ -2412,6 +2412,24 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     skip: () => handleSkipBlock()
   }));
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, "face", currentExpression) : null;
+  const headerButtonStyle = {
+    padding: "6px 20px",
+    borderRadius: "999px",
+    background: "rgba(12, 25, 38, 0.95)",
+    border: `1px solid ${themeColor || THEME.brass}77`,
+    color: themeColor || THEME.brass,
+    fontSize: "0.85em",
+    fontWeight: "900",
+    letterSpacing: "0.1em",
+    backdropFilter: "blur(8px)",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
+    transition: "all 0.2s ease",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textTransform: "uppercase",
+    userSelect: "none"
+  };
   return /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -2423,14 +2441,14 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         boxSizing: "border-box",
         height: "166px",
         background: "rgba(18, 28, 42, 0.98)",
-        padding: currentSpeaker ? "22px 24px 28px 24px" : "18px 24px 28px 24px",
+        padding: currentSpeaker ? "42px 24px 28px 24px" : "24px 24px 28px 24px",
+        // Increased top padding to avoid overlap
         borderRadius: "12px 12px 0 0",
         cursor: "pointer",
         color: THEME.parchment,
         textAlign: "left",
         position: "relative",
         bottom: "12px",
-        // Pushed up slightly
         boxShadow: "0 -4px 15px rgba(0,0,0,0.3)",
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: "none",
@@ -2452,26 +2470,16 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         onMouseEnter: () => setHoverSkip(true),
         onMouseLeave: () => setHoverSkip(false),
         style: {
+          ...headerButtonStyle,
           position: "absolute",
           top: "-32px",
-          // Half-overlap (same as speaker tag)
+          // Align with speaker tag
           right: "24px",
-          // Aligned with internal padding
-          padding: "4px 20px",
-          borderRadius: "999px",
-          background: hoverSkip ? THEME.brass : "rgba(12, 25, 38, 0.95)",
-          border: `1px solid ${hoverSkip ? THEME.brass : (themeColor || THEME.brass) + "77"}`,
+          background: hoverSkip ? themeColor || THEME.brass : "rgba(12, 25, 38, 0.95)",
           color: hoverSkip ? "#0c1926" : themeColor || THEME.brass,
-          fontSize: "0.82em",
-          fontWeight: "900",
+          border: `1px solid ${hoverSkip ? themeColor || THEME.brass : (themeColor || THEME.brass) + "77"}`,
           cursor: "pointer",
-          zIndex: 20,
-          transition: "all 0.2s ease",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-          letterSpacing: "0.15em",
-          backdropFilter: "blur(8px)",
-          textTransform: "uppercase",
-          userSelect: "none"
+          zIndex: 20
         }
       },
       "SKIP"
@@ -2487,7 +2495,6 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       zIndex: 10,
       pointerEvents: "none",
       transition: "all 0.2s ease"
-      // Requirement 3: Fade/Transition
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
       width: "60px",
       height: "60px",
@@ -2530,18 +2537,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       borderRadius: "14px",
       pointerEvents: "none"
     } })), /* @__PURE__ */ React.createElement("div", { style: {
-      padding: "4px 16px",
-      borderRadius: "999px",
-      background: "#0c1926",
+      ...headerButtonStyle,
       border: `1px solid ${themeColor || THEME.brass}77`,
-      fontSize: "0.9em",
-      color: themeColor || THEME.brass,
-      fontWeight: "800",
-      letterSpacing: "0.06em",
-      textShadow: "0 2px 4px rgba(0,0,0,0.8)",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
-      backdropFilter: "blur(8px)",
-      transition: "all 0.2s ease",
       animation: "vn-fade-in 0.2s ease"
     } }, currentSpeaker)),
     isFadingOut && /* @__PURE__ */ React.createElement("div", { style: {
