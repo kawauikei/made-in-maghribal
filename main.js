@@ -1561,7 +1561,7 @@ const HeroineSelectScreen = ({
     opacity: 0.8
   } }));
 };
-const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
   const currentPage = pageList[pageIndex];
@@ -1569,6 +1569,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
   const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
   const currentSpeakerId = typeof currentPage === "object" ? currentPage.speakerId : null;
   const currentExpression = typeof currentPage === "object" ? currentPage.expression || "normal" : "normal";
+  const currentHint = typeof currentPage === "object" ? currentPage.hint || hint : hint;
   const [displayText, setDisplayText] = useState(skip ? currentText : "");
   const [isComplete, setIsComplete] = useState(skip);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -1633,38 +1634,43 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       style: {
         width: "100%",
         boxSizing: "border-box",
-        height: "160px",
-        background: "rgba(20, 30, 45, 0.97)",
-        borderLeft: `4px solid ${themeColor || THEME.brass}`,
-        padding: currentSpeaker ? "16px 24px" : "24px 24px",
-        borderRadius: "0 12px 12px 0",
+        height: "166px",
+        // Slightly taller for stability
+        background: "rgba(18, 28, 42, 0.98)",
+        borderLeft: `5px solid ${themeColor || THEME.brass}`,
+        // Stronger accent
+        padding: currentSpeaker ? "18px 24px 28px 24px" : "28px 24px 28px 24px",
+        borderRadius: "0 16px 16px 0",
         cursor: "pointer",
         color: THEME.parchment,
         textAlign: "left",
         position: "relative",
-        boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+        boxShadow: "0 8px 30px rgba(0,0,0,0.6)",
         fontFamily: "'Outfit', 'Inter', sans-serif",
         userSelect: "none",
         lineHeight: "1.7",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        transition: "all 0.3s ease"
+        transition: "all 0.3s ease",
+        border: "1px solid rgba(255,255,255,0.05)"
       }
     },
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       alignItems: "center",
-      gap: "10px",
+      gap: "12px",
       marginBottom: "10px"
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
-      width: "36px",
-      height: "36px",
+      width: "40px",
+      // Slightly larger face
+      height: "40px",
       borderRadius: "50%",
       overflow: "hidden",
-      border: `1.5px solid ${themeColor || THEME.brass}`,
-      background: "rgba(0,0,0,0.3)",
-      flexShrink: 0
+      border: `2px solid ${themeColor || THEME.brass}`,
+      background: "rgba(0,0,0,0.4)",
+      flexShrink: 0,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.3)"
     } }, /* @__PURE__ */ React.createElement(
       "img",
       {
@@ -1676,7 +1682,7 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
         }
       }
     )), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.9em",
+      fontSize: "0.95em",
       color: themeColor || THEME.brass,
       fontWeight: "bold",
       letterSpacing: "0.08em",
@@ -1685,15 +1691,31 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
     /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: currentSpeaker ? "1.05em" : "1.1em",
       lineHeight: "1.6",
-      minHeight: "4.2em",
+      minHeight: "3.6em",
+      // Adjusted for extra padding
       flex: 1,
-      opacity: currentSpeaker ? 1 : 0.9,
+      opacity: currentSpeaker ? 1 : 0.95,
       fontStyle: currentSpeaker ? "normal" : "italic"
     } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
-    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      bottom: "12px",
-      right: "20px",
+    /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: "8px",
+      minHeight: "24px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.72em",
+      color: THEME.oasisTeal,
+      opacity: 0.8,
+      fontWeight: "500",
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      background: "rgba(0,0,0,0.2)",
+      padding: currentHint ? "2px 10px" : "0",
+      borderRadius: "4px",
+      visibility: currentHint ? "visible" : "hidden"
+    } }, currentHint && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em" } }, "💡"), currentHint)), isComplete && /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: "0.8em",
       color: themeColor || THEME.brass,
       fontWeight: "bold",
@@ -1701,11 +1723,12 @@ const VNBox = forwardRef(({ text, pages, speaker, themeColor, onComplete, onPage
       alignItems: "center",
       gap: "6px",
       animation: "vn-bounce 1s infinite",
-      background: "rgba(0,0,0,0.3)",
-      padding: "4px 10px",
+      background: "rgba(0,0,0,0.4)",
+      padding: "4px 12px",
       borderRadius: "999px",
-      border: `1px solid ${themeColor || THEME.brass}44`
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼")),
+      border: `1px solid ${themeColor || THEME.brass}44`,
+      boxShadow: "0 2px 10px rgba(0,0,0,0.3)"
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼"))),
     /* @__PURE__ */ React.createElement("style", null, `
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
@@ -1801,7 +1824,7 @@ const PrologueScreen = ({
       boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
       border: `1px solid ${THEME.brass}33`,
       borderRadius: "12px",
-      marginBottom: "8px"
+      marginBottom: "12px"
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
@@ -1826,7 +1849,7 @@ const PrologueScreen = ({
           width: "100%",
           maxWidth: "340px",
           margin: 0,
-          height: "46px",
+          height: "48px",
           fontSize: "1.1em",
           boxShadow: `0 4px 15px ${THEME.brass}33`
         }
@@ -1929,12 +1952,13 @@ const IntroScreen = ({
       boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
       border: `1px solid ${THEME.brass}33`,
       borderRadius: "12px",
-      marginBottom: "8px"
+      marginBottom: "12px"
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         ref: vnRef,
         pages: introPages,
+        hint: "客の好みに合わせて素材を選ぼう",
         themeColor: THEME.brass,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed),
@@ -1942,15 +1966,7 @@ const IntroScreen = ({
         onPageComplete,
         onComplete: onBeginService
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { width: "94%", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: {
-      background: "rgba(0,0,0,0.5)",
-      fontSize: "0.75em",
-      padding: "4px 12px",
-      borderRadius: "20px",
-      border: `1px solid ${THEME.oasisTeal}44`,
-      color: THEME.oasisTeal,
-      backdropFilter: "blur(4px)"
-    } }, "💡 客の好みに合わせて素材を選ぼう"), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { style: { width: "94%", display: "flex", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
       "button",
       {
         "data-testid": "intro-start",
@@ -1960,7 +1976,7 @@ const IntroScreen = ({
           width: "100%",
           maxWidth: "340px",
           margin: 0,
-          height: "46px",
+          height: "48px",
           fontSize: "1.1em",
           boxShadow: `0 4px 15px ${THEME.brass}33`
         }
