@@ -41,13 +41,13 @@ const PrologueScreen = ({
   return (
     <div 
       data-testid="prologue-screen" 
-      style={{ ...containerStyle, position: 'relative' }}
+      style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
       onClick={onVnAreaClick}
     >
       {renderThemeStyles()}
       {renderBackground('PROLOGUE')}
       
-      {/* Nadir Standing (Guide Layer - Positioned to peek above dock) */}
+      {/* Nadir Standing */}
       <div style={{ 
         position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
         pointerEvents: 'none', opacity: 1,
@@ -81,73 +81,76 @@ const PrologueScreen = ({
           </h1>
         </div>
 
-        {/* Middle: Choice / Action Area */}
-        <div style={{ 
-          flex: '1 1 auto', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          justifyContent: 'flex-end', 
-          alignItems: 'center',
-          paddingBottom: '178px' // Space for VNBox (166px) + margin
-        }}>
-          {/* Action Row (Future Choice Area) */}
-          <div style={{ minHeight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '94%' }}>
-            {isPrologueComplete && (
-              <button
-                data-testid="prologue-next"
-                onClick={onAdvanceToHeroineSelect}
-                style={{ 
-                  ...buttonStyle, 
-                  width: '100%', 
-                  maxWidth: '340px', 
-                  margin: 0, 
-                  height: '48px',
-                  fontSize: '1.1em',
-                  background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
-                  boxShadow: `0 6px 20px ${THEME.brass}44`,
-                  border: '1px solid rgba(255,255,255,0.2)'
-                }}
-              >
-                星瓶堂へ進む
-              </button>
-            )}
-          </div>
-        </div>
+        {/* Middle: Spacer */}
+        <div style={{ flex: '1 1 auto' }} />
+      </div>
 
-        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Logical Dock) */}
+      {/* Action Button: Absolutely positioned above the VNBox dock */}
+      {isPrologueComplete && (
         <div style={{ 
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 5,
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
+          position: 'absolute', 
+          bottom: '185px', 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          zIndex: 7,
+          width: '94%',
+          display: 'flex',
+          justifyContent: 'center'
         }}>
-          {/* Main VN Box Container */}
-          <div style={{ 
-            width: '100%', 
-            boxSizing: 'border-box',
-            position: 'relative'
-          }}>
-            <VNBox
-              ref={vnRef}
-              pages={prologuePages}
-              themeColor={THEME.brass}
-              speed={textSpeedMeta.delay}
-              skip={shouldSkipTypewriter(isInstantTextSpeed)}
-              getFaceIcon={getFaceIcon}
-              onPageComplete={onPageComplete}
-              onComplete={() => {
-                setIsPrologueComplete(true);
-              }}
-            />
-          </div>
+          <button
+            data-testid="prologue-next"
+            onClick={onAdvanceToHeroineSelect}
+            style={{ 
+              ...buttonStyle, 
+              width: '100%', 
+              maxWidth: '340px', 
+              margin: 0, 
+              height: '48px',
+              fontSize: '1.1em',
+              background: `linear-gradient(135deg, ${THEME.brass} 0%, #b38b4d 100%)`,
+              boxShadow: `0 6px 20px ${THEME.brass}44`,
+              border: '1px solid rgba(255,255,255,0.2)'
+            }}
+          >
+            星瓶堂へ進む
+          </button>
+        </div>
+      )}
+
+      {/* Bottom Dock: VN Box (Stick to screen root bottom) */}
+      <div style={{ 
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 6,
+        width: '100%', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
+      }}>
+        {/* Main VN Box Container */}
+        <div style={{ 
+          width: '100%', 
+          boxSizing: 'border-box',
+          position: 'relative'
+        }}>
+          <VNBox
+            ref={vnRef}
+            pages={prologuePages}
+            themeColor={THEME.brass}
+            speed={textSpeedMeta.delay}
+            skip={shouldSkipTypewriter(isInstantTextSpeed)}
+            getFaceIcon={getFaceIcon}
+            onPageComplete={onPageComplete}
+            onComplete={() => {
+              setIsPrologueComplete(true);
+            }}
+          />
         </div>
       </div>
+    </div>
     </div>
   );
 };
