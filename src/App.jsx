@@ -249,6 +249,13 @@ export default function App() {
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   
+  // DEBUG Mode (M-GALLERY-TEST-UNLOCK-ALL)
+  const [isUnlockAllDebug] = useState(() => {
+    if (typeof localStorage === 'undefined') return true;
+    const val = localStorage.getItem('made_in_maghribal_debug_unlock_all');
+    return val !== 'false'; // Default to true unless explicitly 'false'
+  });
+  
   // Affection / Intimacy State
   const [affection, setAffection] = useState(() => 
     createInitialAffection(HEROINES.map(h => h.id))
@@ -1547,6 +1554,7 @@ export default function App() {
         screen={screen}
         routeMode={routeMode}
         seenEventIds={seenEventIds}
+        unlockAll={isUnlockAllDebug}
         heroines={HEROINES}
         affectionEvents={AFFECTION_EVENTS}
         onBackToTitle={handleBackToTitle}

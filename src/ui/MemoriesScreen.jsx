@@ -18,10 +18,11 @@ const MemoriesScreen = ({
   onOpenHelp,
   onRecallEvent,
   renderThemeStyles,
-  renderUtilityHeader
+  renderUtilityHeader,
+  unlockAll = false
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
-  const seenEvents = allEvents.filter(e => seenEventIds.includes(e.id));
+  const seenEvents = unlockAll ? allEvents : allEvents.filter(e => seenEventIds.includes(e.id));
 
   // Isolated styles to avoid conflicts in main.canvas.jsx top-level
   const memoriesContainerStyle = {
@@ -79,6 +80,20 @@ const MemoriesScreen = ({
       {renderUtilityHeader && renderUtilityHeader('Memories', onBackToTitle, null, 'memories')}
       <h1 style={{ ...memoriesTitleStyle, display: 'none' }}>思い出の記録</h1>
       
+      {unlockAll && (
+        <div style={{ 
+          background: THEME.starGold, 
+          color: '#000', 
+          padding: '4px 10px', 
+          fontSize: '0.7em', 
+          fontWeight: 'bold', 
+          borderRadius: '4px',
+          marginBottom: '8px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+        }}>
+          DEBUG: UNLOCK ALL MODE ACTIVE
+        </div>
+      )}
       <div style={memoriesCardStyle}>
         <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}>
           {seenEvents.length === 0 ? (
