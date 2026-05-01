@@ -54,9 +54,10 @@ export const GameHud = ({
   const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   if (!isHudVisible) return null;
 
+  const isLongHistory = routeMode === 'long_history';
   const hudBtnStyle = {
-    background: 'rgba(255,255,255,0.92)',
-    border: `2px solid \${THEME.brass}`,
+    background: isLongHistory ? 'rgba(255, 220, 235, 0.96)' : 'rgba(255, 255, 255, 0.92)',
+    border: `2px solid ${THEME.brass}`,
     width: '36px',
     height: '36px',
     borderRadius: '50%',
@@ -72,7 +73,6 @@ export const GameHud = ({
 
   return (
     <div style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-      {renderRouteModeBadge(routeMode, true)}
       <div style={{ display: 'flex', gap: '6px' }}>
         <button
           data-testid="backlog-hud-open"
