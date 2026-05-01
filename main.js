@@ -655,9 +655,10 @@ const GameHud = ({
 }) => {
   const isHudVisible = !["ENDING", "FINAL_RESULT", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
   if (!isHudVisible) return null;
+  const isLongHistory = routeMode === "long_history";
   const hudBtnStyle = {
-    background: "rgba(255,255,255,0.92)",
-    border: `2px solid \${THEME.brass}`,
+    background: isLongHistory ? "rgba(255, 220, 235, 0.96)" : "rgba(255, 255, 255, 0.92)",
+    border: `2px solid ${THEME.brass}`,
     width: "36px",
     height: "36px",
     borderRadius: "50%",
@@ -670,7 +671,7 @@ const GameHud = ({
     padding: 0,
     flexShrink: 0
   };
-  return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", right: "8px", zIndex: 1e3, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" } }, renderRouteModeBadge(routeMode, true), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px" } }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", right: "8px", zIndex: 1e3, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "backlog-hud-open",
