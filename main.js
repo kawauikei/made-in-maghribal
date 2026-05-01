@@ -966,7 +966,8 @@ const MemoriesScreen = ({
   })))));
 };
 const SHOP = {
-  name: "星瓶堂"
+  name: "星瓶堂",
+  localName: "ダール・アル＝カワーキブ"
 };
 const PROTAGONIST = {
   id: "nader",
@@ -1026,7 +1027,16 @@ const StartScreen = ({
     justifyContent: "flex-start",
     overflow: "hidden",
     position: "relative",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    backgroundImage: `linear-gradient(rgba(26, 42, 58, 0.4), rgba(26, 42, 58, 0.4)), url(${"https://kawauikei.github.io/made-in-maghribal/"}images/ui/title.png)`.replace(/([^:])\/\//g, "$1/"),
+    backgroundSize: "cover",
+    backgroundPosition: "center"
+  };
+  const titleStyle2 = {
+    fontFamily: "'Playfair Display', serif",
+    color: THEME.starGold,
+    textShadow: `0 2px 10px ${THEME.nightBlue}`,
+    letterSpacing: "0.05em"
   };
   const cardStyle2 = {
     background: "rgba(255, 255, 255, 0.95)",
@@ -1059,23 +1069,15 @@ const StartScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, /* @__PURE__ */ React.createElement(
-    "img",
+  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px", position: "relative", zIndex: 1 } }, /* @__PURE__ */ React.createElement(
+    "h1",
     {
-      src: `${"https://kawauikei.github.io/made-in-maghribal/"}images/ui/title.png`.replace(/([^:])\/\//g, "$1/"),
-      alt: SHOP.name,
       onClick: handleLogoTap,
-      style: {
-        width: "100%",
-        maxWidth: "280px",
-        height: "auto",
-        cursor: "pointer",
-        userSelect: "none",
-        filter: `drop-shadow(0 4px 12px ${THEME.nightBlue}aa)`
-      },
-      draggable: false
-    }
-  ), debugModeEnabled && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "10px", color: THEME.starGold, marginTop: "5px", fontFamily: "monospace" } }, "[ DEBUG MODE ACTIVE ]")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
+      style: { ...titleStyle2, fontSize: "2.2em", margin: "0 0 5px 0", cursor: "pointer", userSelect: "none" }
+    },
+    SHOP.name,
+    debugModeEnabled && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "10px", color: THEME.starGold, verticalAlign: "middle", marginLeft: "5px" } }, "[DEBUG]")
+  ), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
     const isSelected = routeMode === mode;
     return /* @__PURE__ */ React.createElement(
       "button",
