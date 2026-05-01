@@ -926,7 +926,7 @@ const StartScreen = ({
   // Replicating styles from App.jsx to minimize prop passing
   const containerStyle = {
     width: '100%',
-    height: 'var(--app-visible-height, 100%)',
+    height: '100%',
     padding: '12px',
     display: 'flex',
     flexDirection: 'column',
@@ -1122,7 +1122,7 @@ const HeroineSelectScreen = ({
   // Replicating styles from App.jsx
   const containerStyle = {
     width: '100%',
-    height: 'var(--app-visible-height, 100%)',
+    height: '100%',
     padding: '12px',
     display: 'flex',
     flexDirection: 'column',
@@ -1438,13 +1438,19 @@ const PrologueScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Dock) */}
-        <div className="vn-dock" style={{ 
+        {/* Bottom Dock: VN Box */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', 
+            width: '100%', // Full width dock
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -1583,13 +1589,19 @@ const IntroScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Dock) */}
-        <div className="vn-dock" style={{ 
+        {/* Bottom Dock: VN Box */}
+        <div style={{ 
+          flex: '0 0 auto', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          paddingBottom: '0', // Docked to bottom
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', 
+            width: '100%', // Full width dock
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -2035,34 +2047,6 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
 
-  // --- M-UI-MOBILE-VIEWPORT-1: Dynamic Viewport Tracking ---
-  useEffect(() => {
-    function updateViewportVars() {
-      const vv = window.visualViewport;
-      const h = vv?.height ?? window.innerHeight;
-      const w = vv?.width ?? window.innerWidth;
-      // Set CSS variables for accurate mobile viewport calculation
-      document.documentElement.style.setProperty('--app-visible-height', `${Math.round(h)}px`);
-      document.documentElement.style.setProperty('--app-visible-width', `${Math.round(w)}px`);
-    }
-
-    updateViewportVars();
-    
-    // Track both window and visualViewport for mobile browser stability
-    window.addEventListener('resize', updateViewportVars);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', updateViewportVars);
-      window.visualViewport.addEventListener('scroll', updateViewportVars);
-    }
-
-    return () => {
-      window.removeEventListener('resize', updateViewportVars);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', updateViewportVars);
-        window.visualViewport.removeEventListener('scroll', updateViewportVars);
-      }
-    };
-  }, []);
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
 
@@ -2086,10 +2070,6 @@ function App() {
       const newWidth = Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth));
       const newHeight = Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight));
       
-      // M-UI-MOBILE-VIEWPORT-1: Set CSS variables for accurate mobile viewport calculation
-      document.documentElement.style.setProperty('--app-visible-height', `${newHeight}px`);
-      document.documentElement.style.setProperty('--app-visible-width', `${newWidth}px`);
-
       setViewportSize(prev => {
         // Only update if change is significant (> 1px) to avoid micro-drift
         if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
@@ -2161,8 +2141,8 @@ function App() {
 
   const outerWrapperStyle = {
     width: '100%',
-    height: 'var(--app-visible-height, 100vh)',
-    minHeight: isClipped ? `${measuredSize.height}px` : 'var(--app-visible-height, 100dvh)',
+    height: '100%',
+    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
@@ -2649,11 +2629,6 @@ function App() {
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
       
-      :root {
-        --app-visible-height: 100vh;
-        --safe-bottom: env(safe-area-inset-bottom, 0px);
-      }
-
       .game-root {
         font-family: 'Outfit', 'Inter', sans-serif;
         color: ${THEME.parchment};
@@ -2675,19 +2650,6 @@ function App() {
         touch-action: manipulation;
         cursor: pointer;
         WebkitTapHighlightColor: transparent;
-      }
-
-      /* M-UI-MOBILE-VIEWPORT-1: Docked VNBox positioning */
-      .vn-dock {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: var(--safe-bottom, 0px);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 50;
       }
 
       img {
@@ -3524,7 +3486,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 
 const containerStyle = {
   width: '100%',
-  height: 'var(--app-visible-height, 100%)',
+  height: '100%',
   padding: '12px',
   display: 'flex',
   flexDirection: 'column',
