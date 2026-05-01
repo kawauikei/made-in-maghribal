@@ -1730,12 +1730,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       fontStyle: currentSpeaker ? "normal" : "italic"
     } }, displayText, !isComplete && /* @__PURE__ */ React.createElement("span", { style: { animation: "vn-blink 1s infinite", marginLeft: "4px", borderLeft: `2px solid ${THEME.brass}` } }, " ")),
     /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginTop: "8px",
-      minHeight: "24px"
-    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: "14px",
+      left: "24px",
       fontSize: "0.72em",
       color: THEME.oasisTeal,
       opacity: 0.8,
@@ -1743,15 +1740,20 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       display: "flex",
       alignItems: "center",
       gap: "6px",
-      background: "rgba(0,0,0,0.2)",
-      padding: currentHint ? "2px 10px" : "0",
-      borderRadius: "4px",
+      background: "rgba(0,0,0,0.3)",
+      padding: currentHint ? "3px 12px" : "0",
+      borderRadius: "999px",
       visibility: currentHint ? "visible" : "hidden",
       whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      maxWidth: "calc(100% - 140px)"
-    } }, currentHint && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em" } }, "💡"), currentHint)), isComplete && /* @__PURE__ */ React.createElement("div", { style: {
+      zIndex: 5,
+      border: `1px solid ${THEME.oasisTeal}33`,
+      backdropFilter: "blur(2px)",
+      pointerEvents: "none"
+    } }, currentHint && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em" } }, "💡"), currentHint)),
+    isComplete && /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      bottom: "14px",
+      right: "24px",
       fontSize: "0.8em",
       color: themeColor || THEME.brass,
       fontWeight: "bold",
@@ -1759,12 +1761,14 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
       alignItems: "center",
       gap: "6px",
       animation: "vn-bounce 1s infinite",
-      background: "rgba(0,0,0,0.4)",
-      padding: "4px 12px",
+      background: "rgba(0,0,0,0.5)",
+      padding: "4px 16px",
       borderRadius: "999px",
-      border: `1px solid ${themeColor || THEME.brass}44`,
-      boxShadow: "0 2px 10px rgba(0,0,0,0.3)"
-    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼"))),
+      border: `1px solid ${themeColor || THEME.brass}66`,
+      boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+      zIndex: 5,
+      backdropFilter: "blur(2px)"
+    } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, pageIndex < pageList.length - 1 ? "NEXT" : "FINISH"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.2em" } }, "▼")),
     /* @__PURE__ */ React.createElement("style", null, `
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes vn-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
