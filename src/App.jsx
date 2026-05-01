@@ -1342,8 +1342,8 @@ export default function App() {
               onOpenOptions={() => setShowOptions(true)} 
               onOpenHelp={() => setShowHelp(true)} 
             />
-            <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
-              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
+              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                 愛着の記録: {activeEvent.title}
               </h1>
             </div>
@@ -1402,7 +1402,11 @@ export default function App() {
             onOpenOptions={() => setShowOptions(true)} 
             onOpenHelp={() => setShowHelp(true)} 
           />
-          <h1 style={titleStyle}>愛着の記録: {activeEvent.title}</h1>
+          <div style={{ width: '100%', textAlign: 'left', padding: '24px 0 10px 24px', boxSizing: 'border-box' }}>
+            <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+              愛着の記録: {activeEvent.title}
+            </h1>
+          </div>
           <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
             <div style={{ 
               width: '100%', 

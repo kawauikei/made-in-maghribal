@@ -1937,9 +1937,9 @@ const IntroScreen = ({
           onOpenHelp={onOpenHelp} 
         />
         
-        {/* Top: Title */}
-        <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
-          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        {/* Top: Title (Top-Left Aligned for A-4) */}
+        <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             {activeHeroine.name}との語らい
           </h1>
         </div>
@@ -2051,7 +2051,19 @@ const ResultScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, color: THEME.nightBlue, marginBottom: '20px' }}>今回の営業記録</h1>
+        <h1 style={{ 
+          ...titleStyle, 
+          position: 'absolute',
+          top: '24px',
+          left: '24px',
+          margin: 0,
+          color: THEME.nightBlue, 
+          fontSize: '1.2em',
+          maxWidth: '70%',
+          textAlign: 'left'
+        }}>
+          今回の営業記録
+        </h1>
         <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
           <div style={{ marginBottom: '25px' }}>
             <VNBox 
@@ -3761,8 +3773,8 @@ function App() {
               onOpenOptions={() => setShowOptions(true)} 
               onOpenHelp={() => setShowHelp(true)} 
             />
-            <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
-              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
+              <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                 愛着の記録: {activeEvent.title}
               </h1>
             </div>
@@ -3821,7 +3833,11 @@ function App() {
             onOpenOptions={() => setShowOptions(true)} 
             onOpenHelp={() => setShowHelp(true)} 
           />
-          <h1 style={titleStyle}>愛着の記録: {activeEvent.title}</h1>
+          <div style={{ width: '100%', textAlign: 'left', padding: '24px 0 10px 24px', boxSizing: 'border-box' }}>
+            <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+              愛着の記録: {activeEvent.title}
+            </h1>
+          </div>
           <div style={{ ...cardStyle, background: THEME.nightBlue, color: THEME.parchment }}>
             <div style={{ 
               width: '100%', 

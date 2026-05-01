@@ -65,7 +65,19 @@ const ResultScreen = ({
           onOpenOptions={onOpenOptions} 
           onOpenHelp={onOpenHelp} 
         />
-        <h1 style={{ ...titleStyle, color: THEME.nightBlue, marginBottom: '20px' }}>今回の営業記録</h1>
+        <h1 style={{ 
+          ...titleStyle, 
+          position: 'absolute',
+          top: '24px',
+          left: '24px',
+          margin: 0,
+          color: THEME.nightBlue, 
+          fontSize: '1.2em',
+          maxWidth: '70%',
+          textAlign: 'left'
+        }}>
+          今回の営業記録
+        </h1>
         <div style={{ ...cardStyle, borderRadius: '8px', border: `3px double ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '25px', marginTop: '10px' }}>
           <div style={{ marginBottom: '25px' }}>
             <VNBox 

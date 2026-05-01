@@ -261,9 +261,9 @@ const IntroScreen = ({
           onOpenHelp={onOpenHelp} 
         />
         
-        {/* Top: Title */}
-        <div style={{ flex: '0 0 auto', padding: '10px 0 5px 0', textAlign: 'center' }}>
-          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.4em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        {/* Top: Title (Top-Left Aligned for A-4) */}
+        <div style={{ flex: '0 0 auto', padding: '24px 0 0 24px', textAlign: 'left', maxWidth: '70%', boxSizing: 'border-box' }}>
+          <h1 style={{ ...titleStyle, margin: 0, fontSize: '1.2em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             {activeHeroine.name}との語らい
           </h1>
         </div>
