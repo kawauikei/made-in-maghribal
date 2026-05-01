@@ -38,12 +38,24 @@
 *   **Beat Dots above Choices**: 選択肢カードの上部でカウントダウンするように並ぶドット。
 *   **Answer Enable Timing Indicator**: 「今が押し時」であることを示す視覚的な合図。
 
-## 5. 次回以降の実装タスク候補 (Future Roadmap)
+## 5. 実装フェーズ (Implementation Phases)
 
-*   **M-RHYTHM-UI-0B**: QUIZ画面内での静的レイアウトモック作成。
-*   **M-RHYTHM-UI-1**: 視覚的なビートレーン表示のみの実装。
-*   **M-RHYTHM-UI-2**: 回答有効タイミング（Answer Enable Delay）と予兆演出の実装。
-*   **M-RHYTHM-BEATMAP-1**: BGM解析によるオフラインbeatmap生成ツールの作成。
+### Phase 0: 準備とモック (Planning & Mock)
+*   **M-RHYTHM-UI-0A** (Done): 基本方針の策定とドキュメント化。
+*   **M-RHYTHM-UI-0B** (Active): QUIZ画面内での静的レイアウトモック作成。
+    *   画面中央の空白に **Horizontal Beat Lane** の静的配置。
+    *   左右に **Nader と選択中ヒロインの顔アイコン演出枠** を配置（既存アセット使用）。
+    *   この段階ではアニメーション、beatmap、タイミング判定は実装しない。
+
+### Phase 1: 視覚演出と挙動 (Visuals & Animation)
+*   **M-UI-TRANSITION-POLISH**: QUIZ画面の出現演出（Transition）の強化。
+    *   問題文 → Beat Lane → 選択肢カード の出現順序（Stagger/Fade-in）の整理。
+    *   入力可能状態の視覚的な提示。
+*   **M-RHYTHM-UI-1**: 視覚的なビート表示（Pulse等）と最小限のアニメーション実装。
+
+### Phase 2: ロジックとデータ (Logic & Data)
+*   **M-RHYTHM-UI-2**: 回答有効タイミング（Answer Enable Delay）と判定予兆の実装。
+*   **M-RHYTHM-BEATMAP-1**: BGM解析によるオフラインbeatmap生成。
 
 ---
-*Created: 2026-05-01*
+*Last Updated: 2026-05-01*
