@@ -1831,7 +1831,11 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           background: 'rgba(0,0,0,0.2)',
           padding: currentHint ? '2px 10px' : '0',
           borderRadius: '4px',
-          visibility: currentHint ? 'visible' : 'hidden'
+          visibility: currentHint ? 'visible' : 'hidden',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: 'calc(100% - 140px)'
         }}>
           {currentHint && (
             <>
