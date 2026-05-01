@@ -2381,27 +2381,43 @@ const RhythmMock = ({ heroineId, themeColor }) => {
 };
 
 function QuizScreen({
-  session,
-  activeHeroineId,
-  activeHeroine,
-  quizFeedback,
-  routeMode,
-  screen,
-  onOpenLog,
-  onOpenOptions,
-  onOpenHelp,
-  onSelectChoice,
-  renderThemeStyles,
-  getFullPath,
-  containerStyle,
-  headerStyle,
-  cardStyle,
-  customerStyle,
-  bubbleStyle,
-  itemCardStyle,
-  imageStyle,
-  itemNameStyle
+  quizState,
+  quizActions,
+  quizHelpers,
+  quizStyles,
 }) {
+  const {
+    session,
+    activeHeroineId,
+    activeHeroine,
+    quizFeedback,
+    routeMode,
+    screen,
+  } = quizState;
+
+  const {
+    onOpenLog,
+    onOpenOptions,
+    onOpenHelp,
+    onSelectChoice,
+  } = quizActions;
+
+  const {
+    renderThemeStyles,
+    getFullPath,
+  } = quizHelpers;
+
+  const {
+    containerStyle,
+    headerStyle,
+    cardStyle,
+    customerStyle,
+    bubbleStyle,
+    itemCardStyle,
+    imageStyle,
+    itemNameStyle,
+  } = quizStyles;
+
   if (!session) return null;
   const currentQuestion = session.questions[session.currentIndex];
 
@@ -5011,28 +5027,40 @@ function App() {
       </div>
     );
   } else if (screen === 'QUIZ' && session) {
+    const quizState = {
+      session,
+      activeHeroineId,
+      activeHeroine,
+      quizFeedback,
+      routeMode,
+      screen,
+    };
+    const quizActions = {
+      onOpenLog: () => setShowLog(true),
+      onOpenOptions: () => setShowOptions(true),
+      onOpenHelp: () => setShowHelp(true),
+      onSelectChoice: handleSelect,
+    };
+    const quizHelpers = {
+      renderThemeStyles,
+      getFullPath,
+    };
+    const quizStyles = {
+      containerStyle,
+      headerStyle,
+      cardStyle,
+      customerStyle,
+      bubbleStyle,
+      itemCardStyle,
+      imageStyle,
+      itemNameStyle,
+    };
     mainContent = (
       <QuizScreen
-        session={session}
-        activeHeroineId={activeHeroineId}
-        activeHeroine={activeHeroine}
-        quizFeedback={quizFeedback}
-        routeMode={routeMode}
-        screen={screen}
-        onOpenLog={() => setShowLog(true)}
-        onOpenOptions={() => setShowOptions(true)}
-        onOpenHelp={() => setShowHelp(true)}
-        onSelectChoice={handleSelect}
-        renderThemeStyles={renderThemeStyles}
-        getFullPath={getFullPath}
-        containerStyle={containerStyle}
-        headerStyle={headerStyle}
-        cardStyle={cardStyle}
-        customerStyle={customerStyle}
-        bubbleStyle={bubbleStyle}
-        itemCardStyle={itemCardStyle}
-        imageStyle={imageStyle}
-        itemNameStyle={itemNameStyle}
+        quizState={quizState}
+        quizActions={quizActions}
+        quizHelpers={quizHelpers}
+        quizStyles={quizStyles}
       />
     );
   }

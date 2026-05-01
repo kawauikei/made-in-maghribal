@@ -157,27 +157,43 @@ const RhythmMock = ({ heroineId, themeColor }) => {
 };
 
 export default function QuizScreen({
-  session,
-  activeHeroineId,
-  activeHeroine,
-  quizFeedback,
-  routeMode,
-  screen,
-  onOpenLog,
-  onOpenOptions,
-  onOpenHelp,
-  onSelectChoice,
-  renderThemeStyles,
-  getFullPath,
-  containerStyle,
-  headerStyle,
-  cardStyle,
-  customerStyle,
-  bubbleStyle,
-  itemCardStyle,
-  imageStyle,
-  itemNameStyle
+  quizState,
+  quizActions,
+  quizHelpers,
+  quizStyles,
 }) {
+  const {
+    session,
+    activeHeroineId,
+    activeHeroine,
+    quizFeedback,
+    routeMode,
+    screen,
+  } = quizState;
+
+  const {
+    onOpenLog,
+    onOpenOptions,
+    onOpenHelp,
+    onSelectChoice,
+  } = quizActions;
+
+  const {
+    renderThemeStyles,
+    getFullPath,
+  } = quizHelpers;
+
+  const {
+    containerStyle,
+    headerStyle,
+    cardStyle,
+    customerStyle,
+    bubbleStyle,
+    itemCardStyle,
+    imageStyle,
+    itemNameStyle,
+  } = quizStyles;
+
   if (!session) return null;
   const currentQuestion = session.questions[session.currentIndex];
 

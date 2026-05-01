@@ -1861,28 +1861,40 @@ export default function App() {
       </div>
     );
   } else if (screen === 'QUIZ' && session) {
+    const quizState = {
+      session,
+      activeHeroineId,
+      activeHeroine,
+      quizFeedback,
+      routeMode,
+      screen,
+    };
+    const quizActions = {
+      onOpenLog: () => setShowLog(true),
+      onOpenOptions: () => setShowOptions(true),
+      onOpenHelp: () => setShowHelp(true),
+      onSelectChoice: handleSelect,
+    };
+    const quizHelpers = {
+      renderThemeStyles,
+      getFullPath,
+    };
+    const quizStyles = {
+      containerStyle,
+      headerStyle,
+      cardStyle,
+      customerStyle,
+      bubbleStyle,
+      itemCardStyle,
+      imageStyle,
+      itemNameStyle,
+    };
     mainContent = (
       <QuizScreen
-        session={session}
-        activeHeroineId={activeHeroineId}
-        activeHeroine={activeHeroine}
-        quizFeedback={quizFeedback}
-        routeMode={routeMode}
-        screen={screen}
-        onOpenLog={() => setShowLog(true)}
-        onOpenOptions={() => setShowOptions(true)}
-        onOpenHelp={() => setShowHelp(true)}
-        onSelectChoice={handleSelect}
-        renderThemeStyles={renderThemeStyles}
-        getFullPath={getFullPath}
-        containerStyle={containerStyle}
-        headerStyle={headerStyle}
-        cardStyle={cardStyle}
-        customerStyle={customerStyle}
-        bubbleStyle={bubbleStyle}
-        itemCardStyle={itemCardStyle}
-        imageStyle={imageStyle}
-        itemNameStyle={itemNameStyle}
+        quizState={quizState}
+        quizActions={quizActions}
+        quizHelpers={quizHelpers}
+        quizStyles={quizStyles}
       />
     );
   }
