@@ -201,61 +201,62 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         {!isComplete && <span style={{ animation: 'vn-blink 1s infinite', marginLeft: '4px', borderLeft: `2px solid ${THEME.brass}` }}>&nbsp;</span>}
       </div>
 
-      {/* Footer Info Area */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      {/* Footer Info Area (Anchored) */}
+      {/* Hint (Bottom Left) */}
+      <div style={{
+        position: 'absolute',
+        bottom: '14px',
+        left: '24px',
+        fontSize: '0.72em',
+        color: THEME.oasisTeal,
+        opacity: 0.8,
+        fontWeight: '500',
+        display: 'flex',
         alignItems: 'center',
-        marginTop: '8px',
-        minHeight: '24px'
+        gap: '6px',
+        background: 'rgba(0,0,0,0.3)',
+        padding: currentHint ? '3px 12px' : '0',
+        borderRadius: '999px',
+        visibility: currentHint ? 'visible' : 'hidden',
+        whiteSpace: 'nowrap',
+        zIndex: 5,
+        border: `1px solid ${THEME.oasisTeal}33`,
+        backdropFilter: 'blur(2px)',
+        pointerEvents: 'none'
       }}>
-        {/* Hint (Bottom Left) */}
-        <div style={{
-          fontSize: '0.72em',
-          color: THEME.oasisTeal,
-          opacity: 0.8,
-          fontWeight: '500',
+        {currentHint && (
+          <>
+            <span style={{ fontSize: '1.1em' }}>💡</span>
+            {currentHint}
+          </>
+        )}
+      </div>
+
+      {/* Progression Indicator (Bottom Right) */}
+      {isComplete && (
+        <div style={{ 
+          position: 'absolute',
+          bottom: '14px',
+          right: '24px',
+          fontSize: '0.8em', 
+          color: themeColor || THEME.brass,
+          fontWeight: 'bold',
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
-          background: 'rgba(0,0,0,0.2)',
-          padding: currentHint ? '2px 10px' : '0',
-          borderRadius: '4px',
-          visibility: currentHint ? 'visible' : 'hidden',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 'calc(100% - 140px)'
+          animation: 'vn-bounce 1s infinite',
+          background: 'rgba(0,0,0,0.5)',
+          padding: '4px 16px',
+          borderRadius: '999px',
+          border: `1px solid ${themeColor || THEME.brass}66`,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+          zIndex: 5,
+          backdropFilter: 'blur(2px)'
         }}>
-          {currentHint && (
-            <>
-              <span style={{ fontSize: '1.1em' }}>💡</span>
-              {currentHint}
-            </>
-          )}
+          <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
+          <span style={{ fontSize: '1.2em' }}>▼</span>
         </div>
-
-        {/* Progression Indicator (Bottom Right) */}
-        {isComplete && (
-          <div style={{ 
-            fontSize: '0.8em', 
-            color: themeColor || THEME.brass,
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            animation: 'vn-bounce 1s infinite',
-            background: 'rgba(0,0,0,0.4)',
-            padding: '4px 12px',
-            borderRadius: '999px',
-            border: `1px solid ${themeColor || THEME.brass}44`,
-            boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
-          }}>
-            <span style={{ fontSize: '0.9em' }}>{pageIndex < pageList.length - 1 ? 'NEXT' : 'FINISH'}</span>
-            <span style={{ fontSize: '1.2em' }}>▼</span>
-          </div>
-        )}
-      </div>
+      )}
 
       <style>{`
         @keyframes vn-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
