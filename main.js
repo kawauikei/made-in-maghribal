@@ -9038,6 +9038,7 @@ function App() {
     audioEngine.playSfx("uiTapBottle");
     if (workshopState.day >= 10) {
       setScreen("FINAL_RESULT");
+    } else {
       const nextDay = workshopState.day + 1;
       setWorkshopState((prev) => ({ ...prev, day: nextDay }));
       const talk = getNextDailyTalk(
