@@ -3,6 +3,7 @@
 ## 🟩 Recently Completed (Narrative Fidelity & UI Polish)
 
 ### [UI/UX] Interaction Visuals
+- [x] **Still Event Face-Aware Centering (Prototype)**: Added `stillCrop` metadata to `STILL_IMAGES` and updated `App.jsx` to support manual framing overrides for better character focus.
 - [x] **Still Event UI Refine (C-1)**: Replaced cramped framed layout with cinematic full-screen presentation. Removed redundant buttons and integrated with VNBox bottom-dock.
 - [x] **Expression Cross-fade (B-2)**: Implemented 0.2s cross-fade for standing images and face icons during expression changes. Added image load detection to prevent flickering.
 - [x] **QUIZ Screen Redesign (B-1)**: Full-screen background and full-width rhythm lane band for better immersion.
@@ -27,6 +28,9 @@
 ---
 
 ## 🟦 In Progress / Next Steps
+
+### [UI/UX] Still Event Refinement
+- [ ] **Still Face-Aware Full Implementation**: Expand `stillCrop` metadata to all images in `STILL_IMAGES` after verifying prototype framing.
 
 ### [Content] DailyTalk Phase 1 Expansion
 - [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
