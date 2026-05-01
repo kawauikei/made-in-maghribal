@@ -4679,24 +4679,35 @@ function App() {
             <div style={{ 
               ...bubbleStyle, 
               width: '90%', 
+              height: '110px', // Fixed height to prevent layout shift
               background: '#fff', 
               color: '#333',
               border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
               borderRadius: '15px 15px 15px 0',
-              padding: '16px 20px', 
-              fontSize: '1em',
+              padding: '12px 16px', 
+              fontSize: '0.95em', // Slightly smaller font to fit fixed height
               lineHeight: '1.4',
               boxShadow: '4px 4px 0 rgba(0,0,0,0.1)',
               transition: 'all 0.3s',
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: 'row', // Silhouette on left, content column on right
+              alignItems: 'flex-start',
               justifyContent: 'flex-start',
-              textAlign: 'left'
+              textAlign: 'left',
+              overflow: 'hidden'
             }}>
               <CustomerSilhouette customer={currentQuestion.request.customer} />
-              <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '6px' }}>
-                <span style={{ fontWeight: 500 }}>{currentQuestion.request.text}</span>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                flex: 1, 
+                height: '100%', 
+                justifyContent: 'space-between' // Anchor badges to bottom
+              }}>
+                <div style={{ fontWeight: 500, flex: 1, display: 'flex', alignItems: 'center' }}>
+                  <span>{currentQuestion.request.text}</span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingBottom: '2px' }}>
                   {(() => {
                     const criteria = currentQuestion.request.criteria;
                     const badges = [];
