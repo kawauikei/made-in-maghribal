@@ -2129,7 +2129,7 @@ const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
   { id: "MED", name: "薬品" },
-  { id: "ADN", name: "装身具" },
+  { id: "ADN", name: "アクセサリー" },
   { id: "CLT", name: "衣服" },
   { id: "DAY", name: "日用" },
   { id: "WRK", name: "道具" },
@@ -7497,15 +7497,49 @@ const items = [
 const itemsData = {
   items
 };
-const MASTER_ITEMS = itemsData.items.map((item) => ({
-  id: item.id,
-  typeId: `${item.category}_${item.index}`,
-  colorId: item.principle,
-  name: item.variants.normal.description.split("。")[0] || item.id,
-  image: item.image,
-  variants: item.variants
-}));
+const MASTER_ITEMS = itemsData.items.map((item) => {
+  const typeId = `${item.category}_${item.index}`;
+  const type = ITEM_TYPE_BY_ID[typeId];
+  const colorId = item.principle;
+  const colorPrefixMap = {
+    AS: "星明かりの",
+    EL: "青緑の",
+    LI: "生命の",
+    SA: "黄金の",
+    ME: "鋼鉄の"
+  };
+  const typeName = type ? type.name : "";
+  const prefix = colorPrefixMap[colorId] || "";
+  const displayName = `${prefix}${typeName}`;
+  return {
+    id: item.id,
+    typeId,
+    colorId,
+    name: displayName,
+    // Shortened name for quiz
+    fullName: item.variants.normal.description.split("。")[0] || item.id,
+    image: item.image,
+    variants: item.variants
+  };
+});
 const ITEMS_TO_USE = MASTER_ITEMS;
+const CUSTOMER_TYPES = [
+  { id: "old_man", icon: "👴", tone: "elder", color: "#ffcc66" },
+  { id: "woman", icon: "👩", tone: "polite", color: "#ff99cc" },
+  { id: "man", icon: "🧔", tone: "plain", color: "#d1d1d1" },
+  { id: "girl", icon: "👧", tone: "casual", color: "#ffb3ba" }
+];
+function applyCustomerTone(text, tone) {
+  let result = text;
+  if (tone === "elder") {
+    result = result.replace("見せてくれ。", "見せてくれんか。").replace("ある？", "あるかの？").replace("探している。", "探しておるんじゃ。");
+  } else if (tone === "polite") {
+    result = result.replace("見せてくれ。", "見せていただけますか？").replace("ある？", "ありますか？").replace("探している。", "探しているんです。");
+  } else if (tone === "casual") {
+    result = result.replace("見せてくれ。", "見せて！").replace("ある？", "あるかな？").replace("探している。", "探してるの。");
+  }
+  return result;
+}
 function isItemMatchingCriteria(item, criteria) {
   if (!criteria || Object.keys(criteria).length === 0) return false;
   const itemType = ITEM_TYPE_BY_ID[item.typeId];
@@ -7541,14 +7575,26 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
   const requestTemplate = forcedType ? REQUEST_TEMPLATES.find((t) => t.id === forcedType) : REQUEST_TEMPLATES[Math.floor(Math.random() * REQUEST_TEMPLATES.length)];
   const criteria = {};
   let text = "";
+  const customer = CUSTOMER_TYPES[Math.floor(Math.random() * CUSTOMER_TYPES.length)];
   if (requestTemplate.id === "color") {
     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
     criteria.colorId = color.id;
-    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{color}", color.name);
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      const metalPhrases = ["ずっしりとした", "重厚感のある", "鉄の術理を帯びた"];
+      colorName = metalPhrases[Math.floor(Math.random() * metalPhrases.length)];
+      target = "{color}の";
+    }
+    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace(target, colorName);
   } else if (requestTemplate.id === "genre") {
     const genre = GENRES[Math.floor(Math.random() * GENRES.length)];
     criteria.genre = genre.id;
-    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{genre}", genre.name);
+    let genreName = genre.name;
+    if (genre.id === "DAY") genreName = "一般雑貨の品";
+    if (genre.id === "TRD") genreName = "渡来品";
+    if (genre.id === "RIT") genreName = "厳かな儀式具";
+    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{genre}", genreName);
   } else if (requestTemplate.id === "itemType") {
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.itemTypeId = type.id;
@@ -7558,8 +7604,14 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     criteria.colorId = color.id;
     criteria.itemTypeId = type.id;
-    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{color}", color.name).replace("{type}", type.name);
+    let colorName = color.name;
+    let target = "{color}";
+    if (color.id === "ME") {
+      colorName = "鋼鉄の";
+    }
+    text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace(target, colorName).replace("{type}", type.name);
   }
+  text = `${customer.icon} ${applyCustomerTone(text, customer.tone)}`;
   let correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
   const nonDuplicateItems = correctItems.filter((item) => !excludeItemIds.has(item.id));
   if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
@@ -7568,11 +7620,16 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
   if (nonDuplicateItems.length > 0) {
     correctItems = nonDuplicateItems;
   }
+  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   let incorrectItems = [];
   if (requestTemplate.id === "color") {
-    const correctSample = correctItems[0];
-    if (correctSample) {
-      const genreId = ITEM_TYPE_BY_ID[correctSample.typeId].genre;
+    if (correctItem.colorId === "LI") {
+      incorrectItems = ITEMS_TO_USE.filter(
+        (item) => item.typeId === correctItem.typeId && item.colorId !== "LI"
+      );
+    }
+    if (incorrectItems.length === 0) {
+      const genreId = ITEM_TYPE_BY_ID[correctItem.typeId].genre;
       incorrectItems = ITEMS_TO_USE.filter(
         (item) => !isItemMatchingCriteria(item, criteria) && ITEM_TYPE_BY_ID[item.typeId].genre === genreId
       );
@@ -7623,7 +7680,6 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     }
     return null;
   }
-  const correctItem = correctItems[Math.floor(Math.random() * correctItems.length)];
   const incorrectItem = incorrectItems[Math.floor(Math.random() * incorrectItems.length)];
   const choices = Math.random() > 0.5 ? [correctItem, incorrectItem] : [incorrectItem, correctItem];
   return {
@@ -7632,6 +7688,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
       id: requestTemplate.id,
       type: requestTemplate.id,
       text,
+      customer,
       criteria: { ...criteria }
     },
     criteria: { ...criteria },
@@ -7665,10 +7722,12 @@ function answerQuestion(session, selectedItemId) {
   };
 }
 function buildRequestTypePlan(count) {
-  if (count !== 5) return null;
+  if (count < 4) return null;
   const baseTypes = ["color", "genre", "itemType", "colorAndItemType"];
-  const randomExtra = baseTypes[Math.floor(Math.random() * baseTypes.length)];
-  const plan = [...baseTypes, randomExtra];
+  const plan = [];
+  for (let i = 0; i < count; i++) {
+    plan.push(baseTypes[i % baseTypes.length]);
+  }
   return shuffleArray(plan);
 }
 function shuffleArray(array) {
@@ -8359,7 +8418,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 function App() {
-  var _a, _b, _c;
+  var _a, _b, _c, _d, _e;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -9368,13 +9427,14 @@ function App() {
     } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "35px" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       background: "#fff",
-      color: "#333",
-      border: `2px solid ${THEME.brassDark}`,
+      color: ((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || "#333",
+      border: `2px solid ${((_d = currentQuestion.request.customer) == null ? void 0 : _d.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
       padding: "20px",
       fontSize: "1.1em",
       lineHeight: "1.6",
-      boxShadow: "4px 4px 0 rgba(0,0,0,0.1)"
+      boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
+      transition: "all 0.3s"
     } }, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
@@ -9386,6 +9446,13 @@ function App() {
       const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
       const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
       const staggerClass = `quiz-option-${index}`;
+      let displayChoiceName = item.name;
+      if (currentQuestion.request.type === "genre") {
+        const category = item.id.split("_")[1];
+        if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
+        if (category === "TRD") displayChoiceName = `渡来品の${displayChoiceName}`;
+        if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+      }
       return /* @__PURE__ */ React.createElement(
         "div",
         {
@@ -9411,7 +9478,7 @@ function App() {
             }
           }
         ),
-        /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px" } }, item.name)
+        /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px", fontSize: "0.9em" } }, displayChoiceName)
       );
     }))));
   }
@@ -9441,7 +9508,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_c = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _c.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_e = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _e.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
