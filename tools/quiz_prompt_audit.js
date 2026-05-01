@@ -584,6 +584,7 @@ function simulateQuestionGeneration(forcedType = null) {
     let target = "{color}";
     if (color.id === "ME") {
       colorName = "鋼鉄の";
+      target = "{color}の";
     }
 
     promptText = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]

@@ -168,6 +168,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
     let target = "{color}";
     if (color.id === "ME") {
       colorName = "鋼鉄の";
+      target = "{color}の";
     }
 
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)]
