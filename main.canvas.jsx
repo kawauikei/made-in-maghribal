@@ -926,7 +926,7 @@ const StartScreen = ({
   // Replicating styles from App.jsx to minimize prop passing
   const containerStyle = {
     width: '100%',
-    height: '100%',
+    height: 'var(--app-visible-height, 100%)',
     padding: '12px',
     display: 'flex',
     flexDirection: 'column',
@@ -1122,7 +1122,7 @@ const HeroineSelectScreen = ({
   // Replicating styles from App.jsx
   const containerStyle = {
     width: '100%',
-    height: '100%',
+    height: 'var(--app-visible-height, 100%)',
     padding: '12px',
     display: 'flex',
     flexDirection: 'column',
@@ -2046,6 +2046,35 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
+
+  // --- M-UI-MOBILE-VIEWPORT-1: Dynamic Viewport Tracking ---
+  useEffect(() => {
+    function updateViewportVars() {
+      const vv = window.visualViewport;
+      const h = vv?.height ?? window.innerHeight;
+      const w = vv?.width ?? window.innerWidth;
+      // Set CSS variables for accurate mobile viewport calculation
+      document.documentElement.style.setProperty('--app-visible-height', `${Math.round(h)}px`);
+      document.documentElement.style.setProperty('--app-visible-width', `${Math.round(w)}px`);
+    }
+
+    updateViewportVars();
+    
+    // Track both window and visualViewport for mobile browser stability
+    window.addEventListener('resize', updateViewportVars);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', updateViewportVars);
+      window.visualViewport.addEventListener('scroll', updateViewportVars);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateViewportVars);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', updateViewportVars);
+        window.visualViewport.removeEventListener('scroll', updateViewportVars);
+      }
+    };
+  }, []);
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
 
@@ -2069,6 +2098,10 @@ function App() {
       const newWidth = Math.floor(Math.min(viewport?.width || window.innerWidth, doc?.clientWidth || window.innerWidth));
       const newHeight = Math.floor(Math.min(viewport?.height || window.innerHeight, doc?.clientHeight || window.innerHeight));
       
+      // M-UI-MOBILE-VIEWPORT-1: Set CSS variables for accurate mobile viewport calculation
+      document.documentElement.style.setProperty('--app-visible-height', `${newHeight}px`);
+      document.documentElement.style.setProperty('--app-visible-width', `${newWidth}px`);
+
       setViewportSize(prev => {
         // Only update if change is significant (> 1px) to avoid micro-drift
         if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
@@ -2140,8 +2173,8 @@ function App() {
 
   const outerWrapperStyle = {
     width: '100%',
-    height: '100%',
-    minHeight: isClipped ? `${measuredSize.height}px` : '100dvh',
+    height: 'var(--app-visible-height, 100vh)',
+    minHeight: isClipped ? `${measuredSize.height}px` : 'var(--app-visible-height, 100dvh)',
     backgroundColor: '#000',
     display: 'flex',
     justifyContent: 'center',
@@ -3485,7 +3518,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 
 const containerStyle = {
   width: '100%',
-  height: '100%',
+  height: 'var(--app-visible-height, 100%)',
   padding: '12px',
   display: 'flex',
   flexDirection: 'column',

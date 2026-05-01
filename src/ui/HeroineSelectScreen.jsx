@@ -28,7 +28,7 @@ const HeroineSelectScreen = ({
   // Replicating styles from App.jsx
   const containerStyle = {
     width: '100%',
-    height: '100%',
+    height: 'var(--app-visible-height, 100%)',
     padding: '12px',
     display: 'flex',
     flexDirection: 'column',
