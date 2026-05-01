@@ -2845,8 +2845,13 @@ const IntroScreen = ({
     const page = combinedPages[index];
     const isHeroinePage = (page == null ? void 0 : page.speakerId) === activeHeroine.id;
     const isNadirPage = (page == null ? void 0 : page.speakerId) === "nader";
-    if (isNadirPage) setNadirOpacity(1);
-    else if (isHeroinePage) setNadirOpacity(0);
+    if (isNadirPage) {
+      setNadirOpacity(1);
+      setHeroineOpacity(0);
+      visibleRef.current = false;
+    } else if (isHeroinePage) {
+      setNadirOpacity(0);
+    }
     if (isHeroinePage && (page == null ? void 0 : page.expression)) {
       setHeroineExpression(page.expression);
     }
