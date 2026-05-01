@@ -10869,19 +10869,24 @@ function App() {
     const currentQuestion = session.questions[session.currentIndex];
     mainContent = /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      bottom: 0,
+      top: 0,
       left: 0,
       right: 0,
-      height: "42%",
-      // Slightly taller for better card grounding
+      bottom: 0,
       backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
       backgroundSize: "cover",
-      backgroundPosition: "center 75%",
+      backgroundPosition: "center",
       zIndex: 1,
-      borderTop: `2px solid ${THEME.brass}`,
-      boxShadow: "0 -8px 25px rgba(0,0,0,0.4)",
-      opacity: 0.9
-      // Higher opacity for more 'grounded' feel
+      opacity: 0.8
+    } }), /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: "rgba(0,0,0,0.2)",
+      // Subtle darkening for readability
+      zIndex: 2
     } }), /* @__PURE__ */ React.createElement(
       GameHud,
       {
@@ -10906,30 +10911,24 @@ function App() {
       ...cardStyle,
       maxWidth: "800px",
       marginTop: "5px",
-      // Tighter top margin
       flexGrow: 1,
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      // Center vertically for better balance
       background: "transparent",
       border: "none",
       boxShadow: "none",
       backdropFilter: "none",
       padding: "0 20px 20px 20px",
-      // Tighter padding
       zIndex: 5
-      // Above counter, below header
     } }, /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       width: "90%",
-      // Slightly wider
       background: "#fff",
       color: "#333",
       border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
       padding: "16px 20px",
-      // Tighter padding
       fontSize: "1em",
       lineHeight: "1.4",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
@@ -10938,7 +10937,15 @@ function App() {
       alignItems: "center",
       justifyContent: "flex-start",
       textAlign: "left"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: { width: "100%", margin: "10px 0" } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+      width: "calc(100% + 40px)",
+      margin: "15px -20px",
+      background: "rgba(26, 42, 58, 0.6)",
+      // nightBlue with transparency
+      borderTop: `1px solid ${THEME.brass}44`,
+      borderBottom: `1px solid ${THEME.brass}44`,
+      padding: "5px 0"
+    } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
       gap: "20px",
