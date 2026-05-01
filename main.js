@@ -1221,6 +1221,51 @@ function getHeroineAsset(heroineId, type, expression = "normal") {
 const AFFECTION_EVENTS = {
   hakima: [
     {
+      id: "hakima_0",
+      heroineId: "hakima",
+      threshold: 0,
+      kind: "flashback_intro",
+      // route intro / flashback
+      title: "牙と天秤の出会い",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "開店前、ハキマとの出会いを思い出す。市場での香材を巡る小競り合いが、すべての始まりだった。",
+      pages: [
+        {
+          speaker: "ナーディル",
+          expression: "normal",
+          text: "今日はハキマが来る日か。……あいつと初めて会ったのも、こんな風に風が強い日だったな。",
+          backgroundId: "shopExteriorDay"
+        },
+        {
+          speaker: "ハキマ",
+          expression: "anger",
+          text: "「ちょっと、そこのあんた！ その樹脂、乾かし方が甘いわ。そんなの売るつもり？」\n市場の隅で、見知らぬキツネ族の少女にいきなり怒鳴られたんだ。",
+          backgroundId: "marketCentral"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "surprise",
+          text: "「え……？ ああ、確かに少し湿っているな。助かるよ」\n俺が素直に礼を言うと、彼女は拍子抜けしたような顔をしていた。",
+          backgroundId: "marketCentral"
+        },
+        {
+          speaker: "ハキマ",
+          expression: "normal",
+          text: "「……ふん、素直なだけが取り柄ね。星瓶堂の跡取りなら、もっと鼻を鍛えなさいよ」\nそれが、俺と彼女の「ライバル」としての始まりだった。",
+          backgroundId: "marketCentral"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "joy",
+          text: "今じゃ、欠かせない協力者の一人だ。……よし、開店の準備をしよう。",
+          backgroundId: "shopExteriorDay"
+        }
+      ]
+    },
+    {
       id: "hakima_5",
       heroineId: "hakima",
       threshold: 5,
@@ -1278,6 +1323,51 @@ const AFFECTION_EVENTS = {
   ],
   mira: [
     {
+      id: "mira_0",
+      heroineId: "mira",
+      threshold: 0,
+      kind: "flashback_intro",
+      // route intro / flashback
+      title: "天才とノートの余白",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "MIRA-01"
+      },
+      summary: "開店前、ミラとの出会いを思い出す。大学の廊下で、彼女が俺のノートの余白に興味を持ったことがきっかけだった。",
+      pages: [
+        {
+          speaker: "ナーディル",
+          expression: "normal",
+          text: "ミラか。……あの子、最初はずいぶんと俺のノートを熱心に覗き込んでいたっけ。",
+          backgroundId: "shopExteriorDay"
+        },
+        {
+          speaker: "ミラ",
+          expression: "student",
+          text: "「先輩、その計算式の横にある走り書き……父の、ナーディル・シニアの理論の応用ですか？」\n大学の廊下で、学年一の天才と名高いミラに呼び止められた時は心臓が止まるかと思った。",
+          backgroundId: "spotFountain"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "surprise",
+          text: "「え、ああ……。父が昔言っていたことを、自分なりにまとめてみただけだよ」\n俺がそう言うと、彼女の瞳は見たこともないほど輝いたんだ。",
+          backgroundId: "spotFountain"
+        },
+        {
+          speaker: "ミラ",
+          expression: "joy",
+          text: "「素晴らしいです。教科書にはない、実践的な知恵が詰まっています。もっと詳しく教えていただけませんか？」\nそれが、彼女との「先輩・後輩」の関係の始まりだった。",
+          backgroundId: "spotFountain"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "joy",
+          text: "今では商会の相談役として、一番の助言者になってくれている。……よし、今日も頑張ろう。",
+          backgroundId: "shopExteriorDay"
+        }
+      ]
+    },
+    {
       id: "mira_5",
       heroineId: "mira",
       threshold: 5,
@@ -1334,6 +1424,51 @@ const AFFECTION_EVENTS = {
     }
   ],
   dariya: [
+    {
+      id: "dariya_0",
+      heroineId: "dariya",
+      threshold: 0,
+      kind: "flashback_intro",
+      // route intro / flashback
+      title: "王宮の鑑定依頼",
+      presentation: {
+        backgroundId: "shopExteriorDay",
+        bgmId: "DARIYA-01"
+      },
+      summary: "開店前、ダリヤさんとの出会いを思い出す。王宮錬金局からの正式な鑑定依頼が、彼女との始まりだった。",
+      pages: [
+        {
+          speaker: "ナーディル",
+          expression: "normal",
+          text: "ダリヤさんは……最初は本当に『公務』として、この店に来たんだよな。",
+          backgroundId: "shopExteriorDay"
+        },
+        {
+          speaker: "ダリヤ",
+          expression: "normal",
+          text: "「王宮錬金局のダリヤ・アル＝アズラクです。星瓶堂の技術、王室の基準に照らして確認させていただきます」\n検証室で会った時の彼女は、氷のように冷たく、完璧な公務員だった。",
+          backgroundId: "palaceLab"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "sorrow",
+          text: "「厳しいですね。でも、俺の作る品に嘘はありません」\n俺が差し出した試作瓶を、彼女は無言で、しかし誰よりも真剣な眼差しで解析し始めた。",
+          backgroundId: "palaceLab"
+        },
+        {
+          speaker: "ダリヤ",
+          expression: "joy",
+          text: "「……不合格。理論が古すぎるわ。でも、使い手の体温まで計算されている。嫌いな設計じゃない」\n最後に微かに見せたその笑みが、今の「友人」としての関係の種だったんだと思う。",
+          backgroundId: "palaceLab"
+        },
+        {
+          speaker: "ナーディル",
+          expression: "joy",
+          text: "今では良き関係者として、王宮との橋渡しまでしてくれている。……さあ、背筋を伸ばして始めよう。",
+          backgroundId: "shopExteriorDay"
+        }
+      ]
+    },
     {
       id: "dariya_5",
       heroineId: "dariya",
@@ -2137,7 +2272,7 @@ const DAILY_TALKS = [
 function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
   const events = getEventsByHeroine(heroineId);
   const eligibleEvents = events.filter(
-    (event) => currentAffection >= event.threshold && !seenEventIds.includes(event.id)
+    (event) => event.kind !== "flashback_intro" && currentAffection >= event.threshold && !seenEventIds.includes(event.id)
   );
   if (eligibleEvents.length === 0) return null;
   return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
