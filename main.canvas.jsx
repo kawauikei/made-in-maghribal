@@ -3380,9 +3380,9 @@ function App() {
   // Back to Title
   const handleBackToTitle = () => {
     audioEngine.playSfx('uiTapBottle');
-    // Keep internal states for Continue logic
     setScreen('START');
     setHasSave(hasSaveData());
+    setEventBackgroundOverride(null); // Ensure background is reset
     setShowOptions(false);
     setShowLog(false);
     setShowHelp(false);
@@ -3390,6 +3390,7 @@ function App() {
 
   const handleRecallEventFromMemories = (event) => {
     audioEngine.playSfx('uiConfirmChime');
+    setEventBackgroundOverride(null); // Clear any stale override
     setActiveEvent(event);
     setIsRecallMode(true);
     setActiveHeroineId(event.heroineId);
