@@ -947,7 +947,7 @@ const StartScreen = ({
 }) => {
   const containerStyle2 = {
     width: "100%",
-    height: "var(--app-visible-height, 100%)",
+    height: "100%",
     padding: "12px",
     display: "flex",
     flexDirection: "column",
@@ -1397,7 +1397,7 @@ const HeroineSelectScreen = ({
   const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
   const containerStyle2 = {
     width: "100%",
-    height: "var(--app-visible-height, 100%)",
+    height: "100%",
     padding: "12px",
     display: "flex",
     flexDirection: "column",
@@ -1857,10 +1857,18 @@ const PrologueScreen = ({
         }
       },
       "星瓶堂へ進む"
-    ))), /* @__PURE__ */ React.createElement("div", { className: "vn-dock", style: {
+    ))), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "0 0 auto",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingBottom: "0",
+      // Docked to bottom
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
+      // Full width dock
       boxSizing: "border-box",
       position: "relative"
     } }, /* @__PURE__ */ React.createElement(
@@ -1981,10 +1989,18 @@ const IntroScreen = ({
         }
       },
       "営業を始める"
-    ))), /* @__PURE__ */ React.createElement("div", { className: "vn-dock", style: {
+    ))), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "0 0 auto",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingBottom: "0",
+      // Docked to bottom
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
+      // Full width dock
       boxSizing: "border-box",
       position: "relative"
     } }, /* @__PURE__ */ React.createElement(
@@ -8273,28 +8289,6 @@ function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
-  useEffect(() => {
-    function updateViewportVars() {
-      const vv = window.visualViewport;
-      const h = (vv == null ? void 0 : vv.height) ?? window.innerHeight;
-      const w = (vv == null ? void 0 : vv.width) ?? window.innerWidth;
-      document.documentElement.style.setProperty("--app-visible-height", `${Math.round(h)}px`);
-      document.documentElement.style.setProperty("--app-visible-width", `${Math.round(w)}px`);
-    }
-    updateViewportVars();
-    window.addEventListener("resize", updateViewportVars);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", updateViewportVars);
-      window.visualViewport.addEventListener("scroll", updateViewportVars);
-    }
-    return () => {
-      window.removeEventListener("resize", updateViewportVars);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener("resize", updateViewportVars);
-        window.visualViewport.removeEventListener("scroll", updateViewportVars);
-      }
-    };
-  }, []);
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
   const BASE_WIDTH = 390;
@@ -8314,8 +8308,6 @@ function App() {
       const doc = document.documentElement;
       const newWidth = Math.floor(Math.min((viewport == null ? void 0 : viewport.width) || window.innerWidth, (doc == null ? void 0 : doc.clientWidth) || window.innerWidth));
       const newHeight = Math.floor(Math.min((viewport == null ? void 0 : viewport.height) || window.innerHeight, (doc == null ? void 0 : doc.clientHeight) || window.innerHeight));
-      document.documentElement.style.setProperty("--app-visible-height", `${newHeight}px`);
-      document.documentElement.style.setProperty("--app-visible-width", `${newWidth}px`);
       setViewportSize((prev) => {
         if (Math.abs(prev.width - newWidth) <= 1 && Math.abs(prev.height - newHeight) <= 1) return prev;
         return { width: newWidth, height: newHeight };
@@ -8378,8 +8370,8 @@ function App() {
   };
   const outerWrapperStyle = {
     width: "100%",
-    height: "var(--app-visible-height, 100vh)",
-    minHeight: isClipped ? `${measuredSize.height}px` : "var(--app-visible-height, 100dvh)",
+    height: "100%",
+    minHeight: isClipped ? `${measuredSize.height}px` : "100dvh",
     backgroundColor: "#000",
     display: "flex",
     justifyContent: "center",
@@ -8774,11 +8766,6 @@ function App() {
   const renderThemeStyles = () => /* @__PURE__ */ React.createElement("style", null, `
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
       
-      :root {
-        --app-visible-height: 100vh;
-        --safe-bottom: env(safe-area-inset-bottom, 0px);
-      }
-
       .game-root {
         font-family: 'Outfit', 'Inter', sans-serif;
         color: ${THEME.parchment};
@@ -8800,19 +8787,6 @@ function App() {
         touch-action: manipulation;
         cursor: pointer;
         WebkitTapHighlightColor: transparent;
-      }
-
-      /* M-UI-MOBILE-VIEWPORT-1: Docked VNBox positioning */
-      .vn-dock {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: var(--safe-bottom, 0px);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 50;
       }
 
       img {
@@ -9459,7 +9433,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 }
 const containerStyle = {
   width: "100%",
-  height: "var(--app-visible-height, 100%)",
+  height: "100%",
   padding: "12px",
   display: "flex",
   flexDirection: "column",
