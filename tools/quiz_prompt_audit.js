@@ -298,6 +298,21 @@ function generateHtmlReport(items, questions) {
         .choice.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--correct); color: var(--correct); }
         .choice.wrong { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--wrong); color: var(--wrong); }
 
+        .item-img {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border-radius: 8px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+        }
+
+        .sample-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .logic-tag {
             font-size: 0.75rem;
             background: rgba(56, 189, 248, 0.1);
@@ -359,16 +374,22 @@ function generateHtmlReport(items, questions) {
                     <div class="choices">
                         <div class="choice correct">
                             <i data-lucide="check-circle"></i>
-                            <div>
-                                <strong>${q.correctItem.name}</strong><br>
-                                <span style="font-size: 0.8rem; opacity: 0.8;">${q.correctItem.colorName} / ${q.correctItem.typeName}</span>
+                            <div class="sample-item-info">
+                                <img src="../public/${q.correctItem.image}" class="item-img" alt="">
+                                <div>
+                                    <strong>${q.correctItem.name}</strong><br>
+                                    <span style="font-size: 0.8rem; opacity: 0.8;">${q.correctItem.colorName} / ${q.correctItem.typeName}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="choice wrong">
                             <i data-lucide="x-circle"></i>
-                            <div>
-                                <strong>${q.wrongItem.name}</strong><br>
-                                <span style="font-size: 0.8rem; opacity: 0.8;">${q.wrongItem.colorName} / ${q.wrongItem.typeName}</span>
+                            <div class="sample-item-info">
+                                <img src="../public/${q.wrongItem.image}" class="item-img" alt="">
+                                <div>
+                                    <strong>${q.wrongItem.name}</strong><br>
+                                    <span style="font-size: 0.8rem; opacity: 0.8;">${q.wrongItem.colorName} / ${q.wrongItem.typeName}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -393,24 +414,27 @@ function generateHtmlReport(items, questions) {
                     return `
                     <div class="item-card" data-search="${item.name.toLowerCase()} ${type?.name.toLowerCase() || ''}">
                         <div class="item-header">
-                            <div>
-                                <div class="item-title">${item.name}</div>
-                                <div class="item-meta">
-                                    <span>${item.id}</span>
-                                    <span>•</span>
-                                    <span>${genre?.name || item.category}</span>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <img src="../public/${item.image}" class="item-img" alt="">
+                                <div>
+                                    <div class="item-title">${item.name}</div>
+                                    <div class="item-meta">
+                                        <span>${item.id}</span>
+                                        <span>•</span>
+                                        <span>${genre?.name || item.category}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="category-icon">
                                 <i data-lucide="${icon}"></i>
                             </div>
                         </div>
-                        <div style="font-size: 0.85rem; font-weight: 600;">${type?.name || item.typeId}</div>
-                        <div class="color-badge" style="background: ${colorHex}22; color: ${colorHex}; border: 1px solid ${colorHex}55;">
+                        <div style="font-size: 0.85rem; font-weight: 600; margin-left: 60px;">${type?.name || item.typeId}</div>
+                        <div class="color-badge" style="margin-left: 60px; background: ${colorHex}22; color: ${colorHex}; border: 1px solid ${colorHex}55;">
                             <span style="width: 8px; height: 8px; border-radius: 50%; background: ${colorHex};"></span>
                             ${color?.name || item.colorId} (${color?.label || ''})
                         </div>
-                        <div class="description">${item.description}</div>
+                        <div class="description" style="margin-left: 60px;">${item.description}</div>
                     </div>
                     `;
                 }).join('')}
