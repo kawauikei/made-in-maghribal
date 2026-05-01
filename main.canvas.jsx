@@ -894,7 +894,7 @@ const VisualTestScreen = ({
             </div>
 
             {/* Main Preview */}
-            <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '100%', maxWidth: '390px', aspectRatio: '3/4', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
               <img 
                 key={bg.id}
                 src={getFullPath(bg.src)} 
@@ -910,15 +910,15 @@ const VisualTestScreen = ({
 
             {/* Thumbnail Selector */}
             <div style={{ width: '100%', maxWidth: '800px', height: '180px', overflowX: 'auto', overflowY: 'hidden', padding: '8px 0', scrollbarWidth: 'thin' }}>
-              <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
+              <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 120px)', gridAutoColumns: '90px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
                 {bgList.map((item, idx) => (
                   <div
                     data-testid="visual-test-thumbnail"
                     key={item.id}
                     onClick={() => setBgTestIndex(idx)}
                     style={{
-                      width: '140px',
-                      height: '80px',
+                      width: '90px',
+                      height: '120px',
                       borderRadius: '8px',
                       overflow: 'hidden',
                       border: `2px solid ${idx === bgTestIndex % bgList.length ? THEME.brass : '#333'}`,
@@ -940,7 +940,7 @@ const VisualTestScreen = ({
             </div>
 
             {/* Main Preview */}
-            <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '100%', maxWidth: '390px', aspectRatio: '3/4', background: '#000', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${THEME.brass}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
               <img 
                 key={still.id}
                 src={getFullPath(still.src)} 
@@ -956,15 +956,15 @@ const VisualTestScreen = ({
 
             {/* Thumbnail Selector */}
             <div style={{ width: '100%', maxWidth: '800px', height: '180px', overflowX: 'auto', overflowY: 'hidden', padding: '8px 0', scrollbarWidth: 'thin' }}>
-              <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 80px)', gridAutoColumns: '140px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
+              <div style={{ display: 'grid', gridAutoFlow: 'column', gridTemplateRows: 'repeat(2, 120px)', gridAutoColumns: '90px', gap: '10px', alignContent: 'start', width: 'max-content' }}>
                 {stillList.map((item, idx) => (
                   <div
                     data-testid="visual-test-thumbnail"
                     key={item.id}
                     onClick={() => setStillTestIndex(idx)}
                     style={{
-                      width: '140px',
-                      height: '80px',
+                      width: '90px',
+                      height: '120px',
                       borderRadius: '8px',
                       overflow: 'hidden',
                       border: `2px solid ${idx === stillTestIndex % stillList.length ? THEME.brass : '#333'}`,
