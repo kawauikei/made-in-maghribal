@@ -1639,10 +1639,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         height: "166px",
         // Slightly taller for stability
         background: "rgba(18, 28, 42, 0.98)",
-        borderLeft: `5px solid ${themeColor || THEME.brass}`,
-        // Stronger accent
         padding: currentSpeaker ? "22px 24px 28px 24px" : "18px 24px 28px 24px",
-        borderRadius: "0 16px 16px 0",
+        borderRadius: "12px",
+        // Single card feel
         cursor: "pointer",
         color: THEME.parchment,
         textAlign: "left",
@@ -1654,34 +1653,34 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         display: "flex",
         flexDirection: "column",
         overflow: "visible",
-        // Allow speaker plate to overflow top
+        // Allow speaker tag to hook onto corner
         transition: "all 0.3s ease",
-        border: "1px solid rgba(255,255,255,0.05)"
+        border: "1px solid rgba(255,255,255,0.08)"
       }
     },
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      left: "12px",
-      top: "-7px",
+      left: "10px",
+      top: "-8px",
       display: "flex",
       alignItems: "center",
-      gap: "8px",
+      gap: "6px",
       padding: "2px 10px 2px 2px",
-      height: "28px",
+      height: "30px",
       boxSizing: "border-box",
       borderRadius: "999px",
       background: "#0c1926",
-      // Opaque to hide VNBox border behind
-      border: `1px solid ${themeColor || THEME.brass}66`,
+      // Opaque to cleanly overlap corner
+      border: `1px solid ${themeColor || THEME.brass}77`,
       zIndex: 10,
-      boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
       backdropFilter: "blur(4px)"
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
-      width: "24px",
-      height: "24px",
+      width: "26px",
+      height: "26px",
       borderRadius: "50%",
       overflow: "hidden",
-      border: `1px solid ${themeColor || THEME.brass}66`,
+      border: `1px solid ${themeColor || THEME.brass}88`,
       background: "rgba(0,0,0,0.4)",
       flexShrink: 0
     } }, /* @__PURE__ */ React.createElement(
@@ -1702,7 +1701,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         }
       }
     )), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.8em",
+      fontSize: "0.82em",
       color: themeColor || THEME.brass,
       fontWeight: "700",
       letterSpacing: "0.04em",
@@ -1864,15 +1863,10 @@ const PrologueScreen = ({
       paddingBottom: "8px",
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
-      ...cardStyle2,
-      background: "rgba(20, 30, 45, 0.96)",
-      color: THEME.parchment,
-      padding: "16px 20px",
       width: "94%",
       boxSizing: "border-box",
-      boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
-      border: `1px solid ${THEME.brass}33`,
-      borderRadius: "12px"
+      position: "relative"
+      // Ensure absolute plate has anchor
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
@@ -2000,15 +1994,10 @@ const IntroScreen = ({
       paddingBottom: "8px",
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
-      ...cardStyle2,
-      background: "rgba(20, 30, 45, 0.96)",
-      color: THEME.parchment,
-      padding: "16px 20px",
       width: "94%",
       boxSizing: "border-box",
-      boxShadow: "0 -8px 25px rgba(0,0,0,0.6)",
-      border: `1px solid ${THEME.brass}33`,
-      borderRadius: "12px"
+      position: "relative"
+      // Ensure absolute plate has anchor
     } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
