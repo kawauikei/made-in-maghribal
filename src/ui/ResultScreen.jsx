@@ -1,6 +1,7 @@
 import React from 'react';
 import { THEME } from './theme';
 import GameHud from './GameHud';
+import { getResultComment } from '../data/resultComments';
 
 /**
  * ResultScreen Component
@@ -39,15 +40,8 @@ const ResultScreen = ({
   const correctCount = session.answers.filter(a => a.isCorrect).length;
   const rank = getRankInfo(correctCount);
   const mgmt = getWorkshopResult(correctCount);
-
-  const resultNarrations = {
-    5: "大成功。星瓶堂の流れが、よく見えていたわ。",
-    4: "よくやったわ。手つきも安定してきたじゃない。",
-    3: "まずまずね。次の一手はもう見えてるでしょ。",
-    2: "もう少しよ。客の意図をつかめば、もっと楽になるわ。",
-    1: "惜しいわね。焦らず相手の話を聞くところからよ。",
-    0: "今回はダメだったわ。でも、次で取り戻せばいい。",
-  };
+  const totalQuestions = session.questions.length;
+  const comment = getResultComment(activeHeroine.id, correctCount, totalQuestions);
 
   return (
     <div
@@ -145,7 +139,7 @@ const ResultScreen = ({
                 lineHeight: '1.5',
                 fontStyle: 'italic'
               }}>
-                {resultNarrations[correctCount]}
+                {comment}
               </div>
             </div>
           </div>
