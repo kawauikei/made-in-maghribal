@@ -8434,61 +8434,93 @@ const RhythmMock = ({ heroineId, themeColor }) => {
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
   return /* @__PURE__ */ React.createElement("div", { style: {
     width: "100%",
-    height: "60px",
+    height: "64px",
+    // Slightly taller for better presence
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "15px",
-    margin: "10px 0",
+    gap: "12px",
+    margin: "15px 0",
     pointerEvents: "none",
-    userSelect: "none"
+    userSelect: "none",
+    position: "relative"
   } }, /* @__PURE__ */ React.createElement("div", { style: {
-    width: "42px",
-    height: "42px",
+    position: "absolute",
+    width: "70%",
+    height: "100%",
+    background: `radial-gradient(ellipse at center, ${THEME.brass}11 0%, transparent 70%)`,
+    zIndex: 0
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "44px",
+    height: "44px",
     borderRadius: "50%",
     overflow: "hidden",
-    border: `1px solid ${THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.8)",
-    opacity: 0.7,
-    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-    flexShrink: 0
+    border: `2px solid ${THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    opacity: 0.8,
+    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
   } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
     flex: 1,
-    maxWidth: "400px",
-    height: "2px",
-    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
+    maxWidth: "420px",
+    height: "4px",
+    // Slightly thicker for visibility
+    background: `rgba(255,255,255,0.05)`,
+    // Subtle track base
+    borderRadius: "2px",
     position: "relative",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "20%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "40%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement(
+    justifyContent: "center",
+    zIndex: 1
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    width: "100%",
+    height: "1px",
+    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
+    top: "50%",
+    transform: "translateY(-50%)"
+  } }), [20, 35, 65, 80].map((pos) => /* @__PURE__ */ React.createElement("div", { key: pos, style: {
+    position: "absolute",
+    left: `${pos}%`,
+    width: "6px",
+    height: "6px",
+    transform: "rotate(45deg)",
+    background: THEME.brass,
+    boxShadow: `0 0 4px ${THEME.brass}88`,
+    opacity: 0.4
+  } })), /* @__PURE__ */ React.createElement(
     "div",
     {
       className: "beat-pulse",
       style: {
-        width: "16px",
-        height: "16px",
+        width: "24px",
+        height: "24px",
         borderRadius: "50%",
-        border: `2px solid ${THEME.brass}`,
-        background: "rgba(255,255,255,0.1)",
-        boxShadow: `0 0 8px ${THEME.brass}88`,
+        border: `2px solid ${THEME.starGold}`,
+        background: "rgba(255,255,255,0.2)",
+        boxShadow: `0 0 15px ${THEME.starGold}aa`,
         position: "relative",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        zIndex: 3
       }
     },
     /* @__PURE__ */ React.createElement("div", { className: "beat-halo" })
-  ), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "40%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "20%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } })), /* @__PURE__ */ React.createElement("div", { style: {
-    width: "42px",
-    height: "42px",
+  )), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "44px",
+    height: "44px",
     borderRadius: "50%",
     overflow: "hidden",
-    border: `1px solid ${themeColor || THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.8)",
-    opacity: 0.7,
-    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-    flexShrink: 0
+    border: `2px solid ${themeColor || THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    boxShadow: `0 0 12px ${themeColor || THEME.brass}88`,
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
   } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
 };
 function App() {
@@ -9567,14 +9599,16 @@ function App() {
       bottom: 0,
       left: 0,
       right: 0,
-      height: "38%",
+      height: "42%",
+      // Slightly taller for better card grounding
       backgroundImage: `url(${getFullPath(BACKGROUND_IMAGES.shopInteriorService.src)})`,
       backgroundSize: "cover",
-      backgroundPosition: "center 80%",
+      backgroundPosition: "center 75%",
       zIndex: 1,
-      borderTop: `4px solid ${THEME.brassDark}`,
-      boxShadow: "0 -10px 20px rgba(0,0,0,0.3)",
-      opacity: 0.8
+      borderTop: `2px solid ${THEME.brass}`,
+      boxShadow: "0 -8px 25px rgba(0,0,0,0.4)",
+      opacity: 0.9
+      // Higher opacity for more 'grounded' feel
     } }), /* @__PURE__ */ React.createElement(
       GameHud,
       {
@@ -9598,33 +9632,33 @@ function App() {
     } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle,
       maxWidth: "800px",
-      marginTop: "10px",
+      marginTop: "5px",
+      // Tighter top margin
       flexGrow: 1,
       display: "flex",
       flexDirection: "column",
-      justifyContent: "flex-start",
+      justifyContent: "center",
+      // Center vertically for better balance
       background: "transparent",
       border: "none",
       boxShadow: "none",
       backdropFilter: "none",
-      padding: "0 20px 40px 20px",
-      // Tighter padding, enough bottom space
+      padding: "0 20px 20px 20px",
+      // Tighter padding
       zIndex: 5
       // Above counter, below header
-    } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "20px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
-      width: "85%",
-      // Fix width to ensure consistent starting position
+      width: "90%",
+      // Slightly wider
       background: "#fff",
       color: "#333",
-      // Static dark text for readability on white bubble
       border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
-      padding: "18px 24px",
-      // Slightly tighter padding
-      fontSize: "1.05em",
-      // Slightly smaller for better fit
-      lineHeight: "1.5",
+      padding: "16px 20px",
+      // Tighter padding
+      fontSize: "1em",
+      lineHeight: "1.4",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
       transition: "all 0.3s",
       display: "flex",
@@ -9634,11 +9668,11 @@ function App() {
     } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor }), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
-      gap: "24px",
+      gap: "20px",
       width: "100%",
-      marginTop: "35px",
-      // Tighten gap from beat lane
-      padding: "10px 0"
+      marginTop: "20px",
+      // Tighter gap from beat lane
+      paddingBottom: "20px"
     } }, currentQuestion.choices.map((item, index) => {
       const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
       const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
@@ -9675,7 +9709,7 @@ function App() {
             }
           }
         ),
-        /* @__PURE__ */ React.createElement("div", { style: { ...itemNameStyle, color: THEME.textDark, borderTop: "1px solid #ddd", paddingTop: "10px", marginTop: "10px", fontSize: "0.9em" } }, displayChoiceName)
+        /* @__PURE__ */ React.createElement("div", { style: itemNameStyle }, displayChoiceName)
       );
     }))));
   }
@@ -9865,25 +9899,35 @@ const bubbleStyle = {
   border: "1px solid #ddd"
 };
 const itemCardStyle = {
-  background: "#fff",
-  padding: "15px",
-  borderRadius: "8px",
+  background: "rgba(255, 255, 255, 0.98)",
+  padding: "18px",
+  borderRadius: "16px",
+  // More rounded for modern feel
   cursor: "pointer",
-  transition: "transform 0.2s, background 0.2s",
-  border: `1px solid ${THEME.brassDark}`,
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+  transition: "transform 0.2s, background 0.2s, box-shadow 0.2s",
+  border: `1px solid ${THEME.brass}44`,
+  boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-between"
 };
 const imageStyle = {
   width: "100%",
-  height: "auto",
-  borderRadius: "4px",
-  marginBottom: "10px",
-  background: "#eee"
+  aspectRatio: "1 / 1",
+  objectFit: "contain",
+  borderRadius: "8px",
+  marginBottom: "15px",
+  background: "rgba(245, 240, 230, 0.5)",
+  padding: "10px"
 };
 const itemNameStyle = {
-  fontSize: "0.9em",
-  color: "#444",
-  fontWeight: "bold"
+  fontSize: "0.95em",
+  color: THEME.textDark,
+  fontWeight: "bold",
+  textAlign: "center",
+  width: "100%",
+  lineHeight: "1.3"
 };
 export {
   App as default
