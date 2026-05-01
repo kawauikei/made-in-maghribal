@@ -2029,6 +2029,95 @@ const IntroScreen = ({
     )))
   );
 };
+const ResultScreen = ({
+  session,
+  getRankInfo: getRankInfo2,
+  getWorkshopResult: getWorkshopResult2,
+  containerStyle: containerStyle2,
+  handleVnAreaClick,
+  renderThemeStyles,
+  renderBackground,
+  screen,
+  routeMode,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  titleStyle: titleStyle2,
+  cardStyle: cardStyle2,
+  vnRef,
+  textSpeedMeta,
+  shouldSkipTypewriter: shouldSkipTypewriter2,
+  isInstantTextSpeed,
+  appendVnBacklog,
+  handleEndDay,
+  activeHeroine,
+  HeroineDisplay: HeroineDisplay2,
+  getResultExpression: getResultExpression2,
+  lastAffectionGain,
+  buttonStyle: buttonStyle2,
+  handleNextDay
+}) => {
+  if (!session) return null;
+  const correctCount = session.answers.filter((a) => a.isCorrect).length;
+  const rank = getRankInfo2(correctCount);
+  const mgmt = getWorkshopResult2(correctCount);
+  const resultNarrations = {
+    5: "大成功。今回の営業は、星瓶堂の流れがよく見えていた。",
+    4: "よくやった。客の話を聞き取り、品を選ぶ手つきも安定している。",
+    3: "まずまずだ。迷いはあるが、次の一手が見えている。",
+    2: "もう少し。客の意図をつかめれば、品選びはもっと楽になる。",
+    1: "惜しい。焦らず相手の話を聞くところから整えていこう。",
+    0: "今回はうまくいかなかった。だが、次の営業で取り戻せる。"
+  };
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "data-testid": "result-screen",
+      style: { ...containerStyle2, position: "relative" },
+      onClick: handleVnAreaClick
+    },
+    renderThemeStyles && renderThemeStyles(),
+    renderBackground && renderBackground(screen),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+      GameHud,
+      {
+        screen,
+        routeMode,
+        onOpenLog,
+        onOpenOptions,
+        onOpenHelp
+      }
+    ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, color: THEME.nightBlue, marginBottom: "20px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
+      VNBox,
+      {
+        ref: vnRef,
+        text: resultNarrations[correctCount],
+        themeColor: THEME.brass,
+        speed: textSpeedMeta.delay,
+        skip: shouldSkipTypewriter2(isInstantTextSpeed),
+        onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
+        onComplete: handleEndDay
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
+      HeroineDisplay2,
+      {
+        heroine: activeHeroine,
+        type: "face",
+        size: "small",
+        expression: getResultExpression2(correctCount)
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "との縁+", lastAffectionGain)), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "10px",
+      margin: "20px 0",
+      background: "rgba(0,0,0,0.05)",
+      padding: "15px",
+      borderRadius: "4px",
+      border: `1px solid ${THEME.brassDark}`
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleNextDay, style: { ...buttonStyle2, width: "100%", maxWidth: "280px" } }, "次の営業へ")))
+  );
+};
 const GENRES = [
   { id: "ARM", name: "武具" },
   { id: "FOD", name: "食糧" },
@@ -8983,64 +9072,36 @@ function App() {
       }
     );
   } else if (screen === "RESULT" && session) {
-    const correctCount = session.answers.filter((a) => a.isCorrect).length;
-    const rank = getRankInfo(correctCount);
-    const mgmt = getWorkshopResult(correctCount);
-    const resultNarrations = {
-      5: "大成功。今回の営業は、星瓶堂の流れがよく見えていた。",
-      4: "よくやった。客の話を聞き取り、品を選ぶ手つきも安定している。",
-      3: "まずまずだ。迷いはあるが、次の一手が見えている。",
-      2: "もう少し。客の意図をつかめれば、品選びはもっと楽になる。",
-      1: "惜しい。焦らず相手の話を聞くところから整えていこう。",
-      0: "今回はうまくいかなかった。だが、次の営業で取り戻せる。"
-    };
     mainContent = /* @__PURE__ */ React.createElement(
-      "div",
+      ResultScreen,
       {
-        "data-testid": "result-screen",
-        style: { ...containerStyle, position: "relative" },
-        onClick: handleVnAreaClick
-      },
-      renderThemeStyles(),
-      renderBackground(screen),
-      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
-        GameHud,
-        {
-          screen,
-          routeMode,
-          onOpenLog: () => setShowLog(true),
-          onOpenOptions: () => setShowOptions(true),
-          onOpenHelp: () => setShowHelp(true)
-        }
-      ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, color: THEME.nightBlue, marginBottom: "20px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
-        VNBox,
-        {
-          ref: vnRef,
-          text: resultNarrations[correctCount],
-          themeColor: THEME.brass,
-          speed: textSpeedMeta.delay,
-          skip: shouldSkipTypewriter(isInstantTextSpeed),
-          onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "RESULT" }),
-          onComplete: handleEndDay
-        }
-      )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, /* @__PURE__ */ React.createElement(
+        session,
+        getRankInfo,
+        getWorkshopResult,
+        containerStyle,
+        handleVnAreaClick,
+        renderThemeStyles,
+        renderBackground,
+        screen,
+        routeMode,
+        onOpenLog: () => setShowLog(true),
+        onOpenOptions: () => setShowOptions(true),
+        onOpenHelp: () => setShowHelp(true),
+        titleStyle,
+        cardStyle,
+        vnRef,
+        textSpeedMeta,
+        shouldSkipTypewriter,
+        isInstantTextSpeed,
+        appendVnBacklog,
+        handleEndDay,
+        activeHeroine,
         HeroineDisplay,
-        {
-          heroine: activeHeroine,
-          type: "face",
-          size: "small",
-          expression: getResultExpression(correctCount)
-        }
-      ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "との縁+", lastAffectionGain)), /* @__PURE__ */ React.createElement("div", { style: {
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "10px",
-        margin: "20px 0",
-        background: "rgba(0,0,0,0.05)",
-        padding: "15px",
-        borderRadius: "4px",
-        border: `1px solid ${THEME.brassDark}`
-      } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleNextDay, style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "次の営業へ")))
+        getResultExpression,
+        lastAffectionGain,
+        buttonStyle,
+        handleNextDay
+      }
     );
   } else if (screen === "DAY_END") {
     const correctCount = session ? session.answers.filter((a) => a.isCorrect).length : 0;
