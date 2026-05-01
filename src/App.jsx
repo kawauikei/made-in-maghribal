@@ -713,6 +713,11 @@ export default function App() {
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
       
+      :root {
+        --app-visible-height: 100vh;
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
       .game-root {
         font-family: 'Outfit', 'Inter', sans-serif;
         color: ${THEME.parchment};
@@ -734,6 +739,19 @@ export default function App() {
         touch-action: manipulation;
         cursor: pointer;
         WebkitTapHighlightColor: transparent;
+      }
+
+      /* M-UI-MOBILE-VIEWPORT-1: Docked VNBox positioning */
+      .vn-dock {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: var(--safe-bottom, 0px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 50;
       }
 
       img {

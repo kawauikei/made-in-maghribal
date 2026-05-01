@@ -117,19 +117,13 @@ const IntroScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
-        <div style={{ 
-          flex: '0 0 auto', 
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Dock) */}
+        <div className="vn-dock" style={{ 
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>

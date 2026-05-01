@@ -1438,19 +1438,13 @@ const PrologueScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
-        <div style={{ 
-          flex: '0 0 auto', 
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Dock) */}
+        <div className="vn-dock" style={{ 
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -1589,19 +1583,13 @@ const IntroScreen = ({
           </div>
         </div>
 
-        {/* Bottom Dock: VN Box */}
-        <div style={{ 
-          flex: '0 0 auto', 
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          paddingBottom: '0', // Docked to bottom
+        {/* Bottom Dock: VN Box (M-UI-MOBILE-VIEWPORT-1: Absolute Dock) */}
+        <div className="vn-dock" style={{ 
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
         }}>
           {/* Main VN Box Container */}
           <div style={{ 
-            width: '100%', // Full width dock
+            width: '100%', 
             boxSizing: 'border-box',
             position: 'relative'
           }}>
@@ -2661,6 +2649,11 @@ function App() {
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
       
+      :root {
+        --app-visible-height: 100vh;
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
       .game-root {
         font-family: 'Outfit', 'Inter', sans-serif;
         color: ${THEME.parchment};
@@ -2682,6 +2675,19 @@ function App() {
         touch-action: manipulation;
         cursor: pointer;
         WebkitTapHighlightColor: transparent;
+      }
+
+      /* M-UI-MOBILE-VIEWPORT-1: Docked VNBox positioning */
+      .vn-dock {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: var(--safe-bottom, 0px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 50;
       }
 
       img {
