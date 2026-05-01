@@ -1641,7 +1641,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         background: "rgba(18, 28, 42, 0.98)",
         borderLeft: `5px solid ${themeColor || THEME.brass}`,
         // Stronger accent
-        padding: currentSpeaker ? "28px 24px 28px 24px" : "18px 24px 28px 24px",
+        padding: currentSpeaker ? "24px 24px 28px 24px" : "18px 24px 28px 24px",
         borderRadius: "0 16px 16px 0",
         cursor: "pointer",
         color: THEME.parchment,
@@ -1661,24 +1661,26 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     },
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      left: "20px",
-      top: "-18px",
+      left: "16px",
+      top: "-13px",
       display: "flex",
       alignItems: "center",
-      gap: "10px",
-      padding: "6px 16px",
+      gap: "8px",
+      padding: "3px 10px 3px 4px",
+      height: "32px",
+      boxSizing: "border-box",
       borderRadius: "999px",
-      background: "rgba(12, 25, 38, 0.98)",
-      border: `1px solid ${themeColor || THEME.brass}88`,
+      background: "rgba(12, 25, 38, 0.94)",
+      border: `1px solid ${themeColor || THEME.brass}77`,
       zIndex: 10,
-      boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
       backdropFilter: "blur(4px)"
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
-      width: "34px",
-      height: "34px",
+      width: "26px",
+      height: "26px",
       borderRadius: "50%",
       overflow: "hidden",
-      border: `1.5px solid ${themeColor || THEME.brass}`,
+      border: `1px solid ${themeColor || THEME.brass}88`,
       background: "rgba(0,0,0,0.4)",
       flexShrink: 0
     } }, /* @__PURE__ */ React.createElement(
@@ -1699,10 +1701,10 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         }
       }
     )), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.88em",
+      fontSize: "0.85em",
       color: themeColor || THEME.brass,
       fontWeight: "bold",
-      letterSpacing: "0.08em",
+      letterSpacing: "0.05em",
       textShadow: "0 1px 2px rgba(0,0,0,0.5)"
     } }, currentSpeaker)),
     /* @__PURE__ */ React.createElement("div", { style: {
