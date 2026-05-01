@@ -2149,13 +2149,23 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     if (e && e.stopPropagation) e.stopPropagation();
     
     const lastIndex = pageList.length - 1;
-    if (pageIndex === lastIndex && isComplete) {
-      // Already at the end and complete, just finish
-      onComplete?.();
+    
+    // If already at the last page
+    if (pageIndex === lastIndex) {
+      if (isComplete) {
+        // Case A: Last page already finished -> Close/Proceed
+        onComplete?.();
+      } else {
+        // Case B: Typing on last page -> Show full text immediately
+        setDisplayText(currentText);
+        setIsComplete(true);
+        markPageComplete();
+        audioEngine.playSfx('uiTapBottle');
+      }
       return;
     }
 
-    // Fast-forward to the end of the current block
+    // Case C: Before last page -> Jump to last page and make it instant
     setIsSkippingBlock(true);
     setPageIndex(lastIndex);
     audioEngine.playSfx('uiTapBottle');
@@ -2198,28 +2208,30 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: 'none'
       }}
     >
-      {/* M-VN-SKIP-1: Small Skip Button */}
+      {/* M-VN-SKIP-1: Floating Skip Button (Header Position) */}
       <div 
         onClick={handleSkipBlock}
         onMouseEnter={() => setHoverSkip(true)}
         onMouseLeave={() => setHoverSkip(false)}
         style={{
           position: 'absolute',
-          top: '12px',
-          right: '16px',
-          fontSize: '0.65em',
-          color: hoverSkip ? THEME.brass : 'rgba(255,255,255,0.4)',
-          border: `1px solid ${hoverSkip ? THEME.brass : 'rgba(255,255,255,0.15)'}`,
-          padding: '2px 8px',
-          borderRadius: '4px',
+          top: '-38px', // Floating above the box, consistent with nameplate
+          right: '24px',
+          padding: '6px 20px',
+          borderRadius: '999px',
+          background: hoverSkip ? THEME.brass : 'rgba(12, 25, 38, 0.9)',
+          border: `1px solid ${hoverSkip ? THEME.brass : THEME.brass + '77'}`,
+          color: hoverSkip ? '#0c1926' : THEME.brass,
+          fontSize: '0.82em',
+          fontWeight: '900',
           cursor: 'pointer',
-          zIndex: 15,
+          zIndex: 20,
           transition: 'all 0.2s ease',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+          letterSpacing: '0.15em',
+          backdropFilter: 'blur(8px)',
           textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          fontWeight: '800',
-          background: hoverSkip ? 'rgba(0,0,0,0.4)' : 'transparent',
-          backdropFilter: hoverSkip ? 'blur(4px)' : 'none'
+          userSelect: 'none'
         }}
       >
         SKIP
