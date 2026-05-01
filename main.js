@@ -2453,14 +2453,15 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         onMouseLeave: () => setHoverSkip(false),
         style: {
           position: "absolute",
-          top: "-42px",
-          // Floating higher, header-like
+          top: "-32px",
+          // Half-overlap (same as speaker tag)
           right: "24px",
-          padding: "6px 20px",
+          // Aligned with internal padding
+          padding: "4px 20px",
           borderRadius: "999px",
-          background: hoverSkip ? THEME.brass : "rgba(12, 25, 38, 0.9)",
-          border: `1px solid ${hoverSkip ? THEME.brass : THEME.brass + "77"}`,
-          color: hoverSkip ? "#0c1926" : THEME.brass,
+          background: hoverSkip ? THEME.brass : "rgba(12, 25, 38, 0.95)",
+          border: `1px solid ${hoverSkip ? THEME.brass : (themeColor || THEME.brass) + "77"}`,
+          color: hoverSkip ? "#0c1926" : themeColor || THEME.brass,
           fontSize: "0.82em",
           fontWeight: "900",
           cursor: "pointer",
@@ -2769,6 +2770,7 @@ const IntroScreen = ({
 }) => {
   const [heroineOpacity, setHeroineOpacity] = React.useState(0);
   const [heroineExpression, setHeroineExpression] = React.useState("normal");
+  const [nadirOpacity, setNadirOpacity] = React.useState(0);
   const visibleRef = React.useRef(false);
   const TRANSITION_CONFIG = {
     arrival: { delay: 0, sfx: "quizWrongSandTap", volumeScale: 0.5 },
@@ -2833,9 +2835,18 @@ const IntroScreen = ({
     farewellPage,
     startBusinessPage
   ];
+  React.useEffect(() => {
+    var _a;
+    if (((_a = combinedPages[0]) == null ? void 0 : _a.speakerId) === "nader") {
+      setNadirOpacity(1);
+    }
+  }, []);
   const handlePageChange = (index) => {
     const page = combinedPages[index];
     const isHeroinePage = (page == null ? void 0 : page.speakerId) === activeHeroine.id;
+    const isNadirPage = (page == null ? void 0 : page.speakerId) === "nader";
+    if (isNadirPage) setNadirOpacity(1);
+    else if (isHeroinePage) setNadirOpacity(0);
     if (isHeroinePage && (page == null ? void 0 : page.expression)) {
       setHeroineExpression(page.expression);
     }
@@ -2894,7 +2905,7 @@ const IntroScreen = ({
           width: "auto",
           boxShadow: "none",
           position: "absolute",
-          opacity: 1 - heroineOpacity,
+          opacity: nadirOpacity,
           transition: "opacity 0.3s ease-in-out"
         }
       }
