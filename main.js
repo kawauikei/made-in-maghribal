@@ -3124,7 +3124,7 @@ const ResultScreen = ({
 }) => {
   if (!session) return null;
   const correctCount = session.answers.filter((a) => a.isCorrect).length;
-  const rank = getRankInfo2(correctCount);
+  getRankInfo2(correctCount);
   const mgmt = getWorkshopResult2(correctCount);
   const resultNarrations = {
     5: "大成功。今回の営業は、星瓶堂の流れがよく見えていた。",
@@ -3142,7 +3142,14 @@ const ResultScreen = ({
     },
     renderThemeStyles && renderThemeStyles(),
     renderBackground && renderBackground(screen),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      inset: 0,
+      background: "rgba(10, 18, 30, 0.35)",
+      zIndex: 1,
+      pointerEvents: "none"
+    } }),
+    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "0 4px" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -3153,16 +3160,63 @@ const ResultScreen = ({
       }
     ), /* @__PURE__ */ React.createElement("h1", { style: {
       ...titleStyle2,
-      position: "absolute",
-      top: "8px",
-      left: "12px",
-      margin: 0,
+      alignSelf: "flex-start",
+      margin: "4px 0 0 8px",
       color: THEME.nightBlue,
-      fontSize: "1.2em",
-      maxWidth: "70%",
+      fontSize: "1.15em",
       textAlign: "left",
       zIndex: 10
-    } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
+    } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: {
+      flex: "0 0 auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "flex-end",
+      margin: "4px 0 0 0",
+      height: "155px",
+      zIndex: 5
+    } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
+      HeroineDisplay2,
+      {
+        heroine: activeHeroine,
+        type: "standing",
+        size: "medium",
+        expression: getResultExpression2(correctCount),
+        noBorder: true,
+        style: { filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: {
+      ...cardStyle2,
+      borderRadius: "10px",
+      border: `2px solid ${THEME.brass}`,
+      background: "rgba(244, 233, 213, 0.95)",
+      padding: "14px 18px",
+      margin: "8px 0",
+      width: "92%",
+      maxWidth: "340px",
+      textAlign: "center",
+      zIndex: 10
+    } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.5em", fontWeight: "900", color: THEME.brassDark, lineHeight: 1.2 } }, session.score, " 点"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "8px" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "6px",
+      background: "rgba(0,0,0,0.04)",
+      padding: "8px 6px",
+      borderRadius: "6px",
+      marginBottom: "8px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7em", color: "#888" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7em", color: "#888" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.7em", color: "#888" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.9em",
+      fontWeight: "bold",
+      color: activeHeroine.themeColor,
+      padding: "4px 10px",
+      background: `${activeHeroine.themeColor}15`,
+      borderRadius: "999px",
+      display: "inline-block"
+    } }, activeHeroine.name, "との縁 +", lastAffectionGain)), /* @__PURE__ */ React.createElement("div", { style: {
+      width: "92%",
+      maxWidth: "340px",
+      margin: "4px 0",
+      zIndex: 10
+    } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
         ref: vnRef,
@@ -3174,24 +3228,22 @@ const ResultScreen = ({
         hideNext: true,
         onPageComplete: (data) => appendVnBacklog({ ...data, screen: "RESULT" })
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "15px", marginTop: "20px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
-      HeroineDisplay2,
+    )), /* @__PURE__ */ React.createElement(
+      "button",
       {
-        heroine: activeHeroine,
-        type: "face",
-        size: "small",
-        expression: getResultExpression2(correctCount)
-      }
-    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", color: activeHeroine.themeColor, fontWeight: "bold" } }, activeHeroine.name, "との縁+", lastAffectionGain)), /* @__PURE__ */ React.createElement("div", { style: {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      gap: "10px",
-      margin: "20px 0",
-      background: "rgba(0,0,0,0.05)",
-      padding: "15px",
-      borderRadius: "4px",
-      border: `1px solid ${THEME.brassDark}`
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.8em", color: "#666", marginBottom: "4px" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("h2", { style: { margin: "10px 0", fontSize: "1.2em" } }, "最終スコア: ", session.score, " 点"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "1em", marginBottom: "20px", color: "#666" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.05)", padding: "15px", borderRadius: "4px", marginBottom: "30px", fontStyle: "italic", color: "#444", fontSize: "0.9em" } }, rank.message), /* @__PURE__ */ React.createElement("button", { "data-testid": "day-end-next", onClick: handleEndDay, className: "vn-button-reveal", style: { ...buttonStyle2, width: "100%", maxWidth: "280px" } }, "次の営業へ")))
+        "data-testid": "day-end-next",
+        onClick: handleEndDay,
+        className: "vn-button-reveal",
+        style: {
+          ...buttonStyle2,
+          width: "80%",
+          maxWidth: "240px",
+          margin: "6px 0 8px 0",
+          zIndex: 10
+        }
+      },
+      "次の営業へ"
+    ))
   );
 };
 const GENRES = [
