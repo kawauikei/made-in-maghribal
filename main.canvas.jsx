@@ -1680,6 +1680,7 @@ const IntroScreen = ({
 }) => {
   const [heroineOpacity, setHeroineOpacity] = React.useState(0);
   const [heroineExpression, setHeroineExpression] = React.useState('normal');
+  const [nadirOpacity, setNadirOpacity] = React.useState(0); // Will be synced in handlePageChange or effect
   const visibleRef = React.useRef(false);
 
   // Transition management (generalizable wait & volume)
@@ -1759,10 +1760,21 @@ const IntroScreen = ({
     startBusinessPage
   ];
 
+  // Sync initial nadir visibility
+  React.useEffect(() => {
+    if (combinedPages[0]?.speakerId === 'nader') {
+      setNadirOpacity(1);
+    }
+  }, []);
+
   const handlePageChange = (index) => {
     const page = combinedPages[index];
     const isHeroinePage = page?.speakerId === activeHeroine.id;
+    const isNadirPage = page?.speakerId === 'nader';
     
+    if (isNadirPage) setNadirOpacity(1);
+    else if (isHeroinePage) setNadirOpacity(0);
+
     // Sync standing image expression with VNBox icon
     if (isHeroinePage && page?.expression) {
       setHeroineExpression(page.expression);
@@ -1827,7 +1839,7 @@ const IntroScreen = ({
             style={{ 
               height: '100%', width: 'auto', boxShadow: 'none',
               position: 'absolute',
-              opacity: 1 - heroineOpacity, 
+              opacity: nadirOpacity, 
               transition: 'opacity 0.3s ease-in-out'
             }}
           />
@@ -2202,20 +2214,20 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: 'none'
       }}
     >
-      {/* M-VN-SKIP-1: Floating Skip Button (Header Position) */}
+      {/* M-VN-SKIP-1: Floating Skip Button (Header Position, Half-Overlap) */}
       <div 
         onClick={handleSkipBlock}
         onMouseEnter={() => setHoverSkip(true)}
         onMouseLeave={() => setHoverSkip(false)}
         style={{
           position: 'absolute',
-          top: '-42px', // Floating higher, header-like
-          right: '24px',
-          padding: '6px 20px',
+          top: '-32px', // Half-overlap (same as speaker tag)
+          right: '24px', // Aligned with internal padding
+          padding: '4px 20px',
           borderRadius: '999px',
-          background: hoverSkip ? THEME.brass : 'rgba(12, 25, 38, 0.9)',
-          border: `1px solid ${hoverSkip ? THEME.brass : THEME.brass + '77'}`,
-          color: hoverSkip ? '#0c1926' : THEME.brass,
+          background: hoverSkip ? THEME.brass : 'rgba(12, 25, 38, 0.95)',
+          border: `1px solid ${hoverSkip ? THEME.brass : (themeColor || THEME.brass) + '77'}`,
+          color: hoverSkip ? '#0c1926' : (themeColor || THEME.brass),
           fontSize: '0.82em',
           fontWeight: '900',
           cursor: 'pointer',

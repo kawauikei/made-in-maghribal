@@ -64,6 +64,7 @@ const IntroScreen = ({
 }) => {
   const [heroineOpacity, setHeroineOpacity] = React.useState(0);
   const [heroineExpression, setHeroineExpression] = React.useState('normal');
+  const [nadirOpacity, setNadirOpacity] = React.useState(0); // Will be synced in handlePageChange or effect
   const visibleRef = React.useRef(false);
 
   // Transition management (generalizable wait & volume)
@@ -143,10 +144,21 @@ const IntroScreen = ({
     startBusinessPage
   ];
 
+  // Sync initial nadir visibility
+  React.useEffect(() => {
+    if (combinedPages[0]?.speakerId === 'nader') {
+      setNadirOpacity(1);
+    }
+  }, []);
+
   const handlePageChange = (index) => {
     const page = combinedPages[index];
     const isHeroinePage = page?.speakerId === activeHeroine.id;
+    const isNadirPage = page?.speakerId === 'nader';
     
+    if (isNadirPage) setNadirOpacity(1);
+    else if (isHeroinePage) setNadirOpacity(0);
+
     // Sync standing image expression with VNBox icon
     if (isHeroinePage && page?.expression) {
       setHeroineExpression(page.expression);
@@ -211,7 +223,7 @@ const IntroScreen = ({
             style={{ 
               height: '100%', width: 'auto', boxShadow: 'none',
               position: 'absolute',
-              opacity: 1 - heroineOpacity, 
+              opacity: nadirOpacity, 
               transition: 'opacity 0.3s ease-in-out'
             }}
           />
