@@ -7624,7 +7624,7 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     }
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace(target, colorName).replace("{type}", type.name);
   }
-  text = `${customer.icon} ${applyCustomerTone(text, customer.tone)}`;
+  text = applyCustomerTone(text, customer.tone);
   let correctItems = ITEMS_TO_USE.filter((item) => isItemMatchingCriteria(item, criteria));
   const nonDuplicateItems = correctItems.filter((item) => !excludeItemIds.has(item.id));
   if (nonDuplicateItems.length === 0 && correctItems.length > 0 && retryCount < MAX_RETRIES) {
@@ -8430,8 +8430,14 @@ const TEXT_SPEED_META = {
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
+const CustomerSilhouette = ({ customer }) => {
+  if (!customer) return null;
+  return /* @__PURE__ */ React.createElement("div", { className: "customer-silhouette", style: {
+    borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
+  } });
+};
 function App() {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -9013,6 +9019,45 @@ function App() {
       .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
       .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
 
+      /* Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON) */
+      .customer-silhouette {
+        position: relative;
+        display: inline-block;
+        width: 1.8em;
+        height: 1.8em;
+        border-radius: 999px;
+        background: rgba(35, 25, 18, 0.9);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: 2px solid rgba(218, 180, 96, 0.45);
+        flex: 0 0 auto;
+        vertical-align: middle;
+        margin-right: 12px;
+      }
+
+      .customer-silhouette::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 25%;
+        width: 0.52em;
+        height: 0.52em;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #f4e9d5;
+      }
+
+      .customer-silhouette::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 20%;
+        width: 1.0em;
+        height: 0.55em;
+        transform: translateX(-50%);
+        border-radius: 999px 999px 0.25em 0.25em;
+        background: #f4e9d5;
+      }
+
       @keyframes goldFlash {
         0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); border-color: ${THEME.brass}; }
         50% { box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0.8); border-color: #ffcc00; background: #fffdf0; }
@@ -9440,15 +9485,18 @@ function App() {
     } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, maxWidth: "800px", marginTop: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...customerStyle, marginBottom: "35px" } }, /* @__PURE__ */ React.createElement("div", { style: {
       ...bubbleStyle,
       background: "#fff",
-      color: ((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || "#333",
-      border: `2px solid ${((_d = currentQuestion.request.customer) == null ? void 0 : _d.color) || THEME.brassDark}`,
+      color: "#333",
+      // Static dark text for readability on white bubble
+      border: `2px solid ${((_c = currentQuestion.request.customer) == null ? void 0 : _c.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
       padding: "20px",
       fontSize: "1.1em",
       lineHeight: "1.6",
       boxShadow: "4px 4px 0 rgba(0,0,0,0.1)",
-      transition: "all 0.3s"
-    } }, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+      transition: "all 0.3s",
+      display: "flex",
+      alignItems: "center"
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
       gap: "24px",
@@ -9522,7 +9570,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_e = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _e.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_d = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _d.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
