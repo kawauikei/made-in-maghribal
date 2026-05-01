@@ -3094,6 +3094,74 @@ const IntroScreen = ({
     )))
   );
 };
+const RESULT_COMMENTS = {
+  hakima: {
+    perfect: [
+      "大成功ね。星瓶堂の目利き、なかなかやるじゃない。",
+      "ふん、悪くないわ。手つきも安定してきたじゃない。"
+    ],
+    good: [
+      "悪くないわね。客の話も、ちゃんと聞けていたわ。",
+      "まずまずよ。品を選ぶ感覚が、少しづつ戻ってきたわね。"
+    ],
+    ok: [
+      "もう少しね。焦らず相手の話を聞くところからよ。",
+      "惜しいわ。客の意図をつかめば、もっと楽になるわ。"
+    ],
+    bad: [
+      "品を見る前に、客の顔を見なさい。",
+      "今回はダメだったわ。でも、次で取り戻せばいい。"
+    ]
+  },
+  mira: {
+    perfect: [
+      "見事です、先輩。判断の再現性も高くなっています。",
+      "素晴らしいです。素材と依頼の対応が完璧でした。"
+    ],
+    good: [
+      "良い結果です。素材と依頼の対応が整理できていますね。",
+      "順調です、先輩。判断の根拠が少しずつ見えてきました。"
+    ],
+    ok: [
+      "あと少しです。判断材料を一つずつ確認しましょう。",
+      "大丈夫です、先輩。条件を分解すれば道は見えます。"
+    ],
+    bad: [
+      "焦らなくて大丈夫です。まず依頼条件を分解しましょう。",
+      "まだ早いだけです。素材の特徴から整理していきましょう。"
+    ]
+  },
+  dariya: {
+    perfect: [
+      "見事だ。今日の君の判断には、迷いが少なかった。",
+      "悪くない。精度も速度も、申し分ない。"
+    ],
+    good: [
+      "悪くない。客の意図を拾う手つきが安定している。",
+      "まずまずだ。判断の根拠が少しずつ固まってきたな。"
+    ],
+    ok: [
+      "もう一歩だな。判断の根拠を静かに積み上げるといい。",
+      "焦るな。条件を一つずつ確かめれば、道は開ける。"
+    ],
+    bad: [
+      "焦りが見えたな。まずは条件を一つずつ確かめよう。",
+      "今回は厳しかったな。だが、検証は次に活かせる。"
+    ]
+  }
+};
+function getResultComment(heroineId, correctCount, totalQuestions = 5) {
+  const comments = RESULT_COMMENTS[heroineId];
+  if (!comments) return "";
+  const ratio = correctCount / totalQuestions;
+  let tier;
+  if (ratio >= 1) tier = "perfect";
+  else if (ratio >= 0.6) tier = "good";
+  else if (ratio >= 0.4) tier = "ok";
+  else tier = "bad";
+  const pool = comments[tier];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 const ResultScreen = ({
   session,
   getRankInfo: getRankInfo2,
@@ -3126,14 +3194,8 @@ const ResultScreen = ({
   const correctCount = session.answers.filter((a) => a.isCorrect).length;
   getRankInfo2(correctCount);
   const mgmt = getWorkshopResult2(correctCount);
-  const resultNarrations = {
-    5: "大成功。星瓶堂の流れが、よく見えていたわ。",
-    4: "よくやったわ。手つきも安定してきたじゃない。",
-    3: "まずまずね。次の一手はもう見えてるでしょ。",
-    2: "もう少しよ。客の意図をつかめば、もっと楽になるわ。",
-    1: "惜しいわね。焦らず相手の話を聞くところからよ。",
-    0: "今回はダメだったわ。でも、次で取り戻せばいい。"
-  };
+  const totalQuestions = session.questions.length;
+  const comment = getResultComment(activeHeroine.id, correctCount, totalQuestions);
   return /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -3213,7 +3275,7 @@ const ResultScreen = ({
       color: THEME.textDark,
       lineHeight: "1.5",
       fontStyle: "italic"
-    } }, resultNarrations[correctCount]))), /* @__PURE__ */ React.createElement("div", { style: {
+    } }, comment))), /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle2,
       borderRadius: "10px",
       border: `2px solid ${THEME.brass}`,
