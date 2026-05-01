@@ -26,7 +26,7 @@ export const BACKGROUND_IMAGES = {
 export const STILL_IMAGES = {
   hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4, stillCrop: { objectPosition: "50% 35%", objectFit: "cover" } },
   hakimaFestivalNight01: { id: "hakimaFestivalNight01", title: "祭りの夜", label: "祭りの夜", heroineId: "hakima", src: "images/still/still_hakima_festival_night_01.jpg", focusX: 0.5, focusY: 0.5 },
-  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5 },
+  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5, stillCrop: { mode: "heroine_pan", objectFit: "cover", startPosition: "50% 45%", endPosition: "68% 38%", durationMs: 1200 } },
   hakimaRainShelter01: { id: "hakimaRainShelter01", title: "雨宿り", label: "雨宿り", heroineId: "hakima", src: "images/still/still_hakima_rain_shelter_01.jpg", focusX: 0.5, focusY: 0.5 },
   miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45, stillCrop: { objectPosition: "50% 40%", objectFit: "cover" } },
   miraAssignmentConsult01: { id: "miraAssignmentConsult01", title: "課題相談", label: "課題相談", heroineId: "mira", src: "images/still/still_mira_assignment_consult_01.jpg", focusX: 0.5, focusY: 0.5 },
