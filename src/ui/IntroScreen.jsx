@@ -102,6 +102,7 @@ const IntroScreen = ({
         <button 
           data-testid="intro-start" 
           onClick={onBeginService} 
+          className="vn-button-reveal"
           style={{ 
             ...buttonStyle, 
             width: '100%', 

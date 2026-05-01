@@ -100,6 +100,7 @@ const PrologueScreen = ({
           <button
             data-testid="prologue-next"
             onClick={onAdvanceToHeroineSelect}
+            className="vn-button-reveal"
             style={{ 
               ...buttonStyle, 
               width: '100%', 

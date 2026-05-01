@@ -1516,6 +1516,7 @@ const PrologueScreen = ({
           <button
             data-testid="prologue-next"
             onClick={onAdvanceToHeroineSelect}
+            className="vn-button-reveal"
             style={{ 
               ...buttonStyle, 
               width: '100%', 
@@ -1671,6 +1672,7 @@ const IntroScreen = ({
         <button 
           data-testid="intro-start" 
           onClick={onBeginService} 
+          className="vn-button-reveal"
           style={{ 
             ...buttonStyle, 
             width: '100%', 
@@ -1855,7 +1857,7 @@ const ResultScreen = ({
           <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
             {rank.message}
           </div>
-          <button data-testid="day-end-next" onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
+          <button data-testid="day-end-next" onClick={handleNextDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
         </div>
       </div>
     </div>
@@ -2937,6 +2939,15 @@ function App() {
       .quiz-option-0 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.1s; }
       .quiz-option-1 { animation: staggerIn 0.4s ease-out both; animation-delay: 0.25s; }
 
+      /* Story/VN Button Reveal (M-UI-TRANSITION-POLISH) */
+      @keyframes vn-button-reveal {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .vn-button-reveal {
+        animation: vn-button-reveal 0.25s ease-out forwards;
+      }
+
       /* Customer Silhouette Icon (M-QUIZ-SILHOUETTE-ICON) */
       .customer-silhouette {
         position: relative;
@@ -3198,8 +3209,8 @@ function App() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-            <button onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の営業へ</button>
-            <button onClick={handleBackToTitle} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
+            <button onClick={handleNextDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の営業へ</button>
+            <button onClick={handleBackToTitle} className="vn-button-reveal" style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
           </div>
         </div>
       </div>
@@ -3275,6 +3286,7 @@ function App() {
             <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '300px', marginTop: '20px' }}>
               <button 
                 onClick={handleCloseEvent} 
+                className="vn-button-reveal"
                 style={{ ...buttonStyle, flex: 1, margin: 0, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}` }}
               >
                 次へ
@@ -3282,6 +3294,7 @@ function App() {
               {seenEventIds.includes(activeEvent.id) && (
                 <button 
                   onClick={handleCloseEvent}
+                  className="vn-button-reveal"
                   style={{ ...buttonStyle, flex: 1, margin: 0, background: '#444', color: '#ccc', fontSize: '0.8em' }}
                 >
                   SKIP
@@ -3389,7 +3402,7 @@ function App() {
 
           <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10回の営業を締めくくり、次の一歩へ進みます。</p>
 
-          <button onClick={handleSeeEnding} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
+          <button onClick={handleSeeEnding} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
         </div>
       </div>
     );
@@ -3462,7 +3475,7 @@ function App() {
             />
           </div>
 
-          <button onClick={handleFinishGame} style={{ ...buttonStyle, marginBottom: '20px', width: '100%', maxWidth: '240px' }}>タイトルへ戻る</button>
+          <button onClick={handleFinishGame} className="vn-button-reveal" style={{ ...buttonStyle, marginBottom: '20px', width: '100%', maxWidth: '240px' }}>タイトルへ戻る</button>
         </div>
       </div>
     );

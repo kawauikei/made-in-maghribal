@@ -131,7 +131,7 @@ const ResultScreen = ({
           <div style={{ background: 'rgba(0,0,0,0.05)', padding: '15px', borderRadius: '4px', marginBottom: '30px', fontStyle: 'italic', color: '#444', fontSize: '0.9em' }}>
             {rank.message}
           </div>
-          <button data-testid="day-end-next" onClick={handleNextDay} style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
+          <button data-testid="day-end-next" onClick={handleNextDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>次の営業へ</button>
         </div>
       </div>
     </div>
