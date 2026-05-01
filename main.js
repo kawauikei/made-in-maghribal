@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef, useEffect, useImperativeHandle } from "react";
+import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
 const THEME = {
   sand: "#e2d1b1",
   parchment: "#f4e9d5",
@@ -233,8 +233,9 @@ class SimpleAudioEngine {
   /**
    * Play an SFX candidate (used in Sound Test)
    * @param {string} candidateId 
+   * @param {number} volumeScale - Optional multiplier (default 1.0)
    */
-  playSfxCandidate(candidateId) {
+  playSfxCandidate(candidateId, volumeScale = 1) {
     if (this.isMuted) return;
     const candidate = SFX_CANDIDATES.find((c) => c.id === candidateId);
     if (!candidate) {
@@ -244,7 +245,7 @@ class SimpleAudioEngine {
     const fullSrc = `${this.baseUrl}${candidate.src}`.replace(/([^:])\/\//g, "$1/");
     try {
       const sfx = new Audio(fullSrc);
-      const targetVol = (candidate.volume || 1) * this.seVolume * 1.5;
+      const targetVol = (candidate.volume || 1) * this.seVolume * 1.5 * volumeScale;
       sfx.volume = Math.max(0, Math.min(1, targetVol));
       if (candidate.start) {
         sfx.currentTime = candidate.start;
@@ -285,15 +286,16 @@ class SimpleAudioEngine {
   /**
    * Play a production-selected SFX by its functional key
    * @param {string} sfxKey - Key in SELECTED_SFX (e.g. "uiTapBottle")
+   * @param {number} volumeScale - Optional multiplier (default 1.0)
    */
-  playSfx(sfxKey) {
+  playSfx(sfxKey, volumeScale = 1) {
     if (this.isMuted) return;
     const candidateId = SELECTED_SFX[sfxKey];
     if (!candidateId) {
       console.warn(`No production SFX selected for key: ${sfxKey}`);
       return;
     }
-    this.playSfxCandidate(candidateId);
+    this.playSfxCandidate(candidateId, volumeScale);
   }
 }
 const audioEngine = new SimpleAudioEngine();
@@ -1510,7 +1512,7 @@ const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。" },
-      { speaker: "ハキマ", expression: "angry", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
+      { speaker: "ハキマ", expression: "anger", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
     ]
   },
   {
@@ -1548,9 +1550,9 @@ const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "angry", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
+      { speaker: "ハキマ", expression: "anger", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
       { speaker: "ナーディル", expression: "joy", text: "助かるよ。君の鼻があると、棚の品まで背筋が伸びる気がする。" },
-      { speaker: "ハキマ", expression: "surprised", text: "なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。" }
+      { speaker: "ハキマ", expression: "surprise", text: "なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。" }
     ]
   },
   {
@@ -1592,7 +1594,7 @@ const DAILY_TALKS = [
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。" },
       { speaker: "ナーディル", expression: "fun", text: "負けた時だけ、君は今よりずっと静かだった気がする。" },
-      { speaker: "ハキマ", expression: "angry", text: "余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。" }
+      { speaker: "ハキマ", expression: "anger", text: "余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。" }
     ]
   },
   {
@@ -1659,7 +1661,7 @@ const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "fun", text: "実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。" },
-      { speaker: "ミラ", expression: "surprised", text: "……意外ですか？ こういう迷い方くらい、私にもあります。" }
+      { speaker: "ミラ", expression: "surprise", text: "……意外ですか？ こういう迷い方くらい、私にもあります。" }
     ]
   },
   {
@@ -1673,7 +1675,7 @@ const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。" },
       { speaker: "ナーディル", expression: "normal", text: "なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。" },
-      { speaker: "ミラ", expression: "surprised", text: "……そういう考え方、先輩らしいです。少し、悔しいくらいに。" }
+      { speaker: "ミラ", expression: "surprise", text: "……そういう考え方、先輩らしいです。少し、悔しいくらいに。" }
     ]
   },
   {
@@ -1700,7 +1702,7 @@ const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "fun", text: "今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。" },
-      { speaker: "ナーディル", expression: "surprised", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
+      { speaker: "ナーディル", expression: "surprise", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
       { speaker: "ミラ", expression: "joy", text: "ありがとうございます。そう言われると、天才でいるより嬉しいです。" }
     ]
   },
@@ -2093,9 +2095,12 @@ const HeroineSelectScreen = ({
     opacity: 0.8
   } }));
 };
-const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
+  useEffect(() => {
+    onPageChange == null ? void 0 : onPageChange(pageIndex);
+  }, [pageIndex]);
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === "object" ? (currentPage == null ? void 0 : currentPage.text) || "" : currentPage || "";
   const currentSpeaker = typeof currentPage === "object" && (currentPage == null ? void 0 : currentPage.speaker) !== void 0 ? currentPage.speaker : speaker;
@@ -2199,52 +2204,68 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
     },
     currentSpeaker && /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      left: "10px",
-      top: "-8px",
+      left: "12px",
+      top: "-65px",
+      // Lifted higher to avoid VNBox overlap
       display: "flex",
-      alignItems: "center",
-      gap: "6px",
-      padding: "2px 10px 2px 2px",
-      height: "30px",
-      boxSizing: "border-box",
-      borderRadius: "999px",
-      background: "#0c1926",
-      // Opaque to cleanly overlap corner
-      border: `1px solid ${themeColor || THEME.brass}77`,
+      alignItems: "flex-end",
+      gap: "12px",
       zIndex: 10,
-      boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
-      backdropFilter: "blur(4px)"
+      pointerEvents: "none"
     } }, facePath && /* @__PURE__ */ React.createElement("div", { style: {
-      width: "26px",
-      height: "26px",
-      borderRadius: "50%",
+      width: "60px",
+      // 2/3 of previous 90px
+      height: "60px",
+      borderRadius: "12px",
       overflow: "hidden",
-      border: `1px solid ${themeColor || THEME.brass}88`,
-      background: "rgba(0,0,0,0.4)",
-      flexShrink: 0
+      border: `2px solid ${themeColor || THEME.brass}`,
+      background: "rgba(12, 25, 38, 0.95)",
+      flexShrink: 0,
+      boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
+      transform: "rotate(-2deg)",
+      // Slight tilt for flair
+      position: "relative"
     } }, /* @__PURE__ */ React.createElement(
       "img",
       {
         src: facePath,
         alt: currentSpeaker,
         style: {
-          width: "100%",
-          height: "100%",
+          width: "110%",
+          // Slight zoom for better focus
+          height: "110%",
           objectFit: "cover",
+          objectPosition: "center 20%",
           WebkitUserDrag: "none",
-          userSelect: "none"
+          userSelect: "none",
+          position: "absolute",
+          top: "-5%",
+          left: "-5%"
         },
         draggable: false,
         onError: (e) => {
           e.target.style.display = "none";
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.82em",
+    ), /* @__PURE__ */ React.createElement("div", { style: {
+      position: "absolute",
+      inset: 0,
+      border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: "14px",
+      pointerEvents: "none"
+    } })), /* @__PURE__ */ React.createElement("div", { style: {
+      padding: "4px 16px",
+      borderRadius: "999px",
+      background: "#0c1926",
+      border: `1px solid ${themeColor || THEME.brass}77`,
+      fontSize: "0.9em",
       color: themeColor || THEME.brass,
-      fontWeight: "700",
-      letterSpacing: "0.04em",
-      textShadow: "0 1px 2px rgba(0,0,0,0.5)"
+      fontWeight: "800",
+      letterSpacing: "0.06em",
+      textShadow: "0 2px 4px rgba(0,0,0,0.8)",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
+      marginBottom: "8px",
+      backdropFilter: "blur(8px)"
     } }, currentSpeaker)),
     /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: currentSpeaker ? "1.05em" : "1.1em",
@@ -2405,9 +2426,36 @@ const PrologueScreen = ({
     )))
   );
 };
+const GREETING_VARIATIONS = [
+  {
+    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラスの輝きも一段と増すだろうな……）`,
+    greeting: (h) => `「おはよう。朝から熱心ね。その顔、何か良い品でも入ったのかしら？」`,
+    response: (h) => `「いらっしゃい。ええ、ちょうど朝日に透かして見ていたところです」`,
+    farewell: `「ふふ、職人の目ね。それじゃ、私はこれで。今日も良い縁があるといいわね」`
+  },
+  {
+    monologue: (h) => `（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）`,
+    greeting: (h) => `「おはよう。あら、あなたもバテ気味？ 砂の熱に負けてちゃ、商売にならないわよ」`,
+    response: (h) => `「……おはようございます。面目ない。しっかり水分を摂って、シャキッとしないと」`,
+    farewell: `「そうよ。はい、これ。……それじゃ、私も仕事に戻るわ。無理しすぎないようにね」`
+  },
+  {
+    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、開店の準備だ）`,
+    greeting: (h) => `「いらっしゃい。今日は珍しく静かな朝ね。あなたの店も、心なしか落ち着いて見えるわ」`,
+    response: (h) => `「ええ、心地よい静寂です。たまにはこういう、ゆったりとした時間も悪くないですね」`,
+    farewell: `「ええ、同感よ。さて、私も行くわ。いい品ができるのを楽しみにしてる」`
+  },
+  {
+    monologue: (h) => `（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）`,
+    greeting: (h) => `「お疲れ様。熱心に素材を眺めて……何か新しいインスピレーションでも湧いた？」`,
+    response: (h) => `「いらっしゃい。ええ、曇天の下での輝きも、また一興だと思って見ていたんです」`,
+    farewell: `「流石は星瓶堂の店主ね。それじゃ、開店の邪魔はしないわ。また後でね」`
+  }
+];
 const IntroScreen = ({
   activeHeroine,
   activeDailyTalk,
+  day = 1,
   screen,
   routeMode,
   textSpeedMeta,
@@ -2430,28 +2478,50 @@ const IntroScreen = ({
   buttonStyle: buttonStyle2,
   narrativeBoxStyle: narrativeBoxStyle2
 }) => {
-  const baseIntroPages = [
-    {
-      speakerId: "nader",
-      speaker: "ナーディル",
-      text: `${activeHeroine.name}さん、いらっしゃい。今日も店に寄ってくれたのですね。`
-    },
-    {
-      speakerId: activeHeroine.id,
-      speaker: activeHeroine.name,
-      text: activeHeroine.greeting || "ええ、あなたの目利きを見せてもらおうと思って。"
-    },
-    {
-      speakerId: activeHeroine.id,
-      speaker: activeHeroine.name,
-      text: "それじゃ、私はこれで。今日も良い縁があるといいわね。頑張って。"
-    },
-    {
-      speakerId: "nader",
-      speaker: "ナーディル",
-      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+  const [heroineOpacity, setHeroineOpacity] = React.useState(0);
+  const [heroineExpression, setHeroineExpression] = React.useState("normal");
+  const visibleRef = React.useRef(false);
+  const TRANSITION_CONFIG = {
+    arrival: { delay: 0, sfx: "quizWrongSandTap", volumeScale: 0.5 },
+    departure: { delay: 500, sfx: "quizWrongSandTap", volumeScale: 0.5 }
+  };
+  const triggerTransition = (type, action) => {
+    const config = TRANSITION_CONFIG[type];
+    if (!config) {
+      action();
+      return;
     }
-  ];
+    setTimeout(() => {
+      action();
+      if (config.sfx && config.volumeScale !== void 0) {
+        audioEngine2.playSfx(config.sfx, config.volumeScale);
+      } else if (config.sfx) {
+        audioEngine2.playSfx(config.sfx);
+      }
+    }, config.delay);
+  };
+  const greetingIndex = (day - 1) % GREETING_VARIATIONS.length;
+  const variation = GREETING_VARIATIONS[greetingIndex];
+  const baseGreetingPage = {
+    speakerId: "nader",
+    speaker: "ナーディル",
+    text: variation.monologue(activeHeroine)
+  };
+  const arrivalPage = {
+    speakerId: activeHeroine.id,
+    speaker: activeHeroine.name,
+    text: variation.greeting(activeHeroine)
+  };
+  const farewellPage = {
+    speakerId: activeHeroine.id,
+    speaker: activeHeroine.name,
+    text: variation.farewell
+  };
+  const startBusinessPage = {
+    speakerId: "nader",
+    speaker: "ナーディル",
+    text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+  };
   const talkPages = ((activeDailyTalk == null ? void 0 : activeDailyTalk.pages) || []).map((page) => {
     if (page.speakerId) return page;
     let inferredId = null;
@@ -2459,7 +2529,44 @@ const IntroScreen = ({
     else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
     return { ...page, speakerId: inferredId };
   });
-  const combinedPages = [...talkPages, ...baseIntroPages];
+  let conversationPages = talkPages;
+  if (conversationPages.length === 0) {
+    conversationPages = [{
+      speakerId: "nader",
+      speaker: "ナーディル",
+      text: variation.response(activeHeroine)
+    }];
+  }
+  const combinedPages = [
+    baseGreetingPage,
+    arrivalPage,
+    ...conversationPages,
+    farewellPage,
+    startBusinessPage
+  ];
+  const handlePageChange = (index) => {
+    const page = combinedPages[index];
+    const isHeroinePage = (page == null ? void 0 : page.speakerId) === activeHeroine.id;
+    if (isHeroinePage && (page == null ? void 0 : page.expression)) {
+      setHeroineExpression(page.expression);
+    }
+    if (isHeroinePage && !visibleRef.current) {
+      triggerTransition("arrival", () => {
+        setHeroineOpacity(1);
+        visibleRef.current = true;
+      });
+    }
+  };
+  const handleInternalPageComplete = (data) => {
+    onPageComplete(data);
+    const isFarewellPage = data.pageIndex === combinedPages.length - 2;
+    if (isFarewellPage && visibleRef.current) {
+      triggerTransition("departure", () => {
+        setHeroineOpacity(0);
+        visibleRef.current = false;
+      });
+    }
+  };
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
   };
@@ -2474,26 +2581,52 @@ const IntroScreen = ({
     renderBackground(screen),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
-      bottom: "15%",
-      right: "0%",
+      bottom: "8%",
+      // Slightly lower for better grounding
+      left: 0,
+      width: "100%",
       zIndex: 2,
       pointerEvents: "none",
-      opacity: 1,
-      height: "68%",
+      height: "77%",
       display: "flex",
       alignItems: "flex-end",
+      justifyContent: "center",
       filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
-    } }, /* @__PURE__ */ React.createElement(
+    } }, /* @__PURE__ */ React.createElement("div", { style: { position: "relative", height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "flex-end" } }, /* @__PURE__ */ React.createElement(
+      HeroineDisplay2,
+      {
+        heroine: PROTAGONIST,
+        type: "standing",
+        size: "large",
+        expression: "normal",
+        noBorder: true,
+        style: {
+          height: "100%",
+          width: "auto",
+          boxShadow: "none",
+          position: "absolute",
+          opacity: 1 - heroineOpacity,
+          transition: "opacity 0.6s ease-in-out"
+        }
+      }
+    ), /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
       {
         heroine: activeHeroine,
         type: "standing",
         size: "large",
-        expression: "normal",
+        expression: heroineExpression,
         noBorder: true,
-        style: { height: "100%", width: "auto", boxShadow: "none" }
+        style: {
+          height: "100%",
+          width: "auto",
+          boxShadow: "none",
+          position: "absolute",
+          opacity: heroineOpacity,
+          transition: "opacity 0.6s ease-in-out"
+        }
       }
-    )),
+    ))),
     /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
@@ -2529,7 +2662,8 @@ const IntroScreen = ({
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed),
         getFaceIcon,
-        onPageComplete,
+        onPageChange: handlePageChange,
+        onPageComplete: handleInternalPageComplete,
         onComplete: () => onBeginService((activeDailyTalk == null ? void 0 : activeDailyTalk.id) || null)
       }
     )))
@@ -9124,6 +9258,8 @@ function App() {
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
+  const [eventHeroineExpression, setEventHeroineExpression] = useState("normal");
+  const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -9255,6 +9391,11 @@ function App() {
       setIsAudioGated(false);
     }
   }, [screen]);
+  useEffect(() => {
+    if (activeEvent) {
+      setEventHeroineExpression(activeEvent.expression || "normal");
+    }
+  }, [activeEvent]);
   useEffect(() => {
     if (screen !== "START") {
       saveGameData({
@@ -9914,6 +10055,7 @@ function App() {
       {
         activeHeroine,
         activeDailyTalk,
+        day: workshopState.day,
         screen,
         routeMode,
         textSpeedMeta,
@@ -10022,23 +10164,46 @@ function App() {
           e.target.parentNode.innerHTML = '<span style="color:#f44">Still Load Failed</span>';
         }
       }
-    )), !still && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement(
+    )), !still && /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "flex-end",
+      height: "450px",
+      marginBottom: "20px",
+      pointerEvents: "none",
+      filter: "drop-shadow(0 0 20px rgba(0,0,0,0.4))"
+    } }, /* @__PURE__ */ React.createElement(
       HeroineDisplay,
       {
         heroine: activeHeroine,
         type: "standing",
         size: "large",
-        expression: activeEvent.expression
+        expression: eventHeroineExpression
       }
     )), /* @__PURE__ */ React.createElement(
       VNBox,
       {
         ref: vnRef,
         speaker: activeEvent.speaker,
-        pages: getEventPages(activeEvent, routeMode),
+        pages: getEventPages(activeEvent, routeMode).map((page) => {
+          if (page.speakerId) return page;
+          let inferredId = null;
+          if (page.speaker === "ナーディル") inferredId = "nader";
+          else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+          return { ...page, speakerId: inferredId };
+        }),
         themeColor: activeHeroine.themeColor,
         speed: textSpeedMeta.delay,
         skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
+        getFaceIcon,
+        onPageChange: (index) => {
+          const pages = getEventPages(activeEvent, routeMode);
+          const page = pages[index];
+          if (page == null ? void 0 : page.expression) {
+            setEventHeroineExpression(page.expression);
+          }
+          setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
+        },
         onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "EVENT" }),
         onComplete: handleCloseEvent
       }
@@ -10192,10 +10357,17 @@ function App() {
         {
           ref: vnRef,
           speaker: activeHeroine.name,
-          pages: endingData.pages,
+          pages: endingData.pages.map((page) => {
+            if (page.speakerId) return page;
+            let inferredId = null;
+            if (page.speaker === "ナーディル") inferredId = "nader";
+            else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+            return { ...page, speakerId: inferredId };
+          }),
           themeColor: activeHeroine.themeColor,
           speed: textSpeedMeta.delay,
           skip: shouldSkipTypewriter(isInstantTextSpeed),
+          getFaceIcon,
           onPageComplete: ({ speaker, text }) => appendVnBacklog({ speaker, text, screen: "ENDING" }),
           onComplete: handleFinishGame
         }
