@@ -8525,6 +8525,7 @@ function App() {
   const [previewHeroineId, setPreviewHeroineId] = useState("hakima");
   const [workshopState, setWorkshopState] = useState(createInitialWorkshopState());
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [isAudioGated, setIsAudioGated] = useState(true);
   const [showSoundTest, setShowSoundTest] = useState(false);
   const [hasSave, setHasSave] = useState(() => {
     const data = loadSaveData();
@@ -8676,6 +8677,11 @@ function App() {
   }, []);
   useEffect(() => {
     if (screen !== "START") {
+      setIsAudioGated(false);
+    }
+  }, [screen]);
+  useEffect(() => {
+    if (screen !== "START") {
       saveGameData({
         screen: screen === "EVENT" ? "RESULT" : screen,
         // Fallback EVENT to RESULT for safety
@@ -8754,16 +8760,18 @@ function App() {
         trackId = `${hPrefix}-06`;
       }
     }
-    if (isAudioEnabled && trackId && TRACKS[trackId]) {
+    const isGatedOnStart = screen === "START" && isAudioGated;
+    if (isAudioEnabled && !isGatedOnStart && trackId && TRACKS[trackId]) {
       audioEngine.playTrack(TRACKS[trackId]);
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
   const isInstantTextSpeed = textSpeed === "instant" || instantUnreadText;
   const handleStartGame = () => {
+    setIsAudioGated(false);
     audioEngine.playSfx("uiGameStart");
     clearSaveData();
     setHasSave(false);
@@ -8778,6 +8786,7 @@ function App() {
     setScreen("PROLOGUE");
   };
   const handleContinue = () => {
+    setIsAudioGated(false);
     const data = loadSaveData();
     if (data) {
       audioEngine.playSfx("uiConfirmChime");
