@@ -3916,7 +3916,26 @@ function App() {
           onClick={handleVnAreaClick}
         >
           {renderThemeStyles()}
-          
+
+          {/* heroine_pan: inject dynamic keyframe for this still */}
+          {still.stillCrop?.mode === 'heroine_pan' && (() => {
+            const animName = `still-pan-${still.id}`;
+            const start = still.stillCrop.startPosition || '50% 50%';
+            const end   = still.stillCrop.endPosition   || '50% 50%';
+            const dur   = still.stillCrop.durationMs    || 1200;
+            return (
+              <style key={animName}>{`
+                @keyframes ${animName} {
+                  from { object-position: ${start}; }
+                  to   { object-position: ${end}; }
+                }
+                .still-pan-img-${still.id} {
+                  animation: ${animName} ${dur}ms ease-out forwards;
+                }
+              `}</style>
+            );
+          })()}
+
           {/* Large Still Image Background */}
           <div style={{
             position: 'absolute',
@@ -3930,11 +3949,14 @@ function App() {
             <img 
               src={getFullPath(still.src)} 
               alt={still.label}
+              className={still.stillCrop?.mode === 'heroine_pan' ? `still-pan-img-${still.id}` : undefined}
               style={{ 
                 width: '100%', 
                 height: '100%', 
                 objectFit: still.stillCrop?.objectFit || 'cover',
-                objectPosition: still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+                objectPosition: still.stillCrop?.mode === 'heroine_pan'
+                  ? still.stillCrop.startPosition || '50% 50%'
+                  : still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
               }}
               onError={(e) => {
                 e.target.style.display = 'none';
