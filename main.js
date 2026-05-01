@@ -3009,7 +3009,18 @@ const IntroScreen = ({
         onOpenOptions,
         onOpenHelp
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "24px 0 0 24px", textAlign: "left", maxWidth: "70%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: 0, fontSize: "1.2em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, activeHeroine.name, "との語らい")), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+    ), /* @__PURE__ */ React.createElement("h1", { style: {
+      ...titleStyle2,
+      position: "absolute",
+      top: "8px",
+      left: "12px",
+      margin: 0,
+      fontSize: "1.2em",
+      textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+      textAlign: "left",
+      maxWidth: "70%",
+      zIndex: 10
+    } }, activeHeroine.name, "との語らい"), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: 0,
@@ -3102,13 +3113,14 @@ const ResultScreen = ({
     ), /* @__PURE__ */ React.createElement("h1", { style: {
       ...titleStyle2,
       position: "absolute",
-      top: "24px",
-      left: "24px",
+      top: "8px",
+      left: "12px",
       margin: 0,
       color: THEME.nightBlue,
       fontSize: "1.2em",
       maxWidth: "70%",
-      textAlign: "left"
+      textAlign: "left",
+      zIndex: 10
     } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, borderRadius: "8px", border: `3px double ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "25px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(
       VNBox,
       {
@@ -10561,7 +10573,18 @@ function App() {
             onOpenOptions: () => setShowOptions(true),
             onOpenHelp: () => setShowHelp(true)
           }
-        ), /* @__PURE__ */ React.createElement("div", { style: { flex: "0 0 auto", padding: "24px 0 0 24px", textAlign: "left", maxWidth: "70%", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, margin: 0, fontSize: "1.2em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "愛着の記録: ", activeEvent.title)), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+        ), /* @__PURE__ */ React.createElement("h1", { style: {
+          ...titleStyle,
+          position: "absolute",
+          top: "8px",
+          left: "12px",
+          margin: 0,
+          fontSize: "1.2em",
+          textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+          textAlign: "left",
+          maxWidth: "70%",
+          zIndex: 10
+        } }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           bottom: 0,
@@ -10610,7 +10633,18 @@ function App() {
           onOpenOptions: () => setShowOptions(true),
           onOpenHelp: () => setShowHelp(true)
         }
-      ), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", textAlign: "left", padding: "24px 0 10px 24px", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle, margin: 0, fontSize: "1.2em", textShadow: "0 2px 4px rgba(0,0,0,0.5)" } }, "愛着の記録: ", activeEvent.title)), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: THEME.nightBlue, color: THEME.parchment } }, /* @__PURE__ */ React.createElement("div", { style: {
+      ), /* @__PURE__ */ React.createElement("h1", { style: {
+        ...titleStyle,
+        position: "absolute",
+        top: "8px",
+        left: "12px",
+        margin: 0,
+        fontSize: "1.2em",
+        textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+        textAlign: "left",
+        maxWidth: "70%",
+        zIndex: 10
+      } }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "40px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, background: THEME.nightBlue, color: THEME.parchment } }, /* @__PURE__ */ React.createElement("div", { style: {
         width: "100%",
         aspectRatio: "16 / 9",
         background: "#000",
@@ -10680,7 +10714,7 @@ function App() {
           style: { ...buttonStyle, flex: 1, margin: 0, background: "#444", color: "#ccc", fontSize: "0.8em" }
         },
         "SKIP"
-      ))));
+      )))));
     }
   } else if (screen === "VISUAL_TEST") {
     mainContent = /* @__PURE__ */ React.createElement(
