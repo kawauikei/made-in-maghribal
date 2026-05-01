@@ -1621,9 +1621,37 @@ const PrologueScreen = ({
 
 // --- Inlined: IntroScreen ---
 
+const GREETING_VARIATIONS = [
+  {
+    monologue: (h) => `（今日もいい天気だ。この日差しなら、ガラスの輝きも一段と増すだろうな……）`,
+    greeting: (h) => `「おはよう。朝から熱心ね。その顔、何か良い品でも入ったのかしら？」`,
+    response: (h) => `「いらっしゃい。ええ、ちょうど朝日に透かして見ていたところです」`,
+    farewell: `「ふふ、職人の目ね。それじゃ、私はこれで。今日も良い縁があるといいわね」`
+  },
+  {
+    monologue: (h) => `（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）`,
+    greeting: (h) => `「おはよう。あら、あなたもバテ気味？ 砂の熱に負けてちゃ、商売にならないわよ」`,
+    response: (h) => `「……おはようございます。面目ない。しっかり水分を摂って、シャキッとしないと」`,
+    farewell: `「そうよ。はい、これ。……それじゃ、私も仕事に戻るわ。無理しすぎないようにね」`
+  },
+  {
+    monologue: (h) => `（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、開店の準備だ）`,
+    greeting: (h) => `「いらっしゃい。今日は珍しく静かな朝ね。あなたの店も、心なしか落ち着いて見えるわ」`,
+    response: (h) => `「ええ、心地よい静寂です。たまにはこういう、ゆったりとした時間も悪くないですね」`,
+    farewell: `「ええ、同感よ。さて、私も行くわ。いい品ができるのを楽しみにしてる」`
+  },
+  {
+    monologue: (h) => `（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）`,
+    greeting: (h) => `「お疲れ様。熱心に素材を眺めて……何か新しいインスピレーションでも湧いた？」`,
+    response: (h) => `「いらっしゃい。ええ、曇天の下での輝きも、また一興だと思って見ていたんです」`,
+    farewell: `「流石は星瓶堂の店主ね。それじゃ、開店の邪魔はしないわ。また後でね」`
+  }
+];
+
 const IntroScreen = ({
   activeHeroine,
   activeDailyTalk,
+  day = 1,
   screen,
   routeMode,
   textSpeedMeta,
@@ -1646,28 +1674,59 @@ const IntroScreen = ({
   buttonStyle,
   narrativeBoxStyle
 }) => {
-  const baseIntroPages = [
-    { 
-      speakerId: 'nader', 
-      speaker: 'ナーディル', 
-      text: `${activeHeroine.name}さん、いらっしゃい。今日も店に寄ってくれたのですね。` 
-    },
-    { 
-      speakerId: activeHeroine.id, 
-      speaker: activeHeroine.name, 
-      text: activeHeroine.greeting || "ええ、あなたの目利きを見せてもらおうと思って。" 
-    },
-    {
-      speakerId: activeHeroine.id,
-      speaker: activeHeroine.name,
-      text: "それじゃ、私はこれで。今日も良い縁があるといいわね。頑張って。"
-    },
-    {
-      speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+  const [heroineOpacity, setHeroineOpacity] = React.useState(0);
+  const [heroineExpression, setHeroineExpression] = React.useState('normal');
+  const visibleRef = React.useRef(false);
+
+  // Transition management (generalizable wait & volume)
+  const TRANSITION_CONFIG = {
+    arrival: { delay: 0, sfx: 'quizWrongSandTap', volumeScale: 0.5 },
+    departure: { delay: 500, sfx: 'quizWrongSandTap', volumeScale: 0.5 }
+  };
+
+  const triggerTransition = (type, action) => {
+    const config = TRANSITION_CONFIG[type];
+    if (!config) {
+      action();
+      return;
     }
-  ];
+
+    setTimeout(() => {
+      action();
+      if (config.sfx && config.volumeScale !== undefined) {
+        audioEngine.playSfx(config.sfx, config.volumeScale);
+      } else if (config.sfx) {
+        audioEngine.playSfx(config.sfx);
+      }
+    }, config.delay);
+  };
+
+  const greetingIndex = (day - 1) % GREETING_VARIATIONS.length;
+  const variation = GREETING_VARIATIONS[greetingIndex];
+
+  const baseGreetingPage = {
+    speakerId: 'nader',
+    speaker: 'ナーディル',
+    text: variation.monologue(activeHeroine)
+  };
+
+  const arrivalPage = {
+    speakerId: activeHeroine.id,
+    speaker: activeHeroine.name,
+    text: variation.greeting(activeHeroine)
+  };
+
+  const farewellPage = {
+    speakerId: activeHeroine.id,
+    speaker: activeHeroine.name,
+    text: variation.farewell
+  };
+
+  const startBusinessPage = {
+    speakerId: 'nader',
+    speaker: 'ナーディル',
+    text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+  };
 
   // Fix: Ensure speakerId is present for icons in DailyTalk pages
   const talkPages = (activeDailyTalk?.pages || []).map(page => {
@@ -1678,7 +1737,53 @@ const IntroScreen = ({
     return { ...page, speakerId: inferredId };
   });
 
-  const combinedPages = [...talkPages, ...baseIntroPages];
+  // If no specific DailyTalk, use the generic response from variation
+  let conversationPages = talkPages;
+  if (conversationPages.length === 0) {
+    conversationPages = [{
+      speakerId: 'nader',
+      speaker: 'ナーディル',
+      text: variation.response(activeHeroine)
+    }];
+  }
+
+  const combinedPages = [
+    baseGreetingPage,
+    arrivalPage,
+    ...conversationPages,
+    farewellPage,
+    startBusinessPage
+  ];
+
+  const handlePageChange = (index) => {
+    const page = combinedPages[index];
+    const isHeroinePage = page?.speakerId === activeHeroine.id;
+    
+    // Sync standing image expression with VNBox icon
+    if (isHeroinePage && page?.expression) {
+      setHeroineExpression(page.expression);
+    }
+
+    if (isHeroinePage && !visibleRef.current) {
+      triggerTransition('arrival', () => {
+        setHeroineOpacity(1);
+        visibleRef.current = true;
+      });
+    }
+  };
+
+  const handleInternalPageComplete = (data) => {
+    onPageComplete(data);
+    
+    // Departure: If it's the second-to-last page (Heroine's Farewell), and it's completed:
+    const isFarewellPage = data.pageIndex === combinedPages.length - 2;
+    if (isFarewellPage && visibleRef.current) {
+       triggerTransition('departure', () => {
+         setHeroineOpacity(0);
+         visibleRef.current = false;
+       });
+    }
+  };
 
   const handleAreaClick = (e) => {
     onVnAreaClick(e);
@@ -1693,22 +1798,50 @@ const IntroScreen = ({
       {renderThemeStyles()}
       {renderBackground(screen)}
       
-      {/* Heroine Standing */}
+      {/* Character Standing (Centered, Cross-fade Priority) */}
       <div style={{ 
-        position: 'absolute', bottom: '15%', right: '0%', zIndex: 2, 
-        pointerEvents: 'none', opacity: 1,
-        height: '68%',
-        display: 'flex', alignItems: 'flex-end',
+        position: 'absolute', 
+        bottom: '8%', // Slightly lower for better grounding
+        left: 0,
+        width: '100%',
+        zIndex: 2, 
+        pointerEvents: 'none', 
+        height: '77%',
+        display: 'flex', 
+        alignItems: 'flex-end', 
+        justifyContent: 'center',
         filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
       }}>
-        <HeroineDisplay 
-          heroine={activeHeroine} 
-          type="standing" 
-          size="large" 
-          expression="normal" 
-          noBorder={true}
-          style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
-        />
+        <div style={{ position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+          {/* Nadir (Base/Fallback) */}
+          <HeroineDisplay 
+            heroine={NADER} 
+            type="standing" 
+            size="large" 
+            expression="normal" 
+            noBorder={true}
+            style={{ 
+              height: '100%', width: 'auto', boxShadow: 'none',
+              position: 'absolute',
+              opacity: 1 - heroineOpacity, 
+              transition: 'opacity 0.6s ease-in-out'
+            }}
+          />
+          {/* Heroine (Priority) */}
+          <HeroineDisplay 
+            heroine={activeHeroine} 
+            type="standing" 
+            size="large" 
+            expression={heroineExpression} 
+            noBorder={true}
+            style={{ 
+              height: '100%', width: 'auto', boxShadow: 'none',
+              position: 'absolute',
+              opacity: heroineOpacity,
+              transition: 'opacity 0.6s ease-in-out'
+            }}
+          />
+        </div>
       </div>
 
       <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -1758,7 +1891,8 @@ const IntroScreen = ({
             speed={textSpeedMeta.delay}
             skip={shouldSkipTypewriter(isInstantTextSpeed)}
             getFaceIcon={getFaceIcon}
-            onPageComplete={onPageComplete}
+            onPageChange={handlePageChange}
+            onPageComplete={handleInternalPageComplete}
             onComplete={() => onBeginService(activeDailyTalk?.id || null)}
           />
         </div>
@@ -1921,9 +2055,13 @@ const ResultScreen = ({
  * - speed: Typewriter delay (ms)
  * - skip: If true, renders text instantly
  */
-const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
+const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
   const [pageIndex, setPageIndex] = useState(0);
+  
+  useEffect(() => {
+    onPageChange?.(pageIndex);
+  }, [pageIndex]);
   
   const currentPage = pageList[pageIndex];
   const currentText = typeof currentPage === 'object' ? (currentPage?.text || "") : (currentPage || "");
@@ -2039,56 +2177,72 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
         borderBottom: 'none' // Tightly docked to bottom
       }}
     >
-      {/* Speaker Tag (Small Corner Hook) */}
+      {/* Speaker Tag (Floating Top-Left) */}
       {currentSpeaker && (
         <div style={{ 
           position: 'absolute',
-          left: '10px',
-          top: '-8px',
+          left: '12px',
+          top: '-65px', // Lifted higher to avoid VNBox overlap
           display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '2px 10px 2px 2px',
-          height: '30px',
-          boxSizing: 'border-box',
-          borderRadius: '999px',
-          background: '#0c1926', // Opaque to cleanly overlap corner
-          border: `1px solid ${themeColor || THEME.brass}77`,
+          alignItems: 'flex-end',
+          gap: '12px',
           zIndex: 10,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
-          backdropFilter: 'blur(4px)'
+          pointerEvents: 'none'
         }}>
           {facePath && (
             <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
+              width: '60px', // 2/3 of previous 90px
+              height: '60px',
+              borderRadius: '12px',
               overflow: 'hidden',
-              border: `1px solid ${themeColor || THEME.brass}88`,
-              background: 'rgba(0,0,0,0.4)',
-              flexShrink: 0
+              border: `2px solid ${themeColor || THEME.brass}`,
+              background: 'rgba(12, 25, 38, 0.95)',
+              flexShrink: 0,
+              boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
+              transform: 'rotate(-2deg)', // Slight tilt for flair
+              position: 'relative'
             }}>
               <img 
                 src={facePath} 
                 alt={currentSpeaker} 
                 style={{ 
-                  width: '100%', 
-                  height: '100%', 
+                  width: '110%', // Slight zoom for better focus
+                  height: '110%', 
                   objectFit: 'cover',
+                  objectPosition: 'center 20%',
                   WebkitUserDrag: 'none',
-                  userSelect: 'none'
+                  userSelect: 'none',
+                  position: 'absolute',
+                  top: '-5%',
+                  left: '-5%'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
+              {/* Inner bezel */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '14px',
+                pointerEvents: 'none'
+              }} />
             </div>
           )}
+          
           <div style={{ 
-            fontSize: '0.82em', 
+            padding: '4px 16px',
+            borderRadius: '999px',
+            background: '#0c1926',
+            border: `1px solid ${themeColor || THEME.brass}77`,
+            fontSize: '0.9em', 
             color: themeColor || THEME.brass, 
-            fontWeight: '700', 
-            letterSpacing: '0.04em',
-            textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+            fontWeight: '800', 
+            letterSpacing: '0.06em',
+            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+            marginBottom: '8px',
+            backdropFilter: 'blur(8px)'
           }}>
             {currentSpeaker}
           </div>
@@ -2340,6 +2494,8 @@ function App() {
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
+  const [eventHeroineExpression, setEventHeroineExpression] = useState('normal');
+  const [eventSpeakerId, setEventSpeakerId] = useState(null);
   const [isRecallMode, setIsRecallMode] = useState(false);
 
   // --- Asset Loading State (M8-28) ---
@@ -2494,6 +2650,13 @@ function App() {
       setIsAudioGated(false);
     }
   }, [screen]);
+
+  // Reset expression when activeEvent changes
+  useEffect(() => {
+    if (activeEvent) {
+      setEventHeroineExpression(activeEvent.expression || 'normal');
+    }
+  }, [activeEvent]);
 
   // Auto-Save
   useEffect(() => {
@@ -3265,6 +3428,7 @@ function App() {
       <IntroScreen
         activeHeroine={activeHeroine}
         activeDailyTalk={activeDailyTalk}
+        day={workshopState.day}
         screen={screen}
         routeMode={routeMode}
         textSpeedMeta={textSpeedMeta}
@@ -3405,22 +3569,45 @@ function App() {
           )}
           
             {!still && (
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'flex-end',
+                height: '450px',
+                marginBottom: '20px',
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.4))'
+              }}>
                 <HeroineDisplay 
                   heroine={activeHeroine} 
                   type="standing" 
                   size="large" 
-                  expression={activeEvent.expression} 
+                  expression={eventHeroineExpression} 
                 />
               </div>
             )}
             <VNBox 
               ref={vnRef}
               speaker={activeEvent.speaker}
-              pages={getEventPages(activeEvent, routeMode)}
+              pages={getEventPages(activeEvent, routeMode).map(page => {
+                if (page.speakerId) return page;
+                let inferredId = null;
+                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                return { ...page, speakerId: inferredId };
+              })}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+              getFaceIcon={getFaceIcon}
+              onPageChange={(index) => {
+                const pages = getEventPages(activeEvent, routeMode);
+                const page = pages[index];
+                if (page?.expression) {
+                  setEventHeroineExpression(page.expression);
+                }
+                setEventSpeakerId(page?.speakerId || null);
+              }}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'EVENT' })}
               onComplete={handleCloseEvent}
             />
@@ -3607,10 +3794,17 @@ function App() {
             <VNBox 
               ref={vnRef}
               speaker={activeHeroine.name}
-              pages={endingData.pages}
+              pages={endingData.pages.map(page => {
+                if (page.speakerId) return page;
+                let inferredId = null;
+                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                return { ...page, speakerId: inferredId };
+              })}
               themeColor={activeHeroine.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed)}
+              getFaceIcon={getFaceIcon}
               onPageComplete={({ speaker, text }) => appendVnBacklog({ speaker, text, screen: 'ENDING' })}
               onComplete={handleFinishGame}
             />

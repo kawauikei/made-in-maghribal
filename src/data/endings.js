@@ -1,7 +1,7 @@
 /**
  * Ending Scenario Definitions for Made in Maghribal
  */
-import { BACKGROUND_IMAGES } from './imageAssets';
+import { BACKGROUND_IMAGES } from './imageAssets.js';
 
 export const ENDINGS = {
   hakima: {

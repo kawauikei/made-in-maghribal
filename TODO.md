@@ -14,6 +14,8 @@
 - [x] **Narrative Flow Fix**: Implemented 4-part structure: Monologue -> Greeting -> Conversation -> Farewell.
 - [x] **Audit Registry Update**: Enhanced `dailyTalks.test.js` to support new metadata and types.
 - [x] **HTML Audit Report**: Automated report generation for narrative quality control.
+- [x] **Master Narrative Audit**: Consolidated audit tool (`tools/narrative_audit.js`) covering Greetings, Events, and Endings.
+- [x] **Writer Technical Specs**: Integrated system constraints (expression keys, narrative flow, display rules) into the audit report.
 
 ---
 
