@@ -142,6 +142,20 @@ const RhythmMock = ({ heroineId, themeColor }) => {
             opacity: 0.4 
           }} />
         ))}
+
+        {/* Scanline (Light Beam) - (M-RHYTHM-UI-SCANLINE) */}
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: '-12px',
+          bottom: '-12px',
+          width: '2px',
+          background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
+          boxShadow: `0 0 8px ${THEME.starGold}`,
+          opacity: 0.8,
+          zIndex: 2,
+          animation: 'beat-scanline 2s linear infinite'
+        }} />
         
         {/* Center Indicator (Target) */}
         <div 
@@ -160,7 +174,15 @@ const RhythmMock = ({ heroineId, themeColor }) => {
             zIndex: 3
           }} 
         >
-          <div className="beat-halo" />
+          {/* Inner Halo */}
+          <div style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
+            zIndex: -1
+          }} />
         </div>
       </div>
 
@@ -179,6 +201,21 @@ const RhythmMock = ({ heroineId, themeColor }) => {
       }}>
         <img src={heroineFace} alt="H" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
+
+      <style>{`
+        @keyframes beat-pulse {
+          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
+          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+        }
+        @keyframes beat-scanline {
+          0% { left: 0%; opacity: 0; }
+          10% { opacity: 0.8; }
+          90% { opacity: 0.8; }
+          100% { left: 100%; opacity: 0; }
+        }
+        .beat-pulse { animation: beat-pulse 0.5s ease-in-out infinite; }
+      `}</style>
     </div>
   );
 };
