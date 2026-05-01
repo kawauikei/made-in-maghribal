@@ -7502,11 +7502,11 @@ const MASTER_ITEMS = itemsData.items.map((item) => {
   const type = ITEM_TYPE_BY_ID[typeId];
   const colorId = item.principle;
   const colorPrefixMap = {
-    AS: "星明かりの",
-    EL: "青緑の",
-    LI: "生命の",
-    SA: "黄金の",
-    ME: "鋼鉄の"
+    AS: "星明かり",
+    EL: "青緑",
+    LI: "生命",
+    SA: "黄金",
+    ME: "鋼鉄"
   };
   const typeName = type ? type.name : "";
   const prefix = colorPrefixMap[colorId] || "";
@@ -7591,9 +7591,21 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     const genre = GENRES[Math.floor(Math.random() * GENRES.length)];
     criteria.genre = genre.id;
     let genreName = genre.name;
-    if (genre.id === "DAY") genreName = "一般雑貨の品";
-    if (genre.id === "TRD") genreName = "渡来品";
-    if (genre.id === "RIT") genreName = "厳かな儀式具";
+    if (genre.id === "DAY") {
+      const dayPhrases = ["日用品", "普段使いの品"];
+      genreName = dayPhrases[Math.floor(Math.random() * dayPhrases.length)];
+    }
+    if (genre.id === "TRD") {
+      const trdPhrases = ["渡来品", "遠方から入った品"];
+      genreName = trdPhrases[Math.floor(Math.random() * trdPhrases.length)];
+    }
+    if (genre.id === "RIT") {
+      const ritPhrases = ["儀式用の品", "儀礼の品"];
+      genreName = ritPhrases[Math.floor(Math.random() * ritPhrases.length)];
+    }
+    if (genre.id === "ADN") {
+      genreName = "アクセサリー";
+    }
     text = requestTemplate.templates[Math.floor(Math.random() * requestTemplate.templates.length)].replace("{genre}", genreName);
   } else if (requestTemplate.id === "itemType") {
     const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
@@ -9450,9 +9462,10 @@ function App() {
       let displayChoiceName = item.name;
       if (currentQuestion.request.type === "genre") {
         const category = item.id.split("_")[1];
-        if (category === "DAY") displayChoiceName = `【一般雑貨】${displayChoiceName}`;
-        if (category === "TRD") displayChoiceName = `【渡来品】${displayChoiceName}`;
-        if (category === "RIT") displayChoiceName = `【儀式】${displayChoiceName}`;
+        if (category === "DAY") displayChoiceName = `一般雑貨の${displayChoiceName}`;
+        if (category === "TRD") displayChoiceName = `貿易品の${displayChoiceName}`;
+        if (category === "RIT") displayChoiceName = `厳かな${displayChoiceName}`;
+        if (category === "ADN") displayChoiceName = `アクセサリーの${displayChoiceName}`;
       }
       return /* @__PURE__ */ React.createElement(
         "div",
