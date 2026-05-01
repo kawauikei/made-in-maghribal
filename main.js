@@ -8436,6 +8436,57 @@ const CustomerSilhouette = ({ customer }) => {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
 };
+const RhythmMock = ({ heroineId, themeColor }) => {
+  const naderFace = `./characters/nader/face_proc/normal.png`;
+  const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    width: "100%",
+    height: "60px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "15px",
+    margin: "10px 0",
+    pointerEvents: "none",
+    userSelect: "none"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    width: "42px",
+    height: "42px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `1px solid ${THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.8)",
+    opacity: 0.7,
+    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+    flexShrink: 0
+  } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    flex: 1,
+    maxWidth: "400px",
+    height: "2px",
+    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "20%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "40%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "16px",
+    height: "16px",
+    borderRadius: "50%",
+    border: `2px solid ${THEME.brass}`,
+    background: "rgba(255,255,255,0.1)",
+    boxShadow: `0 0 8px ${THEME.brass}88`
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "40%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: "20%", width: "6px", height: "6px", borderRadius: "50%", background: THEME.brass, opacity: 0.4 } })), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "42px",
+    height: "42px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `1px solid ${themeColor || THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.8)",
+    opacity: 0.7,
+    boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+    flexShrink: 0
+  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
+};
 function App() {
   var _a, _b, _c, _d;
   const [session, setSession] = useState(null);
@@ -9500,7 +9551,7 @@ function App() {
       alignItems: "center",
       justifyContent: "flex-start",
       textAlign: "left"
-    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
+    } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text))), /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor }), /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
       gap: "24px",
