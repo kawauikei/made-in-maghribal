@@ -748,7 +748,7 @@ const BACKGROUND_IMAGES = {
 const STILL_IMAGES = {
   hakimaMorningVisit01: { id: "hakimaMorningVisit01", title: "朝の来訪", label: "朝の来訪", heroineId: "hakima", src: "images/still/still_hakima_morning_visit_01.jpg", focusX: 0.5, focusY: 0.4, stillCrop: { objectPosition: "50% 35%", objectFit: "cover" } },
   hakimaFestivalNight01: { id: "hakimaFestivalNight01", title: "祭りの夜", label: "祭りの夜", heroineId: "hakima", src: "images/still/still_hakima_festival_night_01.jpg", focusX: 0.5, focusY: 0.5 },
-  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5 },
+  hakimaMarketArgument01: { id: "hakimaMarketArgument01", title: "市場の小競り合い", label: "市場の小競り合い", heroineId: "hakima", src: "images/still/still_hakima_market_argument_01.jpg", focusX: 0.5, focusY: 0.5, stillCrop: { mode: "heroine_pan", objectFit: "cover", startPosition: "50% 45%", endPosition: "68% 38%", durationMs: 1200 } },
   hakimaRainShelter01: { id: "hakimaRainShelter01", title: "雨宿り", label: "雨宿り", heroineId: "hakima", src: "images/still/still_hakima_rain_shelter_01.jpg", focusX: 0.5, focusY: 0.5 },
   miraAfterSchool01: { id: "miraAfterSchool01", title: "放課後", label: "放課後", heroineId: "mira", src: "images/still/still_mira_after_school_01.jpg", focusX: 0.5, focusY: 0.45, stillCrop: { objectPosition: "50% 40%", objectFit: "cover" } },
   miraAssignmentConsult01: { id: "miraAssignmentConsult01", title: "課題相談", label: "課題相談", heroineId: "mira", src: "images/still/still_mira_assignment_consult_01.jpg", focusX: 0.5, focusY: 0.5 },
@@ -9670,7 +9670,7 @@ const RhythmMock = ({ heroineId, themeColor }) => {
       `));
 };
 function App() {
-  var _a, _b, _c, _d, _e, _f;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -10691,6 +10691,21 @@ function App() {
           onClick: handleVnAreaClick
         },
         renderThemeStyles(),
+        ((_b = still.stillCrop) == null ? void 0 : _b.mode) === "heroine_pan" && (() => {
+          const animName = `still-pan-${still.id}`;
+          const start = still.stillCrop.startPosition || "50% 50%";
+          const end = still.stillCrop.endPosition || "50% 50%";
+          const dur = still.stillCrop.durationMs || 1200;
+          return /* @__PURE__ */ React.createElement("style", { key: animName }, `
+                @keyframes ${animName} {
+                  from { object-position: ${start}; }
+                  to   { object-position: ${end}; }
+                }
+                .still-pan-img-${still.id} {
+                  animation: ${animName} ${dur}ms ease-out forwards;
+                }
+              `);
+        })(),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           top: 0,
@@ -10704,11 +10719,12 @@ function App() {
           {
             src: getFullPath(still.src),
             alt: still.label,
+            className: ((_c = still.stillCrop) == null ? void 0 : _c.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
             style: {
               width: "100%",
               height: "100%",
-              objectFit: ((_b = still.stillCrop) == null ? void 0 : _b.objectFit) || "cover",
-              objectPosition: ((_c = still.stillCrop) == null ? void 0 : _c.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+              objectFit: ((_d = still.stillCrop) == null ? void 0 : _d.objectFit) || "cover",
+              objectPosition: ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_f = still.stillCrop) == null ? void 0 : _f.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
             },
             onError: (e) => {
               e.target.style.display = "none";
@@ -10882,7 +10898,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_d = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _d.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_g = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _g.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -11004,7 +11020,7 @@ function App() {
       width: "90%",
       background: "#fff",
       color: "#333",
-      border: `2px solid ${((_e = currentQuestion.request.customer) == null ? void 0 : _e.color) || THEME.brassDark}`,
+      border: `2px solid ${((_h = currentQuestion.request.customer) == null ? void 0 : _h.color) || THEME.brassDark}`,
       borderRadius: "15px 15px 15px 0",
       padding: "16px 20px",
       fontSize: "1em",
@@ -11097,7 +11113,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_f = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _f.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_i = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _i.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
