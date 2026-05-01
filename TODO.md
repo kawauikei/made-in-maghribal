@@ -14,6 +14,10 @@
 - [x] **Floating Face Icon**: Redesigned `VNBox` nameplate with a scaled-down (60px) floating icon at the top-left corner.
 - [x] **SFX Integration**: Added volume-scaled SFX (`quiz_wrong_sand_tap_01`) for character transitions.
 
+### [QA/Debug] M-GALLERY-TESTING
+- [x] **Typewriter Behavior Check**: Verified typewriter effect works correctly during Gallery/Memories recall for both Normal and Still events.
+- [x] **Debug Unlock Mode (M-GALLERY-TEST-UNLOCK-ALL)**: Implemented a safe `isUnlockAllDebug` toggle (default: true) for development/testing.
+
 ### [Data] DailyTalk Standardization
 - [x] **Expression Asset Sync**: Standardized all expression keys (`anger`, `surprise`, etc.) to match manifest.
 - [x] **Narrative Flow Fix**: Implemented 4-part structure: Monologue -> Greeting -> Conversation -> Farewell.
@@ -23,10 +27,6 @@
 ---
 
 ## 🟦 In Progress / Next Steps
-
-### [QA/Debug] M-GALLERY-TESTING
-- [ ] **Typewriter Behavior Check**: Verify if typewriter effect works correctly during Gallery/Memories recall. Investigate potential logic difference between normal play and recall mode.
-- [ ] **Debug Unlock Mode**: Implement a safe `M-GALLERY-TEST-UNLOCK-ALL` toggle for development/testing without corrupting user seenEventIds.
 
 ### [Content] DailyTalk Phase 1 Expansion
 - [ ] **Affection 5/10 Short Exchanges**: Add 1-2 short exchanges per heroine to bridge the relationship gap.
