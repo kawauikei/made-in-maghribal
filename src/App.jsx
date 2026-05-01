@@ -27,6 +27,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
+import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence } from './game/introFlow';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
@@ -256,30 +257,20 @@ export default function App() {
   const [showHelp, setShowHelp] = useState(false);
   
   // DEBUG Mode (M-GALLERY-TEST-UNLOCK-ALL)
-  const [isUnlockAllDebug] = useState(() => {
-    if (typeof localStorage === 'undefined') return true;
-    const val = localStorage.getItem('made_in_maghribal_debug_unlock_all');
-    return val !== 'false'; // Default to true unless explicitly 'false'
-  });
+  const [isUnlockAllDebug] = useState(() => loadDebugUnlockAllEnabled());
 
   // Persistent Debug/Assist Mode (M-DEBUG-PANEL-PERSISTENCE)
-  const [debugModeEnabled, setDebugModeEnabled] = useState(() => {
-    if (typeof localStorage === 'undefined') return false;
-    return localStorage.getItem('made_in_maghribal_debug_mode') === 'true';
-  });
+  const [debugModeEnabled, setDebugModeEnabled] = useState(() => loadDebugModeEnabled());
 
-  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => {
-    if (typeof localStorage === 'undefined') return false;
-    return localStorage.getItem('made_in_maghribal_auto_skip_quiz') === 'true';
-  });
+  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => loadAutoSkipQuizEnabled());
 
   // Sync debug states to localStorage
   useEffect(() => {
-    localStorage.setItem('made_in_maghribal_debug_mode', debugModeEnabled);
+    saveDebugModeEnabled(debugModeEnabled);
   }, [debugModeEnabled]);
 
   useEffect(() => {
-    localStorage.setItem('made_in_maghribal_auto_skip_quiz', autoSkipQuiz);
+    saveAutoSkipQuizEnabled(autoSkipQuiz);
   }, [autoSkipQuiz]);
 
   // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
