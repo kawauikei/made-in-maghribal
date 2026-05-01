@@ -152,6 +152,21 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
 
   const facePath = currentSpeakerId && getFaceIcon ? getFaceIcon(currentSpeakerId, 'face', currentExpression) : null;
 
+  // B-2: Face Icon transition logic
+  const [displayFace, setDisplayFace] = useState(facePath);
+  const [prevFace, setPrevFace] = useState(null);
+  const [isFaceLoaded, setIsFaceLoaded] = useState(false);
+
+  useEffect(() => {
+    if (facePath !== displayFace) {
+      setPrevFace(displayFace);
+      setDisplayFace(facePath);
+      setIsFaceLoaded(false); // Reset load state
+      const timer = setTimeout(() => setPrevFace(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [facePath]);
+
   const headerButtonStyle = {
     padding: '6px 20px',
     borderRadius: '999px',
@@ -224,7 +239,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           gap: '12px',
           pointerEvents: 'none'
         }}>
-          {currentSpeaker && facePath && (
+          {currentSpeaker && displayFace && (
             <div style={{
               width: '60px',
               height: '60px',
@@ -238,10 +253,30 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
               position: 'relative',
               pointerEvents: 'auto'
             }}>
+              {/* Prev Face (Fade Out) */}
+              {prevFace && (
+                <img 
+                  src={prevFace} 
+                  alt="prev face" 
+                  style={{ 
+                    width: '110%', 
+                    height: '110%', 
+                    objectFit: 'cover',
+                    objectPosition: 'center 20%',
+                    position: 'absolute',
+                    top: '-5%',
+                    left: '-5%',
+                    zIndex: 1,
+                    animation: 'vn-fade-out 0.2s forwards'
+                  }}
+                />
+              )}
+              {/* Current Face (Fade In) */}
               <img 
-                key={facePath} 
-                src={facePath} 
+                key={displayFace} 
+                src={displayFace} 
                 alt={currentSpeaker} 
+                onLoad={() => setIsFaceLoaded(true)}
                 style={{ 
                   width: '110%', 
                   height: '110%', 
@@ -252,7 +287,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                   position: 'absolute',
                   top: '-5%',
                   left: '-5%',
-                  animation: 'vn-fade-in 0.2s ease'
+                  zIndex: 2,
+                  opacity: isFaceLoaded ? 1 : 0,
+                  animation: isFaceLoaded ? 'vn-fade-in 0.2s ease' : 'none'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -262,17 +299,21 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                 inset: 0,
                 border: '1px solid rgba(255,255,255,0.1)',
                 borderRadius: '14px',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 3
               }} />
             </div>
           )}
           
           {currentSpeaker && (
-            <div style={{ 
-              ...headerButtonStyle,
-              pointerEvents: 'auto',
-              animation: 'vn-fade-in 0.2s ease'
-            }}>
+            <div 
+              key={currentSpeaker}
+              style={{ 
+                ...headerButtonStyle,
+                pointerEvents: 'auto',
+                animation: 'vn-fade-in 0.2s ease'
+              }}
+            >
               {currentSpeaker}
             </div>
           )}

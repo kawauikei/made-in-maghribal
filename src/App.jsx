@@ -1004,6 +1004,10 @@ export default function App() {
         animation: vn-button-reveal 0.25s ease-out forwards;
       }
 
+      /* VN Global Fade Animations (B-2) */
+      @keyframes vn-fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes vn-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
       /* Beat Lane Pulse & Halo (M-RHYTHM-UI-1-POLISH) */
       @keyframes beat-lane-pulse {
         0%, 100% { transform: scale(1); filter: brightness(1); box-shadow: 0 0 8px ${THEME.brass}88; }
@@ -1922,8 +1926,27 @@ export default function App() {
 
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
   const [imgError, setImgError] = useState(false);
-  const assetPath = getHeroineAsset(heroine.id, type, expression);
+  const [displayExpr, setDisplayExpr] = useState(expression);
+  const [prevExpr, setPrevExpr] = useState(null);
+  const [isCurrentLoaded, setIsCurrentLoaded] = useState(false);
+  
+  // B-2: Expression transition logic
+  useEffect(() => {
+    if (expression !== displayExpr) {
+      setPrevExpr(displayExpr);
+      setDisplayExpr(expression);
+      setIsCurrentLoaded(false); // Reset load state for new expression
+      const timer = setTimeout(() => setPrevExpr(null), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [expression]);
+
+  const assetPath = getHeroineAsset(heroine.id, type, displayExpr);
   const fullPath = assetPath ? `${import.meta.env.BASE_URL}${assetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+
+  const prevAssetPath = prevExpr ? getHeroineAsset(heroine.id, type, prevExpr) : null;
+  const prevFullPath = prevAssetPath ? `${import.meta.env.BASE_URL}${prevAssetPath}`.replace(/([^:])\/\//g, '$1/') : null;
+
   const isStanding = type === 'standing';
   
   const displaySize = size === 'large' 
@@ -1972,10 +1995,31 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
 
   return (
     <div style={containerStyle}>
+      {/* Prev Expression (Fade Out) */}
+      {prevFullPath && (
+        <img 
+          src={prevFullPath} 
+          alt="previous expression"
+          style={{ 
+            ...imgStyle, 
+            position: 'absolute', 
+            zIndex: 1,
+            animation: 'vn-fade-out 0.2s forwards' 
+          }} 
+        />
+      )}
+      {/* Current Expression (Fade In) */}
       <img 
+        key={displayExpr}
         src={fullPath} 
         alt={heroine.name} 
-        style={imgStyle}
+        onLoad={() => setIsCurrentLoaded(true)}
+        style={{ 
+          ...imgStyle, 
+          zIndex: 2,
+          opacity: isCurrentLoaded ? 1 : 0,
+          animation: isCurrentLoaded ? 'vn-fade-in 0.2s forwards' : 'none' 
+        }}
         draggable={false}
         onError={() => setImgError(true)}
       />
