@@ -2847,9 +2847,10 @@ const IntroScreen = ({
     const isHeroinePage = (page == null ? void 0 : page.speakerId) === activeHeroine.id;
     const isNadirPage = (page == null ? void 0 : page.speakerId) === "nader";
     if (isNadirPage) {
-      setNadirOpacity(1);
-      setHeroineOpacity(0);
-      visibleRef.current = false;
+      if (!visibleRef.current) {
+        setNadirOpacity(1);
+        setHeroineOpacity(0);
+      }
     } else if (isHeroinePage) {
       setNadirOpacity(0);
     }
