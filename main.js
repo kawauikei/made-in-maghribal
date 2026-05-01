@@ -1857,18 +1857,10 @@ const PrologueScreen = ({
         }
       },
       "星瓶堂へ進む"
-    ))), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: "0 0 auto",
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      paddingBottom: "0",
-      // Docked to bottom
+    ))), /* @__PURE__ */ React.createElement("div", { className: "vn-dock", style: {
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
-      // Full width dock
       boxSizing: "border-box",
       position: "relative"
     } }, /* @__PURE__ */ React.createElement(
@@ -1989,18 +1981,10 @@ const IntroScreen = ({
         }
       },
       "営業を始める"
-    ))), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: "0 0 auto",
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      paddingBottom: "0",
-      // Docked to bottom
+    ))), /* @__PURE__ */ React.createElement("div", { className: "vn-dock", style: {
       background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       width: "100%",
-      // Full width dock
       boxSizing: "border-box",
       position: "relative"
     } }, /* @__PURE__ */ React.createElement(
@@ -8790,6 +8774,11 @@ function App() {
   const renderThemeStyles = () => /* @__PURE__ */ React.createElement("style", null, `
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap');
       
+      :root {
+        --app-visible-height: 100vh;
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
       .game-root {
         font-family: 'Outfit', 'Inter', sans-serif;
         color: ${THEME.parchment};
@@ -8811,6 +8800,19 @@ function App() {
         touch-action: manipulation;
         cursor: pointer;
         WebkitTapHighlightColor: transparent;
+      }
+
+      /* M-UI-MOBILE-VIEWPORT-1: Docked VNBox positioning */
+      .vn-dock {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: var(--safe-bottom, 0px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 50;
       }
 
       img {
