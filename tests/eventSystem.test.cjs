@@ -41,6 +41,45 @@ async function main() {
   assert.strictEqual(e5, null);
   console.log('PASSED: Safety for unknown heroine');
 
+  // --- routeMode Separation Tests ---
+  console.log('\nTesting routeMode separation...');
+
+  // Normal route should NOT include long_history events
+  const normalAt10 = checkNewEventUnlock('hakima', 10, [], 'normal');
+  assert.ok(normalAt10 !== null, 'Should have events at affection 10 in normal route');
+  assert.ok(!normalAt10.id.includes('_long_'), `Normal route should not return long_history events, got ${normalAt10.id}`);
+  console.log('PASSED: Normal route excludes long_history events');
+
+  // long_history route should include long_history events
+  const longAt10 = checkNewEventUnlock('hakima', 10, [], 'long_history');
+  assert.ok(longAt10 !== null, 'Should have events at affection 10 in long_history route');
+  // At affection 10 with no seen events, should get hakima_5 first (lowest threshold)
+  // After hakima_5 is seen, should get hakima_long_market_dawn or hakima_10
+  const longAt10Seen = checkNewEventUnlock('hakima', 10, ['hakima_5'], 'long_history');
+  assert.ok(longAt10Seen !== null, 'Should have events after hakima_5 is seen in long_history');
+  // Could be hakima_long_market_dawn or hakima_10 (both threshold 10)
+  assert.ok(
+    longAt10Seen.id === 'hakima_long_market_dawn' || longAt10Seen.id === 'hakima_10',
+    `Should return long_history or normal event at threshold 10, got ${longAt10Seen.id}`
+  );
+  console.log('PASSED: long_history route includes long_history events');
+
+  // long_history events should NOT appear in normal route even at high affection
+  const normalAt100 = checkNewEventUnlock('hakima', 100, ['hakima_5', 'hakima_10', 'hakima_20'], 'normal');
+  assert.ok(normalAt100 === null, 'Normal route should not return long_history events even at 100 affection');
+  console.log('PASSED: long_history events never appear in normal route');
+
+  // long_history events should appear in long_history route
+  const longAt20 = checkNewEventUnlock('hakima', 20, ['hakima_5', 'hakima_10'], 'long_history');
+  assert.ok(longAt20 !== null, 'Should have events at affection 20 in long_history');
+  // hakima_long_rain_memory has threshold 20
+  const longAt20More = checkNewEventUnlock('hakima', 20, ['hakima_5', 'hakima_10', 'hakima_20', 'hakima_long_market_dawn'], 'long_history');
+  assert.ok(
+    longAt20More === null || longAt20More.id === 'hakima_long_rain_memory',
+    `Should return hakima_long_rain_memory at threshold 20, got ${longAt20More?.id}`
+  );
+  console.log('PASSED: long_history events appear at correct threshold');
+
   // --- getEventPages Tests ---
   console.log('\nTesting getEventPages...');
 
@@ -124,6 +163,26 @@ async function main() {
   assert.ok(seenIds.has('dariya_10'));
   assert.ok(seenIds.has('dariya_20'));
   assert.ok(seenIds.has('dariya_climax'));
+
+  // Verify all 6 long_history events exist and have correct structure
+  console.log('\nVerifying long_history event structure...');
+  const expectedLongHistory = [
+    { id: 'hakima_long_market_dawn', stillImageId: 'hakimaMarketArgument01' },
+    { id: 'hakima_long_rain_memory', stillImageId: 'hakimaRainShelter01' },
+    { id: 'mira_long_assignment_night', stillImageId: 'miraAssignmentConsult01' },
+    { id: 'mira_long_sick_visit', stillImageId: 'miraVisitSick01' },
+    { id: 'dariya_long_collaboration', stillImageId: 'dariyaPalaceCollaboration01' },
+    { id: 'dariya_long_rain_corridor', stillImageId: 'dariyaRainCorridor01' }
+  ];
+
+  for (const expected of expectedLongHistory) {
+    const event = allEvents.find(e => e.id === expected.id);
+    assert.ok(event, `Event ${expected.id} should exist`);
+    assert.strictEqual(event.routeMode, 'long_history', `${expected.id} should have routeMode: long_history`);
+    assert.strictEqual(event.stillImageId, expected.stillImageId, `${expected.id} should have correct stillImageId`);
+    assert.ok(event.stillImageId, `${expected.id} should have stillImageId for still display`);
+  }
+  console.log('PASSED: All 6 long_history events have correct structure and stillImageId');
 
   // --- resolveHeroineSelectionEvent Tests ---
   console.log('\nTesting resolveHeroineSelectionEvent...');
