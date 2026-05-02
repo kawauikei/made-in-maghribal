@@ -12,7 +12,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const output = join(__dirname, '../docs/dariya-copy-pack.md');
+const output = join(__dirname, '../.temp/copy_pack_dariya.md');
 
 // ダリヤエントリーをフィルタ
 const dariyaDailyTalks = DAILY_TALKS.filter(t => t.heroineId === 'dariya');
