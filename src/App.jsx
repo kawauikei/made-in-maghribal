@@ -160,6 +160,8 @@ export default function App() {
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null); // M-SCENARIO-DAILYTALK-RUNTIME-1: Track next screen after DailyTalk
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0); // Track current page index for expression sync
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE); // M-TIME-PHASE-UI-1: Current time phase
+  const [isBackgroundTransitioning, setIsBackgroundTransitioning] = useState(false); // M-EVENT-PRESENTATION-FIX-1: Dark overlay for background transition
+  const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0); // M-EVENT-PRESENTATION-FIX-1: Track current page for heroine visibility
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -170,6 +172,7 @@ export default function App() {
   const vnRef = useRef(null);
   const debugAutoSkipAppliedRef = useRef(false);
   const memoriesScrollPositionRef = useRef(0); // M-MEMORIES-UX-POLISH-1-FIX-1: Store scroll position for MEMORIES screen
+  const prevEventBackgroundRef = useRef(null); // M-EVENT-PRESENTATION-FIX-1: Track previous background for fallback
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -537,9 +540,11 @@ export default function App() {
     }
 
     setActiveEvent(null);
+    setEventCurrentPageIndex(0); // M-EVENT-PRESENTATION-FIX-1: Reset page index
 
     if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
+      prevEventBackgroundRef.current = null; // M-EVENT-PRESENTATION-FIX-1: Reset background tracking
     }
 
     switch (nextScreen) {
@@ -669,6 +674,9 @@ export default function App() {
     setTimeout(() => {
       setIsHeroineLoading(false);
       if (flashbackEvent) {
+        setEventBackgroundOverride(null);
+        prevEventBackgroundRef.current = null;
+        setEventCurrentPageIndex(0);
         setActiveEvent(flashbackEvent);
         setScreen('EVENT');
       } else {
@@ -806,6 +814,8 @@ export default function App() {
   const handleRecallEventFromMemories = (event) => {
     audioEngine.playSfx('uiConfirmChime');
     setEventBackgroundOverride(null); // Clear any stale override
+    prevEventBackgroundRef.current = null; // Reset background tracking
+    setEventCurrentPageIndex(0); // Reset page index
     setActiveEvent(event);
     setIsRecallMode(true);
     setActiveHeroineId(event.heroineId);
@@ -1450,6 +1460,17 @@ export default function App() {
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
+      // M-EVENT-PRESENTATION-FIX-1: Hide heroine for flashback_intro narration pages
+      const shouldShowHeroine = (() => {
+        if (activeEvent.kind === 'flashback_intro') {
+          const pages = getEventPages(activeEvent, routeMode);
+          const currentPage = pages[eventCurrentPageIndex];
+          // Show heroine only when speaker is the active heroine
+          return currentPage?.speakerId === activeHeroine.id;
+        }
+        return true;
+      })();
+      
       mainContent = (
         <div 
           data-testid="event-screen-normal" 
@@ -1458,6 +1479,22 @@ export default function App() {
         >
           {renderThemeStyles()}
           {renderBackground(screen)}
+          
+          {/* M-EVENT-PRESENTATION-FIX-1: Dark overlay for background transition */}
+          {isBackgroundTransitioning && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.95)',
+              zIndex: 100,
+              pointerEvents: 'none',
+              transition: 'opacity 0.15s ease',
+              opacity: isBackgroundTransitioning ? 1 : 0
+            }} />
+          )}
           
           <div style={{ 
             position: 'absolute', 
@@ -1470,7 +1507,9 @@ export default function App() {
             display: 'flex', 
             alignItems: 'flex-end', 
             justifyContent: 'center',
-            filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
+            filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))',
+            opacity: shouldShowHeroine ? 1 : 0,
+            transition: 'opacity 0.2s ease'
           }}>
              <HeroineDisplay 
                 heroine={activeHeroine} 
@@ -1520,6 +1559,7 @@ export default function App() {
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
+                  setEventCurrentPageIndex(index); // M-EVENT-PRESENTATION-FIX-1: Track page for heroine visibility
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
                   // Only update heroine expression when the speaker is the active heroine
@@ -1527,8 +1567,21 @@ export default function App() {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
-                  if (page?.backgroundId) {
-                    setEventBackgroundOverride(page.backgroundId);
+                  
+                  // M-EVENT-PRESENTATION-FIX-1: Background with fallback and dark transition
+                  const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
+                  if (newBgId && newBgId !== eventBackgroundOverride) {
+                    // Start dark overlay transition
+                    setIsBackgroundTransitioning(true);
+                    setTimeout(() => {
+                      setEventBackgroundOverride(newBgId);
+                      prevEventBackgroundRef.current = newBgId;
+                      setTimeout(() => {
+                        setIsBackgroundTransitioning(false);
+                      }, 80); // Hold black for 80ms
+                    }, 150); // Fade out 150ms
+                  } else if (newBgId) {
+                    prevEventBackgroundRef.current = newBgId;
                   }
                 }}
                 onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
@@ -1658,6 +1711,7 @@ export default function App() {
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
+                  setEventCurrentPageIndex(index); // M-EVENT-PRESENTATION-FIX-1: Track page for heroine visibility
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
                   // Only update heroine expression when the speaker is the active heroine
@@ -1665,8 +1719,21 @@ export default function App() {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
-                  if (page?.backgroundId) {
-                    setEventBackgroundOverride(page.backgroundId);
+                  
+                  // M-EVENT-PRESENTATION-FIX-1: Background with fallback and dark transition
+                  const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
+                  if (newBgId && newBgId !== eventBackgroundOverride) {
+                    // Start dark overlay transition
+                    setIsBackgroundTransitioning(true);
+                    setTimeout(() => {
+                      setEventBackgroundOverride(newBgId);
+                      prevEventBackgroundRef.current = newBgId;
+                      setTimeout(() => {
+                        setIsBackgroundTransitioning(false);
+                      }, 80); // Hold black for 80ms
+                    }, 150); // Fade out 150ms
+                  } else if (newBgId) {
+                    prevEventBackgroundRef.current = newBgId;
                   }
                 }}
                 onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
