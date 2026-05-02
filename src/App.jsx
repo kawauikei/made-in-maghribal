@@ -1328,6 +1328,20 @@ export default function App() {
     );
   } else if (screen === 'DAILY_TALK' && activeDailyTalk) {
     // M-SCENARIO-DAILYTALK-RUNTIME-1: DailyTalk display screen (for after_result / day_end)
+    // M-DAILYTALK-HEROINE-FILTER-1: Safety check - ensure talk matches active heroine
+    const talkHeroineId = activeDailyTalk.heroineId;
+    const talkScope = activeDailyTalk.scope;
+    const isTalkValid = talkScope === 'common' || talkScope === 'nader' || talkHeroineId === activeHeroineId;
+    
+    if (!isTalkValid) {
+      // Talk doesn't match active heroine - skip to next screen
+      console.warn(`[DAILY_TALK] Talk ${activeDailyTalk.id} has heroineId "${talkHeroineId}" but active heroine is "${activeHeroineId}". Skipping.`);
+      const nextScreen = dailyTalkNextScreen || 'DAY_END';
+      setDailyTalkNextScreen(null);
+      setActiveDailyTalk(null);
+      setScreen(nextScreen);
+      mainContent = null;
+    } else {
     // M-DAILYTALK-NADIR-PRESENCE-2: Map pages with speakerId for consistent character display
     const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map(page => {
       let inferredId = page.speakerId;
@@ -1415,6 +1429,7 @@ export default function App() {
         </div>
       </div>
     );
+    } // end isTalkValid check
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 

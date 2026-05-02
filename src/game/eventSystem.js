@@ -136,8 +136,16 @@ export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkId
     if (talk.timing !== timing) return false;
 
     // 2. Scope/Heroine match
-    if (talk.scope === 'heroine' && talk.heroineId !== heroineId) return false;
-    // common talks are always candidates if they match other criteria
+    if (talk.scope === 'heroine') {
+      // Heroine-scoped talks must match the active heroine
+      if (talk.heroineId !== heroineId) return false;
+    } else if (talk.scope === 'common') {
+      // Common talks are always candidates if they match other criteria
+      // But nader solo talks should not filter by heroine
+    } else {
+      // Unknown scope - skip for safety
+      return false;
+    }
 
     // 3. RouteMode match
     if (talk.routeMode !== 'both' && talk.routeMode !== routeMode) return false;
