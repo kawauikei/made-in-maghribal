@@ -2058,7 +2058,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     WebkitUserDrag: 'none',
     imageRendering: 'auto',
     backfaceVisibility: 'hidden',
-    filter: isStanding ? 'blur(0.12px) contrast(0.99)' : undefined
+    filter: isStanding ? 'blur(0.18px) contrast(0.98)' : undefined
   };
 
   if (!fullPath || imgError) {
