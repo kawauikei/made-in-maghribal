@@ -11769,7 +11769,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 function App() {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -12084,7 +12084,12 @@ function App() {
     var _a2;
     if (screen === "DAILY_TALK" && activeDailyTalk) {
       const currentPage = (_a2 = activeDailyTalk.pages) == null ? void 0 : _a2[dailyTalkCurrentPage];
-      if ((currentPage == null ? void 0 : currentPage.speakerId) === "nader") {
+      let speakerId = currentPage == null ? void 0 : currentPage.speakerId;
+      if (!speakerId && (currentPage == null ? void 0 : currentPage.speaker)) {
+        if (currentPage.speaker === "ナーディル") speakerId = "nader";
+        else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
+      }
+      if (speakerId === "nader") {
         return NADER;
       }
     }
@@ -12828,6 +12833,14 @@ function App() {
       /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房の状態(第", workshopState.day, "回 営業終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の営業へ"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, className: "vn-button-reveal", style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る")))
     );
   } else if (screen === "DAILY_TALK" && activeDailyTalk) {
+    const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map((page) => {
+      let inferredId = page.speakerId;
+      if (!inferredId) {
+        if (page.speaker === "ナーディル") inferredId = "nader";
+        else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+      }
+      return { ...page, speakerId: inferredId };
+    });
     mainContent = /* @__PURE__ */ React.createElement(
       "div",
       {
@@ -12855,7 +12868,7 @@ function App() {
           heroine: mainCharacter,
           type: "standing",
           size: "large",
-          expression: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[dailyTalkCurrentPage]) == null ? void 0 : _c.speakerId) === mainCharacter.id ? ((_e = (_d = activeDailyTalk.pages) == null ? void 0 : _d[dailyTalkCurrentPage]) == null ? void 0 : _e.expression) || "normal" : "normal",
+          expression: ((_b = dailyTalkPagesWithSpeakerId == null ? void 0 : dailyTalkPagesWithSpeakerId[dailyTalkCurrentPage]) == null ? void 0 : _b.speakerId) === mainCharacter.id ? ((_c = dailyTalkPagesWithSpeakerId == null ? void 0 : dailyTalkPagesWithSpeakerId[dailyTalkCurrentPage]) == null ? void 0 : _c.expression) || "normal" : "normal",
           noBorder: true,
           style: { height: "100%", width: "auto", boxShadow: "none" }
         }
@@ -12885,15 +12898,8 @@ function App() {
         VNBox,
         {
           ref: vnRef,
-          speaker: ((_g = (_f = activeDailyTalk.pages) == null ? void 0 : _f[0]) == null ? void 0 : _g.speaker) || "",
-          pages: activeDailyTalk.pages.map((page) => {
-            let inferredId = page.speakerId;
-            if (!inferredId) {
-              if (page.speaker === "ナーディル") inferredId = "nader";
-              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-            }
-            return { ...page, speakerId: inferredId };
-          }),
+          speaker: ((_d = dailyTalkPagesWithSpeakerId == null ? void 0 : dailyTalkPagesWithSpeakerId[0]) == null ? void 0 : _d.speaker) || "",
+          pages: dailyTalkPagesWithSpeakerId,
           themeColor: mainCharacter.themeColor,
           speed: textSpeedMeta.delay,
           skip: shouldSkipTypewriter(isInstantTextSpeed, false),
@@ -13006,7 +13012,7 @@ function App() {
           onClick: handleVnAreaClick
         },
         renderThemeStyles(),
-        ((_h = still.stillCrop) == null ? void 0 : _h.mode) === "heroine_pan" && (() => {
+        ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" && (() => {
           const animName = `still-pan-${still.id}`;
           const start = still.stillCrop.startPosition || "50% 50%";
           const end = still.stillCrop.endPosition || "50% 50%";
@@ -13034,12 +13040,12 @@ function App() {
           {
             src: getFullPath(still.src),
             alt: still.label,
-            className: ((_i = still.stillCrop) == null ? void 0 : _i.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
+            className: ((_f = still.stillCrop) == null ? void 0 : _f.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
             style: {
               width: "100%",
               height: "100%",
-              objectFit: ((_j = still.stillCrop) == null ? void 0 : _j.objectFit) || "cover",
-              objectPosition: ((_k = still.stillCrop) == null ? void 0 : _k.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_l = still.stillCrop) == null ? void 0 : _l.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+              objectFit: ((_g = still.stillCrop) == null ? void 0 : _g.objectFit) || "cover",
+              objectPosition: ((_h = still.stillCrop) == null ? void 0 : _h.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_i = still.stillCrop) == null ? void 0 : _i.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
             },
             onError: (e) => {
               e.target.style.display = "none";
@@ -13209,7 +13215,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_m = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _m.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_j = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _j.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -13335,7 +13341,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_k = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _k.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
