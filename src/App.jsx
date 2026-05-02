@@ -43,6 +43,7 @@ import { GENRE_BY_ID, ITEM_TYPE_BY_ID } from './data/itemTypes';
 import VNBox from './ui/VNBox';
 import SoundTest from './ui/SoundTest';
 import DebugPanel from './ui/DebugPanel';
+import ScreenHeader from './ui/ScreenHeader';
 import TimePhaseBadge from './ui/TimePhaseBadge';
 import { resolveTimePhase, TIME_PHASES } from './game/timePhase';
 
@@ -1246,7 +1247,6 @@ export default function App() {
         vnRef={vnRef}
         getFaceIcon={getFaceIcon}
         containerStyle={containerStyle}
-        titleStyle={titleStyle}
         cardStyle={cardStyle}
         buttonStyle={buttonStyle}
         narrativeBoxStyle={narrativeBoxStyle}
@@ -1443,30 +1443,15 @@ export default function App() {
               />
           </div>
 
-          <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <GameHud 
-              screen={screen} 
-              routeMode={routeMode} 
-              onOpenLog={() => setShowLog(true)} 
-              onOpenOptions={() => setShowOptions(true)} 
-              onOpenHelp={() => setShowHelp(true)} 
-            />
-            <h1 style={{ 
-              ...titleStyle, 
-              position: 'absolute',
-              top: '8px',
-              left: '12px',
-              margin: 0, 
-              fontSize: '1.2em', 
-              textShadow: '0 2px 4px rgba(0,0,0,0.5)', 
-              textAlign: 'left',
-              maxWidth: '70%',
-              zIndex: 10
-            }}>
-              愛着の記録: {activeEvent.title}
-            </h1>
-            <div style={{ flex: '1 1 auto' }} />
-          </div>
+          <ScreenHeader
+            timePhase={currentTimePhase}
+            title={`愛着の記録：${activeEvent.title}`}
+            onOpenLog={() => setShowLog(true)}
+            onOpenOptions={() => setShowOptions(true)}
+            onOpenHelp={() => setShowHelp(true)}
+            routeMode={routeMode}
+            screen={screen}
+          />
 
           <div style={{ 
             position: 'absolute',
@@ -1593,30 +1578,15 @@ export default function App() {
             }} />
           </div>
 
-          <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <GameHud 
-              screen={screen} 
-              routeMode={routeMode} 
-              onOpenLog={() => setShowLog(true)} 
-              onOpenOptions={() => setShowOptions(true)} 
-              onOpenHelp={() => setShowHelp(true)} 
-            />
-            <h1 style={{ 
-              ...titleStyle, 
-              position: 'absolute',
-              top: '8px',
-              left: '12px',
-              margin: 0, 
-              fontSize: '1.2em', 
-              textShadow: '0 2px 4px rgba(0,0,0,0.8)', 
-              textAlign: 'left',
-              maxWidth: '70%',
-              zIndex: 10
-            }}>
-              愛着の記録: {activeEvent.title}
-            </h1>
-            <div style={{ flex: '1 1 auto' }} />
-          </div>
+          <ScreenHeader
+            timePhase={currentTimePhase}
+            title={`愛着の記録：${activeEvent.title}`}
+            onOpenLog={() => setShowLog(true)}
+            onOpenOptions={() => setShowOptions(true)}
+            onOpenHelp={() => setShowHelp(true)}
+            routeMode={routeMode}
+            screen={screen}
+          />
 
           {/* Bottom Dock: VN Box (Consistent with Intro/Normal Event) */}
           <div style={{ 
@@ -1924,10 +1894,12 @@ export default function App() {
       {renderThemeStyles()}
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
-          {/* M-TIME-PHASE-UI-1: Time Phase Badge (Top-Left) */}
-          <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 1000, pointerEvents: 'none' }}>
-            <TimePhaseBadge timePhase={currentTimePhase} />
-          </div>
+          {/* Global TimePhaseBadge for screens without ScreenHeader */}
+          {!['INTRO', 'EVENT'].includes(screen) && (
+            <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 1000, pointerEvents: 'none' }}>
+              <TimePhaseBadge timePhase={currentTimePhase} />
+            </div>
+          )}
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           

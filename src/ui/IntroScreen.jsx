@@ -1,9 +1,10 @@
 import React from 'react';
-import GameHud from './GameHud';
+import ScreenHeader from './ScreenHeader';
 import VNBox from './VNBox';
 import { THEME } from './theme';
 import { shouldSkipTypewriter } from './vnClickHelpers';
 import { PROTAGONIST as NADER } from '../data/world';
+import { resolveTimePhase, TIME_PHASES } from '../game/timePhase';
 
 const IntroScreen = ({
   activeHeroine,
@@ -27,7 +28,6 @@ const IntroScreen = ({
   vnRef,
   getFaceIcon,
   containerStyle,
-  titleStyle,
   cardStyle,
   buttonStyle,
   narrativeBoxStyle
@@ -215,29 +215,16 @@ const IntroScreen = ({
       </div>
 
       <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <GameHud 
-          screen={screen} 
-          routeMode={routeMode} 
-          onOpenLog={onOpenLog} 
-          onOpenOptions={onOpenOptions} 
-          onOpenHelp={onOpenHelp} 
-        />
-        
-        <h1 style={{ 
-          ...titleStyle, 
-          position: 'absolute',
-          top: '8px',
-          left: '12px',
-          margin: 0, 
-          fontSize: '1.2em', 
-          textShadow: '0 2px 4px rgba(0,0,0,0.5)', 
-          textAlign: 'left',
-          maxWidth: '70%',
-          zIndex: 10
-        }}>
-          {activeHeroine.name}との語らい
-        </h1>
-        <div style={{ flex: '1 1 auto' }} />
+      <ScreenHeader
+        timePhase={TIME_PHASES.PRE_OPEN}
+        title={`${activeHeroine.name}との語らい`}
+        onOpenLog={onOpenLog}
+        onOpenOptions={onOpenOptions}
+        onOpenHelp={onOpenHelp}
+        routeMode={routeMode}
+        screen={screen}
+      />
+      <div style={{ flex: '1 1 auto' }} />
       </div>
 
       <div style={{ 
