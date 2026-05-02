@@ -22,13 +22,13 @@ export const AFFECTION_EVENTS = {
         { 
           speaker: "ナーディル", 
           expression: "normal", 
-          text: "今日はハキマが来る日か。……あいつと初めて会ったのも、こんな風に風が強い日だったな。",
+          text: "今日はハキマが来る日か。……あいつと初めて会ったのも、市場に熱い風が吹いていた日だったな。",
           backgroundId: "shopExteriorDay"
         },
         { 
           speaker: "ハキマ", 
           expression: "anger", 
-          text: "「ちょっと、そこのあんた！ その樹脂、乾かし方が甘いわ。そんなの売るつもり？」\n市場の隅で、見知らぬキツネ族の少女にいきなり怒鳴られたんだ。",
+          text: "「ちょっと、そこのあんた！ その樹脂、乾かし方が甘いわ。そんなの棚に並べるつもり？」\n市場の隅で、見知らぬ狐獣人の少女にいきなり怒鳴られたんだ。",
           backgroundId: "marketCentral"
         },
         { 
@@ -40,13 +40,13 @@ export const AFFECTION_EVENTS = {
         { 
           speaker: "ハキマ", 
           expression: "normal", 
-          text: "「……ふん、素直なだけが取り柄ね。星瓶堂の跡取りなら、もっと鼻を鍛えなさいよ」\nそれが、俺と彼女の「ライバル」としての始まりだった。",
+          text: "「……ふん、素直なだけが取り柄ね。星瓶堂の跡取りなら、もっと鼻を鍛えなさいよ」\n厳しい声だった。でも、不思議と嫌な感じはしなかった。",
           backgroundId: "marketCentral"
         },
         { 
           speaker: "ナーディル", 
           expression: "joy", 
-          text: "今じゃ、欠かせない協力者の一人だ。……よし、開店の準備をしよう。",
+          text: "あの頃から、ハキマはずっと鋭かった。今じゃ欠かせない協力者の一人だ。……よし、準備しよう。",
           backgroundId: "shopExteriorDay"
         }
       ]
@@ -63,11 +63,12 @@ export const AFFECTION_EVENTS = {
         heroineExpressions: ["anger", "normal", "sorrow", "joy"],
         naderExpressions: ["normal", "sorrow"]
       },
-      summary: "昔のライバル関係を思い出しながら、ハキマはナーディルを試しつつも、その成長を認める。",
+      summary: "優等生だったナーディルを一方的に気にしていたハキマは、若店主としての彼の見立てを試しながら、その成長を認め始める。",
       pages: [
         { speaker: "ハキマ", expression: "anger", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。\n「今日は、あんたの目利きを見せてもらうから」" },
-        { speaker: "", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nだが香りの奥に、乾いた土と甘い樹脂の違いがあった。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが客の用途を尋ねると、ハキマの耳がぴくりと動いた。\n「……ふうん。品だけじゃなく、使う人まで見るんだ」" },
+        { speaker: "ナーディル", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nけれど用途を尋ねると、乾いた土と甘い樹脂の違いが少しずつ見えてきた。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "「……ふうん。品だけじゃなく、使う人まで見るんだ」\nハキマの耳が、ほんの少しだけ揺れる。" },
+        { speaker: "ナーディル", expression: "joy", text: "「優等生だった頃の癖かな。答えだけじゃなくて、理由まで知りたくなるんだ」" },
         { speaker: "ハキマ", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。\n「まあ、今日のところは合格。少しだけ、頼りにしてあげる」" }
       ],
       routePages: {
@@ -90,17 +91,19 @@ export const AFFECTION_EVENTS = {
         heroineExpressions: ["anger", "surprise", "sorrow", "joy"],
         naderExpressions: ["normal", "surprise", "joy"]
       },
-      summary: "素直になれないハキマだが、ナーディルと同じ目線で品を選べたことに、深い喜びを感じている。",
+      summary: "素直になれないハキマは、ナーディルと同じ目線で品を選べたことに喜びを覚える。優等生だった彼を気にしていた過去が、少しだけにじむ。",
       pages: [
         { speaker: "ハキマ", expression: "anger", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。\n「この配合、悪くないけど……客には少し強すぎるわね」" },
-        { speaker: "ハキマ", expression: "surprise", text: "ナーディルが薄める案を出すと、彼女は驚いた顔をした。\n「同じこと、考えてた。……先に言わないでよ」" },
-        { speaker: "ハキマ", expression: "sorrow", text: "「でも、そういうところは嫌いじゃない」\n言った直後、ハキマの耳が跳ね、尻尾がふわりと揺れた。" },
+        { speaker: "ナーディル", expression: "normal", text: "「薄めるなら、砂蜜よりも乾いた柑橘皮かな。香りが丸くなると思う」\n俺が言うと、ハキマは目を丸くした。" },
+        { speaker: "ハキマ", expression: "surprise", text: "「同じこと、考えてた。……先に言わないでよ」\nその声は不満そうなのに、耳だけは嬉しそうに立っている。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "「昔からそう。あんた、涼しい顔で正解に近づくから、見てるこっちが焦るのよ」" },
         { speaker: "ハキマ", expression: "joy", text: "彼女は慌てて背を向ける。\n「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」" }
       ],
       routePages: {
         long_history: [
           { speaker: "ハキマ", expression: "surprise", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。\nハキマは目を丸くし、やがて呆れたように笑う。" },
           { speaker: "ハキマ", expression: "normal", text: "「……昔は、あんたの方がいつも外してたのに」\n少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
+          { speaker: "ナーディル", expression: "fun", text: "「君に負けたくなくて、ずっと覚えていたからな。香りの強さも、瓶の癖も」" },
           { speaker: "ハキマ", expression: "joy", text: "「やっと追いついてきたってことね。なら、これからは対等だ」\n狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
           { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
         ]
@@ -121,7 +124,8 @@ export const AFFECTION_EVENTS = {
         { "speaker": "ナーディル", "expression": "surprise", "text": "君の商会から正式に？ それは責任重大だな。" },
         { "speaker": "ハキマ", "expression": "anger", "text": "勘違いしないで。あんたが少しは信用できるって、私が報告しただけよ。" },
         { "speaker": "ナーディル", "expression": "joy", "text": "それなら、なおさら嬉しいよ。ハキマが見てくれた星瓶堂の信用だ。" },
-        { "speaker": "ハキマ", "expression": "surprise", "text": "……そういう言い方、ずるい。怒る準備をしてたのに、調子が狂うじゃない。" }
+        { "speaker": "ハキマ", "expression": "surprise", "text": "……そういう言い方、ずるい。怒る準備をしてたのに、調子が狂うじゃない。" },
+        { "speaker": "ハキマ", "expression": "joy", "text": "でも、まあ。あんたが昔から真面目に品を見てたのは知ってる。……だから推薦したのよ。" }
       ],
       routePages: {
         long_history: [
@@ -129,7 +133,8 @@ export const AFFECTION_EVENTS = {
           { speaker: "ナーディル", expression: "fun", text: "否定しきれないな。昔は、君に香材の束を渡されるだけで身構えてた。" },
           { speaker: "ハキマ", expression: "anger", text: "それでも最後まで付き合ったじゃない。悔しいけど、あんたの目利きは昔から当てにしてたのよ。" },
           { speaker: "ナーディル", expression: "joy", text: "なら今回は、昔より胸を張って隣に立てるように頑張るよ。" },
-          { speaker: "ハキマ", expression: "surprise", text: "……そういう言い方、ずるい。こっちは何年も前から、その隣を空けてたみたいじゃない。" }
+          { speaker: "ハキマ", expression: "sorrow", text: "……そういう言い方、ずるい。こっちは何年も前から、その隣を空けてたみたいじゃない。" },
+          { speaker: "ハキマ", expression: "joy", text: "でも、いいわ。今度こそ、私もちゃんと並ぶ。香材も、店も、あんたのことも見逃さないから。" }
         ]
       }
     },
@@ -146,11 +151,12 @@ export const AFFECTION_EVENTS = {
       },
       summary: "成長するナーディルに焦りを感じるハキマに対し、ナーディルは共に歩む決意を伝え、二人は対等なパートナーとしての絆を深める。",
       pages: [
-        { "speaker": "ハキマ", "expression": "sorrow", "text": "あんたが星瓶堂の店主らしくなるほど、少しだけ遠く見える時があるの。" },
+        { "speaker": "ハキマ", "expression": "sorrow", "text": "あんたが星瓶堂の店主らしくなるほど、少しだけ遠くに見える時があるの。" },
         { "speaker": "ナーディル", "expression": "sorrow", "text": "遠くへ行きたいわけじゃない。俺は、この店で誰かと向き合える店主になりたいんだ。" },
         { "speaker": "ハキマ", "expression": "anger", "text": "だったら、隣を空けておきなさいよ。勝手に一人で格好つけないで。" },
         { "speaker": "ナーディル", "expression": "joy", "text": "分かった。難しい香材も、厄介な客も、君と一緒に見立てたい。" },
-        { "speaker": "ハキマ", "expression": "joy", "text": "……最初からそう言えばいいのよ。まったく、手のかかる若店主なんだから。" }
+        { "speaker": "ハキマ", "expression": "sorrow", "text": "優等生だったあんたを見て、勝手に焦って、勝手に悔しがってた。……そういうの、もう終わりにしたいの。" },
+        { "speaker": "ハキマ", "expression": "joy", "text": "これからは、ちゃんと隣で言うわ。間違ってる時は怒るし、良かった時は……少しだけ褒めてあげる。" }
       ],
       routePages: {
         long_history: [
@@ -158,7 +164,9 @@ export const AFFECTION_EVENTS = {
           { speaker: "ナーディル", expression: "normal", text: "覚えてる。君は、負けた方が勝った方の棚を一緒に並べるって言ってた。" },
           { speaker: "ハキマ", expression: "anger", text: "違うわよ。あれは負けた時の約束じゃない。……隣にいるための口実だったの。" },
           { speaker: "ナーディル", expression: "surprise", text: "ハキマ……。俺は、君が隣にいるのを当たり前みたいに思いすぎていたのかもしれない。" },
-          { speaker: "ハキマ", expression: "joy", text: "今さら気づいたなら、遅れた分だけちゃんと空けておきなさい。星瓶堂の隣、私が立つんだから。" }
+          { speaker: "ハキマ", expression: "sorrow", text: "当たり前だったのよ、私には。あんたが星瓶堂を継ぐなら、その隣で香りを見たいって、ずっと思ってた。" },
+          { speaker: "ナーディル", expression: "joy", text: "今度は、ちゃんと言うよ。星瓶堂の隣に、君がいてほしい。" },
+          { speaker: "ハキマ", expression: "joy", text: "今さら気づいたなら、遅れた分だけちゃんと空けておきなさい。そこは、私の場所なんだから。" }
         ]
       }
     },
@@ -176,9 +184,10 @@ export const AFFECTION_EVENTS = {
       },
       summary: "昔、市場開き前に二人で香材を買い付けた朝。値切り合いの末、店主に笑われた思い出。",
       pages: [
-        { speaker: "ハキマ", expression: "anger", text: "……昔、市場で一緒に香材を買い付けた朝。" },
-        { speaker: "ナーディル", expression: "fun", text: "ハキマさんの値切り方は、店主も笑うほどだったな。" },
-        { speaker: "ハキマ", expression: "joy", text: "うるさい。でも、あんたの隣は……悪くなかったよ。" }
+        { speaker: "ハキマ", expression: "anger", text: "……昔、市場開き前に一緒に香材を買い付けた朝、覚えてる？" },
+        { speaker: "ナーディル", expression: "fun", text: "覚えてる。君の値切り方があまりに真剣で、店主まで笑っていた。" },
+        { speaker: "ハキマ", expression: "surprise", text: "あんたも横で妙な理屈を足すからでしょ。あの時、どっちが店主なんだか分からなかったわ。" },
+        { speaker: "ハキマ", expression: "joy", text: "でも、あんたの隣で香りを選ぶのは……昔から、悪くなかったのよ。" }
       ]
     },
     {
@@ -195,9 +204,10 @@ export const AFFECTION_EVENTS = {
       },
       summary: "突然の雨に濡れながら、軒下で乾くのを待った午後。濡れた狐の耳を拭いてやったらいじられた。",
       pages: [
-        { speaker: "ハキマ", expression: "sorrow", text: "……あの雨の日は、本当に困った。" },
-        { speaker: "ナーディル", expression: "normal", text: "ハキマさんの耳がびしょ濡れで、かわいそうでしたからね。" },
-        { speaker: "ハキマ", expression: "joy", text: "……その、拭いてくれたのは、嬉しかった。……けど、言わないでよ。" }
+        { speaker: "ハキマ", expression: "sorrow", text: "……あの雨の日は、本当に困った。香材は濡れるし、耳は重くなるし、散々だったわ。" },
+        { speaker: "ナーディル", expression: "normal", text: "君の耳がびしょ濡れで、ずいぶん寒そうだった。だから布を貸したんだ。" },
+        { speaker: "ハキマ", expression: "surprise", text: "貸しただけじゃないでしょ。あんた、何も言わずに耳まで拭いたじゃない。" },
+        { speaker: "ハキマ", expression: "joy", text: "……その、嬉しかったのよ。昔から。言わないけど。今のも忘れなさい。" }
       ]
     },
     {
@@ -213,9 +223,10 @@ export const AFFECTION_EVENTS = {
       },
       summary: "ルハーン商会の新しい仕入れ先について報告に来たハキマ。昔と同じように、細かい指摘をしてくる。",
       pages: [
-        { speaker: "ハキマ", expression: "normal", text: "ルハーン商会の新しい仕入れ先、確認してきた。" },
-        { speaker: "ナーディル", expression: "fun", text: "ハキマさんらしく、細かいところまでチェックしてきたんですね。" },
-        { speaker: "ハキマ", expression: "anger", text: "当たり前よ。……でも、あんたが喜んでくれそうなのを選んだ。" }
+        { speaker: "ハキマ", expression: "normal", text: "ルハーン商会の新しい仕入れ先、確認してきたわ。癖は強いけど、星瓶堂の棚に合いそうなのもあった。" },
+        { speaker: "ナーディル", expression: "fun", text: "君らしく、細かいところまで見てきたんだな。昔から仕入れ先の癖を見抜くのは得意だった。" },
+        { speaker: "ハキマ", expression: "anger", text: "当たり前よ。……でも、あんたが喜びそうなのを選んだのは、余計な一言だったかしら。" },
+        { speaker: "ナーディル", expression: "joy", text: "いや、嬉しいよ。昔から、君の選ぶ香材は俺の店に不思議と馴染むんだ。" }
       ]
     },
     {
@@ -231,9 +242,10 @@ export const AFFECTION_EVENTS = {
       },
       summary: "街の祭りが近づき、ハキマが屋台の香材を買いに来た。昔も一緒に祭りに行ったっけ、と懐かしむ。",
       pages: [
-        { speaker: "ハキマ", expression: "joy", text: "祭りが近いね。屋台用の香材、いつもの分量で。" },
-        { speaker: "ナーディル", expression: "normal", text: "昔も一緒に祭りを回りましたな。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "……覚えてるなら、今年も付き合ってよ。……別に、一緒じゃなきゃ嫌ってわけじゃないんだから。" }
+        { speaker: "ハキマ", expression: "joy", text: "祭りが近いわね。屋台用の香材、今年もルハーン商会に相談が来てるの。" },
+        { speaker: "ナーディル", expression: "normal", text: "昔も一緒に祭りの屋台を回ったな。君は香りだけで、どこの菓子か当てていた。" },
+        { speaker: "ハキマ", expression: "fun", text: "あんたはすぐ外してたわね。……でも、外しても楽しそうだったから、少し悔しかった。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "覚えてるなら、今年も付き合いなさいよ。別に、一緒じゃなきゃ嫌ってわけじゃ……ないけど。" }
       ]
     }
   ],
@@ -248,7 +260,7 @@ export const AFFECTION_EVENTS = {
         backgroundId: "shopExteriorDay",
         bgmId: "MIRA-01"
       },
-      summary: "開店前、ミラとの出会いを思い出す。大学の廊下で、彼女が俺のノートの余白に興味を持ったことがきっかけだった。",
+      summary: "開店前、ミラとの出会いを思い出す。大学の廊下で、彼女がナーディルのノートの余白に興味を持ったことがきっかけだった。",
       pages: [
         { 
           speaker: "ナーディル", 
@@ -259,7 +271,7 @@ export const AFFECTION_EVENTS = {
         { 
           speaker: "ミラ", 
           expression: "normal", 
-          text: "「先輩、その計算式の横にある走り書き……父の、ナーディル・シニアの理論の応用ですか？」\n大学の廊下で、学年一の天才と名高いミラに呼び止められた時は心臓が止まるかと思った。",
+          text: "「先輩、その計算式の横にある走り書き……星瓶堂の現場で使う調整式ですか？」\n大学の廊下で、学年一の天才と名高いミラに呼び止められた時は、少し身構えた。",
           backgroundId: "spotFountain"
         },
         { 
@@ -277,7 +289,7 @@ export const AFFECTION_EVENTS = {
         { 
           speaker: "ナーディル", 
           expression: "joy", 
-          text: "今では商会の相談役として、一番の助言者になってくれている。……よし、今日も頑張ろう。",
+          text: "今では商会や大学の話を、真っ先に持ってきてくれる。……俺も、頼れる先輩でいられるよう頑張ろう。",
           backgroundId: "shopExteriorDay"
         }
       ]
@@ -298,15 +310,17 @@ export const AFFECTION_EVENTS = {
       pages: [
         { speaker: "ミラ", expression: "normal", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
         { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
-        { speaker: "", expression: "surprise", text: "ナーディルが「迷っていい」と言うと、ミラは目を丸くした。\n天才なら即答するべきだと、ずっと思っていたから。" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです」\n彼女は小さく笑う。\n「そんな言い方をされたら、私でいたくなります」" }
+        { speaker: "ナーディル", expression: "normal", text: "「迷っていいと思う。正解より先に、誰へ届けたい品なのかを考えてみよう」\nそう言うと、ミラは目を丸くした。" },
+        { speaker: "ミラ", expression: "surprise", text: "「天才なら即答すべきだと、ずっと思っていました」\n彼女の声は小さいのに、どこかほっとしていた。" },
+        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです。そんな言い方をされたら、私でいたくなります」\n彼女は小さく笑った。" }
       ],
       routePages: {
         long_history: [
           { speaker: "ミラ", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。\n「この式、先輩に何度も直してもらいましたね」" },
           { speaker: "ミラ", expression: "sorrow", text: "「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」\n彼女の声は、少しだけ震えていた。" },
-          { speaker: "ミラ", expression: "surprise", text: "ナーディルが笑うと、ミラは胸の前で帳面を抱きしめる。\n「だから私は、またここに来たんです」" },
-          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたくて」\nその笑顔は、少し照れくさそうだった。" }
+          { speaker: "ナーディル", expression: "normal", text: "「俺は、君の迷い方が好きだったんだと思う。答えに向かって、ちゃんと考えていたから」" },
+          { speaker: "ミラ", expression: "surprise", text: "ミラは胸の前で帳面を抱きしめる。\n「そんなことを、昔から思ってくれていたんですか」" },
+          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたいです」\nその笑顔は、少し照れくさそうだった。" }
         ]
       }
     },
@@ -324,14 +338,16 @@ export const AFFECTION_EVENTS = {
       summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
       pages: [
         { speaker: "ミラ", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。\n「この配合なら、もっと多くの人に届けられます」" },
-        { speaker: "", expression: "sorrow", text: "けれどナーディルは、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
+        { speaker: "ナーディル", expression: "sorrow", text: "けれど俺は、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
         { speaker: "ミラ", expression: "fun", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。\n「商人の目だけでは、見落とすものがありますね」" },
+        { speaker: "ナーディル", expression: "normal", text: "「俺も、数字を見ないといけない。でも、手紙に残った迷いも無視したくないんだ」" },
         { speaker: "ミラ", expression: "joy", text: "「先輩の隣でなら、正解を出す前の私でいられます」\nその言葉は、星明かりよりも静かに輝いていた。" }
       ],
       routePages: {
         long_history: [
           { speaker: "ミラ", expression: "normal", text: "星空の下、ミラは帳面を閉じた。\n「昔から、先輩は私の答えより、考えている顔を見ていました」" },
           { speaker: "ミラ", expression: "fun", text: "「それが少し悔しくて、でも、とても嬉しかったんです」\n彼女は夜風に揺れる布を押さえ、小さく笑う。" },
+          { speaker: "ナーディル", expression: "normal", text: "「君が答えを出す前の時間は、静かで綺麗だった。急かすのがもったいなかったんだ」" },
           { speaker: "ミラ", expression: "joy", text: "「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」\nその瞳は、もう迷っていなかった。" },
           { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
         ]
@@ -352,7 +368,9 @@ export const AFFECTION_EVENTS = {
         { "speaker": "ナーディル", "expression": "surprise", "text": "うちの商品を？ もっと派手な研究の方が、評価されるんじゃないか。" },
         { "speaker": "ミラ", "expression": "sorrow", "text": "派手さだけなら、そうかもしれません。でも私は、暮らしに届く錬金術を発表したいんです。" },
         { "speaker": "ナーディル", "expression": "joy", "text": "それなら、星瓶堂はぴったりだ。使う人の顔が見える品ばかりだから。" },
-        { "speaker": "ミラ", "expression": "joy", "text": "はい. 先輩がそう見ているから、私もこの店で学びたいと思えたんです。" }
+        { "speaker": "ミラ", "expression": "joy", "text": "はい。先輩がそう見ているから、私もこの店で学びたいと思えたんです。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "俺は大したことはしてないよ。ただ、客の話を聞いているだけだ。" },
+        { "speaker": "ミラ", "expression": "fun", "text": "その「ただ」が難しいんです。だから私は、先輩の隣で学びたいんです。" }
       ],
       routePages: {
         long_history: [
@@ -360,7 +378,8 @@ export const AFFECTION_EVENTS = {
           { speaker: "ナーディル", expression: "fun", text: "覚えてるよ。君は瓶の配置まで数式にしようとして、俺は途中で目を回した。" },
           { speaker: "ミラ", expression: "joy", text: "でも先輩は、最後に言ってくれました。使う人が迷わない棚なら、それも立派な錬金術だって。" },
           { speaker: "ナーディル", expression: "normal", text: "そんなことを言ったのか。今聞くと、ずいぶん星瓶堂らしい答えだな。" },
-          { speaker: "ミラ", expression: "sorrow", text: "私にとっては、研究の原点です。天才の発表ではなく、誰かの暮らしに届く錬金術を選びたいんです。" }
+          { speaker: "ミラ", expression: "sorrow", text: "私にとっては、研究の原点です。天才の発表ではなく、誰かの暮らしに届く錬金術を選びたいんです。" },
+          { speaker: "ミラ", expression: "joy", text: "そして、その原点にはいつも先輩がいます。だから私は、ここへ戻ってきたんです。" }
         ]
       }
     },
@@ -380,8 +399,10 @@ export const AFFECTION_EVENTS = {
         { "speaker": "ミラ", "expression": "sorrow", "text": "天才だと言われるほど、間違えるのが怖くなります。期待を裏切るのが怖いんです。" },
         { "speaker": "ナーディル", "expression": "normal", "text": "ミラが迷って、試して、失敗して、それでも考えるところを俺は見てきた。" },
         { "speaker": "ミラ", "expression": "surprise", "text": "答えだけではなく、そこまで見てくれるんですね。" },
-        { "speaker": "ナーディル", "expression": "joy", "text": "もちろん。俺が信じているのは、天才の看板じゃなくて、目の前のミラだから。" },
-        { "speaker": "ミラ", "expression": "joy", "text": "……先輩の前では、正解の前の私でいてもいいんですね。" }
+        { "speaker": "ナーディル", "expression": "sorrow", "text": "俺は、君の全部を分かっているなんて言えない。でも、答えを出す前の君を見ていたいとは思う。" },
+        { "speaker": "ミラ", "expression": "joy", "text": "……先輩は、やっぱり少しずるいです。そんな言い方をされたら、もっと好きになってしまいます。" },
+        { "speaker": "ナーディル", "expression": "surprise", "text": "ミラ……。" },
+        { "speaker": "ミラ", "expression": "joy", "text": "先輩の前では、正解の前の私でいてもいいんですね。なら私は、ここにいたいです。" }
       ],
       routePages: {
         long_history: [
@@ -389,7 +410,9 @@ export const AFFECTION_EVENTS = {
           { speaker: "ナーディル", expression: "normal", text: "覚えてる。君は泣きそうな顔で、失敗した計算紙を全部抱えてきた。" },
           { speaker: "ミラ", expression: "cry", text: "先輩は、答えを直すより先に、紙を捨てなかったことを褒めてくれました。" },
           { speaker: "ナーディル", expression: "joy", text: "迷って、書き直して、それでも考える君を知っていたからだよ。天才だからじゃない。" },
-          { speaker: "ミラ", expression: "joy", text: "……昔から、先輩の前では正解の前の私でいられました。今も、その場所に帰ってきたいんです。" }
+          { speaker: "ミラ", expression: "joy", text: "……昔から、先輩の前では正解の前の私でいられました。今も、その場所に帰ってきたいんです。" },
+          { speaker: "ナーディル", expression: "sorrow", text: "俺でいいのか、と少し思う。でも、君がそう言ってくれるなら、ここを空けておくよ。" },
+          { speaker: "ミラ", expression: "joy", text: "先輩がいいんです。昔から、ずっと。……だから、もう少しだけ隣にいさせてください。" }
         ]
       }
     },
@@ -405,11 +428,13 @@ export const AFFECTION_EVENTS = {
         backgroundId: "spotFountain",
         bgmId: "MIRA-01"
       },
-      summary: "大学の課題で行き詰まったミラが、先輩のノートを借りて徹夜した夜。朝には二人で解決していた。",
+      summary: "大学の課題で行き詰まったミラが、ナーディルのノートを借りて夜更けまで考えた記憶。朝には二人で解決していた。",
       pages: [
-        { speaker: "ミラ", expression: "sorrow", text: "先輩、この課題……どうしても解けなくて。" },
-        { speaker: "ナーディル", expression: "normal", text: "俺のノートでよければ、使ってくれ。" },
-        { speaker: "ミラ", expression: "joy", text: "……朝には解けていました。先輩と一緒に考えられて、良かったです。" }
+        { speaker: "ミラ", expression: "sorrow", text: "先輩、この課題……どうしても解けなくて。答えに近いはずなのに、最後の一歩が見えません。" },
+        { speaker: "ナーディル", expression: "normal", text: "俺のノートでよければ、使ってくれ。あまり綺麗な字じゃないけど、現場の迷いは残っていると思う。" },
+        { speaker: "ミラ", expression: "joy", text: "……朝には解けていましたね。先輩と一緒に考えられて、本当に嬉しかったです。" },
+        { speaker: "ナーディル", expression: "fun", text: "俺は半分くらい、君の計算の速さについていけてなかったけどな。" },
+        { speaker: "ミラ", expression: "fun", text: "それでも、隣にいてくれました。私には、それが一番心強かったんです。" }
       ]
     },
     {
@@ -424,11 +449,13 @@ export const AFFECTION_EVENTS = {
         backgroundId: "shopExteriorNight",
         bgmId: "MIRA-01"
       },
-      summary: "ナーディルが風邪で休んだ日、ミラが処方箋を持って訪ねてきた。天才が料理したお粥は不味かった。",
+      summary: "ナーディルが風邪で寝込んだ日、ミラが処方箋と不器用な粥を持って訪ねてきた。味はともかく、その温かさは忘れられない。",
       pages: [
-        { speaker: "ミラ", expression: "normal", text: "……風邪、大丈夫ですか。処方箋を持ってきました。" },
-        { speaker: "ナーディル", expression: "surprise", text: "ミラが来てくれるなんて。でも、お粥は……" },
-        { speaker: "ミラ", expression: "sorrow", text: "……不味かったですか。でも、熱は下がりましたね。良かったです。" }
+        { speaker: "ミラ", expression: "normal", text: "……風邪、大丈夫ですか。処方箋と、温かいものを持ってきました。" },
+        { speaker: "ナーディル", expression: "surprise", text: "ミラが来てくれるなんて。助かるよ。……この粥は、君が？" },
+        { speaker: "ミラ", expression: "sorrow", text: "はい。理論上は栄養の配分も完璧だったのですが、味が少し……個性的になりました。" },
+        { speaker: "ナーディル", expression: "fun", text: "熱は下がりそうだ。別の意味で目が覚める味だけど。" },
+        { speaker: "ミラ", expression: "joy", text: "ふふ。笑えるなら大丈夫ですね。先輩が元気になってくれるなら、また作ります。" }
       ]
     },
     {
@@ -442,11 +469,12 @@ export const AFFECTION_EVENTS = {
         backgroundId: "spotFountain",
         bgmId: "MIRA-01"
       },
-      summary: "大学で「先輩の后輩」と噂されているとミラが言う。昔から二人は目立っていたから、と笑う。",
+      summary: "大学で「ナーディル先輩の後輩」と噂されているとミラが言う。昔から二人は目立っていたから、と笑う。",
       pages: [
-        { speaker: "ミラ", expression: "normal", text: "大学で、変な噂を聞きました。『先輩の后輩』だって。" },
-        { speaker: "ナーディル", expression: "fun", text: "昔から二人は目立っていましたからな。" },
-        { speaker: "ミラ", expression: "joy", text: "……でも、嫌いじゃないです。ずっと一緒にいられるなら。" }
+        { speaker: "ミラ", expression: "normal", text: "大学で、少し変な噂を聞きました。「ナーディル先輩の後輩」だそうです。" },
+        { speaker: "ナーディル", expression: "surprise", text: "俺の名前が先に来るのか。ミラの方がずっと目立っていると思うけど。" },
+        { speaker: "ミラ", expression: "fun", text: "ふふ。私も少し驚きました。でも、嫌ではありません。" },
+        { speaker: "ミラ", expression: "joy", text: "先輩の隣で考えてきた時間まで、ちゃんと覚えてもらえている気がしますから。" }
       ]
     },
     {
@@ -462,9 +490,10 @@ export const AFFECTION_EVENTS = {
       },
       summary: "星見台で星の運行を計算するミラ。ナーディルは星瓶堂の瓶に閉じ込めた星の話をした。",
       pages: [
-        { speaker: "ミラ", expression: "normal", text: "星の運行計算、終わりました。次は何をしましょうか。" },
-        { speaker: "ナーディル", expression: "normal", text: "俺は瓶に星を閉じ込める方を選んだな。" },
-        { speaker: "ミラ", expression: "joy", text: "……ロマンチックですね。私も、その瓶の星を見せてください。" }
+        { speaker: "ミラ", expression: "normal", text: "星の運行計算、終わりました。式は合っています。でも、今日は少しだけ眺めていたいです。" },
+        { speaker: "ナーディル", expression: "normal", text: "俺は、星を計算するより、瓶に閉じ込める方を選んだな。星瓶堂らしいだろう。" },
+        { speaker: "ミラ", expression: "joy", text: "はい。先輩らしいです。遠くの星を、誰かの手元に置こうとするところが。" },
+        { speaker: "ミラ", expression: "fun", text: "その瓶の星、私にも見せてください。昔みたいに、隣で。" }
       ]
     }
   ],

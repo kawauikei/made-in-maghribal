@@ -14,8 +14,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父さんの錬金カメラ事業は順調みたいだ。世界中から珍しい景色が届くよ。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも俺は、この場所で誰かの日常を支える星瓶堂の仕事が好きだ。" }
+      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
+      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。客の仕草まで見てる。" },
+      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。でも、そういうところに気づけるのは悪くないわ。" }
     ]
   },
   {
@@ -168,8 +169,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "最近の仕入れはどう？ 変なものを掴まされてないでしょうね。あんたは人が良すぎるから。" },
-      { speaker: "ナーディル", expression: "normal", text: "ありがとう、ハキマ。君がそうやって釘を刺してくれるから、俺も気を引き締められるよ。" }
+      { speaker: "ハキマ", expression: "normal", text: "最近の仕入れ元はどこ？ 変なものを掴まされてないでしょうね。あんた、人を疑うのが少し遅いから。" },
+      { speaker: "ナーディル", expression: "normal", text: "ルハーン商会の目で見られると、背筋が伸びるな。今日は仕入れ帳も一緒に見てくれる？" },
+      { speaker: "ハキマ", expression: "fun", text: "最初からそう言えばいいのよ。……まあ、星瓶堂の棚が雑になると私も困るし、見てあげる。" }
     ]
   },
   {
@@ -182,8 +184,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "最近、安物の樹脂に香りを足した偽物が出回ってるの。見た目だけなら悪くないけど。" },
-      { speaker: "ハキマ", expression: "anger", text: "だから鼻と手触りで見るの。あんたも、値札だけで判断しないことね。" }
+      { speaker: "ハキマ", expression: "normal", text: "市場で、安い樹脂に甘い香気を足した偽物が出てるの。色だけなら見分けにくいわ。" },
+      { speaker: "ナーディル", expression: "normal", text: "見た目だけなら、確かに上等な香材に見えるな。けど、奥の匂いが少し濁ってる。" },
+      { speaker: "ハキマ", expression: "anger", text: "そう。だから鼻と手触りで見るの。値札と見た目だけで選ぶ店主になったら、承知しないから。" }
     ]
   },
   {
@@ -210,8 +213,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "香りって不思議よね。少し嗅いだだけで、昔の市場や家の台所まで思い出す。" },
-      { speaker: "ハキマ", expression: "sorrow", text: "だから雑に扱う人を見ると、腹が立つの。香材には、暮らしが染みてるんだから。" }
+      { speaker: "ハキマ", expression: "normal", text: "香りって不思議よね。少し嗅いだだけで、市場の朝や家の台所まで思い出すことがある。" },
+      { speaker: "ナーディル", expression: "normal", text: "分かるよ。星瓶堂の古い棚も、父さんの調合瓶も、それぞれ違う匂いを覚えてる気がする。" },
+      { speaker: "ハキマ", expression: "sorrow", text: "だから雑に扱う人を見ると、腹が立つの。香材には、誰かの暮らしが染みてるんだから。" }
     ]
   },
   {
@@ -225,8 +229,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "anger", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
-      { speaker: "ナーディル", expression: "joy", text: "助かるよ。君の鼻があると、棚の品まで背筋が伸びる気がする。" },
-      { speaker: "ハキマ", expression: "surprise", text: "なっ……変な褒め方しないで。鑑定士として当然のことを言っただけよ。" }
+      { speaker: "ナーディル", expression: "normal", text: "確かに、瓶に移すと香りの立ち方が荒い。普段使いならまだしも、贈り物には強すぎるな。" },
+      { speaker: "ハキマ", expression: "joy", text: "分かってるじゃない。……悔しいけど、あんたの目利き、前よりずっと信用できるわ。" }
     ]
   },
   {
@@ -239,9 +243,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "fun", text: "弟が、星瓶堂の小さな発光瓶を気に入ってるの。危なくない品、選べる？" },
-      { speaker: "ナーディル", expression: "normal", text: "子ども用なら、光量を落として瓶も厚めにしよう。転がしても割れにくい方がいい。" },
-      { speaker: "ハキマ", expression: "joy", text: "……そういうところは細かいのね。まあ、少しだけ見直したわ。" }
+      { speaker: "ハキマ", expression: "fun", text: "弟がね、星瓶堂の光る小瓶を欲しがってるの。派手なものを見ると、すぐ目を輝かせるんだから。" },
+      { speaker: "ナーディル", expression: "normal", text: "子ども向けなら、光量を落として瓶を厚めにしよう。転がしても割れにくい方がいい。" },
+      { speaker: "ハキマ", expression: "joy", text: "……そういうところ、ちゃんと考えるのね。まあ、弟への土産なら任せてもいいかも。" }
     ]
   },
   {
@@ -270,8 +274,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。" },
-      { speaker: "ナーディル", expression: "fun", text: "負けた時だけ、君は今よりずっと静かだった気がする。" },
-      { speaker: "ハキマ", expression: "anger", text: "余計なことまで覚えてなくていいの。……でも、隣で競うのは嫌いじゃなかったわ。" }
+      { speaker: "ナーディル", expression: "fun", text: "負けた時だけ、君は今よりずっと静かだった気がする。あれはあれで怖かったな。" },
+      { speaker: "ハキマ", expression: "anger", text: "余計なことまで覚えてなくていいの。……でも、あんたと隣で競うのは嫌いじゃなかったわ。" }
     ]
   },
   {
@@ -299,8 +303,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、聞いてください。大学で新しい抽出法が発見されたんです。まだ実験段階ですが……。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは興味深いね。いつか星瓶堂の品作りにも活かせるかもしれない。" }
+      { speaker: "ミラ", expression: "normal", text: "先輩、聞いてください。大学で新しい抽出法が発表されたんです。まだ実験段階ですが、とても面白くて。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは興味深いな。星瓶堂の品にも、いつか応用できるかもしれない。" },
+      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、実際に使う人の顔まで考えてくれると思って、真っ先に話したくなりました。" }
     ]
   },
   {
@@ -314,7 +319,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "昨日の課題、計算は合っていたのに、実験では沈殿が出ました。" },
-      { speaker: "ミラ", expression: "sorrow", text: "理論上は正しい、だけでは足りないんですね。……少し悔しいです。" }
+      { speaker: "ミラ", expression: "sorrow", text: "理論上は正しい、だけでは足りないんですね。……少し悔しいです。" },
+      { speaker: "ナーディル", expression: "normal", text: "でも、沈殿が出た理由まで見れば、次の答えに近づける。ミラならきっと見つけられるよ。" }
     ]
   },
   {
@@ -328,7 +334,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "高品質な素材を使えば、良い品は作れます。でも、それだけでは商売になりません。" },
-      { speaker: "ミラ", expression: "joy", text: "必要な人に届く価格にする。そこまで考えて、初めて商品なんです。" }
+      { speaker: "ナーディル", expression: "normal", text: "必要な人に届く値にしないと、棚の上で眠るだけになるからね。" },
+      { speaker: "ミラ", expression: "joy", text: "はい。先輩のそういう考え方、好きです。品の向こうにいる人を忘れないところが。" }
     ]
   },
   {
@@ -342,7 +349,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "fun", text: "実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。" },
-      { speaker: "ミラ", expression: "surprise", text: "……意外ですか？ こういう迷い方くらい、私にもあります。" }
+      { speaker: "ナーディル", expression: "surprise", text: "それは少し意外だな。ミラなら、すぐ理屈で決めるのかと思ってた。" },
+      { speaker: "ミラ", expression: "joy", text: "ふふ。こういう迷い方くらい、私にもあります。先輩には、ちゃんと知っていてほしいです。" }
     ]
   },
   {
@@ -357,7 +365,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。" },
       { speaker: "ナーディル", expression: "normal", text: "なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。" },
-      { speaker: "ミラ", expression: "surprise", text: "……そういう考え方、先輩らしいです。少し、悔しいくらいに。" }
+      { speaker: "ミラ", expression: "surprise", text: "……そういう考え方、先輩らしいです。少し悔しいくらいに、優しい答えですね。" }
     ]
   },
   {
@@ -372,7 +380,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "商会から試作品を預かってきました。性能は良いのですが、少し高価すぎます。" },
       { speaker: "ナーディル", expression: "normal", text: "良い品でも、必要な人に届かなければ意味が薄いからね。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、そう言ってくださると思っていました。" }
+      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、そう言ってくださると思っていました。だから、最初に相談したかったんです。" }
     ]
   },
   {
@@ -387,7 +395,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "fun", text: "今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。" },
       { speaker: "ナーディル", expression: "surprise", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
-      { speaker: "ミラ", expression: "joy", text: "ありがとうございます。そう言われると、天才でいるより嬉しいです。" }
+      { speaker: "ミラ", expression: "joy", text: "ありがとうございます。そう言われると、天才でいるより嬉しいです。先輩の前では、私でいられますから。" }
     ]
   },
   {
@@ -402,7 +410,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "昔、私の計算式に先輩が赤を入れてくれたこと、まだ覚えています。" },
       { speaker: "ナーディル", expression: "fun", text: "褒めるところより、直すところを探してくれって言われたからね。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩だけは、私を天才ではなく後輩として見てくれました。" }
+      { speaker: "ミラ", expression: "joy", text: "はい。先輩だけは、私を天才ではなく後輩として見てくれました。それが、ずっと嬉しかったんです。" }
     ]
   },
   {
@@ -417,7 +425,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "sorrow", text: "昔は、先輩の隣の席だけが少し静かでした。誰も私を急かさない席でした。" },
       { speaker: "ナーディル", expression: "normal", text: "今も急がなくていい。答えが出るまで、ここで一緒に考えよう。" },
-      { speaker: "ミラ", expression: "joy", text: "……はい。やっぱり私は、この席が一番落ち着きます。" }
+      { speaker: "ミラ", expression: "joy", text: "……はい。やっぱり私は、この席が一番落ち着きます。昔から、ずっと。" }
     ]
   },
   {
@@ -706,7 +714,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。" },
       { speaker: "ナーディル", expression: "surprise", text: "あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。" },
-      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。" }
+      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。……嫌じゃないでしょ？" }
     ]
   },
   {
@@ -720,7 +728,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩、この保存瓶の封止、少しだけ改良できそうです。輸送中の香り抜けを抑えられます。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" }
+      { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" },
+      { speaker: "ミラ", expression: "fun", text: "先輩のお店の香りが遠くまで届くなら、私も少し誇らしいです。" }
     ]
   },
   {
@@ -735,7 +744,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "sorrow", text: "昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。" },
       { speaker: "ナーディル", expression: "fun", text: "個性的で済むなら、まだ商品名でごまかせるかもしれない。" },
-      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。" }
+      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。だからここでは、間違えるのが怖くなくなります。" }
     ]
   },
   {
@@ -750,7 +759,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
       { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
-      { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
+      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
     ]
   },
   {
@@ -864,7 +873,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "今回の品選び、悪くなかったわ。でも、香りの奥にある乾きまでは読み切れてなかったわね。" },
-      { speaker: "ハキマ", expression: "joy", text: "ま、少しずつよ。あんたの目利きは、前より確実に良くなってるから。" }
+      { speaker: "ナーディル", expression: "normal", text: "やっぱりそこか。見た目と客の用途ばかり追って、香りの後味を少し見落としてた。" },
+      { speaker: "ハキマ", expression: "joy", text: "ま、気づけたなら十分よ。あんたの目利きは、前より確実に良くなってるから。" }
     ]
   },
   {
@@ -878,7 +888,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ハキマ", expression: "normal", text: "それじゃ、私は商会に戻るわ。預かってる香材の帳面も見なきゃいけないし。" },
-      { speaker: "ハキマ", expression: "fun", text: "……でも、また近いうちに顔を出すわ。その時は、もっと面白い品を見せなさいよ。" }
+      { speaker: "ナーディル", expression: "normal", text: "今日は助かったよ。君の指摘がなかったら、棚の香りが少し荒れたままだった。" },
+      { speaker: "ハキマ", expression: "fun", text: "当然でしょ。……また近いうちに顔を出すわ。その時は、もっと面白い品を見せなさいよ。" }
     ]
   },
   {
@@ -892,7 +903,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "joy", text: "先輩、今回の接客はとても勉強になりました。理論だけでは、客の迷いまでは拾えませんね。" },
-      { speaker: "ミラ", expression: "fun", text: "星瓶堂で見る品選びは、大学の課題よりずっと生きています。次の相談も、楽しみにしています。" }
+      { speaker: "ナーディル", expression: "normal", text: "俺もまだ迷うよ。けれど、迷いながらでも相手に届く品を探したいんだ。" },
+      { speaker: "ミラ", expression: "fun", text: "はい。星瓶堂で見る品選びは、大学の課題よりずっと生きています。次の相談も楽しみです。" }
     ]
   },
   {
@@ -906,7 +918,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
-      { speaker: "ミラ", expression: "joy", text: "……ふふ。先生に提出する課題より、ずっと面白いです。星瓶堂には、答えの前の迷いがありますから。" }
+      { speaker: "ナーディル", expression: "fun", text: "全部か。あまり立派なものじゃないから、少し恥ずかしいな。" },
+      { speaker: "ミラ", expression: "joy", text: "ふふ。先生に提出する課題より、ずっと面白いです。星瓶堂には、答えの前の迷いがありますから。" }
     ]
   },
   {
@@ -1017,8 +1030,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "市場の喧騒が遠くなる。この静けさが、星瓶堂の帰り道には一番合うわね。" },
-      { speaker: "ハキマ", expression: "joy", text: "……また明日。その時は、もっと面白い瓶を見せてね。" }
+      { speaker: "ハキマ", expression: "normal", text: "市場の灯も落ちてきたし、そろそろ戻るわ。夜の香材は湿気を吸いやすいの。" },
+      { speaker: "ナーディル", expression: "joy", text: "そこまで気にするから、ルハーン商会の品は信用されるんだな。" },
+      { speaker: "ハキマ", expression: "surprise", text: "……急に褒めないで。帰りにくくなるでしょ。" }
     ]
   },
   {
@@ -1031,8 +1045,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "joy", text: "先輩、今日の接客をノートにまとめました。理論では学べない、客の迷いの拾い方。" },
-      { speaker: "ミラ", expression: "fun", text: "次は私も、実際に品を選んでみたいです。……先輩の隣で。" }
+      { speaker: "ミラ", expression: "joy", text: "先輩、今回の接客をノートにまとめました。理論では学べない、客の迷いの拾い方です。" },
+      { speaker: "ナーディル", expression: "surprise", text: "そんなに書くことがあったのか。俺の判断なんて、まだ手探りばかりだよ。" },
+      { speaker: "ミラ", expression: "fun", text: "だから面白いんです。次は私も、実際に品を選んでみたいです。……先輩の隣で。" }
     ]
   },
   {
@@ -1045,8 +1060,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "カフェスペースを借りて、今日の記録を書いています。香草茶の香りが、思考を落ち着かせてくれます。" },
-      { speaker: "ミラ", expression: "joy", text: "……ふふ。先輩の店先は、大学の自習室よりずっと楽しいです。" }
+      { speaker: "ミラ", expression: "normal", text: "店先の席を少し借りて、今回の記録を書いています。香草茶の香りが、思考を落ち着かせてくれます。" },
+      { speaker: "ナーディル", expression: "normal", text: "ゆっくり書いていって。閉める前に、もう一杯淹れるよ。" },
+      { speaker: "ミラ", expression: "joy", text: "ありがとうございます。先輩の店先は、大学の自習室よりずっと楽しいです。" }
     ]
   },
   {
@@ -1102,7 +1118,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩、昔の課題帳を開いていました。この余白の走り書き、全部先輩の跡ですね。" },
-      { speaker: "ミラ", expression: "joy", text: "……ありがとうございます。私、このページが一番好きです。" }
+      { speaker: "ナーディル", expression: "fun", text: "そんなものまで残っていたのか。今見ると、少し恥ずかしいな。" },
+      { speaker: "ミラ", expression: "joy", text: "私は、このページが一番好きです。正解より前に、先輩が一緒に迷ってくれた跡ですから。" }
     ]
   },
   {
@@ -1185,8 +1202,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "閉店後の星瓶堂は、いつもより静かに感じる。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも、この静けさが嫌いじゃないんだ。" }
+      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
+      { speaker: "ナーディル", expression: "normal", text: "熟成前の樹脂か。星瓶堂なら乾燥瓶に分けて、香りの変化を見ながら置けると思う。" },
+      { speaker: "ハキマ", expression: "fun", text: "頼もしいじゃない。誰かさんみたいに扱いにくい香材だけど、ちゃんと見てあげなさいよ。" }
     ]
   },
   {
@@ -1255,8 +1273,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今日の品、香りの残りがよかったわ。" },
-      { speaker: "ハキマ", expression: "joy", text: "あなたが見立て、悪くないと思う。" }
+      { speaker: "ハキマ", expression: "normal", text: "香りの読み方は、正解を丸暗記するものじゃないわ。客の手、瓶の曇り、風向きまで見るの。" },
+      { speaker: "ナーディル", expression: "normal", text: "今日の結果を見ると、その意味が少し分かった気がする。香りだけを嗅いでいたら足りないんだな。" },
+      { speaker: "ハキマ", expression: "fun", text: "そういうこと。まあ、気づくのが遅いけど、気づかないよりはずっといいわ。" }
     ]
   },
   {
@@ -1269,8 +1288,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "帳簿の記録、少し手伝おうか？" },
-      { speaker: "ハキマ", expression: "fun", text: "勘違いしないで。ただの気まぐれよ。" }
+      { speaker: "ナーディル", expression: "normal", text: "結果を帳面に残しておこう。どの客に、どの香りが合ったのか。忘れないように。" },
+      { speaker: "ハキマ", expression: "normal", text: "いい心がけね。商人の記録は、次の信用になるんだから。" },
+      { speaker: "ナーディル", expression: "fun", text: "君にそう言われると、帳面の字まで丁寧に書きたくなるな。" }
     ]
   },
   {
@@ -1283,8 +1303,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今日の客の好み、記録しておいたほうがいいわ。" },
-      { speaker: "ハキマ", expression: "joy", text: "次の来店のときに役立つから。" }
+      { speaker: "ナーディル", expression: "normal", text: "今回の見立てを記録しておこう。香りの強さ、客の用途、君の指摘も。" },
+      { speaker: "ハキマ", expression: "normal", text: "私の指摘まで？ まあ、役に立つなら書いておきなさい。次に同じ間違いをしないためよ。" },
+      { speaker: "ナーディル", expression: "joy", text: "分かった。星瓶堂の帳面に、ルハーン商会式の目利きも少し借りておくよ。" }
     ]
   },
   {
@@ -1297,8 +1318,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "帰りに香炉の灰をならしていくわ。" },
-      { speaker: "ハキマ", expression: "sorrow", text: "この香り、また来たいと思うはずよ。" }
+      { speaker: "ナーディル", expression: "normal", text: "閉店前の棚に、今日扱った香材の匂いが少し残っているな。" },
+      { speaker: "ハキマ", expression: "sorrow", text: "良い香りも、雑に扱えばすぐ濁るわ。だから最後まで気を抜いちゃだめ。" },
+      { speaker: "ナーディル", expression: "joy", text: "うん。今日の香りも、ちゃんと次の営業に残せるように整えておく。" }
     ]
   },
   {
@@ -1311,8 +1333,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "joy", text: "今日の品、色がいいですよね！" },
-      { speaker: "ミラ", expression: "fun", text: "棚に並ぶと、もっと映えますよ。" }
+      { speaker: "ミラ", expression: "joy", text: "今回選んだ品、色がとても綺麗でしたね。光に透かした時、棚の奥まで明るく見えました。" },
+      { speaker: "ナーディル", expression: "normal", text: "色で気持ちが変わることもあるからね。客の表情が少し柔らかくなった気がする。" },
+      { speaker: "ミラ", expression: "fun", text: "はい。先輩の選ぶ色は、ただ綺麗なだけじゃなくて、誰かの気分まで考えている気がします。" }
     ]
   },
   {
@@ -1325,8 +1348,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "帰りに市場によるんですけど、一緒にどうですか？" },
-      { speaker: "ミラ", expression: "joy", text: "新しい色の瓶、見つかるかもしれませんよ。" }
+      { speaker: "ミラ", expression: "normal", text: "この後、市場に寄って帰るつもりです。新しい色ガラスが入ったと聞いたので。" },
+      { speaker: "ナーディル", expression: "surprise", text: "市場まで？ なら、気をつけて。荷物が多くなるなら、途中まで持つよ。" },
+      { speaker: "ミラ", expression: "joy", text: "ありがとうございます、先輩。でも今日は見学だけです。……一緒に見てもらえるなら、少しだけ心強いです。" }
     ]
   },
   {
@@ -1339,8 +1363,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "fun", text: "閉店後のお菓子、少し贅沢しちゃいました。" },
-      { speaker: "ミラ", expression: "joy", text: "明日の活力になりますから。" }
+      { speaker: "ミラ", expression: "fun", text: "帰る前に、デーツ菓子を少しだけ買ってしまいました。観察記録を書くと、お腹が空くんです。" },
+      { speaker: "ナーディル", expression: "fun", text: "それなら、頭を使った分の補給だな。無理に我慢するより健全かもしれない。" },
+      { speaker: "ミラ", expression: "joy", text: "はい。明日の活力です。……先輩にも一つ、置いていきますね。" }
     ]
   },
   {
@@ -1353,8 +1378,9 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "帰りの街灯、今日は綺麗に点いてますね。" },
-      { speaker: "ミラ", expression: "joy", text: "星瓶堂の明かりも、あんな風に誰かを照らしてるんですか。" }
+      { speaker: "ミラ", expression: "normal", text: "帰り道の街灯、今日は綺麗に点いていますね。青い瓶に映ると、星みたいです。" },
+      { speaker: "ナーディル", expression: "normal", text: "星瓶堂の明かりも、あんなふうに誰かの道を照らせたらいいな。" },
+      { speaker: "ミラ", expression: "joy", text: "照らしていますよ。少なくとも、私には。ここへ来る道は、いつも少し明るく見えます。" }
     ]
   },
   {
@@ -1451,9 +1477,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "fun", text: "この香り、昔の市場でよく嗅いだわ。あんたがいつも隠し持ってた香木ね。" },
-      { speaker: "ナーディル", expression: "fun", text: "君の鼻は、相変わらず鋭いな。でもこれは、ただの星瓶堂の朝の香りだ。" },
-      { speaker: "ハキマ", expression: "joy", text: "そう。私の記憶では、それが一番よく似合うのよ。" }
+      { speaker: "ハキマ", expression: "normal", text: "この香り、覚えてる？ 昔、あんたが「市場の夕方みたいだ」って言った配合に近いの。" },
+      { speaker: "ナーディル", expression: "fun", text: "覚えてるよ。君に、感想が雑すぎるって怒られたやつだ。" },
+      { speaker: "ハキマ", expression: "joy", text: "今でも少し雑だけどね。……でも、あの時の言葉は嫌いじゃなかったわ。" }
     ]
   },
   {
@@ -1466,9 +1492,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今の見立て、昔と少し変わっていない？" },
-      { speaker: "ナーディル", expression: "normal", text: "君にそう言われると、少し安心する。変わっていない部分があるなら。" },
-      { speaker: "ハキマ", expression: "joy", text: "ふん。でも、目はさらに鋭くなったわね。……悪くない。" }
+      { speaker: "ナーディル", expression: "normal", text: "昔の俺なら、今の結果で落ち込んで、君に全部聞きに行ってたかもしれない。" },
+      { speaker: "ハキマ", expression: "normal", text: "今でも聞きに来ればいいじゃない。……まあ、昔よりは自分で考える顔になったけど。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは君に鍛えられたからだな。悔しいけど、感謝してる。" }
     ]
   },
   {
@@ -1481,9 +1507,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "星瓶堂の一日のリズム、昔から変わらないわね。" },
-      { speaker: "ナーディル", expression: "joy", text: "君が来る日も、来ない日も、このリズムは続いてた。" },
-      { speaker: "ハキマ", expression: "joy", text: "……それなら、これからも時々、このリズムを刻みに来るわ。" }
+      { speaker: "ナーディル", expression: "normal", text: "閉店前に君が棚を見る時のリズム、昔から変わらないな。瓶を二つ鳴らして、最後に香りを確かめる。" },
+      { speaker: "ハキマ", expression: "joy", text: "あんたの癖も変わらないわよ。悩むと天秤の針ばかり見て、答えを急がなくなる。" },
+      { speaker: "ナーディル", expression: "joy", text: "そういう癖を覚えられているのは、少し照れるな。でも、君と並ぶ時のリズムは嫌いじゃない。" }
     ]
   },
   {
@@ -1496,9 +1522,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、昔私が使ってた計算机、まだ覚えていますか。" },
-      { speaker: "ナーディル", expression: "fun", text: "ああ。君が数字を並べると、なぜか店内が静かになった。" },
-      { speaker: "ミラ", expression: "joy", text: "……今日は、その机で少し計算させてください。懐かしくて。" }
+      { speaker: "ミラ", expression: "normal", text: "先輩、昔私が使っていた計算机、まだ覚えていますか。" },
+      { speaker: "ナーディル", expression: "fun", text: "ああ。君が数字を並べると、なぜか店の中まで静かになった。" },
+      { speaker: "ミラ", expression: "joy", text: "……今日は、その机で少し計算させてください。懐かしくて、先輩の近くにいる感じがするんです。" }
     ]
   },
   {
@@ -1513,7 +1539,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "今の配合、昔私が考えた式に似ていました。" },
       { speaker: "ナーディル", expression: "normal", text: "覚えていたのか。君の式は、今でも星瓶堂で生きている。" },
-      { speaker: "ミラ", expression: "joy", text: "……嬉しいです。私の計算が、ここで息をしているなんて。" }
+      { speaker: "ミラ", expression: "joy", text: "嬉しいです。私の計算が、先輩の棚で息をしているなんて。昔の私に教えてあげたいです。" }
     ]
   },
   {
@@ -1528,7 +1554,7 @@ export const DAILY_TALKS = [
     pages: [
       { speaker: "ミラ", expression: "normal", text: "昔、ここに書き残した落書き、まだ消さないでいてくれたんですね。" },
       { speaker: "ナーディル", expression: "fun", text: "消すのが惜しくなった。君の思考の跡だから。" },
-      { speaker: "ミラ", expression: "joy", text: "……先輩らしい。でも、少し照れます。" }
+      { speaker: "ミラ", expression: "joy", text: "……先輩らしいです。でも、少し照れます。大切に残してくれて、嬉しいです。" }
     ]
   },
   {
@@ -1601,9 +1627,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "fun", text: "あんたと並んで品を見るのは、やっぱり一番気が張るわ。" },
-      { speaker: "ナーディル", expression: "fun", text: "君との競争は、俺の目も鍛えてくれた。" },
-      { speaker: "ハキマ", expression: "joy", text: "ふん。なら、これからも私があんたの隣で目を競ってあげる。" }
+      { speaker: "ハキマ", expression: "fun", text: "あんたと競争したの、いつからだったかしら。香材、瓶選び、値切り方まで勝負にしてたわよね。" },
+      { speaker: "ナーディル", expression: "fun", text: "君が何でも勝負にするからだよ。でも、そのおかげで目利きはかなり鍛えられた。" },
+      { speaker: "ハキマ", expression: "joy", text: "だったら感謝しなさい。……それと、これからも勝手に一人で先に行かないこと。" }
     ]
   },
   {
@@ -1616,9 +1642,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩に教わったこと、大学でも役に立っています。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは頼もしい。でも、君自身の力が一番大きい。" },
-      { speaker: "ミラ", expression: "joy", text: "……でも、先輩がいなかったら、今の私はいませんでした。" }
+      { speaker: "ミラ", expression: "normal", text: "先輩に教わったこと、大学でもずっと役に立っています。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは頼もしい。でも、君自身の力が一番大きいよ。" },
+      { speaker: "ミラ", expression: "joy", text: "そう言ってくださるところも、昔から変わりませんね。……でも、先輩がいなかったら今の私はいません。" }
     ]
   },
   {
@@ -1631,9 +1657,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "星瓶堂の扉を開けるのは、昔から勇気がいる。" },
-      { speaker: "ナーディル", expression: "normal", text: "ここが、君にとって特別な場所だからだ。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……そうだ。ここは、私が私でいられる場所だ。" }
+      { speaker: "ハキマ", expression: "fun", text: "弟が、今度は香りの変わるしおりを欲しがってるの。小瓶の次は紙だなんて、忙しい子よね。" },
+      { speaker: "ナーディル", expression: "normal", text: "本に挟むなら、香りは弱めがいいな。強すぎると紙に移って、読むたびに気が散る。" },
+      { speaker: "ハキマ", expression: "joy", text: "……ふうん。そこまで考えるなら、星瓶堂に頼む価値はありそうね。弟も喜ぶと思うわ。" }
     ]
   },
   {
@@ -1646,9 +1672,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "あんたの判断、昔から信用しているわ。" },
-      { speaker: "ナーディル", expression: "joy", text: "君にそう言ってもらえるのが、一番の証だ。" },
-      { speaker: "ハキマ", expression: "joy", text: "ふん。でも、油断はさせない。私も成長しているんだから。" }
+      { speaker: "ナーディル", expression: "normal", text: "ハキマは、俺の見立てを信じてくれてる？" },
+      { speaker: "ハキマ", expression: "anger", text: "今さら何を聞いてるの。信じてなかったら、大事な香材をあんたに見せたりしないわ。" },
+      { speaker: "ハキマ", expression: "joy", text: "……でも、一番信じるべきなのはあんた自身よ。私は昔から、そこを見てるんだから。" }
     ]
   },
   {
@@ -1662,8 +1688,8 @@ export const DAILY_TALKS = [
     priority: 1,
     pages: [
       { speaker: "ミラ", expression: "normal", text: "先輩のやり方、私も少しずつ受け継いでいるみたいです。" },
-      { speaker: "ナーディル", expression: "joy", text: "君が選んだ道だ。俺はそれを見守るだけだ。" },
-      { speaker: "ミラ", expression: "joy", text: "……でも、先輩の跡を辿っている自分、嫌いじゃないです。" }
+      { speaker: "ナーディル", expression: "joy", text: "君が選んだ道だよ。俺は少し隣で見ていただけだ。" },
+      { speaker: "ミラ", expression: "joy", text: "その少しが、私には大きかったんです。先輩の跡を辿っている自分、嫌いじゃありません。" }
     ]
   },
   {
