@@ -99,7 +99,9 @@ const MemoriesScreen = ({
     borderRadius: '50%',
     objectFit: 'cover',
     border: `2px solid ${THEME.brass}`,
-    background: THEME.sand
+    background: THEME.sand,
+    imageRendering: 'auto',
+    backfaceVisibility: 'hidden'
   };
 
   const thumbnailStyle = {
@@ -108,7 +110,9 @@ const MemoriesScreen = ({
     objectFit: 'cover',
     borderRadius: '4px',
     border: `1px solid ${THEME.brass}`,
-    flexShrink: 0
+    flexShrink: 0,
+    imageRendering: 'auto',
+    backfaceVisibility: 'hidden'
   };
 
   const memoryItemStyle = (heroineThemeColor) => ({

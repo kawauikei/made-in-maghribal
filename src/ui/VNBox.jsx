@@ -266,7 +266,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                     top: '-5%',
                     left: '-5%',
                     zIndex: 1,
-                    animation: 'vn-fade-out 0.2s forwards'
+                    animation: 'vn-fade-out 0.2s forwards',
+                    imageRendering: 'auto',
+                    backfaceVisibility: 'hidden'
                   }}
                 />
               )}
@@ -288,7 +290,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                   left: '-5%',
                   zIndex: 2,
                   opacity: isFaceLoaded ? 1 : 0,
-                  animation: isFaceLoaded ? 'vn-fade-in 0.2s ease' : 'none'
+                  animation: isFaceLoaded ? 'vn-fade-in 0.2s ease' : 'none',
+                  imageRendering: 'auto',
+                  backfaceVisibility: 'hidden'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
