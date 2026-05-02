@@ -98,10 +98,10 @@ const ResultScreen = ({
                 size="large"
                 expression={getResultExpression(correctCount)}
                 noBorder={true}
-                objectPosition="center center"
+                objectPosition="center 45%"
                 style={{ 
                   filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
-                  maxHeight: '220px',
+                  maxHeight: '240px',
                   transform: 'translateX(12px)'
                 }}
               />
