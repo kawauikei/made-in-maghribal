@@ -4729,13 +4729,13 @@ function App() {
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    // M-EVENT-PRESENTATION-FIX-5: EVENT standing image is ALWAYS activeHeroine (not per-page switching)
-    // VNBox face icon follows page speaker, but central standing = heroine only
+    // M-EVENT-PRESENTATION-FIX-6: EVENT standing = activeHeroine fixed (not per-page switching)
+    // VNBox face icon follows page speaker, central standing = heroine only
     const rawEventPages = getEventPages(activeEvent, routeMode);
     const currentEventPage = rawEventPages[eventCurrentPageIndex];
     const currentPageExpression = currentEventPage?.expression || 'normal';
     
-    // M-EVENT-PRESENTATION-FIX-5: Check if current page is heroine speaking
+    // M-EVENT-PRESENTATION-FIX-6: Check if current page is heroine speaking
     const normalizeSpeakerName = (value) => String(value || '').trim();
     const activeHeroineShortName = activeHeroine?.name?.split('・')?.[0];
     const isHeroineSpeakerPage = (page) => {
@@ -4749,14 +4749,15 @@ function App() {
     };
     const isHeroineSpeaker = isHeroineSpeakerPage(currentEventPage);
     
-    // M-EVENT-PRESENTATION-FIX-5: Show standing image only when heroine is speaking (or after she appears)
-    // For flashback_intro, hide until heroine first appears
+    // M-EVENT-PRESENTATION-FIX-6: flashback_intro shows heroine ONLY on her speaking pages
+    // Normal affection events: heroine fixed (not still events)
     const isFlashbackIntro = activeEvent.kind === 'flashback_intro';
-    const heroineHasAppeared = isHeroineSpeaker || eventCurrentPageIndex > 0;
-    const shouldShowEventCharacter = !still && (!isFlashbackIntro || heroineHasAppeared);
+    const shouldShowEventHeroine = isFlashbackIntro
+      ? isHeroineSpeaker  // flashback_intro: only when heroine speaks
+      : !still;           // normal event: always show (not still)
     
-    // M-EVENT-PRESENTATION-FIX-5: Only update expression when heroine speaks
-    // Nader/narration pages keep previous expression or normal
+    // M-EVENT-PRESENTATION-FIX-6: Only update expression when heroine speaks
+    // Nader/narration pages keep previous expression
     const currentCharacterExpression = isHeroineSpeaker ? currentPageExpression : eventHeroineExpression;
 
     if (!still) {
@@ -4770,7 +4771,7 @@ function App() {
           {renderThemeStyles()}
           {renderBackground(screen)}
           
-          {/* M-EVENT-PRESENTATION-FIX-2/5: Curtain slide overlay for background transitions (slowed down) */}
+          {/* M-EVENT-PRESENTATION-FIX-2/6: Curtain slide overlay for background transitions (slowed down) */}
           {(bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && (
             <div style={{
               position: 'absolute',
@@ -4788,7 +4789,7 @@ function App() {
             }} />
           )}
           
-          {/* M-EVENT-PRESENTATION-FIX-3/5: Central standing = activeHeroine always (not per-page switching) */}
+          {/* M-EVENT-PRESENTATION-FIX-3/6: Central standing = activeHeroine (flashback: per-page, normal: fixed) */}
           <div style={{ 
             position: 'absolute', 
             bottom: '8%', 
@@ -4801,7 +4802,7 @@ function App() {
             alignItems: 'flex-end', 
             justifyContent: 'center',
             filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))',
-            opacity: shouldShowEventCharacter ? 1 : 0,
+            opacity: shouldShowEventHeroine ? 1 : 0,
             transition: 'opacity 0.2s ease'
           }}>
              <HeroineDisplay 
@@ -4855,13 +4856,13 @@ function App() {
                   setEventCurrentPageIndex(index);
                   const page = rawEventPages[index];
                   
-                  // M-EVENT-PRESENTATION-FIX-5: Only update expression when heroine speaks
+                  // M-EVENT-PRESENTATION-FIX-6: Only update expression when heroine speaks
                   if (isHeroineSpeakerPage(page) && page?.expression) {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-2/5: Curtain slide transition for background changes
+                  // M-EVENT-PRESENTATION-FIX-2/6: Curtain slide transition for background changes
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
                     // Start curtain slide: slower covering phase (650ms)
