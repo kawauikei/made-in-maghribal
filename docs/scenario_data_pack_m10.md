@@ -99,106 +99,341 @@ ChatGPT や世界観担当とのストーリー作成・文体統一のインプ
 
 ## 2. Affection Events
 
+### [hakima] Threshold 0: 牙と天秤の出会い
+- **Event ID**: hakima_0
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: なし
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 0
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
 ### [hakima] Threshold 5: もう一度、隣に
 - **Event ID**: hakima_5
-- **Speaker**: ハキマ
-- **Expression**: joy
+- **Speaker**: なし
+- **Expression**: なし
 - **IF(long_history) 差分有無**: あり
-- **Normal Route Pages**: 3
-- **IF Route Pages**: 2
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
 - **Still Image**: hakimaMorningVisit01
   - Title: 朝の来訪
-  - Src: images/still/still_hakima_morning_visit_01.jpg
+  - Src: images/still/still_hakima_morning_visit_01.jpeg
 - **表示形式**: stillあり (全画面スチル)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> 店先に立っていると、ハキマが薬草の束を抱えてやってきた。
-> 「調子はどう？ 忙しそうだけど、無理はしてない？」
-> 彼女は薬草の束を卓上に置き、棚の品を眺めながら、私の目利きを静かに見守っている。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 **IFルート本文 (long_history)**:
-> ナーディル、さっきの品選び……あんたが店を継いだ日のことを思い出したよ。
-> あの頃からずっと、あんたの隣で品を見立ててきたけど……今じゃ、立派な店主だね。あたしも鼻が高いよ。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [hakima] Threshold 10: 狐の耳は嘘をつかない
 - **Event ID**: hakima_10
-- **Speaker**: ハキマ
-- **Expression**: fun
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [hakima] Threshold 20: 重なる目利き
+- **Event ID**: hakima_20
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [hakima] Threshold 30: 隣に並ぶ覚悟
+- **Event ID**: hakima_climax
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [mira] Threshold 0: 天才とノートの余白
+- **Event ID**: mira_0
+- **Speaker**: なし
+- **Expression**: なし
 - **IF(long_history) 差分有無**: なし
-- **Normal Route Pages**: 1
+- **Normal Route Pages**: 5
 - **IF Route Pages**: 0
 - **表示形式**: standingのみ (立ち絵表示)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> ……あ、あんまり耳をジロジロ見ないでよ！ ほら、次の鑑定依頼が来てるみたいだよ。……ったく、あんたのそういう真っ直ぐなところ、たまに困るんだから。（耳がピコピコと嬉しそうに動いている）
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [mira] Threshold 5: 普通の女の子として
 - **Event ID**: mira_5
-- **Speaker**: ミラ
-- **Expression**: fun
+- **Speaker**: なし
+- **Expression**: なし
 - **IF(long_history) 差分有無**: あり
-- **Normal Route Pages**: 1
-- **IF Route Pages**: 2
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
 - **Still Image**: miraAfterSchool01
   - Title: 放課後
-  - Src: images/still/still_mira_after_school_01.jpg
+  - Src: images/still/still_mira_after_school_01.jpeg
 - **表示形式**: stillあり (全画面スチル)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> ……ふふっ。先輩とこうして品物を見つめていると、商会の義務も学園の課題も、すべて忘れてしまえそうです。ただの『私』でいられるこの場所が、少しずつ特別になってきました。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 **IFルート本文 (long_history)**:
-> ……ふふっ。先輩とこうしていると、子供の頃に路地裏を駆け回っていたのを思い出します。
-> 今は立場こそ違いますが、先輩の隣が一番落ち着くのは……昔から変わりませんね。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [mira] Threshold 10: 商人の目利き
 - **Event ID**: mira_10
-- **Speaker**: ミラ
-- **Expression**: joy
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [mira] Threshold 20: 暮らしの錬金術
+- **Event ID**: mira_20
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [mira] Threshold 30: 正解の前の私
+- **Event ID**: mira_climax
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [dariya] Threshold 0: 王宮の鑑定依頼
+- **Event ID**: dariya_0
+- **Speaker**: なし
+- **Expression**: なし
 - **IF(long_history) 差分有無**: なし
-- **Normal Route Pages**: 1
+- **Normal Route Pages**: 5
 - **IF Route Pages**: 0
 - **表示形式**: standingのみ (立ち絵表示)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> 先輩、今の品選び……実に見事でした。ただ価値を見るだけでなく、持ち主の心まで汲み取る。商人として、そして一人の人間として、深く尊敬してしまいます。……私も、負けていられませんね。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [dariya] Threshold 5: 安らぎの工房
 - **Event ID**: dariya_5
-- **Speaker**: ダリヤ
-- **Expression**: joy
+- **Speaker**: なし
+- **Expression**: なし
 - **IF(long_history) 差分有無**: あり
-- **Normal Route Pages**: 1
-- **IF Route Pages**: 2
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
 - **Still Image**: dariyaAfterHours01
   - Title: 夜更けの訪問
-  - Src: images/still/still_dariya_after_hours_01.jpg
+  - Src: images/still/still_dariya_after_hours_01.jpeg
 - **表示形式**: stillあり (全画面スチル)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> ……ふぅ。王宮や研究所の喧騒を離れて、ここで君の話を聞いていると、不思議と心が凪いでいくのがわかるよ。この工房の空気は、どんな霊薬よりも私に効くらしい。感謝しているよ、ナーディル。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 **IFルート本文 (long_history)**:
-> ……ふぅ。君がまだ薬草の区別もつかなかった頃からの付き合いだが……。
-> 今や、私の最も信頼する鑑定士だ。君の工房の空気は、どんな霊薬よりも私を安らげてくれるよ。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [dariya] Threshold 10: 共鳴する真理
 - **Event ID**: dariya_10
-- **Speaker**: ダリヤ
-- **Expression**: fun
-- **IF(long_history) 差分有無**: なし
-- **Normal Route Pages**: 1
-- **IF Route Pages**: 0
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 4
+- **IF Route Pages**: 4
 - **表示形式**: standingのみ (立ち絵表示)
 - **M10-2 本文拡充対象**: はい
 
 **通常ルート本文 (pages / text)**:
-> 君の調合理論は、時に王立研究所の教授たちよりも核心を突いているね。真理を求める瞳……私はそれが大好きだ。……面白いな、君という人間を、もっと深く研究してみたくなったよ。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [dariya] Threshold 20: 当たり前の重み
+- **Event ID**: dariya_20
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+### [dariya] Threshold 30: 座らせてくれる場所
+- **Event ID**: dariya_climax
+- **Speaker**: なし
+- **Expression**: なし
+- **IF(long_history) 差分有無**: あり
+- **Normal Route Pages**: 5
+- **IF Route Pages**: 5
+- **表示形式**: standingのみ (立ち絵表示)
+- **M10-2 本文拡充対象**: はい
+
+**通常ルート本文 (pages / text)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+
+**IFルート本文 (long_history)**:
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ---
 
@@ -206,75 +441,93 @@ ChatGPT や世界観担当とのストーリー作成・文体統一のインプ
 
 ### [hakima] good Ending: 星瓶堂の灯が、やさしく続く
 - **条件**: Affection 80以上 かつ Reputation(評判) 40以上 (App.jsx判定)
-- **Expression**: joy
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> これまでの営業の積み重ねが、ちゃんとここまで届いている。ハキマは笑って、また次の営業でも付き合ってくれると言った。
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [hakima] normal Ending: いつもの一日が、少し特別になる
 - **条件**: Affection 40以上79以下 または (Affection 80以上だがReputation 40未満) (App.jsx判定)
-- **Expression**: normal
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> 星瓶堂で重ねた会話は、静かに次の約束へつながっていく。
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [hakima] bad Ending: 言えなかった言葉
 - **条件**: Affection 40未満 (App.jsx判定)
-- **Expression**: sad
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> 少しすれ違いは残ったけれど、星瓶堂で過ごした時間が消えるわけではない。
+> [object Object]
+> [object Object]
 
 ### [mira] good Ending: ひらめきが、未来を照らす
 - **条件**: Affection 80以上 かつ Reputation(評判) 40以上 (App.jsx判定)
-- **Expression**: joy
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> ミラは新しい発想を携えて、また星瓶堂に足を運んでくれる。次の相談が、もう楽しみだ。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [mira] normal Ending: 学びの途中で
 - **条件**: Affection 40以上79以下 または (Affection 80以上だがReputation 40未満) (App.jsx判定)
-- **Expression**: normal
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> まだまだ途中。でも、二人でなら次の一歩も見つけられる。
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [mira] bad Ending: 少し遠回り
 - **条件**: Affection 40未満 (App.jsx判定)
-- **Expression**: sad
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> 距離は少しだけ離れたまま。それでも、また会えば言葉を交わせるはずだ。
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [dariya] good Ending: 静かな信頼
 - **条件**: Affection 80以上 かつ Reputation(評判) 40以上 (App.jsx判定)
-- **Expression**: joy
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> ダリヤは星瓶堂に、気を抜ける場所を見つけた。そうしてまた、少しだけ笑った。
+> [object Object]
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [dariya] normal Ending: 気配を残して
 - **条件**: Affection 40以上79以下 または (Affection 80以上だがReputation 40未満) (App.jsx判定)
-- **Expression**: normal
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> 短い時間でも、言葉を重ねれば距離は変わる。星瓶堂には、その余韻が残る。
+> [object Object]
+> [object Object]
+> [object Object]
 
 ### [dariya] bad Ending: まだほどけない心
 - **条件**: Affection 40未満 (App.jsx判定)
-- **Expression**: sad
-- **Background ID**: shopInteriorService
+- **Expression**: なし
+- **Background ID**: なし
 
 **本文 (text/pages)**:
-> 話し足りない気持ちはある。それでも、星瓶堂での記憶はここにある。
+> [object Object]
+> [object Object]
 
 ---
 
@@ -321,40 +574,32 @@ ChatGPT や世界観担当とのストーリー作成・文体統一のインプ
 ## 6. Assets / BGM / SE
 
 ### Background Images
-- **shopExteriorDay**: shop exterior day (src: images/background/bg_shop_exterior_day.jpg)
-- **shopExteriorNight**: shop exterior night (src: images/background/bg_shop_exterior_night.jpg)
-- **shopInteriorService**: shop interior service (src: images/background/bg_shop_interior_service.jpg)
-- **shopInteriorWorkshop**: shop interior workshop (src: images/background/bg_shop_interior_workshop.jpg)
-- **universityCourtyard**: university courtyard (src: images/background/bg_university_courtyard.jpg)
-- **nadirRoom**: nadir room (src: images/background/bg_nadir_room.jpg)
-- **hakimaRoom**: hakima room (src: images/background/bg_hakima_room.jpg)
-- **miraRoom**: mira room (src: images/background/bg_mira_room.jpg)
-- **dariyaRoom**: dariya room (src: images/background/bg_dariya_room.jpg)
-- **marketCentral**: market central (src: images/background/bg_market_central.jpg)
-- **palaceCorridor**: palace corridor (src: images/background/bg_palace_corridor.jpg)
-- **palaceLab**: palace lab (src: images/background/bg_palace_lab.jpg)
-- **spotFountain**: spot fountain (src: images/background/bg_spot_fountain.jpg)
-- **spotFestivalStreet**: spot festival street (src: images/background/bg_spot_festival_street.jpg)
-- **spotPortView**: spot port view (src: images/background/bg_spot_port_view.jpg)
-- **spotOasisView**: spot oasis view (src: images/background/bg_spot_oasis_view.jpg)
-- **spotRuins**: spot ruins (src: images/background/bg_spot_ruins.jpg)
-- **spotStarView**: spot star view (src: images/background/bg_spot_star_view.jpg)
+- **shopExteriorDay**: shop exterior day (src: images/background/bg_shop_exterior_day.jpeg)
+- **shopExteriorNight**: shop exterior night (src: images/background/bg_shop_exterior_night.jpeg)
+- **shopInteriorService**: shop interior service (src: images/background/bg_shop_interior_service.jpeg)
+- **marketCentral**: market central (src: images/background/bg_market_central.jpeg)
+- **palaceCorridor**: palace corridor (src: images/background/bg_palace_corridor.jpeg)
+- **palaceLab**: palace lab (src: images/background/bg_palace_lab.jpeg)
+- **spotFountain**: spot fountain (src: images/background/bg_spot_fountain.jpeg)
+- **spotFestivalStreet**: spot festival street (src: images/background/bg_spot_festival_street.jpeg)
+- **spotPortView**: spot port view (src: images/background/bg_spot_port_view.jpeg)
+- **spotOasisView**: spot oasis view (src: images/background/bg_spot_oasis_view.jpeg)
+- **spotRuins**: spot ruins (src: images/background/bg_spot_ruins.jpeg)
+- **spotStarView**: spot star view (src: images/background/bg_spot_star_view.jpeg)
 
 ### Still Images
-- **hakimaMorningVisit01**: 朝の来訪 (src: images/still/still_hakima_morning_visit_01.jpg)
-- **hakimaFestivalNight01**: 祭りの夜 (src: images/still/still_hakima_festival_night_01.jpg)
-- **hakimaMarketArgument01**: 市場の小競り合い (src: images/still/still_hakima_market_argument_01.jpg)
-- **hakimaRainShelter01**: 雨宿り (src: images/still/still_hakima_rain_shelter_01.jpg)
-- **miraAfterSchool01**: 放課後 (src: images/still/still_mira_after_school_01.jpg)
-- **miraAssignmentConsult01**: 課題相談 (src: images/still/still_mira_assignment_consult_01.jpg)
-- **miraStarryRooftop01**: 星見の屋上 (src: images/still/still_mira_starry_rooftop_01.jpg)
-- **miraVisitSick01**: 見舞い (src: images/still/still_mira_visit_sick_01.jpg)
-- **dariyaAfterHours01**: 夜更けの訪問 (src: images/still/still_dariya_after_hours_01.jpg)
-- **dariyaLimitNight01**: 限界の夜 (src: images/still/still_dariya_limit_night_01.jpg)
-- **dariyaPalaceCollaboration01**: 王宮との協力 (src: images/still/still_dariya_palace_collaboration_01.jpg)
-- **dariyaRainCorridor01**: 雨の回廊 (src: images/still/still_dariya_rain_corridor_01.jpg)
-- **groupShopping01**: 買い出し (src: images/still/still_group_shopping_01.jpg)
-- **groupCelebration01**: ささやかな祝宴 (src: images/still/still_group_celebration_01.jpg)
+- **hakimaMorningVisit01**: 朝の来訪 (src: images/still/still_hakima_morning_visit_01.jpeg)
+- **hakimaFestivalNight01**: 祭りの夜 (src: images/still/still_hakima_festival_night_01.jpeg)
+- **hakimaMarketArgument01**: 市場の小競り合い (src: images/still/still_hakima_market_argument_01.jpeg)
+- **hakimaRainShelter01**: 雨宿り (src: images/still/still_hakima_rain_shelter_01.jpeg)
+- **miraAfterSchool01**: 放課後 (src: images/still/still_mira_after_school_01.jpeg)
+- **miraAssignmentConsult01**: 課題相談 (src: images/still/still_mira_assignment_consult_01.jpeg)
+- **miraStarryRooftop01**: 星見の屋上 (src: images/still/still_mira_starry_rooftop_01.jpeg)
+- **miraVisitSick01**: 見舞い (src: images/still/still_mira_visit_sick_01.jpeg)
+- **dariyaAfterHours01**: 夜更けの訪問 (src: images/still/still_dariya_after_hours_01.jpeg)
+- **dariyaLimitNight01**: 限界の夜 (src: images/still/still_dariya_limit_night_01.jpeg)
+- **dariyaPalaceCollaboration01**: 王宮との協力 (src: images/still/still_dariya_palace_collaboration_01.jpeg)
+- **dariyaRainCorridor01**: 雨の回廊 (src: images/still/still_dariya_rain_corridor_01.jpeg)
 
 ### Heroine Visuals
 - 全ヒロインに対して `standing_proc` (立ち絵) と `face_proc` (顔アイコン)、一部 `bustup_proc` が提供されています。
