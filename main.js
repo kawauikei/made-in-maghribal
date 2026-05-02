@@ -1,4 +1,4 @@
-import React, { useRef, useState, forwardRef, useEffect, useImperativeHandle, useCallback } from "react";
+import React, { useRef, forwardRef, useState, useEffect, useImperativeHandle, useCallback } from "react";
 const THEME = {
   sand: "#e2d1b1",
   parchment: "#f4e9d5",
@@ -967,27 +967,30 @@ const MemoriesScreen = ({
   onRecallEvent,
   renderThemeStyles,
   renderUtilityHeader,
-  unlockAll = false
+  unlockAll = false,
+  memoriesScrollPosition = 0,
+  // M-MEMORIES-UX-POLISH-1-FIX-1: Scroll position from App.jsx
+  onMemoriesScrollSave = null
+  // M-MEMORIES-UX-POLISH-1-FIX-1: Callback to save scroll position
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
   const seenEvents = unlockAll ? allEvents : allEvents.filter((e) => seenEventIds.includes(e.id));
   const scrollContainerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const handleRecallEvent = (event) => {
-    if (scrollContainerRef.current) {
-      setScrollPosition(scrollContainerRef.current.scrollTop);
+    if (scrollContainerRef.current && onMemoriesScrollSave) {
+      onMemoriesScrollSave(scrollContainerRef.current.scrollTop);
     }
     onRecallEvent && onRecallEvent(event);
   };
   React.useEffect(() => {
-    if (scrollContainerRef.current && scrollPosition > 0) {
+    if (scrollContainerRef.current && memoriesScrollPosition > 0) {
       requestAnimationFrame(() => {
         if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollPosition;
+          scrollContainerRef.current.scrollTop = memoriesScrollPosition;
         }
       });
     }
-  }, []);
+  }, [memoriesScrollPosition]);
   const memoriesContainerStyle = {
     width: "100%",
     height: "100%",
@@ -12637,6 +12640,7 @@ function App() {
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
   const debugAutoSkipAppliedRef = useRef(false);
+  const memoriesScrollPositionRef = useRef(0);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
@@ -13977,7 +13981,11 @@ function App() {
         onOpenHelp: () => setShowHelp(true),
         onRecallEvent: handleRecallEventFromMemories,
         renderThemeStyles,
-        renderUtilityHeader
+        renderUtilityHeader,
+        memoriesScrollPosition: memoriesScrollPositionRef.current,
+        onMemoriesScrollSave: (pos) => {
+          memoriesScrollPositionRef.current = pos;
+        }
       }
     );
   } else if (screen === "HEROINE_SELECT") {
@@ -14160,7 +14168,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_k = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _k.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT", "MEMORIES", "START", "HEROINE_SELECT", "PROLOGUE"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_k = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _k.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
