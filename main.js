@@ -12579,7 +12579,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 function App() {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -13763,51 +13763,20 @@ function App() {
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
     const rawEventPages = getEventPages(activeEvent, routeMode);
-    const normalizeSpeakerName = (value) => String(value || "").trim();
-    const getActiveHeroineSpeakerNames = () => {
-      var _a2, _b2;
-      const canonicalShortNames = {
-        hakima: "ハキマ",
-        mira: "ミラ",
-        dariya: "ダリヤ"
-      };
-      return new Set([
-        activeHeroine == null ? void 0 : activeHeroine.name,
-        activeHeroine == null ? void 0 : activeHeroine.displayName,
-        activeHeroine == null ? void 0 : activeHeroine.shortName,
-        activeHeroine == null ? void 0 : activeHeroine.jpName,
-        activeHeroine == null ? void 0 : activeHeroine.label,
-        (_b2 = (_a2 = activeHeroine == null ? void 0 : activeHeroine.name) == null ? void 0 : _a2.split("・")) == null ? void 0 : _b2[0],
-        canonicalShortNames[activeHeroine == null ? void 0 : activeHeroine.id]
-      ].filter(Boolean).map(normalizeSpeakerName));
-    };
-    const activeHeroineSpeakerNames = getActiveHeroineSpeakerNames();
-    const inferEventSpeakerId = (page) => {
-      if (page == null ? void 0 : page.speakerId) return page.speakerId;
-      const speakerName = normalizeSpeakerName(page == null ? void 0 : page.speaker);
-      if (speakerName === "ナーディル") return "nader";
-      if (activeHeroine && activeHeroineSpeakerNames.has(speakerName)) return activeHeroine.id;
-      return null;
-    };
-    const eventPagesWithSpeakerId = rawEventPages.map((page) => ({
-      ...page,
-      speakerId: inferEventSpeakerId(page)
-    }));
-    const currentEventPage = eventPagesWithSpeakerId[eventCurrentPageIndex];
+    const currentEventPage = rawEventPages[eventCurrentPageIndex];
     const currentPageExpression = (currentEventPage == null ? void 0 : currentEventPage.expression) || "normal";
-    const resolveEventMainCharacter = (page) => {
-      if (!page) return null;
-      if (activeHeroine && page.speakerId === activeHeroine.id) {
-        return activeHeroine;
-      }
-      if (page.speakerId === "nader") {
-        return NADER;
-      }
-      return null;
+    const normalizeSpeakerName = (value) => String(value || "").trim();
+    const activeHeroineShortName = (_f = (_e = activeHeroine == null ? void 0 : activeHeroine.name) == null ? void 0 : _e.split("・")) == null ? void 0 : _f[0];
+    const isHeroineSpeakerPage = (page) => {
+      if (!page || !activeHeroine) return false;
+      const speakerName = normalizeSpeakerName(page == null ? void 0 : page.speaker);
+      return (page == null ? void 0 : page.speakerId) === activeHeroine.id || speakerName === activeHeroine.name || speakerName === activeHeroineShortName;
     };
-    const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
-    const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
-    const currentCharacterExpression = eventMainCharacter ? currentPageExpression : "normal";
+    const isHeroineSpeaker = isHeroineSpeakerPage(currentEventPage);
+    const isFlashbackIntro = activeEvent.kind === "flashback_intro";
+    const heroineHasAppeared = isHeroineSpeaker || eventCurrentPageIndex > 0;
+    const shouldShowEventCharacter = !still && (!isFlashbackIntro || heroineHasAppeared);
+    const currentCharacterExpression = isHeroineSpeaker ? currentPageExpression : eventHeroineExpression;
     if (!still) {
       mainContent = /* @__PURE__ */ React.createElement(
         "div",
@@ -13828,7 +13797,7 @@ function App() {
           zIndex: 1e3,
           pointerEvents: "none",
           transform: bgTransitionPhase === "covering" ? "translateX(0%)" : bgTransitionPhase === "covered" ? "translateX(0%)" : "translateX(100%)",
-          transition: "transform 0.55s ease-in-out"
+          transition: "transform 0.65s ease-in-out"
         } }),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
@@ -13847,7 +13816,7 @@ function App() {
         } }, /* @__PURE__ */ React.createElement(
           HeroineDisplay,
           {
-            heroine: eventMainCharacter || activeHeroine,
+            heroine: activeHeroine,
             type: "standing",
             size: "large",
             expression: currentCharacterExpression,
@@ -13883,16 +13852,22 @@ function App() {
           {
             ref: vnRef,
             speaker: activeEvent.speaker,
-            pages: eventPagesWithSpeakerId,
-            themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
+            pages: rawEventPages.map((page) => {
+              if (page.speakerId) return page;
+              let inferredId = null;
+              if (page.speaker === "ナーディル") inferredId = "nader";
+              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+              return { ...page, speakerId: inferredId };
+            }),
+            themeColor: activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
               var _a2;
               setEventCurrentPageIndex(index);
-              const page = eventPagesWithSpeakerId[index];
-              if (page == null ? void 0 : page.expression) {
+              const page = rawEventPages[index];
+              if (isHeroineSpeakerPage(page) && (page == null ? void 0 : page.expression)) {
                 setEventHeroineExpression(page.expression);
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
@@ -13909,7 +13884,7 @@ function App() {
                       setBgTransitionPhase("idle");
                     }, 450);
                   }, 120);
-                }, 550);
+                }, 650);
               } else if (newBgId) {
                 prevEventBackgroundRef.current = newBgId;
               }
@@ -13928,7 +13903,7 @@ function App() {
           onClick: handleVnAreaClick
         },
         renderThemeStyles(),
-        ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" && (() => {
+        ((_g = still.stillCrop) == null ? void 0 : _g.mode) === "heroine_pan" && (() => {
           const animName = `still-pan-${still.id}`;
           const start = still.stillCrop.startPosition || "50% 50%";
           const end = still.stillCrop.endPosition || "50% 50%";
@@ -13956,12 +13931,12 @@ function App() {
           {
             src: getFullPath(still.src),
             alt: still.label,
-            className: ((_f = still.stillCrop) == null ? void 0 : _f.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
+            className: ((_h = still.stillCrop) == null ? void 0 : _h.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
             style: {
               width: "100%",
               height: "100%",
-              objectFit: ((_g = still.stillCrop) == null ? void 0 : _g.objectFit) || "cover",
-              objectPosition: ((_h = still.stillCrop) == null ? void 0 : _h.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_i = still.stillCrop) == null ? void 0 : _i.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`,
+              objectFit: ((_i = still.stillCrop) == null ? void 0 : _i.objectFit) || "cover",
+              objectPosition: ((_j = still.stillCrop) == null ? void 0 : _j.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_k = still.stillCrop) == null ? void 0 : _k.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`,
               imageRendering: "auto",
               backfaceVisibility: "hidden",
               filter: "blur(0.12px) contrast(0.99)"
@@ -14017,15 +13992,21 @@ function App() {
           {
             ref: vnRef,
             speaker: activeEvent.speaker,
-            pages: eventPagesWithSpeakerId,
-            themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
+            pages: rawEventPages.map((page) => {
+              if (page.speakerId) return page;
+              let inferredId = null;
+              if (page.speaker === "ナーディル") inferredId = "nader";
+              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+              return { ...page, speakerId: inferredId };
+            }),
+            themeColor: activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
               setEventCurrentPageIndex(index);
-              const page = eventPagesWithSpeakerId[index];
-              if (page == null ? void 0 : page.expression) {
+              const page = rawEventPages[index];
+              if (isHeroineSpeakerPage(page) && (page == null ? void 0 : page.expression)) {
                 setEventHeroineExpression(page.expression);
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
@@ -14129,7 +14110,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_j = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _j.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_l = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _l.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -14255,7 +14236,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT", "MEMORIES", "START", "HEROINE_SELECT", "PROLOGUE"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_k = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _k.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT", "MEMORIES", "START", "HEROINE_SELECT", "PROLOGUE"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_m = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _m.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
