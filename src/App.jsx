@@ -1458,59 +1458,35 @@ export default function App() {
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    // M-EVENT-PRESENTATION-FIX-5: Normalize event pages once, then share the same
-    // speakerId/background/expression source between VNBox and standing character display.
-    // This preserves heroine priority and prevents Nader fallback from stealing heroine pages.
+    // M-EVENT-PRESENTATION-FIX-5: EVENT standing image is ALWAYS activeHeroine (not per-page switching)
+    // VNBox face icon follows page speaker, but central standing = heroine only
     const rawEventPages = getEventPages(activeEvent, routeMode);
-    const normalizeSpeakerName = (value) => String(value || '').trim();
-    const getActiveHeroineSpeakerNames = () => {
-      const canonicalShortNames = {
-        hakima: 'ハキマ',
-        mira: 'ミラ',
-        dariya: 'ダリヤ'
-      };
-      return new Set([
-        activeHeroine?.name,
-        activeHeroine?.displayName,
-        activeHeroine?.shortName,
-        activeHeroine?.jpName,
-        activeHeroine?.label,
-        activeHeroine?.name?.split('・')?.[0],
-        canonicalShortNames[activeHeroine?.id]
-      ].filter(Boolean).map(normalizeSpeakerName));
-    };
-    const activeHeroineSpeakerNames = getActiveHeroineSpeakerNames();
-    const inferEventSpeakerId = (page) => {
-      if (page?.speakerId) return page.speakerId;
-      const speakerName = normalizeSpeakerName(page?.speaker);
-      if (speakerName === 'ナーディル') return 'nader';
-      if (activeHeroine && activeHeroineSpeakerNames.has(speakerName)) return activeHeroine.id;
-      return null;
-    };
-    const eventPagesWithSpeakerId = rawEventPages.map(page => ({
-      ...page,
-      speakerId: inferEventSpeakerId(page)
-    }));
-    const currentEventPage = eventPagesWithSpeakerId[eventCurrentPageIndex];
+    const currentEventPage = rawEventPages[eventCurrentPageIndex];
     const currentPageExpression = currentEventPage?.expression || 'normal';
     
-    const resolveEventMainCharacter = (page) => {
-      if (!page) return null;
-      // Heroine must be resolved before Nader. This is the core EVENT priority rule.
-      if (activeHeroine && page.speakerId === activeHeroine.id) {
-        return activeHeroine;
-      }
-      if (page.speakerId === 'nader') {
-        return NADER;
-      }
-      // Narration or unknown speaker
-      return null;
+    // M-EVENT-PRESENTATION-FIX-5: Check if current page is heroine speaking
+    const normalizeSpeakerName = (value) => String(value || '').trim();
+    const activeHeroineShortName = activeHeroine?.name?.split('・')?.[0];
+    const isHeroineSpeakerPage = (page) => {
+      if (!page || !activeHeroine) return false;
+      const speakerName = normalizeSpeakerName(page?.speaker);
+      return (
+        page?.speakerId === activeHeroine.id ||
+        speakerName === activeHeroine.name ||
+        speakerName === activeHeroineShortName
+      );
     };
+    const isHeroineSpeaker = isHeroineSpeakerPage(currentEventPage);
     
-    const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
-    const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
-    // Use expression from the exact same normalized page used by VNBox.
-    const currentCharacterExpression = eventMainCharacter ? currentPageExpression : 'normal';
+    // M-EVENT-PRESENTATION-FIX-5: Show standing image only when heroine is speaking (or after she appears)
+    // For flashback_intro, hide until heroine first appears
+    const isFlashbackIntro = activeEvent.kind === 'flashback_intro';
+    const heroineHasAppeared = isHeroineSpeaker || eventCurrentPageIndex > 0;
+    const shouldShowEventCharacter = !still && (!isFlashbackIntro || heroineHasAppeared);
+    
+    // M-EVENT-PRESENTATION-FIX-5: Only update expression when heroine speaks
+    // Nader/narration pages keep previous expression or normal
+    const currentCharacterExpression = isHeroineSpeaker ? currentPageExpression : eventHeroineExpression;
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
@@ -1523,7 +1499,7 @@ export default function App() {
           {renderThemeStyles()}
           {renderBackground(screen)}
           
-          {/* M-EVENT-PRESENTATION-FIX-2/4: Curtain slide overlay for background transitions (slowed down) */}
+          {/* M-EVENT-PRESENTATION-FIX-2/5: Curtain slide overlay for background transitions (slowed down) */}
           {(bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && (
             <div style={{
               position: 'absolute',
@@ -1537,11 +1513,11 @@ export default function App() {
               transform: bgTransitionPhase === "covering" ? 'translateX(0%)' : 
                          bgTransitionPhase === "covered" ? 'translateX(0%)' :
                          'translateX(100%)',
-              transition: 'transform 0.55s ease-in-out'
+              transition: 'transform 0.65s ease-in-out'
             }} />
           )}
           
-          {/* M-EVENT-PRESENTATION-FIX-3/4: Character display based on current page speaker */}
+          {/* M-EVENT-PRESENTATION-FIX-3/5: Central standing = activeHeroine always (not per-page switching) */}
           <div style={{ 
             position: 'absolute', 
             bottom: '8%', 
@@ -1558,7 +1534,7 @@ export default function App() {
             transition: 'opacity 0.2s ease'
           }}>
              <HeroineDisplay 
-                heroine={eventMainCharacter || activeHeroine} 
+                heroine={activeHeroine} 
                 type="standing" 
                 size="large" 
                 expression={currentCharacterExpression} 
@@ -1593,24 +1569,31 @@ export default function App() {
               <VNBox 
                 ref={vnRef}
                 speaker={activeEvent.speaker}
-                pages={eventPagesWithSpeakerId}
-                themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
+                pages={rawEventPages.map(page => {
+                  if (page.speakerId) return page;
+                  let inferredId = null;
+                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                  return { ...page, speakerId: inferredId };
+                })}
+                themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
-                  const page = eventPagesWithSpeakerId[index];
-                  // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
-                  if (page?.expression) {
+                  const page = rawEventPages[index];
+                  
+                  // M-EVENT-PRESENTATION-FIX-5: Only update expression when heroine speaks
+                  if (isHeroineSpeakerPage(page) && page?.expression) {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-2/4: Curtain slide transition for background changes (slowed down)
+                  // M-EVENT-PRESENTATION-FIX-2/5: Curtain slide transition for background changes
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                    // Start curtain slide: slower covering phase (550ms)
+                    // Start curtain slide: slower covering phase (650ms)
                     setBgTransitionPhase("covering");
                     setTimeout(() => {
                       // Covered phase - switch background
@@ -1625,7 +1608,7 @@ export default function App() {
                           setBgTransitionPhase("idle");
                         }, 450); // Reveal duration
                       }, 120); // Hold covered briefly
-                    }, 550); // Cover duration
+                    }, 650); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
@@ -1745,16 +1728,23 @@ export default function App() {
               <VNBox 
                 ref={vnRef}
                 speaker={activeEvent.speaker}
-                pages={eventPagesWithSpeakerId}
-                themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
+                pages={rawEventPages.map(page => {
+                  if (page.speakerId) return page;
+                  let inferredId = null;
+                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                  return { ...page, speakerId: inferredId };
+                })}
+                themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
-                  const page = eventPagesWithSpeakerId[index];
-                  // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
-                  if (page?.expression) {
+                  const page = rawEventPages[index];
+                  
+                  // M-EVENT-PRESENTATION-FIX-5: Only update expression when heroine speaks
+                  if (isHeroineSpeakerPage(page) && page?.expression) {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
