@@ -508,36 +508,36 @@ export const AFFECTION_EVENTS = {
         backgroundId: "shopExteriorDay",
         bgmId: "DARIYA-01"
       },
-      summary: "開店前、ダリヤさんとの出会いを思い出す。王宮錬金局からの正式な鑑定依頼が、彼女との始まりだった。",
+      summary: "開店前、ダリヤとの出会いを思い出す。王宮錬金局からの鑑定依頼が、彼女との始まりだった。",
       pages: [
         { 
           speaker: "ナーディル", 
           expression: "normal", 
-          text: "ダリヤさんは……最初は本当に『公務』として、この店に来たんだよな。",
+          text: "ダリヤさんは……最初は本当に王宮の用事で、この店に来たんだよな。",
           backgroundId: "shopExteriorDay"
         },
         { 
           speaker: "ダリヤ", 
           expression: "normal", 
-          text: "「王宮錬金局のダリヤ・アル＝アズラクです。星瓶堂の技術、王室の基準に照らして確認させていただきます」\n検証室で会った時の彼女は、氷のように冷たく、完璧な公務員だった。",
+          text: "「王宮錬金局のダリヤです。星瓶堂の技術を、少し確認させてもらえますか」\n検証室で会った時の彼女は、落ち着いて見えた。でも、どこか疲れてもいた。",
           backgroundId: "palaceLab"
         },
         { 
           speaker: "ナーディル", 
           expression: "sorrow", 
-          text: "「厳しいですね。でも、俺の作る品に嘘はありません」\n俺が差し出した試作瓶を、彼女は無言で、しかし誰よりも真剣な眼差しで解析し始めた。",
+          text: "「厳しいですね。でも、俺の作る品に嘘はありません」\n俺が試作瓶を差し出すと、彼女は少しだけ眉を下げて受け取った。",
           backgroundId: "palaceLab"
         },
         { 
           speaker: "ダリヤ", 
-          expression: "joy", 
-          text: "「……不合格。理論が古すぎるわ。でも、使い手の体温まで計算されている。嫌いな設計じゃない」\n最後に微かに見せたその笑みが、今の「友人」としての関係の種だったんだと思う。",
+          expression: "sorrow", 
+          text: "「……不合格、かな。理論は古い。でも、使う人の体温まで考えてある」\nその声は冷たくなくて、むしろ少し困っているようだった。",
           backgroundId: "palaceLab"
         },
         { 
           speaker: "ナーディル", 
           expression: "joy", 
-          text: "今では良き関係者として、王宮との橋渡しまでしてくれている。……さあ、背筋を伸ばして始めよう。",
+          text: "それから何度か、彼女は星瓶堂に顔を出すようになった。完璧に見える人ほど、休む場所が必要なのかもしれない。",
           backgroundId: "shopExteriorDay"
         }
       ]
@@ -554,19 +554,21 @@ export const AFFECTION_EVENTS = {
         heroineExpressions: ["normal", "sorrow", "joy"],
         naderExpressions: ["normal", "sorrow"]
       },
-      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは鎧を下ろし、一人の人として息をつく。",
+      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは少し息をつく。彼女はまだ頼りなく、倒れそうな疲れを隠しきれない。",
       pages: [
-        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「公務の確認だ。……半分は、口実かもしれないが」" },
+        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「確認してほしいものがあって……少しだけ、いいかな」" },
         { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。\nナーディルは黙って椅子を引き、温かい茶を置く。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは少しだけ目を伏せた。\n「君の店は困るな。立ち上がる理由を、忘れてしまいそうになる」" },
-        { speaker: "", expression: "joy", text: "その笑みは疲れていたが、初めて肩の力が抜けていた。\n星瓶堂の夜は、どんな霊薬より静かに彼女を休ませた。" }
+        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは茶に手を伸ばしかけて、小さく息を吐いた。\n「ごめんね。今日は少し、立っているのがつらくて」" },
+        { speaker: "ナーディル", expression: "sorrow", text: "「謝らなくていいです。まず座ってください。話は、それからで大丈夫です」" },
+        { speaker: "ダリヤ", expression: "joy", text: "その笑みは弱々しかったが、少しだけ安心していた。\n星瓶堂の夜は、どんな薬より静かに彼女を休ませた。" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、昔のように小さく息を吐いた。\n「君は相変わらず、追い出すのが下手だな」" },
-          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた夜だけ、この店の灯を思い出し訪れていた。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、強い先輩でいられない日がある」\nダリヤは苦笑し、視線を卓上の茶へ落とした。" },
-          { speaker: "ダリヤ", expression: "joy", text: "「それでも君は、昔から同じ顔で茶を出す」\nその声は、責めるにはあまりにも優しかった。" }
+          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、小さく息を吐いた。\n「ナーディル、今日はもうだめ。少し座らせて」" },
+          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた時だけ、この店の灯を思い出していた。" },
+          { speaker: "ナーディル", expression: "sorrow", text: "「大丈夫ですか、ダリヤさん。すぐ茶を淹れます」" },
+          { speaker: "ダリヤ", expression: "joy", text: "「そこは昔みたいに、お姉ちゃん、座ってて……でいいの」\n彼女は弱々しく笑いながら、いつもの席に腰を下ろした。" },
+          { speaker: "ナーディル", expression: "joy", text: "「分かりました。お姉ちゃん、座ってて。今日は俺が茶を淹れます」\nその言葉に、ダリヤはようやく安心したように目を閉じた。" }
         ]
       }
     },
@@ -581,19 +583,21 @@ export const AFFECTION_EVENTS = {
         heroineExpressions: ["normal", "sorrow", "joy"],
         naderExpressions: ["normal", "surprise", "joy"]
       },
-      summary: "完璧でなければならないという呪縛から解き放たれ、ダリヤはナーディルの前でだけ弱さを共有する。",
+      summary: "完璧でいようとして疲れきったダリヤが、ナーディルの前でだけ弱さを少し見せる。",
       pages: [
-        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、静かに眉を寄せる。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合だ。……だが、君の作ったものより冷たい」\n彼女は、星瓶堂から持ち帰った香りをそっと嗅いだ。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「君の理論は、いつも少しだけ隙がある。だから人が入る余地があるんだ」\nそれは、王立錬金術師の評価ではなく、一人の友人としての言葉だった。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「……また明日、君の店に行こう。少しだけ、あの隙間が恋しい」\n彼女の横顔は、昼間よりずっと穏やかだった。" }
+        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、少しだけ目を押さえる。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合なのに、どうしてこんなに冷たく感じるんだろう」\n彼女の声は、いつもの落ち着きよりずっと小さかった。" },
+        { speaker: "ナーディル", expression: "normal", text: "「使う人の顔が見えないから、かもしれません。星瓶堂では、そこを見失いたくないんです」" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "「君は簡単に言うね。……でも、そういう簡単なことが、今の私には難しい」" },
+        { speaker: "ダリヤ", expression: "joy", text: "「少しだけ、また君の店に行ってもいいかな。あそこなら、ちゃんと息ができる気がするの」" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたはずなのだが」" },
-          { speaker: "", expression: "normal", text: "ナーディルは答えを急かず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "「私は、特別でなくなるのが怖かった」\nダリヤの声は震えたが、逃げることはなかった。" },
-          { speaker: "ダリヤ", expression: "joy", text: "「だが君は、特別でない私にも茶を出すのだろう」\n彼女は泣きそうに笑い、ようやく前を向いた。" }
+          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたと思うんだけど」" },
+          { speaker: "", expression: "normal", text: "ナーディルは答えを急かさず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "「今日は、強い先輩のふりができない。ナーディル、少しだけ甘えていい？」" },
+          { speaker: "ナーディル", expression: "normal", text: "「もちろんです。ここでは無理しなくていいです」" },
+          { speaker: "ダリヤ", expression: "joy", text: "「また敬語。……お姉ちゃんって呼んでくれたら、もっと元気になるのに」\n彼女は困ったように笑いながら、少しだけ肩を寄せた。" }
         ]
       }
     },
@@ -606,21 +610,22 @@ export const AFFECTION_EVENTS = {
         backgroundId: "shopExteriorDay",
         bgmId: "DARIYA-01"
       },
-      summary: "王宮の案件をナーディルに相談するダリヤ。王宮が忘れがちな「当たり前」を大切にするナーディルの視点を高く評価する。",
+      summary: "王宮の案件をナーディルに相談するダリヤ。王宮が忘れがちな「当たり前」を、彼女は弱々しくも大切にしようとする。",
       pages: [
-        { "speaker": "ダリヤ", "expression": "normal", "text": "王宮の検証案件を、星瓶堂にも相談したい。君の目は、研究所と少し違う。" },
-        { "speaker": "ナーディル", "expression": "surprise", "text": "王宮の案件を俺に？ 光栄ですけど、少し緊張しますね。" },
-        { "speaker": "ダリヤ", "expression": "fun", "text": "緊張くらいでちょうどいい。王宮には、緊張しすぎて息を忘れる者も多いからね。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "俺は、使う人が息をしやすい品かどうかを見たいです。" },
-        { "speaker": "ダリヤ", "expression": "joy", "text": "だから君に頼みたい。私が忘れかける当たり前を、君はまだ覚えている。" }
+        { "speaker": "ダリヤ", "expression": "normal", "text": "王宮の検証案件を、星瓶堂にも相談したいの。君の目は、研究所と少し違うから。" },
+        { "speaker": "ナーディル", "expression": "surprise", "text": "王宮の案件を俺に？光栄ですけど、少し緊張します。" },
+        { "speaker": "ダリヤ", "expression": "sorrow", "text": "私も緊張しているよ。正直、ひとりで抱えるには少し重くて……君に見てもらいたかった。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "俺は、使う人が息をしやすい品かどうかを見たいです。それでよければ、一緒に考えます。" },
+        { "speaker": "ダリヤ", "expression": "joy", "text": "うん。だから君に頼みたいの。私が忘れそうになる当たり前を、君はまだ覚えていてくれるから。" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "normal", text: "学生の頃、君と組んだ検証はいつも少し予定を外れた。手順書通りには進まなかったな。" },
+          { speaker: "ダリヤ", expression: "normal", text: "学生の頃、君と組んだ検証はいつも少し予定を外れたね。手順書通りには進まなかった。" },
           { speaker: "ナーディル", expression: "fun", text: "ダリヤさんが怖い顔をして、最後には少し笑ってくれるまでが一組でしたね。" },
-          { speaker: "ダリヤ", expression: "fun", text: "生意気な後輩だったよ。だが、君の発想に救われたことも一度や二度ではない。" },
-          { speaker: "ナーディル", expression: "normal", text: "今も同じです。俺は、使う人が息をしやすい品かどうかを見たい。" },
-          { speaker: "ダリヤ", expression: "joy", text: "だからこそ頼みたい。立場が変わっても、君だけはその当たり前を忘れないでいてくれ。" }
+          { speaker: "ダリヤ", expression: "fun", text: "もう。そういうことは覚えているんだから。……でも、君の発想に助けられたのは本当だよ。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "だから今回も、ひとりで抱えたくなかった。ナーディル、一緒に考えてほしいの。" },
+          { speaker: "ナーディル", expression: "normal", text: "もちろんです。俺でよければ、隣で見ます。" },
+          { speaker: "ダリヤ", expression: "joy", text: "ありがとう。……でも次は、お姉ちゃんのために頑張る、くらい言ってくれてもいいんだよ。" }
         ]
       }
     },
@@ -635,21 +640,27 @@ export const AFFECTION_EVENTS = {
         backgroundId: "shopExteriorNight",
         bgmId: "DARIYA-01"
       },
-      summary: "完璧であることを自らに強いるダリヤに対し、ナーディルは弱さも受け入れる安らぎの場を供し、二人の関係は公務を超えたものへと昇華する。",
+      summary: "完璧でいようとして限界に近いダリヤに対し、ナーディルは弱さを許す場所を差し出す。",
       pages: [
-        { "speaker": "ダリヤ", "expression": "sorrow", "text": "王宮では、優秀でいることに慣れすぎた。できない私を, 私自身が許せない。" },
+        { "speaker": "ダリヤ", "expression": "sorrow", "text": "王宮では、優秀でいることに慣れすぎたの。できない私を、私自身が許せなくて。" },
         { "speaker": "ナーディル", "expression": "sorrow", "text": "できない日があっても、ダリヤさんが積み重ねてきたものは消えません。" },
-        { "speaker": "ダリヤ", "expression": "cry", "text": "君は簡単に言うな。……いや、簡単に聞こえるほど自然に言うから困る。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "ここでは、王宮錬金術師である前に、ダリヤさんとして座ってくれればいい。" },
-        { "speaker": "ダリヤ", "expression": "joy", "text": "……なら、少しだけ座らせてもらおう。立ち上がる時は、君の茶を一杯もらってからだ。" }
+        { "speaker": "ダリヤ", "expression": "cry", "text": "そう言ってもらえると、困るね。……ちゃんと立っていようと思っていたのに、力が抜けてしまう。" },
+        { "speaker": "ナーディル", "expression": "normal", "text": "ここでは、王宮錬金術師である前に、ダリヤさんとして座ってくれればいいです。" },
+        { "speaker": "ダリヤ", "expression": "sorrow", "text": "私、少し頼りないよ。思っているより弱いし、すぐ疲れるし、格好よくもない。" },
+        { "speaker": "ナーディル", "expression": "joy", "text": "それでも、ここに来てくれるダリヤさんを俺は大事にしたいです。" },
+        { "speaker": "ダリヤ", "expression": "joy", "text": "……なら、少しだけ座らせて。立ち上がる時は、君の茶を一杯もらってからにするね。" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "sorrow", text: "昔、一度だけ君に言ったな。特別でなくなった私は、何者でいればいいのだろうと。" },
-          { speaker: "ナーディル", expression: "normal", text: "覚えています。俺はその時、何も立派な答えを返せなかった。茶を出すくらいしかできなくて。" },
-          { speaker: "ダリヤ", expression: "cry", text: "それで十分だった。君は私を慰めず、責めず、ただ座らせてくれた。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "昔、一度だけ君に言ったね。特別でなくなった私は、何者でいればいいんだろうって。" },
+          { speaker: "ナーディル", expression: "normal", text: "覚えています。俺はその時、立派な答えを返せなかった。茶を出すくらいしかできなくて。" },
+          { speaker: "ダリヤ", expression: "cry", text: "それで十分だったよ。君は私を急かさず、責めず、ただ座らせてくれた。" },
           { speaker: "ナーディル", expression: "sorrow", text: "今も同じです。完璧でいられない日も、ここではダリヤさんとして座ってくれればいい。" },
-          { speaker: "ダリヤ", expression: "joy", text: "……なら、あの時と同じ茶をもらおう。立ち上がるのは、それを飲んでからにする。" }
+          { speaker: "ダリヤ", expression: "sorrow", text: "……今日は、ダリヤさんじゃなくていい。昔みたいに、お姉ちゃんって呼んで。" },
+          { speaker: "ナーディル", expression: "surprise", text: "お姉ちゃん……。" },
+          { speaker: "ダリヤ", expression: "joy", text: "うん。ありがとう。そう呼ばれると、少しだけ立ち直れるの。情けないけど、私はそういう人なんだよ。" },
+          { speaker: "ナーディル", expression: "joy", text: "情けなくないです。お姉ちゃんが座っていられる場所なら、星瓶堂にちゃんと空けておきます。" },
+          { speaker: "ダリヤ", expression: "joy", text: "……なら、あの時と同じ茶をもらおうかな。立ち上がるのは、それを飲んでからにする。" }
         ]
       }
     },

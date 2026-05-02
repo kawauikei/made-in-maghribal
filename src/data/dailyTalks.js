@@ -438,8 +438,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉はどれも最高級だが……この店の、少しスパイスが混ざったような香りは悪くない。" },
-      { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。ここでは、少しでも息をつけるようにしておきます。" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉は立派なんだけど、少し緊張する味がするの。ここの茶は、肩の力が抜けるね。" },
+      { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。今日は急がなくていいので、ゆっくり飲んでください。" }
     ]
   },
   {
@@ -452,8 +452,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の検証書類は、瓶の中身より重いことがある。" },
-      { speaker: "ダリヤ", expression: "fun", text: "中身を一滴調べるために、紙を十枚書く。優雅な仕事だろう？" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の書類って、どうしてあんなに重いんだろう。小瓶ひとつ確かめるのに、紙の束が増えるんだよ。" },
+      { speaker: "ダリヤ", expression: "sorrow", text: "今日はその束を見ていたら、少し目が回ってしまって。……ここで息を整えさせてね。" }
     ]
   },
   {
@@ -466,8 +466,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ここは、王宮ほど静かではないのに妙に落ち着くな。瓶の音も、人の声もある。" },
-      { speaker: "ダリヤ", expression: "fun", text: "完璧に整っていないからだろうか。少なくとも、息苦しさは少ない。" }
+      { speaker: "ダリヤ", expression: "normal", text: "ここは、王宮ほど静かじゃないのに落ち着くね。瓶の音も、人の声も、ちゃんと生きてる感じがする。" },
+      { speaker: "ダリヤ", expression: "fun", text: "完璧に整っていないからかな。……少し散らかっているくらいの方が、私は息をしやすいみたい。" }
     ]
   },
   {
@@ -480,8 +480,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "鬼族の里では、私は少し細すぎると言われる。王都では逆のことを言われるがね。" },
-      { speaker: "ダリヤ", expression: "fun", text: "美しさの基準など、場所が変わればすぐ変わる。実に頼りない真理だ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "鬼族の里では、私は細すぎるって言われるの。王都では、背が高いだけで強そうに見られるけど。" },
+      { speaker: "ダリヤ", expression: "fun", text: "見た目って当てにならないね。本当は、少し歩いただけで疲れる日もあるのに。" }
     ]
   },
   {
@@ -494,9 +494,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮から検証用の小瓶を預かってきた。正式な依頼ではない、少し厄介な確認だ。" },
-      { speaker: "ナーディル", expression: "normal", text: "厄介な確認を持ち込まれるくらいには、信用されたと思っておきます。" },
-      { speaker: "ダリヤ", expression: "fun", text: "前向きだな。そういう若さは、王宮の空気に少し分けてやりたいよ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮から検証用の小瓶を預かってきたの。正式な依頼にする前に、少しだけ見てもらえるかな。" },
+      { speaker: "ナーディル", expression: "normal", text: "もちろんです。王宮の手続きになる前の確認ですね。俺でよければ手伝います。" },
+      { speaker: "ダリヤ", expression: "sorrow", text: "ありがとう。実は、書類にするほどの元気がなくて……先に君に見てもらいたかったんだ。" }
     ]
   },
   {
@@ -509,9 +509,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "この棚は、瓶の高さが微妙に揃っていないな。王宮なら直される。" },
-      { speaker: "ナーディル", expression: "fun", text: "すみません。気を抜くと、よく使う瓶だけ前に出てくるんです。" },
-      { speaker: "ダリヤ", expression: "joy", text: "謝ることはない。使われている棚の方が、飾られた棚より私は好きだ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "この棚、瓶の高さが少しずつ違うね。王宮なら、すぐ揃えられてしまうと思う。" },
+      { speaker: "ナーディル", expression: "fun", text: "すみません。よく使う瓶だけ、どうしても前に出てくるんです。" },
+      { speaker: "ダリヤ", expression: "joy", text: "謝らないで。使われている感じがして、私は好きだよ。飾り棚より、ずっと落ち着く。" }
     ]
   },
   {
@@ -524,9 +524,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "今日の装い、どうかしら？ 交易商の会合だから、少し「武装」してきたの。" },
-      { speaker: "ナーディル", expression: "surprise", text: "……武装、ですか。確かに、いつにもまして隙がないように見えます。" },
-      { speaker: "ダリヤ", expression: "joy", text: "なら上々だ。隙を見せる相手くらい、自分で選びたいのでね。" }
+      { speaker: "ダリヤ", expression: "fun", text: "今日の服、少しだけきちんとしてきたの。王宮の会合があったから……似合ってるかな。" },
+      { speaker: "ナーディル", expression: "surprise", text: "似合っています。いつもより少し緊張しますけど、綺麗です。" },
+      { speaker: "ダリヤ", expression: "joy", text: "ふふ、ありがとう。そう言ってもらえると、会合で疲れた分まで少し報われるね。" }
     ]
   },
   {
@@ -539,9 +539,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉を見つけた。香りの層が面白い。後で試してみるか。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんの選ぶ茶葉は、いつも香りの理由まで面白いですから。" },
-      { speaker: "ダリヤ", expression: "joy", text: "いい答えだ。では、君の感想も検証材料に加えさせてもらおう。" }
+      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉を見つけたの。香りが優しくて、疲れた日にちょうどいいと思って。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんが選ぶ茶葉は、いつも落ち着く香りがします。" },
+      { speaker: "ダリヤ", expression: "joy", text: "よかった。今日は私も少し疲れているから、一緒に試してくれると助かるよ。" }
     ]
   },
   {
@@ -554,9 +554,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日は少し、王宮錬金術師らしくない顔をしているかもしれない。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "ここでは、肩書きより先にダリヤさんが座ってくれれば十分です。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……君は時々、こちらが困るほど自然に逃げ道を作るな。" }
+      { speaker: "ダリヤ", expression: "sorrow", text: "今日は少し、王宮錬金術師らしくない顔をしているかもしれない。……うまく笑えているかな。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "ここでは無理に整えなくて大丈夫です。ダリヤさんが座ってくれるだけで十分です。" },
+      { speaker: "ダリヤ", expression: "joy", text: "そう言われると、力が抜けるね。……君は時々、困るくらい優しい。" }
     ]
   },
   {
@@ -569,9 +569,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "この椅子、昔より座り心地がよくなっていないか。ますます立ち上がれなくなる。" },
+      { speaker: "ダリヤ", expression: "fun", text: "この椅子、昔より座り心地がよくなってない？ますます立ち上がれなくなるね。" },
       { speaker: "ナーディル", expression: "fun", text: "昔から長居していたのは、椅子のせいだけじゃないでしょう。" },
-      { speaker: "ダリヤ", expression: "sorrow", text: "……そうだな。君の店は昔から、私が少し黙っていられる場所だった。" }
+      { speaker: "ダリヤ", expression: "joy", text: "うん。ナーディルが、何も聞かずに茶を出してくれるからだよ。" }
     ]
   },
   {
@@ -584,9 +584,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "cry", text: "君は昔から、私が平気な顔をしている時ほど、何も聞かずに茶を出す。" },
-      { speaker: "ナーディル", expression: "normal", text: "聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていい。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……本当に、困った後輩だ。おかげで私は、また少し立て直せてしまう。" }
+      { speaker: "ダリヤ", expression: "cry", text: "ナーディルは昔から、私が平気なふりをしている時ほど、何も聞かずに茶を出すんだよね。" },
+      { speaker: "ナーディル", expression: "normal", text: "聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていいと思います。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……もう、そこは「お姉ちゃん、無理しないで」でいいのに。相変わらず少し遠慮するんだから。" }
     ]
   },
   {
@@ -772,8 +772,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は美しいよ。磨かれすぎて、外の光まで少し緊張して見える。" },
-      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいが、そのぶん光がやわらかい。悪くない違いだ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は綺麗なんだけど、磨かれすぎていて少し疲れるの。外の光まで緊張して見える。" },
+      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいけど、その分だけ光がやわらかいね。私は、こっちの方が落ち着くかも。" }
     ]
   },
   {
@@ -786,9 +786,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の調合品は、効能より先に安全証明を求められる。美しいが、息の詰まる仕事だ。" },
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の調合品は、効き目より先に安全証明を求められるの。大事だけど、少し息が詰まるね。" },
       { speaker: "ナーディル", expression: "normal", text: "暮らしに届く品ほど、安心して使えることが大事ですからね。" },
-      { speaker: "ダリヤ", expression: "joy", text: "そうだな。君は、王宮が時々忘れる当たり前を覚えている。" }
+      { speaker: "ダリヤ", expression: "joy", text: "うん。君は、王宮が時々忘れそうになる当たり前を、ちゃんと覚えていてくれる。" }
     ]
   },
   {
@@ -801,9 +801,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたな。あれは、今でも少し悔しい。" },
-      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度も検証し直していた姿を覚えています。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……そういう覚え方をするから、君の前では格好をつけにくいんだ。" }
+      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたね。あの時は、本当に恥ずかしかった。" },
+      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度もやり直していたダリヤさんを覚えています。" },
+      { speaker: "ダリヤ", expression: "joy", text: "そういう覚え方をするから、君の前では格好つけにくいの。……でも、嫌じゃないよ。" }
     ]
   },
   {
@@ -932,8 +932,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の検証品と比べても、君の見立てには筋が通っている。用途を見失わないのは、簡単ではない。" },
-      { speaker: "ダリヤ", expression: "fun", text: "……少し褒めすぎたかな。だが、悪くない。星瓶堂らしい柔らかさがある。" }
+      { speaker: "ダリヤ", expression: "normal", text: "今回の見立て、よかったと思う。王宮の基準とは違うけど、使う人のことがちゃんと見えていた。" },
+      { speaker: "ダリヤ", expression: "fun", text: "……少し褒めすぎかな。でも、悪くないよ。星瓶堂らしい優しさがあった。" }
     ]
   },
   {
@@ -946,8 +946,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "そろそろ王宮へ戻らないと。夜の回廊は静かだが、書類だけは眠ってくれない。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……だが、君の茶の香りはまだ袖に残っている。悪くない。少しだけ、戻る足取りが軽くなる。" }
+      { speaker: "ダリヤ", expression: "normal", text: "そろそろ王宮へ戻らないと。夜の回廊は静かだけど、書類だけは待ってくれないから。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……でも、君の茶の香りがまだ袖に残ってる。少しだけ、戻る足取りが軽くなるね。" }
     ]
   },
   {
@@ -1075,8 +1075,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の基準で測っても、君の品には一貫した筋がある。用途と美しさの両立は、簡単ではない。" },
-      { speaker: "ダリヤ", expression: "fun", text: "……星瓶堂の柔らかさは、王宮にはない魅力だ。大切にしなさい。" }
+      { speaker: "ダリヤ", expression: "normal", text: "王宮のものさしで測ると、星瓶堂の品は少し不思議に見えるの。きっちりしすぎていないのに、届く。" },
+      { speaker: "ダリヤ", expression: "fun", text: "その柔らかさは、王宮には少ないものだと思う。……私は、けっこう好きだよ。" }
     ]
   },
   {
@@ -1089,8 +1089,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "夜の茶は、昼とは違う深みがある。君の淹れる茶は、特にそうだ。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……王宮の書類も、この香りさえあれば、少しは軽くなる。また寄らせてもらう。" }
+      { speaker: "ダリヤ", expression: "normal", text: "夜に飲む茶は、昼と少し味が違うね。君の淹れる茶は、特に優しく感じる。" },
+      { speaker: "ダリヤ", expression: "joy", text: "王宮の書類も、この香りを思い出せば少し軽くなるかな。また、寄らせてね。" }
     ]
   },
   {
@@ -1393,8 +1393,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "品の仕上げ、丁寧だったな。" },
-      { speaker: "ダリヤ", expression: "joy", text: "王宮の品にも負けていない。" }
+      { speaker: "ダリヤ", expression: "normal", text: "品の仕上げ、丁寧だったね。細かいところまで、ちゃんと手が入っていた。" },
+      { speaker: "ダリヤ", expression: "joy", text: "王宮の品みたいに完璧ではないけれど、使う人に近い温度があると思う。" }
     ]
   },
   {
@@ -1407,8 +1407,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "素材の選び方、参考になった。" },
-      { speaker: "ダリヤ", expression: "fun", text: "工房でも応用できそうだ。" }
+      { speaker: "ダリヤ", expression: "normal", text: "素材の選び方、参考になったよ。高価なものを選べばいいわけではないんだね。" },
+      { speaker: "ダリヤ", expression: "fun", text: "王宮に戻ったら、少し真似してみようかな。……うまくできる自信は、あまりないけれど。" }
     ]
   },
   {
@@ -1421,8 +1421,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "帰りに工房の火を消してくる。" },
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日の炎の色、少し落ち着きすぎだったか。" }
+      { speaker: "ダリヤ", expression: "normal", text: "帰りに、王宮の炉の様子を見てくるね。少しだけ火の色が気になっていて。" },
+      { speaker: "ダリヤ", expression: "sorrow", text: "今日の私は、炎の色を見間違えそうなくらい疲れているけれど……確認だけはしておきたいの。" }
     ]
   },
   {
@@ -1435,8 +1435,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "道具の手入れ、星瓶堂も行き届いているな。" },
-      { speaker: "ダリヤ", expression: "joy", text: "店主の心がけが感じられる。" }
+      { speaker: "ダリヤ", expression: "normal", text: "星瓶堂の道具は、よく使われている感じがするね。新品より、少し安心する。" },
+      { speaker: "ダリヤ", expression: "joy", text: "ナーディルが大事にしているのが分かるよ。そういう道具のそばにいると、私も少し落ち着く。" }
     ]
   },
   {
@@ -1567,9 +1567,9 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "この隅の席、まだ空けておいてくれるのか。" },
-      { speaker: "ナーディル", expression: "fun", text: "君が座る場所くらい、覚えていないと。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……ふん。王宮より、この一角の方が落ち着くんだよ。" }
+      { speaker: "ダリヤ", expression: "fun", text: "この隅の席、まだ空けておいてくれるの？" },
+      { speaker: "ナーディル", expression: "fun", text: "ダリヤさんが座る場所くらい、覚えていますよ。" },
+      { speaker: "ダリヤ", expression: "joy", text: "じゃあ、今日は少し甘えるね。王宮より、この一角の方がずっと落ち着くの。" }
     ]
   },
   {
@@ -1657,9 +1657,9 @@ export const DAILY_TALKS = [
     minAffection: 10,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "fun", text: "弟が、今度は香りの変わるしおりを欲しがってるの。小瓶の次は紙だなんて、忙しい子よね。" },
-      { speaker: "ナーディル", expression: "normal", text: "本に挟むなら、香りは弱めがいいな。強すぎると紙に移って、読むたびに気が散る。" },
-      { speaker: "ハキマ", expression: "joy", text: "……ふうん。そこまで考えるなら、星瓶堂に頼む価値はありそうね。弟も喜ぶと思うわ。" }
+      { speaker: "ダリヤ", expression: "sorrow", text: "今日は少しだけ、王宮の顔を外してもいいかな。ナーディルの前だと、気が抜けてしまうの。" },
+      { speaker: "ナーディル", expression: "normal", text: "もちろんです。ここでは、無理に強く見せなくて大丈夫ですよ。" },
+      { speaker: "ダリヤ", expression: "joy", text: "ありがとう。……でも、昔みたいに「お姉ちゃん、座って」って言ってくれたら、もっと安心するかも。" }
     ]
   },
   {
