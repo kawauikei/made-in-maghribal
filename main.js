@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
+import React, { useRef, useState, forwardRef, useEffect, useImperativeHandle, useCallback } from "react";
 const THEME = {
   sand: "#e2d1b1",
   parchment: "#f4e9d5",
@@ -753,6 +753,12 @@ const STILL_IMAGES = {
   dariyaPalaceCollaboration01: { id: "dariyaPalaceCollaboration01", title: "王宮との協力", label: "王宮との協力", heroineId: "dariya", src: "images/still/still_dariya_palace_collaboration_01.jpeg", focusX: 0.5, focusY: 0.5 },
   dariyaRainCorridor01: { id: "dariyaRainCorridor01", title: "雨の回廊", label: "雨の回廊", heroineId: "dariya", src: "images/still/still_dariya_rain_corridor_01.jpeg", focusX: 0.5, focusY: 0.5 }
 };
+function getBackgroundById(id) {
+  return BACKGROUND_IMAGES[id] || null;
+}
+function getStillById(id) {
+  return STILL_IMAGES[id] || null;
+}
 const VisualTestScreen = ({
   visualTestMode,
   setVisualTestMode,
@@ -855,6 +861,99 @@ const VisualTestScreen = ({
     /* @__PURE__ */ React.createElement("img", { src: getFullPath(item.src), alt: item.label, style: { width: "100%", height: "100%", objectFit: "cover" }, draggable: false })
   )))))));
 };
+const HEROINES = [
+  {
+    id: "hakima",
+    fullName: "ハキマアル＝ルハーン",
+    name: "ハキマ",
+    role: "品質鑑定見習い / 知己",
+    age: 19,
+    themeColor: "#ffcc00",
+    themeTrackId: "HAKIMA-01",
+    visualConfig: {
+      facePosition: "center 20%",
+      standingScale: 1
+    },
+    description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
+    routeDescription: "かつてナーディルと共に学んだ、香材商会の若き主。今は離れた場所にいるが、ある品を探して星瓶堂の扉を叩くことになる。",
+    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
+    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
+    routeRelationship: "過去から続く縁。かつて交わした約束を胸に、再び協力者として歩み寄る関係。",
+    stats: {
+      precision: 80,
+      knowledge: 70,
+      social: 90
+    },
+    routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
+    musicMood: "軽やかで少し照れくさい旋律",
+    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
+    assets: { standing: {}, face: {} }
+  },
+  {
+    id: "mira",
+    fullName: "ミラサフワーン",
+    name: "ミラ",
+    role: "錬金大学の後輩 / 協力者",
+    age: 16,
+    themeColor: "#3d5afe",
+    themeTrackId: "MIRA-01",
+    visualConfig: {
+      facePosition: "center 15%",
+      standingScale: 0.95
+    },
+    description: "錬金大学で学ぶ少女。知識の吸収が早く、星瓶堂では新しい発想を持ち込んでくれる。",
+    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前として見られたいと思っている。",
+    relationship: "課題の相談や素材の購入、試作品の確認などを通じて距離を縮める協力者。",
+    stats: {
+      precision: 95,
+      knowledge: 85,
+      social: 60
+    },
+    routeTheme: "知識と好奇心がつなぐ協力関係",
+    musicMood: "知性的で透明感のある旋律",
+    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
+    assets: { standing: {}, face: {} }
+  },
+  {
+    id: "dariya",
+    fullName: "ダリヤザフラーン",
+    name: "ダリヤ",
+    role: "王宮錬金局のエリート / 協力者",
+    age: 23,
+    themeColor: "#f44336",
+    themeTrackId: "DARIYA-01",
+    visualConfig: {
+      facePosition: "center 25%",
+      standingScale: 1.05
+    },
+    description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
+    personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
+    relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
+    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
+    stats: {
+      precision: 90,
+      knowledge: 95,
+      social: 75
+    },
+    routeTheme: "立場の強さと本音の揺れが交わる関係",
+    musicMood: "静かな緊張感を帯びた旋律",
+    assets: { standing: {}, face: {} }
+  }
+];
+const NADER = {
+  id: "nader",
+  name: "ナーディル",
+  role: "星瓶堂店主",
+  themeColor: "#8b7355",
+  visualConfig: {
+    facePosition: "center 20%",
+    standingScale: 1
+  }
+};
+function getHeroineAsset(heroineId, type, expression = "normal") {
+  const subDir = type === "face" ? "face_proc" : "standing_proc";
+  return `characters/${heroineId}/${subDir}/${expression}.png`;
+}
 const MemoriesScreen = ({
   screen,
   routeMode,
@@ -872,6 +971,23 @@ const MemoriesScreen = ({
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
   const seenEvents = unlockAll ? allEvents : allEvents.filter((e) => seenEventIds.includes(e.id));
+  const scrollContainerRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleRecallEvent = (event) => {
+    if (scrollContainerRef.current) {
+      setScrollPosition(scrollContainerRef.current.scrollTop);
+    }
+    onRecallEvent && onRecallEvent(event);
+  };
+  React.useEffect(() => {
+    if (scrollContainerRef.current && scrollPosition > 0) {
+      requestAnimationFrame(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollPosition;
+        }
+      });
+    }
+  }, []);
   const memoriesContainerStyle = {
     width: "100%",
     height: "100%",
@@ -911,6 +1027,68 @@ const MemoriesScreen = ({
     margin: "0 8px 8px",
     overflow: "hidden"
   };
+  const heroineIconStyle = {
+    width: "24px",
+    height: "24px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    border: `2px solid ${THEME.brass}`,
+    background: THEME.sand
+  };
+  const thumbnailStyle = {
+    width: "60px",
+    height: "60px",
+    objectFit: "cover",
+    borderRadius: "4px",
+    border: `1px solid ${THEME.brass}`,
+    flexShrink: 0
+  };
+  const memoryItemStyle = (heroineThemeColor) => ({
+    background: "rgba(0,0,0,0.03)",
+    padding: "8px",
+    borderRadius: "0 4px 4px 0",
+    border: "1px solid rgba(0,0,0,0.05)",
+    borderLeft: `4px solid ${heroineThemeColor}`,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    minHeight: "76px",
+    transition: "background 0.15s ease"
+  });
+  const memoryTitleStyle = {
+    fontWeight: "bold",
+    fontSize: "0.9em",
+    lineHeight: "1.3",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    flex: 1
+  };
+  const getEventThumbnail = (event) => {
+    var _a;
+    if (event.stillImageId) {
+      const still = getStillById(event.stillImageId);
+      if (still) {
+        return { src: still.src, alt: still.label || event.title, type: "still" };
+      }
+    }
+    if ((_a = event.presentation) == null ? void 0 : _a.backgroundId) {
+      const bg = getBackgroundById(event.presentation.backgroundId);
+      if (bg) {
+        return { src: bg.src, alt: bg.label || event.title, type: "background" };
+      }
+    }
+    if (event.heroineId) {
+      const heroine = heroines.find((h) => h.id === event.heroineId);
+      if (heroine) {
+        return { src: null, alt: heroine.name, type: "fallback", color: heroine.themeColor };
+      }
+    }
+    return { src: null, alt: "Memory", type: "fallback", color: THEME.brass };
+  };
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "memories-screen", style: memoriesContainerStyle }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement(
     GameHud,
     {
@@ -929,41 +1107,86 @@ const MemoriesScreen = ({
     borderRadius: "4px",
     marginBottom: "8px",
     boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
-  } }, "DEBUG: UNLOCK ALL MODE ACTIVE"), /* @__PURE__ */ React.createElement("div", { style: memoriesCardStyle }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" } }, seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, heroines.map((heroine) => {
-    const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
-    if (heroineSeenEvents.length === 0) return null;
-    return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
-      color: heroine.themeColor,
-      fontWeight: "bold",
-      borderBottom: `2px solid ${heroine.themeColor}`,
-      paddingBottom: "5px",
-      marginBottom: "15px",
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      fontSize: "1.1em"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { width: "8px", height: "8px", borderRadius: "50%", background: heroine.themeColor } }), heroine.name, "との思い出"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" } }, heroineSeenEvents.map((event) => /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        key: event.id,
-        className: "memory-item",
-        onClick: () => onRecallEvent && onRecallEvent(event),
-        style: {
-          background: "rgba(0,0,0,0.03)",
-          padding: "12px 15px",
-          borderRadius: "0 4px 4px 0",
-          border: "1px solid rgba(0,0,0,0.05)",
-          borderLeft: `4px solid ${heroine.themeColor}`,
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
+  } }, "DEBUG: UNLOCK ALL MODE ACTIVE"), /* @__PURE__ */ React.createElement("div", { style: memoriesCardStyle }, /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      ref: scrollContainerRef,
+      style: { flex: 1, minHeight: 0, overflowY: "auto", paddingRight: "2px" }
+    },
+    seenEvents.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: "60px 20px", color: "#666", fontStyle: "italic", textAlign: "center" } }, /* @__PURE__ */ React.createElement("p", null, "まだ見返したい記憶はありません。"), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "0.9em", marginTop: "10px" } }, "営業を進めると、ここに記憶が積み上がっていきます。")) : /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, heroines.map((heroine) => {
+      const heroineSeenEvents = seenEvents.filter((e) => e.heroineId === heroine.id);
+      if (heroineSeenEvents.length === 0) return null;
+      return /* @__PURE__ */ React.createElement("div", { key: heroine.id, style: { marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: {
+        color: heroine.themeColor,
+        fontWeight: "bold",
+        borderBottom: `2px solid ${heroine.themeColor}`,
+        paddingBottom: "5px",
+        marginBottom: "15px",
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        fontSize: "1.1em"
+      } }, /* @__PURE__ */ React.createElement(
+        "img",
+        {
+          src: getHeroineAsset(heroine.id, "face", "normal"),
+          alt: heroine.name,
+          style: heroineIconStyle,
+          onError: (e) => {
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "inline-block";
+          }
         }
-      },
-      /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, event.title),
-      /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.8em", color: THEME.brassDark } }, "詳細を見る")
-    ))));
-  })))));
+      ), /* @__PURE__ */ React.createElement("div", { style: {
+        width: "24px",
+        height: "24px",
+        borderRadius: "50%",
+        background: heroine.themeColor,
+        display: "none",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        fontSize: "0.7em",
+        fontWeight: "bold"
+      } }, heroine.name.charAt(0)), heroine.name, "との思い出"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" } }, heroineSeenEvents.map((event) => {
+        const thumb = getEventThumbnail(event);
+        return /* @__PURE__ */ React.createElement(
+          "div",
+          {
+            key: event.id,
+            className: "memory-item",
+            onClick: () => handleRecallEvent(event),
+            style: memoryItemStyle(heroine.themeColor),
+            onMouseEnter: (e) => {
+              e.currentTarget.style.background = "rgba(0,0,0,0.08)";
+            },
+            onMouseLeave: (e) => {
+              e.currentTarget.style.background = "rgba(0,0,0,0.03)";
+            }
+          },
+          thumb.type === "fallback" ? /* @__PURE__ */ React.createElement("div", { style: {
+            ...thumbnailStyle,
+            background: thumb.color,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: "1.2em",
+            fontWeight: "bold"
+          } }, "?") : /* @__PURE__ */ React.createElement(
+            "img",
+            {
+              src: thumb.src,
+              alt: thumb.alt,
+              style: thumbnailStyle,
+              loading: "lazy"
+            }
+          ),
+          /* @__PURE__ */ React.createElement("span", { style: memoryTitleStyle }, event.title)
+        );
+      })));
+    }))
+  )));
 };
 const SHOP = {
   name: "星瓶堂",
@@ -1163,99 +1386,6 @@ const StartScreen = ({
     "記録を全て削除する"
   )));
 };
-const HEROINES = [
-  {
-    id: "hakima",
-    fullName: "ハキマアル＝ルハーン",
-    name: "ハキマ",
-    role: "品質鑑定見習い / 知己",
-    age: 19,
-    themeColor: "#ffcc00",
-    themeTrackId: "HAKIMA-01",
-    visualConfig: {
-      facePosition: "center 20%",
-      standingScale: 1
-    },
-    description: "アル＝ルハーン香材商会で素材を見分ける仕事に携わる少女。香りや色、手触りの違いを見抜く観察眼があり、星瓶堂でも頼れる協力者になる。",
-    routeDescription: "かつてナーディルと共に学んだ、香材商会の若き主。今は離れた場所にいるが、ある品を探して星瓶堂の扉を叩くことになる。",
-    personality: "ツンデレで負けず嫌い。怒っているようで実は相手を心配している世話焼きな性格。",
-    relationship: "通常ルートでは、同業・商会関係の顔見知り程度。星瓶堂を支える流れの中で、協力者として距離を縮めていく。",
-    routeRelationship: "過去から続く縁。かつて交わした約束を胸に、再び協力者として歩み寄る関係。",
-    stats: {
-      precision: 80,
-      knowledge: 70,
-      social: 90
-    },
-    routeTheme: "現在から育つ縁の象徴としての顔見知り関係",
-    musicMood: "軽やかで少し照れくさい旋律",
-    greeting: "来たわよ、ナーディル。今日も星瓶堂らしい目利き、見せてもらうから。",
-    assets: { standing: {}, face: {} }
-  },
-  {
-    id: "mira",
-    fullName: "ミラサフワーン",
-    name: "ミラ",
-    role: "錬金大学の後輩 / 協力者",
-    age: 16,
-    themeColor: "#3d5afe",
-    themeTrackId: "MIRA-01",
-    visualConfig: {
-      facePosition: "center 15%",
-      standingScale: 0.95
-    },
-    description: "錬金大学で学ぶ少女。知識の吸収が早く、星瓶堂では新しい発想を持ち込んでくれる。",
-    personality: "礼儀正しく賢い。子供扱いされるのを嫌い、一人前として見られたいと思っている。",
-    relationship: "課題の相談や素材の購入、試作品の確認などを通じて距離を縮める協力者。",
-    stats: {
-      precision: 95,
-      knowledge: 85,
-      social: 60
-    },
-    routeTheme: "知識と好奇心がつなぐ協力関係",
-    musicMood: "知性的で透明感のある旋律",
-    greeting: "こんにちは、先輩。今日は課題の材料について、少し相談させてください。",
-    assets: { standing: {}, face: {} }
-  },
-  {
-    id: "dariya",
-    fullName: "ダリヤザフラーン",
-    name: "ダリヤ",
-    role: "王宮錬金局のエリート / 協力者",
-    age: 23,
-    themeColor: "#f44336",
-    themeTrackId: "DARIYA-01",
-    visualConfig: {
-      facePosition: "center 25%",
-      standingScale: 1.05
-    },
-    description: "王宮錬金局の要職にある女性。強く見える一方で、内面には疲れも抱えている。",
-    personality: "クールで皮肉屋だが、内面は重圧に疲れている。心を許した相手には弱さを見せることもある。",
-    relationship: "公務の合間に星瓶堂へ顔を出す協力者。落ち着いた大人の距離感を持つ。",
-    greeting: "邪魔するよ、ナーディル。王宮の検証品について、少し見立てを借りたい。",
-    stats: {
-      precision: 90,
-      knowledge: 95,
-      social: 75
-    },
-    routeTheme: "立場の強さと本音の揺れが交わる関係",
-    musicMood: "静かな緊張感を帯びた旋律",
-    assets: { standing: {}, face: {} }
-  }
-];
-const NADER = {
-  id: "nader",
-  name: "ナーディル",
-  role: "星瓶堂店主",
-  themeColor: "#8b7355",
-  visualConfig: {
-    facePosition: "center 20%",
-    standingScale: 1
-  }
-};
-function getHeroineAsset(heroineId, type, expression = "normal") {
-  const subDir = type === "face" ? "face_proc" : "standing_proc";
-  return `characters/${heroineId}/${subDir}/${expression}.png`;
-}
 const AFFECTION_EVENTS = {
   hakima: [
     {
