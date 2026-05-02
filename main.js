@@ -2716,6 +2716,17 @@ function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
   if (personalTalks.length > 0) selected.push(personalTalks[0]);
   return selected;
 }
+function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode) {
+  const eligible = DAILY_TALKS.filter((talk) => {
+    if (talk.timing !== timing) return false;
+    if (talk.scope === "heroine" && talk.heroineId !== heroineId) return false;
+    if (talk.routeMode !== "both" && talk.routeMode !== routeMode) return false;
+    if (talk.minAffection > currentAffection) return false;
+    if (seenTalkIds.includes(talk.id)) return false;
+    return true;
+  });
+  return eligible.length > 0 ? eligible[0] : null;
+}
 function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
   const introEventId = `${heroineId}_0`;
   const events = getEventsByHeroine(heroineId);
@@ -10618,6 +10629,16 @@ function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds, routeM
   const newSeenTalkIds = talks.map((t) => t.id);
   return { greeting, mergedTalk, newSeenTalkIds };
 }
+function prepareResultTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
+  const talk = getNextDailyTalk(heroineId, "after_result", currentAffection, seenTalkIds, routeMode);
+  const newSeenTalkIds = talk ? [talk.id] : [];
+  return { talk, newSeenTalkIds };
+}
+function prepareDayEndTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
+  const talk = getNextDailyTalk(heroineId, "day_end", currentAffection, seenTalkIds, routeMode);
+  const newSeenTalkIds = talk ? [talk.id] : [];
+  return { talk, newSeenTalkIds };
+}
 const ENDINGS = {
   hakima: {
     good: {
@@ -11021,7 +11042,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 function App() {
-  var _a, _b, _c, _d, _e, _f, _g, _h;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -11086,6 +11107,7 @@ function App() {
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
   const [activeGreeting, setActiveGreeting] = useState(null);
+  const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -11505,18 +11527,33 @@ function App() {
     } else {
       const nextDay = workshopState.day + 1;
       setWorkshopState((prev) => ({ ...prev, day: nextDay }));
-      const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+      const { talk: dayEndTalk, newSeenTalkIds: newDayEndTalkIds } = prepareDayEndTalkSequence({
         heroineId: activeHeroineId,
         currentAffection: affection[activeHeroineId] || 0,
         seenTalkIds,
         routeMode
       });
-      setActiveGreeting(greeting);
-      setActiveDailyTalk(mergedTalk);
-      if (newSeenTalkIds.length > 0) {
-        setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
+      if (dayEndTalk) {
+        setActiveDailyTalk(dayEndTalk);
+        setDailyTalkNextScreen("INTRO");
+        if (newDayEndTalkIds.length > 0) {
+          setSeenTalkIds((prev) => [...prev, ...newDayEndTalkIds]);
+        }
+        setScreen("DAILY_TALK");
+      } else {
+        const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+          heroineId: activeHeroineId,
+          currentAffection: affection[activeHeroineId] || 0,
+          seenTalkIds,
+          routeMode
+        });
+        setActiveGreeting(greeting);
+        setActiveDailyTalk(mergedTalk);
+        if (newSeenTalkIds.length > 0) {
+          setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
+        }
+        setScreen("INTRO");
       }
-      setScreen("INTRO");
     }
   };
   const handleSeeEnding = () => {
@@ -11545,12 +11582,34 @@ function App() {
     setSession(createQuizSession({ questionCount: 5 }));
     setScreen("QUIZ");
   };
+  const handleCloseDailyTalk = () => {
+    audioEngine.playSfx("uiTapBottle");
+    const nextScreen = dailyTalkNextScreen || "DAY_END";
+    setDailyTalkNextScreen(null);
+    setActiveDailyTalk(null);
+    setScreen(nextScreen);
+  };
   const handleEndDay = () => {
     if (activeEvent) {
       setScreen("EVENT");
     } else {
-      audioEngine.playSfx("workshopDayEnd");
-      setScreen("DAY_END");
+      const { talk: resultTalk, newSeenTalkIds: newResultTalkIds } = prepareResultTalkSequence({
+        heroineId: activeHeroineId,
+        currentAffection: affection[activeHeroineId] || 0,
+        seenTalkIds,
+        routeMode
+      });
+      if (resultTalk) {
+        setActiveDailyTalk(resultTalk);
+        setDailyTalkNextScreen("DAY_END");
+        if (newResultTalkIds.length > 0) {
+          setSeenTalkIds((prev) => [...prev, ...newResultTalkIds]);
+        }
+        setScreen("DAILY_TALK");
+      } else {
+        audioEngine.playSfx("workshopDayEnd");
+        setScreen("DAY_END");
+      }
     }
   };
   const handleBackToTitle = () => {
@@ -12025,6 +12084,82 @@ function App() {
       renderBackground(screen),
       /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房の状態(第", workshopState.day, "回 営業終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の営業へ"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, className: "vn-button-reveal", style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る")))
     );
+  } else if (screen === "DAILY_TALK" && activeDailyTalk) {
+    mainContent = /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        "data-testid": "daily-talk-screen",
+        style: { ...containerStyle, position: "relative", overflow: "hidden" },
+        onClick: handleVnAreaClick
+      },
+      renderThemeStyles(),
+      renderBackground(screen === "DAILY_TALK" ? "shopInteriorService" : screen),
+      /* @__PURE__ */ React.createElement("div", { style: {
+        position: "absolute",
+        bottom: "8%",
+        left: 0,
+        width: "100%",
+        zIndex: 2,
+        pointerEvents: "none",
+        height: "77%",
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
+      } }, /* @__PURE__ */ React.createElement(
+        HeroineDisplay,
+        {
+          heroine: activeHeroine,
+          type: "standing",
+          size: "large",
+          expression: "normal",
+          noBorder: true,
+          style: { height: "100%", width: "auto", boxShadow: "none" }
+        }
+      )),
+      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
+        GameHud,
+        {
+          screen,
+          routeMode,
+          onOpenLog: () => setShowLog(true),
+          onOpenOptions: () => setShowOptions(true),
+          onOpenHelp: () => setShowHelp(true)
+        }
+      ), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+      /* @__PURE__ */ React.createElement("div", { style: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 6,
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)"
+      } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", boxSizing: "border-box", position: "relative" } }, /* @__PURE__ */ React.createElement(
+        VNBox,
+        {
+          ref: vnRef,
+          speaker: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[0]) == null ? void 0 : _c.speaker) || "",
+          pages: activeDailyTalk.pages.map((page) => {
+            let inferredId = page.speakerId;
+            if (!inferredId) {
+              if (page.speaker === "ナーディル") inferredId = "nader";
+              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+            }
+            return { ...page, speakerId: inferredId };
+          }),
+          themeColor: activeHeroine.themeColor,
+          speed: textSpeedMeta.delay,
+          skip: shouldSkipTypewriter(isInstantTextSpeed, false),
+          getFaceIcon,
+          onPageComplete: (data) => appendVnBacklog({ ...data, screen: "DAILY_TALK" }),
+          onComplete: handleCloseDailyTalk
+        }
+      )))
+    );
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
     if (!still) {
@@ -12131,7 +12266,7 @@ function App() {
           onClick: handleVnAreaClick
         },
         renderThemeStyles(),
-        ((_b = still.stillCrop) == null ? void 0 : _b.mode) === "heroine_pan" && (() => {
+        ((_d = still.stillCrop) == null ? void 0 : _d.mode) === "heroine_pan" && (() => {
           const animName = `still-pan-${still.id}`;
           const start = still.stillCrop.startPosition || "50% 50%";
           const end = still.stillCrop.endPosition || "50% 50%";
@@ -12159,12 +12294,12 @@ function App() {
           {
             src: getFullPath(still.src),
             alt: still.label,
-            className: ((_c = still.stillCrop) == null ? void 0 : _c.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
+            className: ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
             style: {
               width: "100%",
               height: "100%",
-              objectFit: ((_d = still.stillCrop) == null ? void 0 : _d.objectFit) || "cover",
-              objectPosition: ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_f = still.stillCrop) == null ? void 0 : _f.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+              objectFit: ((_f = still.stillCrop) == null ? void 0 : _f.objectFit) || "cover",
+              objectPosition: ((_g = still.stillCrop) == null ? void 0 : _g.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_h = still.stillCrop) == null ? void 0 : _h.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
             },
             onError: (e) => {
               e.target.style.display = "none";
@@ -12341,7 +12476,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_g = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _g.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_i = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _i.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -12467,7 +12602,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_h = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _h.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_j = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _j.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
