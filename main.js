@@ -3872,7 +3872,9 @@ function CustomerSilhouette({ customer }) {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
 }
-function RhythmMock({ heroineId, themeColor }) {
+const DEFAULT_LANE_DURATION_MS = 2400;
+const DEFAULT_BEAT_PULSE_MS = 800;
+function RhythmMock({ heroineId, themeColor, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
   return /* @__PURE__ */ React.createElement("div", { style: {
@@ -3941,7 +3943,7 @@ function RhythmMock({ heroineId, themeColor }) {
     boxShadow: `0 0 8px ${THEME.starGold}`,
     opacity: 0.8,
     zIndex: 2,
-    animation: "beat-scanline 2s linear infinite"
+    animation: `beat-scanline ${laneDurationMs}ms linear infinite`
   } }), /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -3979,7 +3981,20 @@ function RhythmMock({ heroineId, themeColor }) {
     flexShrink: 0,
     zIndex: 2,
     transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
+  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes beat-scanline {
+          0% { left: 0%; opacity: 0; }
+          10% { opacity: 0.8; }
+          90% { opacity: 0.8; }
+          100% { left: 100%; opacity: 0; }
+        }
+        @keyframes beat-pulse {
+          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
+          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
+        }
+        .beat-pulse { animation: beat-pulse ${beatPulseMs}ms ease-in-out infinite; }
+      `));
 }
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
