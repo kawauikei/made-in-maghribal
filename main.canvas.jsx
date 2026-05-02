@@ -1935,7 +1935,8 @@ const ResultScreen = ({
           <div style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '2px'
+            gap: '4px',
+            marginBottom: '8px'
           }}>
             {HeroineDisplay && (
               <HeroineDisplay
@@ -1944,14 +1945,18 @@ const ResultScreen = ({
                 size="large"
                 expression={getResultExpression(correctCount)}
                 noBorder={true}
-                style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))' }}
+                objectPosition="center 60%"
+                style={{ 
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
+                  maxHeight: '280px'
+                }}
               />
             )}
 
             {/* Speech Bubble */}
             <div style={{
-              marginTop: '20px',
-              marginLeft: '-28px',
+              marginTop: '16px',
+              marginLeft: '-20px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
@@ -1999,7 +2004,7 @@ const ResultScreen = ({
             border: `2px solid ${THEME.brass}`,
             background: 'rgba(244, 233, 213, 0.98)',
             padding: '12px 16px',
-            marginTop: '-36px',
+            marginTop: '-24px',
             width: '94%',
             maxWidth: '340px',
             textAlign: 'center'
@@ -4917,7 +4922,7 @@ function App() {
 
 // --- SUB COMPONENTS ---
 
-function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {}, objectPosition }) {
   const [imgError, setImgError] = useState(false);
   const [displayExpr, setDisplayExpr] = useState(expression);
   const [prevExpr, setPrevExpr] = useState(null);
@@ -4966,7 +4971,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    objectPosition: isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%'),
+    objectPosition: objectPosition || (isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%')),
     display: imgError ? 'none' : 'block',
     userSelect: 'none',
     WebkitUserDrag: 'none'

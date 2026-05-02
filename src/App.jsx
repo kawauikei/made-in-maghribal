@@ -1973,7 +1973,7 @@ export default function App() {
 
 // --- SUB COMPONENTS ---
 
-function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {} }) {
+function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {}, objectPosition }) {
   const [imgError, setImgError] = useState(false);
   const [displayExpr, setDisplayExpr] = useState(expression);
   const [prevExpr, setPrevExpr] = useState(null);
@@ -2022,7 +2022,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    objectPosition: isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%'),
+    objectPosition: objectPosition || (isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%')),
     display: imgError ? 'none' : 'block',
     userSelect: 'none',
     WebkitUserDrag: 'none'
