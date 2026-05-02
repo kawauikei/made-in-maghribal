@@ -2655,6 +2655,174 @@ const DAILY_TALKS = [
       { speaker: "ダリヤ", expression: "normal", text: "そろそろ王宮へ戻らないと。夜の回廊は静かだが、書類だけは眠ってくれない。" },
       { speaker: "ダリヤ", expression: "joy", text: "……だが、君の茶の香りはまだ袖に残っている。悪くない。少しだけ、戻る足取りが軽くなる。" }
     ]
+  },
+  {
+    id: "common_result_shelf_memory",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つ整理するたびに、父が並べた日のことを思い出す。あの手の温もりが、まだ残っているようだ。" },
+      { speaker: "ナーディル", expression: "joy", text: "俺もいつか、誰かに温もりを渡せる店主になりたい。今日の接客が、その一歩になればいい。" }
+    ]
+  },
+  {
+    id: "common_result_small_mistake",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "sorrow", text: "……一つ、見立てを誤った。あの瓶は、光の当たり方でもう少し深く見せるべきだった。" },
+      { speaker: "ナーディル", expression: "normal", text: "だが、落ち込んでいる暇はない。次の客には、今日の失敗を活かそう。" }
+    ]
+  },
+  {
+    id: "common_day_end_lamp",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "ランプの火を落とす。瓶たちが一斉に影を落とし、砂の街の夜が足元に広がった。" },
+      { speaker: "ナーディル", expression: "joy", text: "明日も、この灯りが誰かを導くだろう。……さて、閉店の支度をしよう。" }
+    ]
+  },
+  {
+    id: "common_day_end_star_map",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "父の星写し図を巻く。あの地図には、星瓶堂の棚と同じ数の星が描かれている。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "旅先の空は、どんな星を見せるのだろう。……俺はここで、誰かの星を瓶に閉じ込めよう。" }
+    ]
+  },
+  {
+    id: "hakima_result_spice_reading",
+    category: "work",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "今日の香材、乾きが足りなかったわね。でも、香りの層までは悪くなかった。" },
+      { speaker: "ハキマ", expression: "fun", text: "……ま、次はもっと深く読めるでしょ。あんたの鼻は、私が保証するから。" }
+    ]
+  },
+  {
+    id: "hakima_day_end_market_return",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "市場の喧騒が遠くなる。この静けさが、星瓶堂の帰り道には一番合うわね。" },
+      { speaker: "ハキマ", expression: "joy", text: "……また明日。その時は、もっと面白い瓶を見せてね。" }
+    ]
+  },
+  {
+    id: "mira_result_lesson_note",
+    category: "work",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "joy", text: "先輩、今日の接客をノートにまとめました。理論では学べない、客の迷いの拾い方。" },
+      { speaker: "ミラ", expression: "fun", text: "次は私も、実際に品を選んでみたいです。……先輩の隣で。" }
+    ]
+  },
+  {
+    id: "mira_day_end_cafe_note",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "カフェスペースを借りて、今日の記録を書いています。香草茶の香りが、思考を落ち着かせてくれます。" },
+      { speaker: "ミラ", expression: "joy", text: "……ふふ。先輩の店先は、大学の自習室よりずっと楽しいです。" }
+    ]
+  },
+  {
+    id: "dariya_result_palace_measure",
+    category: "work",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "王宮の基準で測っても、君の品には一貫した筋がある。用途と美しさの両立は、簡単ではない。" },
+      { speaker: "ダリヤ", expression: "fun", text: "……星瓶堂の柔らかさは、王宮にはない魅力だ。大切にしなさい。" }
+    ]
+  },
+  {
+    id: "dariya_day_end_quiet_tea",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "夜の茶は、昼とは違う深みがある。君の淹れる茶は、特にそうだ。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……王宮の書類も、この香りさえあれば、少しは軽くなる。また寄らせてもらう。" }
+    ]
+  },
+  {
+    id: "hakima_long_result_old_habit",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "……あんたの棚の並べ方、昔から変わっていないわね。一番奥に、一番大切な瓶を置く。" },
+      { speaker: "ハキマ", expression: "joy", text: "その癖、好きよ。……これからも、そのままでいて。" }
+    ]
+  },
+  {
+    id: "mira_long_day_end_old_note",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩、昔の課題帳を開いていました。この余白の走り書き、全部先輩の跡ですね。" },
+      { speaker: "ミラ", expression: "joy", text: "……ありがとうございます。私、このページが一番好きです。" }
+    ]
   }
 ];
 function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
