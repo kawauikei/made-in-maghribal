@@ -1468,7 +1468,10 @@ export default function App() {
                 onPageChange={(index) => {
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
-                  if (page?.expression) setEventHeroineExpression(page.expression);
+                  // Only update heroine expression when the speaker is the active heroine
+                  if (page?.expression && page?.speakerId === activeHeroine.id) {
+                    setEventHeroineExpression(page.expression);
+                  }
                   setEventSpeakerId(page?.speakerId || null);
                   if (page?.backgroundId) {
                     setEventBackgroundOverride(page.backgroundId);
@@ -1615,7 +1618,10 @@ export default function App() {
                 onPageChange={(index) => {
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
-                  if (page?.expression) setEventHeroineExpression(page.expression);
+                  // Only update heroine expression when the speaker is the active heroine
+                  if (page?.expression && page?.speakerId === activeHeroine.id) {
+                    setEventHeroineExpression(page.expression);
+                  }
                   setEventSpeakerId(page?.speakerId || null);
                   if (page?.backgroundId) {
                     setEventBackgroundOverride(page.backgroundId);
