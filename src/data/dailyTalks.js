@@ -1104,5 +1104,285 @@ export const DAILY_TALKS = [
       { speaker: "ミラ", expression: "normal", text: "先輩、昔の課題帳を開いていました。この余白の走り書き、全部先輩の跡ですね。" },
       { speaker: "ミラ", expression: "joy", text: "……ありがとうございます。私、このページが一番好きです。" }
     ]
+  },
+  {
+    id: "nader_after_result_lamp",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "客が帰った後、棚のランプを少し明るくした。" },
+      { speaker: "ナーディル", expression: "joy", text: "今日の品は、きっと誰かの役に立つはずだ。" }
+    ]
+  },
+  {
+    id: "nader_after_result_scale",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "天秤の針が落ち着くのを、いつもより長く見ていた。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "父さんなら、もっと早く見立てられたのかな。" }
+    ]
+  },
+  {
+    id: "nader_after_result_bottle",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "瓶の蓋を閉める音が、店内に小さく響く。" },
+      { speaker: "ナーディル", expression: "fun", text: "この音、父さんは「星の瞬き」って呼んでたっけ。" }
+    ]
+  },
+  {
+    id: "nader_day_end_ledger",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "帳面の数字を指でなぞる。今日の売上げは、まずまずだ。" },
+      { speaker: "ナーディル", expression: "joy", text: "でも、数字より客の笑顔の方が記憶に残るな。" }
+    ]
+  },
+  {
+    id: "nader_day_end_shelf",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つずつ並べ直す。位置は毎日同じでいい。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "変わらないことが、変わることより難しいんだ。" }
+    ]
+  },
+  {
+    id: "nader_day_end_silent",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "閉店後の星瓶堂は、いつもより静かに感じる。" },
+      { speaker: "ナーディル", expression: "joy", text: "でも、この静けさが嫌いじゃないんだ。" }
+    ]
+  },
+  {
+    id: "hakima_after_result_scent",
+    category: "work",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "今日の品、香りの残りがよかったわ。" },
+      { speaker: "ハキマ", expression: "joy", text: "あなたが見立て、悪くないと思う。" }
+    ]
+  },
+  {
+    id: "hakima_after_result_note",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "帳簿の記録、少し手伝おうか？" },
+      { speaker: "ハキマ", expression: "fun", text: "勘違いしないで。ただの気まぐれよ。" }
+    ]
+  },
+  {
+    id: "hakima_day_end_record",
+    category: "work",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "今日の客の好み、記録しておいたほうがいいわ。" },
+      { speaker: "ハキマ", expression: "joy", text: "次の来店のときに役立つから。" }
+    ]
+  },
+  {
+    id: "hakima_day_end_incense",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "帰りに香炉の灰をならしていくわ。" },
+      { speaker: "ハキマ", expression: "sorrow", text: "この香り、また来たいと思うはずよ。" }
+    ]
+  },
+  {
+    id: "mira_after_result_color",
+    category: "work",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "joy", text: "今日の品、色がいいですよね！" },
+      { speaker: "ミラ", expression: "fun", text: "棚に並ぶと、もっと映えますよ。" }
+    ]
+  },
+  {
+    id: "mira_after_result_market",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "帰りに市場によるんですけど、一緒にどうですか？" },
+      { speaker: "ミラ", expression: "joy", text: "新しい色の瓶、見つかるかもしれませんよ。" }
+    ]
+  },
+  {
+    id: "mira_day_end_snack",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "fun", text: "閉店後のお菓子、少し贅沢しちゃいました。" },
+      { speaker: "ミラ", expression: "joy", text: "明日の活力になりますから。" }
+    ]
+  },
+  {
+    id: "mira_day_end_street",
+    category: "work",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "帰りの街灯、今日は綺麗に点いてますね。" },
+      { speaker: "ミラ", expression: "joy", text: "星瓶堂の明かりも、あんな風に誰かを照らしてるんですか。" }
+    ]
+  },
+  {
+    id: "dariya_after_result_craft",
+    category: "work",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "品の仕上げ、丁寧だったな。" },
+      { speaker: "ダリヤ", expression: "joy", text: "王宮の品にも負けていない。" }
+    ]
+  },
+  {
+    id: "dariya_after_result_material",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "素材の選び方、参考になった。" },
+      { speaker: "ダリヤ", expression: "fun", text: "工房でも応用できそうだ。" }
+    ]
+  },
+  {
+    id: "dariya_day_end_fire",
+    category: "work",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "帰りに工房の火を消してくる。" },
+      { speaker: "ダリヤ", expression: "sorrow", text: "今日の炎の色、少し落ち着きすぎだったか。" }
+    ]
+  },
+  {
+    id: "dariya_day_end_tool",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "道具の手入れ、星瓶堂も行き届いているな。" },
+      { speaker: "ダリヤ", expression: "joy", text: "店主の心がけが感じられる。" }
+    ]
+  },
+  {
+    id: "common_after_result_guest",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "客が帰った後、店内を見渡す。" },
+      { speaker: "ナーディル", expression: "joy", text: "品たちが少し喜んでいるように見える。" }
+    ]
+  },
+  {
+    id: "common_day_end_wind",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "閉店後の風が、店の入り口を優しく撫でる。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "父さんも、こんな夜が好きだったのかな。" }
+    ]
   }
 ];
