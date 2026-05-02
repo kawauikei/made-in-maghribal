@@ -3935,7 +3935,8 @@ function getEventPages(event, routeMode) {
     return {
       speaker: page.speaker !== void 0 ? page.speaker : "",
       expression: page.expression || "normal",
-      text: page.text || ""
+      text: page.text || "",
+      ...page.backgroundId ? { backgroundId: page.backgroundId } : {}
     };
   });
 }
