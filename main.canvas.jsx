@@ -858,6 +858,29 @@ const MemoriesScreen = ({
   const allEvents = Object.values(affectionEvents).flat();
   const seenEvents = unlockAll ? allEvents : allEvents.filter(e => seenEventIds.includes(e.id));
 
+  // Scroll position restoration
+  const scrollContainerRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleRecallEvent = (event) => {
+    // Save scroll position before navigating
+    if (scrollContainerRef.current) {
+      setScrollPosition(scrollContainerRef.current.scrollTop);
+    }
+    onRecallEvent && onRecallEvent(event);
+  };
+
+  // Restore scroll position when component mounts
+  React.useEffect(() => {
+    if (scrollContainerRef.current && scrollPosition > 0) {
+      requestAnimationFrame(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollPosition;
+        }
+      });
+    }
+  }, []);
+
   // Isolated styles to avoid conflicts in main.canvas.jsx top-level
   const memoriesContainerStyle = {
     width: '100%',
@@ -901,6 +924,79 @@ const MemoriesScreen = ({
     overflow: 'hidden'
   };
 
+  const heroineIconStyle = {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: `2px solid ${THEME.brass}`,
+    background: THEME.sand
+  };
+
+  const thumbnailStyle = {
+    width: '60px',
+    height: '60px',
+    objectFit: 'cover',
+    borderRadius: '4px',
+    border: `1px solid ${THEME.brass}`,
+    flexShrink: 0
+  };
+
+  const memoryItemStyle = (heroineThemeColor) => ({
+    background: 'rgba(0,0,0,0.03)',
+    padding: '8px',
+    borderRadius: '0 4px 4px 0',
+    border: '1px solid rgba(0,0,0,0.05)',
+    borderLeft: `4px solid ${heroineThemeColor}`,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    minHeight: '76px',
+    transition: 'background 0.15s ease'
+  });
+
+  const memoryTitleStyle = {
+    fontWeight: 'bold',
+    fontSize: '0.9em',
+    lineHeight: '1.3',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    flex: 1
+  };
+
+  const getEventThumbnail = (event) => {
+    // Try still image first
+    if (event.stillImageId) {
+      const still = getStillById(event.stillImageId);
+      if (still) {
+        return { src: still.src, alt: still.label || event.title, type: 'still' };
+      }
+    }
+    
+    // Try background from presentation
+    if (event.presentation?.backgroundId) {
+      const bg = getBackgroundById(event.presentation.backgroundId);
+      if (bg) {
+        return { src: bg.src, alt: bg.label || event.title, type: 'background' };
+      }
+    }
+    
+    // Fallback: use heroine icon
+    if (event.heroineId) {
+      const heroine = heroines.find(h => h.id === event.heroineId);
+      if (heroine) {
+        return { src: null, alt: heroine.name, type: 'fallback', color: heroine.themeColor };
+      }
+    }
+    
+    // Ultimate fallback
+    return { src: null, alt: 'Memory', type: 'fallback', color: THEME.brass };
+  };
+
   return (
     <div data-testid="memories-screen" style={memoriesContainerStyle}>
       {renderThemeStyles && renderThemeStyles()}
@@ -929,7 +1025,10 @@ const MemoriesScreen = ({
         </div>
       )}
       <div style={memoriesCardStyle}>
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}>
+        <div 
+          ref={scrollContainerRef}
+          style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '2px' }}
+        >
           {seenEvents.length === 0 ? (
             <div style={{ padding: '60px 20px', color: '#666', fontStyle: 'italic', textAlign: 'center' }}>
               <p>まだ見返したい記憶はありません。</p>
@@ -954,31 +1053,72 @@ const MemoriesScreen = ({
                       gap: '10px',
                       fontSize: '1.1em'
                     }}>
-                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: heroine.themeColor }} />
+                      <img 
+                        src={getHeroineAsset(heroine.id, 'face', 'normal')}
+                        alt={heroine.name}
+                        style={heroineIconStyle}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'inline-block';
+                        }}
+                      />
+                      <div style={{ 
+                        width: '24px', 
+                        height: '24px', 
+                        borderRadius: '50%', 
+                        background: heroine.themeColor,
+                        display: 'none',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fff',
+                        fontSize: '0.7em',
+                        fontWeight: 'bold'
+                      }}>
+                        {heroine.name.charAt(0)}
+                      </div>
                       {heroine.name}との思い出
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>
-                      {heroineSeenEvents.map(event => (
-                        <div 
-                          key={event.id}
-                          className="memory-item"
-                          onClick={() => onRecallEvent && onRecallEvent(event)}
-                          style={{
-                            background: 'rgba(0,0,0,0.03)',
-                            padding: '12px 15px',
-                            borderRadius: '0 4px 4px 0',
-                            border: '1px solid rgba(0,0,0,0.05)',
-                            borderLeft: `4px solid ${heroine.themeColor}`,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <span style={{ fontWeight: 'bold' }}>{event.title}</span>
-                          <span style={{ fontSize: '0.8em', color: THEME.brassDark }}>詳細を見る</span>
-                        </div>
-                      ))}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                      {heroineSeenEvents.map(event => {
+                        const thumb = getEventThumbnail(event);
+                        return (
+                          <div 
+                            key={event.id}
+                            className="memory-item"
+                            onClick={() => handleRecallEvent(event)}
+                            style={memoryItemStyle(heroine.themeColor)}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'rgba(0,0,0,0.08)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'rgba(0,0,0,0.03)';
+                            }}
+                          >
+                            {thumb.type === 'fallback' ? (
+                              <div style={{ 
+                                ...thumbnailStyle, 
+                                background: thumb.color,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#fff',
+                                fontSize: '1.2em',
+                                fontWeight: 'bold'
+                              }}>
+                                ?
+                              </div>
+                            ) : (
+                              <img 
+                                src={thumb.src} 
+                                alt={thumb.alt}
+                                style={thumbnailStyle}
+                                loading="lazy"
+                              />
+                            )}
+                            <span style={memoryTitleStyle}>{event.title}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 );
