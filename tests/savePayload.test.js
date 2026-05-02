@@ -1,12 +1,11 @@
 /**
  * Tests for save payload builder functions
  */
-const assert = require('assert');
-
-const {
+import assert from 'node:assert';
+import {
   buildGameSavePayload,
   buildSettingsSavePayload,
-} = require('../src/game/savePayload.cjs');
+} from '../src/game/savePayload.js';
 
 console.log("\n--- Made in Maghribal: Save Payload Builder Tests ---");
 
