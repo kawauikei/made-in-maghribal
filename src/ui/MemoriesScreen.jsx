@@ -21,33 +21,34 @@ const MemoriesScreen = ({
   onRecallEvent,
   renderThemeStyles,
   renderUtilityHeader,
-  unlockAll = false
+  unlockAll = false,
+  memoriesScrollPosition = 0, // M-MEMORIES-UX-POLISH-1-FIX-1: Scroll position from App.jsx
+  onMemoriesScrollSave = null // M-MEMORIES-UX-POLISH-1-FIX-1: Callback to save scroll position
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
   const seenEvents = unlockAll ? allEvents : allEvents.filter(e => seenEventIds.includes(e.id));
 
-  // Scroll position restoration
+  // Scroll position restoration (M-MEMORIES-UX-POLISH-1-FIX-1)
   const scrollContainerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleRecallEvent = (event) => {
     // Save scroll position before navigating
-    if (scrollContainerRef.current) {
-      setScrollPosition(scrollContainerRef.current.scrollTop);
+    if (scrollContainerRef.current && onMemoriesScrollSave) {
+      onMemoriesScrollSave(scrollContainerRef.current.scrollTop);
     }
     onRecallEvent && onRecallEvent(event);
   };
 
   // Restore scroll position when component mounts
   React.useEffect(() => {
-    if (scrollContainerRef.current && scrollPosition > 0) {
+    if (scrollContainerRef.current && memoriesScrollPosition > 0) {
       requestAnimationFrame(() => {
         if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollPosition;
+          scrollContainerRef.current.scrollTop = memoriesScrollPosition;
         }
       });
     }
-  }, []);
+  }, [memoriesScrollPosition]);
 
   // Isolated styles to avoid conflicts in main.canvas.jsx top-level
   const memoriesContainerStyle = {

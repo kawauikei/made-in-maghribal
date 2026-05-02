@@ -853,33 +853,34 @@ const MemoriesScreen = ({
   onRecallEvent,
   renderThemeStyles,
   renderUtilityHeader,
-  unlockAll = false
+  unlockAll = false,
+  memoriesScrollPosition = 0, // M-MEMORIES-UX-POLISH-1-FIX-1: Scroll position from App.jsx
+  onMemoriesScrollSave = null // M-MEMORIES-UX-POLISH-1-FIX-1: Callback to save scroll position
 }) => {
   const allEvents = Object.values(affectionEvents).flat();
   const seenEvents = unlockAll ? allEvents : allEvents.filter(e => seenEventIds.includes(e.id));
 
-  // Scroll position restoration
+  // Scroll position restoration (M-MEMORIES-UX-POLISH-1-FIX-1)
   const scrollContainerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleRecallEvent = (event) => {
     // Save scroll position before navigating
-    if (scrollContainerRef.current) {
-      setScrollPosition(scrollContainerRef.current.scrollTop);
+    if (scrollContainerRef.current && onMemoriesScrollSave) {
+      onMemoriesScrollSave(scrollContainerRef.current.scrollTop);
     }
     onRecallEvent && onRecallEvent(event);
   };
 
   // Restore scroll position when component mounts
   React.useEffect(() => {
-    if (scrollContainerRef.current && scrollPosition > 0) {
+    if (scrollContainerRef.current && memoriesScrollPosition > 0) {
       requestAnimationFrame(() => {
         if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollPosition;
+          scrollContainerRef.current.scrollTop = memoriesScrollPosition;
         }
       });
     }
-  }, []);
+  }, [memoriesScrollPosition]);
 
   // Isolated styles to avoid conflicts in main.canvas.jsx top-level
   const memoriesContainerStyle = {
@@ -3427,6 +3428,7 @@ function App() {
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
   const debugAutoSkipAppliedRef = useRef(false);
+  const memoriesScrollPositionRef = useRef(0); // M-MEMORIES-UX-POLISH-1-FIX-1: Store scroll position for MEMORIES screen
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -3803,6 +3805,7 @@ function App() {
       case 'MEMORIES':
         setIsRecallMode(false);
         setScreen('MEMORIES');
+        // M-MEMORIES-UX-POLISH-1-FIX-1: Scroll position will be restored by MemoriesScreen via ref
         break;
       case 'INTRO':
         setScreen('INTRO');
@@ -4961,6 +4964,8 @@ function App() {
         onRecallEvent={handleRecallEventFromMemories}
         renderThemeStyles={renderThemeStyles}
         renderUtilityHeader={renderUtilityHeader}
+        memoriesScrollPosition={memoriesScrollPositionRef.current}
+        onMemoriesScrollSave={(pos) => { memoriesScrollPositionRef.current = pos; }}
       />
     );
   } else if (screen === 'HEROINE_SELECT') {
@@ -5190,7 +5195,7 @@ function App() {
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
           {/* Global TimePhaseBadge for screens without ScreenHeader */}
-          {!['INTRO', 'EVENT'].includes(screen) && (
+          {!['INTRO', 'EVENT', 'MEMORIES', 'START', 'HEROINE_SELECT', 'PROLOGUE'].includes(screen) && (
             <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 1000, pointerEvents: 'none' }}>
               <TimePhaseBadge timePhase={currentTimePhase} />
             </div>

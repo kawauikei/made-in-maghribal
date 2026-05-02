@@ -169,6 +169,7 @@ export default function App() {
   const outerWrapperRef = useRef(null);
   const vnRef = useRef(null);
   const debugAutoSkipAppliedRef = useRef(false);
+  const memoriesScrollPositionRef = useRef(0); // M-MEMORIES-UX-POLISH-1-FIX-1: Store scroll position for MEMORIES screen
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -545,6 +546,7 @@ export default function App() {
       case 'MEMORIES':
         setIsRecallMode(false);
         setScreen('MEMORIES');
+        // M-MEMORIES-UX-POLISH-1-FIX-1: Scroll position will be restored by MemoriesScreen via ref
         break;
       case 'INTRO':
         setScreen('INTRO');
@@ -1703,6 +1705,8 @@ export default function App() {
         onRecallEvent={handleRecallEventFromMemories}
         renderThemeStyles={renderThemeStyles}
         renderUtilityHeader={renderUtilityHeader}
+        memoriesScrollPosition={memoriesScrollPositionRef.current}
+        onMemoriesScrollSave={(pos) => { memoriesScrollPositionRef.current = pos; }}
       />
     );
   } else if (screen === 'HEROINE_SELECT') {
@@ -1932,7 +1936,7 @@ export default function App() {
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
           {/* Global TimePhaseBadge for screens without ScreenHeader */}
-          {!['INTRO', 'EVENT'].includes(screen) && (
+          {!['INTRO', 'EVENT', 'MEMORIES', 'START', 'HEROINE_SELECT', 'PROLOGUE'].includes(screen) && (
             <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 1000, pointerEvents: 'none' }}>
               <TimePhaseBadge timePhase={currentTimePhase} />
             </div>
