@@ -12,7 +12,8 @@ import { TRACKS, getTrackById } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
-import { loadSaveData, saveGameData, hasSaveData, clearSaveData } from './game/saveData';
+import { loadSaveData, saveGameData } from './game/saveData';
+import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence } from './game/introFlow';
@@ -3133,10 +3134,7 @@ function App() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [isAudioGated, setIsAudioGated] = useState(true);
   const [showSoundTest, setShowSoundTest] = useState(false);
-  const [hasSave, setHasSave] = useState(() => {
-    const data = loadSaveData();
-    return !!(data && data.screen !== 'START');
-  });
+  const { hasSave, setHasSave, refreshHasSave, clearSaveAndRefresh } = useGameSaveStatus();
   const [bgTestIndex, setBgTestIndex] = useState(0);
   const [stillTestIndex, setStillTestIndex] = useState(0);
   const [visualTestMode, setVisualTestMode] = useState('background');
@@ -3494,8 +3492,7 @@ function App() {
   const handleStartGame = () => {
     setIsAudioGated(false);
     audioEngine.playSfx('uiGameStart');
-    clearSaveData();
-    setHasSave(false);
+    clearSaveAndRefresh();
     
     // Reset states to default
     setActiveHeroineId('hakima');
@@ -3534,8 +3531,7 @@ function App() {
 
   const handleResetSave = () => {
     if (window.confirm("セーブデータを削除しますか？")) {
-      clearSaveData();
-      setHasSave(false);
+      clearSaveAndRefresh();
       setSeenEventIds([]);
       setActiveEvent(null);
     }
@@ -3710,8 +3706,7 @@ function App() {
   const handleFinishGame = () => {
     audioEngine.playSfx('uiTapBottle');
     // Clear save on game completion
-    clearSaveData();
-    setHasSave(false);
+    clearSaveAndRefresh();
     setScreen('START');
   };
 
@@ -3752,7 +3747,7 @@ function App() {
   const handleBackToTitle = () => {
     audioEngine.playSfx('uiTapBottle');
     setScreen('START');
-    setHasSave(hasSaveData());
+    refreshHasSave();
     setEventBackgroundOverride(null); // Ensure background is reset
     setShowOptions(false);
     setShowLog(false);
