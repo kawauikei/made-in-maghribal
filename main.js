@@ -5366,12 +5366,49 @@ function CustomerSilhouette({ customer }) {
 const DEFAULT_LANE_DURATION_MS = 2400;
 const DEFAULT_BEAT_PULSE_MS = 800;
 const DEFAULT_BPM = 120;
-function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
+function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, firstBeatOffsetMs = 0, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
   const beatDurationSec = bpm && typeof bpm === "number" && bpm > 0 ? 60 / bpm : 0.5;
   const beatDurationMs = beatDurationSec * 1e3;
-  return /* @__PURE__ */ React.createElement("div", { style: {
+  const containerRef = useRef(null);
+  const beatPulseRef = useRef(null);
+  const rafRef = useRef(null);
+  useEffect(() => {
+    const safeBpm = Number.isFinite(bpm) && bpm > 0 ? bpm : 120;
+    const offsetSec = Math.max(0, Number(firstBeatOffsetMs) || 0) / 1e3;
+    const tick = () => {
+      var _a, _b;
+      const audio = audioEngine.audio;
+      const canUseAudio = audio && !audio.paused && audioEngine.isUnlocked && !audioEngine.isMuted;
+      const beatPulseEl = beatPulseRef.current;
+      if (canUseAudio && beatPulseEl) {
+        const adjustedTime = Math.max(0, audio.currentTime - offsetSec);
+        const beatPosition = adjustedTime * safeBpm / 60;
+        const beatProgress = beatPosition % 1;
+        const beatIndex = Math.floor(beatPosition);
+        const distanceToBeat = Math.min(beatProgress, 1 - beatProgress);
+        const pulse = Math.max(0, 1 - distanceToBeat / 0.18);
+        beatPulseEl.classList.add("audio-synced");
+        beatPulseEl.style.transform = `scale(${1 + pulse * 0.25})`;
+        beatPulseEl.style.opacity = String(0.2 + pulse * 0.65);
+        beatPulseEl.style.boxShadow = `0 0 ${15 + pulse * 20}px ${THEME.starGold}`;
+        (_a = containerRef.current) == null ? void 0 : _a.style.setProperty("--beat-progress", String(beatProgress));
+        (_b = containerRef.current) == null ? void 0 : _b.style.setProperty("--beat-index", String(beatIndex));
+      } else if (beatPulseEl) {
+        beatPulseEl.classList.remove("audio-synced");
+        beatPulseEl.style.transform = "";
+        beatPulseEl.style.opacity = "";
+        beatPulseEl.style.boxShadow = "";
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [bpm, firstBeatOffsetMs]);
+  return /* @__PURE__ */ React.createElement("div", { ref: containerRef, style: {
     width: "100%",
     height: "64px",
     display: "flex",
@@ -5444,6 +5481,7 @@ function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, laneDurationMs =
     "div",
     {
       className: "beat-pulse",
+      ref: beatPulseRef,
       style: {
         width: "24px",
         height: "24px",
@@ -5489,7 +5527,12 @@ function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, laneDurationMs =
           50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
           100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
         }
-        .beat-pulse { animation: beat-pulse var(--beat-pulse-duration, ${beatPulseMs}ms) ease-in-out infinite; }
+        .beat-pulse { 
+          animation: beat-pulse var(--beat-pulse-duration, ${beatPulseMs}ms) ease-in-out infinite;
+        }
+        .beat-pulse.audio-synced {
+          animation: none;
+        }
       `));
 }
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
@@ -11512,7 +11555,8 @@ const TRACKS = {
     loop: true,
     title: "Measure The Mortar",
     category: "メイン BGM",
-    bpm: 120
+    bpm: 120,
+    firstBeatOffsetMs: 0
   },
   // --- Hakima ---
   "HAKIMA-01": {
