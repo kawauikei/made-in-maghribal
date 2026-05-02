@@ -13,11 +13,11 @@ const MASTER_ITEMS = itemsData.items.map(item => {
   // M-QUIZ-PROMPT-TUNING-1: Shortened Name Logic (removed 'の' to prevent 'のの')
   // M-QUIZ-PROMPT-TUNING-CONT: Refined prefixes for better flavor
   const colorPrefixMap = {
-    AS: "星明かり",
-    EL: "星霊", // Changed from "青緑" for better flavor (M-QUIZ-PROMPT-TUNING-CONT)
-    LI: "生命",
-    SA: "黄金",
-    ME: "鋼鉄"
+    AS: "蒼星",
+    EL: "霊液",
+    LI: "命脈",
+    SA: "煌砂",
+    ME: "黒鉄"
   };
   
   const typeName = type ? type.name : "";
