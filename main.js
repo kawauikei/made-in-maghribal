@@ -12261,7 +12261,9 @@ function App() {
             onPageChange: (index) => {
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
-              if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
+              if ((page == null ? void 0 : page.expression) && (page == null ? void 0 : page.speakerId) === activeHeroine.id) {
+                setEventHeroineExpression(page.expression);
+              }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
               if (page == null ? void 0 : page.backgroundId) {
                 setEventBackgroundOverride(page.backgroundId);
@@ -12390,7 +12392,9 @@ function App() {
             onPageChange: (index) => {
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
-              if (page == null ? void 0 : page.expression) setEventHeroineExpression(page.expression);
+              if ((page == null ? void 0 : page.expression) && (page == null ? void 0 : page.speakerId) === activeHeroine.id) {
+                setEventHeroineExpression(page.expression);
+              }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
               if (page == null ? void 0 : page.backgroundId) {
                 setEventBackgroundOverride(page.backgroundId);
