@@ -2919,6 +2919,62 @@ const DAILY_TALKS = [
     ]
   },
   {
+    id: "nader_intro_morning_dust",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "朝の光が棚に積もる埃を浮かび上がらせる。" },
+      { speaker: "ナーディル", expression: "joy", text: "父さんはこれを「星の粉」って呼んでたっけ。" }
+    ]
+  },
+  {
+    id: "nader_intro_key_sound",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "錠前の音が、朝の通りに小さく響く。" },
+      { speaker: "ナーディル", expression: "normal", text: "今日も星瓶堂は、変わらずここにある。" }
+    ]
+  },
+  {
+    id: "nader_intro_bottle_row",
+    category: "work",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "瓶の列を指でなぞる。冷たいガラスが、朝の温度を返す。" },
+      { speaker: "ナーディル", expression: "fun", text: "今日の客は、どんな音を求めてくるんだろう。" }
+    ]
+  },
+  {
+    id: "nader_intro_ledger_open",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "intro",
+    routeMode: "both",
+    minAffection: 0,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "新しい帳面を開く。白いページが、朝の光を吸い込んでいる。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "父さんの帳面は、もっと早く埋まったものだな。" }
+    ]
+  },
+  {
     id: "hakima_after_result_scent",
     category: "work",
     scope: "heroine",
