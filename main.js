@@ -1242,6 +1242,16 @@ const HEROINES = [
     assets: { standing: {}, face: {} }
   }
 ];
+const NADER = {
+  id: "nader",
+  name: "ナーディル",
+  role: "星瓶堂店主",
+  themeColor: "#8b7355",
+  visualConfig: {
+    facePosition: "center 20%",
+    standingScale: 1
+  }
+};
 function getHeroineAsset(heroineId, type, expression = "normal") {
   const subDir = type === "face" ? "face_proc" : "standing_proc";
   return `characters/${heroineId}/${subDir}/${expression}.png`;
@@ -11678,6 +11688,17 @@ function App() {
     }
   }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
+  const getMainCharacter = () => {
+    var _a2;
+    if (screen === "DAILY_TALK" && activeDailyTalk) {
+      const currentPage = (_a2 = activeDailyTalk.pages) == null ? void 0 : _a2[dailyTalkCurrentPage];
+      if ((currentPage == null ? void 0 : currentPage.speakerId) === "nader") {
+        return NADER;
+      }
+    }
+    return activeHeroine;
+  };
+  const mainCharacter = getMainCharacter();
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
   const isInstantTextSpeed = textSpeed === "instant" || instantUnreadText;
   const handleStartGame = () => {
@@ -12440,10 +12461,10 @@ function App() {
       } }, /* @__PURE__ */ React.createElement(
         HeroineDisplay,
         {
-          heroine: activeHeroine,
+          heroine: mainCharacter,
           type: "standing",
           size: "large",
-          expression: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[dailyTalkCurrentPage]) == null ? void 0 : _c.speakerId) === activeHeroine.id ? ((_e = (_d = activeDailyTalk.pages) == null ? void 0 : _d[dailyTalkCurrentPage]) == null ? void 0 : _e.expression) || "normal" : "normal",
+          expression: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[dailyTalkCurrentPage]) == null ? void 0 : _c.speakerId) === mainCharacter.id ? ((_e = (_d = activeDailyTalk.pages) == null ? void 0 : _d[dailyTalkCurrentPage]) == null ? void 0 : _e.expression) || "normal" : "normal",
           noBorder: true,
           style: { height: "100%", width: "auto", boxShadow: "none" }
         }
@@ -12482,7 +12503,7 @@ function App() {
             }
             return { ...page, speakerId: inferredId };
           }),
-          themeColor: activeHeroine.themeColor,
+          themeColor: mainCharacter.themeColor,
           speed: textSpeedMeta.delay,
           skip: shouldSkipTypewriter(isInstantTextSpeed, false),
           getFaceIcon,
