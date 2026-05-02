@@ -10250,6 +10250,12 @@ function buildSettingsSavePayload({
     isAudioEnabled
   };
 }
+function buildSettingsOnlySavePayload(existingSave, settings) {
+  return {
+    ...existingSave || {},
+    ...buildSettingsSavePayload(settings)
+  };
+}
 function useGameSaveStatus() {
   const [hasSave, setHasSaveState] = useState(() => {
     const data = loadSaveData();
@@ -11038,17 +11044,14 @@ function App() {
       const currentData = loadSaveData();
       const isDefaultSettings = routeMode === "normal" && textSpeed === "normal" && instantUnreadText === false && Math.abs(bgmVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && Math.abs(seVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && isAudioEnabled === false;
       if (currentData || !isDefaultSettings) {
-        saveGameData({
-          ...currentData || {},
-          ...buildSettingsSavePayload({
-            routeMode,
-            textSpeed,
-            instantUnreadText,
-            bgmVolume,
-            seVolume,
-            isAudioEnabled
-          })
-        });
+        saveGameData(buildSettingsOnlySavePayload(currentData, {
+          routeMode,
+          textSpeed,
+          instantUnreadText,
+          bgmVolume,
+          seVolume,
+          isAudioEnabled
+        }));
       }
       if (currentData && currentData.screen !== "START") {
         setHasSave(true);
