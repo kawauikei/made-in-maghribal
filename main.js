@@ -10113,6 +10113,9 @@ function normalizeSaveData(raw) {
   if (normalized.screen === "QUIZ") {
     normalized.screen = "INTRO";
   }
+  if (normalized.screen === "EVENT" && (!normalized.activeEvent || typeof normalized.activeEvent !== "object")) {
+    normalized.screen = "INTRO";
+  }
   const validHeroineIds = HEROINES.map((h) => h.id);
   if (!validHeroineIds.includes(normalized.activeHeroineId)) {
     normalized.activeHeroineId = base.activeHeroineId;
