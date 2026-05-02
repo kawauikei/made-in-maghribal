@@ -12647,6 +12647,8 @@ function App() {
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null);
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0);
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE);
+  const [isBackgroundTransitioning, setIsBackgroundTransitioning] = useState(false);
+  const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -12654,6 +12656,7 @@ function App() {
   const vnRef = useRef(null);
   const debugAutoSkipAppliedRef = useRef(false);
   const memoriesScrollPositionRef = useRef(0);
+  const prevEventBackgroundRef = useRef(null);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
@@ -12962,8 +12965,10 @@ function App() {
       setSeenEventIds((prev) => [...prev, activeEvent.id]);
     }
     setActiveEvent(null);
+    setEventCurrentPageIndex(0);
     if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
+      prevEventBackgroundRef.current = null;
     }
     switch (nextScreen) {
       case "MEMORIES":
@@ -13073,6 +13078,9 @@ function App() {
     setTimeout(() => {
       setIsHeroineLoading(false);
       if (flashbackEvent) {
+        setEventBackgroundOverride(null);
+        prevEventBackgroundRef.current = null;
+        setEventCurrentPageIndex(0);
         setActiveEvent(flashbackEvent);
         setScreen("EVENT");
       } else {
@@ -13184,6 +13192,8 @@ function App() {
   const handleRecallEventFromMemories = (event) => {
     audioEngine.playSfx("uiConfirmChime");
     setEventBackgroundOverride(null);
+    prevEventBackgroundRef.current = null;
+    setEventCurrentPageIndex(0);
     setActiveEvent(event);
     setIsRecallMode(true);
     setActiveHeroineId(event.heroineId);
@@ -13752,6 +13762,14 @@ function App() {
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
     if (!still) {
+      const shouldShowHeroine = (() => {
+        if (activeEvent.kind === "flashback_intro") {
+          const pages = getEventPages(activeEvent, routeMode);
+          const currentPage = pages[eventCurrentPageIndex];
+          return (currentPage == null ? void 0 : currentPage.speakerId) === activeHeroine.id;
+        }
+        return true;
+      })();
       mainContent = /* @__PURE__ */ React.createElement(
         "div",
         {
@@ -13761,6 +13779,18 @@ function App() {
         },
         renderThemeStyles(),
         renderBackground(screen),
+        isBackgroundTransitioning && /* @__PURE__ */ React.createElement("div", { style: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.95)",
+          zIndex: 100,
+          pointerEvents: "none",
+          transition: "opacity 0.15s ease",
+          opacity: isBackgroundTransitioning ? 1 : 0
+        } }),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           bottom: "8%",
@@ -13772,7 +13802,9 @@ function App() {
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "center",
-          filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))"
+          filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))",
+          opacity: shouldShowHeroine ? 1 : 0,
+          transition: "opacity 0.2s ease"
         } }, /* @__PURE__ */ React.createElement(
           HeroineDisplay,
           {
@@ -13824,14 +13856,26 @@ function App() {
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
+              var _a2;
+              setEventCurrentPageIndex(index);
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
               if ((page == null ? void 0 : page.expression) && (page == null ? void 0 : page.speakerId) === activeHeroine.id) {
                 setEventHeroineExpression(page.expression);
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
-              if (page == null ? void 0 : page.backgroundId) {
-                setEventBackgroundOverride(page.backgroundId);
+              const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
+              if (newBgId && newBgId !== eventBackgroundOverride) {
+                setIsBackgroundTransitioning(true);
+                setTimeout(() => {
+                  setEventBackgroundOverride(newBgId);
+                  prevEventBackgroundRef.current = newBgId;
+                  setTimeout(() => {
+                    setIsBackgroundTransitioning(false);
+                  }, 80);
+                }, 150);
+              } else if (newBgId) {
+                prevEventBackgroundRef.current = newBgId;
               }
             },
             onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
@@ -13949,14 +13993,26 @@ function App() {
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
+              var _a2;
+              setEventCurrentPageIndex(index);
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
               if ((page == null ? void 0 : page.expression) && (page == null ? void 0 : page.speakerId) === activeHeroine.id) {
                 setEventHeroineExpression(page.expression);
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
-              if (page == null ? void 0 : page.backgroundId) {
-                setEventBackgroundOverride(page.backgroundId);
+              const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
+              if (newBgId && newBgId !== eventBackgroundOverride) {
+                setIsBackgroundTransitioning(true);
+                setTimeout(() => {
+                  setEventBackgroundOverride(newBgId);
+                  prevEventBackgroundRef.current = newBgId;
+                  setTimeout(() => {
+                    setIsBackgroundTransitioning(false);
+                  }, 80);
+                }, 150);
+              } else if (newBgId) {
+                prevEventBackgroundRef.current = newBgId;
               }
             },
             onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
