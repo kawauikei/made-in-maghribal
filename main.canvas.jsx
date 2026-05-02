@@ -4731,38 +4731,28 @@ function App() {
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
-      // M-EVENT-PRESENTATION-FIX-3: Resolve main character for current page
+      // M-EVENT-PRESENTATION-FIX-4: Resolve main character for current page (heroine priority)
+      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+      const currentPageExpression = currentEventPage?.expression || 'normal';
+      
       const resolveEventMainCharacter = (page) => {
         if (!page) return null;
-        // Check for Nader first
-        if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
-          return NADER;
-        }
-        // Check for active heroine
+        // M-EVENT-PRESENTATION-FIX-4: Heroine takes priority over Nader
         if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
           return activeHeroine;
+        }
+        // Check for Nader
+        if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
+          return NADER;
         }
         // Narration or unknown speaker
         return null;
       };
       
-      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
       const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
       const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
-      
-      // M-EVENT-PRESENTATION-FIX-2: Hide heroine for flashback_intro narration pages (legacy, kept for safety)
-      const shouldShowHeroine = (() => {
-        if (activeEvent.kind === 'flashback_intro') {
-          const pages = getEventPages(activeEvent, routeMode);
-          const currentPage = pages[eventCurrentPageIndex];
-          // Show heroine when speaker is the active heroine (check both speakerId and speaker name)
-          if (currentPage?.speakerId === activeHeroine.id) return true;
-          if (currentPage?.speaker === activeHeroine.name) return true;
-          // Hide for narration or Nader
-          return false;
-        }
-        return true;
-      })();
+      // M-EVENT-PRESENTATION-FIX-4: Use expression from current page for current character
+      const currentCharacterExpression = eventMainCharacter ? currentPageExpression : 'normal';
       
       mainContent = (
         <div 
@@ -4773,7 +4763,7 @@ function App() {
           {renderThemeStyles()}
           {renderBackground(screen)}
           
-          {/* M-EVENT-PRESENTATION-FIX-2: Curtain slide overlay for background transitions */}
+          {/* M-EVENT-PRESENTATION-FIX-2/4: Curtain slide overlay for background transitions (slowed down) */}
           {(bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && (
             <div style={{
               position: 'absolute',
@@ -4787,11 +4777,11 @@ function App() {
               transform: bgTransitionPhase === "covering" ? 'translateX(0%)' : 
                          bgTransitionPhase === "covered" ? 'translateX(0%)' :
                          'translateX(100%)',
-              transition: 'transform 0.3s ease-in-out'
+              transition: 'transform 0.4s ease-in-out'
             }} />
           )}
           
-          {/* M-EVENT-PRESENTATION-FIX-3: Character display based on current page speaker */}
+          {/* M-EVENT-PRESENTATION-FIX-3/4: Character display based on current page speaker */}
           <div style={{ 
             position: 'absolute', 
             bottom: '8%', 
@@ -4811,7 +4801,7 @@ function App() {
                 heroine={eventMainCharacter || activeHeroine} 
                 type="standing" 
                 size="large" 
-                expression={eventHeroineExpression} 
+                expression={currentCharacterExpression} 
                 noBorder={true}
                 style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
               />
@@ -4858,18 +4848,16 @@ function App() {
                   setEventCurrentPageIndex(index);
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
-                  // Update expression when the speaker is the active heroine or Nader
+                  // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
                   if (page?.expression) {
-                    if (page?.speakerId === activeHeroine.id || page?.speakerId === 'nader') {
-                      setEventHeroineExpression(page.expression);
-                    }
+                    setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-2: Curtain slide transition for background changes
+                  // M-EVENT-PRESENTATION-FIX-2/4: Curtain slide transition for background changes (slowed down)
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                    // Start curtain slide: covering phase
+                    // Start curtain slide: covering phase (400ms)
                     setBgTransitionPhase("covering");
                     setTimeout(() => {
                       // Covered phase - switch background
@@ -4877,14 +4865,14 @@ function App() {
                       setEventBackgroundOverride(newBgId);
                       prevEventBackgroundRef.current = newBgId;
                       setTimeout(() => {
-                        // Revealing phase
+                        // Revealing phase (450ms)
                         setBgTransitionPhase("revealing");
                         setTimeout(() => {
                           // Done - back to idle
                           setBgTransitionPhase("idle");
-                        }, 300); // Reveal duration
+                        }, 450); // Reveal duration
                       }, 100); // Hold covered briefly
-                    }, 300); // Cover duration
+                    }, 400); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
@@ -5011,7 +4999,7 @@ function App() {
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
-                themeColor={activeHeroine.themeColor}
+                themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
@@ -5019,16 +5007,16 @@ function App() {
                   setEventCurrentPageIndex(index);
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
-                  // Only update heroine expression when the speaker is the active heroine
-                  if (page?.expression && page?.speakerId === activeHeroine.id) {
+                  // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
+                  if (page?.expression) {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-2: Curtain slide transition for background changes
+                  // M-EVENT-PRESENTATION-FIX-2/4: Curtain slide transition for background changes (slowed down)
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                    // Start curtain slide: covering phase
+                    // Start curtain slide: covering phase (400ms)
                     setBgTransitionPhase("covering");
                     setTimeout(() => {
                       // Covered phase - switch background
@@ -5036,14 +5024,14 @@ function App() {
                       setEventBackgroundOverride(newBgId);
                       prevEventBackgroundRef.current = newBgId;
                       setTimeout(() => {
-                        // Revealing phase
+                        // Revealing phase (450ms)
                         setBgTransitionPhase("revealing");
                         setTimeout(() => {
                           // Done - back to idle
                           setBgTransitionPhase("idle");
-                        }, 300); // Reveal duration
+                        }, 450); // Reveal duration
                       }, 100); // Hold covered briefly
-                    }, 300); // Cover duration
+                    }, 400); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
