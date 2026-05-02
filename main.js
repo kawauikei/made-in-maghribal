@@ -10256,6 +10256,47 @@ function buildSettingsOnlySavePayload(existingSave, settings) {
     ...buildSettingsSavePayload(settings)
   };
 }
+const AUTO_SAVE_MODE = {
+  NONE: "none",
+  FULL: "full",
+  SETTINGS_ONLY: "settings_only"
+};
+function resolveAutoSavePolicy({
+  screen,
+  isDefaultSettings: isDefaultSettings2,
+  hasExistingSave
+}) {
+  if (screen !== "START") {
+    return {
+      mode: AUTO_SAVE_MODE.FULL,
+      shouldSave: true,
+      shouldSetHasSave: true
+    };
+  }
+  if (hasExistingSave || !isDefaultSettings2) {
+    return {
+      mode: AUTO_SAVE_MODE.SETTINGS_ONLY,
+      shouldSave: true,
+      shouldSetHasSave: true
+    };
+  }
+  return {
+    mode: AUTO_SAVE_MODE.NONE,
+    shouldSave: false,
+    shouldSetHasSave: false
+  };
+}
+function isDefaultSettings({
+  routeMode,
+  textSpeed,
+  instantUnreadText,
+  bgmVolume,
+  seVolume,
+  isAudioEnabled,
+  defaultAudioVolume = 0.8
+}) {
+  return routeMode === "normal" && textSpeed === "normal" && instantUnreadText === false && Math.abs(bgmVolume - defaultAudioVolume) < 0.01 && Math.abs(seVolume - defaultAudioVolume) < 0.01 && isAudioEnabled === false;
+}
 function useGameSaveStatus() {
   const [hasSave, setHasSaveState] = useState(() => {
     const data = loadSaveData();
@@ -11021,7 +11062,20 @@ function App() {
     }
   }, [activeEvent]);
   useEffect(() => {
-    if (screen !== "START") {
+    const policy = resolveAutoSavePolicy({
+      screen,
+      isDefaultSettings: isDefaultSettings({
+        routeMode,
+        textSpeed,
+        instantUnreadText,
+        bgmVolume,
+        seVolume,
+        isAudioEnabled,
+        defaultAudioVolume: DEFAULT_AUDIO_VOLUME
+      }),
+      hasExistingSave: Boolean(loadSaveData())
+    });
+    if (policy.mode === AUTO_SAVE_MODE.FULL) {
       saveGameData(buildGameSavePayload({
         screen: screen === "EVENT" ? "RESULT" : screen,
         // Fallback EVENT to RESULT for safety
@@ -11040,19 +11094,19 @@ function App() {
         vnBacklog
       }));
       setHasSave(true);
-    } else {
+    } else if (policy.mode === AUTO_SAVE_MODE.SETTINGS_ONLY) {
       const currentData = loadSaveData();
-      const isDefaultSettings = routeMode === "normal" && textSpeed === "normal" && instantUnreadText === false && Math.abs(bgmVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && Math.abs(seVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && isAudioEnabled === false;
-      if (currentData || !isDefaultSettings) {
-        saveGameData(buildSettingsOnlySavePayload(currentData, {
-          routeMode,
-          textSpeed,
-          instantUnreadText,
-          bgmVolume,
-          seVolume,
-          isAudioEnabled
-        }));
-      }
+      saveGameData(buildSettingsOnlySavePayload(currentData, {
+        routeMode,
+        textSpeed,
+        instantUnreadText,
+        bgmVolume,
+        seVolume,
+        isAudioEnabled
+      }));
+      setHasSave(true);
+    } else if (policy.mode === AUTO_SAVE_MODE.NONE) {
+      const currentData = loadSaveData();
       if (currentData && currentData.screen !== "START") {
         setHasSave(true);
       } else {
