@@ -11216,6 +11216,95 @@ function DebugPanel({
     "BACK TO GAME"
   ));
 }
+const TIME_PHASES = {
+  NONE: { key: "none", label: "", icon: "", color: "transparent", description: "" },
+  PRE_OPEN: { key: "pre_open", label: "開店前", icon: "🌅", color: "#f59e0b", description: "朝の支度" },
+  OPEN: { key: "open", label: "営業中", icon: "🛍", color: "#10b981", description: "お客様対応中" },
+  POST_OPEN: { key: "post_open", label: "営業後", icon: "🌆", color: "#f97316", description: "営業直後" },
+  CLOSED: { key: "closed", label: "閉店後", icon: "🌙", color: "#6366f1", description: "夜の支度" },
+  FINALE: { key: "finale", label: "総決算", icon: "✨", color: "#8b5cf6", description: "10 日の総括" },
+  MEMORY: { key: "memory", label: "回想", icon: "📖", color: "#94a3b8", description: "愛着の記録" }
+};
+function resolveTimePhase(screen, activeDailyTalk = null, isRecallMode = false) {
+  if (isRecallMode) {
+    return TIME_PHASES.MEMORY;
+  }
+  switch (screen) {
+    case "START":
+    case "HEROINE_SELECT":
+      return TIME_PHASES.NONE;
+    case "PROLOGUE":
+    case "INTRO":
+      return TIME_PHASES.PRE_OPEN;
+    case "QUIZ":
+      return TIME_PHASES.OPEN;
+    case "RESULT":
+      return TIME_PHASES.POST_OPEN;
+    case "DAILY_TALK":
+      if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "day_end") {
+        return TIME_PHASES.CLOSED;
+      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "after_result") {
+        return TIME_PHASES.POST_OPEN;
+      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "intro") {
+        return TIME_PHASES.PRE_OPEN;
+      }
+      return TIME_PHASES.PRE_OPEN;
+    case "DAY_END":
+      return TIME_PHASES.CLOSED;
+    case "FINAL_RESULT":
+      return TIME_PHASES.FINALE;
+    case "EVENT":
+    case "MEMORIES":
+      return TIME_PHASES.MEMORY;
+    case "VISUAL_TEST":
+    case "OPTIONS":
+    case "LOG":
+    case "HELP":
+    case "SOUND_TEST":
+      return TIME_PHASES.NONE;
+    default:
+      return TIME_PHASES.NONE;
+  }
+}
+const TimePhaseBadge = ({ timePhase }) => {
+  if (!timePhase || timePhase.key === "none") {
+    return null;
+  }
+  const phase = TIME_PHASES[timePhase.key.toUpperCase()] || timePhase;
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "4px 10px",
+        background: `rgba(12, 25, 38, 0.85)`,
+        border: `1px solid ${phase.color}77`,
+        borderRadius: "999px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+        backdropFilter: "blur(4px)",
+        maxWidth: "120px",
+        pointerEvents: "none",
+        userSelect: "none"
+      }
+    },
+    phase.icon && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1.1em", lineHeight: 1 } }, phase.icon),
+    /* @__PURE__ */ React.createElement(
+      "span",
+      {
+        style: {
+          fontSize: "0.75em",
+          fontWeight: "bold",
+          color: phase.color,
+          letterSpacing: "0.05em",
+          whiteSpace: "nowrap"
+        }
+      },
+      phase.label
+    )
+  );
+};
 const TEXT_SPEED_META = {
   slow: { label: "遅い", delay: 45 },
   normal: { label: "標準", delay: 30 },
@@ -11292,6 +11381,7 @@ function App() {
   const [activeGreeting, setActiveGreeting] = useState(null);
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null);
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0);
+  const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -11492,6 +11582,10 @@ function App() {
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
+  useEffect(() => {
+    const phase = resolveTimePhase(screen, activeDailyTalk, isRecallMode);
+    setCurrentTimePhase(phase);
+  }, [screen, activeDailyTalk, isRecallMode]);
   useEffect(() => {
     let trackId = null;
     const day = workshopState.day || 1;
@@ -12794,7 +12888,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
