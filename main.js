@@ -13774,8 +13774,7 @@ function App() {
     };
     const isHeroineSpeaker = isHeroineSpeakerPage(currentEventPage);
     const isFlashbackIntro = activeEvent.kind === "flashback_intro";
-    const heroineHasAppeared = isHeroineSpeaker || eventCurrentPageIndex > 0;
-    const shouldShowEventCharacter = !still && (!isFlashbackIntro || heroineHasAppeared);
+    const shouldShowEventHeroine = isFlashbackIntro ? isHeroineSpeaker : !still;
     const currentCharacterExpression = isHeroineSpeaker ? currentPageExpression : eventHeroineExpression;
     if (!still) {
       mainContent = /* @__PURE__ */ React.createElement(
@@ -13811,7 +13810,7 @@ function App() {
           alignItems: "flex-end",
           justifyContent: "center",
           filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))",
-          opacity: shouldShowEventCharacter ? 1 : 0,
+          opacity: shouldShowEventHeroine ? 1 : 0,
           transition: "opacity 0.2s ease"
         } }, /* @__PURE__ */ React.createElement(
           HeroineDisplay,
