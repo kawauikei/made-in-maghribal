@@ -13763,7 +13763,20 @@ function App() {
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
     if (!still) {
-      const shouldShowHeroine = (() => {
+      const resolveEventMainCharacter = (page) => {
+        if (!page) return null;
+        if (page.speakerId === "nader" || page.speaker === "ナーディル") {
+          return NADER;
+        }
+        if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+          return activeHeroine;
+        }
+        return null;
+      };
+      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+      const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
+      const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
+      (() => {
         if (activeEvent.kind === "flashback_intro") {
           const pages = getEventPages(activeEvent, routeMode);
           const currentPage = pages[eventCurrentPageIndex];
@@ -13806,12 +13819,12 @@ function App() {
           alignItems: "flex-end",
           justifyContent: "center",
           filter: "drop-shadow(0 0 15px rgba(0,0,0,0.3))",
-          opacity: shouldShowHeroine ? 1 : 0,
+          opacity: shouldShowEventCharacter ? 1 : 0,
           transition: "opacity 0.2s ease"
         } }, /* @__PURE__ */ React.createElement(
           HeroineDisplay,
           {
-            heroine: activeHeroine,
+            heroine: eventMainCharacter || activeHeroine,
             type: "standing",
             size: "large",
             expression: eventHeroineExpression,
@@ -13854,7 +13867,7 @@ function App() {
               else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
               return { ...page, speakerId: inferredId };
             }),
-            themeColor: activeHeroine.themeColor,
+            themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
@@ -13863,8 +13876,10 @@ function App() {
               setEventCurrentPageIndex(index);
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
-              if ((page == null ? void 0 : page.expression) && (page == null ? void 0 : page.speakerId) === activeHeroine.id) {
-                setEventHeroineExpression(page.expression);
+              if (page == null ? void 0 : page.expression) {
+                if ((page == null ? void 0 : page.speakerId) === activeHeroine.id || (page == null ? void 0 : page.speakerId) === "nader") {
+                  setEventHeroineExpression(page.expression);
+                }
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
               const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
