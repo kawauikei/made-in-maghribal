@@ -5,7 +5,7 @@ import { createQuizSession, answerQuestion } from './game/quizEngine';
 import { getRankInfo } from './game/scoring';
 import { resolveQuizCompletion, createPerfectQuizPayload } from './game/quizFlow';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
-import { HEROINES, getHeroineAsset } from './data/heroines';
+import { HEROINES, NADER, getHeroineAsset } from './data/heroines';
 import { getResultExpression, getDayEndExpression } from './game/presentation';
 import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS, getTrackById } from './data/tracks';
@@ -43,9 +43,6 @@ const TEXT_SPEED_META = {
 
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
-
-const NADER = PROTAGONIST;
-
 
 const CustomerSilhouette = ({ customer }) => {
   if (!customer) return null;
@@ -3444,6 +3441,23 @@ function App() {
 
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
+  
+  /**
+   * Determine main character for display based on screen context.
+   * For DAILY_TALK: uses speaker of current page (Nadir or heroine).
+   * For other screens: always uses activeHeroine.
+   */
+  const getMainCharacter = () => {
+    if (screen === 'DAILY_TALK' && activeDailyTalk) {
+      const currentPage = activeDailyTalk.pages?.[dailyTalkCurrentPage];
+      if (currentPage?.speakerId === 'nader') {
+        return NADER;
+      }
+    }
+    return activeHeroine;
+  };
+  
+  const mainCharacter = getMainCharacter();
   const textSpeedMeta = getTextSpeedMeta(textSpeed);
   const isInstantTextSpeed = textSpeed === 'instant' || instantUnreadText;
 
@@ -4328,10 +4342,10 @@ function App() {
           filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
         }}>
           <HeroineDisplay 
-            heroine={activeHeroine} 
+            heroine={mainCharacter} 
             type="standing" 
             size="large" 
-            expression={activeDailyTalk.pages?.[dailyTalkCurrentPage]?.speakerId === activeHeroine.id 
+            expression={activeDailyTalk.pages?.[dailyTalkCurrentPage]?.speakerId === mainCharacter.id 
               ? (activeDailyTalk.pages?.[dailyTalkCurrentPage]?.expression || 'normal')
               : 'normal'}
             noBorder={true}
@@ -4374,7 +4388,7 @@ function App() {
                 }
                 return { ...page, speakerId: inferredId };
               })}
-              themeColor={activeHeroine.themeColor}
+              themeColor={mainCharacter.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed, false)}
               getFaceIcon={getFaceIcon}

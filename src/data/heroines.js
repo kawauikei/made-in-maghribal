@@ -87,7 +87,23 @@ export function getHeroineById(id) {
 }
 
 /**
+ * Nadir Character Definition
+ * Used for solo scenes when heroine is not present.
+ */
+export const NADER = {
+  id: "nader",
+  name: "ナーディル",
+  role: "星瓶堂店主",
+  themeColor: "#8b7355",
+  visualConfig: {
+    facePosition: "center 20%",
+    standingScale: 1.0
+  }
+};
+
+/**
  * Returns the path to a heroine asset.
+ * Also supports 'nader' character.
  * @param {string} heroineId 
  * @param {string} type - 'standing' or 'face'
  * @param {string} expression - 'normal', 'joy', 'fun', 'sorrow', 'cry', etc.
