@@ -3169,6 +3169,244 @@ const DAILY_TALKS = [
       { speaker: "ナーディル", expression: "normal", text: "閉店後の風が、店の入り口を優しく撫でる。" },
       { speaker: "ナーディル", expression: "sorrow", text: "父さんも、こんな夜が好きだったのかな。" }
     ]
+  },
+  {
+    id: "hakima_long_intro_incense_match",
+    category: "work",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "fun", text: "この香り、昔の市場でよく嗅いだわ。あんたがいつも隠し持ってた香木ね。" },
+      { speaker: "ナーディル", expression: "fun", text: "君の鼻は、相変わらず鋭いな。でもこれは、ただの星瓶堂の朝の香りだ。" },
+      { speaker: "ハキマ", expression: "joy", text: "そう。私の記憶では、それが一番よく似合うのよ。" }
+    ]
+  },
+  {
+    id: "hakima_long_after_result_compare",
+    category: "work",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "今の見立て、昔と少し変わっていない？" },
+      { speaker: "ナーディル", expression: "normal", text: "君にそう言われると、少し安心する。変わっていない部分があるなら。" },
+      { speaker: "ハキマ", expression: "joy", text: "ふん。でも、目はさらに鋭くなったわね。……悪くない。" }
+    ]
+  },
+  {
+    id: "hakima_long_day_end_rhythm",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "星瓶堂の一日のリズム、昔から変わらないわね。" },
+      { speaker: "ナーディル", expression: "joy", text: "君が来る日も、来ない日も、このリズムは続いてた。" },
+      { speaker: "ハキマ", expression: "joy", text: "……それなら、これからも時々、このリズムを刻みに来るわ。" }
+    ]
+  },
+  {
+    id: "mira_long_intro_calculation_seat",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩、昔私が使ってた計算机、まだ覚えていますか。" },
+      { speaker: "ナーディル", expression: "fun", text: "ああ。君が数字を並べると、なぜか店内が静かになった。" },
+      { speaker: "ミラ", expression: "joy", text: "……今日は、その机で少し計算させてください。懐かしくて。" }
+    ]
+  },
+  {
+    id: "mira_long_after_result_formula",
+    category: "work",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "今の配合、昔私が考えた式に似ていました。" },
+      { speaker: "ナーディル", expression: "normal", text: "覚えていたのか。君の式は、今でも星瓶堂で生きている。" },
+      { speaker: "ミラ", expression: "joy", text: "……嬉しいです。私の計算が、ここで息をしているなんて。" }
+    ]
+  },
+  {
+    id: "mira_long_day_end_notebook",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "昔、ここに書き残した落書き、まだ消さないでいてくれたんですね。" },
+      { speaker: "ナーディル", expression: "fun", text: "消すのが惜しくなった。君の思考の跡だから。" },
+      { speaker: "ミラ", expression: "joy", text: "……先輩らしい。でも、少し照れます。" }
+    ]
+  },
+  {
+    id: "dariya_long_intro_corner",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "fun", text: "この隅の席、まだ空けておいてくれるのか。" },
+      { speaker: "ナーディル", expression: "fun", text: "君が座る場所くらい、覚えていないと。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……ふん。王宮より、この一角の方が落ち着くんだよ。" }
+    ]
+  },
+  {
+    id: "dariya_long_after_result_taste",
+    category: "work",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "今の見立て、昔と味が違っていないか。" },
+      { speaker: "ナーディル", expression: "normal", text: "味は変わらない。君の舌が、より鋭くなっただけだ。" },
+      { speaker: "ダリヤ", expression: "fun", text: "……そうか。なら、私もまだ成長しているということだな。" }
+    ]
+  },
+  {
+    id: "dariya_long_day_end_escape",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "sorrow", text: "王宮の重圧から、昔と同じように逃げ込んできてしまった。" },
+      { speaker: "ナーディル", expression: "normal", text: "逃げ場は、昔からここにあります。いつでも。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……ありがとう。おかげで、また明日を耐えられそうだ。" }
+    ]
+  },
+  {
+    id: "hakima_long_intro_competitor",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "fun", text: "あんたと並んで品を見るのは、やっぱり一番気が張るわ。" },
+      { speaker: "ナーディル", expression: "fun", text: "君との競争は、俺の目も鍛えてくれた。" },
+      { speaker: "ハキマ", expression: "joy", text: "ふん。なら、これからも私があんたの隣で目を競ってあげる。" }
+    ]
+  },
+  {
+    id: "mira_long_intro_teacher",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩に教わったこと、大学でも役に立っています。" },
+      { speaker: "ナーディル", expression: "joy", text: "それは頼もしい。でも、君自身の力が一番大きい。" },
+      { speaker: "ミラ", expression: "joy", text: "……でも、先輩がいなかったら、今の私はいませんでした。" }
+    ]
+  },
+  {
+    id: "dariya_long_intro_shelter",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "intro",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "星瓶堂の扉を開けるのは、昔から勇気がいる。" },
+      { speaker: "ナーディル", expression: "normal", text: "ここが、君にとって特別な場所だからだ。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……そうだ。ここは、私が私でいられる場所だ。" }
+    ]
+  },
+  {
+    id: "hakima_long_after_result_trust",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "hakima",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ハキマ", expression: "normal", text: "あんたの判断、昔から信用しているわ。" },
+      { speaker: "ナーディル", expression: "joy", text: "君にそう言ってもらえるのが、一番の証だ。" },
+      { speaker: "ハキマ", expression: "joy", text: "ふん。でも、油断はさせない。私も成長しているんだから。" }
+    ]
+  },
+  {
+    id: "mira_long_after_result_legacy",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "mira",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ミラ", expression: "normal", text: "先輩のやり方、私も少しずつ受け継いでいるみたいです。" },
+      { speaker: "ナーディル", expression: "joy", text: "君が選んだ道だ。俺はそれを見守るだけだ。" },
+      { speaker: "ミラ", expression: "joy", text: "……でも、先輩の跡を辿っている自分、嫌いじゃないです。" }
+    ]
+  },
+  {
+    id: "nader_long_after_result_father",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "父さんが残した帳面を、今日は開いてみる。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "昔の客の名前が、まだ色あせずに残っている。" }
+    ]
+  },
+  {
+    id: "nader_long_day_end_continuity",
+    category: "personal",
+    scope: "common",
+    heroineId: null,
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ナーディル", expression: "normal", text: "星瓶堂は、父から俺へ、そして明日へと続いていく。" },
+      { speaker: "ナーディル", expression: "joy", text: "その連鎖の真ん中に、俺がいるんだ。" }
+    ]
   }
 ];
 function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
