@@ -96,6 +96,9 @@ export function getRouteText(baseText, routeTexts, routeMode) {
  * Returns a set of talks for the morning (intro) sequence.
  * Should ideally return one 'work' talk and one 'personal' talk.
  * 
+ * M-DAILYTALK-INTRO-RANDOMNESS-FIX-1: Prioritize heroine-specific talks over common talks.
+ * Common talks are only used as fallback when no heroine-specific talks are available.
+ * 
  * @param {string} heroineId 
  * @param {number} currentAffection 
  * @param {string[]} seenTalkIds 
@@ -103,7 +106,7 @@ export function getRouteText(baseText, routeTexts, routeMode) {
  * @returns {Object[]} Array of talk objects
  */
 export function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
-  const getEligible = (category) => {
+  const getEligible = (category, prioritizeHeroine = false) => {
     return DAILY_TALKS.filter(talk => {
       if (talk.timing !== 'intro') return false;
       if (talk.category !== category) return false;
@@ -115,12 +118,27 @@ export function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMod
     }).sort((a, b) => (b.priority || 1) - (a.priority || 1));
   };
 
-  const workTalks = getEligible('work');
-  const personalTalks = getEligible('personal');
+  // M-DAILYTALK-INTRO-RANDOMNESS-FIX-1: Prioritize heroine-specific talks
+  const getPreferredTalk = (category) => {
+    // First, try heroine-specific talks
+    const heroineTalks = getEligible(category).filter(t => t.scope === 'heroine');
+    if (heroineTalks.length > 0) {
+      return heroineTalks[0];
+    }
+    // Fallback to common talks only when no heroine-specific available
+    const commonTalks = getEligible(category).filter(t => t.scope === 'common');
+    if (commonTalks.length > 0) {
+      return commonTalks[0];
+    }
+    return null;
+  };
 
   const selected = [];
-  if (workTalks.length > 0) selected.push(workTalks[0]);
-  if (personalTalks.length > 0) selected.push(personalTalks[0]);
+  const workTalk = getPreferredTalk('work');
+  const personalTalk = getPreferredTalk('personal');
+  
+  if (workTalk) selected.push(workTalk);
+  if (personalTalk) selected.push(personalTalk);
 
   return selected;
 }
