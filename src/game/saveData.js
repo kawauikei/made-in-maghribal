@@ -60,6 +60,12 @@ export function normalizeSaveData(raw) {
     normalized.screen = 'INTRO';
   }
 
+  // EVENT restore safety: If screen is EVENT but activeEvent is null/invalid, fallback to INTRO
+  // This prevents crashing when restoring a broken EVENT save without valid event data
+  if (normalized.screen === 'EVENT' && (!normalized.activeEvent || typeof normalized.activeEvent !== 'object')) {
+    normalized.screen = 'INTRO';
+  }
+
   // Heroine ID safety
   const validHeroineIds = HEROINES.map(h => h.id);
   if (!validHeroineIds.includes(normalized.activeHeroineId)) {

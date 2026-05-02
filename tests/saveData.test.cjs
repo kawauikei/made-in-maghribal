@@ -203,14 +203,32 @@ try {
   assert.strictEqual(unknownScreen.screen, 'UNKNOWN_SCREEN', 'Unknown screen is currently preserved (only QUIZ is handled)');
   console.log("PASSED: unknown screen preserved (current behavior - only QUIZ handled)");
 
-  // Test: EVENT restore risk - screen EVENT with null activeEvent
+  // Test: EVENT restore safety - screen EVENT with null activeEvent falls back to INTRO
   const eventWithNullActive = normalizeSaveData({
     screen: 'EVENT',
     activeEvent: null
   });
-  assert.strictEqual(eventWithNullActive.screen, 'EVENT', 'EVENT screen is preserved even with null activeEvent');
+  assert.strictEqual(eventWithNullActive.screen, 'INTRO', 'EVENT screen with null activeEvent falls back to INTRO');
   assert.strictEqual(eventWithNullActive.activeEvent, null, 'activeEvent remains null');
-  console.log("PASSED: EVENT restore with null activeEvent (current behavior documented)");
+  console.log("PASSED: EVENT restore with null activeEvent falls back to INTRO");
+
+  // Test: EVENT restore safety - screen EVENT with valid activeEvent is preserved
+  const eventWithValidActive = normalizeSaveData({
+    screen: 'EVENT',
+    activeEvent: { eventId: 'hakima_1', title: 'Test Event' }
+  });
+  assert.strictEqual(eventWithValidActive.screen, 'EVENT', 'EVENT screen with valid activeEvent is preserved');
+  assert.deepStrictEqual(eventWithValidActive.activeEvent, { eventId: 'hakima_1', title: 'Test Event' }, 'activeEvent is preserved');
+  console.log("PASSED: EVENT restore with valid activeEvent is preserved");
+
+  // Test: EVENT restore safety - screen EVENT with invalid activeEvent (string) falls back to INTRO
+  const eventWithStringActive = normalizeSaveData({
+    screen: 'EVENT',
+    activeEvent: 'invalid_string'
+  });
+  assert.strictEqual(eventWithStringActive.screen, 'INTRO', 'EVENT screen with string activeEvent falls back to INTRO');
+  assert.strictEqual(eventWithStringActive.activeEvent, null, 'activeEvent is normalized to null');
+  console.log("PASSED: EVENT restore with invalid activeEvent (string) falls back to INTRO");
 
   // Test: unknown heroineId fallback
   const unknownHeroine = normalizeSaveData({
