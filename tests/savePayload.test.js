@@ -5,6 +5,7 @@ import assert from 'node:assert';
 import {
   buildGameSavePayload,
   buildSettingsSavePayload,
+  buildSettingsOnlySavePayload,
 } from '../src/game/savePayload.js';
 
 console.log("\n--- Made in Maghribal: Save Payload Builder Tests ---");
@@ -148,6 +149,56 @@ try {
   assert.ok(!settingsKeys.includes('debugMode'), 'Should not include debugMode');
   assert.ok(!settingsKeys.includes('autoSkipQuiz'), 'Should not include autoSkipQuiz');
   console.log("PASSED: buildSettingsSavePayload does not include Debug/Assist keys");
+
+  // Test: buildSettingsOnlySavePayload merges settings into existing save
+  const existingSave = {
+    screen: 'RESULT',
+    activeHeroineId: 'hakima',
+    workshopState: { day: 5, reputation: 20 },
+    affection: { hakima: 50 },
+    routeMode: 'normal',
+    textSpeed: 'normal',
+  };
+  const merged = buildSettingsOnlySavePayload(existingSave, {
+    routeMode: 'long_history',
+    textSpeed: 'fast',
+    instantUnreadText: true,
+    bgmVolume: 0.5,
+    seVolume: 0.6,
+    isAudioEnabled: true,
+  });
+  assert.strictEqual(merged.screen, 'RESULT', 'Should preserve screen');
+  assert.strictEqual(merged.activeHeroineId, 'hakima', 'Should preserve activeHeroineId');
+  assert.strictEqual(merged.workshopState.day, 5, 'Should preserve workshopState');
+  assert.strictEqual(merged.affection.hakima, 50, 'Should preserve affection');
+  assert.strictEqual(merged.routeMode, 'long_history', 'Should override routeMode');
+  assert.strictEqual(merged.textSpeed, 'fast', 'Should override textSpeed');
+  assert.strictEqual(merged.instantUnreadText, true, 'Should set instantUnreadText');
+  assert.strictEqual(merged.bgmVolume, 0.5, 'Should set bgmVolume');
+  assert.strictEqual(merged.seVolume, 0.6, 'Should set seVolume');
+  assert.strictEqual(merged.isAudioEnabled, true, 'Should set isAudioEnabled');
+  console.log("PASSED: buildSettingsOnlySavePayload merges settings into existing save");
+
+  // Test: buildSettingsOnlySavePayload with null existingSave
+  const nullMerged = buildSettingsOnlySavePayload(null, {
+    routeMode: 'normal',
+    textSpeed: 'slow',
+    instantUnreadText: false,
+    bgmVolume: 0.7,
+    seVolume: 0.8,
+    isAudioEnabled: false,
+  });
+  assert.strictEqual(nullMerged.routeMode, 'normal', 'Should set routeMode');
+  assert.strictEqual(nullMerged.textSpeed, 'slow', 'Should set textSpeed');
+  assert.strictEqual(Object.keys(nullMerged).length, 6, 'Should only have 6 settings keys');
+  console.log("PASSED: buildSettingsOnlySavePayload with null existingSave");
+
+  // Test: buildSettingsOnlySavePayload does not include Debug/Assist keys
+  const mergedKeys = Object.keys(merged);
+  assert.ok(!mergedKeys.includes('debugMode'), 'Should not include debugMode');
+  assert.ok(!mergedKeys.includes('autoSkipQuiz'), 'Should not include autoSkipQuiz');
+  assert.ok(!mergedKeys.includes('unlockAll'), 'Should not include unlockAll');
+  console.log("PASSED: buildSettingsOnlySavePayload does not include Debug/Assist keys");
 
   console.log("\n--- All save payload builder tests completed successfully! ---");
 } catch (err) {

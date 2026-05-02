@@ -27,7 +27,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
-import { buildGameSavePayload, buildSettingsSavePayload } from './game/savePayload';
+import { buildGameSavePayload, buildSettingsOnlySavePayload } from './game/savePayload';
 import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
@@ -512,17 +512,14 @@ export default function App() {
         isAudioEnabled === false;
 
       if (currentData || !isDefaultSettings) {
-        saveGameData({
-          ...(currentData || {}),
-          ...buildSettingsSavePayload({
-            routeMode,
-            textSpeed,
-            instantUnreadText,
-            bgmVolume,
-            seVolume,
-            isAudioEnabled
-          })
-        });
+        saveGameData(buildSettingsOnlySavePayload(currentData, {
+          routeMode,
+          textSpeed,
+          instantUnreadText,
+          bgmVolume,
+          seVolume,
+          isAudioEnabled
+        }));
       }
 
       // hasSave should only be true if it's a real game progress save

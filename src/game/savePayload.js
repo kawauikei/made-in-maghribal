@@ -83,3 +83,25 @@ export function buildSettingsSavePayload({
     isAudioEnabled,
   };
 }
+
+/**
+ * Build settings-only save payload by merging settings into existing save.
+ * Pure function: no side effects, no localStorage access.
+ * Preserves progress-related fields from existing save.
+ * 
+ * @param {Object|null} existingSave - Existing save data from loadSaveData()
+ * @param {Object} settings - Settings object
+ * @param {string} settings.routeMode
+ * @param {string} settings.textSpeed
+ * @param {boolean} settings.instantUnreadText
+ * @param {number} settings.bgmVolume
+ * @param {number} settings.seVolume
+ * @param {boolean} settings.isAudioEnabled
+ * @returns {Object} Merged save payload
+ */
+export function buildSettingsOnlySavePayload(existingSave, settings) {
+  return {
+    ...(existingSave || {}),
+    ...buildSettingsSavePayload(settings),
+  };
+}
