@@ -5668,12 +5668,10 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
     justifyContent: "space-between"
   } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria })))));
 }
-function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked, showUnlockFlash }) {
+function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked }) {
   const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
   const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
   const staggerClass = `quiz-option-${index}`;
-  const lockedClass = isLocked ? "quiz-option-locked" : "";
-  const flashClass = showUnlockFlash && !isLocked ? "quiz-option-ready-flash" : "";
   let displayChoiceName = item.name;
   if (requestType === "genre") {
     const category = item.id.split("_")[1];
@@ -5687,7 +5685,7 @@ function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardSty
       "data-testid": "quiz-choice",
       key: item.id,
       onClick: () => !isLocked && onSelectChoice(item.id),
-      className: `item-card ${staggerClass} ${feedbackClass} ${lockedClass} ${flashClass}`,
+      className: `item-card ${staggerClass} ${feedbackClass}`,
       style: {
         ...itemCardStyle2,
         pointerEvents: quizFeedback || isLocked ? "none" : "auto"
@@ -5709,7 +5707,7 @@ function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardSty
     /* @__PURE__ */ React.createElement("div", { style: itemNameStyle2 }, displayChoiceName)
   );
 }
-function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked, showUnlockFlash }) {
+function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked }) {
   return /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
@@ -5729,8 +5727,7 @@ function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: 
       imageStyle: imageStyle2,
       itemNameStyle: itemNameStyle2,
       requestType,
-      isLocked,
-      showUnlockFlash
+      isLocked
     }
   )));
 }
@@ -5770,26 +5767,16 @@ function QuizScreen({
     itemNameStyle: itemNameStyle2
   } = quizStyles;
   const [isAnswerLocked, setIsAnswerLocked] = useState(true);
-  const [showUnlockFlash, setShowUnlockFlash] = useState(false);
   const unlockTimerRef = useRef(null);
-  const flashTimerRef = useRef(null);
   const answerUnlockDelayMs = 1e3;
-  const unlockFlashMs = 600;
   useEffect(() => {
     setIsAnswerLocked(true);
-    setShowUnlockFlash(false);
     if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
-    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     unlockTimerRef.current = setTimeout(() => {
       setIsAnswerLocked(false);
-      setShowUnlockFlash(true);
-      flashTimerRef.current = setTimeout(() => {
-        setShowUnlockFlash(false);
-      }, unlockFlashMs);
     }, answerUnlockDelayMs);
     return () => {
       if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
-      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     };
   }, [session == null ? void 0 : session.currentIndex]);
   if (!session) return null;
@@ -5862,102 +5849,9 @@ function QuizScreen({
       imageStyle: imageStyle2,
       itemNameStyle: itemNameStyle2,
       requestType: currentQuestion.request.type,
-      isLocked: isAnswerLocked,
-      showUnlockFlash
+      isLocked: isAnswerLocked
     }
-  )), isAnswerLocked && /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      className: "quiz-lock-overlay",
-      "aria-live": "polite",
-      style: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        zIndex: 20,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "8px",
-        pointerEvents: "none"
-      }
-    },
-    /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        className: "quiz-lock-spinner",
-        style: {
-          width: "32px",
-          height: "32px",
-          border: `3px solid ${THEME.brass}44`,
-          borderTopColor: THEME.starGold,
-          borderRadius: "50%",
-          animation: "quizLockSpin 0.8s linear infinite"
-        }
-      }
-    ),
-    /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        className: "quiz-lock-text",
-        style: {
-          fontSize: "0.85em",
-          color: THEME.parchment,
-          fontWeight: "bold",
-          textShadow: "0 2px 4px rgba(0,0,0,0.8)"
-        }
-      },
-      "準備中..."
-    )
-  ), showUnlockFlash && /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      className: "quiz-unlock-flash",
-      "aria-live": "polite",
-      style: {
-        position: "absolute",
-        top: "45%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        zIndex: 20,
-        background: `rgba(255, 204, 0, 0.9)`,
-        color: THEME.textDark,
-        padding: "12px 20px",
-        borderRadius: "8px",
-        fontSize: "0.95em",
-        fontWeight: "bold",
-        boxShadow: `0 0 20px ${THEME.starGold}`,
-        animation: "quizUnlockFlash 0.6s ease-out forwards"
-      }
-    },
-    "回答可能！"
-  ), /* @__PURE__ */ React.createElement("style", null, `
-        @keyframes quizLockSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes quizUnlockFlash {
-          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-          20% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-          80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-          100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-        }
-        .quiz-option-locked {
-          opacity: 0.6 !important;
-          pointer-events: none !important;
-          cursor: not-allowed !important;
-          filter: grayscale(0.3) !important;
-        }
-        .quiz-option-ready-flash {
-          animation: quizOptionGlow 0.2s ease-out;
-        }
-        @keyframes quizOptionGlow {
-          0% { background: rgba(255, 255, 255, 0.05); }
-          50% { background: rgba(255, 204, 0, 0.2); }
-          100% { background: rgba(255, 255, 255, 0.05); }
-        }
-      `));
+  )));
 }
 const REQUEST_TEMPLATES = [
   {
