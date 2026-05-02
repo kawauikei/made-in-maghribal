@@ -1426,7 +1426,7 @@ const AFFECTION_EVENTS = {
         },
         {
           speaker: "ミラ",
-          expression: "student",
+          expression: "normal",
           text: "「先輩、その計算式の横にある走り書き……父の、ナーディル・シニアの理論の応用ですか？」\n大学の廊下で、学年一の天才と名高いミラに呼び止められた時は心臓が止まるかと思った。",
           backgroundId: "spotFountain"
         },
@@ -1459,12 +1459,12 @@ const AFFECTION_EVENTS = {
       presentation: {
         backgroundId: "shopExteriorNight",
         bgmId: "MIRA-01",
-        heroineExpressions: ["student", "sorrow", "joy"],
+        heroineExpressions: ["normal", "sorrow", "joy"],
         naderExpressions: ["normal", "surprise"]
       },
       summary: "天才として常に正解を求められるミラが、星瓶堂でだけは「迷うこと」を許され、一人の少女に戻る。",
       pages: [
-        { speaker: "ミラ", expression: "student", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
+        { speaker: "ミラ", expression: "normal", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
         { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
         { speaker: "", expression: "surprise", text: "ナーディルが「迷っていい」と言うと、ミラは目を丸くした。\n天才なら即答するべきだと、ずっと思っていたから。" },
         { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです」\n彼女は小さく笑う。\n「そんな言い方をされたら、私でいたくなります」" }
@@ -2467,7 +2467,7 @@ const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "student", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
+      { speaker: "ミラ", expression: "normal", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
       { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
       { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
     ]
@@ -2624,7 +2624,7 @@ const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "student", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
+      { speaker: "ミラ", expression: "normal", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
       { speaker: "ミラ", expression: "joy", text: "……ふふ。先生に提出する課題より、ずっと面白いです。星瓶堂には、答えの前の迷いがありますから。" }
     ]
   },
