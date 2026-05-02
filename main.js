@@ -5365,9 +5365,12 @@ function CustomerSilhouette({ customer }) {
 }
 const DEFAULT_LANE_DURATION_MS = 2400;
 const DEFAULT_BEAT_PULSE_MS = 800;
-function RhythmMock({ heroineId, themeColor, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
+const DEFAULT_BPM = 120;
+function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
+  const beatDurationSec = bpm && typeof bpm === "number" && bpm > 0 ? 60 / bpm : 0.5;
+  const beatDurationMs = beatDurationSec * 1e3;
   return /* @__PURE__ */ React.createElement("div", { style: {
     width: "100%",
     height: "64px",
@@ -5378,7 +5381,9 @@ function RhythmMock({ heroineId, themeColor, laneDurationMs = DEFAULT_LANE_DURAT
     margin: "15px 0",
     pointerEvents: "none",
     userSelect: "none",
-    position: "relative"
+    position: "relative",
+    "--beat-duration": `${beatDurationMs}ms`,
+    "--beat-pulse-duration": `${beatDurationMs}ms`
   } }, /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
     width: "70%",
@@ -5484,7 +5489,7 @@ function RhythmMock({ heroineId, themeColor, laneDurationMs = DEFAULT_LANE_DURAT
           50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
           100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
         }
-        .beat-pulse { animation: beat-pulse ${beatPulseMs}ms ease-in-out infinite; }
+        .beat-pulse { animation: beat-pulse var(--beat-pulse-duration, ${beatPulseMs}ms) ease-in-out infinite; }
       `));
 }
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
@@ -5694,7 +5699,8 @@ function QuizScreen({
     activeHeroine,
     quizFeedback,
     routeMode,
-    screen
+    screen,
+    quizBpm
   } = quizState;
   const {
     onOpenLog,
@@ -5776,7 +5782,7 @@ function QuizScreen({
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
     padding: "5px 0"
-  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor })), /* @__PURE__ */ React.createElement(
+  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor, bpm: quizBpm })), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
       choices: currentQuestion.choices,
@@ -11505,7 +11511,8 @@ const TRACKS = {
     src: "audio/bgm/main/main03_puzzle.mp3",
     loop: true,
     title: "Measure The Mortar",
-    category: "メインBGM"
+    category: "メイン BGM",
+    bpm: 120
   },
   // --- Hakima ---
   "HAKIMA-01": {
@@ -14194,13 +14201,30 @@ function App() {
       )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
     );
   } else if (screen === "QUIZ" && session) {
+    const day = workshopState.day || 1;
+    const hPrefix = (activeHeroineId || "hakima").toUpperCase();
+    let quizTrackId = null;
+    if (day <= 2) {
+      quizTrackId = "MAIN-03";
+    } else if (day <= 4) {
+      quizTrackId = `${hPrefix}-02`;
+    } else if (day <= 6) {
+      quizTrackId = `${hPrefix}-03`;
+    } else if (day <= 8) {
+      quizTrackId = `${hPrefix}-04`;
+    } else {
+      quizTrackId = `${hPrefix}-05`;
+    }
+    const quizTrack = TRACKS[quizTrackId];
+    const quizBpm = (quizTrack == null ? void 0 : quizTrack.bpm) ?? 120;
     const quizState = {
       session,
       activeHeroineId,
       activeHeroine,
       quizFeedback,
       routeMode,
-      screen
+      screen,
+      quizBpm
     };
     const quizActions = {
       onOpenLog: () => setShowLog(true),
