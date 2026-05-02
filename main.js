@@ -14271,7 +14271,7 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     WebkitUserDrag: "none",
     imageRendering: "auto",
     backfaceVisibility: "hidden",
-    filter: isStanding ? "blur(0.12px) contrast(0.99)" : void 0
+    filter: isStanding ? "blur(0.18px) contrast(0.98)" : void 0
   };
   if (!fullPath || imgError) {
     return /* @__PURE__ */ React.createElement("div", { style: containerStyle2 }, /* @__PURE__ */ React.createElement("span", { style: {
