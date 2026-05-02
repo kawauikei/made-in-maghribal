@@ -176,9 +176,9 @@ export const AFFECTION_EVENTS = {
       },
       summary: "昔、市場開き前に二人で香材を買い付けた朝。値切り合いの末、店主に笑われた思い出。",
       pages: [
-        { speaker: "ハキマ", expression: "normal", text: "……懐かしいわね。昔、あんたと市場で香材の値切り合いをしたこと。" },
-        { speaker: "ナーディル", expression: "fun", text: "俺たちが言い争っている間に、店主が笑ってたっけ。" },
-        { speaker: "ハキマ", expression: "joy", text: "ふん。でも、あの朝の光はきれいだった。……悪くない思い出よ。" }
+        { speaker: "ハキマ", expression: "anger", text: "……昔、市場で一緒に香材を買い付けた朝。" },
+        { speaker: "ナーディル", expression: "fun", text: "ハキマさんの値切り方は、店主も笑うほどだったな。" },
+        { speaker: "ハキマ", expression: "joy", text: "うるさい。でも、あんたの隣は……悪くなかったよ。" }
       ]
     },
     {
@@ -195,9 +195,45 @@ export const AFFECTION_EVENTS = {
       },
       summary: "突然の雨に濡れながら、軒下で乾くのを待った午後。濡れた狐の耳を拭いてやったらいじられた。",
       pages: [
-        { speaker: "ハキマ", expression: "sorrow", text: "……あの時もそうだったわね。突然の雨で、一緒に濡れていた。" },
-        { speaker: "ナーディル", expression: "normal", text: "君の耳がびしょ濡れで、思わず拭いてしまった。" },
-        { speaker: "ハキマ", expression: "joy", text: "ふん。でも、悪くはなかったわ。……少しだけ。" }
+        { speaker: "ハキマ", expression: "sorrow", text: "……あの雨の日は、本当に困った。" },
+        { speaker: "ナーディル", expression: "normal", text: "ハキマさんの耳がびしょ濡れで、かわいそうでしたからね。" },
+        { speaker: "ハキマ", expression: "joy", text: "……その、拭いてくれたのは、嬉しかった。……けど、言わないでよ。" }
+      ]
+    },
+    {
+      id: "hakima_long_merchant_report",
+      heroineId: "hakima",
+      routeMode: "long_history",
+      threshold: 5,
+      kind: "long_history_background",
+      title: "商会の近況",
+      presentation: {
+        backgroundId: "shopInteriorService",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "ルハーン商会の新しい仕入れ先について報告に来たハキマ。昔と同じように、細かい指摘をしてくる。",
+      pages: [
+        { speaker: "ハキマ", expression: "normal", text: "ルハーン商会の新しい仕入れ先、確認してきた。" },
+        { speaker: "ナーディル", expression: "fun", text: "ハキマさんらしく、細かいところまでチェックしてきたんですね。" },
+        { speaker: "ハキマ", expression: "anger", text: "当たり前よ。……でも、あんたが喜んでくれそうなのを選んだ。" }
+      ]
+    },
+    {
+      id: "hakima_long_festival_prep",
+      heroineId: "hakima",
+      routeMode: "long_history",
+      threshold: 15,
+      kind: "long_history_background",
+      title: "祭りの香り",
+      presentation: {
+        backgroundId: "spotFestivalStreet",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "街の祭りが近づき、ハキマが屋台の香材を買いに来た。昔も一緒に祭りに行ったっけ、と懐かしむ。",
+      pages: [
+        { speaker: "ハキマ", expression: "joy", text: "祭りが近いね。屋台用の香材、いつもの分量で。" },
+        { speaker: "ナーディル", expression: "normal", text: "昔も一緒に祭りを回りましたな。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "……覚えてるなら、今年も付き合ってよ。……別に、一緒じゃなきゃ嫌ってわけじゃないんだから。" }
       ]
     }
   ],
@@ -394,6 +430,42 @@ export const AFFECTION_EVENTS = {
         { speaker: "ナーディル", expression: "surprise", text: "ミラが来てくれるなんて。でも、お粥は……" },
         { speaker: "ミラ", expression: "sorrow", text: "……不味かったですか。でも、熱は下がりましたね。良かったです。" }
       ]
+    },
+    {
+      id: "mira_long_university_rumor",
+      heroineId: "mira",
+      routeMode: "long_history",
+      threshold: 5,
+      kind: "long_history_background",
+      title: "天才の噂",
+      presentation: {
+        backgroundId: "spotFountain",
+        bgmId: "MIRA-01"
+      },
+      summary: "大学で「先輩の后輩」と噂されているとミラが言う。昔から二人は目立っていたから、と笑う。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "大学で、変な噂を聞きました。『先輩の后輩』だって。" },
+        { speaker: "ナーディル", expression: "fun", text: "昔から二人は目立っていましたからな。" },
+        { speaker: "ミラ", expression: "joy", text: "……でも、嫌いじゃないです。ずっと一緒にいられるなら。" }
+      ]
+    },
+    {
+      id: "mira_long_stargazing",
+      heroineId: "mira",
+      routeMode: "long_history",
+      threshold: 15,
+      kind: "long_history_background",
+      title: "星の計算",
+      presentation: {
+        backgroundId: "spotStarView",
+        bgmId: "MIRA-01"
+      },
+      summary: "星見台で星の運行を計算するミラ。ナーディルは星瓶堂の瓶に閉じ込めた星の話をした。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "星の運行計算、終わりました。次は何をしましょうか。" },
+        { speaker: "ナーディル", expression: "normal", text: "俺は瓶に星を閉じ込める方を選んだな。" },
+        { speaker: "ミラ", expression: "joy", text: "……ロマンチックですね。私も、その瓶の星を見せてください。" }
+      ]
     }
   ],
   dariya: [
@@ -588,6 +660,42 @@ export const AFFECTION_EVENTS = {
         { speaker: "ダリヤ", expression: "sorrow", text: "……王宮の回廊は、雨音がよく響く。" },
         { speaker: "ナーディル", expression: "normal", text: "今日は何も聞きません。ただ、一緒に雨宿りしましょう。" },
         { speaker: "ダリヤ", expression: "joy", text: "……ふん。それが一番、ありがたいな。" }
+      ]
+    },
+    {
+      id: "dariya_long_palace_break",
+      heroineId: "dariya",
+      routeMode: "long_history",
+      threshold: 5,
+      kind: "long_history_background",
+      title: "束の間の休息",
+      presentation: {
+        backgroundId: "palaceCorridor",
+        bgmId: "DARIYA-01"
+      },
+      summary: "王宮の公務の合間に、ダリヤが星瓶堂に立ち寄った。昔のように、一言も喋らず茶を飲む。",
+      pages: [
+        { speaker: "ダリヤ", expression: "normal", text: "公務の合間だ。少し、休ませてくれ。" },
+        { speaker: "ナーディル", expression: "fun", text: "昔のように、黙って茶を飲みましょうか。" },
+        { speaker: "ダリヤ", expression: "joy", text: "……ふん。君はそういうところが、本当に変わらないな。" }
+      ]
+    },
+    {
+      id: "dariya_long_oasis_view",
+      heroineId: "dariya",
+      routeMode: "long_history",
+      threshold: 15,
+      kind: "long_history_background",
+      title: "オアシスの約束",
+      presentation: {
+        backgroundId: "spotOasisView",
+        bgmId: "DARIYA-01"
+      },
+      summary: "オアシスを眺めながら、ダリヤが昔の約束を思い出した。二人で来たかった場所だと告げる。",
+      pages: [
+        { speaker: "ダリヤ", expression: "sorrow", text: "……オアシスか。昔、二人で来たかった場所だ。" },
+        { speaker: "ナーディル", expression: "normal", text: "ようやく来られましたな。" },
+        { speaker: "ダリヤ", expression: "joy", text: "……ふん。また来よう。公務を抜けてでも。" }
       ]
     }
   ]

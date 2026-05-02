@@ -58,7 +58,8 @@ function testImageAssets() {
   Object.keys(AFFECTION_EVENTS).forEach(heroineId => {
     const events = AFFECTION_EVENTS[heroineId];
     events.forEach(event => {
-      if (event.threshold === 5) {
+      // Check threshold 5 events have stillImageId (except long_history background events)
+      if (event.threshold === 5 && event.routeMode !== 'long_history') {
         assert.ok(event.stillImageId, `Event ${event.id} (threshold 5) should have stillImageId`);
         const still = STILL_IMAGES[event.stillImageId];
         assert.ok(still, `stillImageId ${event.stillImageId} for event ${event.id} should exist in STILL_IMAGES`);

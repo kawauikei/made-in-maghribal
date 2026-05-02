@@ -54,12 +54,14 @@ async function main() {
   const longAt10 = checkNewEventUnlock('hakima', 10, [], 'long_history');
   assert.ok(longAt10 !== null, 'Should have events at affection 10 in long_history route');
   // At affection 10 with no seen events, should get hakima_5 first (lowest threshold)
-  // After hakima_5 is seen, should get hakima_long_market_dawn or hakima_10
+  // After hakima_5 is seen, should get hakima_long_market_dawn or hakima_10 or hakima_long_merchant_report
   const longAt10Seen = checkNewEventUnlock('hakima', 10, ['hakima_5'], 'long_history');
   assert.ok(longAt10Seen !== null, 'Should have events after hakima_5 is seen in long_history');
-  // Could be hakima_long_market_dawn or hakima_10 (both threshold 10)
+  // Could be hakima_long_market_dawn, hakima_10, or hakima_long_merchant_report (all threshold 5-10)
   assert.ok(
-    longAt10Seen.id === 'hakima_long_market_dawn' || longAt10Seen.id === 'hakima_10',
+    longAt10Seen.id === 'hakima_long_market_dawn' || 
+    longAt10Seen.id === 'hakima_10' || 
+    longAt10Seen.id === 'hakima_long_merchant_report',
     `Should return long_history or normal event at threshold 10, got ${longAt10Seen.id}`
   );
   console.log('PASSED: long_history route includes long_history events');
@@ -73,7 +75,7 @@ async function main() {
   const longAt20 = checkNewEventUnlock('hakima', 20, ['hakima_5', 'hakima_10'], 'long_history');
   assert.ok(longAt20 !== null, 'Should have events at affection 20 in long_history');
   // hakima_long_rain_memory has threshold 20
-  const longAt20More = checkNewEventUnlock('hakima', 20, ['hakima_5', 'hakima_10', 'hakima_20', 'hakima_long_market_dawn'], 'long_history');
+  const longAt20More = checkNewEventUnlock('hakima', 20, ['hakima_5', 'hakima_10', 'hakima_20', 'hakima_long_market_dawn', 'hakima_long_merchant_report', 'hakima_long_festival_prep'], 'long_history');
   assert.ok(
     longAt20More === null || longAt20More.id === 'hakima_long_rain_memory',
     `Should return hakima_long_rain_memory at threshold 20, got ${longAt20More?.id}`
@@ -124,8 +126,8 @@ async function main() {
 
   for (const heroineId of ['hakima', 'mira', 'dariya']) {
     const heroineEvents = getEventsByHeroine(heroineId);
-    // Now 7 events per heroine (5 original + 2 long_history)
-    assert.strictEqual(heroineEvents.length, 7, `Expected exactly seven events for ${heroineId}`);
+    // Now 9 events per heroine (5 original + 4 long_history)
+    assert.strictEqual(heroineEvents.length, 9, `Expected exactly nine events for ${heroineId}`);
     
     // Ensure climax is NOT auto-unlocked by threshold
     const climax = checkNewEventUnlock(heroineId, 100, []);
@@ -164,9 +166,9 @@ async function main() {
   assert.ok(seenIds.has('dariya_20'));
   assert.ok(seenIds.has('dariya_climax'));
 
-  // Verify all 6 long_history events exist and have correct structure
+  // Verify all 10 long_history events exist and have correct structure
   console.log('\nVerifying long_history event structure...');
-  const expectedLongHistory = [
+  const expectedLongHistoryStill = [
     { id: 'hakima_long_market_dawn', stillImageId: 'hakimaMarketArgument01' },
     { id: 'hakima_long_rain_memory', stillImageId: 'hakimaRainShelter01' },
     { id: 'mira_long_assignment_night', stillImageId: 'miraAssignmentConsult01' },
@@ -175,14 +177,33 @@ async function main() {
     { id: 'dariya_long_rain_corridor', stillImageId: 'dariyaRainCorridor01' }
   ];
 
-  for (const expected of expectedLongHistory) {
+  for (const expected of expectedLongHistoryStill) {
     const event = allEvents.find(e => e.id === expected.id);
     assert.ok(event, `Event ${expected.id} should exist`);
     assert.strictEqual(event.routeMode, 'long_history', `${expected.id} should have routeMode: long_history`);
     assert.strictEqual(event.stillImageId, expected.stillImageId, `${expected.id} should have correct stillImageId`);
     assert.ok(event.stillImageId, `${expected.id} should have stillImageId for still display`);
   }
-  console.log('PASSED: All 6 long_history events have correct structure and stillImageId');
+  console.log('PASSED: All 6 long_history still events have correct structure and stillImageId');
+
+  // Verify 4 background-only long_history events (no stillImageId)
+  const expectedLongHistoryBg = [
+    'hakima_long_merchant_report',
+    'hakima_long_festival_prep',
+    'mira_long_university_rumor',
+    'mira_long_stargazing',
+    'dariya_long_palace_break',
+    'dariya_long_oasis_view'
+  ];
+
+  for (const expectedId of expectedLongHistoryBg) {
+    const event = allEvents.find(e => e.id === expectedId);
+    assert.ok(event, `Event ${expectedId} should exist`);
+    assert.strictEqual(event.routeMode, 'long_history', `${expectedId} should have routeMode: long_history`);
+    assert.ok(!event.stillImageId, `${expectedId} should NOT have stillImageId (background-only)`);
+    assert.ok(event.presentation?.backgroundId, `${expectedId} should have backgroundId`);
+  }
+  console.log('PASSED: All 6 long_history background events have correct structure (no stillImageId)');
 
   // --- resolveHeroineSelectionEvent Tests ---
   console.log('\nTesting resolveHeroineSelectionEvent...');
