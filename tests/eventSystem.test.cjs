@@ -85,8 +85,8 @@ async function main() {
 
   for (const heroineId of ['hakima', 'mira', 'dariya']) {
     const heroineEvents = getEventsByHeroine(heroineId);
-    // Now 6 events per heroine (5 original + 1 long_history)
-    assert.strictEqual(heroineEvents.length, 6, `Expected exactly six events for ${heroineId}`);
+    // Now 7 events per heroine (5 original + 2 long_history)
+    assert.strictEqual(heroineEvents.length, 7, `Expected exactly seven events for ${heroineId}`);
     
     // Ensure climax is NOT auto-unlocked by threshold
     const climax = checkNewEventUnlock(heroineId, 100, []);

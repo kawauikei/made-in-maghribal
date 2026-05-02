@@ -180,6 +180,25 @@ export const AFFECTION_EVENTS = {
         { speaker: "ナーディル", expression: "fun", text: "俺たちが言い争っている間に、店主が笑ってたっけ。" },
         { speaker: "ハキマ", expression: "joy", text: "ふん。でも、あの朝の光はきれいだった。……悪くない思い出よ。" }
       ]
+    },
+    {
+      id: "hakima_long_rain_memory",
+      heroineId: "hakima",
+      routeMode: "long_history",
+      threshold: 20,
+      kind: "long_history_still",
+      title: "雨宿りの午後",
+      stillImageId: "hakimaRainShelter01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "突然の雨に濡れながら、軒下で乾くのを待った午後。濡れた狐の耳を拭いてやったらいじられた。",
+      pages: [
+        { speaker: "ハキマ", expression: "sorrow", text: "……あの時もそうだったわね。突然の雨で、一緒に濡れていた。" },
+        { speaker: "ナーディル", expression: "normal", text: "君の耳がびしょ濡れで、思わず拭いてしまった。" },
+        { speaker: "ハキマ", expression: "joy", text: "ふん。でも、悪くはなかったわ。……少しだけ。" }
+      ]
     }
   ],
   mira: [
@@ -356,6 +375,25 @@ export const AFFECTION_EVENTS = {
         { speaker: "ナーディル", expression: "normal", text: "俺のノートでよければ、使ってくれ。" },
         { speaker: "ミラ", expression: "joy", text: "……朝には解けていました。先輩と一緒に考えられて、良かったです。" }
       ]
+    },
+    {
+      id: "mira_long_sick_visit",
+      heroineId: "mira",
+      routeMode: "long_history",
+      threshold: 20,
+      kind: "long_history_still",
+      title: "見舞いの温もり",
+      stillImageId: "miraVisitSick01",
+      presentation: {
+        backgroundId: "shopExteriorNight",
+        bgmId: "MIRA-01"
+      },
+      summary: "ナーディルが風邪で休んだ日、ミラが処方箋を持って訪ねてきた。天才が料理したお粥は不味かった。",
+      pages: [
+        { speaker: "ミラ", expression: "normal", text: "……風邪、大丈夫ですか。処方箋を持ってきました。" },
+        { speaker: "ナーディル", expression: "surprise", text: "ミラが来てくれるなんて。でも、お粥は……" },
+        { speaker: "ミラ", expression: "sorrow", text: "……不味かったですか。でも、熱は下がりましたね。良かったです。" }
+      ]
     }
   ],
   dariya: [
@@ -531,6 +569,25 @@ export const AFFECTION_EVENTS = {
         { speaker: "ダリヤ", expression: "normal", text: "……懐かしいな。学生時代、王宮で一緒に実験した日。" },
         { speaker: "ナーディル", expression: "fun", text: "ダリヤさんの堅実さと、俺の自由な発想。悪くない組み合わせでした。" },
         { speaker: "ダリヤ", expression: "joy", text: "ふん。今もその組み合わせは、生きているだろう？" }
+      ]
+    },
+    {
+      id: "dariya_long_rain_corridor",
+      heroineId: "dariya",
+      routeMode: "long_history",
+      threshold: 20,
+      kind: "long_history_still",
+      title: "回廊の雨音",
+      stillImageId: "dariyaRainCorridor01",
+      presentation: {
+        backgroundId: "palaceCorridor",
+        bgmId: "DARIYA-01"
+      },
+      summary: "王宮の長い回廊で雨宿りした日。ダリヤが初めて弱音を吐いた瞬間。ナーディルは何も聞かなかった。",
+      pages: [
+        { speaker: "ダリヤ", expression: "sorrow", text: "……王宮の回廊は、雨音がよく響く。" },
+        { speaker: "ナーディル", expression: "normal", text: "今日は何も聞きません。ただ、一緒に雨宿りしましょう。" },
+        { speaker: "ダリヤ", expression: "joy", text: "……ふん。それが一番、ありがたいな。" }
       ]
     }
   ]
