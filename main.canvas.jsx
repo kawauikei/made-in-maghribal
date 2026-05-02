@@ -4731,7 +4731,26 @@ function App() {
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
-      // M-EVENT-PRESENTATION-FIX-2: Hide heroine for flashback_intro narration pages
+      // M-EVENT-PRESENTATION-FIX-3: Resolve main character for current page
+      const resolveEventMainCharacter = (page) => {
+        if (!page) return null;
+        // Check for Nader first
+        if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
+          return NADER;
+        }
+        // Check for active heroine
+        if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+          return activeHeroine;
+        }
+        // Narration or unknown speaker
+        return null;
+      };
+      
+      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+      const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
+      const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
+      
+      // M-EVENT-PRESENTATION-FIX-2: Hide heroine for flashback_intro narration pages (legacy, kept for safety)
       const shouldShowHeroine = (() => {
         if (activeEvent.kind === 'flashback_intro') {
           const pages = getEventPages(activeEvent, routeMode);
@@ -4772,6 +4791,7 @@ function App() {
             }} />
           )}
           
+          {/* M-EVENT-PRESENTATION-FIX-3: Character display based on current page speaker */}
           <div style={{ 
             position: 'absolute', 
             bottom: '8%', 
@@ -4784,11 +4804,11 @@ function App() {
             alignItems: 'flex-end', 
             justifyContent: 'center',
             filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))',
-            opacity: shouldShowHeroine ? 1 : 0,
+            opacity: shouldShowEventCharacter ? 1 : 0,
             transition: 'opacity 0.2s ease'
           }}>
              <HeroineDisplay 
-                heroine={activeHeroine} 
+                heroine={eventMainCharacter || activeHeroine} 
                 type="standing" 
                 size="large" 
                 expression={eventHeroineExpression} 
@@ -4830,7 +4850,7 @@ function App() {
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
-                themeColor={activeHeroine.themeColor}
+                themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
@@ -4838,9 +4858,11 @@ function App() {
                   setEventCurrentPageIndex(index);
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
-                  // Only update heroine expression when the speaker is the active heroine
-                  if (page?.expression && page?.speakerId === activeHeroine.id) {
-                    setEventHeroineExpression(page.expression);
+                  // Update expression when the speaker is the active heroine or Nader
+                  if (page?.expression) {
+                    if (page?.speakerId === activeHeroine.id || page?.speakerId === 'nader') {
+                      setEventHeroineExpression(page.expression);
+                    }
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
