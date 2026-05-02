@@ -5,22 +5,24 @@ import { DAILY_TALKS } from '../src/data/dailyTalks.js';
 const OUTPUT_PATH = path.join('.temp', 'narrative_edit_pack.md');
 
 function generateMarkdown() {
-  let md = `# Made in Maghribal - Narrative Edit Pack (MVP)\n\n`;
-  md += `このファイルは世界観担当AIが DailyTalk の本文を編集するためのパックです。\n`;
+  let md = `# Made in Maghribal - Narrative Edit Pack\n\n`;
+  md += `このファイルは世界観担当 AI が DailyTalk の本文を編集するためのパックです。\n\n`;
   md += `## 編集ガイドライン\n`;
   md += `- **編集可能**: \`text\`, \`speaker\`, \`expression\`\n`;
-  md += `- **編集不可**: \`id\`, \`scope\`, \`heroineId\`, \`timing\`, \`routeMode\`, \`minAffection\`\n`;
-  md += `- **注意**: IDを変更したり、新しいIDを追加したりしないでください（MVP範囲外）。\n`;
+  md += `- **編集不可**: \`id\`, \`category\`, \`scope\`, \`heroineId\`, \`timing\`, \`routeMode\`, \`minAffection\`, \`priority\`\n`;
+  md += `- **新規 ID 追加**: \`node tools/import_narrative_edit_pack.js --allow-new\` で可能\n`;
   md += `- **書式**: 各項目は \`key: value\` 形式を維持してください。\n\n`;
 
   DAILY_TALKS.forEach((talk) => {
     md += `## dailyTalk: ${talk.id}\n\n`;
     md += `id: ${talk.id}\n`;
+    md += `category: ${talk.category}\n`;
     md += `scope: ${talk.scope}\n`;
     md += `heroineId: ${talk.heroineId || 'null'}\n`;
     md += `timing: ${talk.timing}\n`;
     md += `routeMode: ${talk.routeMode}\n`;
-    md += `minAffection: ${talk.minAffection}\n\n`;
+    md += `minAffection: ${talk.minAffection}\n`;
+    md += `priority: ${talk.priority}\n\n`;
 
     md += `### pages\n\n`;
     talk.pages.forEach((page, index) => {

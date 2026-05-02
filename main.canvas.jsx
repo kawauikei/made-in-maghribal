@@ -1900,7 +1900,15 @@ const ResultScreen = ({
       {renderBackground && renderBackground(screen)}
 
       {/* Content layer */}
-      <div style={{ zIndex: 10, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', padding: '0 8px' }}>
+      <div style={{
+        zIndex: 10,
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '0 8px'
+      }}>
         <GameHud
           screen={screen}
           routeMode={routeMode}
@@ -1934,10 +1942,12 @@ const ResultScreen = ({
           {/* Heroine Standing + Speech Bubble */}
           <div style={{
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             gap: '12px',
             marginBottom: '4px',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            minHeight: '250px',
+            overflow: 'visible'
           }}>
             {HeroineDisplay && (
               <HeroineDisplay
@@ -1946,31 +1956,39 @@ const ResultScreen = ({
                 size="large"
                 expression={getResultExpression(correctCount)}
                 noBorder={true}
-                objectPosition="center 45%"
-                style={{ 
+                objectPosition="center center"
+                style={{
                   filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
-                  maxHeight: '240px',
-                  transform: 'translateX(12px)'
+                  maxHeight: 'none',
+                  overflow: 'visible',
+                  transform: 'translateX(12px) scale(0.88)',
+                  transformOrigin: 'center bottom'
                 }}
               />
             )}
 
             {/* Speech Bubble */}
             <div style={{
-              marginTop: '12px',
+              marginTop: '0',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
-              padding: '10px 14px',
+              padding: '12px 10px',
               position: 'relative',
-              maxWidth: '220px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              width: '84px',
+              minHeight: '168px',
+              maxHeight: '190px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
               {/* Bubble tail (pointing left toward heroine) */}
               <div style={{
                 position: 'absolute',
                 left: '-8px',
-                top: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
                 width: '0',
                 height: '0',
                 borderTop: '8px solid transparent',
@@ -1980,7 +1998,8 @@ const ResultScreen = ({
               <div style={{
                 position: 'absolute',
                 left: '-5px',
-                top: '17px',
+                top: '50%',
+                transform: 'translateY(-50%)',
                 width: '0',
                 height: '0',
                 borderTop: '7px solid transparent',
@@ -1988,10 +2007,17 @@ const ResultScreen = ({
                 borderRight: '7px solid rgba(244, 233, 213, 0.92)'
               }} />
               <div style={{
-                fontSize: '0.85em',
+                fontSize: '0.86em',
                 color: THEME.textDark,
-                lineHeight: '1.5',
-                fontStyle: 'italic'
+                lineHeight: '1.9',
+                fontStyle: 'normal',
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                writingMode: 'vertical-rl',
+                textOrientation: 'mixed',
+                maxHeight: '178px',
+                overflow: 'hidden',
+                fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif'
               }}>
                 {comment}
               </div>
@@ -2010,10 +2036,19 @@ const ResultScreen = ({
             maxWidth: '340px',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '1.4em', fontWeight: '900', color: THEME.brassDark, lineHeight: 1.2 }}>
+            <div style={{
+              fontSize: '1.4em',
+              fontWeight: '900',
+              color: THEME.brassDark,
+              lineHeight: 1.2
+            }}>
               {session.score} 点
             </div>
-            <div style={{ fontSize: '0.75em', color: '#666', marginBottom: '6px' }}>
+            <div style={{
+              fontSize: '0.75em',
+              color: '#666',
+              marginBottom: '6px'
+            }}>
               依頼 {session.questions.length} 件中 {correctCount} 件達成
             </div>
 
@@ -2028,19 +2063,31 @@ const ResultScreen = ({
             }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>評判</div>
-                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844' }}>
+                <div style={{
+                  fontSize: '0.95em',
+                  fontWeight: 'bold',
+                  color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844'
+                }}>
                   {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>売上</div>
-                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: THEME.brassDark }}>
+                <div style={{
+                  fontSize: '0.95em',
+                  fontWeight: 'bold',
+                  color: THEME.brassDark
+                }}>
                   {mgmt.sales}G
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>満足度</div>
-                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : '#844' }}>
+                <div style={{
+                  fontSize: '0.95em',
+                  fontWeight: 'bold',
+                  color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : '#844'
+                }}>
                   {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
                 </div>
               </div>
