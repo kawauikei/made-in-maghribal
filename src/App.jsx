@@ -27,6 +27,7 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
+import { buildGameSavePayload, buildSettingsSavePayload } from './game/savePayload';
 import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
@@ -477,7 +478,7 @@ export default function App() {
   // Auto-Save
   useEffect(() => {
     if (screen !== 'START') {
-      saveGameData({
+      saveGameData(buildGameSavePayload({
         screen: screen === 'EVENT' ? 'RESULT' : screen, // Fallback EVENT to RESULT for safety
         activeHeroineId,
         routeMode,
@@ -492,7 +493,7 @@ export default function App() {
         seenTalkIds,
         activeEvent,
         vnBacklog
-      });
+      }));
       setHasSave(true);
     } else {
       // On START screen: save settings into existing save file if it exists,
@@ -513,12 +514,14 @@ export default function App() {
       if (currentData || !isDefaultSettings) {
         saveGameData({
           ...(currentData || {}),
-          routeMode,
-          textSpeed,
-          instantUnreadText,
-          bgmVolume,
-          seVolume,
-          isAudioEnabled
+          ...buildSettingsSavePayload({
+            routeMode,
+            textSpeed,
+            instantUnreadText,
+            bgmVolume,
+            seVolume,
+            isAudioEnabled
+          })
         });
       }
 
@@ -752,7 +755,7 @@ export default function App() {
     }
 
     // Auto-save when starting a new session with a heroine
-    saveGameData({
+    saveGameData(buildGameSavePayload({
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
@@ -762,8 +765,12 @@ export default function App() {
       seVolume,
       seenEventIds,
       seenTalkIds,
-      vnBacklog
-    });
+      vnBacklog,
+      isAudioEnabled,
+      activeHeroineId,
+      activeEvent: null,
+      screen: 'HEROINE_SELECT'
+    }));
     
     // Check for flashback_intro
     const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
