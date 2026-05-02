@@ -748,7 +748,7 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "student", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
+      { speaker: "ミラ", expression: "normal", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
       { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
       { speaker: "ミラ", expression: "joy", text: "先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
     ]
@@ -905,7 +905,7 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ミラ", expression: "student", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
+      { speaker: "ミラ", expression: "normal", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
       { speaker: "ミラ", expression: "joy", text: "……ふふ。先生に提出する課題より、ずっと面白いです。星瓶堂には、答えの前の迷いがありますから。" }
     ]
   },

@@ -44,6 +44,8 @@ const GREETING_VARIATIONS = [
 ];
 
 const PROHIBITED_WORDS = ["店番", "再建", "借金", "遺品", "一緒に営業する", "働かせる", "スタッフ", "店員"];
+const MAIN_SCENARIO_EXPRESSIONS = ['normal', 'joy', 'fun', 'sorrow', 'anger', 'surprise', 'cry', 'blush'];
+const GALLERY_ONLY_EXPRESSIONS = ['student', 'social', 'maid'];
 
 console.log("--- Master Narrative Audit Starting ---");
 
@@ -54,6 +56,15 @@ function checkText(text, id, errors) {
             errors.push(`${id}: Prohibited word "${word}" found in "${text.substring(0, 20)}..."`);
         }
     });
+}
+
+function checkExpression(expr, id, pageIdx, errors) {
+    if (!expr) return;
+    if (GALLERY_ONLY_EXPRESSIONS.includes(expr)) {
+        errors.push(`${id} (page ${pageIdx + 1}): Gallery-only expression "${expr}" found in main scenario. Use one of: ${MAIN_SCENARIO_EXPRESSIONS.join(', ')}`);
+    } else if (!MAIN_SCENARIO_EXPRESSIONS.includes(expr)) {
+        errors.push(`${id} (page ${pageIdx + 1}): Unknown expression "${expr}". Valid: ${MAIN_SCENARIO_EXPRESSIONS.join(', ')}`);
+    }
 }
 
 const auditResults = {
@@ -67,7 +78,10 @@ const auditResults = {
 // 1. Audit DailyTalks
 DAILY_TALKS.forEach(talk => {
     const talkErrors = [];
-    talk.pages.forEach(p => checkText(p.text, talk.id, talkErrors));
+    talk.pages.forEach((p, idx) => {
+        checkText(p.text, talk.id, talkErrors);
+        checkExpression(p.expression, talk.id, idx, talkErrors);
+    });
     auditResults.dailyTalks.push({ ...talk, errors: talkErrors });
     if (talkErrors.length > 0) auditResults.errors.push(...talkErrors);
 });
@@ -75,9 +89,15 @@ DAILY_TALKS.forEach(talk => {
 // 2. Audit AffectionEvents
 Object.values(AFFECTION_EVENTS).flat().forEach(event => {
     const eventErrors = [];
-    event.pages.forEach(p => checkText(p.text, event.id, eventErrors));
+    event.pages.forEach((p, idx) => {
+        checkText(p.text, event.id, eventErrors);
+        checkExpression(p.expression, event.id, idx, eventErrors);
+    });
     if (event.routePages?.long_history) {
-        event.routePages.long_history.forEach(p => checkText(p.text, `${event.id} (IF)`, eventErrors));
+        event.routePages.long_history.forEach((p, idx) => {
+            checkText(p.text, `${event.id} (IF)`, eventErrors);
+            checkExpression(p.expression, `${event.id} (IF)`, idx, eventErrors);
+        });
     }
     auditResults.affectionEvents.push({ ...event, errors: eventErrors });
     if (eventErrors.length > 0) auditResults.errors.push(...eventErrors);
@@ -160,7 +180,7 @@ const generateReport = (results) => {
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <div>
                     <h3 style="color: #f59e0b; font-size: 1em;">1. 表情キー（Expression Taxonomy）</h3>
-                    <p style="font-size: 0.85em; color: #94a3b8; margin-bottom: 10px;">以下のキーのみが有効です。アセット名と連動しています。</p>
+                    <p style="font-size: 0.85em; color: #94a3b8; margin-bottom: 10px;">本編シナリオで使用可能な表情キーのみが有効です。</p>
                     <ul style="font-size: 0.85em; display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
                         <li><code>normal</code>: 標準</li>
                         <li><code>joy</code>: 喜び/笑顔</li>
@@ -170,10 +190,8 @@ const generateReport = (results) => {
                         <li><code>anger</code>: 怒り/ツン</li>
                         <li><code>surprise</code>: 驚き/動揺</li>
                         <li><code>blush</code>: 照れ/赤面</li>
-                        <li><code>student</code>: 制服（ミラ専用）</li>
-                        <li><code>social</code>: 社交（ダリヤ専用）</li>
-                        <li><code>maid</code>: メイド（ハキマ専用）</li>
                     </ul>
+                    <p style="font-size: 0.85em; color: #f59e0b; margin-top: 10px;">※ ギャラリー/素材専用（本編禁止）: <code>student</code>, <code>social</code>, <code>maid</code></p>
                 </div>
                 <div>
                     <h3 style="color: #f59e0b; font-size: 1em;">2. デイリートークの構造</h3>
