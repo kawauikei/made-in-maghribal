@@ -1458,13 +1458,13 @@ export default function App() {
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    // M-EVENT-PRESENTATION-FIX-6: EVENT standing = activeHeroine fixed (not per-page switching)
+    // M-EVENT-PRESENTATION-FIX-7: EVENT standing = activeHeroine fixed (not per-page switching)
     // VNBox face icon follows page speaker, central standing = heroine only
     const rawEventPages = getEventPages(activeEvent, routeMode);
     const currentEventPage = rawEventPages[eventCurrentPageIndex];
     const currentPageExpression = currentEventPage?.expression || 'normal';
     
-    // M-EVENT-PRESENTATION-FIX-6: Check if current page is heroine speaking
+    // M-EVENT-PRESENTATION-FIX-7: Check if current page is heroine speaking
     const normalizeSpeakerName = (value) => String(value || '').trim();
     const activeHeroineShortName = activeHeroine?.name?.split('・')?.[0];
     const isHeroineSpeakerPage = (page) => {
@@ -1478,16 +1478,34 @@ export default function App() {
     };
     const isHeroineSpeaker = isHeroineSpeakerPage(currentEventPage);
     
-    // M-EVENT-PRESENTATION-FIX-6: flashback_intro shows heroine ONLY on her speaking pages
-    // Normal affection events: heroine fixed (not still events)
-    const isFlashbackIntro = activeEvent.kind === 'flashback_intro';
-    const shouldShowEventHeroine = isFlashbackIntro
-      ? isHeroineSpeaker  // flashback_intro: only when heroine speaks
-      : !still;           // normal event: always show (not still)
+    // M-EVENT-PRESENTATION-FIX-7: flashback_intro uses background to determine heroine visibility
+    // Current day backgrounds = hide heroine, Memory/backstory backgrounds = show heroine
+    const CURRENT_DAY_BACKGROUNDS = new Set([
+      'shopExteriorDay',
+      'shopExteriorNight',
+      'shopInteriorService',
+      'shopInteriorWorkshop'
+    ]);
     
-    // M-EVENT-PRESENTATION-FIX-6: Only update expression when heroine speaks
+    // Use effective background (with fallback) for display decision
+    const effectiveBackgroundId = currentEventPage?.backgroundId || 
+                                   prevEventBackgroundRef.current || 
+                                   activeEvent.presentation?.backgroundId;
+    
+    const isFlashbackIntro = activeEvent.kind === 'flashback_intro';
+    const isMemoryBackground = effectiveBackgroundId && !CURRENT_DAY_BACKGROUNDS.has(effectiveBackgroundId);
+    
+    // flashback_intro: show heroine on memory pages OR when heroine speaks
+    // normal event: show heroine always (not still)
+    const shouldShowEventHeroine = isFlashbackIntro
+      ? (isMemoryBackground || isHeroineSpeaker)  // flashback: memory bg OR heroine speaking
+      : !still;  // normal event: always show (not still)
+    
+    // M-EVENT-PRESENTATION-FIX-7: Only update expression when heroine speaks
     // Nader/narration pages keep previous expression
-    const currentCharacterExpression = isHeroineSpeaker ? currentPageExpression : eventHeroineExpression;
+    const displayedExpression = isHeroineSpeaker
+      ? (currentPageExpression || eventHeroineExpression)
+      : (eventHeroineExpression || 'normal');
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
@@ -1500,7 +1518,7 @@ export default function App() {
           {renderThemeStyles()}
           {renderBackground(screen)}
           
-          {/* M-EVENT-PRESENTATION-FIX-2/6: Curtain slide overlay for background transitions (slowed down) */}
+          {/* M-EVENT-PRESENTATION-FIX-2/7: Curtain slide overlay for background transitions (slowed down) */}
           {(bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && (
             <div style={{
               position: 'absolute',
@@ -1518,7 +1536,7 @@ export default function App() {
             }} />
           )}
           
-          {/* M-EVENT-PRESENTATION-FIX-3/6: Central standing = activeHeroine (flashback: per-page, normal: fixed) */}
+          {/* M-EVENT-PRESENTATION-FIX-3/7: Central standing = activeHeroine (flashback: bg-based, normal: fixed) */}
           <div style={{ 
             position: 'absolute', 
             bottom: '8%', 
@@ -1538,7 +1556,7 @@ export default function App() {
                 heroine={activeHeroine} 
                 type="standing" 
                 size="large" 
-                expression={currentCharacterExpression} 
+                expression={displayedExpression} 
                 noBorder={true}
                 style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
               />
@@ -1585,13 +1603,13 @@ export default function App() {
                   setEventCurrentPageIndex(index);
                   const page = rawEventPages[index];
                   
-                  // M-EVENT-PRESENTATION-FIX-6: Only update expression when heroine speaks
+                  // M-EVENT-PRESENTATION-FIX-7: Only update expression when heroine speaks
                   if (isHeroineSpeakerPage(page) && page?.expression) {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-2/6: Curtain slide transition for background changes
+                  // M-EVENT-PRESENTATION-FIX-2/7: Curtain slide transition for background changes
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
                     // Start curtain slide: slower covering phase (650ms)
