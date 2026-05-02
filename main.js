@@ -3936,7 +3936,8 @@ function getEventPages(event, routeMode) {
       speaker: page.speaker !== void 0 ? page.speaker : "",
       expression: page.expression || "normal",
       text: page.text || "",
-      ...page.backgroundId ? { backgroundId: page.backgroundId } : {}
+      ...page.backgroundId ? { backgroundId: page.backgroundId } : {},
+      ...page.speakerId ? { speakerId: page.speakerId } : {}
     };
   });
 }
@@ -12647,7 +12648,7 @@ function App() {
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null);
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0);
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE);
-  const [isBackgroundTransitioning, setIsBackgroundTransitioning] = useState(false);
+  const [bgTransitionPhase, setBgTransitionPhase] = useState("idle");
   const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -13766,7 +13767,9 @@ function App() {
         if (activeEvent.kind === "flashback_intro") {
           const pages = getEventPages(activeEvent, routeMode);
           const currentPage = pages[eventCurrentPageIndex];
-          return (currentPage == null ? void 0 : currentPage.speakerId) === activeHeroine.id;
+          if ((currentPage == null ? void 0 : currentPage.speakerId) === activeHeroine.id) return true;
+          if ((currentPage == null ? void 0 : currentPage.speaker) === activeHeroine.name) return true;
+          return false;
         }
         return true;
       })();
@@ -13779,17 +13782,17 @@ function App() {
         },
         renderThemeStyles(),
         renderBackground(screen),
-        isBackgroundTransitioning && /* @__PURE__ */ React.createElement("div", { style: {
+        (bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: "rgba(0,0,0,0.95)",
-          zIndex: 100,
+          backgroundColor: "rgba(0,0,0,0.98)",
+          zIndex: 1e3,
           pointerEvents: "none",
-          transition: "opacity 0.15s ease",
-          opacity: isBackgroundTransitioning ? 1 : 0
+          transform: bgTransitionPhase === "covering" ? "translateX(0%)" : bgTransitionPhase === "covered" ? "translateX(0%)" : "translateX(100%)",
+          transition: "transform 0.3s ease-in-out"
         } }),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
@@ -13865,15 +13868,19 @@ function App() {
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
               const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
-              if (newBgId && newBgId !== eventBackgroundOverride) {
-                setIsBackgroundTransitioning(true);
+              if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
+                setBgTransitionPhase("covering");
                 setTimeout(() => {
+                  setBgTransitionPhase("covered");
                   setEventBackgroundOverride(newBgId);
                   prevEventBackgroundRef.current = newBgId;
                   setTimeout(() => {
-                    setIsBackgroundTransitioning(false);
-                  }, 80);
-                }, 150);
+                    setBgTransitionPhase("revealing");
+                    setTimeout(() => {
+                      setBgTransitionPhase("idle");
+                    }, 300);
+                  }, 100);
+                }, 300);
               } else if (newBgId) {
                 prevEventBackgroundRef.current = newBgId;
               }
@@ -14002,15 +14009,19 @@ function App() {
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
               const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
-              if (newBgId && newBgId !== eventBackgroundOverride) {
-                setIsBackgroundTransitioning(true);
+              if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
+                setBgTransitionPhase("covering");
                 setTimeout(() => {
+                  setBgTransitionPhase("covered");
                   setEventBackgroundOverride(newBgId);
                   prevEventBackgroundRef.current = newBgId;
                   setTimeout(() => {
-                    setIsBackgroundTransitioning(false);
-                  }, 80);
-                }, 150);
+                    setBgTransitionPhase("revealing");
+                    setTimeout(() => {
+                      setBgTransitionPhase("idle");
+                    }, 300);
+                  }, 100);
+                }, 300);
               } else if (newBgId) {
                 prevEventBackgroundRef.current = newBgId;
               }
