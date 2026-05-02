@@ -1458,18 +1458,49 @@ export default function App() {
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
-    // M-EVENT-PRESENTATION-FIX-4: Resolve main character for current page (heroine priority) - shared for both normal/still
-    const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+    // M-EVENT-PRESENTATION-FIX-5: Normalize event pages once, then share the same
+    // speakerId/background/expression source between VNBox and standing character display.
+    // This preserves heroine priority and prevents Nader fallback from stealing heroine pages.
+    const rawEventPages = getEventPages(activeEvent, routeMode);
+    const normalizeSpeakerName = (value) => String(value || '').trim();
+    const getActiveHeroineSpeakerNames = () => {
+      const canonicalShortNames = {
+        hakima: 'ハキマ',
+        mira: 'ミラ',
+        dariya: 'ダリヤ'
+      };
+      return new Set([
+        activeHeroine?.name,
+        activeHeroine?.displayName,
+        activeHeroine?.shortName,
+        activeHeroine?.jpName,
+        activeHeroine?.label,
+        activeHeroine?.name?.split('・')?.[0],
+        canonicalShortNames[activeHeroine?.id]
+      ].filter(Boolean).map(normalizeSpeakerName));
+    };
+    const activeHeroineSpeakerNames = getActiveHeroineSpeakerNames();
+    const inferEventSpeakerId = (page) => {
+      if (page?.speakerId) return page.speakerId;
+      const speakerName = normalizeSpeakerName(page?.speaker);
+      if (speakerName === 'ナーディル') return 'nader';
+      if (activeHeroine && activeHeroineSpeakerNames.has(speakerName)) return activeHeroine.id;
+      return null;
+    };
+    const eventPagesWithSpeakerId = rawEventPages.map(page => ({
+      ...page,
+      speakerId: inferEventSpeakerId(page)
+    }));
+    const currentEventPage = eventPagesWithSpeakerId[eventCurrentPageIndex];
     const currentPageExpression = currentEventPage?.expression || 'normal';
     
     const resolveEventMainCharacter = (page) => {
       if (!page) return null;
-      // M-EVENT-PRESENTATION-FIX-4: Heroine takes priority over Nader
-      if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+      // Heroine must be resolved before Nader. This is the core EVENT priority rule.
+      if (activeHeroine && page.speakerId === activeHeroine.id) {
         return activeHeroine;
       }
-      // Check for Nader
-      if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
+      if (page.speakerId === 'nader') {
         return NADER;
       }
       // Narration or unknown speaker
@@ -1478,7 +1509,7 @@ export default function App() {
     
     const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
     const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
-    // M-EVENT-PRESENTATION-FIX-4: Use expression from current page for current character
+    // Use expression from the exact same normalized page used by VNBox.
     const currentCharacterExpression = eventMainCharacter ? currentPageExpression : 'normal';
 
     if (!still) {
@@ -1506,7 +1537,7 @@ export default function App() {
               transform: bgTransitionPhase === "covering" ? 'translateX(0%)' : 
                          bgTransitionPhase === "covered" ? 'translateX(0%)' :
                          'translateX(100%)',
-              transition: 'transform 0.4s ease-in-out'
+              transition: 'transform 0.55s ease-in-out'
             }} />
           )}
           
@@ -1562,21 +1593,14 @@ export default function App() {
               <VNBox 
                 ref={vnRef}
                 speaker={activeEvent.speaker}
-                pages={getEventPages(activeEvent, routeMode).map(page => {
-                  if (page.speakerId) return page;
-                  let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
-                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-                  return { ...page, speakerId: inferredId };
-                })}
+                pages={eventPagesWithSpeakerId}
                 themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
-                  const pages = getEventPages(activeEvent, routeMode);
-                  const page = pages[index];
+                  const page = eventPagesWithSpeakerId[index];
                   // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
                   if (page?.expression) {
                     setEventHeroineExpression(page.expression);
@@ -1586,7 +1610,7 @@ export default function App() {
                   // M-EVENT-PRESENTATION-FIX-2/4: Curtain slide transition for background changes (slowed down)
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
                   if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                    // Start curtain slide: covering phase (400ms)
+                    // Start curtain slide: slower covering phase (550ms)
                     setBgTransitionPhase("covering");
                     setTimeout(() => {
                       // Covered phase - switch background
@@ -1600,8 +1624,8 @@ export default function App() {
                           // Done - back to idle
                           setBgTransitionPhase("idle");
                         }, 450); // Reveal duration
-                      }, 100); // Hold covered briefly
-                    }, 400); // Cover duration
+                      }, 120); // Hold covered briefly
+                    }, 550); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
@@ -1721,21 +1745,14 @@ export default function App() {
               <VNBox 
                 ref={vnRef}
                 speaker={activeEvent.speaker}
-                pages={getEventPages(activeEvent, routeMode).map(page => {
-                  if (page.speakerId) return page;
-                  let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
-                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-                  return { ...page, speakerId: inferredId };
-                })}
+                pages={eventPagesWithSpeakerId}
                 themeColor={eventMainCharacter?.themeColor || activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
-                  const pages = getEventPages(activeEvent, routeMode);
-                  const page = pages[index];
+                  const page = eventPagesWithSpeakerId[index];
                   // M-EVENT-PRESENTATION-FIX-4: Update expression for current page speaker (heroine or Nader)
                   if (page?.expression) {
                     setEventHeroineExpression(page.expression);
