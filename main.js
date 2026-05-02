@@ -3306,6 +3306,21 @@ const DAILY_TALKS = [
     ]
   },
   {
+    id: "dariya_long_day_end_craft",
+    category: "personal",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "day_end",
+    routeMode: "long_history",
+    minAffection: 10,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "昔、君が初めて作った小瓶を覚えているか。歪で、でも熱のこもった品だった。" },
+      { speaker: "ナーディル", expression: "fun", text: "恥ずかしい作品です。でも、あの熱だけは失わないようにしてきました。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……その熱が、今の星瓶堂の柔らかさになっている。悪くない工房だ。" }
+    ]
+  },
+  {
     id: "hakima_long_intro_competitor",
     category: "personal",
     scope: "heroine",
@@ -3406,6 +3421,21 @@ const DAILY_TALKS = [
     pages: [
       { speaker: "ナーディル", expression: "normal", text: "星瓶堂は、父から俺へ、そして明日へと続いていく。" },
       { speaker: "ナーディル", expression: "joy", text: "その連鎖の真ん中に、俺がいるんだ。" }
+    ]
+  },
+  {
+    id: "dariya_long_after_result_calm",
+    category: "work",
+    scope: "heroine",
+    heroineId: "dariya",
+    timing: "after_result",
+    routeMode: "long_history",
+    minAffection: 5,
+    priority: 1,
+    pages: [
+      { speaker: "ダリヤ", expression: "normal", text: "君の品は、昔から騒がないな。静かで、でも確かに仕事をしている。" },
+      { speaker: "ナーディル", expression: "normal", text: "派手さはなくても、誰かの役に立てばいい。" },
+      { speaker: "ダリヤ", expression: "joy", text: "……その静けさが、王宮にはない美しさだ。" }
     ]
   }
 ];
