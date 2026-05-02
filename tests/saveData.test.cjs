@@ -180,6 +180,168 @@ try {
   assert.strictEqual(corrupted, null);
   console.log("PASSED: Corrupted JSON handling");
 
+  // Test: version mismatch - old version normalizes to current version
+  const oldVersion = normalizeSaveData({
+    version: "0.9",
+    screen: 'START'
+  });
+  assert.strictEqual(oldVersion.version, "1.0", 'Old version should normalize to current version');
+  console.log("PASSED: version mismatch - old version normalizes to current");
+
+  // Test: version mismatch - future version normalizes to current version
+  const futureVersion = normalizeSaveData({
+    version: "2.0",
+    screen: 'START'
+  });
+  assert.strictEqual(futureVersion.version, "1.0", 'Future version should normalize to current version');
+  console.log("PASSED: version mismatch - future version normalizes to current");
+
+  // Test: unknown screen - currently preserved as-is (only QUIZ is specifically handled)
+  const unknownScreen = normalizeSaveData({
+    screen: 'UNKNOWN_SCREEN'
+  });
+  assert.strictEqual(unknownScreen.screen, 'UNKNOWN_SCREEN', 'Unknown screen is currently preserved (only QUIZ is handled)');
+  console.log("PASSED: unknown screen preserved (current behavior - only QUIZ handled)");
+
+  // Test: EVENT restore risk - screen EVENT with null activeEvent
+  const eventWithNullActive = normalizeSaveData({
+    screen: 'EVENT',
+    activeEvent: null
+  });
+  assert.strictEqual(eventWithNullActive.screen, 'EVENT', 'EVENT screen is preserved even with null activeEvent');
+  assert.strictEqual(eventWithNullActive.activeEvent, null, 'activeEvent remains null');
+  console.log("PASSED: EVENT restore with null activeEvent (current behavior documented)");
+
+  // Test: unknown heroineId fallback
+  const unknownHeroine = normalizeSaveData({
+    activeHeroineId: 'deleted_heroine'
+  });
+  assert.strictEqual(unknownHeroine.activeHeroineId, 'hakima', 'Unknown heroineId should fallback to hakima');
+  console.log("PASSED: unknown heroineId fallback to hakima");
+
+  // Test: invalid routeMode fallback
+  const invalidRouteMode = normalizeSaveData({
+    routeMode: 'future_route'
+  });
+  assert.strictEqual(invalidRouteMode.routeMode, 'normal', 'Invalid routeMode should fallback to normal');
+  console.log("PASSED: invalid routeMode fallback to normal");
+
+  // Test: affection schema missing - all heroines are initialized
+  const missingAffection = normalizeSaveData({
+    affection: undefined
+  });
+  assert.ok(missingAffection.affection.hakima !== undefined, 'hakima affection should exist');
+  assert.ok(missingAffection.affection.mira !== undefined, 'mira affection should exist');
+  assert.ok(missingAffection.affection.dariya !== undefined, 'dariya affection should exist');
+  assert.strictEqual(missingAffection.affection.hakima, 0, 'Missing affection should default to 0');
+  console.log("PASSED: affection schema missing - all heroines initialized");
+
+  // Test: affection schema partial - missing heroine is initialized
+  const partialAffection = normalizeSaveData({
+    affection: {
+      hakima: 50
+      // mira and dariya missing
+    }
+  });
+  assert.strictEqual(partialAffection.affection.hakima, 50, 'Existing affection preserved');
+  assert.strictEqual(partialAffection.affection.mira, 0, 'Missing affection defaults to 0');
+  assert.strictEqual(partialAffection.affection.dariya, 0, 'Missing affection defaults to 0');
+  console.log("PASSED: affection schema partial - missing heroines initialized");
+
+  // Test: affection clamp - negative values clamped to 0
+  const negativeAffection = normalizeSaveData({
+    affection: {
+      hakima: -50,
+      mira: -1,
+      dariya: 0
+    }
+  });
+  assert.strictEqual(negativeAffection.affection.hakima, 0, 'Negative affection clamped to 0');
+  assert.strictEqual(negativeAffection.affection.mira, 0, 'Negative affection clamped to 0');
+  console.log("PASSED: affection clamp - negative values");
+
+  // Test: affection clamp - values over 100 clamped to 100
+  const overAffection = normalizeSaveData({
+    affection: {
+      hakima: 150,
+      mira: 101,
+      dariya: 100
+    }
+  });
+  assert.strictEqual(overAffection.affection.hakima, 100, 'Affection over 100 clamped to 100');
+  assert.strictEqual(overAffection.affection.mira, 100, 'Affection over 100 clamped to 100');
+  assert.strictEqual(overAffection.affection.dariya, 100, 'Affection at 100 preserved');
+  console.log("PASSED: affection clamp - values over 100");
+
+  // Test: vnBacklog cap - exactly 100 entries preserved
+  const exactly100Entries = Array.from({ length: 100 }, (_, i) => ({
+    speaker: 'Test',
+    text: `Entry ${i}`,
+    screen: 'INTRO',
+    heroineId: 'hakima',
+    routeMode: 'normal',
+    sequence: i + 1
+  }));
+  const exactly100 = normalizeSaveData({
+    vnBacklog: exactly100Entries
+  });
+  assert.strictEqual(exactly100.vnBacklog.length, 100, 'Exactly 100 entries preserved');
+  console.log("PASSED: vnBacklog cap - exactly 100 entries");
+
+  // Test: vnBacklog cap - 101 entries trimmed to 100
+  const exactly101Entries = Array.from({ length: 101 }, (_, i) => ({
+    speaker: 'Test',
+    text: `Entry ${i}`,
+    screen: 'INTRO',
+    heroineId: 'hakima',
+    routeMode: 'normal',
+    sequence: i + 1
+  }));
+  const exactly101 = normalizeSaveData({
+    vnBacklog: exactly101Entries
+  });
+  assert.strictEqual(exactly101.vnBacklog.length, 100, '101 entries trimmed to 100');
+  assert.strictEqual(exactly101.vnBacklog[0].text, 'Entry 1', 'Oldest entry removed');
+  console.log("PASSED: vnBacklog cap - 101 entries trimmed");
+
+  // Test: old save without seenTalkIds - defaults to empty array
+  const oldSaveNoSeenTalks = normalizeSaveData({
+    screen: 'RESULT',
+    activeHeroineId: 'mira',
+    workshopState: { day: 3 },
+    affection: { hakima: 5, mira: 7, dariya: 9 }
+  });
+  assert.ok(Array.isArray(oldSaveNoSeenTalks.seenTalkIds), 'seenTalkIds should be array');
+  assert.strictEqual(oldSaveNoSeenTalks.seenTalkIds.length, 0, 'Missing seenTalkIds defaults to empty array');
+  console.log("PASSED: old save without seenTalkIds defaults to empty array");
+
+  // Test: partial settings-only save normalization - routeMode only
+  const settingsOnlyRoute = normalizeSaveData({
+    routeMode: 'long_history'
+  });
+  assert.strictEqual(settingsOnlyRoute.routeMode, 'long_history', 'routeMode preserved');
+  assert.strictEqual(settingsOnlyRoute.textSpeed, 'normal', 'textSpeed defaults to normal');
+  assert.strictEqual(settingsOnlyRoute.bgmVolume, 0.8, 'bgmVolume defaults to 0.8');
+  console.log("PASSED: partial settings-only save - routeMode only");
+
+  // Test: partial settings-only save normalization - textSpeed only
+  const settingsOnlyText = normalizeSaveData({
+    textSpeed: 'fast'
+  });
+  assert.strictEqual(settingsOnlyText.textSpeed, 'fast', 'textSpeed preserved');
+  assert.strictEqual(settingsOnlyText.routeMode, 'normal', 'routeMode defaults to normal');
+  console.log("PASSED: partial settings-only save - textSpeed only");
+
+  // Test: partial settings-only save normalization - volumes only
+  const settingsOnlyVolumes = normalizeSaveData({
+    bgmVolume: 0.5,
+    seVolume: 0.3
+  });
+  assert.strictEqual(settingsOnlyVolumes.bgmVolume, 0.5, 'bgmVolume preserved');
+  assert.strictEqual(settingsOnlyVolumes.seVolume, 0.3, 'seVolume preserved');
+  assert.strictEqual(settingsOnlyVolumes.routeMode, 'normal', 'routeMode defaults to normal');
+  console.log("PASSED: partial settings-only save - volumes only");
+
   console.log("\n--- All save logic tests completed successfully! ---");
 } catch (err) {
   console.error("\nTEST FAILED:");
