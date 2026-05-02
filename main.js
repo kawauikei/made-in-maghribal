@@ -3861,6 +3861,178 @@ const PrologueScreen = ({
     )))
   );
 };
+const TIME_PHASES = {
+  NONE: { key: "none", label: "", icon: "", color: "transparent", description: "" },
+  PRE_OPEN: { key: "pre_open", label: "開店前", icon: "🌅", color: "#f59e0b", description: "朝の支度" },
+  OPEN: { key: "open", label: "営業中", icon: "🛍", color: "#10b981", description: "お客様対応中" },
+  POST_OPEN: { key: "post_open", label: "営業後", icon: "🌆", color: "#f97316", description: "営業直後" },
+  CLOSED: { key: "closed", label: "閉店後", icon: "🌙", color: "#6366f1", description: "夜の支度" },
+  FINALE: { key: "finale", label: "総決算", icon: "✨", color: "#8b5cf6", description: "10 日の総括" },
+  MEMORY: { key: "memory", label: "回想", icon: "📖", color: "#94a3b8", description: "愛着の記録" }
+};
+function resolveTimePhase(screen, activeDailyTalk = null, isRecallMode = false) {
+  if (isRecallMode) {
+    return TIME_PHASES.MEMORY;
+  }
+  switch (screen) {
+    case "START":
+    case "HEROINE_SELECT":
+      return TIME_PHASES.NONE;
+    case "PROLOGUE":
+    case "INTRO":
+      return TIME_PHASES.PRE_OPEN;
+    case "QUIZ":
+      return TIME_PHASES.OPEN;
+    case "RESULT":
+      return TIME_PHASES.POST_OPEN;
+    case "DAILY_TALK":
+      if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "day_end") {
+        return TIME_PHASES.CLOSED;
+      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "after_result") {
+        return TIME_PHASES.POST_OPEN;
+      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "intro") {
+        return TIME_PHASES.PRE_OPEN;
+      }
+      return TIME_PHASES.PRE_OPEN;
+    case "DAY_END":
+      return TIME_PHASES.CLOSED;
+    case "FINAL_RESULT":
+      return TIME_PHASES.FINALE;
+    case "EVENT":
+    case "MEMORIES":
+      return TIME_PHASES.MEMORY;
+    case "VISUAL_TEST":
+    case "OPTIONS":
+    case "LOG":
+    case "HELP":
+    case "SOUND_TEST":
+      return TIME_PHASES.NONE;
+    default:
+      return TIME_PHASES.NONE;
+  }
+}
+const ScreenHeader = ({
+  timePhase,
+  title,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp,
+  routeMode,
+  screen
+}) => {
+  var _a;
+  const isHudVisible = !["ENDING", "FINAL_RESULT", "VISUAL_TEST", "SOUND_TEST"].includes(screen);
+  const isLongHistory = routeMode === "long_history";
+  const hudBtnStyle = {
+    background: isLongHistory ? "rgba(255, 220, 235, 0.96)" : "rgba(255, 255, 255, 0.92)",
+    border: `2px solid ${THEME.brass}`,
+    width: "36px",
+    height: "36px",
+    borderRadius: "50%",
+    fontSize: "18px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
+    padding: 0,
+    flexShrink: 0
+  };
+  const phase = timePhase && TIME_PHASES[(_a = timePhase.key) == null ? void 0 : _a.toUpperCase()] ? TIME_PHASES[timePhase.key.toUpperCase()] : timePhase;
+  const showBadge = phase && phase.key !== "none";
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "8px",
+    left: "8px",
+    right: "8px",
+    zIndex: 1e3,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "8px",
+    minHeight: "40px"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0 } }, showBadge && /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "3px 8px",
+        background: `rgba(12, 25, 38, 0.9)`,
+        border: `1px solid ${phase.color}99`,
+        borderRadius: "999px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+        backdropFilter: "blur(4px)",
+        maxWidth: "100px",
+        pointerEvents: "none",
+        userSelect: "none",
+        fontSize: "0.7em"
+      }
+    },
+    phase.icon && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "1em", lineHeight: 1 } }, phase.icon),
+    /* @__PURE__ */ React.createElement(
+      "span",
+      {
+        style: {
+          fontWeight: "bold",
+          color: phase.color,
+          letterSpacing: "0.05em",
+          whiteSpace: "nowrap"
+        }
+      },
+      phase.label
+    )
+  )), title && /* @__PURE__ */ React.createElement("h1", { style: {
+    color: "#e2d1b1",
+    fontSize: "1.15em",
+    margin: 0,
+    textAlign: "center",
+    textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+    fontWeight: "bold",
+    flex: 1,
+    minWidth: 0,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  } }, title), isHudVisible && /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, display: "flex", gap: "6px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "backlog-hud-open",
+      onClick: () => {
+        audioEngine.playSfx("uiTapBottle");
+        onOpenLog();
+      },
+      style: hudBtnStyle,
+      "aria-label": "ログ"
+    },
+    "📖"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "options-open",
+      onClick: () => {
+        audioEngine.playSfx("uiTapBottle");
+        onOpenOptions();
+      },
+      style: hudBtnStyle,
+      "aria-label": "設定"
+    },
+    "⚙️"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "help-hud-open",
+      onClick: () => {
+        audioEngine.playSfx("uiTapBottle");
+        onOpenHelp();
+      },
+      style: hudBtnStyle,
+      "aria-label": "ヘルプ"
+    },
+    "？"
+  )));
+};
 const IntroScreen = ({
   activeHeroine,
   activeDailyTalk,
@@ -3883,7 +4055,6 @@ const IntroScreen = ({
   vnRef,
   getFaceIcon,
   containerStyle: containerStyle2,
-  titleStyle: titleStyle2,
   cardStyle: cardStyle2,
   buttonStyle: buttonStyle2,
   narrativeBoxStyle: narrativeBoxStyle2
@@ -4049,26 +4220,17 @@ const IntroScreen = ({
       }
     ))),
     /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
-      GameHud,
+      ScreenHeader,
       {
-        screen,
-        routeMode,
+        timePhase: TIME_PHASES.PRE_OPEN,
+        title: `${activeHeroine.name}との語らい`,
         onOpenLog,
         onOpenOptions,
-        onOpenHelp
+        onOpenHelp,
+        routeMode,
+        screen
       }
-    ), /* @__PURE__ */ React.createElement("h1", { style: {
-      ...titleStyle2,
-      position: "absolute",
-      top: "8px",
-      left: "12px",
-      margin: 0,
-      fontSize: "1.2em",
-      textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-      textAlign: "left",
-      maxWidth: "70%",
-      zIndex: 10
-    } }, activeHeroine.name, "との語らい"), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
     /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       bottom: 0,
@@ -11559,56 +11721,6 @@ function DebugPanel({
     "BACK TO GAME"
   ));
 }
-const TIME_PHASES = {
-  NONE: { key: "none", label: "", icon: "", color: "transparent", description: "" },
-  PRE_OPEN: { key: "pre_open", label: "開店前", icon: "🌅", color: "#f59e0b", description: "朝の支度" },
-  OPEN: { key: "open", label: "営業中", icon: "🛍", color: "#10b981", description: "お客様対応中" },
-  POST_OPEN: { key: "post_open", label: "営業後", icon: "🌆", color: "#f97316", description: "営業直後" },
-  CLOSED: { key: "closed", label: "閉店後", icon: "🌙", color: "#6366f1", description: "夜の支度" },
-  FINALE: { key: "finale", label: "総決算", icon: "✨", color: "#8b5cf6", description: "10 日の総括" },
-  MEMORY: { key: "memory", label: "回想", icon: "📖", color: "#94a3b8", description: "愛着の記録" }
-};
-function resolveTimePhase(screen, activeDailyTalk = null, isRecallMode = false) {
-  if (isRecallMode) {
-    return TIME_PHASES.MEMORY;
-  }
-  switch (screen) {
-    case "START":
-    case "HEROINE_SELECT":
-      return TIME_PHASES.NONE;
-    case "PROLOGUE":
-    case "INTRO":
-      return TIME_PHASES.PRE_OPEN;
-    case "QUIZ":
-      return TIME_PHASES.OPEN;
-    case "RESULT":
-      return TIME_PHASES.POST_OPEN;
-    case "DAILY_TALK":
-      if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "day_end") {
-        return TIME_PHASES.CLOSED;
-      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "after_result") {
-        return TIME_PHASES.POST_OPEN;
-      } else if ((activeDailyTalk == null ? void 0 : activeDailyTalk.timing) === "intro") {
-        return TIME_PHASES.PRE_OPEN;
-      }
-      return TIME_PHASES.PRE_OPEN;
-    case "DAY_END":
-      return TIME_PHASES.CLOSED;
-    case "FINAL_RESULT":
-      return TIME_PHASES.FINALE;
-    case "EVENT":
-    case "MEMORIES":
-      return TIME_PHASES.MEMORY;
-    case "VISUAL_TEST":
-    case "OPTIONS":
-    case "LOG":
-    case "HELP":
-    case "SOUND_TEST":
-      return TIME_PHASES.NONE;
-    default:
-      return TIME_PHASES.NONE;
-  }
-}
 const TimePhaseBadge = ({ timePhase }) => {
   if (!timePhase || timePhase.key === "none") {
     return null;
@@ -12665,7 +12777,6 @@ function App() {
         vnRef,
         getFaceIcon,
         containerStyle,
-        titleStyle,
         cardStyle,
         buttonStyle,
         narrativeBoxStyle
@@ -12831,27 +12942,18 @@ function App() {
             style: { height: "100%", width: "auto", boxShadow: "none" }
           }
         )),
-        /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
-          GameHud,
+        /* @__PURE__ */ React.createElement(
+          ScreenHeader,
           {
-            screen,
-            routeMode,
+            timePhase: currentTimePhase,
+            title: `愛着の記録：${activeEvent.title}`,
             onOpenLog: () => setShowLog(true),
             onOpenOptions: () => setShowOptions(true),
-            onOpenHelp: () => setShowHelp(true)
+            onOpenHelp: () => setShowHelp(true),
+            routeMode,
+            screen
           }
-        ), /* @__PURE__ */ React.createElement("h1", { style: {
-          ...titleStyle,
-          position: "absolute",
-          top: "8px",
-          left: "12px",
-          margin: 0,
-          fontSize: "1.2em",
-          textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-          textAlign: "left",
-          maxWidth: "70%",
-          zIndex: 10
-        } }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+        ),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           bottom: 0,
@@ -12963,27 +13065,18 @@ function App() {
           background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%)",
           zIndex: 2
         } })),
-        /* @__PURE__ */ React.createElement("div", { style: { zIndex: 5, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement(
-          GameHud,
+        /* @__PURE__ */ React.createElement(
+          ScreenHeader,
           {
-            screen,
-            routeMode,
+            timePhase: currentTimePhase,
+            title: `愛着の記録：${activeEvent.title}`,
             onOpenLog: () => setShowLog(true),
             onOpenOptions: () => setShowOptions(true),
-            onOpenHelp: () => setShowHelp(true)
+            onOpenHelp: () => setShowHelp(true),
+            routeMode,
+            screen
           }
-        ), /* @__PURE__ */ React.createElement("h1", { style: {
-          ...titleStyle,
-          position: "absolute",
-          top: "8px",
-          left: "12px",
-          margin: 0,
-          fontSize: "1.2em",
-          textShadow: "0 2px 4px rgba(0,0,0,0.8)",
-          textAlign: "left",
-          maxWidth: "70%",
-          zIndex: 10
-        } }, "愛着の記録: ", activeEvent.title), /* @__PURE__ */ React.createElement("div", { style: { flex: "1 1 auto" } })),
+        ),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
           bottom: 0,
@@ -13242,7 +13335,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
