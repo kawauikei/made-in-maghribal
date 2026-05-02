@@ -1391,6 +1391,7 @@ const AFFECTION_EVENTS = {
       threshold: 30,
       kind: "route_climax",
       title: "隣に並ぶ覚悟",
+      stillImageId: "hakimaFestivalNight01",
       presentation: {
         backgroundId: "shopExteriorNight",
         bgmId: "HAKIMA-01"
@@ -1548,6 +1549,7 @@ const AFFECTION_EVENTS = {
       threshold: 30,
       kind: "route_climax",
       title: "正解の前の私",
+      stillImageId: "miraStarryRooftop01",
       presentation: {
         backgroundId: "shopExteriorNight",
         bgmId: "MIRA-01"
@@ -1705,6 +1707,7 @@ const AFFECTION_EVENTS = {
       threshold: 30,
       kind: "route_climax",
       title: "座らせてくれる場所",
+      stillImageId: "dariyaLimitNight01",
       presentation: {
         backgroundId: "shopExteriorNight",
         bgmId: "DARIYA-01"
