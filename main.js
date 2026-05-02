@@ -3948,7 +3948,7 @@ function getRouteText(baseText, routeTexts, routeMode) {
   return baseText;
 }
 function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
-  const getEligible = (category) => {
+  const getEligible = (category, prioritizeHeroine = false) => {
     return DAILY_TALKS.filter((talk) => {
       if (talk.timing !== "intro") return false;
       if (talk.category !== category) return false;
@@ -3959,11 +3959,22 @@ function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
       return true;
     }).sort((a, b) => (b.priority || 1) - (a.priority || 1));
   };
-  const workTalks = getEligible("work");
-  const personalTalks = getEligible("personal");
+  const getPreferredTalk = (category) => {
+    const heroineTalks = getEligible(category).filter((t) => t.scope === "heroine");
+    if (heroineTalks.length > 0) {
+      return heroineTalks[0];
+    }
+    const commonTalks = getEligible(category).filter((t) => t.scope === "common");
+    if (commonTalks.length > 0) {
+      return commonTalks[0];
+    }
+    return null;
+  };
   const selected = [];
-  if (workTalks.length > 0) selected.push(workTalks[0]);
-  if (personalTalks.length > 0) selected.push(personalTalks[0]);
+  const workTalk = getPreferredTalk("work");
+  const personalTalk = getPreferredTalk("personal");
+  if (workTalk) selected.push(workTalk);
+  if (personalTalk) selected.push(personalTalk);
   return selected;
 }
 function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode) {
