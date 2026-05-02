@@ -13762,22 +13762,22 @@ function App() {
     }
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
+    const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+    const currentPageExpression = (currentEventPage == null ? void 0 : currentEventPage.expression) || "normal";
+    const resolveEventMainCharacter = (page) => {
+      if (!page) return null;
+      if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+        return activeHeroine;
+      }
+      if (page.speakerId === "nader" || page.speaker === "ナーディル") {
+        return NADER;
+      }
+      return null;
+    };
+    const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
+    const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
+    const currentCharacterExpression = eventMainCharacter ? currentPageExpression : "normal";
     if (!still) {
-      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
-      const currentPageExpression = (currentEventPage == null ? void 0 : currentEventPage.expression) || "normal";
-      const resolveEventMainCharacter = (page) => {
-        if (!page) return null;
-        if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
-          return activeHeroine;
-        }
-        if (page.speakerId === "nader" || page.speaker === "ナーディル") {
-          return NADER;
-        }
-        return null;
-      };
-      const eventMainCharacter2 = resolveEventMainCharacter(currentEventPage);
-      const shouldShowEventCharacter = eventMainCharacter2 !== null && !activeEvent.stillImageId;
-      const currentCharacterExpression = eventMainCharacter2 ? currentPageExpression : "normal";
       mainContent = /* @__PURE__ */ React.createElement(
         "div",
         {
@@ -13816,7 +13816,7 @@ function App() {
         } }, /* @__PURE__ */ React.createElement(
           HeroineDisplay,
           {
-            heroine: eventMainCharacter2 || activeHeroine,
+            heroine: eventMainCharacter || activeHeroine,
             type: "standing",
             size: "large",
             expression: currentCharacterExpression,
@@ -13859,7 +13859,7 @@ function App() {
               else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
               return { ...page, speakerId: inferredId };
             }),
-            themeColor: (eventMainCharacter2 == null ? void 0 : eventMainCharacter2.themeColor) || activeHeroine.themeColor,
+            themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
@@ -14005,7 +14005,6 @@ function App() {
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
-              var _a2;
               setEventCurrentPageIndex(index);
               const pages = getEventPages(activeEvent, routeMode);
               const page = pages[index];
@@ -14013,23 +14012,6 @@ function App() {
                 setEventHeroineExpression(page.expression);
               }
               setEventSpeakerId((page == null ? void 0 : page.speakerId) || null);
-              const newBgId = (page == null ? void 0 : page.backgroundId) || prevEventBackgroundRef.current || ((_a2 = activeEvent.presentation) == null ? void 0 : _a2.backgroundId);
-              if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                setBgTransitionPhase("covering");
-                setTimeout(() => {
-                  setBgTransitionPhase("covered");
-                  setEventBackgroundOverride(newBgId);
-                  prevEventBackgroundRef.current = newBgId;
-                  setTimeout(() => {
-                    setBgTransitionPhase("revealing");
-                    setTimeout(() => {
-                      setBgTransitionPhase("idle");
-                    }, 450);
-                  }, 100);
-                }, 400);
-              } else if (newBgId) {
-                prevEventBackgroundRef.current = newBgId;
-              }
             },
             onPageComplete: (data) => appendVnBacklog({ ...data, screen: "EVENT" }),
             onComplete: handleCloseEvent
