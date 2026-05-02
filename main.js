@@ -10200,6 +10200,56 @@ function clearSaveData() {
   if (!isStorageAvailable$1()) return;
   localStorage.removeItem(STORAGE_KEY);
 }
+function buildGameSavePayload({
+  screen,
+  activeHeroineId,
+  routeMode,
+  workshopState,
+  affection,
+  seenEventIds,
+  seenTalkIds,
+  activeEvent,
+  vnBacklog,
+  textSpeed,
+  instantUnreadText,
+  bgmVolume,
+  seVolume,
+  isAudioEnabled
+}) {
+  return {
+    screen,
+    activeHeroineId,
+    routeMode,
+    workshopState,
+    affection,
+    seenEventIds,
+    seenTalkIds,
+    activeEvent,
+    vnBacklog,
+    textSpeed,
+    instantUnreadText,
+    bgmVolume,
+    seVolume,
+    isAudioEnabled
+  };
+}
+function buildSettingsSavePayload({
+  routeMode,
+  textSpeed,
+  instantUnreadText,
+  bgmVolume,
+  seVolume,
+  isAudioEnabled
+}) {
+  return {
+    routeMode,
+    textSpeed,
+    instantUnreadText,
+    bgmVolume,
+    seVolume,
+    isAudioEnabled
+  };
+}
 function useGameSaveStatus() {
   const [hasSave, setHasSaveState] = useState(() => {
     const data = loadSaveData();
@@ -10966,7 +11016,7 @@ function App() {
   }, [activeEvent]);
   useEffect(() => {
     if (screen !== "START") {
-      saveGameData({
+      saveGameData(buildGameSavePayload({
         screen: screen === "EVENT" ? "RESULT" : screen,
         // Fallback EVENT to RESULT for safety
         activeHeroineId,
@@ -10982,7 +11032,7 @@ function App() {
         seenTalkIds,
         activeEvent,
         vnBacklog
-      });
+      }));
       setHasSave(true);
     } else {
       const currentData = loadSaveData();
@@ -10990,12 +11040,14 @@ function App() {
       if (currentData || !isDefaultSettings) {
         saveGameData({
           ...currentData || {},
-          routeMode,
-          textSpeed,
-          instantUnreadText,
-          bgmVolume,
-          seVolume,
-          isAudioEnabled
+          ...buildSettingsSavePayload({
+            routeMode,
+            textSpeed,
+            instantUnreadText,
+            bgmVolume,
+            seVolume,
+            isAudioEnabled
+          })
         });
       }
       if (currentData && currentData.screen !== "START") {
@@ -11189,7 +11241,7 @@ function App() {
     if (newSeenTalkIds.length > 0) {
       setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
     }
-    saveGameData({
+    saveGameData(buildGameSavePayload({
       routeMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
@@ -11199,8 +11251,12 @@ function App() {
       seVolume,
       seenEventIds,
       seenTalkIds,
-      vnBacklog
-    });
+      vnBacklog,
+      isAudioEnabled,
+      activeHeroineId,
+      activeEvent: null,
+      screen: "HEROINE_SELECT"
+    }));
     const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
     setTimeout(() => {
       setIsHeroineLoading(false);
