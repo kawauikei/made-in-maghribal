@@ -95,7 +95,7 @@ export const AFFECTION_EVENTS = {
       },
       summary: "素直になれないハキマは、ナーディルと同じ目線で品を選べたことに喜びを覚える。優等生だった彼を気にしていた過去が、少しだけにじむ。",
       pages: [
-        { speaker: "", expression: "normal", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。" },
+        { speaker: "", expression: "normal", text: "閉店後の店先に、まだ昼の熱を含んだ風が残っていた。市場の香料瓶を前に、ハキマは腕を組んでうなった。" },
         { speaker: "ハキマ", expression: "anger", text: "この配合、悪くないけど……客には少し強すぎるわね" },
         { speaker: "ナーディル", expression: "normal", text: "薄めるなら、砂蜜よりも乾いた柑橘皮かな。香りが丸くなると思う" },
         { speaker: "", expression: "normal", text: "俺が言うと、ハキマは目を丸くした。" },
@@ -130,6 +130,7 @@ export const AFFECTION_EVENTS = {
       },
       summary: "ルハーン商会からの大口相談を巡り、ハキマはナーディルの目利きを認め、素直になれないながらも信頼を口にする。",
       pages: [
+        { speaker: "", expression: "normal", text: "朝の光が店先の布幕を照らしていた。" },
         { "speaker": "ハキマ", "expression": "normal", "text": "ルハーン商会から、大口の香材相談が来たの。星瓶堂の目利きも借りたいって。" },
         { "speaker": "ナーディル", "expression": "surprise", "text": "君の商会から正式に？ それは責任重大だな。" },
         { "speaker": "ハキマ", "expression": "anger", "text": "勘違いしないで。あんたが少しは信用できるって、私が報告しただけよ。" },
@@ -386,6 +387,7 @@ export const AFFECTION_EVENTS = {
       },
       summary: "ミラは大学の発表題材に星瓶堂を選び、ナーディルの「使う人の顔が見える品」という姿勢に自身の理想を重ねる。",
       pages: [
+        { speaker: "", expression: "normal", text: "昼下がりの店先で、ミラは課題帳を抱えて立った。" },
         { "speaker": "ミラ", "expression": "normal", "text": "先輩、星瓶堂の商品を学外発表の題材にしてもいいでしょうか。" },
         { "speaker": "ナーディル", "expression": "surprise", "text": "うちの商品を？ もっと派手な研究の方が、評価されるんじゃないか。" },
         { "speaker": "ミラ", "expression": "sorrow", "text": "派手さだけなら、そうかもしれません。でも私は、暮らしに届く錬金術を発表したいんです。" },
@@ -615,6 +617,7 @@ export const AFFECTION_EVENTS = {
       },
       summary: "完璧でいようとして疲れきったダリヤが、ナーディルの前でだけ弱さを少し見せる。",
       pages: [
+        { speaker: "", expression: "normal", text: "夜風が店先の布幕をゆっくり揺らしていた。ダリヤはふと、過去の検証室を思い出した。" },
         { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。" },
         { speaker: "", expression: "normal", text: "ダリヤは手順書を閉じ、少しだけ目を押さえる。" },
         { speaker: "ダリヤ", expression: "sorrow", text: "完璧な配合なのに、どうしてこんなに冷たく感じるんだろう" },
@@ -647,6 +650,7 @@ export const AFFECTION_EVENTS = {
       },
       summary: "王宮の案件をナーディルに相談するダリヤ。王宮が忘れがちな「当たり前」を、彼女は弱々しくも大切にしようとする。",
       pages: [
+        { speaker: "", expression: "normal", text: "午後の光が棚の瓶を淡く照らしていた。" },
         { "speaker": "ダリヤ", "expression": "normal", "text": "王宮の検証案件を、星瓶堂にも相談したいの。君の目は、研究所と少し違うから。" },
         { "speaker": "ナーディル", "expression": "surprise", "text": "王宮の案件を俺に？光栄ですけど、少し緊張します。" },
         { "speaker": "ダリヤ", "expression": "sorrow", "text": "私も緊張しているよ。正直、ひとりで抱えるには少し重くて……君に見てもらいたかった。" },
