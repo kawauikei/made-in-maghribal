@@ -126,7 +126,8 @@ export default function App() {
           totalCount,
           activeHeroineId,
           affection[activeHeroineId] || 0,
-          seenEventIds
+          seenEventIds,
+          routeMode
         );
         applyQuizResultState(result);
       }, 500);
@@ -842,7 +843,8 @@ export default function App() {
       totalCount,
       activeHeroineId,
       currentAffection: affection[activeHeroineId] || 0,
-      seenEventIds
+      seenEventIds,
+      routeMode
     });
 
     applyQuizResultState(result);

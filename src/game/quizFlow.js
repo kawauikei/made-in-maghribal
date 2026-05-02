@@ -14,6 +14,7 @@ import { checkNewEventUnlock } from './eventSystem.js';
  * @param {string} params.activeHeroineId - The ID of the currently active heroine.
  * @param {number} params.currentAffection - The current affection level of the active heroine (before gain).
  * @param {string[]} params.seenEventIds - List of event IDs already seen by the player.
+ * @param {string} [params.routeMode] - 'normal' or 'long_history' (optional).
  * @returns {Object} Consolidated results including rank, gains, and potential unlocks.
  */
 export function resolveQuizCompletion({
@@ -21,7 +22,8 @@ export function resolveQuizCompletion({
   totalCount,
   activeHeroineId,
   currentAffection,
-  seenEventIds
+  seenEventIds,
+  routeMode
 }) {
   // 1. Get Rank Info (Title and Message)
   const rank = getRankInfo(correctCount);
@@ -34,7 +36,7 @@ export function resolveQuizCompletion({
   
   // 4. Check for New Event Unlock
   const nextAffectionValue = currentAffection + affectionGain;
-  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds);
+  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds, routeMode);
 
   return {
     correctCount,
@@ -54,14 +56,16 @@ export function resolveQuizCompletion({
  * @param {string} activeHeroineId 
  * @param {number} currentAffection 
  * @param {string[]} seenEventIds 
+ * @param {string} [routeMode] - 'normal' or 'long_history' (optional).
  * @returns {Object} A perfect result payload.
  */
-export function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds) {
+export function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode) {
   return resolveQuizCompletion({
     correctCount: totalCount,
     totalCount,
     activeHeroineId,
     currentAffection,
-    seenEventIds
+    seenEventIds,
+    routeMode
   });
 }

@@ -7,9 +7,10 @@ import { DAILY_TALKS } from '../data/dailyTalks.js';
  * @param {string} heroineId - The active heroine
  * @param {number} currentAffection - Current affection level
  * @param {string[]} seenEventIds - List of IDs already seen by the player
+ * @param {string} [routeMode] - 'normal' or 'long_history' (optional, defaults to matching all)
  * @returns {Object|null} The first eligible event or null if none
  */
-export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
+export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode) {
   const events = getEventsByHeroine(heroineId);
   
   // Find the highest threshold event that meets criteria and hasn't been seen
@@ -18,7 +19,10 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
     event.kind !== 'flashback_intro' && 
     event.kind !== 'route_climax' && 
     currentAffection >= event.threshold && 
-    !seenEventIds.includes(event.id)
+    !seenEventIds.includes(event.id) &&
+    // routeMode filter: if event has routeMode, it must match
+    // if event has no routeMode, it's treated as 'both' (matches any)
+    (!event.routeMode || event.routeMode === 'both' || event.routeMode === routeMode)
   );
 
   if (eligibleEvents.length === 0) return null;
