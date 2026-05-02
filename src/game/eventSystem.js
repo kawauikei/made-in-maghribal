@@ -66,12 +66,13 @@ export function getEventPages(event, routeMode) {
         text: page
       };
     }
-    // Return object page, ensuring fallbacks
+    // Return object page, ensuring fallbacks and preserving all fields
     return {
       speaker: page.speaker !== undefined ? page.speaker : "",
       expression: page.expression || "normal",
       text: page.text || "",
-      ...(page.backgroundId ? { backgroundId: page.backgroundId } : {})
+      ...(page.backgroundId ? { backgroundId: page.backgroundId } : {}),
+      ...(page.speakerId ? { speakerId: page.speakerId } : {})
     };
   });
 }

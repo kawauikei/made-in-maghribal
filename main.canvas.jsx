@@ -3431,7 +3431,7 @@ function App() {
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null); // M-SCENARIO-DAILYTALK-RUNTIME-1: Track next screen after DailyTalk
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0); // Track current page index for expression sync
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE); // M-TIME-PHASE-UI-1: Current time phase
-  const [isBackgroundTransitioning, setIsBackgroundTransitioning] = useState(false); // M-EVENT-PRESENTATION-FIX-1: Dark overlay for background transition
+  const [bgTransitionPhase, setBgTransitionPhase] = useState("idle"); // M-EVENT-PRESENTATION-FIX-2: "idle" | "covering" | "covered" | "revealing"
   const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0); // M-EVENT-PRESENTATION-FIX-1: Track current page for heroine visibility
 
   // --- Asset Loading State (M8-28) ---
@@ -4731,13 +4731,16 @@ function App() {
 
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
-      // M-EVENT-PRESENTATION-FIX-1: Hide heroine for flashback_intro narration pages
+      // M-EVENT-PRESENTATION-FIX-2: Hide heroine for flashback_intro narration pages
       const shouldShowHeroine = (() => {
         if (activeEvent.kind === 'flashback_intro') {
           const pages = getEventPages(activeEvent, routeMode);
           const currentPage = pages[eventCurrentPageIndex];
-          // Show heroine only when speaker is the active heroine
-          return currentPage?.speakerId === activeHeroine.id;
+          // Show heroine when speaker is the active heroine (check both speakerId and speaker name)
+          if (currentPage?.speakerId === activeHeroine.id) return true;
+          if (currentPage?.speaker === activeHeroine.name) return true;
+          // Hide for narration or Nader
+          return false;
         }
         return true;
       })();
@@ -4751,19 +4754,21 @@ function App() {
           {renderThemeStyles()}
           {renderBackground(screen)}
           
-          {/* M-EVENT-PRESENTATION-FIX-1: Dark overlay for background transition */}
-          {isBackgroundTransitioning && (
+          {/* M-EVENT-PRESENTATION-FIX-2: Curtain slide overlay for background transitions */}
+          {(bgTransitionPhase === "covering" || bgTransitionPhase === "covered" || bgTransitionPhase === "revealing") && (
             <div style={{
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(0,0,0,0.95)',
-              zIndex: 100,
+              backgroundColor: 'rgba(0,0,0,0.98)',
+              zIndex: 1000,
               pointerEvents: 'none',
-              transition: 'opacity 0.15s ease',
-              opacity: isBackgroundTransitioning ? 1 : 0
+              transform: bgTransitionPhase === "covering" ? 'translateX(0%)' : 
+                         bgTransitionPhase === "covered" ? 'translateX(0%)' :
+                         'translateX(100%)',
+              transition: 'transform 0.3s ease-in-out'
             }} />
           )}
           
@@ -4830,7 +4835,7 @@ function App() {
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
-                  setEventCurrentPageIndex(index); // M-EVENT-PRESENTATION-FIX-1: Track page for heroine visibility
+                  setEventCurrentPageIndex(index);
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
                   // Only update heroine expression when the speaker is the active heroine
@@ -4839,18 +4844,25 @@ function App() {
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-1: Background with fallback and dark transition
+                  // M-EVENT-PRESENTATION-FIX-2: Curtain slide transition for background changes
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
-                  if (newBgId && newBgId !== eventBackgroundOverride) {
-                    // Start dark overlay transition
-                    setIsBackgroundTransitioning(true);
+                  if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
+                    // Start curtain slide: covering phase
+                    setBgTransitionPhase("covering");
                     setTimeout(() => {
+                      // Covered phase - switch background
+                      setBgTransitionPhase("covered");
                       setEventBackgroundOverride(newBgId);
                       prevEventBackgroundRef.current = newBgId;
                       setTimeout(() => {
-                        setIsBackgroundTransitioning(false);
-                      }, 80); // Hold black for 80ms
-                    }, 150); // Fade out 150ms
+                        // Revealing phase
+                        setBgTransitionPhase("revealing");
+                        setTimeout(() => {
+                          // Done - back to idle
+                          setBgTransitionPhase("idle");
+                        }, 300); // Reveal duration
+                      }, 100); // Hold covered briefly
+                    }, 300); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
@@ -4982,7 +4994,7 @@ function App() {
                 skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
-                  setEventCurrentPageIndex(index); // M-EVENT-PRESENTATION-FIX-1: Track page for heroine visibility
+                  setEventCurrentPageIndex(index);
                   const pages = getEventPages(activeEvent, routeMode);
                   const page = pages[index];
                   // Only update heroine expression when the speaker is the active heroine
@@ -4991,18 +5003,25 @@ function App() {
                   }
                   setEventSpeakerId(page?.speakerId || null);
                   
-                  // M-EVENT-PRESENTATION-FIX-1: Background with fallback and dark transition
+                  // M-EVENT-PRESENTATION-FIX-2: Curtain slide transition for background changes
                   const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
-                  if (newBgId && newBgId !== eventBackgroundOverride) {
-                    // Start dark overlay transition
-                    setIsBackgroundTransitioning(true);
+                  if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
+                    // Start curtain slide: covering phase
+                    setBgTransitionPhase("covering");
                     setTimeout(() => {
+                      // Covered phase - switch background
+                      setBgTransitionPhase("covered");
                       setEventBackgroundOverride(newBgId);
                       prevEventBackgroundRef.current = newBgId;
                       setTimeout(() => {
-                        setIsBackgroundTransitioning(false);
-                      }, 80); // Hold black for 80ms
-                    }, 150); // Fade out 150ms
+                        // Revealing phase
+                        setBgTransitionPhase("revealing");
+                        setTimeout(() => {
+                          // Done - back to idle
+                          setBgTransitionPhase("idle");
+                        }, 300); // Reveal duration
+                      }, 100); // Hold covered briefly
+                    }, 300); // Cover duration
                   } else if (newBgId) {
                     prevEventBackgroundRef.current = newBgId;
                   }
