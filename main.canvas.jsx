@@ -14,6 +14,7 @@ import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
 import { buildGameSavePayload, buildSettingsOnlySavePayload } from './game/savePayload';
+import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings, AUTO_SAVE_MODE } from './game/autoSavePolicy';
 import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
@@ -3372,7 +3373,21 @@ function App() {
 
   // Auto-Save
   useEffect(() => {
-    if (screen !== 'START') {
+    const policy = resolveAutoSavePolicy({
+      screen,
+      isDefaultSettings: checkIsDefaultSettings({
+        routeMode,
+        textSpeed,
+        instantUnreadText,
+        bgmVolume,
+        seVolume,
+        isAudioEnabled,
+        defaultAudioVolume: DEFAULT_AUDIO_VOLUME,
+      }),
+      hasExistingSave: Boolean(loadSaveData()),
+    });
+
+    if (policy.mode === AUTO_SAVE_MODE.FULL) {
       saveGameData(buildGameSavePayload({
         screen: screen === 'EVENT' ? 'RESULT' : screen, // Fallback EVENT to RESULT for safety
         activeHeroineId,
@@ -3390,34 +3405,20 @@ function App() {
         vnBacklog
       }));
       setHasSave(true);
-    } else {
-      // On START screen: save settings into existing save file if it exists,
-      // or create a default save with these settings if it doesn't.
+    } else if (policy.mode === AUTO_SAVE_MODE.SETTINGS_ONLY) {
       const currentData = loadSaveData();
-      
-      // Determine if we should save: 
-      // 1. If a save already exists
-      // 2. Or if any setting is non-default (meaning the user changed something)
-      const isDefaultSettings = 
-        routeMode === 'normal' && 
-        textSpeed === 'normal' && 
-        instantUnreadText === false && 
-        Math.abs(bgmVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && 
-        Math.abs(seVolume - DEFAULT_AUDIO_VOLUME) < 0.01 && 
-        isAudioEnabled === false;
-
-      if (currentData || !isDefaultSettings) {
-        saveGameData(buildSettingsOnlySavePayload(currentData, {
-          routeMode,
-          textSpeed,
-          instantUnreadText,
-          bgmVolume,
-          seVolume,
-          isAudioEnabled
-        }));
-      }
-
+      saveGameData(buildSettingsOnlySavePayload(currentData, {
+        routeMode,
+        textSpeed,
+        instantUnreadText,
+        bgmVolume,
+        seVolume,
+        isAudioEnabled
+      }));
+      setHasSave(true);
+    } else if (policy.mode === AUTO_SAVE_MODE.NONE) {
       // hasSave should only be true if it's a real game progress save
+      const currentData = loadSaveData();
       if (currentData && currentData.screen !== 'START') {
         setHasSave(true);
       } else {
