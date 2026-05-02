@@ -397,7 +397,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
           overflow: "hidden",
           border: `1px solid ${THEME.brass}88`,
           background: "#0c1926"
-        } }, /* @__PURE__ */ React.createElement("img", { src: facePath, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })) : /* @__PURE__ */ React.createElement("div", { style: {
+        } }, /* @__PURE__ */ React.createElement("img", { src: facePath, alt: "", style: { width: "100%", height: "100%", objectFit: "cover", imageRendering: "auto", backfaceVisibility: "hidden" } })) : /* @__PURE__ */ React.createElement("div", { style: {
           width: "48px",
           height: "48px",
           borderRadius: "8px",
@@ -1036,7 +1036,9 @@ const MemoriesScreen = ({
     borderRadius: "50%",
     objectFit: "cover",
     border: `2px solid ${THEME.brass}`,
-    background: THEME.sand
+    background: THEME.sand,
+    imageRendering: "auto",
+    backfaceVisibility: "hidden"
   };
   const thumbnailStyle = {
     width: "60px",
@@ -1044,7 +1046,9 @@ const MemoriesScreen = ({
     objectFit: "cover",
     borderRadius: "4px",
     border: `1px solid ${THEME.brass}`,
-    flexShrink: 0
+    flexShrink: 0,
+    imageRendering: "auto",
+    backfaceVisibility: "hidden"
   };
   const memoryItemStyle = (heroineThemeColor) => ({
     background: "rgba(0,0,0,0.03)",
@@ -4418,7 +4422,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           top: "-5%",
           left: "-5%",
           zIndex: 1,
-          animation: "vn-fade-out 0.2s forwards"
+          animation: "vn-fade-out 0.2s forwards",
+          imageRendering: "auto",
+          backfaceVisibility: "hidden"
         }
       }
     ), /* @__PURE__ */ React.createElement(
@@ -4440,7 +4446,9 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
           left: "-5%",
           zIndex: 2,
           opacity: isFaceLoaded ? 1 : 0,
-          animation: isFaceLoaded ? "vn-fade-in 0.2s ease" : "none"
+          animation: isFaceLoaded ? "vn-fade-in 0.2s ease" : "none",
+          imageRendering: "auto",
+          backfaceVisibility: "hidden"
         },
         draggable: false,
         onError: (e) => {
