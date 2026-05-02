@@ -107,27 +107,22 @@ const ResultScreen = ({
               />
             )}
 
-            {/* Speech Bubble - Vertical Writing Mode Test */}
+            {/* Speech Bubble */}
             <div style={{
               marginTop: '12px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
-              padding: '12px 16px',
+              padding: '10px 14px',
               position: 'relative',
               maxWidth: '220px',
-              maxHeight: '180px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-              writingMode: 'vertical-rl',
-              textOrientation: 'mixed',
-              lineHeight: '1.8'
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}>
               {/* Bubble tail (pointing left toward heroine) */}
               <div style={{
                 position: 'absolute',
                 left: '-8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '16px',
                 width: '0',
                 height: '0',
                 borderTop: '8px solid transparent',
@@ -137,8 +132,7 @@ const ResultScreen = ({
               <div style={{
                 position: 'absolute',
                 left: '-5px',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '17px',
                 width: '0',
                 height: '0',
                 borderTop: '7px solid transparent',
@@ -148,9 +142,8 @@ const ResultScreen = ({
               <div style={{
                 fontSize: '0.85em',
                 color: THEME.textDark,
-                fontStyle: 'italic',
-                height: '160px',
-                overflowY: 'auto'
+                lineHeight: '1.5',
+                fontStyle: 'italic'
               }}>
                 {comment}
               </div>
