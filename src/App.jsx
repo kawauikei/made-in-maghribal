@@ -648,26 +648,39 @@ export default function App() {
 
   const handleCloseEvent = () => {
     audioEngine.playSfx('uiTapBottle');
-    
-    const actions = resolveEventCloseActions({ event: activeEvent, isRecallMode });
-    
-    if (actions.shouldMarkSeen) {
+
+    const {
+      shouldMarkSeen,
+      nextScreen,
+      shouldClearBackgroundOverride,
+      shouldPlayDayEndSfx,
+    } = resolveEventCloseActions({ event: activeEvent, isRecallMode });
+
+    if (shouldMarkSeen && activeEvent) {
       setSeenEventIds(prev => [...prev, activeEvent.id]);
     }
+
     setActiveEvent(null);
-    if (actions.shouldClearBackgroundOverride) {
+
+    if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
     }
-    if (actions.nextScreen === 'MEMORIES') {
-      setIsRecallMode(false);
-      setScreen('MEMORIES');
-    } else if (actions.nextScreen === 'INTRO') {
-      setScreen('INTRO');
-    } else {
-      if (actions.shouldPlayDayEndSfx) {
-        audioEngine.playSfx('workshopDayEnd');
-      }
-      setScreen('DAY_END');
+
+    switch (nextScreen) {
+      case 'MEMORIES':
+        setIsRecallMode(false);
+        setScreen('MEMORIES');
+        break;
+      case 'INTRO':
+        setScreen('INTRO');
+        break;
+      case 'DAY_END':
+      default:
+        if (shouldPlayDayEndSfx) {
+          audioEngine.playSfx('workshopDayEnd');
+        }
+        setScreen('DAY_END');
+        break;
     }
   };
 
