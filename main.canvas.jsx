@@ -3052,6 +3052,7 @@ function App() {
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
   const [activeGreeting, setActiveGreeting] = useState(null);
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null); // M-SCENARIO-DAILYTALK-RUNTIME-1: Track next screen after DailyTalk
+  const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0); // Track current page index for expression sync
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -4219,7 +4220,9 @@ function App() {
             heroine={activeHeroine} 
             type="standing" 
             size="large" 
-            expression="normal" 
+            expression={activeDailyTalk.pages?.[dailyTalkCurrentPage]?.speakerId === activeHeroine.id 
+              ? (activeDailyTalk.pages?.[dailyTalkCurrentPage]?.expression || 'normal')
+              : 'normal'}
             noBorder={true}
             style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
           />
@@ -4264,8 +4267,12 @@ function App() {
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed, false)}
               getFaceIcon={getFaceIcon}
+              onPageChange={(index) => setDailyTalkCurrentPage(index)}
               onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'DAILY_TALK' })}
-              onComplete={handleCloseDailyTalk}
+              onComplete={() => {
+                setDailyTalkCurrentPage(0); // Reset page index for next talk
+                handleCloseDailyTalk();
+              }}
             />
           </div>
         </div>

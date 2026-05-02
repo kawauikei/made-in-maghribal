@@ -56,6 +56,11 @@ function checkText(text, id, errors) {
             errors.push(`${id}: Prohibited word "${word}" found in "${text.substring(0, 20)}..."`);
         }
     });
+    // Check for outer quotation marks (warning, not error)
+    const trimmed = text.trim();
+    if (trimmed.startsWith('「') && trimmed.endsWith('」')) {
+        errors.push(`${id}: Warning - Outer quotation marks「」found in "${text.substring(0, 30)}...". Consider removing since VNBox shows speaker separately.`);
+    }
 }
 
 function checkExpression(expr, id, pageIdx, errors) {
