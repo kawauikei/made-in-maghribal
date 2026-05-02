@@ -2055,7 +2055,10 @@ function HeroineDisplay({ heroine, type, size = "large", expression = "normal", 
     objectPosition: objectPosition || (isStanding ? 'top center' : (heroine.visualConfig?.facePosition || 'center 20%')),
     display: imgError ? 'none' : 'block',
     userSelect: 'none',
-    WebkitUserDrag: 'none'
+    WebkitUserDrag: 'none',
+    imageRendering: 'auto',
+    backfaceVisibility: 'hidden',
+    filter: isStanding ? 'blur(0.12px) contrast(0.99)' : undefined
   };
 
   if (!fullPath || imgError) {
