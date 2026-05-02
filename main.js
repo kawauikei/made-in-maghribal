@@ -5767,16 +5767,26 @@ function QuizScreen({
     itemNameStyle: itemNameStyle2
   } = quizStyles;
   const [isAnswerLocked, setIsAnswerLocked] = useState(true);
+  const [showReadyStatus, setShowReadyStatus] = useState(false);
   const unlockTimerRef = useRef(null);
+  const readyTimerRef = useRef(null);
   const answerUnlockDelayMs = 1e3;
+  const readyStatusMs = 800;
   useEffect(() => {
     setIsAnswerLocked(true);
+    setShowReadyStatus(false);
     if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
+    if (readyTimerRef.current) clearTimeout(readyTimerRef.current);
     unlockTimerRef.current = setTimeout(() => {
       setIsAnswerLocked(false);
+      setShowReadyStatus(true);
+      readyTimerRef.current = setTimeout(() => {
+        setShowReadyStatus(false);
+      }, readyStatusMs);
     }, answerUnlockDelayMs);
     return () => {
       if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
+      if (readyTimerRef.current) clearTimeout(readyTimerRef.current);
     };
   }, [session == null ? void 0 : session.currentIndex]);
   if (!session) return null;
@@ -5838,8 +5848,37 @@ function QuizScreen({
     background: "rgba(26, 42, 58, 0.6)",
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "5px 0"
-  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor, bpm: quizBpm })), /* @__PURE__ */ React.createElement(
+    padding: "5px 0",
+    position: "relative"
+  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor, bpm: quizBpm }), isAnswerLocked && /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: `rgba(${THEME.warning.rgb}, 0.9)`,
+    color: THEME.warning.text,
+    padding: "4px 12px",
+    borderRadius: "12px",
+    fontSize: "12px",
+    fontWeight: "bold",
+    whiteSpace: "nowrap",
+    zIndex: 10,
+    pointerEvents: "none"
+  } }, "準備中"), !isAnswerLocked && showReadyStatus && /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: `rgba(${THEME.success.rgb}, 0.9)`,
+    color: THEME.success.text,
+    padding: "4px 12px",
+    borderRadius: "12px",
+    fontSize: "12px",
+    fontWeight: "bold",
+    whiteSpace: "nowrap",
+    zIndex: 10,
+    pointerEvents: "none"
+  } }, "回答可能")), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
       choices: currentQuestion.choices,
