@@ -11225,7 +11225,7 @@ const TEXT_SPEED_META = {
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
 function App() {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState("START");
   const [activeHeroineId, setActiveHeroineId] = useState("hakima");
@@ -11291,6 +11291,7 @@ function App() {
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
   const [activeGreeting, setActiveGreeting] = useState(null);
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null);
+  const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -12295,7 +12296,7 @@ function App() {
           heroine: activeHeroine,
           type: "standing",
           size: "large",
-          expression: "normal",
+          expression: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[dailyTalkCurrentPage]) == null ? void 0 : _c.speakerId) === activeHeroine.id ? ((_e = (_d = activeDailyTalk.pages) == null ? void 0 : _d[dailyTalkCurrentPage]) == null ? void 0 : _e.expression) || "normal" : "normal",
           noBorder: true,
           style: { height: "100%", width: "auto", boxShadow: "none" }
         }
@@ -12325,7 +12326,7 @@ function App() {
         VNBox,
         {
           ref: vnRef,
-          speaker: ((_c = (_b = activeDailyTalk.pages) == null ? void 0 : _b[0]) == null ? void 0 : _c.speaker) || "",
+          speaker: ((_g = (_f = activeDailyTalk.pages) == null ? void 0 : _f[0]) == null ? void 0 : _g.speaker) || "",
           pages: activeDailyTalk.pages.map((page) => {
             let inferredId = page.speakerId;
             if (!inferredId) {
@@ -12338,8 +12339,12 @@ function App() {
           speed: textSpeedMeta.delay,
           skip: shouldSkipTypewriter(isInstantTextSpeed, false),
           getFaceIcon,
+          onPageChange: (index) => setDailyTalkCurrentPage(index),
           onPageComplete: (data) => appendVnBacklog({ ...data, screen: "DAILY_TALK" }),
-          onComplete: handleCloseDailyTalk
+          onComplete: () => {
+            setDailyTalkCurrentPage(0);
+            handleCloseDailyTalk();
+          }
         }
       )))
     );
@@ -12451,7 +12456,7 @@ function App() {
           onClick: handleVnAreaClick
         },
         renderThemeStyles(),
-        ((_d = still.stillCrop) == null ? void 0 : _d.mode) === "heroine_pan" && (() => {
+        ((_h = still.stillCrop) == null ? void 0 : _h.mode) === "heroine_pan" && (() => {
           const animName = `still-pan-${still.id}`;
           const start = still.stillCrop.startPosition || "50% 50%";
           const end = still.stillCrop.endPosition || "50% 50%";
@@ -12479,12 +12484,12 @@ function App() {
           {
             src: getFullPath(still.src),
             alt: still.label,
-            className: ((_e = still.stillCrop) == null ? void 0 : _e.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
+            className: ((_i = still.stillCrop) == null ? void 0 : _i.mode) === "heroine_pan" ? `still-pan-img-${still.id}` : void 0,
             style: {
               width: "100%",
               height: "100%",
-              objectFit: ((_f = still.stillCrop) == null ? void 0 : _f.objectFit) || "cover",
-              objectPosition: ((_g = still.stillCrop) == null ? void 0 : _g.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_h = still.stillCrop) == null ? void 0 : _h.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+              objectFit: ((_j = still.stillCrop) == null ? void 0 : _j.objectFit) || "cover",
+              objectPosition: ((_k = still.stillCrop) == null ? void 0 : _k.mode) === "heroine_pan" ? still.stillCrop.startPosition || "50% 50%" : ((_l = still.stillCrop) == null ? void 0 : _l.objectPosition) || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
             },
             onError: (e) => {
               e.target.style.display = "none";
@@ -12663,7 +12668,7 @@ function App() {
       endingType = "bad";
     }
     const endingData = ENDINGS[activeHeroineId][endingType];
-    const endingBackgroundId = ((_i = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _i.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
+    const endingBackgroundId = ((_m = endingData == null ? void 0 : endingData.presentation) == null ? void 0 : _m.backgroundId) || (endingData == null ? void 0 : endingData.bgId) || "shopInteriorService";
     const endingBackground = BACKGROUND_IMAGES[endingBackgroundId] || BACKGROUND_IMAGES.shopInteriorService;
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
@@ -12789,7 +12794,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_j = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _j.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
