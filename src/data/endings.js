@@ -27,8 +27,10 @@ export const ENDINGS = {
       summary: "関係に大きな変化はないが、以前よりも確実に柔らかい空気が二人の間に流れている。",
       pages: [
         { speaker: "", expression: "normal", text: "営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。\nそれでも口ぶりは、相変わらず手厳しい。" },
-        { speaker: "ハキマ", expression: "normal", text: "「あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる」" },
-        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。\n星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
+        { speaker: "", expression: "normal", text: "ハキマはカウンターの向こうから、少しだけ顔をのぞき込む。" },
+        { speaker: "ハキマ", expression: "normal", text: "あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる" },
+        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。" },
+        { speaker: "", expression: "normal", text: "星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
       ]
     },
     bad: {
@@ -96,8 +98,11 @@ export const ENDINGS = {
       summary: "ダリヤは王宮の重圧から逃げるのではなく、星瓶堂で息を整えながら向き合う道を選ぶ。",
       pages: [
         { speaker: "", expression: "joy", text: "ダリヤは王宮を去らなかった。\nただし、もう一人で重さを抱え込むことはやめた。" },
-        { speaker: "ダリヤ", expression: "fun", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。\n茶を飲み、少し皮肉を言い、少しだけ笑う。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「私はまだ完璧ではない」\nダリヤは静かに言った。\n「だが、それを君に見られるのは、もう怖くない」" },
+        { speaker: "", expression: "normal", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。" },
+        { speaker: "", expression: "normal", text: "茶を飲み、少し皮肉を言い、少しだけ笑う。" },
+        { speaker: "ダリヤ", expression: "fun", text: "私はまだ完璧ではない" },
+        { speaker: "", expression: "normal", text: "ダリヤは静かに言った。" },
+        { speaker: "ダリヤ", expression: "joy", text: "だが、それを君に見られるのは、もう怖くない" },
         { speaker: "", expression: "joy", text: "夜の工房に、柔らかな灯がともる。\nその明かりは、王宮へ戻る彼女の背中を静かに支えていた。" }
       ]
     },
