@@ -1912,7 +1912,7 @@ const ResultScreen = ({
         {/* Title */}
         <h1 style={{
           ...titleStyle,
-          margin: '4px 0 0 4px',
+          margin: '40px 0 0 4px',
           color: THEME.parchment,
           fontSize: '1.15em',
           textAlign: 'left',
@@ -1935,40 +1935,47 @@ const ResultScreen = ({
           <div style={{
             display: 'flex',
             alignItems: 'flex-end',
-            gap: '8px',
-            marginBottom: '4px'
+            gap: '12px',
+            marginBottom: '4px',
+            justifyContent: 'center'
           }}>
             {HeroineDisplay && (
               <HeroineDisplay
                 heroine={activeHeroine}
                 type="standing"
-                size="medium"
+                size="large"
                 expression={getResultExpression(correctCount)}
                 noBorder={true}
                 objectPosition="center center"
                 style={{ 
                   filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
-                  maxHeight: '200px'
+                  maxHeight: '220px',
+                  transform: 'translateX(12px)'
                 }}
               />
             )}
 
-            {/* Speech Bubble */}
+            {/* Speech Bubble - Vertical Writing Mode Test */}
             <div style={{
-              marginTop: '8px',
+              marginTop: '12px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
-              padding: '10px 14px',
+              padding: '12px 16px',
               position: 'relative',
-              maxWidth: '200px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              maxWidth: '220px',
+              maxHeight: '180px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              writingMode: 'vertical-rl',
+              textOrientation: 'mixed',
+              lineHeight: '1.8'
             }}>
               {/* Bubble tail (pointing left toward heroine) */}
               <div style={{
                 position: 'absolute',
                 left: '-8px',
-                top: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
                 width: '0',
                 height: '0',
                 borderTop: '8px solid transparent',
@@ -1978,7 +1985,8 @@ const ResultScreen = ({
               <div style={{
                 position: 'absolute',
                 left: '-5px',
-                top: '17px',
+                top: '50%',
+                transform: 'translateY(-50%)',
                 width: '0',
                 height: '0',
                 borderTop: '7px solid transparent',
@@ -1986,10 +1994,11 @@ const ResultScreen = ({
                 borderRight: '7px solid rgba(244, 233, 213, 0.92)'
               }} />
               <div style={{
-                fontSize: '0.78em',
+                fontSize: '0.85em',
                 color: THEME.textDark,
-                lineHeight: '1.5',
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                height: '160px',
+                overflowY: 'auto'
               }}>
                 {comment}
               </div>
@@ -2003,7 +2012,7 @@ const ResultScreen = ({
             border: `2px solid ${THEME.brass}`,
             background: 'rgba(244, 233, 213, 0.98)',
             padding: '12px 16px',
-            marginTop: '-16px',
+            marginTop: '-12px',
             width: '94%',
             maxWidth: '340px',
             textAlign: 'center'
