@@ -454,7 +454,13 @@ export default function App() {
   const getMainCharacter = () => {
     if (screen === 'DAILY_TALK' && activeDailyTalk) {
       const currentPage = activeDailyTalk.pages?.[dailyTalkCurrentPage];
-      if (currentPage?.speakerId === 'nader') {
+      // Infer speakerId same way as VNBox pages mapping
+      let speakerId = currentPage?.speakerId;
+      if (!speakerId && currentPage?.speaker) {
+        if (currentPage.speaker === 'ナーディル') speakerId = 'nader';
+        else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
+      }
+      if (speakerId === 'nader') {
         return NADER;
       }
     }
@@ -1322,6 +1328,16 @@ export default function App() {
     );
   } else if (screen === 'DAILY_TALK' && activeDailyTalk) {
     // M-SCENARIO-DAILYTALK-RUNTIME-1: DailyTalk display screen (for after_result / day_end)
+    // M-DAILYTALK-NADIR-PRESENCE-2: Map pages with speakerId for consistent character display
+    const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map(page => {
+      let inferredId = page.speakerId;
+      if (!inferredId) {
+        if (page.speaker === 'ナーディル') inferredId = 'nader';
+        else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+      }
+      return { ...page, speakerId: inferredId };
+    });
+    
     mainContent = (
       <div 
         data-testid="daily-talk-screen" 
@@ -1348,8 +1364,8 @@ export default function App() {
             heroine={mainCharacter} 
             type="standing" 
             size="large" 
-            expression={activeDailyTalk.pages?.[dailyTalkCurrentPage]?.speakerId === mainCharacter.id 
-              ? (activeDailyTalk.pages?.[dailyTalkCurrentPage]?.expression || 'normal')
+            expression={dailyTalkPagesWithSpeakerId?.[dailyTalkCurrentPage]?.speakerId === mainCharacter.id 
+              ? (dailyTalkPagesWithSpeakerId?.[dailyTalkCurrentPage]?.expression || 'normal')
               : 'normal'}
             noBorder={true}
             style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
@@ -1382,15 +1398,8 @@ export default function App() {
           <div style={{ width: '100%', boxSizing: 'border-box', position: 'relative' }}>
             <VNBox 
               ref={vnRef}
-              speaker={activeDailyTalk.pages?.[0]?.speaker || ''}
-              pages={activeDailyTalk.pages.map(page => {
-                let inferredId = page.speakerId;
-                if (!inferredId) {
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
-                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-                }
-                return { ...page, speakerId: inferredId };
-              })}
+              speaker={dailyTalkPagesWithSpeakerId?.[0]?.speaker || ''}
+              pages={dailyTalkPagesWithSpeakerId}
               themeColor={mainCharacter.themeColor}
               speed={textSpeedMeta.delay}
               skip={shouldSkipTypewriter(isInstantTextSpeed, false)}
