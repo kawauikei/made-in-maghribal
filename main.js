@@ -1317,11 +1317,13 @@ const AFFECTION_EVENTS = {
       },
       summary: "優等生だったナーディルを一方的に気にしていたハキマは、若店主としての彼の見立てを試しながら、その成長を認め始める。",
       pages: [
-        { speaker: "ハキマ", expression: "anger", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。\n「今日は、あんたの目利きを見せてもらうから」" },
+        { speaker: "", expression: "normal", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。" },
+        { speaker: "ハキマ", expression: "anger", text: "今日は、あんたの目利きを見せてもらうから" },
         { speaker: "ナーディル", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nけれど用途を尋ねると、乾いた土と甘い樹脂の違いが少しずつ見えてきた。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "「……ふうん。品だけじゃなく、使う人まで見るんだ」\nハキマの耳が、ほんの少しだけ揺れる。" },
-        { speaker: "ナーディル", expression: "joy", text: "「優等生だった頃の癖かな。答えだけじゃなくて、理由まで知りたくなるんだ」" },
-        { speaker: "ハキマ", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。\n「まあ、今日のところは合格。少しだけ、頼りにしてあげる」" }
+        { speaker: "", expression: "sorrow", text: "「……ふうん。品だけじゃなく、使う人まで見るんだ」\nハキマの耳が、ほんの少しだけ揺れる。" },
+        { speaker: "ナーディル", expression: "joy", text: "優等生だった頃の癖かな。答えだけじゃなくて、理由まで知りたくなるんだ" },
+        { speaker: "", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。" },
+        { speaker: "ハキマ", expression: "joy", text: "まあ、今日のところは合格。少しだけ、頼りにしてあげる" }
       ],
       routePages: {
         long_history: [
@@ -1345,19 +1347,27 @@ const AFFECTION_EVENTS = {
       },
       summary: "素直になれないハキマは、ナーディルと同じ目線で品を選べたことに喜びを覚える。優等生だった彼を気にしていた過去が、少しだけにじむ。",
       pages: [
-        { speaker: "ハキマ", expression: "anger", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。\n「この配合、悪くないけど……客には少し強すぎるわね」" },
-        { speaker: "ナーディル", expression: "normal", text: "「薄めるなら、砂蜜よりも乾いた柑橘皮かな。香りが丸くなると思う」\n俺が言うと、ハキマは目を丸くした。" },
-        { speaker: "ハキマ", expression: "surprise", text: "「同じこと、考えてた。……先に言わないでよ」\nその声は不満そうなのに、耳だけは嬉しそうに立っている。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "「昔からそう。あんた、涼しい顔で正解に近づくから、見てるこっちが焦るのよ」" },
-        { speaker: "ハキマ", expression: "joy", text: "彼女は慌てて背を向ける。\n「見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから」" }
+        { speaker: "", expression: "normal", text: "市場の香料瓶を前に、ハキマは腕を組んでうなった。" },
+        { speaker: "ハキマ", expression: "anger", text: "この配合、悪くないけど……客には少し強すぎるわね" },
+        { speaker: "ナーディル", expression: "normal", text: "薄めるなら、砂蜜よりも乾いた柑橘皮かな。香りが丸くなると思う" },
+        { speaker: "", expression: "normal", text: "俺が言うと、ハキマは目を丸くした。" },
+        { speaker: "ハキマ", expression: "surprise", text: "同じこと、考えてた。……先に言わないでよ" },
+        { speaker: "", expression: "normal", text: "その声は不満そうなのに、耳だけは嬉しそうに立っている。" },
+        { speaker: "ハキマ", expression: "sorrow", text: "昔からそう。あんた、涼しい顔で正解に近づくから、見てるこっちが焦るのよ" },
+        { speaker: "", expression: "normal", text: "彼女は慌てて背を向ける。" },
+        { speaker: "ハキマ", expression: "joy", text: "見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ハキマ", expression: "surprise", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。\nハキマは目を丸くし、やがて呆れたように笑う。" },
-          { speaker: "ハキマ", expression: "normal", text: "「……昔は、あんたの方がいつも外してたのに」\n少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
-          { speaker: "ナーディル", expression: "fun", text: "「君に負けたくなくて、ずっと覚えていたからな。香りの強さも、瓶の癖も」" },
-          { speaker: "ハキマ", expression: "joy", text: "「やっと追いついてきたってことね。なら、これからは対等だ」\n狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
-          { speaker: "ハキマ", expression: "joy", text: "「言っとくけど、まだまだ負けないからね」\nその顔は、市場のどの灯りよりも眩しかった。" }
+          { speaker: "", expression: "normal", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。" },
+          { speaker: "", expression: "normal", text: "ハキマは目を丸くし、やがて呆れたように笑う。" },
+          { speaker: "ハキマ", expression: "normal", text: "……昔は、あんたの方がいつも外してたのに" },
+          { speaker: "", expression: "normal", text: "少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
+          { speaker: "ナーディル", expression: "fun", text: "君に負けたくなくて、ずっと覚えていたからな。香りの強さも、瓶の癖も" },
+          { speaker: "ハキマ", expression: "joy", text: "やっと追いついてきたってことね。なら、これからは対等だ" },
+          { speaker: "", expression: "normal", text: "狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
+          { speaker: "ハキマ", expression: "joy", text: "言っとくけど、まだまだ負けないからね" },
+          { speaker: "", expression: "normal", text: "その顔は、市場のどの灯りよりも眩しかった。" }
         ]
       }
     },
@@ -1569,11 +1579,15 @@ const AFFECTION_EVENTS = {
       ],
       routePages: {
         long_history: [
-          { speaker: "ミラ", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。\n「この式、先輩に何度も直してもらいましたね」" },
-          { speaker: "ミラ", expression: "sorrow", text: "「みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた」\n彼女の声は、少しだけ震えていた。" },
-          { speaker: "ナーディル", expression: "normal", text: "「俺は、君の迷い方が好きだったんだと思う。答えに向かって、ちゃんと考えていたから」" },
-          { speaker: "ミラ", expression: "surprise", text: "ミラは胸の前で帳面を抱きしめる。\n「そんなことを、昔から思ってくれていたんですか」" },
-          { speaker: "ミラ", expression: "joy", text: "「天才ではなく、ただの私として。……先輩の隣で、もう一度考えたいです」\nその笑顔は、少し照れくさそうだった。" }
+          { speaker: "", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。" },
+          { speaker: "ミラ", expression: "normal", text: "この式、先輩に何度も直してもらいましたね" },
+          { speaker: "ミラ", expression: "sorrow", text: "みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた" },
+          { speaker: "", expression: "normal", text: "彼女の声は、少しだけ震えていた。" },
+          { speaker: "ナーディル", expression: "normal", text: "俺は、君の迷い方が好きだったんだと思う。答えに向かって、ちゃんと考えていたから" },
+          { speaker: "", expression: "normal", text: "ミラは胸の前で帳面を抱きしめる。" },
+          { speaker: "ミラ", expression: "surprise", text: "そんなことを、昔から思ってくれていたんですか" },
+          { speaker: "ミラ", expression: "joy", text: "天才ではなく、ただの私として。……先輩の隣で、もう一度考えたいです" },
+          { speaker: "", expression: "normal", text: "その笑顔は、少し照れくさそうだった。" }
         ]
       }
     },
@@ -1590,19 +1604,27 @@ const AFFECTION_EVENTS = {
       },
       summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
       pages: [
-        { speaker: "ミラ", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。\n「この配合なら、もっと多くの人に届けられます」" },
-        { speaker: "ナーディル", expression: "sorrow", text: "けれど俺は、最後に客の手紙を読み返した。\n効率だけでは測れない願いが、そこには残っていた。" },
-        { speaker: "ミラ", expression: "fun", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。\n「商人の目だけでは、見落とすものがありますね」" },
-        { speaker: "ナーディル", expression: "normal", text: "「俺も、数字を見ないといけない。でも、手紙に残った迷いも無視したくないんだ」" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩の隣でなら、正解を出す前の私でいられます」\nその言葉は、星明かりよりも静かに輝いていた。" }
+        { speaker: "", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。" },
+        { speaker: "ミラ", expression: "normal", text: "この配合なら、もっと多くの人に届けられます" },
+        { speaker: "ナーディル", expression: "sorrow", text: "けれど俺は、最後に客の手紙を読み返した。" },
+        { speaker: "", expression: "normal", text: "効率だけでは測れない願いが、そこには残っていた。" },
+        { speaker: "", expression: "normal", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。" },
+        { speaker: "ミラ", expression: "fun", text: "商人の目だけでは、見落とすものがありますね" },
+        { speaker: "ナーディル", expression: "normal", text: "俺も、数字を見ないといけない。でも、手紙に残った迷いも無視したくないんだ" },
+        { speaker: "ミラ", expression: "joy", text: "先輩の隣でなら、正解を出す前の私でいられます" },
+        { speaker: "", expression: "normal", text: "その言葉は、星明かりよりも静かに輝いていた。" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ミラ", expression: "normal", text: "星空の下、ミラは帳面を閉じた。\n「昔から、先輩は私の答えより、考えている顔を見ていました」" },
-          { speaker: "ミラ", expression: "fun", text: "「それが少し悔しくて、でも、とても嬉しかったんです」\n彼女は夜風に揺れる布を押さえ、小さく笑う。" },
-          { speaker: "ナーディル", expression: "normal", text: "「君が答えを出す前の時間は、静かで綺麗だった。急かすのがもったいなかったんだ」" },
-          { speaker: "ミラ", expression: "joy", text: "「私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい」\nその瞳は、もう迷っていなかった。" },
-          { speaker: "ミラ", expression: "joy", text: "「先輩。これからも、私が答えを急ぎそうになったら止めてください」\nミラは照れながら、そっと隣に並んだ。" }
+          { speaker: "", expression: "normal", text: "星空の下、ミラは帳面を閉じた。" },
+          { speaker: "ミラ", expression: "normal", text: "昔から、先輩は私の答えより、考えている顔を見ていました" },
+          { speaker: "ミラ", expression: "fun", text: "それが少し悔しくて、でも、とても嬉しかったんです" },
+          { speaker: "", expression: "normal", text: "彼女は夜風に揺れる布を押さえ、小さく笑う。" },
+          { speaker: "ナーディル", expression: "normal", text: "君が答えを出す前の時間は、静かで綺麗だった。急かすのがもったいなかったんだ" },
+          { speaker: "ミラ", expression: "joy", text: "私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい" },
+          { speaker: "", expression: "normal", text: "その瞳は、もう迷っていなかった。" },
+          { speaker: "ミラ", expression: "joy", text: "先輩。これからも、私が答えを急ぎそうになったら止めてください" },
+          { speaker: "", expression: "normal", text: "ミラは照れながら、そっと隣に並んだ。" }
         ]
       }
     },
@@ -1810,19 +1832,27 @@ const AFFECTION_EVENTS = {
       },
       summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは少し息をつく。彼女はまだ頼りなく、倒れそうな疲れを隠しきれない。",
       pages: [
-        { speaker: "ダリヤ", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。\n「確認してほしいものがあって……少しだけ、いいかな」" },
-        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。\nナーディルは黙って椅子を引き、温かい茶を置く。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "ダリヤは茶に手を伸ばしかけて、小さく息を吐いた。\n「ごめんね。今日は少し、立っているのがつらくて」" },
-        { speaker: "ナーディル", expression: "sorrow", text: "「謝らなくていいです。まず座ってください。話は、それからで大丈夫です」" },
-        { speaker: "ダリヤ", expression: "joy", text: "その笑みは弱々しかったが、少しだけ安心していた。\n星瓶堂の夜は、どんな薬より静かに彼女を休ませた。" }
+        { speaker: "", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。" },
+        { speaker: "ダリヤ", expression: "normal", text: "確認してほしいものがあって……少しだけ、いいかな" },
+        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。" },
+        { speaker: "", expression: "normal", text: "ナーディルは黙って椅子を引き、温かい茶を置く。" },
+        { speaker: "", expression: "normal", text: "ダリヤは茶に手を伸ばしかけて、小さく息を吐いた。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "ごめんね。今日は少し、立っているのがつらくて" },
+        { speaker: "ナーディル", expression: "sorrow", text: "謝らなくていいです。まず座ってください。話は、それからで大丈夫です" },
+        { speaker: "", expression: "normal", text: "その笑みは弱々しかったが、少しだけ安心していた。" },
+        { speaker: "", expression: "normal", text: "星瓶堂の夜は、どんな薬より静かに彼女を休ませた。" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "normal", text: "ダリヤは扉を閉めるなり、小さく息を吐いた。\n「ナーディル、今日はもうだめ。少し座らせて」" },
-          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。\n彼女は本当に疲れた時だけ、この店の灯を思い出していた。" },
-          { speaker: "ナーディル", expression: "sorrow", text: "「大丈夫ですか、ダリヤさん。すぐ茶を淹れます」" },
-          { speaker: "ダリヤ", expression: "joy", text: "「そこは昔みたいに、お姉ちゃん、座ってて……でいいの」\n彼女は弱々しく笑いながら、いつもの席に腰を下ろした。" },
-          { speaker: "ナーディル", expression: "joy", text: "「分かりました。お姉ちゃん、座ってて。今日は俺が茶を淹れます」\nその言葉に、ダリヤはようやく安心したように目を閉じた。" }
+          { speaker: "", expression: "normal", text: "ダリヤは扉を閉めるなり、小さく息を吐いた。" },
+          { speaker: "ダリヤ", expression: "normal", text: "ナーディル、今日はもうだめ。少し座らせて" },
+          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。" },
+          { speaker: "", expression: "normal", text: "彼女は本当に疲れた時だけ、この店の灯を思い出していた。" },
+          { speaker: "ナーディル", expression: "sorrow", text: "大丈夫ですか、ダリヤさん。すぐ茶を淹れます" },
+          { speaker: "ダリヤ", expression: "joy", text: "そこは昔みたいに、お姉ちゃん、座ってて……でいいの" },
+          { speaker: "", expression: "normal", text: "彼女は弱々しく笑いながら、いつもの席に腰を下ろした。" },
+          { speaker: "ナーディル", expression: "joy", text: "分かりました。お姉ちゃん、座ってて。今日は俺が茶を淹れます" },
+          { speaker: "", expression: "normal", text: "その言葉に、ダリヤはようやく安心したように目を閉じた。" }
         ]
       }
     },
@@ -1839,19 +1869,24 @@ const AFFECTION_EVENTS = {
       },
       summary: "完璧でいようとして疲れきったダリヤが、ナーディルの前でだけ弱さを少し見せる。",
       pages: [
-        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。\nダリヤは手順書を閉じ、少しだけ目を押さえる。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "「完璧な配合なのに、どうしてこんなに冷たく感じるんだろう」\n彼女の声は、いつもの落ち着きよりずっと小さかった。" },
-        { speaker: "ナーディル", expression: "normal", text: "「使う人の顔が見えないから、かもしれません。星瓶堂では、そこを見失いたくないんです」" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "「君は簡単に言うね。……でも、そういう簡単なことが、今の私には難しい」" },
-        { speaker: "ダリヤ", expression: "joy", text: "「少しだけ、また君の店に行ってもいいかな。あそこなら、ちゃんと息ができる気がするの」" }
+        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。" },
+        { speaker: "", expression: "normal", text: "ダリヤは手順書を閉じ、少しだけ目を押さえる。" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "完璧な配合なのに、どうしてこんなに冷たく感じるんだろう" },
+        { speaker: "", expression: "normal", text: "彼女の声は、いつもの落ち着きよりずっと小さかった。" },
+        { speaker: "ナーディル", expression: "normal", text: "使う人の顔が見えないから、かもしれません。星瓶堂では、そこを見失いたくないんです" },
+        { speaker: "ダリヤ", expression: "sorrow", text: "君は簡単に言うね。……でも、そういう簡単なことが、今の私には難しい" },
+        { speaker: "ダリヤ", expression: "joy", text: "少しだけ、また君の店に行ってもいいかな。あそこなら、ちゃんと息ができる気がするの" }
       ],
       routePages: {
         long_history: [
-          { speaker: "ダリヤ", expression: "sorrow", text: "夜の検証室で、ダリヤはついに筆を置いた。\n「昔なら、もう少し上手に隠せたと思うんだけど」" },
-          { speaker: "", expression: "normal", text: "ナーディルは答えを急かさず、ただ隣に立った。\nその沈黙が、昔から彼女には何よりありがたかった。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "「今日は、強い先輩のふりができない。ナーディル、少しだけ甘えていい？」" },
-          { speaker: "ナーディル", expression: "normal", text: "「もちろんです。ここでは無理しなくていいです」" },
-          { speaker: "ダリヤ", expression: "joy", text: "「また敬語。……お姉ちゃんって呼んでくれたら、もっと元気になるのに」\n彼女は困ったように笑いながら、少しだけ肩を寄せた。" }
+          { speaker: "", expression: "normal", text: "夜の検証室で、ダリヤはついに筆を置いた。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "昔なら、もう少し上手に隠せたと思うんだけど" },
+          { speaker: "", expression: "normal", text: "ナーディルは答えを急かさず、ただ隣に立った。" },
+          { speaker: "", expression: "normal", text: "その沈黙が、昔から彼女には何よりありがたかった。" },
+          { speaker: "ダリヤ", expression: "sorrow", text: "今日は、強い先輩のふりができない。ナーディル、少しだけ甘えていい？" },
+          { speaker: "ナーディル", expression: "normal", text: "もちろんです。ここでは無理しなくていいです" },
+          { speaker: "ダリヤ", expression: "joy", text: "また敬語。……お姉ちゃんって呼んでくれたら、もっと元気になるのに" },
+          { speaker: "", expression: "normal", text: "彼女は困ったように笑いながら、少しだけ肩を寄せた。" }
         ]
       }
     },
@@ -11974,8 +12009,10 @@ const ENDINGS = {
       summary: "関係に大きな変化はないが、以前よりも確実に柔らかい空気が二人の間に流れている。",
       pages: [
         { speaker: "", expression: "normal", text: "営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。\nそれでも口ぶりは、相変わらず手厳しい。" },
-        { speaker: "ハキマ", expression: "normal", text: "「あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる」" },
-        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。\n星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
+        { speaker: "", expression: "normal", text: "ハキマはカウンターの向こうから、少しだけ顔をのぞき込む。" },
+        { speaker: "ハキマ", expression: "normal", text: "あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる" },
+        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。" },
+        { speaker: "", expression: "normal", text: "星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
       ]
     },
     bad: {
@@ -12043,8 +12080,11 @@ const ENDINGS = {
       summary: "ダリヤは王宮の重圧から逃げるのではなく、星瓶堂で息を整えながら向き合う道を選ぶ。",
       pages: [
         { speaker: "", expression: "joy", text: "ダリヤは王宮を去らなかった。\nただし、もう一人で重さを抱え込むことはやめた。" },
-        { speaker: "ダリヤ", expression: "fun", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。\n茶を飲み、少し皮肉を言い、少しだけ笑う。" },
-        { speaker: "ダリヤ", expression: "joy", text: "「私はまだ完璧ではない」\nダリヤは静かに言った。\n「だが、それを君に見られるのは、もう怖くない」" },
+        { speaker: "", expression: "normal", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。" },
+        { speaker: "", expression: "normal", text: "茶を飲み、少し皮肉を言い、少しだけ笑う。" },
+        { speaker: "ダリヤ", expression: "fun", text: "私はまだ完璧ではない" },
+        { speaker: "", expression: "normal", text: "ダリヤは静かに言った。" },
+        { speaker: "ダリヤ", expression: "joy", text: "だが、それを君に見られるのは、もう怖くない" },
         { speaker: "", expression: "joy", text: "夜の工房に、柔らかな灯がともる。\nその明かりは、王宮へ戻る彼女の背中を静かに支えていた。" }
       ]
     },
