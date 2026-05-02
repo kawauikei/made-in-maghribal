@@ -27,8 +27,8 @@ import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
-import { buildGameSavePayload, buildSettingsOnlySavePayload } from './game/savePayload';
-import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings, AUTO_SAVE_MODE } from './game/autoSavePolicy';
+import { buildGameSavePayload, buildSettingsOnlySavePayload, resolveAutoSavePayload } from './game/savePayload';
+import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings } from './game/autoSavePolicy';
 import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
@@ -492,8 +492,11 @@ export default function App() {
       hasExistingSave: Boolean(loadSaveData()),
     });
 
-    if (policy.mode === AUTO_SAVE_MODE.FULL) {
-      saveGameData(buildGameSavePayload({
+    const currentData = loadSaveData();
+    const payload = resolveAutoSavePayload({
+      policy,
+      existingSave: currentData,
+      fullSaveState: {
         screen: screen === 'EVENT' ? 'RESULT' : screen, // Fallback EVENT to RESULT for safety
         activeHeroineId,
         routeMode,
@@ -508,22 +511,22 @@ export default function App() {
         seenTalkIds,
         activeEvent,
         vnBacklog
-      }));
-      setHasSave(true);
-    } else if (policy.mode === AUTO_SAVE_MODE.SETTINGS_ONLY) {
-      const currentData = loadSaveData();
-      saveGameData(buildSettingsOnlySavePayload(currentData, {
+      },
+      settingsState: {
         routeMode,
         textSpeed,
         instantUnreadText,
         bgmVolume,
         seVolume,
         isAudioEnabled
-      }));
+      }
+    });
+
+    if (payload !== null) {
+      saveGameData(payload);
       setHasSave(true);
-    } else if (policy.mode === AUTO_SAVE_MODE.NONE) {
+    } else {
       // hasSave should only be true if it's a real game progress save
-      const currentData = loadSaveData();
       if (currentData && currentData.screen !== 'START') {
         setHasSave(true);
       } else {

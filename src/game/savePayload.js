@@ -105,3 +105,35 @@ export function buildSettingsOnlySavePayload(existingSave, settings) {
     ...buildSettingsSavePayload(settings),
   };
 }
+
+/**
+ * Resolve auto-save payload based on policy.
+ * Pure function: no side effects, no localStorage access.
+ * 
+ * @param {Object} params
+ * @param {{mode: "none" | "full" | "settings_only"}} params.policy - Auto-save policy
+ * @param {Object|null} params.existingSave - Existing save data from loadSaveData()
+ * @param {Object} params.fullSaveState - Full save state for FULL mode
+ * @param {Object} params.settingsState - Settings state for SETTINGS_ONLY mode
+ * @returns {Object|null} Save payload or null for NONE mode
+ */
+export function resolveAutoSavePayload({
+  policy,
+  existingSave,
+  fullSaveState,
+  settingsState,
+}) {
+  if (!policy || !policy.mode) {
+    return null;
+  }
+
+  switch (policy.mode) {
+    case "full":
+      return buildGameSavePayload(fullSaveState);
+    case "settings_only":
+      return buildSettingsOnlySavePayload(existingSave, settingsState);
+    case "none":
+    default:
+      return null;
+  }
+}

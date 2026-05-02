@@ -6,6 +6,7 @@ import {
   buildGameSavePayload,
   buildSettingsSavePayload,
   buildSettingsOnlySavePayload,
+  resolveAutoSavePayload,
 } from '../src/game/savePayload.js';
 
 console.log("\n--- Made in Maghribal: Save Payload Builder Tests ---");
@@ -199,6 +200,131 @@ try {
   assert.ok(!mergedKeys.includes('autoSkipQuiz'), 'Should not include autoSkipQuiz');
   assert.ok(!mergedKeys.includes('unlockAll'), 'Should not include unlockAll');
   console.log("PASSED: buildSettingsOnlySavePayload does not include Debug/Assist keys");
+
+  // Test: resolveAutoSavePayload with FULL policy
+  const fullSaveState = {
+    screen: 'RESULT',
+    activeHeroineId: 'hakima',
+    routeMode: 'normal',
+    workshopState: { day: 3, reputation: 10 },
+    affection: { hakima: 25 },
+    seenEventIds: ['hakima_5'],
+    seenTalkIds: ['talk_1'],
+    activeEvent: null,
+    vnBacklog: [{ speaker: 'Hakima', text: 'Hello', screen: 'INTRO' }],
+    textSpeed: 'fast',
+    instantUnreadText: true,
+    bgmVolume: 0.5,
+    seVolume: 0.6,
+    isAudioEnabled: true,
+  };
+  const fullPolicy = { mode: "full", shouldSave: true, shouldSetHasSave: true };
+  const fullResult = resolveAutoSavePayload({
+    policy: fullPolicy,
+    existingSave: null,
+    fullSaveState,
+    settingsState: {},
+  });
+  assert.deepStrictEqual(fullResult, buildGameSavePayload(fullSaveState));
+  assert.strictEqual(fullResult.screen, 'RESULT');
+  assert.strictEqual(fullResult.activeHeroineId, 'hakima');
+  console.log("PASSED: resolveAutoSavePayload with FULL policy");
+
+  // Test: resolveAutoSavePayload with SETTINGS_ONLY policy
+  const existingSaveForSettings = {
+    screen: 'RESULT',
+    activeHeroineId: 'hakima',
+    workshopState: { day: 5, reputation: 20 },
+    affection: { hakima: 50 },
+  };
+  const settingsState = {
+    routeMode: 'long_history',
+    textSpeed: 'fast',
+    instantUnreadText: true,
+    bgmVolume: 0.5,
+    seVolume: 0.6,
+    isAudioEnabled: true,
+  };
+  const settingsPolicy = { mode: "settings_only", shouldSave: true, shouldSetHasSave: true };
+  const settingsResult = resolveAutoSavePayload({
+    policy: settingsPolicy,
+    existingSave: existingSaveForSettings,
+    fullSaveState: {},
+    settingsState,
+  });
+  const expectedSettingsResult = buildSettingsOnlySavePayload(existingSaveForSettings, settingsState);
+  assert.deepStrictEqual(settingsResult, expectedSettingsResult);
+  assert.strictEqual(settingsResult.screen, 'RESULT', 'Should preserve screen from existingSave');
+  assert.strictEqual(settingsResult.routeMode, 'long_history', 'Should override routeMode');
+  console.log("PASSED: resolveAutoSavePayload with SETTINGS_ONLY policy");
+
+  // Test: resolveAutoSavePayload with SETTINGS_ONLY policy and null existingSave
+  const nullExistingPolicy = { mode: "settings_only", shouldSave: true, shouldSetHasSave: true };
+  const nullExistingResult = resolveAutoSavePayload({
+    policy: nullExistingPolicy,
+    existingSave: null,
+    fullSaveState: {},
+    settingsState,
+  });
+  const expectedNullExistingResult = buildSettingsOnlySavePayload(null, settingsState);
+  assert.deepStrictEqual(nullExistingResult, expectedNullExistingResult);
+  assert.strictEqual(Object.keys(nullExistingResult).length, 6, 'Should only have 6 settings keys');
+  console.log("PASSED: resolveAutoSavePayload with SETTINGS_ONLY policy and null existingSave");
+
+  // Test: resolveAutoSavePayload with NONE policy
+  const nonePolicy = { mode: "none", shouldSave: false, shouldSetHasSave: false };
+  const noneResult = resolveAutoSavePayload({
+    policy: nonePolicy,
+    existingSave: null,
+    fullSaveState: {},
+    settingsState: {},
+  });
+  assert.strictEqual(noneResult, null);
+  console.log("PASSED: resolveAutoSavePayload with NONE policy");
+
+  // Test: resolveAutoSavePayload with unknown mode returns null
+  const unknownPolicy = { mode: "unknown_mode" };
+  const unknownResult = resolveAutoSavePayload({
+    policy: unknownPolicy,
+    existingSave: null,
+    fullSaveState: {},
+    settingsState: {},
+  });
+  assert.strictEqual(unknownResult, null);
+  console.log("PASSED: resolveAutoSavePayload with unknown mode returns null");
+
+  // Test: resolveAutoSavePayload with null/undefined policy returns null
+  const nullPolicyResult = resolveAutoSavePayload({
+    policy: null,
+    existingSave: null,
+    fullSaveState: {},
+    settingsState: {},
+  });
+  assert.strictEqual(nullPolicyResult, null);
+  console.log("PASSED: resolveAutoSavePayload with null policy returns null");
+
+  const undefinedPolicyResult = resolveAutoSavePayload({
+    policy: undefined,
+    existingSave: null,
+    fullSaveState: {},
+    settingsState: {},
+  });
+  assert.strictEqual(undefinedPolicyResult, null);
+  console.log("PASSED: resolveAutoSavePayload with undefined policy returns null");
+
+  // Test: resolveAutoSavePayload does not include Debug/Assist keys in FULL mode
+  const fullResultKeys = Object.keys(fullResult);
+  assert.ok(!fullResultKeys.includes('debugMode'), 'Should not include debugMode');
+  assert.ok(!fullResultKeys.includes('autoSkipQuiz'), 'Should not include autoSkipQuiz');
+  assert.ok(!fullResultKeys.includes('unlockAll'), 'Should not include unlockAll');
+  console.log("PASSED: resolveAutoSavePayload does not include Debug/Assist keys in FULL mode");
+
+  // Test: resolveAutoSavePayload does not include Debug/Assist keys in SETTINGS_ONLY mode
+  const settingsResultKeys = Object.keys(settingsResult);
+  assert.ok(!settingsResultKeys.includes('debugMode'), 'Should not include debugMode');
+  assert.ok(!settingsResultKeys.includes('autoSkipQuiz'), 'Should not include autoSkipQuiz');
+  assert.ok(!settingsResultKeys.includes('unlockAll'), 'Should not include unlockAll');
+  console.log("PASSED: resolveAutoSavePayload does not include Debug/Assist keys in SETTINGS_ONLY mode");
 
   console.log("\n--- All save payload builder tests completed successfully! ---");
 } catch (err) {
