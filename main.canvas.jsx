@@ -18,7 +18,7 @@ import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings } fr
 import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
-import { prepareIntroSequence } from './game/introFlow';
+import { prepareIntroSequence, prepareResultTalkSequence, prepareDayEndTalkSequence } from './game/introFlow';
 import { AFFECTION_EVENTS } from './data/affectionEvents';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { ENDINGS } from './data/endings';
@@ -3209,6 +3209,7 @@ function App() {
   const [isRecallMode, setIsRecallMode] = useState(false);
   const [eventBackgroundOverride, setEventBackgroundOverride] = useState(null);
   const [activeGreeting, setActiveGreeting] = useState(null);
+  const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null); // M-SCENARIO-DAILYTALK-RUNTIME-1: Track next screen after DailyTalk
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -3703,19 +3704,37 @@ function App() {
       const nextDay = workshopState.day + 1;
       setWorkshopState(prev => ({ ...prev, day: nextDay }));
 
-      const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+      // M-SCENARIO-DAILYTALK-RUNTIME-1: Check for day_end DailyTalk before intro
+      const { talk: dayEndTalk, newSeenTalkIds: newDayEndTalkIds } = prepareDayEndTalkSequence({
         heroineId: activeHeroineId,
         currentAffection: affection[activeHeroineId] || 0,
         seenTalkIds,
         routeMode,
       });
-      setActiveGreeting(greeting);
-      setActiveDailyTalk(mergedTalk);
-      if (newSeenTalkIds.length > 0) {
-        setSeenTalkIds(prev => [...prev, ...newSeenTalkIds]);
-      }
 
-      setScreen('INTRO');
+      if (dayEndTalk) {
+        // Show day_end DailyTalk first, then go to INTRO
+        setActiveDailyTalk(dayEndTalk);
+        setDailyTalkNextScreen('INTRO');
+        if (newDayEndTalkIds.length > 0) {
+          setSeenTalkIds(prev => [...prev, ...newDayEndTalkIds]);
+        }
+        setScreen('DAILY_TALK');
+      } else {
+        // No day_end talk, go directly to intro with intro talk
+        const { greeting, mergedTalk, newSeenTalkIds } = prepareIntroSequence({
+          heroineId: activeHeroineId,
+          currentAffection: affection[activeHeroineId] || 0,
+          seenTalkIds,
+          routeMode,
+        });
+        setActiveGreeting(greeting);
+        setActiveDailyTalk(mergedTalk);
+        if (newSeenTalkIds.length > 0) {
+          setSeenTalkIds(prev => [...prev, ...newSeenTalkIds]);
+        }
+        setScreen('INTRO');
+      }
     }
   };
 
@@ -3754,13 +3773,41 @@ function App() {
     setScreen('QUIZ');
   };
 
+  const handleCloseDailyTalk = () => {
+    audioEngine.playSfx('uiTapBottle');
+    const nextScreen = dailyTalkNextScreen || 'DAY_END';
+    setDailyTalkNextScreen(null);
+    setActiveDailyTalk(null);
+    setScreen(nextScreen);
+  };
+
   // End of service, go to Day End (or Event)
+  // M-SCENARIO-DAILYTALK-RUNTIME-1: Check for after_result DailyTalk first
   const handleEndDay = () => {
     if (activeEvent) {
       setScreen('EVENT');
     } else {
-      audioEngine.playSfx('workshopDayEnd');
-      setScreen('DAY_END');
+      // Check for after_result DailyTalk before going to DAY_END
+      const { talk: resultTalk, newSeenTalkIds: newResultTalkIds } = prepareResultTalkSequence({
+        heroineId: activeHeroineId,
+        currentAffection: affection[activeHeroineId] || 0,
+        seenTalkIds,
+        routeMode,
+      });
+
+      if (resultTalk) {
+        // Show after_result DailyTalk first, then go to DAY_END
+        setActiveDailyTalk(resultTalk);
+        setDailyTalkNextScreen('DAY_END');
+        if (newResultTalkIds.length > 0) {
+          setSeenTalkIds(prev => [...prev, ...newResultTalkIds]);
+        }
+        setScreen('DAILY_TALK');
+      } else {
+        // No after_result talk, go directly to DAY_END
+        audioEngine.playSfx('workshopDayEnd');
+        setScreen('DAY_END');
+      }
     }
   };
 
@@ -4298,6 +4345,86 @@ function App() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
             <button onClick={handleNextDay} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px', margin: 0 }}>次の営業へ</button>
             <button onClick={handleBackToTitle} className="vn-button-reveal" style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '280px', margin: 0 }}>タイトルへ戻る</button>
+          </div>
+        </div>
+      </div>
+    );
+  } else if (screen === 'DAILY_TALK' && activeDailyTalk) {
+    // M-SCENARIO-DAILYTALK-RUNTIME-1: DailyTalk display screen (for after_result / day_end)
+    mainContent = (
+      <div 
+        data-testid="daily-talk-screen" 
+        style={{ ...containerStyle, position: 'relative', overflow: 'hidden' }}
+        onClick={handleVnAreaClick}
+      >
+        {renderThemeStyles()}
+        {renderBackground(screen === 'DAILY_TALK' ? 'shopInteriorService' : screen)}
+        
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '8%', 
+          left: 0,
+          width: '100%',
+          zIndex: 2, 
+          pointerEvents: 'none', 
+          height: '77%',
+          display: 'flex', 
+          alignItems: 'flex-end', 
+          justifyContent: 'center',
+          filter: 'drop-shadow(0 0 15px rgba(0,0,0,0.3))'
+        }}>
+          <HeroineDisplay 
+            heroine={activeHeroine} 
+            type="standing" 
+            size="large" 
+            expression="normal" 
+            noBorder={true}
+            style={{ height: '100%', width: 'auto', boxShadow: 'none' }}
+          />
+        </div>
+
+        <div style={{ zIndex: 5, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <GameHud 
+            screen={screen} 
+            routeMode={routeMode} 
+            onOpenLog={() => setShowLog(true)} 
+            onOpenOptions={() => setShowOptions(true)} 
+            onOpenHelp={() => setShowHelp(true)} 
+          />
+          <div style={{ flex: '1 1 auto' }} />
+        </div>
+
+        <div style={{ 
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 6,
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
+        }}>
+          <div style={{ width: '100%', boxSizing: 'border-box', position: 'relative' }}>
+            <VNBox 
+              ref={vnRef}
+              speaker={activeDailyTalk.pages?.[0]?.speaker || ''}
+              pages={activeDailyTalk.pages.map(page => {
+                let inferredId = page.speakerId;
+                if (!inferredId) {
+                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
+                }
+                return { ...page, speakerId: inferredId };
+              })}
+              themeColor={activeHeroine.themeColor}
+              speed={textSpeedMeta.delay}
+              skip={shouldSkipTypewriter(isInstantTextSpeed, false)}
+              getFaceIcon={getFaceIcon}
+              onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'DAILY_TALK' })}
+              onComplete={handleCloseDailyTalk}
+            />
           </div>
         </div>
       </div>
