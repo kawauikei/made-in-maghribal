@@ -1174,8 +1174,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "帳面の数字を指でなぞる。今日の売上げは、まずまずだ。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも、数字より客の笑顔の方が記憶に残るな。" }
+      { speaker: "ナーディル", expression: "normal", text: "帳面を閉じて、今日の売上を確かめる。" },
+      { speaker: "ナーディル", expression: "joy", text: "……まあまあだな。明日もこの調子でいこう。" }
     ]
   },
   {
@@ -1188,8 +1188,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つずつ並べ直す。位置は毎日同じでいい。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "変わらないことが、変わることより難しいんだ。" }
+      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つずつ確認して、明日の準備をしておく。" },
+      { speaker: "ナーディル", expression: "joy", text: "これで明日の朝も、すぐ営業を始められる。" }
     ]
   },
   {
@@ -1202,9 +1202,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
-      { speaker: "ナーディル", expression: "normal", text: "熟成前の樹脂か。星瓶堂なら乾燥瓶に分けて、香りの変化を見ながら置けると思う。" },
-      { speaker: "ハキマ", expression: "fun", text: "頼もしいじゃない。誰かさんみたいに扱いにくい香材だけど、ちゃんと見てあげなさいよ。" }
+      { speaker: "ナーディル", expression: "normal", text: "閉店後の静けさが、店内に広がる。" },
+      { speaker: "ナーディル", expression: "sorrow", text: "……ふと、父さんのことを思い出す。元気かな。" }
     ]
   },
   {
@@ -1217,8 +1216,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "朝の光が棚に積もる埃を浮かび上がらせる。" },
-      { speaker: "ナーディル", expression: "joy", text: "父さんはこれを「星の粉」って呼んでたっけ。" }
+      { speaker: "ナーディル", expression: "normal", text: "朝一番に、棚の埃を拭いた。細かい瓶の隙間は、少し面倒だけど。" },
+      { speaker: "ナーディル", expression: "joy", text: "でも、光に透かすと気持ちいいくらい綺麗に見える。開店の準備は、これでよし。" }
     ]
   },
   {
@@ -1231,8 +1230,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "錠前の音が、朝の通りに小さく響く。" },
-      { speaker: "ナーディル", expression: "normal", text: "今日も星瓶堂は、変わらずここにある。" }
+      { speaker: "ナーディル", expression: "normal", text: "店の鍵を開ける音が、朝の街に小さく響く。" },
+      { speaker: "ナーディル", expression: "joy", text: "今日も星瓶堂は、ちゃんと始まった。" }
     ]
   },
   {
@@ -1245,8 +1244,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "瓶の列を指でなぞる。冷たいガラスが、朝の温度を返す。" },
-      { speaker: "ナーディル", expression: "fun", text: "今日の客は、どんな音を求めてくるんだろう。" }
+      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を並べ直す。順番は、父さんのやり方を少し変えただけ。" },
+      { speaker: "ナーディル", expression: "fun", text: "使いやすさ重視で。これで俺らしい棚になったと思う。" }
     ]
   },
   {
@@ -1259,8 +1258,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "新しい帳面を開く。白いページが、朝の光を吸い込んでいる。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "父さんの帳面は、もっと早く埋まったものだな。" }
+      { speaker: "ナーディル", expression: "normal", text: "帳面を開いて、今日の仕入れを確認。" },
+      { speaker: "ナーディル", expression: "joy", text: "……よし、問題なさそうだ。営業を始めよう。" }
     ]
   },
   {
@@ -1449,8 +1448,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "客が帰った後、店内を見渡す。" },
-      { speaker: "ナーディル", expression: "joy", text: "品たちが少し喜んでいるように見える。" }
+      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来た。相手のことを考えて、少し丁寧に。" },
+      { speaker: "ナーディル", expression: "joy", text: "星瓶堂の品で、誰かが喜んでくれる。それが一番嬉しいな。" }
     ]
   },
   {
@@ -1463,8 +1462,8 @@ export const DAILY_TALKS = [
     minAffection: 0,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "閉店後の風が、店の入り口を優しく撫でる。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "父さんも、こんな夜が好きだったのかな。" }
+      { speaker: "ナーディル", expression: "normal", text: "帰りに、夜の風が少し涼しくなったのを感じる。" },
+      { speaker: "ナーディル", expression: "joy", text: "明日もいい天気だといいな。" }
     ]
   },
   {
@@ -1702,8 +1701,8 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父さんが残した帳面を、今日は開いてみる。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "昔の客の名前が、まだ色あせずに残っている。" }
+      { speaker: "ナーディル", expression: "normal", text: "父さんからまた写真が届いた。今回は、海港都市の朝焼けだって。" },
+      { speaker: "ナーディル", expression: "joy", text: "……元気そうだ。俺もここで、ちゃんとやってるよ。" }
     ]
   },
   {
@@ -1716,8 +1715,8 @@ export const DAILY_TALKS = [
     minAffection: 5,
     priority: 1,
     pages: [
-      { speaker: "ナーディル", expression: "normal", text: "星瓶堂は、父から俺へ、そして明日へと続いていく。" },
-      { speaker: "ナーディル", expression: "joy", text: "その連鎖の真ん中に、俺がいるんだ。" }
+      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を並べながら、父さんのやり方を少し思い出した。" },
+      { speaker: "ナーディル", expression: "joy", text: "……俺なりのやり方で、続けていこうと思う。" }
     ]
   },
   {

@@ -10,7 +10,7 @@ export const GREETING_VARIATIONS = [
   {
     id: "greet_sunny",
     theme: "sunny_day",
-    monologue: "（今日もいい天気だ。この日差しなら、ガラス瓶の輝きも一段と増すだろうな……）",
+    monologue: "（いい天気だな。これだけ光があると、棚の瓶もいつもより少し得意そうに見える）",
     heroineReactions: {
       hakima: {
         arrival: "来たわよ、ナーディル。店先の瓶、今日はずいぶん光ってるじゃない。……磨き方だけは合格ね。",
@@ -29,7 +29,7 @@ export const GREETING_VARIATIONS = [
   {
     id: "greet_hot",
     theme: "hot_day",
-    monologue: "（……暑い。砂漠の朝は早いというが、今日は一段と厳しいな。冷えた水が恋しい……）",
+    monologue: "（……暑い。今日は冷えた香草水を多めに用意しておこう。俺が先に飲み切らないようにしないとな）",
     heroineReactions: {
       hakima: {
         arrival: "少し顔が赤いわよ。砂の熱に負けてたら、香りの違いも見落とすんだから。",
@@ -48,7 +48,7 @@ export const GREETING_VARIATIONS = [
   {
     id: "greet_calm",
     theme: "calm_day",
-    monologue: "（今日は風が穏やかだな。街の喧騒もどこか遠くに感じる。……さて、営業の準備だ）",
+    monologue: "（今日は風が静かだ。瓶の鳴る音までよく聞こえる。こういう日は、棚を整えるだけで少し楽しい）",
     heroineReactions: {
       hakima: {
         arrival: "今日は風が静かね。こういう日は、乾いた香材の癖がよく出るわ。棚、見せてもらうわよ。",
@@ -67,7 +67,7 @@ export const GREETING_VARIATIONS = [
   {
     id: "greet_cloudy",
     theme: "cloudy_day",
-    monologue: "（曇りか……。だが、こういう日の方が影が消えて、宝石の地色がよく見えるんだよな）",
+    monologue: "（曇りの日は地味だけど、石や瓶の色は見やすい。派手じゃない分、仕事はしやすいかもな）",
     heroineReactions: {
       hakima: {
         arrival: "曇りの日に素材を眺めてるなんて、珍しいわね。何か見えるものでもあるの？",
