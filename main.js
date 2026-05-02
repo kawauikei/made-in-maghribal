@@ -10256,6 +10256,25 @@ function buildSettingsOnlySavePayload(existingSave, settings) {
     ...buildSettingsSavePayload(settings)
   };
 }
+function resolveAutoSavePayload({
+  policy,
+  existingSave,
+  fullSaveState,
+  settingsState
+}) {
+  if (!policy || !policy.mode) {
+    return null;
+  }
+  switch (policy.mode) {
+    case "full":
+      return buildGameSavePayload(fullSaveState);
+    case "settings_only":
+      return buildSettingsOnlySavePayload(existingSave, settingsState);
+    case "none":
+    default:
+      return null;
+  }
+}
 const AUTO_SAVE_MODE = {
   NONE: "none",
   FULL: "full",
@@ -11075,8 +11094,11 @@ function App() {
       }),
       hasExistingSave: Boolean(loadSaveData())
     });
-    if (policy.mode === AUTO_SAVE_MODE.FULL) {
-      saveGameData(buildGameSavePayload({
+    const currentData = loadSaveData();
+    const payload = resolveAutoSavePayload({
+      policy,
+      existingSave: currentData,
+      fullSaveState: {
         screen: screen === "EVENT" ? "RESULT" : screen,
         // Fallback EVENT to RESULT for safety
         activeHeroineId,
@@ -11092,21 +11114,20 @@ function App() {
         seenTalkIds,
         activeEvent,
         vnBacklog
-      }));
-      setHasSave(true);
-    } else if (policy.mode === AUTO_SAVE_MODE.SETTINGS_ONLY) {
-      const currentData = loadSaveData();
-      saveGameData(buildSettingsOnlySavePayload(currentData, {
+      },
+      settingsState: {
         routeMode,
         textSpeed,
         instantUnreadText,
         bgmVolume,
         seVolume,
         isAudioEnabled
-      }));
+      }
+    });
+    if (payload !== null) {
+      saveGameData(payload);
       setHasSave(true);
-    } else if (policy.mode === AUTO_SAVE_MODE.NONE) {
-      const currentData = loadSaveData();
+    } else {
       if (currentData && currentData.screen !== "START") {
         setHasSave(true);
       } else {
