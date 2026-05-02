@@ -120,6 +120,55 @@ async function main() {
   assert.deepStrictEqual(p5, [{ speaker: "", expression: "normal", text: 'Normal text' }], 'Missing routeMode should fallback to normal text');
   console.log('PASSED: getEventPages fallback for missing routeMode');
 
+  // --- backgroundId Preservation Tests (M-EVENT-BACKGROUND-SWITCH-FIX-1) ---
+  console.log('\nTesting backgroundId preservation...');
+
+  const mockEventWithBg = {
+    pages: [
+      { speaker: 'Test', text: 'Page 1', backgroundId: 'shopExteriorDay' },
+      { speaker: 'Test', text: 'Page 2', backgroundId: 'shopExteriorNight' },
+      { speaker: 'Test', text: 'Page 3' } // No backgroundId
+    ]
+  };
+  const p6 = getEventPages(mockEventWithBg, 'normal');
+  assert.strictEqual(p6.length, 3, 'Should return all 3 pages');
+  assert.strictEqual(p6[0].backgroundId, 'shopExteriorDay', 'First page should have backgroundId');
+  assert.strictEqual(p6[1].backgroundId, 'shopExteriorNight', 'Second page should have backgroundId');
+  assert.strictEqual(p6[2].backgroundId, undefined, 'Third page should not have backgroundId');
+  console.log('PASSED: getEventPages preserves backgroundId from pages array');
+
+  const mockEventLongWithBg = {
+    routePages: {
+      long_history: [
+        { speaker: 'Test', text: 'IF Page 1', backgroundId: 'marketCentral' },
+        { speaker: 'Test', text: 'IF Page 2', backgroundId: 'spotFountain' }
+      ]
+    }
+  };
+  const p7 = getEventPages(mockEventLongWithBg, 'long_history');
+  assert.strictEqual(p7.length, 2, 'Should return both IF pages');
+  assert.strictEqual(p7[0].backgroundId, 'marketCentral', 'First IF page should have backgroundId');
+  assert.strictEqual(p7[1].backgroundId, 'spotFountain', 'Second IF page should have backgroundId');
+  console.log('PASSED: getEventPages preserves backgroundId from routePages.long_history');
+
+  // Test with real event data
+  const realEvent = getEventsByHeroine('hakima').find(e => e.id === 'hakima_0');
+  assert.ok(realEvent, 'hakima_0 should exist');
+  const realPages = getEventPages(realEvent, 'normal');
+  assert.ok(realPages.length > 0, 'Should have pages');
+  const pagesWithBg = realPages.filter(p => p.backgroundId);
+  assert.ok(pagesWithBg.length > 0, 'Should have pages with backgroundId');
+  console.log(`PASSED: Real event hakima_0 has ${pagesWithBg.length} pages with backgroundId`);
+
+  // Test long_history event with background
+  const longEvent = getEventsByHeroine('dariya').find(e => e.id === 'dariya_long_palace_break');
+  assert.ok(longEvent, 'dariya_long_palace_break should exist');
+  const longPages = getEventPages(longEvent, 'long_history');
+  assert.ok(longPages.length > 0, 'Should have long_history pages');
+  // Check if presentation.backgroundId exists at event level (fallback)
+  assert.ok(longEvent.presentation?.backgroundId, 'Event should have presentation.backgroundId');
+  console.log('PASSED: Real long_history event has pages and presentation.backgroundId');
+
   // --- Story Definition Structure Checks ---
   const allEvents = Object.values(AFFECTION_EVENTS).flat();
   const seenIds = new Set();

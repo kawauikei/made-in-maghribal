@@ -37,7 +37,7 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, r
  * 
  * @param {Object} event - The event object
  * @param {string} routeMode - 'normal' or 'long_history'
- * @returns {Array} Array of page objects { speaker, expression, text }
+ * @returns {Array} Array of page objects { speaker, expression, text, backgroundId? }
  */
 export function getEventPages(event, routeMode) {
   if (!event) return [{ speaker: "", expression: "normal", text: "" }];
@@ -70,7 +70,8 @@ export function getEventPages(event, routeMode) {
     return {
       speaker: page.speaker !== undefined ? page.speaker : "",
       expression: page.expression || "normal",
-      text: page.text || ""
+      text: page.text || "",
+      ...(page.backgroundId ? { backgroundId: page.backgroundId } : {})
     };
   });
 }
