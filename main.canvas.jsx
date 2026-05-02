@@ -1934,35 +1934,34 @@ const ResultScreen = ({
           {/* Heroine Standing + Speech Bubble */}
           <div style={{
             display: 'flex',
-            alignItems: 'flex-start',
-            gap: '4px',
-            marginBottom: '8px'
+            alignItems: 'flex-end',
+            gap: '8px',
+            marginBottom: '4px'
           }}>
             {HeroineDisplay && (
               <HeroineDisplay
                 heroine={activeHeroine}
                 type="standing"
-                size="large"
+                size="medium"
                 expression={getResultExpression(correctCount)}
                 noBorder={true}
-                objectPosition="center 60%"
+                objectPosition="center center"
                 style={{ 
                   filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
-                  maxHeight: '280px'
+                  maxHeight: '200px'
                 }}
               />
             )}
 
             {/* Speech Bubble */}
             <div style={{
-              marginTop: '16px',
-              marginLeft: '-20px',
+              marginTop: '8px',
               background: 'rgba(244, 233, 213, 0.92)',
               border: `1.5px solid ${THEME.brass}`,
               borderRadius: '12px',
               padding: '10px 14px',
               position: 'relative',
-              maxWidth: '180px',
+              maxWidth: '200px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}>
               {/* Bubble tail (pointing left toward heroine) */}
@@ -2004,7 +2003,7 @@ const ResultScreen = ({
             border: `2px solid ${THEME.brass}`,
             background: 'rgba(244, 233, 213, 0.98)',
             padding: '12px 16px',
-            marginTop: '-24px',
+            marginTop: '-16px',
             width: '94%',
             maxWidth: '340px',
             textAlign: 'center'
@@ -2993,23 +2992,23 @@ const TimePhaseBadge = ({ timePhase }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
-        padding: '4px 10px',
-        background: `rgba(12, 25, 38, 0.85)`,
-        border: `1px solid ${phase.color}77`,
+        padding: '3px 8px',
+        background: `rgba(12, 25, 38, 0.9)`,
+        border: `1px solid ${phase.color}99`,
         borderRadius: '999px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
         backdropFilter: 'blur(4px)',
-        maxWidth: '120px',
+        maxWidth: '100px',
         pointerEvents: 'none',
-        userSelect: 'none'
+        userSelect: 'none',
+        fontSize: '0.7em'
       }}
     >
       {phase.icon && (
-        <span style={{ fontSize: '1.1em', lineHeight: 1 }}>{phase.icon}</span>
+        <span style={{ fontSize: '1em', lineHeight: 1 }}>{phase.icon}</span>
       )}
       <span
         style={{
-          fontSize: '0.75em',
           fontWeight: 'bold',
           color: phase.color,
           letterSpacing: '0.05em',

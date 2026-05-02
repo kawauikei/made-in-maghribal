@@ -19,23 +19,23 @@ const TimePhaseBadge = ({ timePhase }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
-        padding: '4px 10px',
-        background: `rgba(12, 25, 38, 0.85)`,
-        border: `1px solid ${phase.color}77`,
+        padding: '3px 8px',
+        background: `rgba(12, 25, 38, 0.9)`,
+        border: `1px solid ${phase.color}99`,
         borderRadius: '999px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
         backdropFilter: 'blur(4px)',
-        maxWidth: '120px',
+        maxWidth: '100px',
         pointerEvents: 'none',
-        userSelect: 'none'
+        userSelect: 'none',
+        fontSize: '0.7em'
       }}
     >
       {phase.icon && (
-        <span style={{ fontSize: '1.1em', lineHeight: 1 }}>{phase.icon}</span>
+        <span style={{ fontSize: '1em', lineHeight: 1 }}>{phase.icon}</span>
       )}
       <span
         style={{
-          fontSize: '0.75em',
           fontWeight: 'bold',
           color: phase.color,
           letterSpacing: '0.05em',
