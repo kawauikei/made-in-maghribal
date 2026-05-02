@@ -240,7 +240,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
                       width: '48px', height: '48px', borderRadius: '8px', overflow: 'hidden', 
                       border: `1px solid ${THEME.brass}88`, background: '#0c1926' 
                     }}>
-                      <img src={facePath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'auto', backfaceVisibility: 'hidden' }} />
+                      <img src={facePath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'auto', backfaceVisibility: 'hidden', filter: 'blur(0.12px) contrast(0.99)' }} />
                     </div>
                   ) : (
                     <div style={{ 
@@ -933,7 +933,8 @@ const MemoriesScreen = ({
     border: `2px solid ${THEME.brass}`,
     background: THEME.sand,
     imageRendering: 'auto',
-    backfaceVisibility: 'hidden'
+    backfaceVisibility: 'hidden',
+    filter: 'blur(0.12px) contrast(0.99)'
   };
 
   const thumbnailStyle = {
@@ -944,7 +945,8 @@ const MemoriesScreen = ({
     border: `1px solid ${THEME.brass}`,
     flexShrink: 0,
     imageRendering: 'auto',
-    backfaceVisibility: 'hidden'
+    backfaceVisibility: 'hidden',
+    filter: 'blur(0.12px) contrast(0.99)'
   };
 
   const memoryItemStyle = (heroineThemeColor) => ({
@@ -2649,7 +2651,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                     zIndex: 1,
                     animation: 'vn-fade-out 0.2s forwards',
                     imageRendering: 'auto',
-                    backfaceVisibility: 'hidden'
+                    backfaceVisibility: 'hidden',
+                    filter: 'blur(0.12px) contrast(0.99)'
                   }}
                 />
               )}
@@ -2673,7 +2676,8 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
                   opacity: isFaceLoaded ? 1 : 0,
                   animation: isFaceLoaded ? 'vn-fade-in 0.2s ease' : 'none',
                   imageRendering: 'auto',
-                  backfaceVisibility: 'hidden'
+                  backfaceVisibility: 'hidden',
+                  filter: 'blur(0.12px) contrast(0.99)'
                 }}
                 draggable={false}
                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -4854,7 +4858,10 @@ function App() {
                 objectFit: still.stillCrop?.objectFit || 'cover',
                 objectPosition: still.stillCrop?.mode === 'heroine_pan'
                   ? still.stillCrop.startPosition || '50% 50%'
-                  : still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+                  : still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`,
+                imageRendering: 'auto',
+                backfaceVisibility: 'hidden',
+                filter: 'blur(0.12px) contrast(0.99)'
               }}
               onError={(e) => {
                 e.target.style.display = 'none';

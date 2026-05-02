@@ -1587,7 +1587,10 @@ export default function App() {
                 objectFit: still.stillCrop?.objectFit || 'cover',
                 objectPosition: still.stillCrop?.mode === 'heroine_pan'
                   ? still.stillCrop.startPosition || '50% 50%'
-                  : still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`
+                  : still.stillCrop?.objectPosition || `${(still.focusX ?? 0.5) * 100}% ${(still.focusY ?? 0.5) * 100}%`,
+                imageRendering: 'auto',
+                backfaceVisibility: 'hidden',
+                filter: 'blur(0.12px) contrast(0.99)'
               }}
               onError={(e) => {
                 e.target.style.display = 'none';

@@ -68,7 +68,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
                       width: '48px', height: '48px', borderRadius: '8px', overflow: 'hidden', 
                       border: `1px solid ${THEME.brass}88`, background: '#0c1926' 
                     }}>
-                      <img src={facePath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'auto', backfaceVisibility: 'hidden' }} />
+                      <img src={facePath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'auto', backfaceVisibility: 'hidden', filter: 'blur(0.12px) contrast(0.99)' }} />
                     </div>
                   ) : (
                     <div style={{ 
