@@ -1413,6 +1413,25 @@ const AFFECTION_EVENTS = {
           { speaker: "ハキマ", expression: "joy", text: "今さら気づいたなら、遅れた分だけちゃんと空けておきなさい。星瓶堂の隣、私が立つんだから。" }
         ]
       }
+    },
+    {
+      id: "hakima_long_market_dawn",
+      heroineId: "hakima",
+      routeMode: "long_history",
+      threshold: 10,
+      kind: "long_history_still",
+      title: "市場の朝駆け",
+      stillImageId: "hakimaMarketArgument01",
+      presentation: {
+        backgroundId: "marketCentral",
+        bgmId: "HAKIMA-01"
+      },
+      summary: "昔、市場開き前に二人で香材を買い付けた朝。値切り合いの末、店主に笑われた思い出。",
+      pages: [
+        { speaker: "ハキマ", expression: "normal", text: "……懐かしいわね。昔、あんたと市場で香材の値切り合いをしたこと。" },
+        { speaker: "ナーディル", expression: "fun", text: "俺たちが言い争っている間に、店主が笑ってたっけ。" },
+        { speaker: "ハキマ", expression: "joy", text: "ふん。でも、あの朝の光はきれいだった。……悪くない思い出よ。" }
+      ]
     }
   ],
   mira: [
@@ -1571,6 +1590,25 @@ const AFFECTION_EVENTS = {
           { speaker: "ミラ", expression: "joy", text: "……昔から、先輩の前では正解の前の私でいられました。今も、その場所に帰ってきたいんです。" }
         ]
       }
+    },
+    {
+      id: "mira_long_assignment_night",
+      heroineId: "mira",
+      routeMode: "long_history",
+      threshold: 10,
+      kind: "long_history_still",
+      title: "課題の夜更け",
+      stillImageId: "miraAssignmentConsult01",
+      presentation: {
+        backgroundId: "spotFountain",
+        bgmId: "MIRA-01"
+      },
+      summary: "大学の課題で行き詰まったミラが、先輩のノートを借りて徹夜した夜。朝には二人で解決していた。",
+      pages: [
+        { speaker: "ミラ", expression: "sorrow", text: "先輩、この課題……どうしても解けなくて。" },
+        { speaker: "ナーディル", expression: "normal", text: "俺のノートでよければ、使ってくれ。" },
+        { speaker: "ミラ", expression: "joy", text: "……朝には解けていました。先輩と一緒に考えられて、良かったです。" }
+      ]
     }
   ],
   dariya: [
@@ -1723,12 +1761,31 @@ const AFFECTION_EVENTS = {
       routePages: {
         long_history: [
           { speaker: "ダリヤ", expression: "sorrow", text: "昔、一度だけ君に言ったな。特別でなくなった私は、何者でいればいいのだろうと。" },
-          { speaker: "ナーディル", expression: "normal", text: "覚えています. 俺はその時、何も立派な答えを返せなかった。茶を出すくらいしかできなくて。" },
+          { speaker: "ナーディル", expression: "normal", text: "覚えています。俺はその時、何も立派な答えを返せなかった。茶を出すくらいしかできなくて。" },
           { speaker: "ダリヤ", expression: "cry", text: "それで十分だった。君は私を慰めず、責めず、ただ座らせてくれた。" },
           { speaker: "ナーディル", expression: "sorrow", text: "今も同じです。完璧でいられない日も、ここではダリヤさんとして座ってくれればいい。" },
           { speaker: "ダリヤ", expression: "joy", text: "……なら、あの時と同じ茶をもらおう。立ち上がるのは、それを飲んでからにする。" }
         ]
       }
+    },
+    {
+      id: "dariya_long_collaboration",
+      heroineId: "dariya",
+      routeMode: "long_history",
+      threshold: 10,
+      kind: "long_history_still",
+      title: "共同研究の記憶",
+      stillImageId: "dariyaPalaceCollaboration01",
+      presentation: {
+        backgroundId: "palaceLab",
+        bgmId: "DARIYA-01"
+      },
+      summary: "学生時代、王宮の研究施設で一緒に実験した日。ナーディルの自由な発想が、ダリヤの堅実さを補った。",
+      pages: [
+        { speaker: "ダリヤ", expression: "normal", text: "……懐かしいな。学生時代、王宮で一緒に実験した日。" },
+        { speaker: "ナーディル", expression: "fun", text: "ダリヤさんの堅実さと、俺の自由な発想。悪くない組み合わせでした。" },
+        { speaker: "ダリヤ", expression: "joy", text: "ふん。今もその組み合わせは、生きているだろう？" }
+      ]
     }
   ]
 };
@@ -3442,10 +3499,12 @@ const DAILY_TALKS = [
     ]
   }
 ];
-function checkNewEventUnlock(heroineId, currentAffection, seenEventIds) {
+function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode) {
   const events = getEventsByHeroine(heroineId);
   const eligibleEvents = events.filter(
-    (event) => event.kind !== "flashback_intro" && event.kind !== "route_climax" && currentAffection >= event.threshold && !seenEventIds.includes(event.id)
+    (event) => event.kind !== "flashback_intro" && event.kind !== "route_climax" && currentAffection >= event.threshold && !seenEventIds.includes(event.id) && // routeMode filter: if event has routeMode, it must match
+    // if event has no routeMode, it's treated as 'both' (matches any)
+    (!event.routeMode || event.routeMode === "both" || event.routeMode === routeMode)
   );
   if (eligibleEvents.length === 0) return null;
   return eligibleEvents.sort((a, b) => a.threshold - b.threshold)[0];
@@ -10961,13 +11020,14 @@ function resolveQuizCompletion({
   totalCount,
   activeHeroineId,
   currentAffection,
-  seenEventIds
+  seenEventIds,
+  routeMode
 }) {
   const rank = getRankInfo(correctCount);
   const affectionGain = calculateQuizAffectionGain(correctCount, totalCount);
   const workshopResult = getWorkshopResult(correctCount);
   const nextAffectionValue = currentAffection + affectionGain;
-  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds);
+  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds, routeMode);
   return {
     correctCount,
     totalCount,
@@ -10980,13 +11040,14 @@ function resolveQuizCompletion({
     isPerfect: correctCount === totalCount
   };
 }
-function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds) {
+function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode) {
   return resolveQuizCompletion({
     correctCount: totalCount,
     totalCount,
     activeHeroineId,
     currentAffection,
-    seenEventIds
+    seenEventIds,
+    routeMode
   });
 }
 function getResultExpression(correctCount) {
@@ -12142,7 +12203,8 @@ function App() {
           totalCount,
           activeHeroineId,
           affection[activeHeroineId] || 0,
-          seenEventIds
+          seenEventIds,
+          routeMode
         );
         applyQuizResultState(result);
       }, 500);
@@ -12740,7 +12802,8 @@ function App() {
       totalCount,
       activeHeroineId,
       currentAffection: affection[activeHeroineId] || 0,
-      seenEventIds
+      seenEventIds,
+      routeMode
     });
     applyQuizResultState(result);
   };
