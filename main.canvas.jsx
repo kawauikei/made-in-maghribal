@@ -26,6 +26,7 @@ import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
 import { COLOR_BY_ID } from './data/principles';
 import { GENRE_BY_ID, ITEM_TYPE_BY_ID } from './data/itemTypes';
+import { resolveTimePhase, TIME_PHASES } from './game/timePhase';
 
 
 
@@ -2968,6 +2969,56 @@ function DebugPanel({
 }
 
 
+// --- Inlined: TimePhaseBadge ---
+
+/**
+ * TimePhaseBadge Component
+ * Displays the current time phase (morning/opening/closing/night) in the top-left corner.
+ */
+const TimePhaseBadge = ({ timePhase }) => {
+  if (!timePhase || timePhase.key === 'none') {
+    return null;
+  }
+
+  const phase = TIME_PHASES[timePhase.key.toUpperCase()] || timePhase;
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '4px 10px',
+        background: `rgba(12, 25, 38, 0.85)`,
+        border: `1px solid ${phase.color}77`,
+        borderRadius: '999px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+        backdropFilter: 'blur(4px)',
+        maxWidth: '120px',
+        pointerEvents: 'none',
+        userSelect: 'none'
+      }}
+    >
+      {phase.icon && (
+        <span style={{ fontSize: '1.1em', lineHeight: 1 }}>{phase.icon}</span>
+      )}
+      <span
+        style={{
+          fontSize: '0.75em',
+          fontWeight: 'bold',
+          color: phase.color,
+          letterSpacing: '0.05em',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        {phase.label}
+      </span>
+    </div>
+  );
+};
+
+
+
 function App() {
   const [session, setSession] = useState(null);
   const [screen, setScreen] = useState('START');
@@ -3053,6 +3104,7 @@ function App() {
   const [activeGreeting, setActiveGreeting] = useState(null);
   const [dailyTalkNextScreen, setDailyTalkNextScreen] = useState(null); // M-SCENARIO-DAILYTALK-RUNTIME-1: Track next screen after DailyTalk
   const [dailyTalkCurrentPage, setDailyTalkCurrentPage] = useState(0); // Track current page index for expression sync
+  const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE); // M-TIME-PHASE-UI-1: Current time phase
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -3286,6 +3338,12 @@ function App() {
   useEffect(() => {
     audioEngine.setMuted(!isAudioEnabled);
   }, [isAudioEnabled]);
+
+  // M-TIME-PHASE-UI-1: Update time phase based on screen and context
+  useEffect(() => {
+    const phase = resolveTimePhase(screen, activeDailyTalk, isRecallMode);
+    setCurrentTimePhase(phase);
+  }, [screen, activeDailyTalk, isRecallMode]);
 
   // Handle BGM per screen
   useEffect(() => {
@@ -4796,6 +4854,10 @@ function App() {
       {renderThemeStyles()}
       <div style={canvasContainerStyle}>
         <div style={canvasStyle}>
+          {/* M-TIME-PHASE-UI-1: Time Phase Badge (Top-Left) */}
+          <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 1000, pointerEvents: 'none' }}>
+            <TimePhaseBadge timePhase={currentTimePhase} />
+          </div>
           {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
           {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
           
