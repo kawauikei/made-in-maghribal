@@ -3921,7 +3921,15 @@ const ResultScreen = ({
     },
     renderThemeStyles && renderThemeStyles(),
     renderBackground && renderBackground(screen),
-    /* @__PURE__ */ React.createElement("div", { style: { zIndex: 10, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", padding: "0 8px" } }, /* @__PURE__ */ React.createElement(
+    /* @__PURE__ */ React.createElement("div", { style: {
+      zIndex: 10,
+      position: "relative",
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      padding: "0 8px"
+    } }, /* @__PURE__ */ React.createElement(
       GameHud,
       {
         screen,
@@ -3947,10 +3955,12 @@ const ResultScreen = ({
       minWidth: 0
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
-      alignItems: "flex-end",
+      alignItems: "center",
       gap: "12px",
       marginBottom: "4px",
-      justifyContent: "center"
+      justifyContent: "center",
+      minHeight: "250px",
+      overflow: "visible"
     } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
       HeroineDisplay2,
       {
@@ -3959,26 +3969,34 @@ const ResultScreen = ({
         size: "large",
         expression: getResultExpression2(correctCount),
         noBorder: true,
-        objectPosition: "center 45%",
+        objectPosition: "center center",
         style: {
           filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
-          maxHeight: "240px",
-          transform: "translateX(12px)"
+          maxHeight: "none",
+          overflow: "visible",
+          transform: "translateX(12px) scale(0.88)",
+          transformOrigin: "center bottom"
         }
       }
     ), /* @__PURE__ */ React.createElement("div", { style: {
-      marginTop: "12px",
+      marginTop: "0",
       background: "rgba(244, 233, 213, 0.92)",
       border: `1.5px solid ${THEME.brass}`,
       borderRadius: "12px",
-      padding: "10px 14px",
+      padding: "12px 10px",
       position: "relative",
-      maxWidth: "220px",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
+      width: "84px",
+      minHeight: "168px",
+      maxHeight: "190px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       left: "-8px",
-      top: "16px",
+      top: "50%",
+      transform: "translateY(-50%)",
       width: "0",
       height: "0",
       borderTop: "8px solid transparent",
@@ -3987,17 +4005,25 @@ const ResultScreen = ({
     } }), /* @__PURE__ */ React.createElement("div", { style: {
       position: "absolute",
       left: "-5px",
-      top: "17px",
+      top: "50%",
+      transform: "translateY(-50%)",
       width: "0",
       height: "0",
       borderTop: "7px solid transparent",
       borderBottom: "7px solid transparent",
       borderRight: "7px solid rgba(244, 233, 213, 0.92)"
     } }), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.85em",
+      fontSize: "0.86em",
       color: THEME.textDark,
-      lineHeight: "1.5",
-      fontStyle: "italic"
+      lineHeight: "1.9",
+      fontStyle: "normal",
+      fontWeight: 600,
+      letterSpacing: "0.04em",
+      writingMode: "vertical-rl",
+      textOrientation: "mixed",
+      maxHeight: "178px",
+      overflow: "hidden",
+      fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif'
     } }, comment))), /* @__PURE__ */ React.createElement("div", { style: {
       ...cardStyle2,
       borderRadius: "10px",
@@ -4008,7 +4034,16 @@ const ResultScreen = ({
       width: "94%",
       maxWidth: "340px",
       textAlign: "center"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.4em", fontWeight: "900", color: THEME.brassDark, lineHeight: 1.2 } }, session.score, " 点"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#666", marginBottom: "6px" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "1.4em",
+      fontWeight: "900",
+      color: THEME.brassDark,
+      lineHeight: 1.2
+    } }, session.score, " 点"), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.75em",
+      color: "#666",
+      marginBottom: "6px"
+    } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
       gap: "4px",
@@ -4016,7 +4051,19 @@ const ResultScreen = ({
       padding: "6px 4px",
       borderRadius: "6px",
       marginBottom: "6px"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.95em",
+      fontWeight: "bold",
+      color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844"
+    } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.95em",
+      fontWeight: "bold",
+      color: THEME.brassDark
+    } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.95em",
+      fontWeight: "bold",
+      color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844"
+    } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("div", { style: {
       fontSize: "0.85em",
       fontWeight: "bold",
       color: activeHeroine.themeColor,
