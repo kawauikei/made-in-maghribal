@@ -4,7 +4,7 @@ export const REQUEST_TEMPLATES = [
     templates: [
       "夜の砂漠を照らす、{color}の導きが要る。",
       "祝祭を彩る、{color}の品を頼むよ。",
-      "旅の夜を共にする、{color}の術理を頼む。",
+      "朝日に映える、{color}の光が欲しい。",
       "工房の棚に映える、{color}のものが要る。"
     ]
   },
@@ -13,7 +13,7 @@ export const REQUEST_TEMPLATES = [
     templates: [
       "旅支度の{genre}を一つ見立ててくれ。",
       "市場では得られない、上質な{genre}が要る。",
-      "大学へ届ける、確かな{genre}を頼む。",
+      "大学の研究に、確かな{genre}を頼む。",
       "砂嵐の中でも保存の利く{genre}が要る。"
     ]
   },
@@ -31,7 +31,7 @@ export const REQUEST_TEMPLATES = [
     templates: [
       "王宮へ届ける、{color}の{type}が要る。",
       "旅の守りに、{color}の{type}を頼む。",
-      "市場で見かけた{color}の{type}が忘れられなくて。",
+      "星図に合う、{color}の{type}を探している。",
       "何か{color}の{type}はないかな？"
     ]
   }
