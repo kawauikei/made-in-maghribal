@@ -13762,14 +13762,45 @@ function App() {
     }
   } else if (screen === "EVENT" && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
-    const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+    const rawEventPages = getEventPages(activeEvent, routeMode);
+    const normalizeSpeakerName = (value) => String(value || "").trim();
+    const getActiveHeroineSpeakerNames = () => {
+      var _a2, _b2;
+      const canonicalShortNames = {
+        hakima: "ハキマ",
+        mira: "ミラ",
+        dariya: "ダリヤ"
+      };
+      return new Set([
+        activeHeroine == null ? void 0 : activeHeroine.name,
+        activeHeroine == null ? void 0 : activeHeroine.displayName,
+        activeHeroine == null ? void 0 : activeHeroine.shortName,
+        activeHeroine == null ? void 0 : activeHeroine.jpName,
+        activeHeroine == null ? void 0 : activeHeroine.label,
+        (_b2 = (_a2 = activeHeroine == null ? void 0 : activeHeroine.name) == null ? void 0 : _a2.split("・")) == null ? void 0 : _b2[0],
+        canonicalShortNames[activeHeroine == null ? void 0 : activeHeroine.id]
+      ].filter(Boolean).map(normalizeSpeakerName));
+    };
+    const activeHeroineSpeakerNames = getActiveHeroineSpeakerNames();
+    const inferEventSpeakerId = (page) => {
+      if (page == null ? void 0 : page.speakerId) return page.speakerId;
+      const speakerName = normalizeSpeakerName(page == null ? void 0 : page.speaker);
+      if (speakerName === "ナーディル") return "nader";
+      if (activeHeroine && activeHeroineSpeakerNames.has(speakerName)) return activeHeroine.id;
+      return null;
+    };
+    const eventPagesWithSpeakerId = rawEventPages.map((page) => ({
+      ...page,
+      speakerId: inferEventSpeakerId(page)
+    }));
+    const currentEventPage = eventPagesWithSpeakerId[eventCurrentPageIndex];
     const currentPageExpression = (currentEventPage == null ? void 0 : currentEventPage.expression) || "normal";
     const resolveEventMainCharacter = (page) => {
       if (!page) return null;
-      if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+      if (activeHeroine && page.speakerId === activeHeroine.id) {
         return activeHeroine;
       }
-      if (page.speakerId === "nader" || page.speaker === "ナーディル") {
+      if (page.speakerId === "nader") {
         return NADER;
       }
       return null;
@@ -13797,7 +13828,7 @@ function App() {
           zIndex: 1e3,
           pointerEvents: "none",
           transform: bgTransitionPhase === "covering" ? "translateX(0%)" : bgTransitionPhase === "covered" ? "translateX(0%)" : "translateX(100%)",
-          transition: "transform 0.4s ease-in-out"
+          transition: "transform 0.55s ease-in-out"
         } }),
         /* @__PURE__ */ React.createElement("div", { style: {
           position: "absolute",
@@ -13852,13 +13883,7 @@ function App() {
           {
             ref: vnRef,
             speaker: activeEvent.speaker,
-            pages: getEventPages(activeEvent, routeMode).map((page) => {
-              if (page.speakerId) return page;
-              let inferredId = null;
-              if (page.speaker === "ナーディル") inferredId = "nader";
-              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-              return { ...page, speakerId: inferredId };
-            }),
+            pages: eventPagesWithSpeakerId,
             themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
@@ -13866,8 +13891,7 @@ function App() {
             onPageChange: (index) => {
               var _a2;
               setEventCurrentPageIndex(index);
-              const pages = getEventPages(activeEvent, routeMode);
-              const page = pages[index];
+              const page = eventPagesWithSpeakerId[index];
               if (page == null ? void 0 : page.expression) {
                 setEventHeroineExpression(page.expression);
               }
@@ -13884,8 +13908,8 @@ function App() {
                     setTimeout(() => {
                       setBgTransitionPhase("idle");
                     }, 450);
-                  }, 100);
-                }, 400);
+                  }, 120);
+                }, 550);
               } else if (newBgId) {
                 prevEventBackgroundRef.current = newBgId;
               }
@@ -13993,21 +14017,14 @@ function App() {
           {
             ref: vnRef,
             speaker: activeEvent.speaker,
-            pages: getEventPages(activeEvent, routeMode).map((page) => {
-              if (page.speakerId) return page;
-              let inferredId = null;
-              if (page.speaker === "ナーディル") inferredId = "nader";
-              else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
-              return { ...page, speakerId: inferredId };
-            }),
+            pages: eventPagesWithSpeakerId,
             themeColor: (eventMainCharacter == null ? void 0 : eventMainCharacter.themeColor) || activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
             skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
               setEventCurrentPageIndex(index);
-              const pages = getEventPages(activeEvent, routeMode);
-              const page = pages[index];
+              const page = eventPagesWithSpeakerId[index];
               if (page == null ? void 0 : page.expression) {
                 setEventHeroineExpression(page.expression);
               }
