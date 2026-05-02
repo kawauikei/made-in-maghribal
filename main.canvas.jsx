@@ -4729,31 +4729,31 @@ function App() {
   } else if (screen === 'EVENT' && activeEvent) {
     const still = activeEvent.stillImageId ? STILL_IMAGES[activeEvent.stillImageId] : null;
 
+    // M-EVENT-PRESENTATION-FIX-4: Resolve main character for current page (heroine priority) - shared for both normal/still
+    const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
+    const currentPageExpression = currentEventPage?.expression || 'normal';
+    
+    const resolveEventMainCharacter = (page) => {
+      if (!page) return null;
+      // M-EVENT-PRESENTATION-FIX-4: Heroine takes priority over Nader
+      if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
+        return activeHeroine;
+      }
+      // Check for Nader
+      if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
+        return NADER;
+      }
+      // Narration or unknown speaker
+      return null;
+    };
+    
+    const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
+    const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
+    // M-EVENT-PRESENTATION-FIX-4: Use expression from current page for current character
+    const currentCharacterExpression = eventMainCharacter ? currentPageExpression : 'normal';
+
     if (!still) {
       // Normal Event: Intro Style (Standing Image + Fixed Bottom VNBox)
-      // M-EVENT-PRESENTATION-FIX-4: Resolve main character for current page (heroine priority)
-      const currentEventPage = getEventPages(activeEvent, routeMode)[eventCurrentPageIndex];
-      const currentPageExpression = currentEventPage?.expression || 'normal';
-      
-      const resolveEventMainCharacter = (page) => {
-        if (!page) return null;
-        // M-EVENT-PRESENTATION-FIX-4: Heroine takes priority over Nader
-        if (activeHeroine && (page.speakerId === activeHeroine.id || page.speaker === activeHeroine.name)) {
-          return activeHeroine;
-        }
-        // Check for Nader
-        if (page.speakerId === 'nader' || page.speaker === 'ナーディル') {
-          return NADER;
-        }
-        // Narration or unknown speaker
-        return null;
-      };
-      
-      const eventMainCharacter = resolveEventMainCharacter(currentEventPage);
-      const shouldShowEventCharacter = eventMainCharacter !== null && !activeEvent.stillImageId;
-      // M-EVENT-PRESENTATION-FIX-4: Use expression from current page for current character
-      const currentCharacterExpression = eventMainCharacter ? currentPageExpression : 'normal';
-      
       mainContent = (
         <div 
           data-testid="event-screen-normal" 
@@ -5012,29 +5012,7 @@ function App() {
                     setEventHeroineExpression(page.expression);
                   }
                   setEventSpeakerId(page?.speakerId || null);
-                  
-                  // M-EVENT-PRESENTATION-FIX-2/4: Curtain slide transition for background changes (slowed down)
-                  const newBgId = page?.backgroundId || prevEventBackgroundRef.current || activeEvent.presentation?.backgroundId;
-                  if (newBgId && newBgId !== eventBackgroundOverride && bgTransitionPhase === "idle") {
-                    // Start curtain slide: covering phase (400ms)
-                    setBgTransitionPhase("covering");
-                    setTimeout(() => {
-                      // Covered phase - switch background
-                      setBgTransitionPhase("covered");
-                      setEventBackgroundOverride(newBgId);
-                      prevEventBackgroundRef.current = newBgId;
-                      setTimeout(() => {
-                        // Revealing phase (450ms)
-                        setBgTransitionPhase("revealing");
-                        setTimeout(() => {
-                          // Done - back to idle
-                          setBgTransitionPhase("idle");
-                        }, 450); // Reveal duration
-                      }, 100); // Hold covered briefly
-                    }, 400); // Cover duration
-                  } else if (newBgId) {
-                    prevEventBackgroundRef.current = newBgId;
-                  }
+                  // Note: Still events don't trigger background transitions - the still image is the background
                 }}
                 onPageComplete={(data) => appendVnBacklog({ ...data, screen: 'EVENT' })}
                 onComplete={handleCloseEvent}
