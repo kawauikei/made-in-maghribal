@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { THEME } from '../theme';
 
 export const DEFAULT_NOTE_INTERVAL_MS = 750;
-export const DEFAULT_JUDGMENT_WINDOW_MS = 200;
+export const DEFAULT_JUDGMENT_WINDOW_MS = 140;
 const DEFAULT_TRAVEL_DURATION_MS = 2000;
 const DEFAULT_LANE_HEIGHT = 58;
 export const DEFAULT_RHYTHM_PHASE_OFFSET_MS = DEFAULT_TRAVEL_DURATION_MS / 2;
@@ -155,8 +155,8 @@ export default function RhythmMock({
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '36px',
-          height: '36px',
+          width: '28px',
+          height: '28px',
           borderRadius: '50%',
           border: `2px solid ${THEME.starGold}`,
           background: isRhythmHit ? 'rgba(255, 219, 128, 0.24)' : 'rgba(255, 255, 255, 0.14)',
@@ -171,8 +171,8 @@ export default function RhythmMock({
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '56px',
-          height: '56px',
+          width: '44px',
+          height: '44px',
           borderRadius: '50%',
           background: isRhythmHit
             ? `radial-gradient(circle, ${THEME.starGold}30 0%, transparent 68%)`

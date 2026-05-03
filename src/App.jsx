@@ -895,7 +895,7 @@ export default function App() {
       judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
       phaseOffsetMs: DEFAULT_RHYTHM_PHASE_OFFSET_MS,
     });
-    const fast = answeredAt - quizQuestionStartAtRef.current <= 5000;
+    const fast = answeredAt - quizQuestionStartAtRef.current <= 3000;
     const updatedSession = answerQuestion(session, itemId, {
       rhythmGood,
       fast
