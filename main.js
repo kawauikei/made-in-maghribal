@@ -1,4 +1,4 @@
-import React, { useRef, forwardRef, useState, useEffect, useImperativeHandle, useCallback } from "react";
+import React, { useRef, forwardRef, useState, useEffect, useImperativeHandle, useMemo, useCallback } from "react";
 const THEME = {
   sand: "#e2d1b1",
   parchment: "#f4e9d5",
@@ -5363,6 +5363,184 @@ function CustomerSilhouette({ customer }) {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
 }
+const DEFAULT_NOTE_INTERVAL_MS = 500;
+const DEFAULT_JUDGMENT_WINDOW_MS = 140;
+const DEFAULT_RHYTHM_BONUS_GOLD = 20;
+const DEFAULT_TRAVEL_DURATION_MS = 2e3;
+const DEFAULT_LANE_HEIGHT = 58;
+function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS) {
+  const phase = now % noteIntervalMs;
+  return phase < 0 ? phase + noteIntervalMs : phase;
+}
+function getIsRhythmHitNow({
+  now = Date.now(),
+  noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS,
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS
+} = {}) {
+  const phase = getRhythmPhaseMs(now, noteIntervalMs);
+  return phase <= judgmentWindowMs || phase >= noteIntervalMs - judgmentWindowMs;
+}
+function RhythmMock({
+  heroineId,
+  themeColor,
+  noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS,
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
+  travelDurationMs = DEFAULT_TRAVEL_DURATION_MS,
+  laneHeight = DEFAULT_LANE_HEIGHT
+}) {
+  const naderFace = `./characters/nader/face_proc/normal.png`;
+  const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    let frame = 0;
+    const tick = () => {
+      setNow(Date.now());
+      frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+  const isRhythmHit = getIsRhythmHitNow({ now, noteIntervalMs, judgmentWindowMs });
+  const noteStartIndex = Math.floor((now - travelDurationMs) / noteIntervalMs) - 1;
+  const noteEndIndex = Math.floor((now + 200) / noteIntervalMs) + 2;
+  const notes = useMemo(() => {
+    const items2 = [];
+    for (let index = noteStartIndex; index <= noteEndIndex; index += 1) {
+      const spawnTime = index * noteIntervalMs;
+      const age = now - spawnTime;
+      const progress = age / travelDurationMs;
+      if (progress < -0.15 || progress > 1.15) continue;
+      const left = 108 - progress * 116;
+      const distanceToTarget = Math.abs(left - 50);
+      items2.push({
+        index,
+        left,
+        isTargeting: distanceToTarget <= 4,
+        isVisible: progress >= 0 && progress <= 1
+      });
+    }
+    return items2;
+  }, [now, noteStartIndex, noteEndIndex, noteIntervalMs, travelDurationMs]);
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    width: "100%",
+    minHeight: `${laneHeight}px`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px",
+    margin: "0",
+    padding: "0 4px",
+    pointerEvents: "none",
+    userSelect: "none",
+    position: "relative"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    width: "72%",
+    height: "100%",
+    background: `radial-gradient(ellipse at center, ${THEME.brass}12 0%, transparent 72%)`,
+    zIndex: 0
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "38px",
+    height: "38px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `2px solid ${THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    opacity: 0.8,
+    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
+  } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    flex: 1,
+    maxWidth: "460px",
+    height: "32px",
+    background: "linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02))",
+    border: `1px solid ${THEME.brass}20`,
+    borderRadius: "999px",
+    position: "relative",
+    overflow: "hidden",
+    zIndex: 1
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    width: "100%",
+    height: "2px",
+    background: `linear-gradient(to right, transparent, ${THEME.brass} 14%, ${THEME.brass} 86%, transparent)`,
+    top: "50%",
+    transform: "translateY(-50%)"
+  } }), [14, 28, 72, 86].map((pos) => /* @__PURE__ */ React.createElement("div", { key: pos, style: {
+    position: "absolute",
+    left: `${pos}%`,
+    width: "5px",
+    height: "5px",
+    transform: "rotate(45deg)",
+    background: THEME.brass,
+    boxShadow: `0 0 4px ${THEME.brass}88`,
+    opacity: 0.25
+  } })), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "4px",
+    left: "50%",
+    bottom: "4px",
+    width: "3px",
+    transform: "translateX(-50%)",
+    background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
+    boxShadow: `0 0 10px ${THEME.starGold}`,
+    opacity: isRhythmHit ? 0.95 : 0.72,
+    zIndex: 2
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "28px",
+    height: "28px",
+    borderRadius: "50%",
+    border: `2px solid ${THEME.starGold}`,
+    background: isRhythmHit ? "rgba(255, 219, 128, 0.24)" : "rgba(255, 255, 255, 0.14)",
+    boxShadow: isRhythmHit ? `0 0 18px ${THEME.starGold}cc` : `0 0 10px ${THEME.starGold}66`,
+    zIndex: 3
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "44px",
+    height: "44px",
+    borderRadius: "50%",
+    background: isRhythmHit ? `radial-gradient(circle, ${THEME.starGold}30 0%, transparent 68%)` : `radial-gradient(circle, ${THEME.starGold}18 0%, transparent 72%)`,
+    zIndex: 1
+  } }), notes.map((note) => /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      key: note.index,
+      style: {
+        position: "absolute",
+        left: `${note.left}%`,
+        top: "50%",
+        width: note.isTargeting ? "5px" : "4px",
+        height: note.isTargeting ? "28px" : "22px",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "999px",
+        background: note.isTargeting ? `linear-gradient(180deg, ${THEME.starGold}, ${themeColor || THEME.brass})` : `linear-gradient(180deg, rgba(255,255,255,0.88), rgba(221, 194, 128, 0.72))`,
+        boxShadow: note.isTargeting ? `0 0 10px ${THEME.starGold}88` : "0 0 5px rgba(255,255,255,0.16)",
+        opacity: note.isVisible ? 0.96 : 0.52,
+        zIndex: note.isTargeting ? 4 : 2
+      }
+    }
+  ))), /* @__PURE__ */ React.createElement("div", { style: {
+    width: "38px",
+    height: "38px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `2px solid ${themeColor || THEME.brass}`,
+    background: "rgba(35, 25, 18, 0.9)",
+    boxShadow: `0 0 12px ${themeColor || THEME.brass}88`,
+    flexShrink: 0,
+    zIndex: 2,
+    transition: "transform 0.3s"
+  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })));
+}
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
     GameHud,
@@ -5496,7 +5674,7 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
     justifyContent: "space-between"
   } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria })))));
 }
-function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked }) {
+function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
   const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
   const feedbackClass = isSelected ? quizFeedback.isCorrect ? "feedback-correct" : "feedback-wrong" : "";
   const staggerClass = `quiz-option-${index}`;
@@ -5512,11 +5690,11 @@ function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardSty
     {
       "data-testid": "quiz-choice",
       key: item.id,
-      onClick: () => !isLocked && onSelectChoice(item.id),
+      onClick: () => onSelectChoice(item.id),
       className: `item-card ${staggerClass} ${feedbackClass}`,
       style: {
         ...itemCardStyle2,
-        pointerEvents: quizFeedback || isLocked ? "none" : "auto"
+        pointerEvents: quizFeedback ? "none" : "auto"
       }
     },
     /* @__PURE__ */ React.createElement(
@@ -5535,7 +5713,7 @@ function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardSty
     /* @__PURE__ */ React.createElement("div", { style: itemNameStyle2 }, displayChoiceName)
   );
 }
-function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType, isLocked }) {
+function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
   return /* @__PURE__ */ React.createElement("div", { className: "choice-container", style: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
@@ -5554,216 +5732,9 @@ function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: 
       itemCardStyle: itemCardStyle2,
       imageStyle: imageStyle2,
       itemNameStyle: itemNameStyle2,
-      requestType,
-      isLocked
+      requestType
     }
   )));
-}
-const DEFAULT_BAR_INTERVAL_MS = 1e3;
-const DEFAULT_SCROLL_SPEED_PX_PER_SEC = 300;
-const DEFAULT_FIRST_BAR_OFFSET_MS = 0;
-const DEFAULT_ANSWER_UNLOCK_DELAY_MS = 1e3;
-const DEFAULT_JUDGMENT_WINDOW_MS = 140;
-function RhythmMockBeatLane({
-  variant = "debug",
-  barIntervalMs = DEFAULT_BAR_INTERVAL_MS,
-  scrollSpeedPxPerSec = DEFAULT_SCROLL_SPEED_PX_PER_SEC,
-  firstBarOffsetMs = DEFAULT_FIRST_BAR_OFFSET_MS,
-  answerUnlockDelayMs = DEFAULT_ANSWER_UNLOCK_DELAY_MS,
-  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
-  laneWidth = 400,
-  laneHeight = 80,
-  showDebugInfo = true,
-  bpm
-  // Reference only, not used for timing calculation
-}) {
-  const isQuizVariant = variant === "quiz";
-  const showDebugPanel = showDebugInfo && !isQuizVariant;
-  const showDebugLabels = showDebugInfo && !isQuizVariant;
-  const showQuizBonusLabel = isQuizVariant;
-  const containerRef = useRef(null);
-  const rafRef = useRef(null);
-  const [beatData, setBeatData] = useState({
-    currentTime: 0,
-    barPosition: 0,
-    barProgress: 0,
-    barsPassed: 0,
-    inJudgmentWindow: false,
-    answerUnlocked: false
-  });
-  useEffect(() => {
-    const intervalMs = Number.isFinite(barIntervalMs) && barIntervalMs > 0 ? barIntervalMs : 1e3;
-    const offsetMs = Math.max(0, Number(firstBarOffsetMs) || 0);
-    const tick = () => {
-      const audio = audioEngine.audio;
-      const canUseAudio = audio && !audio.paused && audioEngine.isUnlocked && !audioEngine.isMuted;
-      let currentTime = 0;
-      if (canUseAudio) {
-        currentTime = audio.currentTime * 1e3;
-      }
-      const adjustedMs = Math.max(0, currentTime - offsetMs);
-      const barPosition = adjustedMs / intervalMs;
-      const barProgress = barPosition % 1;
-      const barsPassed = Math.floor(barPosition);
-      const answerUnlocked = currentTime >= answerUnlockDelayMs;
-      const distanceToBar = Math.min(barProgress, 1 - barProgress);
-      const judgmentWindowFraction = judgmentWindowMs / intervalMs;
-      const inJudgmentWindow = answerUnlocked && distanceToBar < judgmentWindowFraction;
-      setBeatData({
-        currentTime: currentTime / 1e3,
-        barPosition,
-        barProgress,
-        barsPassed,
-        inJudgmentWindow,
-        answerUnlocked
-      });
-      const el = containerRef.current;
-      if (el) {
-        el.style.setProperty("--bar-progress", String(barProgress));
-        el.style.setProperty("--bars-passed", String(barsPassed));
-        el.style.setProperty("--answer-unlocked", answerUnlocked ? "1" : "0");
-        el.style.setProperty("--in-judgment", inJudgmentWindow ? "1" : "0");
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [barIntervalMs, firstBarOffsetMs, answerUnlockDelayMs, judgmentWindowMs]);
-  const pixelsPerBar = scrollSpeedPxPerSec * (barIntervalMs / 1e3);
-  const judgmentX = laneWidth * (isQuizVariant ? 0.62 : 0.75);
-  const overscanBars = Math.ceil(laneWidth / pixelsPerBar) + 8;
-  const renderBars = () => {
-    const bars = [];
-    const fractionalBar = beatData.barProgress;
-    for (let i = -overscanBars; i <= overscanBars; i++) {
-      const relativeBar = i - fractionalBar;
-      const x = judgmentX + relativeBar * pixelsPerBar;
-      if (x >= -24 && x <= laneWidth + 24) {
-        const isPast = relativeBar < 0;
-        const distanceToJudgment = Math.abs(relativeBar);
-        const inWindow = distanceToJudgment < judgmentWindowMs / barIntervalMs;
-        const isNext = relativeBar > 0 && relativeBar < 1;
-        bars.push(
-          /* @__PURE__ */ React.createElement(
-            "div",
-            {
-              key: i,
-              style: {
-                position: "absolute",
-                left: `${x}px`,
-                top: isQuizVariant ? "12%" : "10%",
-                bottom: isQuizVariant ? "12%" : "10%",
-                width: isQuizVariant ? "6px" : "4px",
-                background: isPast ? isQuizVariant ? "rgba(153, 166, 177, 0.34)" : "rgba(132, 145, 158, 0.28)" : inWindow ? THEME.starGold : isNext ? isQuizVariant ? "rgba(255, 255, 255, 0.94)" : "rgba(255, 255, 255, 0.78)" : isQuizVariant ? "rgba(255, 255, 255, 0.68)" : "rgba(255, 255, 255, 0.42)",
-                borderRadius: "3px",
-                boxShadow: inWindow ? `0 0 10px ${THEME.starGold}, 0 0 0 1px rgba(0,0,0,0.25)` : isQuizVariant ? "0 0 0 1px rgba(0,0,0,0.2)" : "none",
-                transform: "translateX(-50%)",
-                opacity: isPast ? 0.45 : 1
-              }
-            }
-          )
-        );
-      }
-    }
-    return bars;
-  };
-  return /* @__PURE__ */ React.createElement("div", { ref: containerRef, style: {
-    width: "100%",
-    maxWidth: `${laneWidth}px`,
-    margin: "0 auto"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "relative",
-    width: "100%",
-    height: `${laneHeight}px`,
-    background: isQuizVariant ? "rgba(0, 0, 0, 0.16)" : "rgba(0, 0, 0, 0.4)",
-    borderRadius: "8px",
-    border: `1px solid ${THEME.brassDark}`,
-    overflow: "hidden"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    inset: 0,
-    background: `repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent ${pixelsPerBar - 1}px,
-            rgba(255, 255, 255, 0.03) ${pixelsPerBar - 1}px,
-            rgba(255, 255, 255, 0.03) ${pixelsPerBar}px
-          )`
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    inset: 0,
-    background: isQuizVariant ? "linear-gradient(90deg, rgba(26, 42, 58, 0.22) 0%, transparent 8%, transparent 92%, rgba(26, 42, 58, 0.22) 100%)" : "linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.12))",
-    pointerEvents: "none"
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: 0,
-    bottom: 0,
-    width: isQuizVariant ? "6px" : "3px",
-    background: THEME.starGold,
-    boxShadow: isQuizVariant ? `0 0 0 2px rgba(255, 204, 0, 0.16), 0 0 14px ${THEME.starGold}` : `0 0 12px ${THEME.starGold}`,
-    zIndex: 12,
-    transform: "translateX(-50%)"
-  } }), showQuizBonusLabel && /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    fontSize: "0.72rem",
-    color: THEME.starGold,
-    fontWeight: "bold",
-    letterSpacing: "0.06em",
-    whiteSpace: "nowrap",
-    zIndex: 13,
-    textShadow: "0 1px 0 rgba(0,0,0,0.5)"
-  } }, "BONUS"), showDebugLabels && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: "1px",
-    transform: "translateX(-50%)",
-    fontSize: "0.6rem",
-    color: THEME.starGold,
-    fontWeight: "bold",
-    whiteSpace: "nowrap",
-    zIndex: 13,
-    textShadow: "0 1px 0 rgba(0,0,0,0.5)"
-  } }, "BONUS"), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    bottom: "2px",
-    transform: "translateX(-50%)",
-    fontSize: "0.55rem",
-    color: THEME.starGold,
-    fontWeight: "bold",
-    whiteSpace: "nowrap",
-    zIndex: 13
-  } }, "BONUS")), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: "5%",
-    bottom: "5%",
-    width: `${judgmentWindowMs / barIntervalMs * pixelsPerBar * 2}px`,
-    background: `linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.13), transparent)`,
-    zIndex: 2,
-    transform: "translateX(-50%)",
-    borderRadius: "4px"
-  } }), renderBars()), showDebugPanel && /* @__PURE__ */ React.createElement("div", { style: {
-    marginTop: "8px",
-    padding: "8px",
-    background: "rgba(0, 0, 0, 0.3)",
-    borderRadius: "4px",
-    fontSize: "0.65rem",
-    color: "#aaa",
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "6px"
-  } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Time"), /* @__PURE__ */ React.createElement("div", { style: { color: "#fff", fontFamily: "monospace" } }, beatData.currentTime.toFixed(2), "s")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Bars"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.answerUnlocked ? THEME.starGold : "#666" } }, beatData.barsPassed)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Status"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.inJudgmentWindow ? THEME.starGold : beatData.answerUnlocked ? "#fff" : "#666" } }, beatData.answerUnlocked ? beatData.inJudgmentWindow ? "BONUS!" : "READY" : "LOCKED"))), showDebugPanel && typeof bpm === "number" && /* @__PURE__ */ React.createElement("div", { style: {
-    marginTop: "6px",
-    fontSize: "0.58rem",
-    color: "#666"
-  } }, "BPM reference: ", bpm));
 }
 function QuizScreen({
   quizState,
@@ -5773,6 +5744,8 @@ function QuizScreen({
 }) {
   const {
     session,
+    activeHeroineId,
+    activeHeroine,
     quizFeedback,
     routeMode,
     screen
@@ -5841,7 +5814,7 @@ function QuizScreen({
     border: "none",
     boxShadow: "none",
     backdropFilter: "none",
-    padding: "0 20px 12px 20px",
+    padding: "0 20px 20px 20px",
     zIndex: 5
   } }, /* @__PURE__ */ React.createElement(
     QuizRequestCard,
@@ -5850,38 +5823,37 @@ function QuizScreen({
       customerStyle: customerStyle2,
       bubbleStyle: bubbleStyle2
     }
-  ), /* @__PURE__ */ React.createElement("div", { style: {
-    margin: "8px 0 10px",
-    padding: "0 4px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    fontSize: "0.62rem",
-    color: "#d7dde5",
-    textAlign: "center",
-    whiteSpace: "nowrap"
-  } }, "リズムに合わせて正解すると少しボーナス！"), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
-    width: "100%",
-    background: "linear-gradient(180deg, rgba(26, 42, 58, 0.82), rgba(14, 24, 34, 0.88))",
+  ), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+    width: "calc(100% + 40px)",
+    margin: "8px -20px 6px",
+    background: "rgba(26, 42, 58, 0.6)",
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "4px 0 6px",
-    position: "relative"
+    padding: "4px 0"
   } }, /* @__PURE__ */ React.createElement(
-    RhythmMockBeatLane,
+    RhythmMock,
     {
-      variant: "quiz",
-      laneWidth: 760,
-      laneHeight: 52,
-      barIntervalMs: 1e3,
-      scrollSpeedPxPerSec: 300,
-      firstBarOffsetMs: 0,
-      answerUnlockDelayMs: 1e3,
-      judgmentWindowMs: 140,
-      showDebugInfo: false
+      heroineId: activeHeroineId,
+      themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor,
+      noteIntervalMs: 500,
+      judgmentWindowMs: 140
     }
-  ))), /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement("div", { style: {
+    textAlign: "center",
+    fontSize: "0.72em",
+    color: THEME.parchment,
+    opacity: 0.78,
+    marginTop: "2px",
+    marginBottom: "8px",
+    letterSpacing: "0.02em"
+  } }, "リズムに合わせて正解すると少しボーナス！"), (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) > 0 && /* @__PURE__ */ React.createElement("div", { style: {
+    textAlign: "center",
+    fontSize: "0.78em",
+    fontWeight: "700",
+    color: THEME.starGold,
+    marginBottom: "6px",
+    textShadow: `0 0 8px ${THEME.starGold}66`
+  } }, "リズム好機 +", quizFeedback.rhythmBonus, "G"), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
       choices: currentQuestion.choices,
@@ -5890,8 +5862,7 @@ function QuizScreen({
       itemCardStyle: itemCardStyle2,
       imageStyle: imageStyle2,
       itemNameStyle: itemNameStyle2,
-      requestType: currentQuestion.request.type,
-      isLocked: false
+      requestType: currentQuestion.request.type
     }
   )));
 }
@@ -5938,9 +5909,9 @@ REQUEST_TEMPLATES.reduce((acc, t) => {
   return acc;
 }, {});
 const DEFAULT_BASE_SCORE = 100;
-function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE } = {}) {
+function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE, rhythmBonus = 0 } = {}) {
   if (isCorrect) {
-    return baseScore;
+    return baseScore + Math.max(0, rhythmBonus);
   }
   return 0;
 }
@@ -11447,9 +11418,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     correctItemId: correctItem.id
   };
 }
-function checkAnswer(question, selectedItemId) {
+function checkAnswer(question, selectedItemId, { rhythmBonus = 0 } = {}) {
   const isCorrect = question.correctItemId === selectedItemId;
-  const gainedScore = calculateScore({ isCorrect });
+  const gainedScore = calculateScore({ isCorrect, rhythmBonus });
   return {
     questionId: question.id,
     selectedItemId,
@@ -11458,10 +11429,10 @@ function checkAnswer(question, selectedItemId) {
     gainedScore
   };
 }
-function answerQuestion(session, selectedItemId) {
+function answerQuestion(session, selectedItemId, options = {}) {
   if (session.isFinished) return session;
   const currentQuestion = session.questions[session.currentIndex];
-  const result = checkAnswer(currentQuestion, selectedItemId);
+  const result = checkAnswer(currentQuestion, selectedItemId, options);
   const nextIndex = session.currentIndex + 1;
   const isFinished = nextIndex >= session.questions.length;
   return {
@@ -11611,9 +11582,7 @@ const TRACKS = {
     src: "audio/bgm/main/main03_puzzle.mp3",
     loop: true,
     title: "Measure The Mortar",
-    category: "メイン BGM",
-    bpm: 120,
-    firstBeatOffsetMs: 0
+    category: "メインBGM"
   },
   // --- Hakima ---
   "HAKIMA-01": {
@@ -12433,21 +12402,9 @@ const SFX = {
   }
 };
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
-  const [activeTab, setActiveTab] = useState("BGM");
   const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
-  const [currentTime, setCurrentTime] = useState(0);
-  const timeIntervalRef = useRef(null);
-  const [selectedTrackId, setSelectedTrackId] = useState("MAIN-03");
-  const [barIntervalMs, setBarIntervalMs] = useState(1e3);
-  const [scrollSpeedPxPerSec, setScrollSpeedPxPerSec] = useState(300);
-  const [firstBarOffsetMs, setFirstBarOffsetMs] = useState(0);
-  const [answerUnlockDelayMs, setAnswerUnlockDelayMs] = useState(1e3);
-  const [judgmentWindowMs, setJudgmentWindowMs] = useState(140);
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   const currentTrack = currentPlayingId ? Object.values(TRACKS).find((t) => t.id === currentPlayingId) : null;
-  const selectedTrack = TRACKS[selectedTrackId];
-  const displayBpm = (selectedTrack == null ? void 0 : selectedTrack.bpm) ?? 120;
   const handlePlayTrack = (track) => {
     audioEngine.playTrack(track);
     setCurrentPlayingId(track.id);
@@ -12456,74 +12413,14 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
     audioEngine.stop();
     setCurrentPlayingId(null);
   };
-  const handleRhythmPlay = () => {
-    const track = selectedTrack;
-    if (track) {
-      handlePlayTrack(track);
-    }
-  };
-  const handleRhythmRestart = () => {
-    const track = selectedTrack;
-    if (track) {
-      audioEngine.stop();
-      setTimeout(() => handlePlayTrack(track), 50);
-    }
-  };
-  useEffect(() => {
-    if (currentPlayingId === selectedTrackId) {
-      timeIntervalRef.current = setInterval(() => {
-        var _a;
-        setCurrentTime(((_a = audioEngine.audio) == null ? void 0 : _a.currentTime) ?? 0);
-      }, 100);
-    } else {
-      setCurrentTime(0);
-    }
-    return () => {
-      if (timeIntervalRef.current) clearInterval(timeIntervalRef.current);
-    };
-  }, [currentPlayingId, selectedTrackId]);
-  const handleResetAll = () => {
-    setBarIntervalMs(1e3);
-    setScrollSpeedPxPerSec(300);
-    setFirstBarOffsetMs(0);
-    setAnswerUnlockDelayMs(1e3);
-    setJudgmentWindowMs(140);
-  };
-  const isPlayingSelected = currentPlayingId === selectedTrackId;
-  const tabs = [
-    { id: "BGM", label: "BGM" },
-    { id: "SFX", label: "SFX" },
-    { id: "RHYTHM", label: "Rhythm Debug" }
-  ];
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "700px", width: "100%", height: "100%", margin: "0 auto", background: "#1a1a1a", borderRadius: "12px", border: `1px solid ${THEME.brassDark}`, color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 16px", background: "rgba(26, 42, 58, 0.98)", borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: THEME.starGold, fontSize: "1.1rem", fontWeight: "bold" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "6px 12px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" } }, "閉じる")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "8px", borderRadius: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#888", textTransform: "uppercase" } }, "Now Playing"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85rem", color: currentTrack ? THEME.starGold : "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: "500" } }, currentTrack ? `${currentTrack.title} (${currentTrack.id})` : "None")), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#1a1a1a", borderRadius: "12px", border: `1px solid ${THEME.brassDark}`, color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 16px", background: "rgba(26, 42, 58, 0.98)", borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: THEME.starGold, fontSize: "1.1rem", fontWeight: "bold" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "6px 12px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" } }, "閉じる")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "8px", borderRadius: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#888", textTransform: "uppercase" } }, "Now Playing"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85rem", color: currentTrack ? THEME.starGold : "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: "500" } }, currentTrack ? `${currentTrack.title} (${currentTrack.id})` : "None")), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: handleStop,
       style: { padding: "8px 16px", background: currentPlayingId ? "#e53935" : "#333", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.75rem", fontWeight: "bold", transition: "background 0.2s" }
     },
     "STOP"
-  ))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", borderBottom: `1px solid ${THEME.brassDark}`, background: "rgba(0,0,0,0.2)", flexShrink: 0 } }, tabs.map((tab) => /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      key: tab.id,
-      onClick: () => setActiveTab(tab.id),
-      style: {
-        flex: 1,
-        padding: "10px 8px",
-        background: activeTab === tab.id ? "rgba(255, 204, 0, 0.15)" : "transparent",
-        border: "none",
-        borderBottom: activeTab === tab.id ? `2px solid ${THEME.starGold}` : "2px solid transparent",
-        color: activeTab === tab.id ? THEME.starGold : "#888",
-        fontSize: "0.75rem",
-        fontWeight: "bold",
-        textTransform: "uppercase",
-        letterSpacing: "0.05em",
-        cursor: "pointer",
-        transition: "all 0.2s"
-      }
-    },
-    tab.label
-  ))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", flex: 1, padding: "16px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "12px", marginBottom: "20px", borderRadius: "8px", color: "#f88", fontSize: "0.85rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #622" } }, /* @__PURE__ */ React.createElement("span", null, "音声が OFF のため、再生されません。"), /* @__PURE__ */ React.createElement("button", { onClick: onToggleAudio, style: { padding: "6px 12px", background: THEME.starGold, color: THEME.textDark, border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.8rem" } }, "音を ON にする")), activeTab === "BGM" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "BGM (Music)"), [...new Set(Object.values(TRACKS).map((t) => t.category || "その他"))].map((category) => /* @__PURE__ */ React.createElement("div", { key: category, style: { marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, category), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" } }, Object.values(TRACKS).filter((t) => (t.category || "その他") === category).map((track) => {
+  ))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "16px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "12px", marginBottom: "20px", borderRadius: "8px", color: "#f88", fontSize: "0.85rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #622" } }, /* @__PURE__ */ React.createElement("span", null, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("button", { onClick: onToggleAudio, style: { padding: "6px 12px", background: THEME.starGold, color: THEME.textDark, border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.8rem" } }, "音をONにする")), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "24px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "BGM (Music)"), [...new Set(Object.values(TRACKS).map((t) => t.category || "その他"))].map((category) => /* @__PURE__ */ React.createElement("div", { key: category, style: { marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, category), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" } }, Object.values(TRACKS).filter((t) => (t.category || "その他") === category).map((track) => {
     const isPlaying = currentPlayingId === track.id;
     return /* @__PURE__ */ React.createElement(
       "button",
@@ -12547,7 +12444,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
       /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.7rem", color: isPlaying ? THEME.starGold : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, track.title),
       /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, track.id)
     );
-  }))))), activeTab === "SFX" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "SFX (Sound Effects)"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement(
+  }))))), /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "SFX (Sound Effects)"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement(
     "button",
     {
       key: c.id,
@@ -12563,40 +12460,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
       }
     },
     /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, c.id)
-  )))))), activeTab === "RHYTHM" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h3", { style: { color: THEME.starGold, fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "Rhythm Preview"), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", marginBottom: "12px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("label", { style: { fontSize: "0.75rem", color: "#aaa", minWidth: "60px" } }, "Track:"), /* @__PURE__ */ React.createElement(
-    "select",
-    {
-      value: selectedTrackId,
-      onChange: (e) => setSelectedTrackId(e.target.value),
-      style: { flex: 1, background: "#2a2a2a", color: "#fff", border: `1px solid ${THEME.brassDark}`, padding: "6px 8px", borderRadius: "4px", fontSize: "0.8rem" }
-    },
-    Object.values(TRACKS).map((track) => /* @__PURE__ */ React.createElement("option", { key: track.id, value: track.id }, track.title, " (", track.id, ")"))
-  )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      onClick: handleRhythmPlay,
-      disabled: !isAudioEnabled,
-      style: { flex: 1, padding: "10px", background: isPlayingSelected ? THEME.starGold : "#2a4a2a", color: isPlayingSelected ? "#000" : "#fff", border: "none", borderRadius: "4px", cursor: isAudioEnabled ? "pointer" : "default", fontWeight: "bold", fontSize: "0.75rem" }
-    },
-    isPlayingSelected ? "PLAYING" : "PLAY"
-  ), /* @__PURE__ */ React.createElement("button", { onClick: handleRhythmRestart, disabled: !isAudioEnabled, style: { padding: "10px 16px", background: "#2a2a4a", color: "#fff", border: "none", borderRadius: "4px", cursor: isAudioEnabled ? "pointer" : "default", fontWeight: "bold", fontSize: "0.75rem" } }, "↻"), /* @__PURE__ */ React.createElement("button", { onClick: handleStop, style: { padding: "10px 16px", background: "#4a2a2a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.75rem" } }, "■")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.7rem", color: "#888", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "Bar Interval: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, barIntervalMs, "ms")), /* @__PURE__ */ React.createElement("span", null, "Time: ", /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "monospace" } }, currentTime.toFixed(2), "s"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666", marginBottom: "8px" } }, "WAIT → BONUS: ", (answerUnlockDelayMs / 1e3).toFixed(1), "s | Speed: ", scrollSpeedPxPerSec, "px/s | BPM Reference: ", displayBpm), !isPlayingSelected && currentPlayingId && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#f88", marginBottom: "8px" } }, "⚠ Playing ", currentPlayingId, ", not ", selectedTrackId), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(255,204,0,0.1)", border: `1px solid ${THEME.starGold}44`, padding: "8px", borderRadius: "4px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#ccc", marginBottom: "4px", fontWeight: "bold" } }, "クイズリズム仕様 (v0)"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#aaa", lineHeight: 1.4 } }, /* @__PURE__ */ React.createElement("div", null, "1. 問題表示 → 約 1 秒待機 → 解答可能"), /* @__PURE__ */ React.createElement("div", null, "2. 縦棒が BONUS ラインに来たら好機"), /* @__PURE__ */ React.createElement("div", null, "3. 棒を見送りすぎるとボーナス減少"))), /* @__PURE__ */ React.createElement(
-    RhythmMockBeatLane,
-    {
-      barIntervalMs,
-      scrollSpeedPxPerSec,
-      firstBarOffsetMs,
-      answerUnlockDelayMs,
-      judgmentWindowMs
-    }
-  )), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.3)", padding: "10px", borderRadius: "8px", marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.65rem", color: "#888" } }, "Bar Interval (縦棒の間隔)"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.6rem", color: "#666" } }, "基本は 1 秒 = 1000ms")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs(750), style: { flex: 1, padding: "6px", background: barIntervalMs === 750 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Fast (750ms)"), /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs(1e3), style: { flex: 1, padding: "6px", background: barIntervalMs === 1e3 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Normal (1000ms)"), /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs(1200), style: { flex: 1, padding: "6px", background: barIntervalMs === 1200 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Slow (1200ms)"))), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.3)", padding: "10px", borderRadius: "8px", marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.65rem", color: "#888" } }, "Scroll Speed (流速)"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.6rem", color: "#666" } }, "速くすると棒間隔が広がる")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec(200), style: { flex: 1, padding: "6px", background: scrollSpeedPxPerSec === 200 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Slow (200)"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec(300), style: { flex: 1, padding: "6px", background: scrollSpeedPxPerSec === 300 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Normal (300)"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec(400), style: { flex: 1, padding: "6px", background: scrollSpeedPxPerSec === 400 ? THEME.brassDark : "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Fast (400)"))), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", marginBottom: "16px" } }, /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      onClick: () => setShowAdvanced(!showAdvanced),
-      style: { width: "100%", padding: "8px", background: "transparent", border: "none", color: "#888", cursor: "pointer", fontSize: "0.7rem", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", justifyContent: "space-between", alignItems: "center" }
-    },
-    /* @__PURE__ */ React.createElement("span", null, "Advanced Tuning"),
-    /* @__PURE__ */ React.createElement("span", null, showAdvanced ? "▼" : "▶")
-  ), showAdvanced && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "Bar Interval (ms)"), /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, barIntervalMs)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs((prev) => Math.max(500, prev - 50)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "−"), /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs(1e3), style: { flex: 1, padding: "6px", background: THEME.brassDark, color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.65rem" } }, "Reset"), /* @__PURE__ */ React.createElement("button", { onClick: () => setBarIntervalMs((prev) => Math.min(2e3, prev + 50)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "+"))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "Scroll Speed (px/s)"), /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, scrollSpeedPxPerSec)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec((prev) => Math.max(100, prev - 50)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "−"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec(300), style: { flex: 1, padding: "6px", background: THEME.brassDark, color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.65rem" } }, "Reset"), /* @__PURE__ */ React.createElement("button", { onClick: () => setScrollSpeedPxPerSec((prev) => Math.min(600, prev + 50)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "+"))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "firstBarOffsetMs"), /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, firstBarOffsetMs, "ms")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setFirstBarOffsetMs((prev) => prev - 10), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "−"), /* @__PURE__ */ React.createElement("button", { onClick: () => setFirstBarOffsetMs(0), style: { flex: 1, padding: "6px", background: THEME.brassDark, color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.65rem" } }, "Reset"), /* @__PURE__ */ React.createElement("button", { onClick: () => setFirstBarOffsetMs((prev) => prev + 10), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "+"))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "Unlock Delay"), /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, answerUnlockDelayMs, "ms")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setAnswerUnlockDelayMs((prev) => Math.max(0, prev - 100)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "−"), /* @__PURE__ */ React.createElement("button", { onClick: () => setAnswerUnlockDelayMs(1e3), style: { flex: 1, padding: "6px", background: THEME.brassDark, color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.65rem" } }, "Reset"), /* @__PURE__ */ React.createElement("button", { onClick: () => setAnswerUnlockDelayMs((prev) => prev + 100), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "+"))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "Judgment Window"), /* @__PURE__ */ React.createElement("span", { style: { color: THEME.starGold, fontWeight: "bold" } }, judgmentWindowMs, "ms")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "6px", alignItems: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setJudgmentWindowMs((prev) => Math.max(40, prev - 10)), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "−"), /* @__PURE__ */ React.createElement("button", { onClick: () => setJudgmentWindowMs(140), style: { flex: 1, padding: "6px", background: THEME.brassDark, color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.65rem" } }, "Reset"), /* @__PURE__ */ React.createElement("button", { onClick: () => setJudgmentWindowMs((prev) => prev + 10), style: { width: "36px", padding: "6px", background: "#3a3a3a", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "+"))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "12px", opacity: 0.6 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#888", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("span", null, "BPM (reference only)"), /* @__PURE__ */ React.createElement("span", { style: { color: "#666", fontWeight: "bold" } }, displayBpm)), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#666" } }, "BPM is not used for timing calculation. Bar interval and scroll speed are the primary controls.")), /* @__PURE__ */ React.createElement("div", { style: { background: "rgba(255,255,255,0.05)", padding: "8px", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#888", marginBottom: "4px" } }, "Timing model config"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#aaa", fontFamily: "monospace", background: "rgba(0,0,0,0.3)", padding: "4px", borderRadius: "4px" } }, "barIntervalMs: ", barIntervalMs, ", scrollSpeedPxPerSec: ", scrollSpeedPxPerSec, ", firstBarOffsetMs: ", firstBarOffsetMs)), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "12px", padding: "8px", background: "rgba(100,100,100,0.2)", borderRadius: "4px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#666" } }, "Auto Guess Timing: 今後実装予定")), /* @__PURE__ */ React.createElement("button", { onClick: handleResetAll, style: { width: "100%", marginTop: "12px", padding: "8px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.7rem" } }, "Reset All")))))));
+  ))))))));
 }
 function DebugPanel({
   routeMode,
@@ -13475,10 +13339,14 @@ function App() {
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    const updatedSession = answerQuestion(session, itemId);
+    const currentRhythmHit = getIsRhythmHitNow();
+    const updatedSession = answerQuestion(session, itemId, {
+      rhythmBonus: currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0
+    });
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
-    setQuizFeedback({ itemId, isCorrect });
+    const rhythmBonus = isCorrect && currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0;
+    setQuizFeedback({ itemId, isCorrect, rhythmBonus });
     setTimeout(() => {
       if (isCorrect) {
         audioEngine.playSfx("quizCorrectStarChime");
@@ -14407,30 +14275,13 @@ function App() {
       )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
     );
   } else if (screen === "QUIZ" && session) {
-    const day = workshopState.day || 1;
-    const hPrefix = (activeHeroineId || "hakima").toUpperCase();
-    let quizTrackId = null;
-    if (day <= 2) {
-      quizTrackId = "MAIN-03";
-    } else if (day <= 4) {
-      quizTrackId = `${hPrefix}-02`;
-    } else if (day <= 6) {
-      quizTrackId = `${hPrefix}-03`;
-    } else if (day <= 8) {
-      quizTrackId = `${hPrefix}-04`;
-    } else {
-      quizTrackId = `${hPrefix}-05`;
-    }
-    const quizTrack = TRACKS[quizTrackId];
-    const quizBpm = (quizTrack == null ? void 0 : quizTrack.bpm) ?? 120;
     const quizState = {
       session,
       activeHeroineId,
       activeHeroine,
       quizFeedback,
       routeMode,
-      screen,
-      quizBpm
+      screen
     };
     const quizActions = {
       onOpenLog: () => setShowLog(true),
