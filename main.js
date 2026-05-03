@@ -1212,6 +1212,7 @@ const StartScreen = ({
   onOpenSoundTest,
   onOpenVisualTest,
   onClearSaveData,
+  onForceClearSaveData,
   onOpenLog,
   onOpenHelp,
   renderThemeStyles,
@@ -1353,23 +1354,41 @@ const StartScreen = ({
       style: { ...buttonStyle2, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
     },
     "映像確認"
-  )), hasSave && /* @__PURE__ */ React.createElement(
+  )), hasSave && /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: onClearSaveData,
       style: {
-        background: "none",
-        border: "none",
-        color: "#844",
-        textDecoration: "underline",
+        ...buttonStyle2,
+        background: "linear-gradient(180deg, #7d2b2b, #571c1c)",
+        color: "#fff5f5",
+        border: "1px solid #a85858",
         cursor: "pointer",
-        fontSize: "0.75em",
-        marginTop: "10px",
-        opacity: 0.6
+        fontSize: "0.8em",
+        width: "100%",
+        maxWidth: "260px",
+        margin: 0
       }
     },
     "記録を全て削除する"
-  )));
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onForceClearSaveData,
+      style: {
+        ...buttonStyle2,
+        background: "linear-gradient(180deg, #7a1f45, #4c1026)",
+        color: "#fff",
+        border: "1px solid #c65a84",
+        cursor: "pointer",
+        fontSize: "0.8em",
+        width: "100%",
+        maxWidth: "260px",
+        margin: 0
+      }
+    },
+    "全量強制削除"
+  ))));
 };
 const NADER = "ナーディル";
 const HEROINE_LABELS = {
@@ -9591,7 +9610,7 @@ const AFFECTION_LIMITS = {
   MIN: 0,
   MAX: 100
 };
-function createInitialAffection(heroineIds) {
+function createInitialAffection$1(heroineIds) {
   const state = {};
   heroineIds.forEach((id) => {
     state[id] = 0;
@@ -9695,6 +9714,27 @@ function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection,
   }));
   return resolveQuizCompletion({
     correctCount: totalCount,
+    totalCount,
+    activeHeroineId,
+    currentAffection,
+    seenEventIds,
+    routeMode,
+    persistentSeenEventIds,
+    answers
+  });
+}
+function createZeroScoreQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode, persistentSeenEventIds = []) {
+  const answers = Array.from({ length: totalCount }, (_, index) => ({
+    questionId: `q_${String(index + 1).padStart(3, "0")}`,
+    selectedItemId: null,
+    correctItemId: `q_${String(index + 1).padStart(3, "0")}`,
+    isCorrect: false,
+    rhythmGood: false,
+    fast: false,
+    gainedScore: 0
+  }));
+  return resolveQuizCompletion({
+    correctCount: 0,
     totalCount,
     activeHeroineId,
     currentAffection,
@@ -9976,11 +10016,12 @@ function createDefaultSaveData() {
     activeHeroineId: "hakima",
     routeMode: "normal",
     workshopState: createInitialWorkshopState(),
-    affection: createInitialAffection(HEROINES.map((h) => h.id)),
+    affection: createInitialAffection$1(HEROINES.map((h) => h.id)),
     seenEventIds: [],
     activeEvent: null,
     vnBacklog: [],
     seenTalkIds: [],
+    dailyScoreHistory: [],
     textSpeed: "normal",
     instantUnreadText: false,
     bgmVolume: DEFAULT_AUDIO_VOLUME$1,
@@ -10035,6 +10076,17 @@ function normalizeSaveData(raw) {
   } else {
     normalized.seenTalkIds = [...new Set(normalized.seenTalkIds.filter((id) => typeof id === "string"))];
   }
+  if (!Array.isArray(normalized.dailyScoreHistory)) {
+    normalized.dailyScoreHistory = [];
+  } else {
+    normalized.dailyScoreHistory = normalized.dailyScoreHistory.filter((entry) => entry && typeof entry === "object").map((entry) => ({
+      day: Number(entry.day) || 0,
+      sales: Number(entry.sales) || 0,
+      reputation: Number(entry.reputation) || 0,
+      satisfaction: Number(entry.satisfaction) || 0,
+      affection: Number(entry.affection) || 0
+    })).filter((entry) => entry.day > 0).slice(-5).sort((a, b) => a.day - b.day);
+  }
   if (normalized.activeEvent && typeof normalized.activeEvent !== "object") {
     normalized.activeEvent = null;
   }
@@ -10052,7 +10104,7 @@ function normalizeSaveData(raw) {
   }
   return normalized;
 }
-function isStorageAvailable$3() {
+function isStorageAvailable$4() {
   try {
     return typeof localStorage !== "undefined";
   } catch (e) {
@@ -10060,7 +10112,7 @@ function isStorageAvailable$3() {
   }
 }
 function saveGameData(data) {
-  if (!isStorageAvailable$3()) return false;
+  if (!isStorageAvailable$4()) return false;
   try {
     const serialized = JSON.stringify({
       ...data,
@@ -10074,7 +10126,7 @@ function saveGameData(data) {
   }
 }
 function loadSaveData() {
-  if (!isStorageAvailable$3()) return null;
+  if (!isStorageAvailable$4()) return null;
   try {
     const serialized = localStorage.getItem(STORAGE_KEY);
     if (!serialized) return null;
@@ -10086,7 +10138,7 @@ function loadSaveData() {
   }
 }
 function clearSaveData() {
-  if (!isStorageAvailable$3()) return;
+  if (!isStorageAvailable$4()) return;
   localStorage.removeItem(STORAGE_KEY);
 }
 function buildGameSavePayload({
@@ -10095,6 +10147,7 @@ function buildGameSavePayload({
   routeMode,
   workshopState,
   affection,
+  dailyScoreHistory,
   seenEventIds,
   seenTalkIds,
   activeEvent,
@@ -10111,6 +10164,7 @@ function buildGameSavePayload({
     routeMode,
     workshopState,
     affection,
+    dailyScoreHistory,
     seenEventIds,
     seenTalkIds,
     activeEvent,
@@ -10232,8 +10286,9 @@ function useGameSaveStatus() {
 }
 const DEBUG_MODE_KEY = "made_in_maghribal_debug_mode";
 const AUTO_SKIP_QUIZ_KEY = "made_in_maghribal_auto_skip_quiz";
+const QUIZ_SKIP_MODE_KEY = "made_in_maghribal_quiz_skip_mode";
 const DEBUG_UNLOCK_ALL_KEY = "made_in_maghribal_debug_unlock_all";
-function isStorageAvailable$2() {
+function isStorageAvailable$3() {
   try {
     return typeof localStorage !== "undefined";
   } catch {
@@ -10241,7 +10296,7 @@ function isStorageAvailable$2() {
   }
 }
 function loadBooleanFlag(key, defaultValue = false) {
-  if (!isStorageAvailable$2()) return defaultValue;
+  if (!isStorageAvailable$3()) return defaultValue;
   try {
     const val = localStorage.getItem(key);
     if (val === null) return defaultValue;
@@ -10251,7 +10306,7 @@ function loadBooleanFlag(key, defaultValue = false) {
   }
 }
 function saveBooleanFlag(key, value) {
-  if (!isStorageAvailable$2()) return;
+  if (!isStorageAvailable$3()) return;
   try {
     localStorage.setItem(key, String(Boolean(value)));
   } catch {
@@ -10263,11 +10318,29 @@ function loadDebugModeEnabled() {
 function saveDebugModeEnabled(value) {
   saveBooleanFlag(DEBUG_MODE_KEY, value);
 }
-function loadAutoSkipQuizEnabled() {
-  return loadBooleanFlag(AUTO_SKIP_QUIZ_KEY, false);
+function loadQuizSkipMode() {
+  if (!isStorageAvailable$3()) return "off";
+  try {
+    const val = localStorage.getItem(QUIZ_SKIP_MODE_KEY);
+    if (val === "zero" || val === "perfect" || val === "off") {
+      return val;
+    }
+    if (loadBooleanFlag(AUTO_SKIP_QUIZ_KEY, false)) {
+      return "perfect";
+    }
+    return "off";
+  } catch {
+    return "off";
+  }
 }
-function saveAutoSkipQuizEnabled(value) {
-  saveBooleanFlag(AUTO_SKIP_QUIZ_KEY, value);
+function saveQuizSkipMode(value) {
+  if (!isStorageAvailable$3()) return;
+  try {
+    const next = value === "zero" || value === "perfect" ? value : "off";
+    localStorage.setItem(QUIZ_SKIP_MODE_KEY, next);
+    localStorage.setItem(AUTO_SKIP_QUIZ_KEY, String(next !== "off"));
+  } catch {
+  }
 }
 function loadDebugUnlockAllEnabled() {
   return loadBooleanFlag(DEBUG_UNLOCK_ALL_KEY, true);
@@ -10299,7 +10372,7 @@ function prepareDayEndTalkSequence({ heroineId, currentAffection, seenTalkIds, r
   return { talk: talk2, newSeenTalkIds };
 }
 const EVENT_MEMORY_KEY = "made_in_maghribal_event_memory";
-function isStorageAvailable$1() {
+function isStorageAvailable$2() {
   try {
     return typeof localStorage !== "undefined";
   } catch {
@@ -10311,7 +10384,7 @@ function normalizeIdList(value) {
   return [...new Set(value.filter((id) => typeof id === "string" && id.length > 0))];
 }
 function loadPersistentSeenEventIds() {
-  if (!isStorageAvailable$1()) return [];
+  if (!isStorageAvailable$2()) return [];
   try {
     const raw = localStorage.getItem(EVENT_MEMORY_KEY);
     if (!raw) return [];
@@ -10322,7 +10395,7 @@ function loadPersistentSeenEventIds() {
   }
 }
 function savePersistentSeenEventIds(seenEventIds) {
-  if (!isStorageAvailable$1()) return false;
+  if (!isStorageAvailable$2()) return false;
   try {
     localStorage.setItem(EVENT_MEMORY_KEY, JSON.stringify(normalizeIdList(seenEventIds)));
     return true;
@@ -10331,7 +10404,7 @@ function savePersistentSeenEventIds(seenEventIds) {
   }
 }
 function clearPersistentSeenEventIds() {
-  if (!isStorageAvailable$1()) return;
+  if (!isStorageAvailable$2()) return;
   try {
     localStorage.removeItem(EVENT_MEMORY_KEY);
   } catch {
@@ -10339,7 +10412,7 @@ function clearPersistentSeenEventIds() {
 }
 const CAREER_PROGRESS_KEY = "made_in_maghribal_career_progress";
 const ROUTE_KEYS = ["normal", "long_history"];
-function isStorageAvailable() {
+function isStorageAvailable$1() {
   try {
     return typeof localStorage !== "undefined";
   } catch {
@@ -10404,7 +10477,7 @@ function normalizeCareerProgress(raw) {
   return normalized;
 }
 function loadCareerProgress() {
-  if (!isStorageAvailable()) {
+  if (!isStorageAvailable$1()) {
     return createDefaultCareerProgress();
   }
   try {
@@ -10416,7 +10489,7 @@ function loadCareerProgress() {
   }
 }
 function saveCareerProgress(progress) {
-  if (!isStorageAvailable()) return false;
+  if (!isStorageAvailable$1()) return false;
   try {
     localStorage.setItem(CAREER_PROGRESS_KEY, JSON.stringify(normalizeCareerProgress(progress)));
     return true;
@@ -10457,6 +10530,31 @@ function getHeroineProgressScore(progress, heroineId, routeMode, currentSales = 
   const sales = normalizeStatNumber(currentSales);
   const total = sales + stats.weeklyReputation + stats.weeklySatisfaction;
   return Math.min(100, Math.floor(total / 10));
+}
+const GAME_STORAGE_KEYS = [
+  STORAGE_KEY,
+  EVENT_MEMORY_KEY,
+  CAREER_PROGRESS_KEY,
+  DEBUG_MODE_KEY,
+  AUTO_SKIP_QUIZ_KEY,
+  QUIZ_SKIP_MODE_KEY,
+  DEBUG_UNLOCK_ALL_KEY
+];
+function isStorageAvailable() {
+  try {
+    return typeof localStorage !== "undefined";
+  } catch {
+    return false;
+  }
+}
+function clearAllGameStorage() {
+  if (!isStorageAvailable()) return false;
+  try {
+    GAME_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+    return true;
+  } catch {
+    return false;
+  }
 }
 const SFX = {
   // --- UI Interactions ---
@@ -10582,8 +10680,8 @@ function DebugPanel({
   setSeenEventIds,
   onResetEventMemory = null,
   onTriggerEvent,
-  autoSkipQuiz,
-  setAutoSkipQuiz,
+  quizSkipMode,
+  setQuizSkipMode,
   onClose
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -10680,14 +10778,49 @@ function DebugPanel({
       }
     },
     "LONG HISTORY"
-  ))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ STORY ASSIST ]"), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement(
-    "input",
+  ))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ STORY ASSIST ]"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gap: "8px" } }, /* @__PURE__ */ React.createElement(
+    "button",
     {
-      type: "checkbox",
-      checked: autoSkipQuiz,
-      onChange: (e) => setAutoSkipQuiz(e.target.checked)
-    }
-  ), /* @__PURE__ */ React.createElement("span", null, "Auto Complete Quiz (Story Focus)"))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ HEROINE & EVENTS ]"), HEROINES.map((h) => /* @__PURE__ */ React.createElement("div", { key: h.id, style: { marginBottom: "15px", padding: "10px", border: "1px solid #444", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", marginBottom: "8px" } }, h.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("span", null, "Aff: ", affection[h.id]), /* @__PURE__ */ React.createElement(
+      onClick: () => setQuizSkipMode("off"),
+      style: {
+        padding: "8px",
+        background: quizSkipMode === "off" ? THEME.brass : "#333",
+        color: quizSkipMode === "off" ? THEME.textDark : "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }
+    },
+    "クイズスキップ: OFF"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setQuizSkipMode("zero"),
+      style: {
+        padding: "8px",
+        background: quizSkipMode === "zero" ? THEME.starGold : "#333",
+        color: quizSkipMode === "zero" ? "#000" : "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }
+    },
+    "0点スキップ"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setQuizSkipMode("perfect"),
+      style: {
+        padding: "8px",
+        background: quizSkipMode === "perfect" ? THEME.starGold : "#333",
+        color: quizSkipMode === "perfect" ? "#000" : "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }
+    },
+    "満点スキップ"
+  ))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ HEROINE & EVENTS ]"), HEROINES.map((h) => /* @__PURE__ */ React.createElement("div", { key: h.id, style: { marginBottom: "15px", padding: "10px", border: "1px solid #444", borderRadius: "4px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", marginBottom: "8px" } }, h.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("span", null, "Aff: ", affection[h.id]), /* @__PURE__ */ React.createElement(
     "input",
     {
       type: "range",
@@ -10845,6 +10978,29 @@ const buildHeroineProgressSummary = (progress, heroineId, routeMode) => {
     initialAffection
   };
 };
+const normalizeDailyScoreHistory = (history) => {
+  if (!Array.isArray(history)) return [];
+  return history.filter((entry) => entry && typeof entry === "object").map((entry) => ({
+    day: Number(entry.day) || 0,
+    sales: Number(entry.sales) || 0,
+    reputation: Number(entry.reputation) || 0,
+    satisfaction: Number(entry.satisfaction) || 0,
+    affection: Number(entry.affection) || 0
+  })).filter((entry) => entry.day > 0).slice(-5).sort((a, b) => a.day - b.day);
+};
+const upsertDailyScoreHistory = (history, entry) => {
+  const nextEntry = {
+    day: Number(entry == null ? void 0 : entry.day) || 0,
+    sales: Number(entry == null ? void 0 : entry.sales) || 0,
+    reputation: Number(entry == null ? void 0 : entry.reputation) || 0,
+    satisfaction: Number(entry == null ? void 0 : entry.satisfaction) || 0,
+    affection: Number(entry == null ? void 0 : entry.affection) || 0
+  };
+  if (nextEntry.day <= 0) return normalizeDailyScoreHistory(history);
+  const next = normalizeDailyScoreHistory(history).filter((item) => item.day !== nextEntry.day);
+  next.push(nextEntry);
+  return next.sort((a, b) => a.day - b.day).slice(-5);
+};
 function App() {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
   const [session, setSession] = useState(null);
@@ -10870,15 +11026,17 @@ function App() {
   const [showOptions, setShowOptions] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [dailyScoreHistory, setDailyScoreHistory] = useState([]);
+  const [endingComplete, setEndingComplete] = useState(false);
   const [isUnlockAllDebug] = useState(() => loadDebugUnlockAllEnabled());
   const [debugModeEnabled, setDebugModeEnabled] = useState(() => loadDebugModeEnabled());
-  const [autoSkipQuiz, setAutoSkipQuiz] = useState(() => loadAutoSkipQuizEnabled());
+  const [quizSkipMode, setQuizSkipMode] = useState(() => loadQuizSkipMode());
   useEffect(() => {
     saveDebugModeEnabled(debugModeEnabled);
   }, [debugModeEnabled]);
   useEffect(() => {
-    saveAutoSkipQuizEnabled(autoSkipQuiz);
-  }, [autoSkipQuiz]);
+    saveQuizSkipMode(quizSkipMode);
+  }, [quizSkipMode]);
   const [careerProgress, setCareerProgress] = useState(() => loadCareerProgress());
   const [affection, setAffection] = useState(
     () => buildAffectionStateFromProgress(loadCareerProgress(), "normal", "hakima", 0)
@@ -10939,11 +11097,18 @@ function App() {
     }
   }, [screen, routeMode, careerProgress, previewHeroineId]);
   useEffect(() => {
-    if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+    if (screen === "QUIZ" && quizSkipMode !== "off" && session && !debugAutoSkipAppliedRef.current) {
       debugAutoSkipAppliedRef.current = true;
       const timer = setTimeout(() => {
         const totalCount = session.questions.length;
-        const result = createPerfectQuizPayload(
+        const result = quizSkipMode === "zero" ? createZeroScoreQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds,
+          routeMode,
+          persistentSeenEventIds
+        ) : createPerfectQuizPayload(
           totalCount,
           activeHeroineId,
           affection[activeHeroineId] || 0,
@@ -10958,7 +11123,7 @@ function App() {
     if (screen !== "QUIZ") {
       debugAutoSkipAppliedRef.current = false;
     }
-  }, [screen, autoSkipQuiz, session, activeHeroineId, affection, seenEventIds, routeMode, persistentSeenEventIds]);
+  }, [screen, quizSkipMode, session, activeHeroineId, affection, seenEventIds, routeMode, persistentSeenEventIds]);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
@@ -11078,6 +11243,7 @@ function App() {
       setSeenEventIds(data.seenEventIds || []);
       setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setSeenTalkIds(data.seenTalkIds || []);
+      setDailyScoreHistory(normalizeDailyScoreHistory(data.dailyScoreHistory));
     }
   }, []);
   useEffect(() => {
@@ -11115,6 +11281,7 @@ function App() {
         routeMode,
         workshopState,
         affection,
+        dailyScoreHistory,
         textSpeed,
         instantUnreadText,
         bgmVolume,
@@ -11144,7 +11311,7 @@ function App() {
         setHasSave(false);
       }
     }
-  }, [screen, activeHeroineId, routeMode, workshopState, affection, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, seenTalkIds, activeEvent, vnBacklog]);
+  }, [screen, activeHeroineId, routeMode, workshopState, affection, dailyScoreHistory, textSpeed, instantUnreadText, bgmVolume, seVolume, isAudioEnabled, seenEventIds, seenTalkIds, activeEvent, vnBacklog]);
   useEffect(() => {
     audioEngine.setBgmVolume(bgmVolume);
   }, [bgmVolume]);
@@ -11243,6 +11410,8 @@ function App() {
     setCareerProgress(loadCareerProgress());
     setSeenEventIds([]);
     setPersistentSeenEventIds(loadPersistentSeenEventIds());
+    setDailyScoreHistory([]);
+    setEndingComplete(false);
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
@@ -11264,6 +11433,8 @@ function App() {
       setWorkshopState(data.workshopState);
       setCareerProgress(loadCareerProgress());
       setAffection(data.affection);
+      setDailyScoreHistory(normalizeDailyScoreHistory(data.dailyScoreHistory));
+      setEndingComplete(false);
       setSeenEventIds(data.seenEventIds || []);
       setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setActiveEvent(data.activeEvent || null);
@@ -11279,6 +11450,45 @@ function App() {
       setSeenEventIds([]);
       setPersistentSeenEventIds([]);
       setActiveEvent(null);
+      prevEventBgmRef.current = null;
+    }
+  };
+  const handleForceResetAll = () => {
+    if (window.confirm("全ての記録を強制削除しますか？\nセーブ、周回記録、評判/満足度、デバッグ設定を消去します。")) {
+      clearAllGameStorage();
+      clearSaveAndRefresh();
+      clearPersistentSeenEventIds();
+      setCareerProgress(loadCareerProgress());
+      setSeenEventIds([]);
+      setPersistentSeenEventIds([]);
+      setDailyScoreHistory([]);
+      setEndingComplete(false);
+      setActiveEvent(null);
+      setActiveDailyTalk(null);
+      setActiveGreeting(null);
+      setDailyTalkNextScreen(null);
+      setVnBacklog([]);
+      setSession(null);
+      setWorkshopState(createInitialWorkshopState());
+      setAffection(createInitialAffection(HEROINES.map((h) => h.id)));
+      setActiveHeroineId("hakima");
+      setPreviewHeroineId("hakima");
+      setRouteMode("normal");
+      setTextSpeed("normal");
+      setInstantUnreadText(false);
+      setBgmVolume(DEFAULT_AUDIO_VOLUME);
+      setSeVolume(DEFAULT_AUDIO_VOLUME);
+      setScreen("START");
+      setIsAudioEnabled(false);
+      setIsAudioGated(true);
+      setDebugModeEnabled(false);
+      setQuizSkipMode("off");
+      setHasSave(false);
+      setShowOptions(false);
+      setShowLog(false);
+      setShowHelp(false);
+      setShowSoundTest(false);
+      setIsHeroineLoading(false);
       prevEventBgmRef.current = null;
     }
   };
@@ -11407,6 +11617,7 @@ function App() {
       seVolume,
       seenEventIds,
       seenTalkIds,
+      dailyScoreHistory,
       vnBacklog,
       isAudioEnabled,
       activeHeroineId,
@@ -11478,11 +11689,14 @@ function App() {
     if (finalAffection >= 70) {
       setCareerProgress((prev) => unlockLongHistory(prev, activeHeroineId));
     }
+    setEndingComplete(false);
     setScreen("ENDING");
   };
   const handleFinishGame = () => {
     audioEngine.playSfx("uiTapBottle");
     clearSaveAndRefresh();
+    setDailyScoreHistory([]);
+    setEndingComplete(false);
     setScreen("START");
   };
   const handleBeginService = (talkId = null) => {
@@ -11596,6 +11810,7 @@ function App() {
   };
   const applyQuizResultState = (result) => {
     const currentAffection = affection[activeHeroineId] || 0;
+    const currentDay = workshopState.day || 1;
     const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
     const nextProgress = updateHeroineWeeklyStats(
       careerProgress,
@@ -11616,6 +11831,13 @@ function App() {
       [activeHeroineId]: nextAffection
     }));
     setLastAffectionGain(Math.max(0, nextAffection - currentAffection));
+    setDailyScoreHistory((prev) => upsertDailyScoreHistory(prev, {
+      day: currentDay,
+      sales: result.workshopResult.sales,
+      reputation: result.workshopResult.reputation,
+      satisfaction: result.workshopResult.satisfaction,
+      affection: nextAffection
+    }));
     const unlockedEvent = checkNewEventUnlock(
       activeHeroineId,
       nextAffection,
@@ -11947,6 +12169,7 @@ function App() {
         onOpenSoundTest: () => setShowSoundTest(true),
         onOpenVisualTest: () => setScreen("VISUAL_TEST"),
         onClearSaveData: handleResetSave,
+        onForceClearSaveData: handleForceResetAll,
         onOpenLog: () => setShowLog(true),
         onOpenHelp: () => setShowHelp(true),
         renderThemeStyles,
@@ -12519,6 +12742,7 @@ function App() {
   } else if (screen === "ENDING") {
     const finalAffection = affection[activeHeroineId];
     workshopState.reputation;
+    const endingHistory = normalizeDailyScoreHistory(dailyScoreHistory);
     let endingType = "normal";
     if (finalAffection >= 70) {
       endingType = "good";
@@ -12531,6 +12755,18 @@ function App() {
     const endingBackgroundSrc = getFullPath(
       (endingBackground || BACKGROUND_IMAGES.shopInteriorService).src
     );
+    const summaryCardStyle = {
+      width: "min(760px, calc(100% - 32px))",
+      background: "rgba(18, 12, 8, 0.88)",
+      border: `2px solid ${THEME.brass}`,
+      borderRadius: "18px",
+      boxShadow: "0 18px 40px rgba(0,0,0,0.35)",
+      padding: "18px 20px 20px",
+      color: THEME.sand,
+      display: "flex",
+      flexDirection: "column",
+      gap: "14px"
+    };
     mainContent = /* @__PURE__ */ React.createElement(
       "div",
       {
@@ -12566,7 +12802,7 @@ function App() {
           size: "large",
           expression: endingData.expression || "normal"
         }
-      )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "0" } }, /* @__PURE__ */ React.createElement(
+      )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "0 16px 20px", display: "flex", justifyContent: "center" } }, !endingComplete ? /* @__PURE__ */ React.createElement(
         VNBox,
         {
           ref: vnRef,
@@ -12583,9 +12819,33 @@ function App() {
           skip: shouldSkipTypewriter(isInstantTextSpeed),
           getFaceIcon,
           onPageComplete: (data) => appendVnBacklog({ ...data, screen: "ENDING" }),
-          onComplete: handleFinishGame
+          onComplete: () => setEndingComplete(true)
         }
-      )), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, marginBottom: "20px", width: "100%", maxWidth: "240px" } }, "タイトルへ戻る"))
+      ) : /* @__PURE__ */ React.createElement("div", { style: summaryCardStyle, onClick: (e) => e.stopPropagation() }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.15em", fontWeight: "bold", color: THEME.brassLight, textAlign: "center" } }, "5日分の結果"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gap: "8px" } }, [1, 2, 3, 4, 5].map((day) => {
+        const entry = endingHistory.find((item) => item.day === day);
+        return /* @__PURE__ */ React.createElement(
+          "div",
+          {
+            key: day,
+            style: {
+              display: "grid",
+              gridTemplateColumns: "72px repeat(4, minmax(0, 1fr))",
+              gap: "8px",
+              alignItems: "center",
+              padding: "8px 10px",
+              borderRadius: "10px",
+              background: "rgba(255, 248, 232, 0.06)",
+              border: `1px solid rgba(214, 182, 114, 0.18)`,
+              fontSize: "0.92em"
+            }
+          },
+          /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", color: THEME.brassLight } }, "Day ", day),
+          /* @__PURE__ */ React.createElement("div", null, "売上: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, entry ? `${entry.sales}G` : "-")),
+          /* @__PURE__ */ React.createElement("div", null, "評判: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: entry && entry.reputation >= 0 ? THEME.oasisTeal : "#844" } }, entry ? entry.reputation >= 0 ? `+${entry.reputation}` : entry.reputation : "-")),
+          /* @__PURE__ */ React.createElement("div", null, "満足度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: entry && entry.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, entry ? entry.satisfaction >= 0 ? `+${entry.satisfaction}` : entry.satisfaction : "-")),
+          /* @__PURE__ */ React.createElement("div", null, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, entry ? `${entry.affection} / 100` : "-"))
+        );
+      })), /* @__PURE__ */ React.createElement("button", { onClick: handleFinishGame, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "240px", alignSelf: "center", marginTop: "6px" } }, "タイトルへ戻る"))))
     );
   } else if (screen === "QUIZ" && session) {
     const quizState = {
@@ -12688,8 +12948,8 @@ function App() {
         clearPersistentSeenEventIds();
         setPersistentSeenEventIds([]);
       },
-      autoSkipQuiz,
-      setAutoSkipQuiz,
+      quizSkipMode,
+      setQuizSkipMode,
       onTriggerEvent: (ev) => {
         setScreen("EVENT");
         setActiveEvent(ev);
