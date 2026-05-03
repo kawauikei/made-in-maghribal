@@ -5829,7 +5829,8 @@ function QuizScreen({
     background: "rgba(26, 42, 58, 0.6)",
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "4px 0"
+    padding: "4px 0",
+    position: "relative"
   } }, /* @__PURE__ */ React.createElement(
     RhythmMock,
     {
@@ -5838,22 +5839,29 @@ function QuizScreen({
       noteIntervalMs: 500,
       judgmentWindowMs: 140
     }
-  )), /* @__PURE__ */ React.createElement("div", { style: {
-    textAlign: "center",
-    fontSize: "0.72em",
-    color: THEME.parchment,
-    opacity: 0.78,
-    marginTop: "2px",
-    marginBottom: "8px",
-    letterSpacing: "0.02em"
-  } }, "リズムに合わせて正解すると少しボーナス！"), (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) > 0 && /* @__PURE__ */ React.createElement("div", { style: {
-    textAlign: "center",
-    fontSize: "0.78em",
-    fontWeight: "700",
-    color: THEME.starGold,
-    marginBottom: "6px",
-    textShadow: `0 0 8px ${THEME.starGold}66`
-  } }, "リズム好機 +", quizFeedback.rhythmBonus, "G"), /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "aria-hidden": "true",
+      style: {
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        fontSize: "0.76em",
+        fontWeight: "700",
+        color: THEME.starGold,
+        textShadow: `0 0 8px ${THEME.starGold}66`,
+        pointerEvents: "none",
+        whiteSpace: "nowrap",
+        opacity: (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) > 0 ? 1 : 0,
+        transition: "opacity 160ms ease"
+      }
+    },
+    "リズム好機 +",
+    (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) || 0,
+    "G"
+  )), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
       choices: currentQuestion.choices,
