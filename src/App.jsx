@@ -894,7 +894,7 @@ export default function App() {
       noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
       judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
     });
-    const fast = answeredAt - quizQuestionStartAtRef.current <= 3000;
+    const fast = answeredAt - quizQuestionStartAtRef.current <= 5000;
     const updatedSession = answerQuestion(session, itemId, {
       rhythmGood,
       fast
