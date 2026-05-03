@@ -5367,6 +5367,7 @@ const DEFAULT_NOTE_INTERVAL_MS = 750;
 const DEFAULT_JUDGMENT_WINDOW_MS = 200;
 const DEFAULT_TRAVEL_DURATION_MS = 2e3;
 const DEFAULT_LANE_HEIGHT = 58;
+const DEFAULT_RHYTHM_PHASE_OFFSET_MS = DEFAULT_TRAVEL_DURATION_MS / 2;
 function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS) {
   const phase = now % noteIntervalMs;
   return phase < 0 ? phase + noteIntervalMs : phase;
@@ -5374,9 +5375,10 @@ function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERV
 function getIsRhythmHitNow({
   now = Date.now(),
   noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS,
-  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
+  phaseOffsetMs = DEFAULT_RHYTHM_PHASE_OFFSET_MS
 } = {}) {
-  const phase = getRhythmPhaseMs(now, noteIntervalMs);
+  const phase = getRhythmPhaseMs(now - phaseOffsetMs, noteIntervalMs);
   return phase <= judgmentWindowMs || phase >= noteIntervalMs - judgmentWindowMs;
 }
 function RhythmMock({
@@ -13416,7 +13418,8 @@ function App() {
     const rhythmGood = getIsRhythmHitNow({
       now: answeredAt,
       noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
-      judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS
+      judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
+      phaseOffsetMs: DEFAULT_RHYTHM_PHASE_OFFSET_MS
     });
     const fast = answeredAt - quizQuestionStartAtRef.current <= 5e3;
     const updatedSession = answerQuestion(session, itemId, {
