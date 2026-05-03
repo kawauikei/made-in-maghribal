@@ -5363,178 +5363,6 @@ function CustomerSilhouette({ customer }) {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
 }
-const DEFAULT_LANE_DURATION_MS = 2400;
-const DEFAULT_BEAT_PULSE_MS = 800;
-const DEFAULT_BPM = 120;
-function RhythmMock({ heroineId, themeColor, bpm = DEFAULT_BPM, firstBeatOffsetMs = 0, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
-  const naderFace = `./characters/nader/face_proc/normal.png`;
-  const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
-  const beatDurationSec = bpm && typeof bpm === "number" && bpm > 0 ? 60 / bpm : 0.5;
-  const beatDurationMs = beatDurationSec * 1e3;
-  const containerRef = useRef(null);
-  const beatPulseRef = useRef(null);
-  const rafRef = useRef(null);
-  useEffect(() => {
-    const safeBpm = Number.isFinite(bpm) && bpm > 0 ? bpm : 120;
-    const offsetSec = Math.max(0, Number(firstBeatOffsetMs) || 0) / 1e3;
-    const tick = () => {
-      var _a, _b;
-      const audio = audioEngine.audio;
-      const canUseAudio = audio && !audio.paused && audioEngine.isUnlocked && !audioEngine.isMuted;
-      const beatPulseEl = beatPulseRef.current;
-      if (canUseAudio && beatPulseEl) {
-        const adjustedTime = Math.max(0, audio.currentTime - offsetSec);
-        const beatPosition = adjustedTime * safeBpm / 60;
-        const beatProgress = beatPosition % 1;
-        const beatIndex = Math.floor(beatPosition);
-        const distanceToBeat = Math.min(beatProgress, 1 - beatProgress);
-        const pulse = Math.max(0, 1 - distanceToBeat / 0.18);
-        beatPulseEl.classList.add("audio-synced");
-        beatPulseEl.style.transform = `scale(${1 + pulse * 0.25})`;
-        beatPulseEl.style.opacity = String(0.2 + pulse * 0.65);
-        beatPulseEl.style.boxShadow = `0 0 ${15 + pulse * 20}px ${THEME.starGold}`;
-        (_a = containerRef.current) == null ? void 0 : _a.style.setProperty("--beat-progress", String(beatProgress));
-        (_b = containerRef.current) == null ? void 0 : _b.style.setProperty("--beat-index", String(beatIndex));
-      } else if (beatPulseEl) {
-        beatPulseEl.classList.remove("audio-synced");
-        beatPulseEl.style.transform = "";
-        beatPulseEl.style.opacity = "";
-        beatPulseEl.style.boxShadow = "";
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [bpm, firstBeatOffsetMs]);
-  return /* @__PURE__ */ React.createElement("div", { ref: containerRef, style: {
-    width: "100%",
-    height: "64px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "12px",
-    margin: "15px 0",
-    pointerEvents: "none",
-    userSelect: "none",
-    position: "relative",
-    "--beat-duration": `${beatDurationMs}ms`,
-    "--beat-pulse-duration": `${beatDurationMs}ms`
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    width: "70%",
-    height: "100%",
-    background: `radial-gradient(ellipse at center, ${THEME.brass}11 0%, transparent 70%)`,
-    zIndex: 0
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    width: "44px",
-    height: "44px",
-    borderRadius: "50%",
-    overflow: "hidden",
-    border: `2px solid ${THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.9)",
-    opacity: 0.8,
-    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
-    flexShrink: 0,
-    zIndex: 2,
-    transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: naderFace, alt: "N", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: {
-    flex: 1,
-    maxWidth: "420px",
-    height: "4px",
-    background: `rgba(255,255,255,0.05)`,
-    borderRadius: "2px",
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    width: "100%",
-    height: "1px",
-    background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
-    top: "50%",
-    transform: "translateY(-50%)"
-  } }), [20, 35, 65, 80].map((pos) => /* @__PURE__ */ React.createElement("div", { key: pos, style: {
-    position: "absolute",
-    left: `${pos}%`,
-    width: "6px",
-    height: "6px",
-    transform: "rotate(45deg)",
-    background: THEME.brass,
-    boxShadow: `0 0 4px ${THEME.brass}88`,
-    opacity: 0.4
-  } })), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: 0,
-    top: "-12px",
-    bottom: "-12px",
-    width: "2px",
-    background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
-    boxShadow: `0 0 8px ${THEME.starGold}`,
-    opacity: 0.8,
-    zIndex: 2,
-    animation: `beat-scanline ${laneDurationMs}ms linear infinite`
-  } }), /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      className: "beat-pulse",
-      ref: beatPulseRef,
-      style: {
-        width: "24px",
-        height: "24px",
-        borderRadius: "50%",
-        border: `2px solid ${THEME.starGold}`,
-        background: "rgba(255,255,255,0.2)",
-        boxShadow: `0 0 15px ${THEME.starGold}aa`,
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 3
-      }
-    },
-    /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
-      zIndex: -1
-    } })
-  )), /* @__PURE__ */ React.createElement("div", { style: {
-    width: "44px",
-    height: "44px",
-    borderRadius: "50%",
-    overflow: "hidden",
-    border: `2px solid ${themeColor || THEME.brass}`,
-    background: "rgba(35, 25, 18, 0.9)",
-    boxShadow: `0 0 12px ${themeColor || THEME.brass}88`,
-    flexShrink: 0,
-    zIndex: 2,
-    transition: "transform 0.3s"
-  } }, /* @__PURE__ */ React.createElement("img", { src: heroineFace, alt: "H", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("style", null, `
-        @keyframes beat-scanline {
-          0% { left: 0%; opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.8; }
-          100% { left: 100%; opacity: 0; }
-        }
-        @keyframes beat-pulse {
-          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
-          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-        }
-        .beat-pulse { 
-          animation: beat-pulse var(--beat-pulse-duration, ${beatPulseMs}ms) ease-in-out infinite;
-        }
-        .beat-pulse.audio-synced {
-          animation: none;
-        }
-      `));
-}
 function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, headerStyle: headerStyle2, session }) {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
     GameHud,
@@ -5731,6 +5559,223 @@ function QuizChoiceList({ choices, quizFeedback, onSelectChoice, itemCardStyle: 
     }
   )));
 }
+const DEFAULT_BAR_INTERVAL_MS = 1e3;
+const DEFAULT_SCROLL_SPEED_PX_PER_SEC = 300;
+const DEFAULT_FIRST_BAR_OFFSET_MS = 0;
+const DEFAULT_ANSWER_UNLOCK_DELAY_MS = 1e3;
+const DEFAULT_JUDGMENT_WINDOW_MS = 140;
+function RhythmMockBeatLane({
+  variant = "debug",
+  barIntervalMs = DEFAULT_BAR_INTERVAL_MS,
+  scrollSpeedPxPerSec = DEFAULT_SCROLL_SPEED_PX_PER_SEC,
+  firstBarOffsetMs = DEFAULT_FIRST_BAR_OFFSET_MS,
+  answerUnlockDelayMs = DEFAULT_ANSWER_UNLOCK_DELAY_MS,
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
+  laneWidth = 400,
+  laneHeight = 80,
+  showDebugInfo = true,
+  bpm
+  // Reference only, not used for timing calculation
+}) {
+  const isQuizVariant = variant === "quiz";
+  const showDebugPanel = showDebugInfo && !isQuizVariant;
+  const showLabels = isQuizVariant || showDebugInfo;
+  const containerRef = useRef(null);
+  const rafRef = useRef(null);
+  const [beatData, setBeatData] = useState({
+    currentTime: 0,
+    barPosition: 0,
+    barProgress: 0,
+    barsPassed: 0,
+    inJudgmentWindow: false,
+    answerUnlocked: false
+  });
+  useEffect(() => {
+    const intervalMs = Number.isFinite(barIntervalMs) && barIntervalMs > 0 ? barIntervalMs : 1e3;
+    const offsetMs = Math.max(0, Number(firstBarOffsetMs) || 0);
+    const tick = () => {
+      const audio = audioEngine.audio;
+      const canUseAudio = audio && !audio.paused && audioEngine.isUnlocked && !audioEngine.isMuted;
+      let currentTime = 0;
+      if (canUseAudio) {
+        currentTime = audio.currentTime * 1e3;
+      }
+      const adjustedMs = Math.max(0, currentTime - offsetMs);
+      const barPosition = adjustedMs / intervalMs;
+      const barProgress = barPosition % 1;
+      const barsPassed = Math.floor(barPosition);
+      const answerUnlocked = currentTime >= answerUnlockDelayMs;
+      const distanceToBar = Math.min(barProgress, 1 - barProgress);
+      const judgmentWindowFraction = judgmentWindowMs / intervalMs;
+      const inJudgmentWindow = answerUnlocked && distanceToBar < judgmentWindowFraction;
+      setBeatData({
+        currentTime: currentTime / 1e3,
+        barPosition,
+        barProgress,
+        barsPassed,
+        inJudgmentWindow,
+        answerUnlocked
+      });
+      const el = containerRef.current;
+      if (el) {
+        el.style.setProperty("--bar-progress", String(barProgress));
+        el.style.setProperty("--bars-passed", String(barsPassed));
+        el.style.setProperty("--answer-unlocked", answerUnlocked ? "1" : "0");
+        el.style.setProperty("--in-judgment", inJudgmentWindow ? "1" : "0");
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [barIntervalMs, firstBarOffsetMs, answerUnlockDelayMs, judgmentWindowMs]);
+  const pixelsPerBar = scrollSpeedPxPerSec * (barIntervalMs / 1e3);
+  const judgmentX = laneWidth * (isQuizVariant ? 0.62 : 0.75);
+  const waitX = judgmentX - answerUnlockDelayMs / barIntervalMs * pixelsPerBar;
+  const overscanBars = Math.ceil(laneWidth / pixelsPerBar) + 8;
+  const renderBars = () => {
+    const bars = [];
+    const fractionalBar = beatData.barProgress;
+    for (let i = -overscanBars; i <= overscanBars; i++) {
+      const relativeBar = i - fractionalBar;
+      const x = judgmentX + relativeBar * pixelsPerBar;
+      if (x >= -24 && x <= laneWidth + 24) {
+        const isPast = relativeBar < 0;
+        const distanceToJudgment = Math.abs(relativeBar);
+        const inWindow = distanceToJudgment < judgmentWindowMs / barIntervalMs;
+        const isNext = relativeBar > 0 && relativeBar < 1;
+        bars.push(
+          /* @__PURE__ */ React.createElement(
+            "div",
+            {
+              key: i,
+              style: {
+                position: "absolute",
+                left: `${x}px`,
+                top: isQuizVariant ? "12%" : "10%",
+                bottom: isQuizVariant ? "12%" : "10%",
+                width: isQuizVariant ? "6px" : "4px",
+                background: isPast ? isQuizVariant ? "rgba(153, 166, 177, 0.34)" : "rgba(132, 145, 158, 0.28)" : inWindow ? THEME.starGold : isNext ? isQuizVariant ? "rgba(255, 255, 255, 0.94)" : "rgba(255, 255, 255, 0.78)" : isQuizVariant ? "rgba(255, 255, 255, 0.68)" : "rgba(255, 255, 255, 0.42)",
+                borderRadius: "3px",
+                boxShadow: inWindow ? `0 0 10px ${THEME.starGold}, 0 0 0 1px rgba(0,0,0,0.25)` : isQuizVariant ? "0 0 0 1px rgba(0,0,0,0.2)" : "none",
+                transform: "translateX(-50%)",
+                opacity: isPast ? 0.45 : 1
+              }
+            }
+          )
+        );
+      }
+    }
+    return bars;
+  };
+  return /* @__PURE__ */ React.createElement("div", { ref: containerRef, style: {
+    width: "100%",
+    maxWidth: `${laneWidth}px`,
+    margin: "0 auto"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "relative",
+    width: "100%",
+    height: `${laneHeight}px`,
+    background: isQuizVariant ? "rgba(0, 0, 0, 0.18)" : "rgba(0, 0, 0, 0.4)",
+    borderRadius: "8px",
+    border: `1px solid ${THEME.brassDark}`,
+    overflow: "hidden"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    inset: 0,
+    background: `repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent ${pixelsPerBar - 1}px,
+            rgba(255, 255, 255, 0.03) ${pixelsPerBar - 1}px,
+            rgba(255, 255, 255, 0.03) ${pixelsPerBar}px
+          )`
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    inset: 0,
+    background: isQuizVariant ? "linear-gradient(90deg, rgba(26, 42, 58, 0.26) 0%, transparent 8%, transparent 92%, rgba(26, 42, 58, 0.26) 100%)" : "linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.12))",
+    pointerEvents: "none"
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${judgmentX}px`,
+    top: 0,
+    bottom: 0,
+    width: isQuizVariant ? "6px" : "3px",
+    background: THEME.starGold,
+    boxShadow: isQuizVariant ? `0 0 0 2px rgba(255, 204, 0, 0.18), 0 0 14px ${THEME.starGold}` : `0 0 12px ${THEME.starGold}`,
+    zIndex: 12,
+    transform: "translateX(-50%)"
+  } }), showLabels && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${judgmentX}px`,
+    top: isQuizVariant ? "50%" : "1px",
+    transform: isQuizVariant ? "translate(-50%, -50%)" : "translateX(-50%)",
+    fontSize: isQuizVariant ? "0.76rem" : "0.6rem",
+    color: isQuizVariant ? "#1a2a3a" : THEME.starGold,
+    fontWeight: "bold",
+    whiteSpace: "nowrap",
+    zIndex: 13,
+    textShadow: "0 1px 0 rgba(0,0,0,0.5)",
+    padding: isQuizVariant ? "8px 16px" : 0,
+    borderRadius: isQuizVariant ? "999px" : 0,
+    background: isQuizVariant ? "rgba(255, 204, 0, 0.94)" : "transparent",
+    border: isQuizVariant ? "1px solid rgba(255, 204, 0, 0.95)" : "none",
+    boxShadow: isQuizVariant ? "0 0 0 1px rgba(0,0,0,0.25), 0 0 18px rgba(255, 204, 0, 0.35)" : "none"
+  } }, isQuizVariant ? "ここで押す" : "BONUS"), !isQuizVariant && /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${judgmentX}px`,
+    bottom: "2px",
+    transform: "translateX(-50%)",
+    fontSize: "0.55rem",
+    color: THEME.starGold,
+    fontWeight: "bold",
+    whiteSpace: "nowrap",
+    zIndex: 13
+  } }, "BONUS")), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${judgmentX}px`,
+    top: "5%",
+    bottom: "5%",
+    width: `${judgmentWindowMs / barIntervalMs * pixelsPerBar * 2}px`,
+    background: `linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.13), transparent)`,
+    zIndex: 2,
+    transform: "translateX(-50%)",
+    borderRadius: "4px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${waitX}px`,
+    top: "8%",
+    bottom: "8%",
+    width: "2px",
+    background: "rgba(100, 200, 255, 0.42)",
+    borderLeft: "1px dashed rgba(100, 200, 255, 0.7)",
+    zIndex: 6
+  } }), showLabels && /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${waitX}px`,
+    bottom: "2px",
+    transform: "translateX(-50%)",
+    fontSize: "0.52rem",
+    color: "rgba(100, 200, 255, 0.8)",
+    whiteSpace: "nowrap",
+    zIndex: 7
+  } }, "WAIT"), renderBars()), showDebugPanel && /* @__PURE__ */ React.createElement("div", { style: {
+    marginTop: "8px",
+    padding: "8px",
+    background: "rgba(0, 0, 0, 0.3)",
+    borderRadius: "4px",
+    fontSize: "0.65rem",
+    color: "#aaa",
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "6px"
+  } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Time"), /* @__PURE__ */ React.createElement("div", { style: { color: "#fff", fontFamily: "monospace" } }, beatData.currentTime.toFixed(2), "s")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Bars"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.answerUnlocked ? THEME.starGold : "#666" } }, beatData.barsPassed)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Status"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.inJudgmentWindow ? THEME.starGold : beatData.answerUnlocked ? "#fff" : "#666" } }, beatData.answerUnlocked ? beatData.inJudgmentWindow ? "BONUS!" : "READY" : "LOCKED"))), showDebugPanel && typeof bpm === "number" && /* @__PURE__ */ React.createElement("div", { style: {
+    marginTop: "6px",
+    fontSize: "0.58rem",
+    color: "#666"
+  } }, "BPM reference: ", bpm));
+}
 function QuizScreen({
   quizState,
   quizActions,
@@ -5739,12 +5784,9 @@ function QuizScreen({
 }) {
   const {
     session,
-    activeHeroineId,
-    activeHeroine,
     quizFeedback,
     routeMode,
-    screen,
-    quizBpm
+    screen
   } = quizState;
   const {
     onOpenLog,
@@ -5833,7 +5875,7 @@ function QuizScreen({
     border: "none",
     boxShadow: "none",
     backdropFilter: "none",
-    padding: "0 20px 20px 20px",
+    padding: "0 20px 16px 20px",
     zIndex: 5
   } }, /* @__PURE__ */ React.createElement(
     QuizRequestCard,
@@ -5843,42 +5885,78 @@ function QuizScreen({
       bubbleStyle: bubbleStyle2
     }
   ), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
-    width: "calc(100% + 40px)",
-    margin: "15px -20px",
-    background: "rgba(26, 42, 58, 0.6)",
+    width: "100%",
+    margin: "10px 0 12px",
+    background: "linear-gradient(180deg, rgba(26, 42, 58, 0.9), rgba(14, 24, 34, 0.92))",
     borderTop: `1px solid ${THEME.brass}44`,
     borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "5px 0",
+    padding: "8px 0 10px",
     position: "relative"
-  } }, /* @__PURE__ */ React.createElement(RhythmMock, { heroineId: activeHeroineId, themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor, bpm: quizBpm }), isAnswerLocked && /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: `rgba(197, 160, 89, 0.9)`,
-    color: "#1a2a3a",
-    padding: "4px 12px",
-    borderRadius: "12px",
-    fontSize: "12px",
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    padding: "0 10px 8px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "10px",
+    flexWrap: "wrap"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    gap: "6px",
+    flexWrap: "wrap",
+    alignItems: "center"
+  } }, [
+    { label: "準備中", active: isAnswerLocked },
+    { label: "回答可能", active: !isAnswerLocked && !showReadyStatus },
+    { label: "好機", active: !isAnswerLocked && showReadyStatus }
+  ].map((item) => /* @__PURE__ */ React.createElement(
+    "span",
+    {
+      key: item.label,
+      style: {
+        padding: "3px 8px",
+        borderRadius: "999px",
+        border: `1px solid ${item.active ? THEME.starGold : "rgba(255,255,255,0.12)"}`,
+        background: item.active ? "rgba(255, 204, 0, 0.12)" : "rgba(255,255,255,0.04)",
+        color: item.active ? THEME.starGold : "#b4c0cb",
+        fontSize: "0.62rem",
+        fontWeight: "bold",
+        whiteSpace: "nowrap"
+      }
+    },
+    item.label
+  ))), /* @__PURE__ */ React.createElement("div", { style: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "4px 10px",
+    borderRadius: "999px",
+    background: "rgba(255, 204, 0, 0.94)",
+    color: THEME.textDark,
+    border: `1px solid ${THEME.starGold}`,
+    fontSize: "0.66rem",
     fontWeight: "bold",
     whiteSpace: "nowrap",
-    zIndex: 10,
-    pointerEvents: "none"
-  } }, "準備中"), !isAnswerLocked && showReadyStatus && /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: `rgba(42, 160, 100, 0.9)`,
-    color: "#ffffff",
-    padding: "4px 12px",
-    borderRadius: "12px",
-    fontSize: "12px",
-    fontWeight: "bold",
-    whiteSpace: "nowrap",
-    zIndex: 10,
-    pointerEvents: "none"
-  } }, "回答可能")), /* @__PURE__ */ React.createElement(
+    boxShadow: "0 0 12px rgba(255, 204, 0, 0.18)"
+  } }, "ここで押す"))), /* @__PURE__ */ React.createElement("div", { style: {
+    padding: "0 10px"
+  } }, /* @__PURE__ */ React.createElement(
+    RhythmMockBeatLane,
+    {
+      variant: "quiz",
+      laneWidth: 760,
+      laneHeight: 56,
+      barIntervalMs: 1e3,
+      scrollSpeedPxPerSec: 300,
+      firstBarOffsetMs: 0,
+      answerUnlockDelayMs,
+      judgmentWindowMs: 140,
+      showDebugInfo: false
+    }
+  ))), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
       choices: currentQuestion.choices,
@@ -12429,194 +12507,6 @@ const SFX = {
     description: "Wooden door latch or shop bell for day end"
   }
 };
-const DEFAULT_BAR_INTERVAL_MS = 1e3;
-const DEFAULT_SCROLL_SPEED_PX_PER_SEC = 300;
-const DEFAULT_FIRST_BAR_OFFSET_MS = 0;
-const DEFAULT_ANSWER_UNLOCK_DELAY_MS = 1e3;
-const DEFAULT_JUDGMENT_WINDOW_MS = 140;
-function RhythmMockBeatLane({
-  barIntervalMs = DEFAULT_BAR_INTERVAL_MS,
-  scrollSpeedPxPerSec = DEFAULT_SCROLL_SPEED_PX_PER_SEC,
-  firstBarOffsetMs = DEFAULT_FIRST_BAR_OFFSET_MS,
-  answerUnlockDelayMs = DEFAULT_ANSWER_UNLOCK_DELAY_MS,
-  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
-  laneWidth = 400,
-  laneHeight = 80,
-  showDebugInfo = true,
-  bpm
-  // Reference only, not used for timing calculation
-}) {
-  const containerRef = useRef(null);
-  const rafRef = useRef(null);
-  const [beatData, setBeatData] = useState({
-    currentTime: 0,
-    barPosition: 0,
-    barProgress: 0,
-    barsPassed: 0,
-    inJudgmentWindow: false,
-    answerUnlocked: false
-  });
-  useEffect(() => {
-    const intervalMs = Number.isFinite(barIntervalMs) && barIntervalMs > 0 ? barIntervalMs : 1e3;
-    const offsetMs = Math.max(0, Number(firstBarOffsetMs) || 0);
-    const tick = () => {
-      const audio = audioEngine.audio;
-      const canUseAudio = audio && !audio.paused && audioEngine.isUnlocked && !audioEngine.isMuted;
-      let currentTime = 0;
-      if (canUseAudio) {
-        currentTime = audio.currentTime * 1e3;
-      }
-      const adjustedMs = Math.max(0, currentTime - offsetMs);
-      const barPosition = adjustedMs / intervalMs;
-      const barProgress = barPosition % 1;
-      const barsPassed = Math.floor(barPosition);
-      const answerUnlocked = currentTime >= answerUnlockDelayMs;
-      const distanceToBar = Math.min(barProgress, 1 - barProgress);
-      const judgmentWindowFraction = judgmentWindowMs / intervalMs;
-      const inJudgmentWindow = answerUnlocked && distanceToBar < judgmentWindowFraction;
-      setBeatData({
-        currentTime: currentTime / 1e3,
-        barPosition,
-        barProgress,
-        barsPassed,
-        inJudgmentWindow,
-        answerUnlocked
-      });
-      const el = containerRef.current;
-      if (el) {
-        el.style.setProperty("--bar-progress", String(barProgress));
-        el.style.setProperty("--bars-passed", String(barsPassed));
-        el.style.setProperty("--answer-unlocked", answerUnlocked ? "1" : "0");
-        el.style.setProperty("--in-judgment", inJudgmentWindow ? "1" : "0");
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [barIntervalMs, scrollSpeedPxPerSec, firstBarOffsetMs, answerUnlockDelayMs, judgmentWindowMs]);
-  const pixelsPerBar = scrollSpeedPxPerSec * (barIntervalMs / 1e3);
-  const judgmentX = laneWidth * 0.75;
-  const waitX = judgmentX - answerUnlockDelayMs / barIntervalMs * pixelsPerBar;
-  const renderBars = () => {
-    const bars = [];
-    const fractionalBar = beatData.barProgress;
-    for (let i = -2; i <= 8; i++) {
-      const relativeBar = i - fractionalBar;
-      const x = judgmentX + relativeBar * pixelsPerBar;
-      if (x >= -20 && x <= laneWidth + 20) {
-        const isPast = relativeBar < 0;
-        const distanceToJudgment = Math.abs(relativeBar);
-        const inWindow = distanceToJudgment < judgmentWindowMs / barIntervalMs;
-        const isNext = i === 0 && relativeBar > 0;
-        bars.push(
-          /* @__PURE__ */ React.createElement(
-            "div",
-            {
-              key: i,
-              style: {
-                position: "absolute",
-                left: `${x}px`,
-                top: "10%",
-                bottom: "10%",
-                width: "4px",
-                background: isPast ? "rgba(100, 100, 100, 0.3)" : inWindow ? THEME.starGold : isNext ? THEME.brass : "rgba(255, 255, 255, 0.5)",
-                borderRadius: "2px",
-                boxShadow: inWindow ? `0 0 8px ${THEME.starGold}` : "none",
-                transform: "translateX(-50%)",
-                opacity: isPast ? 0.4 : 1
-              }
-            }
-          )
-        );
-      }
-    }
-    return bars;
-  };
-  return /* @__PURE__ */ React.createElement("div", { ref: containerRef, style: {
-    width: "100%",
-    maxWidth: `${laneWidth}px`,
-    margin: "0 auto"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "relative",
-    width: "100%",
-    height: `${laneHeight}px`,
-    background: "rgba(0, 0, 0, 0.4)",
-    borderRadius: "8px",
-    border: `1px solid ${THEME.brassDark}`,
-    overflow: "hidden"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: `repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent ${pixelsPerBar - 1}px,
-            rgba(255, 255, 255, 0.03) ${pixelsPerBar - 1}px,
-            rgba(255, 255, 255, 0.03) ${pixelsPerBar}px
-          )`
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: 0,
-    bottom: 0,
-    width: "3px",
-    background: THEME.starGold,
-    boxShadow: `0 0 10px ${THEME.starGold}`,
-    zIndex: 10,
-    transform: "translateX(-50%)"
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    top: "5%",
-    bottom: "5%",
-    width: `${judgmentWindowMs / barIntervalMs * pixelsPerBar * 2}px`,
-    background: `linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.15), transparent)`,
-    zIndex: 1,
-    transform: "translateX(-50%)",
-    borderRadius: "4px"
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${waitX}px`,
-    top: 0,
-    bottom: 0,
-    width: "2px",
-    background: "rgba(100, 200, 255, 0.5)",
-    borderLeft: `1px dashed rgba(100, 200, 255, 0.8)`,
-    zIndex: 5
-  } }), renderBars(), showDebugInfo && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${judgmentX}px`,
-    bottom: "2px",
-    transform: "translateX(-50%)",
-    fontSize: "0.6rem",
-    color: THEME.starGold,
-    fontWeight: "bold",
-    zIndex: 11
-  } }, "BONUS"), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${waitX}px`,
-    bottom: "2px",
-    transform: "translateX(-50%)",
-    fontSize: "0.55rem",
-    color: "rgba(100, 200, 255, 0.8)",
-    zIndex: 6
-  } }, "WAIT"))), showDebugInfo && /* @__PURE__ */ React.createElement("div", { style: {
-    marginTop: "8px",
-    padding: "8px",
-    background: "rgba(0, 0, 0, 0.3)",
-    borderRadius: "4px",
-    fontSize: "0.65rem",
-    color: "#aaa",
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "6px"
-  } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Time"), /* @__PURE__ */ React.createElement("div", { style: { color: "#fff", fontFamily: "monospace" } }, beatData.currentTime.toFixed(2), "s")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Bars"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.answerUnlocked ? THEME.starGold : "#666" } }, beatData.barsPassed)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#666" } }, "Status"), /* @__PURE__ */ React.createElement("div", { style: { color: beatData.inJudgmentWindow ? THEME.starGold : beatData.answerUnlocked ? "#fff" : "#666" } }, beatData.answerUnlocked ? beatData.inJudgmentWindow ? "BONUS!" : "READY" : "LOCKED"))));
-}
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const [activeTab, setActiveTab] = useState("BGM");
   const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
