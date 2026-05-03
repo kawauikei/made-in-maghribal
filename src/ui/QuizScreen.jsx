@@ -1,5 +1,4 @@
 import React from 'react';
-import { THEME } from './theme';
 import { BACKGROUND_IMAGES } from '../data/imageAssets';
 import { RhythmMock, QuizHeader, QuizRequestCard, QuizChoiceList } from './quiz';
 
@@ -99,42 +98,23 @@ export default function QuizScreen({
           currentQuestion={currentQuestion}
           customerStyle={customerStyle}
           bubbleStyle={bubbleStyle}
+          quizFeedback={quizFeedback}
         />
 
         <div className="quiz-rhythm-lane" style={{
           width: 'calc(100% + 40px)',
           margin: '8px -20px 6px',
           background: 'rgba(26, 42, 58, 0.6)',
-          borderTop: `1px solid ${THEME.brass}44`,
-          borderBottom: `1px solid ${THEME.brass}44`,
-          padding: '4px 0',
-          position: 'relative'
+          borderTop: '1px solid rgba(218, 180, 96, 0.27)',
+          borderBottom: '1px solid rgba(218, 180, 96, 0.27)',
+          padding: '4px 0'
         }}>
           <RhythmMock
             heroineId={activeHeroineId}
             themeColor={activeHeroine?.themeColor}
-            noteIntervalMs={500}
+            noteIntervalMs={750}
             judgmentWindowMs={140}
           />
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              fontSize: '0.76em',
-              fontWeight: '700',
-              color: THEME.starGold,
-              textShadow: `0 0 8px ${THEME.starGold}66`,
-              pointerEvents: 'none',
-              whiteSpace: 'nowrap',
-              opacity: quizFeedback?.rhythmBonus > 0 ? 1 : 0,
-              transition: 'opacity 160ms ease'
-            }}
-          >
-            リズム好機 +{quizFeedback?.rhythmBonus || 0}G
-          </div>
         </div>
 
         <QuizChoiceList

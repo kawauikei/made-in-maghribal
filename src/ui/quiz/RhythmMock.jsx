@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { THEME } from '../theme';
 
-export const DEFAULT_NOTE_INTERVAL_MS = 500;
+export const DEFAULT_NOTE_INTERVAL_MS = 750;
 export const DEFAULT_JUDGMENT_WINDOW_MS = 140;
-export const DEFAULT_RHYTHM_BONUS_GOLD = 20;
 const DEFAULT_TRAVEL_DURATION_MS = 2000;
 const DEFAULT_LANE_HEIGHT = 58;
 

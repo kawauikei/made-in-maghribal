@@ -315,9 +315,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
 /**
  * Checks if the selected item is correct for the given question.
  */
-export function checkAnswer(question, selectedItemId, { rhythmBonus = 0 } = {}) {
+export function checkAnswer(question, selectedItemId, { rhythmGood = false, fast = false } = {}) {
   const isCorrect = question.correctItemId === selectedItemId;
-  const gainedScore = calculateScore({ isCorrect, rhythmBonus });
+  const gainedScore = calculateScore({ isCorrect, rhythmGood, fast });
 
   return {
     questionId: question.id,

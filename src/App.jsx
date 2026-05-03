@@ -13,11 +13,11 @@ import PrologueScreen from './ui/PrologueScreen';
 import IntroScreen from './ui/IntroScreen';
 import ResultScreen from './ui/ResultScreen';
 import QuizScreen from './ui/QuizScreen';
-import { getIsRhythmHitNow, DEFAULT_RHYTHM_BONUS_GOLD } from './ui/quiz/RhythmMock';
+import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS } from './ui/quiz/RhythmMock';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
-import { getRankInfo } from './game/scoring';
+import { getRankInfo, getQuizStampInfo } from './game/scoring';
 import { resolveQuizCompletion, createPerfectQuizPayload } from './game/quizFlow';
 import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } from './game/management';
 import { HEROINES, NADER, getHeroineAsset } from './data/heroines';
@@ -94,6 +94,7 @@ export default function App() {
   const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
+  const quizQuestionStartAtRef = useRef(Date.now());
   // M10-UI-2: 3 independent modal states (Options / Log / Help)
   const [showOptions, setShowOptions] = useState(false);
   const [showLog, setShowLog] = useState(false);
@@ -760,6 +761,7 @@ export default function App() {
     setActiveDailyTalk(null);
 
     setSession(createQuizSession({ questionCount: 5 }));
+    quizQuestionStartAtRef.current = Date.now();
     setScreen('QUIZ');
   };
 
@@ -886,16 +888,29 @@ export default function App() {
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
 
-    const currentRhythmHit = getIsRhythmHitNow();
+    const answeredAt = Date.now();
+    const rhythmGood = getIsRhythmHitNow({
+      now: answeredAt,
+      noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
+      judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
+    });
+    const fast = answeredAt - quizQuestionStartAtRef.current <= 3000;
     const updatedSession = answerQuestion(session, itemId, {
-      rhythmBonus: currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0
+      rhythmGood,
+      fast
     });
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
-    const rhythmBonus = isCorrect && currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0;
+    const stamp = getQuizStampInfo(lastAnswer.gainedScore);
 
     // Trigger visual feedback
-    setQuizFeedback({ itemId, isCorrect, rhythmBonus });
+    setQuizFeedback({
+      itemId,
+      isCorrect,
+      stampLabel: stamp.label,
+      stampTone: stamp.tone,
+      stampScore: lastAnswer.gainedScore,
+    });
 
     // Delay result sound slightly
     setTimeout(() => {
@@ -913,6 +928,8 @@ export default function App() {
         if (updatedSession.isFinished) {
           const correctCount = updatedSession.answers.filter(a => a.isCorrect).length;
           finishQuizWithResult(correctCount);
+        } else {
+          quizQuestionStartAtRef.current = Date.now();
         }
       }, 650);
     }, 150);
