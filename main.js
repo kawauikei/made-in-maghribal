@@ -5409,7 +5409,7 @@ function RhythmMock({
       const age = now - spawnTime;
       const progress = age / travelDurationMs;
       if (progress < -0.15 || progress > 1.15) continue;
-      const left = 108 - progress * 116;
+      const left = -8 + progress * 116;
       const distanceToTarget = Math.abs(left - 50);
       items2.push({
         index,
