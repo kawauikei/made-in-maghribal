@@ -5647,8 +5647,9 @@ function ConditionBadges({ criteria }) {
 function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbleStyle: bubbleStyle2, quizFeedback }) {
   var _a;
   const stampLabel = quizFeedback == null ? void 0 : quizFeedback.stampLabel;
-  const stampScore = quizFeedback == null ? void 0 : quizFeedback.stampScore;
   const stampTone = (quizFeedback == null ? void 0 : quizFeedback.stampTone) || "gold";
+  const tempoMark = (quizFeedback == null ? void 0 : quizFeedback.tempoMark) || "△";
+  const speedMark = (quizFeedback == null ? void 0 : quizFeedback.speedMark) || "△";
   const stampColors = {
     gold: { border: "rgba(198, 156, 66, 0.9)", text: "#8a5f14", fill: "rgba(255, 244, 208, 0.92)" },
     brass: { border: "rgba(162, 128, 64, 0.85)", text: "#7a4f10", fill: "rgba(249, 236, 197, 0.92)" },
@@ -5660,7 +5661,7 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
   return /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle2, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
     ...bubbleStyle2,
     width: "90%",
-    height: "110px",
+    height: "136px",
     background: "#fff",
     color: "#333",
     border: `2px solid ${((_a = currentQuestion.request.customer) == null ? void 0 : _a.color) || THEME.brassDark}`,
@@ -5683,7 +5684,14 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
     flex: 1,
     height: "100%",
     justifyContent: "space-between"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria }))), stampLabel && /* @__PURE__ */ React.createElement(
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: {
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 2,
+    overflow: "hidden",
+    lineHeight: "1.45",
+    maxHeight: "2.9em"
+  } }, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria }))), stampLabel && /* @__PURE__ */ React.createElement(
     "div",
     {
       "aria-hidden": "true",
@@ -5692,19 +5700,51 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
         right: "10px",
         bottom: "10px",
         transform: "rotate(-8deg)",
-        minWidth: "84px",
-        padding: "7px 10px 6px",
+        display: "flex",
+        alignItems: "flex-end",
+        gap: "6px",
         borderRadius: "8px",
-        border: `2px solid ${stampStyle.border}`,
-        background: stampStyle.fill,
-        color: stampStyle.text,
-        textAlign: "center",
         pointerEvents: "none",
-        boxShadow: "0 2px 0 rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.28)"
+        maxWidth: "calc(100% - 18px)"
       }
     },
-    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", fontWeight: 900, letterSpacing: "0.05em" } }, stampLabel),
-    stampScore > 0 && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.68em", fontWeight: 700, marginTop: "1px" } }, "+", stampScore)
+    /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "3px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.56em",
+      fontWeight: 800,
+      color: "#7a5a20",
+      background: "rgba(255,255,255,0.88)",
+      border: `1px solid ${stampStyle.border}`,
+      borderRadius: "999px",
+      padding: "2px 7px",
+      letterSpacing: "0.03em",
+      lineHeight: 1,
+      alignSelf: "flex-end"
+    } }, "テンポ ", tempoMark), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "0.56em",
+      fontWeight: 800,
+      color: "#7a5a20",
+      background: "rgba(255,255,255,0.88)",
+      border: `1px solid ${stampStyle.border}`,
+      borderRadius: "999px",
+      padding: "2px 7px",
+      letterSpacing: "0.03em",
+      lineHeight: 1,
+      alignSelf: "flex-end"
+    } }, "速度 ", speedMark)),
+    /* @__PURE__ */ React.createElement("div", { style: {
+      minWidth: "84px",
+      padding: "7px 10px 6px",
+      borderRadius: "8px",
+      border: `2px solid ${stampStyle.border}`,
+      background: stampStyle.fill,
+      color: stampStyle.text,
+      textAlign: "center",
+      boxShadow: "0 2px 0 rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.28)"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", fontWeight: 900, letterSpacing: "0.05em" } }, stampLabel))
   )));
 }
 function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
@@ -13391,7 +13431,8 @@ function App() {
       isCorrect,
       stampLabel: stamp.label,
       stampTone: stamp.tone,
-      stampScore: lastAnswer.gainedScore
+      tempoMark: rhythmGood ? "◎" : "△",
+      speedMark: fast ? "◎" : "△"
     });
     setTimeout(() => {
       if (isCorrect) {
