@@ -5579,7 +5579,8 @@ function RhythmMockBeatLane({
 }) {
   const isQuizVariant = variant === "quiz";
   const showDebugPanel = showDebugInfo && !isQuizVariant;
-  const showLabels = isQuizVariant || showDebugInfo;
+  const showDebugLabels = showDebugInfo && !isQuizVariant;
+  const showQuizBonusLabel = isQuizVariant;
   const containerRef = useRef(null);
   const rafRef = useRef(null);
   const [beatData, setBeatData] = useState({
@@ -5632,7 +5633,6 @@ function RhythmMockBeatLane({
   }, [barIntervalMs, firstBarOffsetMs, answerUnlockDelayMs, judgmentWindowMs]);
   const pixelsPerBar = scrollSpeedPxPerSec * (barIntervalMs / 1e3);
   const judgmentX = laneWidth * (isQuizVariant ? 0.62 : 0.75);
-  const waitX = judgmentX - answerUnlockDelayMs / barIntervalMs * pixelsPerBar;
   const overscanBars = Math.ceil(laneWidth / pixelsPerBar) + 8;
   const renderBars = () => {
     const bars = [];
@@ -5677,7 +5677,7 @@ function RhythmMockBeatLane({
     position: "relative",
     width: "100%",
     height: `${laneHeight}px`,
-    background: isQuizVariant ? "rgba(0, 0, 0, 0.18)" : "rgba(0, 0, 0, 0.4)",
+    background: isQuizVariant ? "rgba(0, 0, 0, 0.16)" : "rgba(0, 0, 0, 0.4)",
     borderRadius: "8px",
     border: `1px solid ${THEME.brassDark}`,
     overflow: "hidden"
@@ -5694,7 +5694,7 @@ function RhythmMockBeatLane({
   } }), /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
     inset: 0,
-    background: isQuizVariant ? "linear-gradient(90deg, rgba(26, 42, 58, 0.26) 0%, transparent 8%, transparent 92%, rgba(26, 42, 58, 0.26) 100%)" : "linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.12))",
+    background: isQuizVariant ? "linear-gradient(90deg, rgba(26, 42, 58, 0.22) 0%, transparent 8%, transparent 92%, rgba(26, 42, 58, 0.22) 100%)" : "linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.12))",
     pointerEvents: "none"
   } }), /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
@@ -5703,26 +5703,33 @@ function RhythmMockBeatLane({
     bottom: 0,
     width: isQuizVariant ? "6px" : "3px",
     background: THEME.starGold,
-    boxShadow: isQuizVariant ? `0 0 0 2px rgba(255, 204, 0, 0.18), 0 0 14px ${THEME.starGold}` : `0 0 12px ${THEME.starGold}`,
+    boxShadow: isQuizVariant ? `0 0 0 2px rgba(255, 204, 0, 0.16), 0 0 14px ${THEME.starGold}` : `0 0 12px ${THEME.starGold}`,
     zIndex: 12,
     transform: "translateX(-50%)"
-  } }), showLabels && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
+  } }), showQuizBonusLabel && /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
     left: `${judgmentX}px`,
-    top: isQuizVariant ? "50%" : "1px",
-    transform: isQuizVariant ? "translate(-50%, -50%)" : "translateX(-50%)",
-    fontSize: isQuizVariant ? "0.76rem" : "0.6rem",
-    color: isQuizVariant ? "#1a2a3a" : THEME.starGold,
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    fontSize: "0.72rem",
+    color: THEME.starGold,
+    fontWeight: "bold",
+    letterSpacing: "0.06em",
+    whiteSpace: "nowrap",
+    zIndex: 13,
+    textShadow: "0 1px 0 rgba(0,0,0,0.5)"
+  } }, "BONUS"), showDebugLabels && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    left: `${judgmentX}px`,
+    top: "1px",
+    transform: "translateX(-50%)",
+    fontSize: "0.6rem",
+    color: THEME.starGold,
     fontWeight: "bold",
     whiteSpace: "nowrap",
     zIndex: 13,
-    textShadow: "0 1px 0 rgba(0,0,0,0.5)",
-    padding: isQuizVariant ? "8px 16px" : 0,
-    borderRadius: isQuizVariant ? "999px" : 0,
-    background: isQuizVariant ? "rgba(255, 204, 0, 0.94)" : "transparent",
-    border: isQuizVariant ? "1px solid rgba(255, 204, 0, 0.95)" : "none",
-    boxShadow: isQuizVariant ? "0 0 0 1px rgba(0,0,0,0.25), 0 0 18px rgba(255, 204, 0, 0.35)" : "none"
-  } }, isQuizVariant ? "ここで押す" : "BONUS"), !isQuizVariant && /* @__PURE__ */ React.createElement("div", { style: {
+    textShadow: "0 1px 0 rgba(0,0,0,0.5)"
+  } }, "BONUS"), /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
     left: `${judgmentX}px`,
     bottom: "2px",
@@ -5742,25 +5749,7 @@ function RhythmMockBeatLane({
     zIndex: 2,
     transform: "translateX(-50%)",
     borderRadius: "4px"
-  } }), /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${waitX}px`,
-    top: "8%",
-    bottom: "8%",
-    width: "2px",
-    background: "rgba(100, 200, 255, 0.42)",
-    borderLeft: "1px dashed rgba(100, 200, 255, 0.7)",
-    zIndex: 6
-  } }), showLabels && /* @__PURE__ */ React.createElement("div", { style: {
-    position: "absolute",
-    left: `${waitX}px`,
-    bottom: "2px",
-    transform: "translateX(-50%)",
-    fontSize: "0.52rem",
-    color: "rgba(100, 200, 255, 0.8)",
-    whiteSpace: "nowrap",
-    zIndex: 7
-  } }, "WAIT"), renderBars()), showDebugPanel && /* @__PURE__ */ React.createElement("div", { style: {
+  } }), renderBars()), showDebugPanel && /* @__PURE__ */ React.createElement("div", { style: {
     marginTop: "8px",
     padding: "8px",
     background: "rgba(0, 0, 0, 0.3)",
@@ -5808,29 +5797,6 @@ function QuizScreen({
     imageStyle: imageStyle2,
     itemNameStyle: itemNameStyle2
   } = quizStyles;
-  const [isAnswerLocked, setIsAnswerLocked] = useState(true);
-  const [showReadyStatus, setShowReadyStatus] = useState(false);
-  const unlockTimerRef = useRef(null);
-  const readyTimerRef = useRef(null);
-  const answerUnlockDelayMs = 1e3;
-  const readyStatusMs = 800;
-  useEffect(() => {
-    setIsAnswerLocked(true);
-    setShowReadyStatus(false);
-    if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
-    if (readyTimerRef.current) clearTimeout(readyTimerRef.current);
-    unlockTimerRef.current = setTimeout(() => {
-      setIsAnswerLocked(false);
-      setShowReadyStatus(true);
-      readyTimerRef.current = setTimeout(() => {
-        setShowReadyStatus(false);
-      }, readyStatusMs);
-    }, answerUnlockDelayMs);
-    return () => {
-      if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
-      if (readyTimerRef.current) clearTimeout(readyTimerRef.current);
-    };
-  }, [session == null ? void 0 : session.currentIndex]);
   if (!session) return null;
   const currentQuestion = session.questions[session.currentIndex];
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "quiz-screen", style: containerStyle2 }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: {
@@ -5875,7 +5841,7 @@ function QuizScreen({
     border: "none",
     boxShadow: "none",
     backdropFilter: "none",
-    padding: "0 20px 16px 20px",
+    padding: "0 20px 12px 20px",
     zIndex: 5
   } }, /* @__PURE__ */ React.createElement(
     QuizRequestCard,
@@ -5884,75 +5850,34 @@ function QuizScreen({
       customerStyle: customerStyle2,
       bubbleStyle: bubbleStyle2
     }
-  ), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
-    width: "100%",
-    margin: "10px 0 12px",
-    background: "linear-gradient(180deg, rgba(26, 42, 58, 0.9), rgba(14, 24, 34, 0.92))",
-    borderTop: `1px solid ${THEME.brass}44`,
-    borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "8px 0 10px",
-    position: "relative"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    padding: "0 10px 8px",
+  ), /* @__PURE__ */ React.createElement("div", { style: {
+    margin: "8px 0 10px",
+    padding: "0 4px",
     display: "flex",
     flexDirection: "column",
-    gap: "4px"
+    gap: "6px"
   } }, /* @__PURE__ */ React.createElement("div", { style: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "10px",
-    flexWrap: "wrap"
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    display: "flex",
-    gap: "6px",
-    flexWrap: "wrap",
-    alignItems: "center"
-  } }, [
-    { label: "準備中", active: isAnswerLocked },
-    { label: "回答可能", active: !isAnswerLocked && !showReadyStatus },
-    { label: "好機", active: !isAnswerLocked && showReadyStatus }
-  ].map((item) => /* @__PURE__ */ React.createElement(
-    "span",
-    {
-      key: item.label,
-      style: {
-        padding: "3px 8px",
-        borderRadius: "999px",
-        border: `1px solid ${item.active ? THEME.starGold : "rgba(255,255,255,0.12)"}`,
-        background: item.active ? "rgba(255, 204, 0, 0.12)" : "rgba(255,255,255,0.04)",
-        color: item.active ? THEME.starGold : "#b4c0cb",
-        fontSize: "0.62rem",
-        fontWeight: "bold",
-        whiteSpace: "nowrap"
-      }
-    },
-    item.label
-  ))), /* @__PURE__ */ React.createElement("div", { style: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "4px 10px",
-    borderRadius: "999px",
-    background: "rgba(255, 204, 0, 0.94)",
-    color: THEME.textDark,
-    border: `1px solid ${THEME.starGold}`,
-    fontSize: "0.66rem",
-    fontWeight: "bold",
-    whiteSpace: "nowrap",
-    boxShadow: "0 0 12px rgba(255, 204, 0, 0.18)"
-  } }, "ここで押す"))), /* @__PURE__ */ React.createElement("div", { style: {
-    padding: "0 10px"
+    fontSize: "0.62rem",
+    color: "#d7dde5",
+    textAlign: "center",
+    whiteSpace: "nowrap"
+  } }, "リズムに合わせて正解すると少しボーナス！"), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
+    width: "100%",
+    background: "linear-gradient(180deg, rgba(26, 42, 58, 0.82), rgba(14, 24, 34, 0.88))",
+    borderTop: `1px solid ${THEME.brass}44`,
+    borderBottom: `1px solid ${THEME.brass}44`,
+    padding: "4px 0 6px",
+    position: "relative"
   } }, /* @__PURE__ */ React.createElement(
     RhythmMockBeatLane,
     {
       variant: "quiz",
       laneWidth: 760,
-      laneHeight: 56,
+      laneHeight: 52,
       barIntervalMs: 1e3,
       scrollSpeedPxPerSec: 300,
       firstBarOffsetMs: 0,
-      answerUnlockDelayMs,
+      answerUnlockDelayMs: 1e3,
       judgmentWindowMs: 140,
       showDebugInfo: false
     }
@@ -5966,7 +5891,7 @@ function QuizScreen({
       imageStyle: imageStyle2,
       itemNameStyle: itemNameStyle2,
       requestType: currentQuestion.request.type,
-      isLocked: isAnswerLocked
+      isLocked: false
     }
   )));
 }
