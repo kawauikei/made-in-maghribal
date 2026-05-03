@@ -13418,7 +13418,7 @@ function App() {
       noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
       judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS
     });
-    const fast = answeredAt - quizQuestionStartAtRef.current <= 3e3;
+    const fast = answeredAt - quizQuestionStartAtRef.current <= 5e3;
     const updatedSession = answerQuestion(session, itemId, {
       rhythmGood,
       fast
