@@ -7,24 +7,34 @@
 
 /**
  * Returns the appropriate expression ID for the result screen based on quiz performance.
- * @param {number} correctCount - Number of correct answers (out of 5)
+ * @param {number} correctCount - Number of correct answers
+ * @param {number} totalQuestions - Total questions in the turn
  * @returns {string} Expression ID
  */
-export function getResultExpression(correctCount) {
-  if (correctCount >= 5) return 'fun';
-  if (correctCount >= 4) return 'joy';
-  if (correctCount >= 3) return 'normal';
-  if (correctCount >= 2) return 'sorrow';
+export function getResultExpression(correctCount, totalQuestions = 10) {
+  const perfectThreshold = Math.max(1, totalQuestions);
+  const joyThreshold = Math.max(1, Math.ceil(totalQuestions * 0.8));
+  const normalThreshold = Math.max(1, Math.ceil(totalQuestions * 0.6));
+  const sorrowThreshold = Math.max(1, Math.ceil(totalQuestions * 0.4));
+
+  if (correctCount >= perfectThreshold) return 'fun';
+  if (correctCount >= joyThreshold) return 'joy';
+  if (correctCount >= normalThreshold) return 'normal';
+  if (correctCount >= sorrowThreshold) return 'sorrow';
   return 'cry';
 }
 
 /**
  * Returns the appropriate expression ID for the day end screen based on daily performance.
- * @param {number} correctCount - Number of correct answers (out of 5)
+ * @param {number} correctCount - Number of correct answers
+ * @param {number} totalQuestions - Total questions in the turn
  * @returns {string} Expression ID
  */
-export function getDayEndExpression(correctCount) {
-  if (correctCount >= 4) return 'joy'; // Can also be 'fun'
-  if (correctCount >= 2) return 'normal';
+export function getDayEndExpression(correctCount, totalQuestions = 10) {
+  const joyThreshold = Math.max(1, Math.ceil(totalQuestions * 0.8));
+  const normalThreshold = Math.max(1, Math.ceil(totalQuestions * 0.5));
+
+  if (correctCount >= joyThreshold) return 'joy'; // Can also be 'fun'
+  if (correctCount >= normalThreshold) return 'normal';
   return 'sorrow';
 }

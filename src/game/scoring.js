@@ -1,5 +1,6 @@
-export const QUIZ_FULL_SCORE = 100;
+export const QUIZ_FULL_SCORE = 200;
 export const DEFAULT_BASE_SCORE = QUIZ_FULL_SCORE;
+export const QUIZ_SCORE_TO_G = 1;
 
 export function calculateScore({ isCorrect, rhythmGood = false, fast = false } = {}) {
   const isFastOrRhythmGood = rhythmGood || fast;
@@ -25,14 +26,19 @@ export function getQuizStampInfo(score) {
   return { label: '不正解', tone: 'rose' };
 }
 
-export function getRankInfo(correctCount) {
-  if (correctCount >= 5) {
+export function getRankInfo(correctCount, totalQuestions = 10) {
+  const perfectThreshold = Math.max(1, totalQuestions);
+  const greatThreshold = Math.max(1, Math.ceil(totalQuestions * 0.8));
+  const goodThreshold = Math.max(1, Math.ceil(totalQuestions * 0.6));
+  const okayThreshold = Math.max(1, Math.ceil(totalQuestions * 0.4));
+
+  if (correctCount >= perfectThreshold) {
     return { title: '星瓶堂の若店主', message: '客の求める品を見極める目が、もうしっかり育っています。' };
-  } else if (correctCount >= 4) {
+  } else if (correctCount >= greatThreshold) {
     return { title: '若き錬金店主', message: 'なかなか鋭いです。あと一歩で、さらに星瓶堂らしい判断ができそうです。' };
-  } else if (correctCount >= 3) {
+  } else if (correctCount >= goodThreshold) {
     return { title: 'かけだし店主', message: 'まずまずです。品選びの勘は、少しずつ形になっています。' };
-  } else if (correctCount >= 2) {
+  } else if (correctCount >= okayThreshold) {
     return { title: '星瓶堂の一歩目', message: '手応えはあります。星瓶堂の仕事に、だんだん慣れてきました。' };
   } else {
     return { title: '見習い錬金店主', message: 'ここからです。星瓶堂の仕事は、ひとつずつ覚えていけば大丈夫です。' };

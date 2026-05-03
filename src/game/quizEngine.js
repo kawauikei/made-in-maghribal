@@ -104,7 +104,7 @@ export function isItemMatchingCriteria(item, criteria) {
 /**
  * Creates a new quiz session with the specified number of questions.
  */
-export function createQuizSession({ questionCount = 20 } = {}) {
+export function createQuizSession({ questionCount = 10 } = {}) {
   const questions = [];
   const typePlan = buildRequestTypePlan(questionCount);
 
@@ -324,6 +324,8 @@ export function checkAnswer(question, selectedItemId, { rhythmGood = false, fast
     selectedItemId,
     correctItemId: question.correctItemId,
     isCorrect,
+    rhythmGood,
+    fast,
     gainedScore
   };
 }

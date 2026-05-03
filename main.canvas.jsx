@@ -1,5 +1,5 @@
 import React from 'react';
-import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS, DEFAULT_RHYTHM_PHASE_OFFSET_MS } from './ui/quiz/RhythmMock';
+﻿import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS, DEFAULT_RHYTHM_PHASE_OFFSET_MS } from './ui/quiz/RhythmMock';
 
 const { useState, useEffect, useRef } = React;
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -12,7 +12,6 @@ import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
-import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
 import { buildGameSavePayload, buildSettingsOnlySavePayload, resolveAutoSavePayload } from './game/savePayload';
 import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings } from './game/autoSavePolicy';
@@ -21,6 +20,19 @@ import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, sa
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence, prepareResultTalkSequence, prepareDayEndTalkSequence } from './game/introFlow';
 import { NARRATIVE_SCRIPT } from './data/narrativeScript';
+import {
+  loadPersistentSeenEventIds,
+  savePersistentSeenEventIds,
+  clearPersistentSeenEventIds,
+} from './game/eventMemoryStorage';
+import {
+  loadCareerProgress,
+  saveCareerProgress,
+  getHeroineProgressScore,
+  updateHeroineBestStats,
+  unlockLongHistory,
+  isLongHistoryUnlocked,
+} from './game/careerProgressStorage';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
@@ -33,7 +45,7 @@ const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT
 
 
 const getBacklogRouteModeLabel = (routeMode) => {
-  return routeMode === 'long_history' ? '過去から続く縁' : '現在から育つ縁';
+  return routeMode === 'long_history' ? '過去の縁' : '現在の縁';
 };
 
 const TEXT_SPEED_META = {
@@ -45,6 +57,19 @@ const TEXT_SPEED_META = {
 
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
+
+const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, activeSales = 0) => {
+  const state = {};
+  HEROINES.forEach(heroine => {
+    state[heroine.id] = getHeroineProgressScore(
+      progress,
+      heroine.id,
+      routeMode,
+      heroine.id === activeHeroineId ? activeSales : 0
+    );
+  });
+  return state;
+};
 
 const CustomerSilhouette = ({ customer }) => {
   if (!customer) return null;
@@ -198,7 +223,17 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
 
   return (
     <div data-testid="backlog-modal" style={hudModalBackdrop}>
-      <div style={{ ...hudModalCard, maxWidth: '380px', padding: '16px 14px 14px', height: '85vh', display: 'flex', flexDirection: 'column' }}>
+      <div style={{
+        ...hudModalCard,
+        width: '90vw',
+        maxWidth: '90vw',
+        height: 'min(78vh, 560px)',
+        maxHeight: 'calc(100dvh - 24px)',
+        padding: '16px 14px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box'
+      }}>
         {hudCloseX(handleClose)}
         <h2 style={{ margin: '0 0 15px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em', fontWeight: 'bold' }}>会話ログ</h2>
         
@@ -303,6 +338,7 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
 
 
 // --- Inlined: OptionsModal ---
+﻿import React from 'react';
 
 const buttonStyle = {
   padding: '12px 20px',
@@ -367,7 +403,7 @@ function OptionsModal({
             </button>
           </div>
           <div style={{ background: '#f5f5f5', borderRadius: '10px', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>SE</span>
+            <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>効果音</span>
             <button
               data-testid="se-enabled-toggle"
               aria-pressed={seVolume > 0}
@@ -539,7 +575,7 @@ const renderRouteModeBadge = (routeMode, compact = false) => {
         justifyContent: 'center',
         padding: compact ? '5px 8px' : '6px 10px',
         borderRadius: '999px',
-        border: `1px solid \${THEME.brass}`,
+        border: `1px solid ${THEME.brass}`,
         background: 'rgba(255,255,255,0.9)',
         color: THEME.nightBlue,
         fontSize: compact ? '0.7em' : '0.78em',
@@ -556,12 +592,12 @@ const renderRouteModeBadge = (routeMode, compact = false) => {
   );
 };
 
-const GameHud = ({ 
-  screen, 
-  routeMode, 
-  onOpenLog, 
-  onOpenOptions, 
-  onOpenHelp 
+const GameHud = ({
+  screen,
+  routeMode,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp
 }) => {
   const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   if (!isHudVisible) return null;
@@ -727,11 +763,11 @@ const VisualTestScreen = ({
       
       {/* Fixed Header */}
       <div style={{ width: '100%', padding: '10px 16px', background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
-        <button data-testid="visual-test-back" onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>TITLE</button>
+        <button data-testid="visual-test-back" onClick={handleBackToTitle} style={{ ...utilityBackButtonStyle, margin: 0, fontSize: '0.8em', padding: '6px 12px' }}>タイトルへ</button>
         <div style={{ flex: 1, color: THEME.sand, fontWeight: 'bold', fontSize: '0.9em' }}>映像確認 Asset Test</div>
         <div style={{ display: 'flex', gap: '4px' }}>
-          <button data-testid="visual-test-tab-bg" onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>BG</button>
-          <button data-testid="visual-test-tab-still" onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'still' ? THEME.brass : '#333', color: visualTestMode === 'still' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>STILL</button>
+          <button data-testid="visual-test-tab-bg" onClick={() => setVisualTestMode('background')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'background' ? THEME.brass : '#333', color: visualTestMode === 'background' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>背景</button>
+          <button data-testid="visual-test-tab-still" onClick={() => setVisualTestMode('still')} style={{ ...utilityBackButtonStyle, margin: 0, background: visualTestMode === 'still' ? THEME.brass : '#333', color: visualTestMode === 'still' ? THEME.textDark : '#aaa', fontSize: '0.75em', padding: '4px 8px' }}>立ち絵</button>
         </div>
       </div>
 
@@ -1016,7 +1052,7 @@ const MemoriesScreen = ({
         onOpenOptions={onOpenOptions} 
         onOpenHelp={onOpenHelp} 
       />
-      {renderUtilityHeader && renderUtilityHeader('Memories', onBackToTitle, null, 'memories')}
+      {renderUtilityHeader && renderUtilityHeader('思い出の記録', onBackToTitle, null, 'memories')}
       <h1 style={{ ...memoriesTitleStyle, display: 'none' }}>思い出の記録</h1>
       
       {unlockAll && (
@@ -1144,14 +1180,9 @@ const MemoriesScreen = ({
 
 // --- Inlined: StartScreen ---
 
-/**
- * StartScreen Component
- * Encapsulates the Title/Start screen of Made in Maghribal.
- */
 const StartScreen = ({
   screen,
   routeMode,
-  setRouteMode,
   hasSave,
   onContinue,
   onNewGame,
@@ -1170,28 +1201,27 @@ const StartScreen = ({
   const logoTapTimer = React.useRef(null);
 
   const handleLogoTap = () => {
-    setLogoTaps(prev => {
-      const next = prev + 1;
-      if (next >= 5) {
-        onToggleDebug();
-        audioEngine.playSfx('uiConfirmChime');
-        return 0;
-      }
-      return next;
-    });
+    const next = logoTaps + 1;
+    if (next >= 5) {
+      onToggleDebug();
+      audioEngine.playSfx('uiConfirmChime');
+      setLogoTaps(0);
+    } else {
+      setLogoTaps(next);
+    }
 
     if (logoTapTimer.current) clearTimeout(logoTapTimer.current);
     logoTapTimer.current = setTimeout(() => setLogoTaps(0), 1000);
   };
-  // Replicating styles from App.jsx to minimize prop passing
+
   const containerStyle = {
     width: '100%',
     height: '100%',
-    padding: '12px',
+    padding: '24px 12px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
     boxSizing: 'border-box',
@@ -1234,16 +1264,28 @@ const StartScreen = ({
   return (
     <div data-testid="start-screen" style={containerStyle}>
       {renderThemeStyles && renderThemeStyles()}
-      <GameHud 
-        screen={screen} 
-        routeMode={routeMode} 
-        onOpenLog={onOpenLog} 
-        onOpenOptions={onOpenOptions} 
-        onOpenHelp={onOpenHelp} 
+      <GameHud
+        screen={screen}
+        routeMode={routeMode}
+        onOpenLog={onOpenLog}
+        onOpenOptions={onOpenOptions}
+        onOpenHelp={onOpenHelp}
       />
-      
-      <div style={{ textAlign: 'center', marginBottom: '20px', position: 'relative', zIndex: 1 }}>
-        <h1 
+
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '22px',
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: '420px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px'
+      }}>
+        <h1
           onClick={handleLogoTap}
           style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0', cursor: 'pointer', userSelect: 'none' }}
         >
@@ -1257,48 +1299,11 @@ const StartScreen = ({
         </div>
       </div>
 
-      <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
+      <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0', width: '100%', maxWidth: '420px' }}>
         <div style={{ width: '100%', maxWidth: '260px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'stretch' }}>
-          <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁のかたち</div>
-          <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
-            {Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
-              const isSelected = routeMode === mode;
-              return (
-                <button
-                  key={mode}
-                  data-testid={`route-mode-${mode}`}
-                  aria-pressed={isSelected}
-                  onClick={() => {
-                    audioEngine.playSfx('uiTapBottle');
-                    setRouteMode(mode);
-                  }}
-                  style={{
-                    ...buttonStyle,
-                    flex: 1,
-                    margin: 0,
-                    padding: '10px 8px',
-                    fontSize: '0.74em',
-                    lineHeight: 1.2,
-                    background: isSelected ? THEME.starGold : '#2c3e50',
-                    color: isSelected ? THEME.textDark : THEME.sand,
-                    border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
-                    boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.2)' : 'none'
-                  }}
-                >
-                  {meta.label}
-                </button>
-              );
-            })}
-          </div>
-          <div data-testid="route-mode-description" style={{ fontSize: '0.7em', color: THEME.parchment, opacity: 0.7, textAlign: 'center', marginTop: '2px', fontStyle: 'italic' }}>
-            {getRouteModeMeta(routeMode).description}
-          </div>
-          <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
-            {renderRouteModeBadge(routeMode)}
-          </div>
-          <button 
-            data-testid="start-new" 
-            onClick={onNewGame} 
+          <button
+            data-testid="start-new"
+            onClick={onNewGame}
             style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: '100%', maxWidth: '260px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
             <span style={{ fontSize: '1.2em' }}>☆</span> 星瓶堂を開く
@@ -1306,37 +1311,41 @@ const StartScreen = ({
         </div>
 
         {hasSave && (
-          <button 
+          <button
             data-testid="start-continue"
-            onClick={onContinue} 
+            onClick={onContinue}
             style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
           >
             つづきから
           </button>
         )}
-        
-        <button data-testid="memories-open" onClick={onOpenMemories} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}>
+
+        <button
+          data-testid="memories-open"
+          onClick={onOpenMemories}
+          style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}
+        >
           思い出の記録
         </button>
 
         <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
-          <button 
+          <button
             data-testid="start-options"
             onClick={onOpenOptions}
             style={{ ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: '0.85em', flex: 1, margin: 0 }}
           >
             設定
           </button>
-          <button 
+          <button
             data-testid="sound-test-open"
-            onClick={onOpenSoundTest} 
+            onClick={onOpenSoundTest}
             style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
           >
-            音設定
+            音源確認
           </button>
-          <button 
+          <button
             data-testid="visual-test-open"
-            onClick={onOpenVisualTest} 
+            onClick={onOpenVisualTest}
             style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
           >
             映像確認
@@ -1344,13 +1353,13 @@ const StartScreen = ({
         </div>
 
         {hasSave && (
-          <button 
-            onClick={onClearSaveData} 
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              color: '#844', 
-              textDecoration: 'underline', 
+          <button
+            onClick={onClearSaveData}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#844',
+              textDecoration: 'underline',
               cursor: 'pointer',
               fontSize: '0.75em',
               marginTop: '10px',
@@ -1369,13 +1378,11 @@ const StartScreen = ({
 
 // --- Inlined: HeroineSelectScreen ---
 
-/**
- * HeroineSelectScreen Component
- * Encapsulates the HEROINE_SELECT screen logic and UI.
- */
 const HeroineSelectScreen = ({
   previewHeroineId,
   onPreviewHeroineChange,
+  onToggleRouteMode,
+  canToggleRouteMode,
   onSelectHeroine,
   affection,
   routeMode,
@@ -1389,16 +1396,17 @@ const HeroineSelectScreen = ({
   audioEngine
 }) => {
   const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
+  const routeMeta = getRouteModeMeta(routeMode);
+  const isLongHistoryUnlocked = Boolean(canToggleRouteMode);
 
-  // Replicating styles from App.jsx
   const containerStyle = {
     width: '100%',
     height: '100%',
-    padding: '12px',
+    padding: '24px 12px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
     boxSizing: 'border-box'
@@ -1446,153 +1454,176 @@ const HeroineSelectScreen = ({
     color: THEME.textDark
   };
 
+  const handleHeroineIconClick = (heroineId) => {
+    if (audioEngine) audioEngine.playSfx('uiHeroineTab');
+    if (heroineId === previewHeroineId) {
+      if (isLongHistoryUnlocked && onToggleRouteMode) {
+        onToggleRouteMode(heroineId);
+      }
+      return;
+    }
+    if (onPreviewHeroineChange) onPreviewHeroineChange(heroineId);
+  };
+
+  const previewExpressionFor = (heroineId) => (
+    heroineId === previewHeroineId && routeMode === 'long_history' ? 'maid' : 'normal'
+  );
+
   return (
     <div data-testid="heroine-select-screen" style={containerStyle}>
       {renderThemeStyles && renderThemeStyles()}
-      <GameHud 
-        screen={screen} 
-        routeMode={routeMode} 
-        onOpenLog={onOpenLog} 
-        onOpenOptions={onOpenOptions} 
-        onOpenHelp={onOpenHelp} 
+      <GameHud
+        screen={screen}
+        routeMode={routeMode}
+        onOpenLog={onOpenLog}
+        onOpenOptions={onOpenOptions}
+        onOpenHelp={onOpenHelp}
       />
-      
-      <h1 style={{ ...titleStyle, marginBottom: '20px' }}>誰との縁を深める？</h1>
-      
-      {/* Tabs for Heroine selection */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '20px', 
-        marginBottom: '20px',
+
+      <div style={{
         width: '100%',
-        maxWidth: '350px'
-      }}>
-        {HEROINES.map(h => {
-          const isSelected = previewHeroineId === h.id;
-          return (
-            <div 
-              data-testid={`heroine-tab-${h.id}`}
-              key={h.id}
-              className="heroine-card"
-              onClick={() => {
-                if (audioEngine) audioEngine.playSfx('uiHeroineTab');
-                if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
-              }}
-              style={{
-                width: '70px',
-                height: '70px',
-                borderRadius: '50%',
-                border: `3px solid ${isSelected ? h.themeColor : 'rgba(226,209,177,0.65)'}`,
-                background: '#111',
-                padding: 0,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                transform: isSelected ? 'scale(1.12)' : 'scale(1.0)',
-                boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : '0 2px 8px rgba(0,0,0,0.35)',
-                overflow: 'hidden',
-                zIndex: isSelected ? 2 : 1,
-                boxSizing: 'border-box',
-                position: 'relative'
-              }}
-            >
-              <img
-                src={getFullPath ? getFullPath(getHeroineAsset(h.id, 'face', 'normal')) : ''}
-                alt={h.name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: h.visualConfig?.facePosition || 'center 20%',
-                  display: 'block',
-                  borderRadius: '50%',
-                  clipPath: 'circle(50% at 50% 50%)'
-                }}
-                draggable={false}
-              />
-              {isSelected && (
-                <div style={{
-                  position: 'absolute',
-                  top: '7px',
-                  left: '-3px',
-                  width: '18px',
-                  height: '50px',
-                  borderLeft: `3px solid ${THEME.starGold}`,
-                  borderRadius: '50%',
-                  filter: `drop-shadow(0 0 5px ${h.themeColor})`,
-                  pointerEvents: 'none'
-                }} />
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Heroine Detail Card (Fixed Height to prevent scrolling) */}
-      <div style={{ 
-        ...cardStyle, 
-        maxWidth: '350px', 
-        height: '420px',
-        display: 'flex', 
-        flexDirection: 'column', 
-        padding: '20px',
-        background: THEME.parchment,
-        border: `2px solid ${selectedHeroine.themeColor}`,
-        position: 'relative'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: selectedHeroine.themeColor }} />
-        
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', marginBottom: '15px' }}>
-           {HeroineDisplay && <HeroineDisplay heroine={selectedHeroine} type="face" size="medium" expression="normal" />}
-           <div style={{ textAlign: 'left', flex: 1 }}>
-             <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
-             <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
-             <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
-               親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection ? affection[selectedHeroine.id] : 0}</span>
-             </div>
-           </div>
-        </div>
-
-        <div style={{ 
-          ...narrativeBoxStyle, 
-          flex: 1, 
-          padding: '12px', 
-          fontSize: '0.9em', 
-          marginBottom: '15px', 
-          overflowY: 'auto',
-          background: 'rgba(255,255,255,0.4)',
-          border: '1px solid rgba(0,0,0,0.05)',
-          color: '#333',
-          textAlign: 'left'
-        }}>
-          {getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)}
-        </div>
-
-        <button 
-          data-testid="heroine-start"
-          onClick={() => onSelectHeroine && onSelectHeroine(selectedHeroine.id)}
-          style={{ 
-            ...buttonStyle, 
-            width: '100%', 
-            margin: 0, 
-            background: selectedHeroine.themeColor, 
-            color: '#fff', 
-            border: `2px solid ${selectedHeroine.themeColor}`,
-            boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
-          }}
-        >
-          {selectedHeroine.name}を頼む
-        </button>
-      </div>
-
-      {/* Navigation Footer */}
-      <div style={{ 
-        marginTop: '20px',
+        maxWidth: '420px',
         display: 'flex',
-        gap: '20px',
-        opacity: 0.8
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-        {/* If back navigation was needed, it would go here */}
+        <h1 style={{ ...titleStyle, margin: '0 0 18px 0', textAlign: 'center' }}>ヒロインを選ぶ</h1>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '18px', width: '100%', maxWidth: '350px', flexWrap: 'wrap' }}>
+          {HEROINES.map(h => {
+            const isSelected = previewHeroineId === h.id;
+            const previewExpression = previewExpressionFor(h.id);
+            return (
+              <div
+                data-testid={`heroine-tab-${h.id}`}
+                key={h.id}
+                className="heroine-card"
+                onClick={() => handleHeroineIconClick(h.id)}
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  borderRadius: '50%',
+                  border: `3px solid ${isSelected ? h.themeColor : 'rgba(226,209,177,0.65)'}`,
+                  background: '#111',
+                  padding: 0,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  transform: isSelected ? 'scale(1.12)' : 'scale(1.0)',
+                  boxShadow: isSelected ? `0 0 0 5px ${h.themeColor}33, -10px 0 18px ${h.themeColor}66` : '0 2px 8px rgba(0,0,0,0.35)',
+                  overflow: 'hidden',
+                  zIndex: isSelected ? 2 : 1,
+                  boxSizing: 'border-box',
+                  position: 'relative'
+                }}
+              >
+                <img
+                  src={getFullPath ? getFullPath(getHeroineAsset(h.id, 'face', previewExpression)) : ''}
+                  alt={h.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: h.visualConfig?.facePosition || 'center 20%',
+                    display: 'block',
+                    borderRadius: '50%',
+                    clipPath: 'circle(50% at 50% 50%)'
+                  }}
+                  draggable={false}
+                />
+                {isSelected && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '7px',
+                    left: '-3px',
+                    width: '18px',
+                    height: '50px',
+                    borderLeft: `3px solid ${THEME.starGold}`,
+                    borderRadius: '50%',
+                    filter: `drop-shadow(0 0 5px ${h.themeColor})`,
+                    pointerEvents: 'none'
+                  }} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{
+          ...cardStyle,
+          maxWidth: '350px',
+          height: '420px',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '20px',
+          background: THEME.parchment,
+          border: `2px solid ${selectedHeroine.themeColor}`,
+          position: 'relative'
+        }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: selectedHeroine.themeColor }} />
+
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center', marginBottom: '15px' }}>
+            {HeroineDisplay && <HeroineDisplay heroine={selectedHeroine} type="face" size="medium" expression={routeMode === 'long_history' ? 'maid' : 'normal'} />}
+            <div style={{ textAlign: 'left', flex: 1 }}>
+              <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
+              <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
+              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
+                親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection ? affection[selectedHeroine.id] : 0}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{
+            ...narrativeBoxStyle,
+            flex: 1,
+            padding: '12px',
+            fontSize: '0.9em',
+            marginBottom: '10px',
+            overflowY: 'auto',
+            background: 'rgba(255,255,255,0.4)',
+            border: '1px solid rgba(0,0,0,0.05)',
+            color: '#333',
+            textAlign: 'left'
+          }}>
+            {getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)}
+          </div>
+
+          <div style={{
+            fontSize: '0.75em',
+            color: THEME.textDark,
+            marginBottom: '10px',
+            lineHeight: 1.5,
+            background: 'rgba(255,255,255,0.55)',
+            borderRadius: '8px',
+            padding: '8px 10px',
+            border: `1px solid ${THEME.brass}`
+          }}>
+            <div style={{ fontWeight: 'bold', color: selectedHeroine.themeColor }}>
+              ルート: {routeMeta.label}
+            </div>
+            <div style={{ marginTop: '4px' }}>
+              {isLongHistoryUnlocked
+                ? '同じヒロインをもう一度押すと、解放済みルートへ切り替わります。'
+                : '解放されたら、同じヒロインをもう一度押してルートを切り替えられます。'}
+            </div>
+          </div>
+
+          <button
+            data-testid="heroine-start"
+            onClick={() => onSelectHeroine && onSelectHeroine(selectedHeroine.id)}
+            style={{
+              ...buttonStyle,
+              width: '100%',
+              margin: 0,
+              background: selectedHeroine.themeColor,
+              color: '#fff',
+              border: `2px solid ${selectedHeroine.themeColor}`,
+              boxShadow: '0 4px 0 rgba(0,0,0,0.2)'
+            }}
+          >
+            {selectedHeroine.name}で始める
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -1823,7 +1854,7 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "See you tomorrow."
+      text: "また明日。"
     });
 
     // 6. Start Business (Nader)
@@ -1985,10 +2016,6 @@ const IntroScreen = ({
 
 // --- Inlined: ResultScreen ---
 
-/**
- * ResultScreen Component
- * All main elements in one centered container.
- */
 const ResultScreen = ({
   session,
   getRankInfo,
@@ -2021,28 +2048,16 @@ const ResultScreen = ({
 
   const correctCount = session.answers.filter(a => a.isCorrect).length;
   const rank = getRankInfo(correctCount);
-  const mgmt = getWorkshopResult(correctCount);
+  const mgmt = getWorkshopResult({ correctCount, answers: session.answers });
   const totalQuestions = session.questions.length;
   const comment = getResultComment(activeHeroine.id, correctCount, totalQuestions);
 
   return (
-    <div
-      data-testid="result-screen"
-      style={{ ...containerStyle, position: 'relative' }}
-    >
+    <div data-testid="result-screen" style={{ ...containerStyle, position: 'relative' }}>
       {renderThemeStyles && renderThemeStyles()}
       {renderBackground && renderBackground(screen)}
 
-      {/* Content layer */}
-      <div style={{
-        zIndex: 10,
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '0 8px'
-      }}>
+      <div style={{ zIndex: 10, position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', padding: '0 8px' }}>
         <GameHud
           screen={screen}
           routeMode={routeMode}
@@ -2051,44 +2066,18 @@ const ResultScreen = ({
           onOpenHelp={onOpenHelp}
         />
 
-        {/* Title */}
-        <h1 style={{
-          ...titleStyle,
-          margin: '40px 0 0 4px',
-          color: THEME.parchment,
-          fontSize: '1.15em',
-          textAlign: 'left',
-          zIndex: 10
-        }}>
+        <h1 style={{ ...titleStyle, margin: '40px 0 0 4px', color: THEME.parchment, fontSize: '1.15em', textAlign: 'left', zIndex: 10 }}>
           今回の営業記録
         </h1>
 
-        {/* Center pack: all main elements */}
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '4px',
-          minWidth: 0
-        }}>
-          {/* Heroine Standing + Speech Bubble */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: '4px',
-            justifyContent: 'center',
-            minHeight: '250px',
-            overflow: 'visible'
-          }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px', justifyContent: 'center', minHeight: '250px', overflow: 'visible' }}>
             {HeroineDisplay && (
               <HeroineDisplay
                 heroine={activeHeroine}
                 type="standing"
                 size="large"
-                expression={getResultExpression(correctCount)}
+                expression={getResultExpression(correctCount, totalQuestions)}
                 noBorder={true}
                 objectPosition="center center"
                 style={{
@@ -2101,146 +2090,49 @@ const ResultScreen = ({
               />
             )}
 
-            {/* Speech Bubble */}
-            <div style={{
-              marginTop: '0',
-              background: 'rgba(244, 233, 213, 0.92)',
-              border: `1.5px solid ${THEME.brass}`,
-              borderRadius: '12px',
-              padding: '12px 10px',
-              position: 'relative',
-              width: '84px',
-              minHeight: '168px',
-              maxHeight: '190px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              {/* Bubble tail (pointing left toward heroine) */}
-              <div style={{
-                position: 'absolute',
-                left: '-8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '0',
-                height: '0',
-                borderTop: '8px solid transparent',
-                borderBottom: '8px solid transparent',
-                borderRight: `8px solid ${THEME.brass}`
-              }} />
-              <div style={{
-                position: 'absolute',
-                left: '-5px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '0',
-                height: '0',
-                borderTop: '7px solid transparent',
-                borderBottom: '7px solid transparent',
-                borderRight: '7px solid rgba(244, 233, 213, 0.92)'
-              }} />
-              <div style={{
-                fontSize: '0.86em',
-                color: THEME.textDark,
-                lineHeight: '1.9',
-                fontStyle: 'normal',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                writingMode: 'vertical-rl',
-                textOrientation: 'mixed',
-                maxHeight: '178px',
-                overflow: 'hidden',
-                fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif'
-              }}>
+            <div style={{ marginTop: '0', background: 'rgba(244, 233, 213, 0.92)', border: `1.5px solid ${THEME.brass}`, borderRadius: '12px', padding: '12px 10px', position: 'relative', width: '84px', minHeight: '168px', maxHeight: '190px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ position: 'absolute', left: '-8px', top: '50%', transform: 'translateY(-50%)', width: '0', height: '0', borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: `8px solid ${THEME.brass}` }} />
+              <div style={{ position: 'absolute', left: '-5px', top: '50%', transform: 'translateY(-50%)', width: '0', height: '0', borderTop: '7px solid transparent', borderBottom: '7px solid transparent', borderRight: '7px solid rgba(244, 233, 213, 0.92)' }} />
+              <div style={{ fontSize: '0.86em', color: THEME.textDark, lineHeight: '1.9', fontStyle: 'normal', fontWeight: 600, letterSpacing: '0.04em', writingMode: 'vertical-rl', textOrientation: 'mixed', maxHeight: '178px', overflow: 'hidden', fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif' }}>
                 {comment}
               </div>
             </div>
           </div>
 
-          {/* Score Panel */}
-          <div style={{
-            ...cardStyle,
-            borderRadius: '10px',
-            border: `2px solid ${THEME.brass}`,
-            background: 'rgba(244, 233, 213, 0.98)',
-            padding: '12px 16px',
-            marginTop: '-12px',
-            width: '94%',
-            maxWidth: '340px',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              fontSize: '1.4em',
-              fontWeight: '900',
-              color: THEME.brassDark,
-              lineHeight: 1.2
-            }}>
-              {session.score} 点
+          <div style={{ ...cardStyle, borderRadius: '10px', border: `2px solid ${THEME.brass}`, background: 'rgba(244, 233, 213, 0.98)', padding: '12px 16px', marginTop: '-12px', width: '94%', maxWidth: '340px', textAlign: 'center' }}>
+            <div style={{ fontSize: '1.4em', fontWeight: '900', color: THEME.brassDark, lineHeight: 1.2 }}>
+              {session.score * QUIZ_SCORE_TO_G}G
             </div>
-            <div style={{
-              fontSize: '0.75em',
-              color: '#666',
-              marginBottom: '6px'
-            }}>
+            <div style={{ fontSize: '0.75em', color: '#666', marginBottom: '6px' }}>
               依頼 {session.questions.length} 件中 {correctCount} 件達成
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '4px',
-              background: 'rgba(0,0,0,0.04)',
-              padding: '6px 4px',
-              borderRadius: '6px',
-              marginBottom: '6px'
-            }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', background: 'rgba(0,0,0,0.04)', padding: '6px 4px', borderRadius: '6px', marginBottom: '6px' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>評判</div>
-                <div style={{
-                  fontSize: '0.95em',
-                  fontWeight: 'bold',
-                  color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844'
-                }}>
+                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: mgmt.reputation >= 0 ? THEME.oasisTeal : '#844' }}>
                   {mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation}
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>売上</div>
-                <div style={{
-                  fontSize: '0.95em',
-                  fontWeight: 'bold',
-                  color: THEME.brassDark
-                }}>
+                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: THEME.brassDark }}>
                   {mgmt.sales}G
                 </div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.65em', color: '#888' }}>満足度</div>
-                <div style={{
-                  fontSize: '0.95em',
-                  fontWeight: 'bold',
-                  color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : '#844'
-                }}>
+                <div style={{ fontSize: '0.95em', fontWeight: 'bold', color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : '#844' }}>
                   {mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction}
                 </div>
               </div>
             </div>
 
-            <div style={{
-              fontSize: '0.85em',
-              fontWeight: 'bold',
-              color: activeHeroine.themeColor,
-              padding: '3px 10px',
-              background: `${activeHeroine.themeColor}15`,
-              borderRadius: '999px',
-              display: 'inline-block'
-            }}>
+            <div style={{ fontSize: '0.85em', fontWeight: 'bold', color: activeHeroine.themeColor, padding: '3px 10px', background: `${activeHeroine.themeColor}15`, borderRadius: '999px', display: 'inline-block' }}>
               {activeHeroine.name}との縁 +{lastAffectionGain}
             </div>
           </div>
 
-          {/* Next Day Button */}
           <button
             data-testid="day-end-next"
             onClick={handleEndDay}
@@ -2830,6 +2722,7 @@ const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, 
 
 
 // --- Inlined: SoundTest ---
+﻿import React, { useEffect, useRef, useState } from 'react';
 
 
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
@@ -2845,7 +2738,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   }, []);
 
   const handlePlayTrack = (track) => {
-    audioEngine.playTrack(track);
+    audioEngine.playTrack(track, 'soundTest');
     setCurrentPlayingId(track.id);
   };
 
@@ -2860,22 +2753,22 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
         {/* Fixed Header */}
         <div style={{ padding: '12px 16px', background: 'rgba(26, 42, 58, 0.98)', borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h2 style={{ margin: 0, color: THEME.starGold, fontSize: '1.1rem', fontWeight: 'bold' }}>Sound Test</h2>
+            <h2 style={{ margin: 0, color: THEME.starGold, fontSize: '1.1rem', fontWeight: 'bold' }}>音源確認</h2>
             <button data-testid="sound-test-close" onClick={onClose} style={{ padding: '6px 12px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>閉じる</button>
           </div>
-          
+
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: '6px' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase' }}>Now Playing</div>
+              <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase' }}>再生中</div>
               <div style={{ fontSize: '0.85rem', color: currentTrack ? THEME.starGold : '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '500' }}>
-                {currentTrack ? `${currentTrack.title} (${currentTrack.id})` : 'None'}
+                {currentTrack ? `${currentTrack.title} (${currentTrack.id})` : 'なし'}
               </div>
             </div>
-            <button 
+            <button
               onClick={handleStop}
               style={{ padding: '8px 16px', background: currentPlayingId ? '#e53935' : '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 'bold', transition: 'background 0.2s' }}
             >
-              STOP
+              停止
             </button>
           </div>
         </div>
@@ -2888,70 +2781,70 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
             </div>
           )}
 
-        {/* BGM Section */}
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>BGM (Music)</h3>
-          
-          {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
-            <div key={category} style={{ marginBottom: '16px' }}>
-              <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{category}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => {
-                  const isPlaying = currentPlayingId === track.id;
-                  return (
-                    <button 
-                      key={track.id} 
-                      onClick={() => handlePlayTrack(track)}
-                      disabled={!isAudioEnabled}
-                      style={{ 
-                        background: isPlaying ? 'rgba(255, 204, 0, 0.15)' : '#2a2a2a', 
-                        padding: '10px 8px', 
-                        borderRadius: '6px', 
-                        border: `1px solid ${isPlaying ? THEME.starGold : '#3a3a3a'}`,
-                        textAlign: 'left',
-                        cursor: isAudioEnabled ? 'pointer' : 'default',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '2px',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div style={{ fontWeight: 'bold', fontSize: '0.7rem', color: isPlaying ? THEME.starGold : '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</div>
-                      <div style={{ fontSize: '0.6rem', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.id}</div>
-                    </button>
-                  );
-                })}
+          {/* BGM Section */}
+          <div style={{ marginBottom: '24px' }}>
+            <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>BGM</h3>
+
+            {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
+              <div key={category} style={{ marginBottom: '16px' }}>
+                <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{category}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                  {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => {
+                    const isPlaying = currentPlayingId === track.id;
+                    return (
+                      <button
+                        key={track.id}
+                        onClick={() => handlePlayTrack(track)}
+                        disabled={!isAudioEnabled}
+                        style={{
+                          background: isPlaying ? 'rgba(255, 204, 0, 0.15)' : '#2a2a2a',
+                          padding: '10px 8px',
+                          borderRadius: '6px',
+                          border: `1px solid ${isPlaying ? THEME.starGold : '#3a3a3a'}`,
+                          textAlign: 'left',
+                          cursor: isAudioEnabled ? 'pointer' : 'default',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '2px',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        <div style={{ fontWeight: 'bold', fontSize: '0.7rem', color: isPlaying ? THEME.starGold : '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</div>
+                        <div style={{ fontSize: '0.6rem', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.id}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>効果音</h3>
+
+          {groups.map(group => (
+            <div key={group} style={{ marginBottom: '20px' }}>
+              <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{group}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+                {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
+                  <button
+                    key={c.id}
+                    onClick={() => audioEngine.playSfxCandidate(c.id)}
+                    disabled={!isAudioEnabled}
+                    style={{
+                      background: '#2a2a2a',
+                      padding: '8px 4px',
+                      borderRadius: '6px',
+                      border: '1px solid #3a3a3a',
+                      cursor: isAudioEnabled ? 'pointer' : 'default',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.65rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.id}</div>
+                  </button>
+                ))}
               </div>
             </div>
           ))}
-        </div>
-
-        <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>SFX (Sound Effects)</h3>
-
-        {groups.map(group => (
-          <div key={group} style={{ marginBottom: '20px' }}>
-            <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{group}</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-              {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
-                <button
-                  key={c.id}
-                  onClick={() => audioEngine.playSfxCandidate(c.id)}
-                  disabled={!isAudioEnabled}
-                  style={{ 
-                    background: '#2a2a2a', 
-                    padding: '8px 4px', 
-                    borderRadius: '6px', 
-                    border: '1px solid #3a3a3a',
-                    cursor: isAudioEnabled ? 'pointer' : 'default',
-                    textAlign: 'center'
-                  }}
-                >
-                  <div style={{ fontSize: '0.65rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.id}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
         </div>
       </div>
     </div>
@@ -2981,6 +2874,7 @@ function DebugPanel({
   setAffection, 
   seenEventIds, 
   setSeenEventIds,
+  onResetEventMemory = null,
   onTriggerEvent,
   autoSkipQuiz,
   setAutoSkipQuiz,
@@ -3007,7 +2901,7 @@ function DebugPanel({
           fontFamily: 'monospace'
         }}
       >
-        DEBUG / ASSIST
+        デバッグ / 補助
       </div>
     );
   }
@@ -3038,7 +2932,7 @@ function DebugPanel({
         paddingBottom: '8px',
         flexShrink: 0
       }}>
-        <h2 style={{ color: THEME.starGold, margin: 0, fontSize: '0.9em', letterSpacing: '0.05em' }}>DEBUG / ASSIST</h2>
+        <h2 style={{ color: THEME.starGold, margin: 0, fontSize: '0.9em', letterSpacing: '0.05em' }}>デバッグ / 補助</h2>
         <button 
           onClick={() => setExpanded(false)} 
           style={{ 
@@ -3154,15 +3048,18 @@ function DebugPanel({
 
       {/* Flags */}
       <section>
-        <div style={{ color: THEME.brass, marginBottom: '5px' }}>[ FLAGS ]</div>
+        <div style={{ color: THEME.brass, marginBottom: '5px' }}>[ フラグ ]</div>
         <div style={{ fontSize: '10px', background: '#222', padding: '5px', maxHeight: '100px', overflowY: 'auto', marginBottom: '5px' }}>
-          Seen: {seenEventIds.join(', ') || '(none)'}
+          既読: {seenEventIds.join(', ') || '(なし)'}
         </div>
         <button 
-          onClick={() => setSeenEventIds([])}
+          onClick={() => {
+            setSeenEventIds([]);
+            onResetEventMemory && onResetEventMemory();
+          }}
           style={{ width: '100%', padding: '5px', background: '#622', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
         >
-          RESET SEEN FLAGS
+          既読フラグをリセット
         </button>
       </section>
 
@@ -3170,7 +3067,7 @@ function DebugPanel({
         onClick={() => setExpanded(false)}
         style={{ marginTop: 'auto', padding: '12px', background: '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
       >
-        BACK TO GAME
+        ゲームに戻る
       </button>
     </div>
   );
@@ -3179,11 +3076,6 @@ function DebugPanel({
 
 // --- Inlined: ScreenHeader ---
 
-/**
- * ScreenHeader Component
- * Common header layout for all screens.
- * Left: TimePhaseBadge, Center: Title, Right: GameHud buttons
- */
 const ScreenHeader = ({
   timePhase,
   title,
@@ -3195,7 +3087,7 @@ const ScreenHeader = ({
 }) => {
   const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   const isLongHistory = routeMode === 'long_history';
-  
+
   const hudBtnStyle = {
     background: isLongHistory ? 'rgba(255, 220, 235, 0.96)' : 'rgba(255, 255, 255, 0.92)',
     border: `2px solid ${THEME.brass}`,
@@ -3228,7 +3120,6 @@ const ScreenHeader = ({
       gap: '8px',
       minHeight: '40px'
     }}>
-      {/* Left: TimePhaseBadge */}
       <div style={{ flexShrink: 0 }}>
         {showBadge && (
           <div
@@ -3265,7 +3156,6 @@ const ScreenHeader = ({
         )}
       </div>
 
-      {/* Center: Title */}
       {title && (
         <h1 style={{
           color: '#e2d1b1',
@@ -3284,7 +3174,6 @@ const ScreenHeader = ({
         </h1>
       )}
 
-      {/* Right: GameHud buttons */}
       {isHudVisible && (
         <div style={{ flexShrink: 0, display: 'flex', gap: '6px' }}>
           <button
@@ -3405,33 +3294,11 @@ function App() {
   useEffect(() => {
     saveAutoSkipQuizEnabled(autoSkipQuiz);
   }, [autoSkipQuiz]);
-
-  // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
-  useEffect(() => {
-    if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
-      debugAutoSkipAppliedRef.current = true;
-      // Force perfect score and proceed to result using shared logic
-      const timer = setTimeout(() => {
-        const totalCount = session.questions.length;
-        const result = createPerfectQuizPayload(
-          totalCount,
-          activeHeroineId,
-          affection[activeHeroineId] || 0,
-          seenEventIds,
-          routeMode
-        );
-        applyQuizResultState(result);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    if (screen !== 'QUIZ') {
-      debugAutoSkipAppliedRef.current = false;
-    }
-  }, [screen, autoSkipQuiz, session]);
   
   // Affection / Intimacy State
-  const [affection, setAffection] = useState(() => 
-    createInitialAffection(HEROINES.map(h => h.id))
+  const [careerProgress, setCareerProgress] = useState(() => loadCareerProgress());
+  const [affection, setAffection] = useState(() =>
+    buildAffectionStateFromProgress(loadCareerProgress(), 'normal', 'hakima', 0)
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
 
@@ -3440,6 +3307,7 @@ function App() {
 
   // Event State
   const [seenEventIds, setSeenEventIds] = useState([]);
+  const [persistentSeenEventIds, setPersistentSeenEventIds] = useState(() => loadPersistentSeenEventIds());
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
@@ -3464,6 +3332,66 @@ function App() {
   const debugAutoSkipAppliedRef = useRef(false);
   const memoriesScrollPositionRef = useRef(0); // M-MEMORIES-UX-POLISH-1-FIX-1: Store scroll position for MEMORIES screen
   const prevEventBackgroundRef = useRef(null); // M-EVENT-PRESENTATION-FIX-1: Track previous background for fallback
+  const prevEventBgmRef = useRef(null); // Keep event BGM stable across pages without an explicit bgmId
+  const effectiveSeenEventIds = [...new Set([...seenEventIds, ...persistentSeenEventIds])];
+
+  useEffect(() => {
+    savePersistentSeenEventIds(persistentSeenEventIds);
+  }, [persistentSeenEventIds]);
+
+  useEffect(() => {
+    saveCareerProgress(careerProgress);
+  }, [careerProgress]);
+
+  useEffect(() => {
+    setAffection(prev => {
+      const next = buildAffectionStateFromProgress(
+        careerProgress,
+        routeMode,
+        workshopState.activeHeroineId || activeHeroineId,
+        workshopState.sales || 0
+      );
+      const prevKeys = Object.keys(prev || {});
+      const nextKeys = Object.keys(next);
+      if (
+        prevKeys.length === nextKeys.length &&
+        nextKeys.every(key => prev[key] === next[key])
+      ) {
+        return prev;
+      }
+      return next;
+    });
+  }, [careerProgress, routeMode, workshopState.activeHeroineId, workshopState.sales, activeHeroineId]);
+
+  useEffect(() => {
+    if (screen === 'HEROINE_SELECT' && routeMode === 'long_history' && !isLongHistoryUnlocked(careerProgress, previewHeroineId)) {
+      setRouteMode('normal');
+    }
+  }, [screen, routeMode, careerProgress, previewHeroineId]);
+
+  // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
+  useEffect(() => {
+    if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+      debugAutoSkipAppliedRef.current = true;
+      // Force perfect score and proceed to result using shared logic
+      const timer = setTimeout(() => {
+        const totalCount = session.questions.length;
+        const result = createPerfectQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds,
+          routeMode,
+          persistentSeenEventIds
+        );
+        applyQuizResultState(result);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    if (screen !== 'QUIZ') {
+      debugAutoSkipAppliedRef.current = false;
+    }
+  }, [screen, autoSkipQuiz, session, activeHeroineId, affection, seenEventIds, routeMode, persistentSeenEventIds]);
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -3599,6 +3527,7 @@ function App() {
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setSeenTalkIds(data.seenTalkIds || []);
     }
   }, []);
@@ -3697,13 +3626,21 @@ function App() {
 
   // Handle BGM per screen
   useEffect(() => {
+    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'PROLOGUE', 'VISUAL_TEST'].includes(screen);
+    if (isPassiveScreen) {
+      if (audioEngine.currentTrackSource !== 'soundTest') {
+        audioEngine.stop();
+      }
+      return;
+    }
+
     let trackId = null;
     const day = workshopState.day || 1;
     const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
+    const eventPages = screen === 'EVENT' && activeEvent ? getEventPages(activeEvent, routeMode) : [];
+    const currentEventPage = eventPages[eventCurrentPageIndex];
 
-    if (screen === 'START' || screen === 'HEROINE_SELECT' || screen === 'MEMORIES' || screen === 'PROLOGUE') {
-      trackId = 'MAIN-01';
-    } else if (screen === 'QUIZ') {
+    if (screen === 'QUIZ') {
       if (day <= 2) {
         trackId = 'MAIN-03';
       } else if (day <= 4) {
@@ -3718,7 +3655,9 @@ function App() {
     } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
       trackId = 'MAIN-02';
     } else if (screen === 'EVENT') {
-      trackId = `${hPrefix}-01`;
+      const eventBgmId = currentEventPage?.bgmId || activeEvent?.presentation?.bgmId || activeEvent?.bgmId || prevEventBgmRef.current || `${hPrefix}-01`;
+      trackId = TRACKS[eventBgmId] ? eventBgmId : `${hPrefix}-01`;
+      prevEventBgmRef.current = trackId;
     } else if (screen === 'ENDING') {
       const finalAffection = affection[activeHeroineId];
       const finalReputation = workshopState.reputation;
@@ -3729,15 +3668,12 @@ function App() {
       }
     }
 
-    // M-UI-AUDIO-START-GATE: Gate BGM playback on START screen until user takes a start action
-    const isGatedOnStart = screen === 'START' && isAudioGated;
-    
-    if (isAudioEnabled && !isGatedOnStart && trackId && TRACKS[trackId]) {
-      audioEngine.playTrack(TRACKS[trackId]);
+    if (isAudioEnabled && trackId && TRACKS[trackId]) {
+      audioEngine.playTrack(TRACKS[trackId], 'game');
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, activeEvent, eventCurrentPageIndex, routeMode]);
 
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
@@ -3753,7 +3689,7 @@ function App() {
       // Infer speakerId same way as VNBox pages mapping
       let speakerId = currentPage?.speakerId;
       if (!speakerId && currentPage?.speaker) {
-        if (currentPage.speaker === 'ナーディル') speakerId = 'nader';
+        if (currentPage.speaker === 'NADER') speakerId = 'nader';
         else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
       }
       if (speakerId === 'nader') {
@@ -3777,11 +3713,13 @@ function App() {
     setActiveHeroineId('hakima');
     setPreviewHeroineId('hakima');
     setWorkshopState(createInitialWorkshopState());
-    setAffection(createInitialAffection(HEROINES.map(h => h.id)));
+    setCareerProgress(loadCareerProgress());
     setSeenEventIds([]);
+    setPersistentSeenEventIds(loadPersistentSeenEventIds());
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
+    prevEventBgmRef.current = null;
     
     setScreen('PROLOGUE');
   };
@@ -3800,19 +3738,25 @@ function App() {
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
+      setCareerProgress(loadCareerProgress());
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setActiveEvent(data.activeEvent || null);
       setVnBacklog(data.vnBacklog || []);
       setIsAudioEnabled(data.isAudioEnabled);
+      prevEventBgmRef.current = null;
     }
   };
 
   const handleResetSave = () => {
     if (window.confirm("セーブデータを削除しますか？")) {
       clearSaveAndRefresh();
+      clearPersistentSeenEventIds();
       setSeenEventIds([]);
+      setPersistentSeenEventIds([]);
       setActiveEvent(null);
+      prevEventBgmRef.current = null;
     }
   };
 
@@ -3828,10 +3772,12 @@ function App() {
 
     if (shouldMarkSeen && activeEvent) {
       setSeenEventIds(prev => [...prev, activeEvent.id]);
+      setPersistentSeenEventIds(prev => (prev.includes(activeEvent.id) ? prev : [...prev, activeEvent.id]));
     }
 
     setActiveEvent(null);
     setEventCurrentPageIndex(0); // M-EVENT-PRESENTATION-FIX-1: Reset page index
+    prevEventBgmRef.current = null;
 
     if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
@@ -3915,6 +3861,12 @@ function App() {
     audioEngine.playSfx('uiHeroineSelect');
     setIsHeroineLoading(true);
     setLoadingProgress(0);
+    const effectiveRouteMode = isLongHistoryUnlocked(careerProgress, heroineId) && routeMode === 'long_history'
+      ? 'long_history'
+      : 'normal';
+    if (effectiveRouteMode !== routeMode) {
+      setRouteMode(effectiveRouteMode);
+    }
     
     const heroine = HEROINES.find(h => h.id === heroineId);
     const heroineTracks = Object.values(TRACKS).filter(track => track.id.startsWith(`${heroineId.toUpperCase()}-`));
@@ -3937,7 +3889,7 @@ function App() {
       heroineId,
       currentAffection: affection[heroineId] || 0,
       seenTalkIds,
-      routeMode,
+      routeMode: effectiveRouteMode,
     });
     setActiveGreeting(greeting);
     setActiveDailyTalk(mergedTalk);
@@ -3947,7 +3899,7 @@ function App() {
 
     // Auto-save when starting a new session with a heroine
     saveGameData(buildGameSavePayload({
-      routeMode,
+      routeMode: effectiveRouteMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
@@ -3964,7 +3916,11 @@ function App() {
     }));
     
     // Check for flashback_intro
-    const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
+    const flashbackEvent = resolveHeroineSelectionEvent({
+      heroineId,
+      seenEventIds,
+      persistentSeenEventIds,
+    });
     
     setTimeout(() => {
       setIsHeroineLoading(false);
@@ -3980,9 +3936,15 @@ function App() {
     }, 500); // Small buffer for smoothness
   };
 
+  const handleToggleRouteMode = (heroineId) => {
+    if (!isLongHistoryUnlocked(careerProgress, heroineId)) return;
+    audioEngine.playSfx('uiTapBottle');
+    setRouteMode(prev => (prev === 'long_history' ? 'normal' : 'long_history'));
+  };
+
   const handleNextDay = () => {
     audioEngine.playSfx('uiTapBottle');
-    if (workshopState.day >= 10) {
+    if (workshopState.day >= 5) {
       setScreen('FINAL_RESULT');
     } else {
       const nextDay = workshopState.day + 1;
@@ -4024,6 +3986,10 @@ function App() {
 
   const handleSeeEnding = () => {
     audioEngine.playSfx('uiConfirmChime');
+    const finalAffection = affection[activeHeroineId] || 0;
+    if (finalAffection >= 70) {
+      setCareerProgress(prev => unlockLongHistory(prev, activeHeroineId));
+    }
     setScreen('ENDING');
   };
 
@@ -4053,7 +4019,7 @@ function App() {
     }
     setActiveDailyTalk(null);
 
-    setSession(createQuizSession({ questionCount: 5 }));
+    setSession(createQuizSession({ questionCount: 10 }));
     quizQuestionStartAtRef.current = Date.now();
     setScreen('QUIZ');
   };
@@ -4102,6 +4068,10 @@ function App() {
     setScreen('START');
     refreshHasSave();
     setEventBackgroundOverride(null); // Ensure background is reset
+    prevEventBgmRef.current = null;
+    if (audioEngine.currentTrackSource === 'game') {
+      audioEngine.stop();
+    }
     setShowOptions(false);
     setShowLog(false);
     setShowHelp(false);
@@ -4111,6 +4081,7 @@ function App() {
     audioEngine.playSfx('uiConfirmChime');
     setEventBackgroundOverride(null); // Clear any stale override
     prevEventBackgroundRef.current = null; // Reset background tracking
+    prevEventBgmRef.current = null;
     setEventCurrentPageIndex(0); // Reset page index
     setActiveEvent(event);
     setIsRecallMode(true);
@@ -4152,7 +4123,9 @@ function App() {
       activeHeroineId,
       currentAffection: affection[activeHeroineId] || 0,
       seenEventIds,
-      routeMode
+      persistentSeenEventIds,
+      routeMode,
+      answers: session?.answers || []
     });
 
     applyQuizResultState(result);
@@ -4160,20 +4133,40 @@ function App() {
 
   // Helper to apply the calculated quiz results to React state
   const applyQuizResultState = (result) => {
-    // 1. Update Affection
-    const nextAffection = addAffection(affection, activeHeroineId, result.affectionGain);
-    setAffection(nextAffection);
-    setLastAffectionGain(result.affectionGain);
+    const currentAffection = affection[activeHeroineId] || 0;
+    const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
+    const nextProgress = updateHeroineBestStats(
+      careerProgress,
+      activeHeroineId,
+      routeMode,
+      result.workshopResult
+    );
+    const nextAffection = getHeroineProgressScore(
+      nextProgress,
+      activeHeroineId,
+      routeMode,
+      nextWorkshopState.sales
+    );
 
-    // 2. Update Workshop State
-    setWorkshopState(prev => applyWorkshopResult(prev, result.workshopResult));
+    setCareerProgress(nextProgress);
+    setWorkshopState(nextWorkshopState);
+    setAffection(prev => ({
+      ...prev,
+      [activeHeroineId]: nextAffection
+    }));
+    setLastAffectionGain(Math.max(0, nextAffection - currentAffection));
 
-    // 3. Handle Potential Event Unlock
-    if (result.unlockedEvent) {
-      setActiveEvent(result.unlockedEvent);
+    const unlockedEvent = checkNewEventUnlock(
+      activeHeroineId,
+      nextAffection,
+      effectiveSeenEventIds,
+      routeMode,
+      persistentSeenEventIds
+    );
+    if (unlockedEvent) {
+      setActiveEvent(unlockedEvent);
     }
 
-    // 4. Transition to Result Screen
     setScreen('RESULT');
   };
 
@@ -4203,8 +4196,8 @@ function App() {
       isCorrect,
       stampLabel: stamp.label,
       stampTone: stamp.tone,
-      tempoMark: rhythmGood ? '◎' : '△',
-      speedMark: fast ? '◎' : '△',
+      tempoMark: rhythmGood ? '+1' : '+0',
+      speedMark: fast ? '+1' : '+0',
     });
 
     // Delay result sound slightly
@@ -4516,7 +4509,6 @@ function App() {
       <StartScreen
         screen={screen}
         routeMode={routeMode}
-        setRouteMode={setRouteMode}
         hasSave={hasSave}
         onContinue={handleContinue}
         onNewGame={handleStartGame}
@@ -4529,7 +4521,7 @@ function App() {
         onOpenHelp={() => setShowHelp(true)}
         renderThemeStyles={renderThemeStyles}
         debugModeEnabled={debugModeEnabled}
-        onToggleDebug={() => setDebugModeEnabled(!debugModeEnabled)}
+        onToggleDebug={() => setDebugModeEnabled(prev => !prev)}
       />
     );
   } else if (screen === 'PROLOGUE') {
@@ -4622,7 +4614,10 @@ function App() {
     );
   } else if (screen === 'DAY_END') {
     const correctCount = session ? session.answers.filter(a => a.isCorrect).length : 0;
-    const mgmt = getWorkshopResult(correctCount);
+    const mgmt = getWorkshopResult({
+      correctCount,
+      answers: session?.answers || []
+    });
 
     mainContent = (
       <div 
@@ -4651,12 +4646,12 @@ function App() {
             </div>
             
             <div style={{ textAlign: 'left', fontSize: '0.85em', color: '#444', borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-              <strong>現在の工房の状態 (第{workshopState.day}回 営業終了)</strong>
+              <strong>現在の工房状況 (Day {workshopState.day})</strong>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
-                 <div>総売上：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
-                 <div>総評判：<span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
-                 <div>満足度：<span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
-                 <div>親密度：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
+                  <div>総売上：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
+                  <div>評判：<span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
+                  <div>満足度：<span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
+                  <div>親密度：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
               </div>
             </div>
           </div>
@@ -4688,7 +4683,7 @@ function App() {
     const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map(page => {
       let inferredId = page.speakerId;
       if (!inferredId) {
-        if (page.speaker === 'ナーディル') inferredId = 'nader';
+        if (page.speaker === 'NADER') inferredId = 'nader';
         else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
       }
       return { ...page, speakerId: inferredId };
@@ -4783,7 +4778,7 @@ function App() {
     
     // M-EVENT-PRESENTATION-FIX-7: Check if current page is heroine speaking
     const normalizeSpeakerName = (value) => String(value || '').trim();
-    const activeHeroineShortName = activeHeroine?.name?.split('・')?.[0];
+    const activeHeroineShortName = activeHeroine?.name?.split(' ')?.[0];
     const isHeroineSpeakerPage = (page) => {
       if (!page || !activeHeroine) return false;
       const speakerName = normalizeSpeakerName(page?.speaker);
@@ -4881,7 +4876,7 @@ function App() {
 
           <ScreenHeader
             timePhase={currentTimePhase}
-            title={`愛着の記録：${activeEvent.title}`}
+            title={`イベント：${activeEvent.title}`}
             onOpenLog={() => setShowLog(true)}
             onOpenOptions={() => setShowOptions(true)}
             onOpenHelp={() => setShowHelp(true)}
@@ -4908,13 +4903,13 @@ function App() {
                 pages={rawEventPages.map(page => {
                   if (page.speakerId) return page;
                   let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  if (page.speaker === 'NADER') inferredId = 'nader';
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
                 themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
-                skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+                skip={shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
@@ -5040,7 +5035,7 @@ function App() {
 
           <ScreenHeader
             timePhase={currentTimePhase}
-            title={`愛着の記録：${activeEvent.title}`}
+            title={`イベント：${activeEvent.title}`}
             onOpenLog={() => setShowLog(true)}
             onOpenOptions={() => setShowOptions(true)}
             onOpenHelp={() => setShowHelp(true)}
@@ -5067,13 +5062,13 @@ function App() {
                 pages={rawEventPages.map(page => {
                   if (page.speakerId) return page;
                   let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  if (page.speaker === 'NADER') inferredId = 'nader';
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
                 themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
-                skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+                skip={shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
@@ -5111,10 +5106,10 @@ function App() {
     );
   } else if (screen === 'MEMORIES') {
     mainContent = (
-      <MemoriesScreen
+        <MemoriesScreen
         screen={screen}
         routeMode={routeMode}
-        seenEventIds={seenEventIds}
+        seenEventIds={effectiveSeenEventIds}
         unlockAll={isUnlockAllDebug}
         heroines={HEROINES}
         affectionEvents={AFFECTION_EVENTS}
@@ -5134,6 +5129,8 @@ function App() {
       <HeroineSelectScreen
         previewHeroineId={previewHeroineId}
         onPreviewHeroineChange={setPreviewHeroineId}
+        onToggleRouteMode={handleToggleRouteMode}
+        canToggleRouteMode={isLongHistoryUnlocked(careerProgress, previewHeroineId)}
         onSelectHeroine={handleSelectHeroine}
         affection={affection}
         routeMode={routeMode}
@@ -5167,35 +5164,35 @@ function App() {
           onOpenOptions={() => setShowOptions(true)} 
           onOpenHelp={() => setShowHelp(true)} 
         />
-        <h1 style={titleStyle}>10回の営業総決算</h1>
+        <h1 style={titleStyle}>最終結果</h1>
         <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
           <div style={{ marginBottom: '25px' }}>
             <HeroineDisplay heroine={activeHeroine} type="face" size="medium" />
             <div style={{ marginTop: '10px', fontSize: '1.2em', fontWeight: 'bold', color: THEME.brassDark }}>
-              {activeHeroine.name} との歩み
+              {activeHeroine.name}との縁
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '30px' }}>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>総売上合計</span>
+               <span>総売上</span>
                <span style={{ fontWeight: 'bold' }}>{finalSales} G</span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>最終的な評判</span>
+               <span>最高評判</span>
                <span style={{ fontWeight: 'bold', color: finalReputation >= 0 ? THEME.oasisTeal : '#844' }}>
                  {finalReputation >= 0 ? `+${finalReputation}` : finalReputation}
                </span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>{activeHeroine.name} との縁</span>
+               <span>{activeHeroine.name}親密度</span>
                <span style={{ fontWeight: 'bold', color: THEME.brassDark }}>{finalAffection} / 100</span>
              </div>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10回の営業を締めくくり、次の一歩へ進みます。</p>
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>全5ターンを終えると、次の節目に進みます。</p>
 
-          <button onClick={handleSeeEnding} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
+          <button onClick={handleSeeEnding} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>エンディングを見る</button>
         </div>
       </div>
     );
@@ -5204,7 +5201,7 @@ function App() {
     const finalReputation = workshopState.reputation;
     
     let endingType = "normal";
-    if (finalAffection >= 80 && finalReputation >= 40) {
+    if (finalAffection >= 70) {
       endingType = "good";
     } else if (finalAffection < 40) {
       endingType = "bad";
@@ -5262,7 +5259,7 @@ function App() {
               pages={endingData.pages.map(page => {
                 if (page.speakerId) return page;
                 let inferredId = null;
-                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                if (page.speaker === 'NADER') inferredId = 'nader';
                 else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                 return { ...page, speakerId: inferredId };
               })}
@@ -5318,7 +5315,7 @@ function App() {
     );
   }
 
-  const renderLoadingOverlay = (message = "Loading...") => (
+  const renderLoadingOverlay = (message = "読み込み中...") => (
     <div style={{
       position: 'absolute',
       top: 0, left: 0, right: 0, bottom: 0,
@@ -5361,8 +5358,8 @@ function App() {
               <TimePhaseBadge timePhase={currentTimePhase} />
             </div>
           )}
-          {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
-          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
+          {isInitialLoading && renderLoadingOverlay("ゲームデータを読み込み中...")}
+          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を読み込み中...`)}
           
           <OptionsModal
             isOpen={showOptions}
@@ -5391,8 +5388,12 @@ function App() {
               setRouteMode={setRouteMode}
               affection={affection}
               setAffection={setAffection}
-              seenEventIds={seenEventIds}
+              seenEventIds={effectiveSeenEventIds}
               setSeenEventIds={setSeenEventIds}
+              onResetEventMemory={() => {
+                clearPersistentSeenEventIds();
+                setPersistentSeenEventIds([]);
+              }}
               autoSkipQuiz={autoSkipQuiz}
               setAutoSkipQuiz={setAutoSkipQuiz}
               onTriggerEvent={(ev) => {
@@ -5406,7 +5407,7 @@ function App() {
             <div key={screen} className="screen-enter">
               {mainContent || (
                 <div style={containerStyle}>
-                  <p>Loading...</p>
+                  <p>読み込み中...</p>
                   <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
                 </div>
               )}
@@ -5661,6 +5662,8 @@ const itemNameStyle = {
   width: '100%',
   lineHeight: '1.3'
 };
+
+
 
 
 const apiKey = ""; // Gemini Canvas direct paste version

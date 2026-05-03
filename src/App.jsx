@@ -1,4 +1,4 @@
-import { THEME } from './ui/theme';
+﻿import { THEME } from './ui/theme';
 import './ui/modalStyles';
 import HelpModal from './ui/HelpModal';
 import LogModal from './ui/LogModal';
@@ -26,7 +26,6 @@ import { WORLD, SHOP, PROTAGONIST } from './data/world';
 import { TRACKS } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
-import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
 import { loadSaveData, saveGameData } from './game/saveData';
 import { buildGameSavePayload, buildSettingsOnlySavePayload, resolveAutoSavePayload } from './game/savePayload';
 import { resolveAutoSavePolicy, isDefaultSettings as checkIsDefaultSettings } from './game/autoSavePolicy';
@@ -35,6 +34,19 @@ import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, sa
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence, prepareResultTalkSequence, prepareDayEndTalkSequence } from './game/introFlow';
 import { NARRATIVE_SCRIPT } from './data/narrativeScript';
+import {
+  loadPersistentSeenEventIds,
+  savePersistentSeenEventIds,
+  clearPersistentSeenEventIds,
+} from './game/eventMemoryStorage';
+import {
+  loadCareerProgress,
+  saveCareerProgress,
+  getHeroineProgressScore,
+  updateHeroineBestStats,
+  unlockLongHistory,
+  isLongHistoryUnlocked,
+} from './game/careerProgressStorage';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
@@ -52,7 +64,7 @@ const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT
 
 
 const getBacklogRouteModeLabel = (routeMode) => {
-  return routeMode === 'long_history' ? '過去から続く縁' : '現在から育つ縁';
+  return routeMode === 'long_history' ? '過去の縁' : '現在の縁';
 };
 
 const TEXT_SPEED_META = {
@@ -64,6 +76,19 @@ const TEXT_SPEED_META = {
 
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
+
+const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, activeSales = 0) => {
+  const state = {};
+  HEROINES.forEach(heroine => {
+    state[heroine.id] = getHeroineProgressScore(
+      progress,
+      heroine.id,
+      routeMode,
+      heroine.id === activeHeroineId ? activeSales : 0
+    );
+  });
+  return state;
+};
 
 const CustomerSilhouette = ({ customer }) => {
   if (!customer) return null;
@@ -117,33 +142,11 @@ export default function App() {
   useEffect(() => {
     saveAutoSkipQuizEnabled(autoSkipQuiz);
   }, [autoSkipQuiz]);
-
-  // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
-  useEffect(() => {
-    if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
-      debugAutoSkipAppliedRef.current = true;
-      // Force perfect score and proceed to result using shared logic
-      const timer = setTimeout(() => {
-        const totalCount = session.questions.length;
-        const result = createPerfectQuizPayload(
-          totalCount,
-          activeHeroineId,
-          affection[activeHeroineId] || 0,
-          seenEventIds,
-          routeMode
-        );
-        applyQuizResultState(result);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    if (screen !== 'QUIZ') {
-      debugAutoSkipAppliedRef.current = false;
-    }
-  }, [screen, autoSkipQuiz, session]);
   
   // Affection / Intimacy State
-  const [affection, setAffection] = useState(() => 
-    createInitialAffection(HEROINES.map(h => h.id))
+  const [careerProgress, setCareerProgress] = useState(() => loadCareerProgress());
+  const [affection, setAffection] = useState(() =>
+    buildAffectionStateFromProgress(loadCareerProgress(), 'normal', 'hakima', 0)
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
 
@@ -152,6 +155,7 @@ export default function App() {
 
   // Event State
   const [seenEventIds, setSeenEventIds] = useState([]);
+  const [persistentSeenEventIds, setPersistentSeenEventIds] = useState(() => loadPersistentSeenEventIds());
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
@@ -176,6 +180,66 @@ export default function App() {
   const debugAutoSkipAppliedRef = useRef(false);
   const memoriesScrollPositionRef = useRef(0); // M-MEMORIES-UX-POLISH-1-FIX-1: Store scroll position for MEMORIES screen
   const prevEventBackgroundRef = useRef(null); // M-EVENT-PRESENTATION-FIX-1: Track previous background for fallback
+  const prevEventBgmRef = useRef(null); // Keep event BGM stable across pages without an explicit bgmId
+  const effectiveSeenEventIds = [...new Set([...seenEventIds, ...persistentSeenEventIds])];
+
+  useEffect(() => {
+    savePersistentSeenEventIds(persistentSeenEventIds);
+  }, [persistentSeenEventIds]);
+
+  useEffect(() => {
+    saveCareerProgress(careerProgress);
+  }, [careerProgress]);
+
+  useEffect(() => {
+    setAffection(prev => {
+      const next = buildAffectionStateFromProgress(
+        careerProgress,
+        routeMode,
+        workshopState.activeHeroineId || activeHeroineId,
+        workshopState.sales || 0
+      );
+      const prevKeys = Object.keys(prev || {});
+      const nextKeys = Object.keys(next);
+      if (
+        prevKeys.length === nextKeys.length &&
+        nextKeys.every(key => prev[key] === next[key])
+      ) {
+        return prev;
+      }
+      return next;
+    });
+  }, [careerProgress, routeMode, workshopState.activeHeroineId, workshopState.sales, activeHeroineId]);
+
+  useEffect(() => {
+    if (screen === 'HEROINE_SELECT' && routeMode === 'long_history' && !isLongHistoryUnlocked(careerProgress, previewHeroineId)) {
+      setRouteMode('normal');
+    }
+  }, [screen, routeMode, careerProgress, previewHeroineId]);
+
+  // Auto Skip Quiz Logic (M-DEBUG-AUTO-SKIP-QUIZ)
+  useEffect(() => {
+    if (screen === 'QUIZ' && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+      debugAutoSkipAppliedRef.current = true;
+      // Force perfect score and proceed to result using shared logic
+      const timer = setTimeout(() => {
+        const totalCount = session.questions.length;
+        const result = createPerfectQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds,
+          routeMode,
+          persistentSeenEventIds
+        );
+        applyQuizResultState(result);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    if (screen !== 'QUIZ') {
+      debugAutoSkipAppliedRef.current = false;
+    }
+  }, [screen, autoSkipQuiz, session, activeHeroineId, affection, seenEventIds, routeMode, persistentSeenEventIds]);
 
   // --- Scale-to-Fit Implementation (M8-23) ---
   const BASE_WIDTH = 390;
@@ -311,6 +375,7 @@ export default function App() {
       // We don't restore everything automatically on mount, 
       // but we do need the seenEventIds for the session logic
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setSeenTalkIds(data.seenTalkIds || []);
     }
   }, []);
@@ -409,13 +474,21 @@ export default function App() {
 
   // Handle BGM per screen
   useEffect(() => {
+    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'PROLOGUE', 'VISUAL_TEST'].includes(screen);
+    if (isPassiveScreen) {
+      if (audioEngine.currentTrackSource !== 'soundTest') {
+        audioEngine.stop();
+      }
+      return;
+    }
+
     let trackId = null;
     const day = workshopState.day || 1;
     const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
+    const eventPages = screen === 'EVENT' && activeEvent ? getEventPages(activeEvent, routeMode) : [];
+    const currentEventPage = eventPages[eventCurrentPageIndex];
 
-    if (screen === 'START' || screen === 'HEROINE_SELECT' || screen === 'MEMORIES' || screen === 'PROLOGUE') {
-      trackId = 'MAIN-01';
-    } else if (screen === 'QUIZ') {
+    if (screen === 'QUIZ') {
       if (day <= 2) {
         trackId = 'MAIN-03';
       } else if (day <= 4) {
@@ -430,7 +503,9 @@ export default function App() {
     } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
       trackId = 'MAIN-02';
     } else if (screen === 'EVENT') {
-      trackId = `${hPrefix}-01`;
+      const eventBgmId = currentEventPage?.bgmId || activeEvent?.presentation?.bgmId || activeEvent?.bgmId || prevEventBgmRef.current || `${hPrefix}-01`;
+      trackId = TRACKS[eventBgmId] ? eventBgmId : `${hPrefix}-01`;
+      prevEventBgmRef.current = trackId;
     } else if (screen === 'ENDING') {
       const finalAffection = affection[activeHeroineId];
       const finalReputation = workshopState.reputation;
@@ -441,15 +516,12 @@ export default function App() {
       }
     }
 
-    // M-UI-AUDIO-START-GATE: Gate BGM playback on START screen until user takes a start action
-    const isGatedOnStart = screen === 'START' && isAudioGated;
-    
-    if (isAudioEnabled && !isGatedOnStart && trackId && TRACKS[trackId]) {
-      audioEngine.playTrack(TRACKS[trackId]);
+    if (isAudioEnabled && trackId && TRACKS[trackId]) {
+      audioEngine.playTrack(TRACKS[trackId], 'game');
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, activeEvent, eventCurrentPageIndex, routeMode]);
 
 
   const activeHeroine = HEROINES.find(h => h.id === activeHeroineId) || HEROINES[0];
@@ -465,7 +537,7 @@ export default function App() {
       // Infer speakerId same way as VNBox pages mapping
       let speakerId = currentPage?.speakerId;
       if (!speakerId && currentPage?.speaker) {
-        if (currentPage.speaker === 'ナーディル') speakerId = 'nader';
+        if (currentPage.speaker === 'NADER') speakerId = 'nader';
         else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
       }
       if (speakerId === 'nader') {
@@ -489,11 +561,13 @@ export default function App() {
     setActiveHeroineId('hakima');
     setPreviewHeroineId('hakima');
     setWorkshopState(createInitialWorkshopState());
-    setAffection(createInitialAffection(HEROINES.map(h => h.id)));
+    setCareerProgress(loadCareerProgress());
     setSeenEventIds([]);
+    setPersistentSeenEventIds(loadPersistentSeenEventIds());
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
+    prevEventBgmRef.current = null;
     
     setScreen('PROLOGUE');
   };
@@ -512,19 +586,25 @@ export default function App() {
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
+      setCareerProgress(loadCareerProgress());
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setActiveEvent(data.activeEvent || null);
       setVnBacklog(data.vnBacklog || []);
       setIsAudioEnabled(data.isAudioEnabled);
+      prevEventBgmRef.current = null;
     }
   };
 
   const handleResetSave = () => {
     if (window.confirm("セーブデータを削除しますか？")) {
       clearSaveAndRefresh();
+      clearPersistentSeenEventIds();
       setSeenEventIds([]);
+      setPersistentSeenEventIds([]);
       setActiveEvent(null);
+      prevEventBgmRef.current = null;
     }
   };
 
@@ -540,10 +620,12 @@ export default function App() {
 
     if (shouldMarkSeen && activeEvent) {
       setSeenEventIds(prev => [...prev, activeEvent.id]);
+      setPersistentSeenEventIds(prev => (prev.includes(activeEvent.id) ? prev : [...prev, activeEvent.id]));
     }
 
     setActiveEvent(null);
     setEventCurrentPageIndex(0); // M-EVENT-PRESENTATION-FIX-1: Reset page index
+    prevEventBgmRef.current = null;
 
     if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
@@ -627,6 +709,12 @@ export default function App() {
     audioEngine.playSfx('uiHeroineSelect');
     setIsHeroineLoading(true);
     setLoadingProgress(0);
+    const effectiveRouteMode = isLongHistoryUnlocked(careerProgress, heroineId) && routeMode === 'long_history'
+      ? 'long_history'
+      : 'normal';
+    if (effectiveRouteMode !== routeMode) {
+      setRouteMode(effectiveRouteMode);
+    }
     
     const heroine = HEROINES.find(h => h.id === heroineId);
     const heroineTracks = Object.values(TRACKS).filter(track => track.id.startsWith(`${heroineId.toUpperCase()}-`));
@@ -649,7 +737,7 @@ export default function App() {
       heroineId,
       currentAffection: affection[heroineId] || 0,
       seenTalkIds,
-      routeMode,
+      routeMode: effectiveRouteMode,
     });
     setActiveGreeting(greeting);
     setActiveDailyTalk(mergedTalk);
@@ -659,7 +747,7 @@ export default function App() {
 
     // Auto-save when starting a new session with a heroine
     saveGameData(buildGameSavePayload({
-      routeMode,
+      routeMode: effectiveRouteMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
@@ -676,7 +764,11 @@ export default function App() {
     }));
     
     // Check for flashback_intro
-    const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
+    const flashbackEvent = resolveHeroineSelectionEvent({
+      heroineId,
+      seenEventIds,
+      persistentSeenEventIds,
+    });
     
     setTimeout(() => {
       setIsHeroineLoading(false);
@@ -692,9 +784,15 @@ export default function App() {
     }, 500); // Small buffer for smoothness
   };
 
+  const handleToggleRouteMode = (heroineId) => {
+    if (!isLongHistoryUnlocked(careerProgress, heroineId)) return;
+    audioEngine.playSfx('uiTapBottle');
+    setRouteMode(prev => (prev === 'long_history' ? 'normal' : 'long_history'));
+  };
+
   const handleNextDay = () => {
     audioEngine.playSfx('uiTapBottle');
-    if (workshopState.day >= 10) {
+    if (workshopState.day >= 5) {
       setScreen('FINAL_RESULT');
     } else {
       const nextDay = workshopState.day + 1;
@@ -736,6 +834,10 @@ export default function App() {
 
   const handleSeeEnding = () => {
     audioEngine.playSfx('uiConfirmChime');
+    const finalAffection = affection[activeHeroineId] || 0;
+    if (finalAffection >= 70) {
+      setCareerProgress(prev => unlockLongHistory(prev, activeHeroineId));
+    }
     setScreen('ENDING');
   };
 
@@ -765,7 +867,7 @@ export default function App() {
     }
     setActiveDailyTalk(null);
 
-    setSession(createQuizSession({ questionCount: 5 }));
+    setSession(createQuizSession({ questionCount: 10 }));
     quizQuestionStartAtRef.current = Date.now();
     setScreen('QUIZ');
   };
@@ -814,6 +916,10 @@ export default function App() {
     setScreen('START');
     refreshHasSave();
     setEventBackgroundOverride(null); // Ensure background is reset
+    prevEventBgmRef.current = null;
+    if (audioEngine.currentTrackSource === 'game') {
+      audioEngine.stop();
+    }
     setShowOptions(false);
     setShowLog(false);
     setShowHelp(false);
@@ -823,6 +929,7 @@ export default function App() {
     audioEngine.playSfx('uiConfirmChime');
     setEventBackgroundOverride(null); // Clear any stale override
     prevEventBackgroundRef.current = null; // Reset background tracking
+    prevEventBgmRef.current = null;
     setEventCurrentPageIndex(0); // Reset page index
     setActiveEvent(event);
     setIsRecallMode(true);
@@ -864,7 +971,9 @@ export default function App() {
       activeHeroineId,
       currentAffection: affection[activeHeroineId] || 0,
       seenEventIds,
-      routeMode
+      persistentSeenEventIds,
+      routeMode,
+      answers: session?.answers || []
     });
 
     applyQuizResultState(result);
@@ -872,20 +981,40 @@ export default function App() {
 
   // Helper to apply the calculated quiz results to React state
   const applyQuizResultState = (result) => {
-    // 1. Update Affection
-    const nextAffection = addAffection(affection, activeHeroineId, result.affectionGain);
-    setAffection(nextAffection);
-    setLastAffectionGain(result.affectionGain);
+    const currentAffection = affection[activeHeroineId] || 0;
+    const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
+    const nextProgress = updateHeroineBestStats(
+      careerProgress,
+      activeHeroineId,
+      routeMode,
+      result.workshopResult
+    );
+    const nextAffection = getHeroineProgressScore(
+      nextProgress,
+      activeHeroineId,
+      routeMode,
+      nextWorkshopState.sales
+    );
 
-    // 2. Update Workshop State
-    setWorkshopState(prev => applyWorkshopResult(prev, result.workshopResult));
+    setCareerProgress(nextProgress);
+    setWorkshopState(nextWorkshopState);
+    setAffection(prev => ({
+      ...prev,
+      [activeHeroineId]: nextAffection
+    }));
+    setLastAffectionGain(Math.max(0, nextAffection - currentAffection));
 
-    // 3. Handle Potential Event Unlock
-    if (result.unlockedEvent) {
-      setActiveEvent(result.unlockedEvent);
+    const unlockedEvent = checkNewEventUnlock(
+      activeHeroineId,
+      nextAffection,
+      effectiveSeenEventIds,
+      routeMode,
+      persistentSeenEventIds
+    );
+    if (unlockedEvent) {
+      setActiveEvent(unlockedEvent);
     }
 
-    // 4. Transition to Result Screen
     setScreen('RESULT');
   };
 
@@ -915,8 +1044,8 @@ export default function App() {
       isCorrect,
       stampLabel: stamp.label,
       stampTone: stamp.tone,
-      tempoMark: rhythmGood ? '◎' : '△',
-      speedMark: fast ? '◎' : '△',
+      tempoMark: rhythmGood ? '+1' : '+0',
+      speedMark: fast ? '+1' : '+0',
     });
 
     // Delay result sound slightly
@@ -1228,7 +1357,6 @@ export default function App() {
       <StartScreen
         screen={screen}
         routeMode={routeMode}
-        setRouteMode={setRouteMode}
         hasSave={hasSave}
         onContinue={handleContinue}
         onNewGame={handleStartGame}
@@ -1241,7 +1369,7 @@ export default function App() {
         onOpenHelp={() => setShowHelp(true)}
         renderThemeStyles={renderThemeStyles}
         debugModeEnabled={debugModeEnabled}
-        onToggleDebug={() => setDebugModeEnabled(!debugModeEnabled)}
+        onToggleDebug={() => setDebugModeEnabled(prev => !prev)}
       />
     );
   } else if (screen === 'PROLOGUE') {
@@ -1334,7 +1462,10 @@ export default function App() {
     );
   } else if (screen === 'DAY_END') {
     const correctCount = session ? session.answers.filter(a => a.isCorrect).length : 0;
-    const mgmt = getWorkshopResult(correctCount);
+    const mgmt = getWorkshopResult({
+      correctCount,
+      answers: session?.answers || []
+    });
 
     mainContent = (
       <div 
@@ -1363,12 +1494,12 @@ export default function App() {
             </div>
             
             <div style={{ textAlign: 'left', fontSize: '0.85em', color: '#444', borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-              <strong>現在の工房の状態 (第{workshopState.day}回 営業終了)</strong>
+              <strong>現在の工房状況 (Day {workshopState.day})</strong>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '10px' }}>
-                 <div>総売上：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
-                 <div>総評判：<span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
-                 <div>満足度：<span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
-                 <div>親密度：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
+                  <div>総売上：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{workshopState.sales}G</span></div>
+                  <div>評判：<span style={{ color: workshopState.reputation >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation}</span></div>
+                  <div>満足度：<span style={{ color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : '#844', fontWeight: 'bold' }}>{workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction}</span></div>
+                  <div>親密度：<span style={{ color: THEME.brassDark, fontWeight: 'bold' }}>{affection[activeHeroine.id]} / 100</span></div>
               </div>
             </div>
           </div>
@@ -1400,7 +1531,7 @@ export default function App() {
     const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map(page => {
       let inferredId = page.speakerId;
       if (!inferredId) {
-        if (page.speaker === 'ナーディル') inferredId = 'nader';
+        if (page.speaker === 'NADER') inferredId = 'nader';
         else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
       }
       return { ...page, speakerId: inferredId };
@@ -1495,7 +1626,7 @@ export default function App() {
     
     // M-EVENT-PRESENTATION-FIX-7: Check if current page is heroine speaking
     const normalizeSpeakerName = (value) => String(value || '').trim();
-    const activeHeroineShortName = activeHeroine?.name?.split('・')?.[0];
+    const activeHeroineShortName = activeHeroine?.name?.split(' ')?.[0];
     const isHeroineSpeakerPage = (page) => {
       if (!page || !activeHeroine) return false;
       const speakerName = normalizeSpeakerName(page?.speaker);
@@ -1593,7 +1724,7 @@ export default function App() {
 
           <ScreenHeader
             timePhase={currentTimePhase}
-            title={`愛着の記録：${activeEvent.title}`}
+            title={`イベント：${activeEvent.title}`}
             onOpenLog={() => setShowLog(true)}
             onOpenOptions={() => setShowOptions(true)}
             onOpenHelp={() => setShowHelp(true)}
@@ -1620,13 +1751,13 @@ export default function App() {
                 pages={rawEventPages.map(page => {
                   if (page.speakerId) return page;
                   let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  if (page.speaker === 'NADER') inferredId = 'nader';
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
                 themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
-                skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+                skip={shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
@@ -1752,7 +1883,7 @@ export default function App() {
 
           <ScreenHeader
             timePhase={currentTimePhase}
-            title={`愛着の記録：${activeEvent.title}`}
+            title={`イベント：${activeEvent.title}`}
             onOpenLog={() => setShowLog(true)}
             onOpenOptions={() => setShowOptions(true)}
             onOpenHelp={() => setShowHelp(true)}
@@ -1779,13 +1910,13 @@ export default function App() {
                 pages={rawEventPages.map(page => {
                   if (page.speakerId) return page;
                   let inferredId = null;
-                  if (page.speaker === 'ナーディル') inferredId = 'nader';
+                  if (page.speaker === 'NADER') inferredId = 'nader';
                   else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                   return { ...page, speakerId: inferredId };
                 })}
                 themeColor={activeHeroine.themeColor}
                 speed={textSpeedMeta.delay}
-                skip={shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id))}
+                skip={shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id))}
                 getFaceIcon={getFaceIcon}
                 onPageChange={(index) => {
                   setEventCurrentPageIndex(index);
@@ -1823,10 +1954,10 @@ export default function App() {
     );
   } else if (screen === 'MEMORIES') {
     mainContent = (
-      <MemoriesScreen
+        <MemoriesScreen
         screen={screen}
         routeMode={routeMode}
-        seenEventIds={seenEventIds}
+        seenEventIds={effectiveSeenEventIds}
         unlockAll={isUnlockAllDebug}
         heroines={HEROINES}
         affectionEvents={AFFECTION_EVENTS}
@@ -1846,6 +1977,8 @@ export default function App() {
       <HeroineSelectScreen
         previewHeroineId={previewHeroineId}
         onPreviewHeroineChange={setPreviewHeroineId}
+        onToggleRouteMode={handleToggleRouteMode}
+        canToggleRouteMode={isLongHistoryUnlocked(careerProgress, previewHeroineId)}
         onSelectHeroine={handleSelectHeroine}
         affection={affection}
         routeMode={routeMode}
@@ -1879,35 +2012,35 @@ export default function App() {
           onOpenOptions={() => setShowOptions(true)} 
           onOpenHelp={() => setShowHelp(true)} 
         />
-        <h1 style={titleStyle}>10回の営業総決算</h1>
+        <h1 style={titleStyle}>最終結果</h1>
         <div style={{ ...cardStyle, border: `3px double ${THEME.brass}`, padding: '25px' }}>
           <div style={{ marginBottom: '25px' }}>
             <HeroineDisplay heroine={activeHeroine} type="face" size="medium" />
             <div style={{ marginTop: '10px', fontSize: '1.2em', fontWeight: 'bold', color: THEME.brassDark }}>
-              {activeHeroine.name} との歩み
+              {activeHeroine.name}との縁
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '30px' }}>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>総売上合計</span>
+               <span>総売上</span>
                <span style={{ fontWeight: 'bold' }}>{finalSales} G</span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>最終的な評判</span>
+               <span>最高評判</span>
                <span style={{ fontWeight: 'bold', color: finalReputation >= 0 ? THEME.oasisTeal : '#844' }}>
                  {finalReputation >= 0 ? `+${finalReputation}` : finalReputation}
                </span>
              </div>
              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #ddd', paddingBottom: '8px' }}>
-               <span>{activeHeroine.name} との縁</span>
+               <span>{activeHeroine.name}親密度</span>
                <span style={{ fontWeight: 'bold', color: THEME.brassDark }}>{finalAffection} / 100</span>
              </div>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>10回の営業を締めくくり、次の一歩へ進みます。</p>
+          <p style={{ fontStyle: 'italic', color: '#666', fontSize: '0.95em', marginBottom: '30px', lineHeight: '1.6' }}>全5ターンを終えると、次の節目に進みます。</p>
 
-          <button onClick={handleSeeEnding} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>結末を見届ける</button>
+          <button onClick={handleSeeEnding} className="vn-button-reveal" style={{ ...buttonStyle, width: '100%', maxWidth: '280px' }}>エンディングを見る</button>
         </div>
       </div>
     );
@@ -1916,7 +2049,7 @@ export default function App() {
     const finalReputation = workshopState.reputation;
     
     let endingType = "normal";
-    if (finalAffection >= 80 && finalReputation >= 40) {
+    if (finalAffection >= 70) {
       endingType = "good";
     } else if (finalAffection < 40) {
       endingType = "bad";
@@ -1974,7 +2107,7 @@ export default function App() {
               pages={endingData.pages.map(page => {
                 if (page.speakerId) return page;
                 let inferredId = null;
-                if (page.speaker === 'ナーディル') inferredId = 'nader';
+                if (page.speaker === 'NADER') inferredId = 'nader';
                 else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
                 return { ...page, speakerId: inferredId };
               })}
@@ -2030,7 +2163,7 @@ export default function App() {
     );
   }
 
-  const renderLoadingOverlay = (message = "Loading...") => (
+  const renderLoadingOverlay = (message = "読み込み中...") => (
     <div style={{
       position: 'absolute',
       top: 0, left: 0, right: 0, bottom: 0,
@@ -2073,8 +2206,8 @@ export default function App() {
               <TimePhaseBadge timePhase={currentTimePhase} />
             </div>
           )}
-          {isInitialLoading && renderLoadingOverlay("星瓶堂を開店中...")}
-          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を待っています...`)}
+          {isInitialLoading && renderLoadingOverlay("ゲームデータを読み込み中...")}
+          {isHeroineLoading && renderLoadingOverlay(`${HEROINES.find(h => h.id === previewHeroineId)?.name}を読み込み中...`)}
           
           <OptionsModal
             isOpen={showOptions}
@@ -2103,8 +2236,12 @@ export default function App() {
               setRouteMode={setRouteMode}
               affection={affection}
               setAffection={setAffection}
-              seenEventIds={seenEventIds}
+              seenEventIds={effectiveSeenEventIds}
               setSeenEventIds={setSeenEventIds}
+              onResetEventMemory={() => {
+                clearPersistentSeenEventIds();
+                setPersistentSeenEventIds([]);
+              }}
               autoSkipQuiz={autoSkipQuiz}
               setAutoSkipQuiz={setAutoSkipQuiz}
               onTriggerEvent={(ev) => {
@@ -2118,7 +2255,7 @@ export default function App() {
             <div key={screen} className="screen-enter">
               {mainContent || (
                 <div style={containerStyle}>
-                  <p>Loading...</p>
+                  <p>読み込み中...</p>
                   <button onClick={handleBackToTitle} style={buttonStyle}>タイトルへ戻る</button>
                 </div>
               )}
@@ -2373,3 +2510,5 @@ const itemNameStyle = {
   width: '100%',
   lineHeight: '1.3'
 };
+
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { THEME } from './theme';
 import { audioEngine } from '../game/audioEngine';
 import { hudModalBackdrop, hudModalCard, hudCloseX } from './modalStyles';
@@ -66,7 +66,7 @@ function OptionsModal({
             </button>
           </div>
           <div style={{ background: '#f5f5f5', borderRadius: '10px', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>SE</span>
+            <span style={{ fontSize: '0.9em', fontWeight: 'bold', color: THEME.textDark }}>効果音</span>
             <button
               data-testid="se-enabled-toggle"
               aria-pressed={seVolume > 0}

@@ -18,6 +18,7 @@ class SimpleAudioEngine {
     this.audio = null;
     this.lastSfx = null;
     this.currentTrackId = null;
+    this.currentTrackSource = null;
     this.isMuted = false;
     this.isUnlocked = false; // Track if user has interacted
     this.bgmVolume = 0.8;
@@ -49,7 +50,7 @@ class SimpleAudioEngine {
    * Play a track by its manifest data
    * @param {Object} track - Track object from tracks.js
    */
-  playTrack(track) {
+  playTrack(track, source = 'game') {
     if (!track || !track.src) {
       this.stop();
       return;
@@ -74,6 +75,7 @@ class SimpleAudioEngine {
       this.audio.muted = this.isMuted;
       
       this.currentTrackId = track.id;
+      this.currentTrackSource = source;
 
       if (!this.isUnlocked || this.isMuted) {
         // Don't even try to play yet if locked or muted
@@ -104,6 +106,7 @@ class SimpleAudioEngine {
       this.audio = null;
     }
     this.currentTrackId = null;
+    this.currentTrackSource = null;
   }
 
   /**

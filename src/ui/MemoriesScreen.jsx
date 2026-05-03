@@ -182,7 +182,7 @@ const MemoriesScreen = ({
         onOpenOptions={onOpenOptions} 
         onOpenHelp={onOpenHelp} 
       />
-      {renderUtilityHeader && renderUtilityHeader('Memories', onBackToTitle, null, 'memories')}
+      {renderUtilityHeader && renderUtilityHeader('思い出の記録', onBackToTitle, null, 'memories')}
       <h1 style={{ ...memoriesTitleStyle, display: 'none' }}>思い出の記録</h1>
       
       {unlockAll && (

@@ -3,11 +3,6 @@ import { TIME_PHASES } from '../game/timePhase';
 import { THEME } from './theme';
 import { audioEngine } from '../game/audioEngine';
 
-/**
- * ScreenHeader Component
- * Common header layout for all screens.
- * Left: TimePhaseBadge, Center: Title, Right: GameHud buttons
- */
 const ScreenHeader = ({
   timePhase,
   title,
@@ -19,7 +14,7 @@ const ScreenHeader = ({
 }) => {
   const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   const isLongHistory = routeMode === 'long_history';
-  
+
   const hudBtnStyle = {
     background: isLongHistory ? 'rgba(255, 220, 235, 0.96)' : 'rgba(255, 255, 255, 0.92)',
     border: `2px solid ${THEME.brass}`,
@@ -52,7 +47,6 @@ const ScreenHeader = ({
       gap: '8px',
       minHeight: '40px'
     }}>
-      {/* Left: TimePhaseBadge */}
       <div style={{ flexShrink: 0 }}>
         {showBadge && (
           <div
@@ -89,7 +83,6 @@ const ScreenHeader = ({
         )}
       </div>
 
-      {/* Center: Title */}
       {title && (
         <h1 style={{
           color: '#e2d1b1',
@@ -108,7 +101,6 @@ const ScreenHeader = ({
         </h1>
       )}
 
-      {/* Right: GameHud buttons */}
       {isHudVisible && (
         <div style={{ flexShrink: 0, display: 'flex', gap: '6px' }}>
           <button

@@ -106,7 +106,7 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "See you tomorrow."
+      text: "また明日。"
     });
 
     // 6. Start Business (Nader)

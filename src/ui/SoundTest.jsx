@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+﻿import React, { useEffect, useRef, useState } from 'react';
 import { audioEngine } from '../game/audioEngine';
 import { SFX_CANDIDATES } from '../data/sfxCandidates';
 import { TRACKS } from '../data/tracks';
@@ -18,7 +18,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   }, []);
 
   const handlePlayTrack = (track) => {
-    audioEngine.playTrack(track);
+    audioEngine.playTrack(track, 'soundTest');
     setCurrentPlayingId(track.id);
   };
 
@@ -33,22 +33,22 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
         {/* Fixed Header */}
         <div style={{ padding: '12px 16px', background: 'rgba(26, 42, 58, 0.98)', borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h2 style={{ margin: 0, color: THEME.starGold, fontSize: '1.1rem', fontWeight: 'bold' }}>Sound Test</h2>
+            <h2 style={{ margin: 0, color: THEME.starGold, fontSize: '1.1rem', fontWeight: 'bold' }}>音源確認</h2>
             <button data-testid="sound-test-close" onClick={onClose} style={{ padding: '6px 12px', background: '#444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>閉じる</button>
           </div>
-          
+
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: '6px' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase' }}>Now Playing</div>
+              <div style={{ fontSize: '0.65rem', color: '#888', textTransform: 'uppercase' }}>再生中</div>
               <div style={{ fontSize: '0.85rem', color: currentTrack ? THEME.starGold : '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '500' }}>
-                {currentTrack ? `${currentTrack.title} (${currentTrack.id})` : 'None'}
+                {currentTrack ? `${currentTrack.title} (${currentTrack.id})` : 'なし'}
               </div>
             </div>
-            <button 
+            <button
               onClick={handleStop}
               style={{ padding: '8px 16px', background: currentPlayingId ? '#e53935' : '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 'bold', transition: 'background 0.2s' }}
             >
-              STOP
+              停止
             </button>
           </div>
         </div>
@@ -61,70 +61,70 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
             </div>
           )}
 
-        {/* BGM Section */}
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>BGM (Music)</h3>
-          
-          {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
-            <div key={category} style={{ marginBottom: '16px' }}>
-              <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{category}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => {
-                  const isPlaying = currentPlayingId === track.id;
-                  return (
-                    <button 
-                      key={track.id} 
-                      onClick={() => handlePlayTrack(track)}
-                      disabled={!isAudioEnabled}
-                      style={{ 
-                        background: isPlaying ? 'rgba(255, 204, 0, 0.15)' : '#2a2a2a', 
-                        padding: '10px 8px', 
-                        borderRadius: '6px', 
-                        border: `1px solid ${isPlaying ? THEME.starGold : '#3a3a3a'}`,
-                        textAlign: 'left',
-                        cursor: isAudioEnabled ? 'pointer' : 'default',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '2px',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div style={{ fontWeight: 'bold', fontSize: '0.7rem', color: isPlaying ? THEME.starGold : '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</div>
-                      <div style={{ fontSize: '0.6rem', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.id}</div>
-                    </button>
-                  );
-                })}
+          {/* BGM Section */}
+          <div style={{ marginBottom: '24px' }}>
+            <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>BGM</h3>
+
+            {[...new Set(Object.values(TRACKS).map(t => t.category || "その他"))].map(category => (
+              <div key={category} style={{ marginBottom: '16px' }}>
+                <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{category}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                  {Object.values(TRACKS).filter(t => (t.category || "その他") === category).map(track => {
+                    const isPlaying = currentPlayingId === track.id;
+                    return (
+                      <button
+                        key={track.id}
+                        onClick={() => handlePlayTrack(track)}
+                        disabled={!isAudioEnabled}
+                        style={{
+                          background: isPlaying ? 'rgba(255, 204, 0, 0.15)' : '#2a2a2a',
+                          padding: '10px 8px',
+                          borderRadius: '6px',
+                          border: `1px solid ${isPlaying ? THEME.starGold : '#3a3a3a'}`,
+                          textAlign: 'left',
+                          cursor: isAudioEnabled ? 'pointer' : 'default',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '2px',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        <div style={{ fontWeight: 'bold', fontSize: '0.7rem', color: isPlaying ? THEME.starGold : '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</div>
+                        <div style={{ fontSize: '0.6rem', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.id}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>効果音</h3>
+
+          {groups.map(group => (
+            <div key={group} style={{ marginBottom: '20px' }}>
+              <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{group}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+                {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
+                  <button
+                    key={c.id}
+                    onClick={() => audioEngine.playSfxCandidate(c.id)}
+                    disabled={!isAudioEnabled}
+                    style={{
+                      background: '#2a2a2a',
+                      padding: '8px 4px',
+                      borderRadius: '6px',
+                      border: '1px solid #3a3a3a',
+                      cursor: isAudioEnabled ? 'pointer' : 'default',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.65rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.id}</div>
+                  </button>
+                ))}
               </div>
             </div>
           ))}
-        </div>
-
-        <h3 style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '12px', letterSpacing: '0.1em', fontWeight: 'bold' }}>SFX (Sound Effects)</h3>
-
-        {groups.map(group => (
-          <div key={group} style={{ marginBottom: '20px' }}>
-            <div style={{ color: '#777', fontSize: '0.7rem', marginBottom: '8px', borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: '8px', fontWeight: 'bold' }}>{group}</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-              {SFX_CANDIDATES.filter(c => c.group === group).map(c => (
-                <button
-                  key={c.id}
-                  onClick={() => audioEngine.playSfxCandidate(c.id)}
-                  disabled={!isAudioEnabled}
-                  style={{ 
-                    background: '#2a2a2a', 
-                    padding: '8px 4px', 
-                    borderRadius: '6px', 
-                    border: '1px solid #3a3a3a',
-                    cursor: isAudioEnabled ? 'pointer' : 'default',
-                    textAlign: 'center'
-                  }}
-                >
-                  <div style={{ fontSize: '0.65rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.id}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ export const renderRouteModeBadge = (routeMode, compact = false) => {
         justifyContent: 'center',
         padding: compact ? '5px 8px' : '6px 10px',
         borderRadius: '999px',
-        border: `1px solid \${THEME.brass}`,
+        border: `1px solid ${THEME.brass}`,
         background: 'rgba(255,255,255,0.9)',
         color: THEME.nightBlue,
         fontSize: compact ? '0.7em' : '0.78em',
@@ -44,12 +44,12 @@ export const renderRouteModeBadge = (routeMode, compact = false) => {
   );
 };
 
-export const GameHud = ({ 
-  screen, 
-  routeMode, 
-  onOpenLog, 
-  onOpenOptions, 
-  onOpenHelp 
+export const GameHud = ({
+  screen,
+  routeMode,
+  onOpenLog,
+  onOpenOptions,
+  onOpenHelp
 }) => {
   const isHudVisible = !['ENDING', 'FINAL_RESULT', 'VISUAL_TEST', 'SOUND_TEST'].includes(screen);
   if (!isHudVisible) return null;

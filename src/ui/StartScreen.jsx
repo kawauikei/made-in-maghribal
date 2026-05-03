@@ -2,20 +2,11 @@ import React from 'react';
 import { THEME } from './theme';
 import { SHOP } from '../data/world';
 import { audioEngine } from '../game/audioEngine';
-import GameHud, { 
-  ROUTE_MODE_META, 
-  getRouteModeMeta, 
-  renderRouteModeBadge 
-} from './GameHud';
+import GameHud from './GameHud';
 
-/**
- * StartScreen Component
- * Encapsulates the Title/Start screen of Made in Maghribal.
- */
 const StartScreen = ({
   screen,
   routeMode,
-  setRouteMode,
   hasSave,
   onContinue,
   onNewGame,
@@ -34,28 +25,27 @@ const StartScreen = ({
   const logoTapTimer = React.useRef(null);
 
   const handleLogoTap = () => {
-    setLogoTaps(prev => {
-      const next = prev + 1;
-      if (next >= 5) {
-        onToggleDebug();
-        audioEngine.playSfx('uiConfirmChime');
-        return 0;
-      }
-      return next;
-    });
+    const next = logoTaps + 1;
+    if (next >= 5) {
+      onToggleDebug();
+      audioEngine.playSfx('uiConfirmChime');
+      setLogoTaps(0);
+    } else {
+      setLogoTaps(next);
+    }
 
     if (logoTapTimer.current) clearTimeout(logoTapTimer.current);
     logoTapTimer.current = setTimeout(() => setLogoTaps(0), 1000);
   };
-  // Replicating styles from App.jsx to minimize prop passing
+
   const containerStyle = {
     width: '100%',
     height: '100%',
-    padding: '12px',
+    padding: '24px 12px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
     boxSizing: 'border-box',
@@ -98,16 +88,28 @@ const StartScreen = ({
   return (
     <div data-testid="start-screen" style={containerStyle}>
       {renderThemeStyles && renderThemeStyles()}
-      <GameHud 
-        screen={screen} 
-        routeMode={routeMode} 
-        onOpenLog={onOpenLog} 
-        onOpenOptions={onOpenOptions} 
-        onOpenHelp={onOpenHelp} 
+      <GameHud
+        screen={screen}
+        routeMode={routeMode}
+        onOpenLog={onOpenLog}
+        onOpenOptions={onOpenOptions}
+        onOpenHelp={onOpenHelp}
       />
-      
-      <div style={{ textAlign: 'center', marginBottom: '20px', position: 'relative', zIndex: 1 }}>
-        <h1 
+
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '22px',
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: '420px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px'
+      }}>
+        <h1
           onClick={handleLogoTap}
           style={{ ...titleStyle, fontSize: '2.2em', margin: '0 0 5px 0', cursor: 'pointer', userSelect: 'none' }}
         >
@@ -121,48 +123,11 @@ const StartScreen = ({
         </div>
       </div>
 
-      <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0' }}>
+      <div style={{ ...cardStyle, background: 'transparent', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', padding: '0', width: '100%', maxWidth: '420px' }}>
         <div style={{ width: '100%', maxWidth: '260px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'stretch' }}>
-          <div style={{ fontSize: '0.76em', color: THEME.sand, opacity: 0.85, textAlign: 'center' }}>縁のかたち</div>
-          <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
-            {Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
-              const isSelected = routeMode === mode;
-              return (
-                <button
-                  key={mode}
-                  data-testid={`route-mode-${mode}`}
-                  aria-pressed={isSelected}
-                  onClick={() => {
-                    audioEngine.playSfx('uiTapBottle');
-                    setRouteMode(mode);
-                  }}
-                  style={{
-                    ...buttonStyle,
-                    flex: 1,
-                    margin: 0,
-                    padding: '10px 8px',
-                    fontSize: '0.74em',
-                    lineHeight: 1.2,
-                    background: isSelected ? THEME.starGold : '#2c3e50',
-                    color: isSelected ? THEME.textDark : THEME.sand,
-                    border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
-                    boxShadow: isSelected ? '0 0 0 2px rgba(255, 204, 0, 0.2)' : 'none'
-                  }}
-                >
-                  {meta.label}
-                </button>
-              );
-            })}
-          </div>
-          <div data-testid="route-mode-description" style={{ fontSize: '0.7em', color: THEME.parchment, opacity: 0.7, textAlign: 'center', marginTop: '2px', fontStyle: 'italic' }}>
-            {getRouteModeMeta(routeMode).description}
-          </div>
-          <div data-testid="route-mode-current" style={{ display: 'flex', justifyContent: 'center' }}>
-            {renderRouteModeBadge(routeMode)}
-          </div>
-          <button 
-            data-testid="start-new" 
-            onClick={onNewGame} 
+          <button
+            data-testid="start-new"
+            onClick={onNewGame}
             style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, width: '100%', maxWidth: '260px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
             <span style={{ fontSize: '1.2em' }}>☆</span> 星瓶堂を開く
@@ -170,37 +135,41 @@ const StartScreen = ({
         </div>
 
         {hasSave && (
-          <button 
+          <button
             data-testid="start-continue"
-            onClick={onContinue} 
+            onClick={onContinue}
             style={{ ...buttonStyle, background: THEME.starGold, width: '100%', maxWidth: '260px', margin: 0 }}
           >
             つづきから
           </button>
         )}
-        
-        <button data-testid="memories-open" onClick={onOpenMemories} style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}>
+
+        <button
+          data-testid="memories-open"
+          onClick={onOpenMemories}
+          style={{ ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: '100%', maxWidth: '260px', margin: 0 }}
+        >
           思い出の記録
         </button>
 
         <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '260px' }}>
-          <button 
+          <button
             data-testid="start-options"
             onClick={onOpenOptions}
             style={{ ...buttonStyle, background: THEME.brass, color: THEME.textDark, fontSize: '0.85em', flex: 1, margin: 0 }}
           >
             設定
           </button>
-          <button 
+          <button
             data-testid="sound-test-open"
-            onClick={onOpenSoundTest} 
+            onClick={onOpenSoundTest}
             style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
           >
-            音設定
+            音源確認
           </button>
-          <button 
+          <button
             data-testid="visual-test-open"
-            onClick={onOpenVisualTest} 
+            onClick={onOpenVisualTest}
             style={{ ...buttonStyle, background: '#333', color: '#fff', fontSize: '0.85em', flex: 1, margin: 0 }}
           >
             映像確認
@@ -208,13 +177,13 @@ const StartScreen = ({
         </div>
 
         {hasSave && (
-          <button 
-            onClick={onClearSaveData} 
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              color: '#844', 
-              textDecoration: 'underline', 
+          <button
+            onClick={onClearSaveData}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#844',
+              textDecoration: 'underline',
               cursor: 'pointer',
               fontSize: '0.75em',
               marginTop: '10px',

@@ -22,6 +22,10 @@ async function main() {
   assert.strictEqual(e2.id, 'hakima_5');
   console.log('PASSED: Unlock at threshold 5');
 
+  const e2PersistentBlocked = checkNewEventUnlock('hakima', 5, [], 'normal', ['hakima_5']);
+  assert.strictEqual(e2PersistentBlocked, null, 'Persistent seen events should block repeat unlocks');
+  console.log('PASSED: Persistent seen-event memory blocks repeat unlocks');
+
   const e3 = checkNewEventUnlock('hakima', 10, ['hakima_5']);
   assert.ok(e3 !== null);
   assert.strictEqual(e3.id, 'hakima_10', 'Should unlock threshold 10 if 5 is seen');
@@ -266,6 +270,14 @@ async function main() {
   const fb2 = resolveHeroineSelectionEvent({ heroineId: 'hakima', seenEventIds: ['hakima_0'] });
   assert.strictEqual(fb2, null, 'Should return null when _0 is already seen');
   console.log('PASSED: resolveHeroineSelectionEvent returns null for seen _0');
+
+  const fb2PersistentBlocked = resolveHeroineSelectionEvent({
+    heroineId: 'hakima',
+    seenEventIds: [],
+    persistentSeenEventIds: ['hakima_0']
+  });
+  assert.strictEqual(fb2PersistentBlocked, null, 'Persistent seen-event memory should block flashback intro repeats');
+  console.log('PASSED: Persistent seen-event memory blocks flashback intro repeats');
 
   const fb3 = resolveHeroineSelectionEvent({ heroineId: 'unknown', seenEventIds: [] });
   assert.strictEqual(fb3, null, 'Should return null for unknown heroine');

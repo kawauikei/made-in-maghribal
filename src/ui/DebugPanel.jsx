@@ -22,6 +22,7 @@ export default function DebugPanel({
   setAffection, 
   seenEventIds, 
   setSeenEventIds,
+  onResetEventMemory = null,
   onTriggerEvent,
   autoSkipQuiz,
   setAutoSkipQuiz,
@@ -48,7 +49,7 @@ export default function DebugPanel({
           fontFamily: 'monospace'
         }}
       >
-        DEBUG / ASSIST
+        デバッグ / 補助
       </div>
     );
   }
@@ -79,7 +80,7 @@ export default function DebugPanel({
         paddingBottom: '8px',
         flexShrink: 0
       }}>
-        <h2 style={{ color: THEME.starGold, margin: 0, fontSize: '0.9em', letterSpacing: '0.05em' }}>DEBUG / ASSIST</h2>
+        <h2 style={{ color: THEME.starGold, margin: 0, fontSize: '0.9em', letterSpacing: '0.05em' }}>デバッグ / 補助</h2>
         <button 
           onClick={() => setExpanded(false)} 
           style={{ 
@@ -195,15 +196,18 @@ export default function DebugPanel({
 
       {/* Flags */}
       <section>
-        <div style={{ color: THEME.brass, marginBottom: '5px' }}>[ FLAGS ]</div>
+        <div style={{ color: THEME.brass, marginBottom: '5px' }}>[ フラグ ]</div>
         <div style={{ fontSize: '10px', background: '#222', padding: '5px', maxHeight: '100px', overflowY: 'auto', marginBottom: '5px' }}>
-          Seen: {seenEventIds.join(', ') || '(none)'}
+          既読: {seenEventIds.join(', ') || '(なし)'}
         </div>
         <button 
-          onClick={() => setSeenEventIds([])}
+          onClick={() => {
+            setSeenEventIds([]);
+            onResetEventMemory && onResetEventMemory();
+          }}
           style={{ width: '100%', padding: '5px', background: '#622', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
         >
-          RESET SEEN FLAGS
+          既読フラグをリセット
         </button>
       </section>
 
@@ -211,7 +215,7 @@ export default function DebugPanel({
         onClick={() => setExpanded(false)}
         style={{ marginTop: 'auto', padding: '12px', background: '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
       >
-        BACK TO GAME
+        ゲームに戻る
       </button>
     </div>
   );

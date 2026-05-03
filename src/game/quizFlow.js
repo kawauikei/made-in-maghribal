@@ -23,20 +23,31 @@ export function resolveQuizCompletion({
   activeHeroineId,
   currentAffection,
   seenEventIds,
+  persistentSeenEventIds = [],
+  answers = [],
   routeMode
 }) {
   // 1. Get Rank Info (Title and Message)
-  const rank = getRankInfo(correctCount);
+  const rank = getRankInfo(correctCount, totalCount);
 
   // 2. Calculate Affection Gain
   const affectionGain = calculateQuizAffectionGain(correctCount, totalCount);
 
   // 3. Calculate Workshop/Management Result (Sales, Reputation, Satisfaction)
-  const workshopResult = getWorkshopResult(correctCount);
+  const workshopResult = getWorkshopResult({
+    correctCount,
+    answers,
+  });
   
   // 4. Check for New Event Unlock
   const nextAffectionValue = currentAffection + affectionGain;
-  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds, routeMode);
+  const unlockedEvent = checkNewEventUnlock(
+    activeHeroineId,
+    nextAffectionValue,
+    seenEventIds,
+    routeMode,
+    persistentSeenEventIds
+  );
 
   return {
     correctCount,
@@ -59,13 +70,32 @@ export function resolveQuizCompletion({
  * @param {string} [routeMode] - 'normal' or 'long_history' (optional).
  * @returns {Object} A perfect result payload.
  */
-export function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode) {
+export function createPerfectQuizPayload(
+  totalCount,
+  activeHeroineId,
+  currentAffection,
+  seenEventIds,
+  routeMode,
+  persistentSeenEventIds = []
+) {
+  const answers = Array.from({ length: totalCount }, (_, index) => ({
+    questionId: `q_${String(index + 1).padStart(3, '0')}`,
+    selectedItemId: 'perfect',
+    correctItemId: 'perfect',
+    isCorrect: true,
+    rhythmGood: true,
+    fast: true,
+    gainedScore: 20,
+  }));
+
   return resolveQuizCompletion({
     correctCount: totalCount,
     totalCount,
     activeHeroineId,
     currentAffection,
     seenEventIds,
-    routeMode
+    routeMode,
+    persistentSeenEventIds,
+    answers
   });
 }

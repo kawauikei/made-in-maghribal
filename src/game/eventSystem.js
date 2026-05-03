@@ -6,17 +6,26 @@ function getEventsByHeroine(heroineId) {
   return AFFECTION_EVENTS[heroineId] || [];
 }
 
+function buildSeenEventSet(seenEventIds = [], persistentSeenEventIds = []) {
+  return new Set([
+    ...(Array.isArray(seenEventIds) ? seenEventIds : []),
+    ...(Array.isArray(persistentSeenEventIds) ? persistentSeenEventIds : []),
+  ]);
+}
+
 /**
  * Checks for any new events that should be unlocked based on current affection.
  * 
  * @param {string} heroineId - The active heroine
  * @param {number} currentAffection - Current affection level
- * @param {string[]} seenEventIds - List of IDs already seen by the player
+ * @param {string[]} seenEventIds - List of IDs already seen in the current save
  * @param {string} [routeMode] - 'normal' or 'long_history' (optional, defaults to matching all)
+ * @param {string[]} [persistentSeenEventIds] - List of IDs remembered across playthroughs
  * @returns {Object|null} The first eligible event or null if none
  */
-export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode) {
+export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode, persistentSeenEventIds = []) {
   const events = getEventsByHeroine(heroineId);
+  const seenEventSet = buildSeenEventSet(seenEventIds, persistentSeenEventIds);
   
   // Find the highest threshold event that meets criteria and hasn't been seen
   // For MVP, we'll just return the first one found that is eligible.
@@ -24,7 +33,7 @@ export function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, r
     event.kind !== 'flashback_intro' && 
     event.kind !== 'route_climax' && 
     currentAffection >= event.threshold && 
-    !seenEventIds.includes(event.id) &&
+    !seenEventSet.has(event.id) &&
     // routeMode filter: if event has routeMode, it must match
     // if event has no routeMode, it's treated as 'both' (matches any)
     (!event.routeMode || event.routeMode === 'both' || event.routeMode === routeMode)
@@ -202,15 +211,17 @@ export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkId
  * 
  * @param {Object} params
  * @param {string} params.heroineId - The selected heroine ID
- * @param {string[]} params.seenEventIds - List of event IDs already seen
+ * @param {string[]} params.seenEventIds - List of event IDs already seen in the current save
+ * @param {string[]} [params.persistentSeenEventIds] - List of event IDs remembered across playthroughs
  * @returns {Object|null} The flashback_intro event object, or null if not eligible
  */
-export function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
+export function resolveHeroineSelectionEvent({ heroineId, seenEventIds, persistentSeenEventIds = [] }) {
   const introEventId = `${heroineId}_0`;
   const events = getEventsByHeroine(heroineId);
   const introEvent = events.find(e => e.id === introEventId);
+  const seenEventSet = buildSeenEventSet(seenEventIds, persistentSeenEventIds);
 
-  if (introEvent && !seenEventIds.includes(introEventId)) {
+  if (introEvent && !seenEventSet.has(introEventId)) {
     return introEvent;
   }
   return null;

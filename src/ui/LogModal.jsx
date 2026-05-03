@@ -24,7 +24,17 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
 
   return (
     <div data-testid="backlog-modal" style={hudModalBackdrop}>
-      <div style={{ ...hudModalCard, maxWidth: '380px', padding: '16px 14px 14px', height: '85vh', display: 'flex', flexDirection: 'column' }}>
+      <div style={{
+        ...hudModalCard,
+        width: '90vw',
+        maxWidth: '90vw',
+        height: 'min(78vh, 560px)',
+        maxHeight: 'calc(100dvh - 24px)',
+        padding: '16px 14px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box'
+      }}>
         {hudCloseX(handleClose)}
         <h2 style={{ margin: '0 0 15px 0', color: THEME.nightBlue, textAlign: 'center', fontSize: '1.2em', fontWeight: 'bold' }}>会話ログ</h2>
         

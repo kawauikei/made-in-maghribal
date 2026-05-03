@@ -6,8 +6,8 @@ import ConditionBadges from './ConditionBadges';
 export default function QuizRequestCard({ currentQuestion, customerStyle, bubbleStyle, quizFeedback }) {
   const stampLabel = quizFeedback?.stampLabel;
   const stampTone = quizFeedback?.stampTone || 'gold';
-  const tempoMark = quizFeedback?.tempoMark || '△';
-  const speedMark = quizFeedback?.speedMark || '△';
+  const tempoMark = quizFeedback?.tempoMark || '+0';
+  const speedMark = quizFeedback?.speedMark || '+0';
   const stampColors = {
     gold: { border: 'rgba(198, 156, 66, 0.9)', text: '#8a5f14', fill: 'rgba(255, 244, 208, 0.92)' },
     brass: { border: 'rgba(162, 128, 64, 0.85)', text: '#7a4f10', fill: 'rgba(249, 236, 197, 0.92)' },
@@ -43,11 +43,11 @@ export default function QuizRequestCard({ currentQuestion, customerStyle, bubble
         <CustomerSilhouette customer={currentQuestion.request.customer} />
         <div style={{
           display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        height: '100%',
-        justifyContent: 'space-between'
-      }}>
+          flexDirection: 'column',
+          flex: 1,
+          height: '100%',
+          justifyContent: 'space-between'
+        }}>
           <div style={{ fontWeight: 500, flex: 1, display: 'flex', alignItems: 'center' }}>
             <span style={{
               display: '-webkit-box',
