@@ -5363,9 +5363,8 @@ function CustomerSilhouette({ customer }) {
     borderColor: customer.color || "rgba(218, 180, 96, 0.45)"
   } });
 }
-const DEFAULT_NOTE_INTERVAL_MS = 500;
+const DEFAULT_NOTE_INTERVAL_MS = 750;
 const DEFAULT_JUDGMENT_WINDOW_MS = 140;
-const DEFAULT_RHYTHM_BONUS_GOLD = 20;
 const DEFAULT_TRAVEL_DURATION_MS = 2e3;
 const DEFAULT_LANE_HEIGHT = 58;
 function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS) {
@@ -5645,8 +5644,19 @@ function ConditionBadges({ criteria }) {
     letterSpacing: "0.05em"
   } }, b.text));
 }
-function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbleStyle: bubbleStyle2 }) {
+function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbleStyle: bubbleStyle2, quizFeedback }) {
   var _a;
+  const stampLabel = quizFeedback == null ? void 0 : quizFeedback.stampLabel;
+  const stampScore = quizFeedback == null ? void 0 : quizFeedback.stampScore;
+  const stampTone = (quizFeedback == null ? void 0 : quizFeedback.stampTone) || "gold";
+  const stampColors = {
+    gold: { border: "rgba(198, 156, 66, 0.9)", text: "#8a5f14", fill: "rgba(255, 244, 208, 0.92)" },
+    brass: { border: "rgba(162, 128, 64, 0.85)", text: "#7a4f10", fill: "rgba(249, 236, 197, 0.92)" },
+    teal: { border: "rgba(64, 148, 141, 0.85)", text: "#1f6763", fill: "rgba(224, 246, 244, 0.94)" },
+    amber: { border: "rgba(186, 125, 52, 0.85)", text: "#8a541c", fill: "rgba(255, 238, 214, 0.94)" },
+    rose: { border: "rgba(176, 91, 91, 0.85)", text: "#7a3232", fill: "rgba(255, 232, 232, 0.94)" }
+  };
+  const stampStyle = stampColors[stampTone] || stampColors.gold;
   return /* @__PURE__ */ React.createElement("div", { className: "quiz-question-bubble", style: { ...customerStyle2, marginBottom: "10px", justifyContent: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
     ...bubbleStyle2,
     width: "90%",
@@ -5665,14 +5675,37 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
     alignItems: "flex-start",
     justifyContent: "flex-start",
     textAlign: "left",
-    overflow: "hidden"
+    overflow: "hidden",
+    position: "relative"
   } }, /* @__PURE__ */ React.createElement(CustomerSilhouette, { customer: currentQuestion.request.customer }), /* @__PURE__ */ React.createElement("div", { style: {
     display: "flex",
     flexDirection: "column",
     flex: 1,
     height: "100%",
     justifyContent: "space-between"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria })))));
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 500, flex: 1, display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", null, currentQuestion.request.text)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", paddingBottom: "2px" } }, /* @__PURE__ */ React.createElement(ConditionBadges, { criteria: currentQuestion.request.criteria }))), stampLabel && /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      "aria-hidden": "true",
+      style: {
+        position: "absolute",
+        right: "10px",
+        bottom: "10px",
+        transform: "rotate(-8deg)",
+        minWidth: "84px",
+        padding: "7px 10px 6px",
+        borderRadius: "8px",
+        border: `2px solid ${stampStyle.border}`,
+        background: stampStyle.fill,
+        color: stampStyle.text,
+        textAlign: "center",
+        pointerEvents: "none",
+        boxShadow: "0 2px 0 rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.28)"
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.92em", fontWeight: 900, letterSpacing: "0.05em" } }, stampLabel),
+    stampScore > 0 && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.68em", fontWeight: 700, marginTop: "1px" } }, "+", stampScore)
+  )));
 }
 function QuizChoiceCard({ item, index, quizFeedback, onSelectChoice, itemCardStyle: itemCardStyle2, imageStyle: imageStyle2, itemNameStyle: itemNameStyle2, requestType }) {
   const isSelected = (quizFeedback == null ? void 0 : quizFeedback.itemId) === item.id;
@@ -5821,46 +5854,24 @@ function QuizScreen({
     {
       currentQuestion,
       customerStyle: customerStyle2,
-      bubbleStyle: bubbleStyle2
+      bubbleStyle: bubbleStyle2,
+      quizFeedback
     }
   ), /* @__PURE__ */ React.createElement("div", { className: "quiz-rhythm-lane", style: {
     width: "calc(100% + 40px)",
     margin: "8px -20px 6px",
     background: "rgba(26, 42, 58, 0.6)",
-    borderTop: `1px solid ${THEME.brass}44`,
-    borderBottom: `1px solid ${THEME.brass}44`,
-    padding: "4px 0",
-    position: "relative"
+    borderTop: "1px solid rgba(218, 180, 96, 0.27)",
+    borderBottom: "1px solid rgba(218, 180, 96, 0.27)",
+    padding: "4px 0"
   } }, /* @__PURE__ */ React.createElement(
     RhythmMock,
     {
       heroineId: activeHeroineId,
       themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor,
-      noteIntervalMs: 500,
+      noteIntervalMs: 750,
       judgmentWindowMs: 140
     }
-  ), /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      "aria-hidden": "true",
-      style: {
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-        transform: "translate(-50%, -50%)",
-        fontSize: "0.76em",
-        fontWeight: "700",
-        color: THEME.starGold,
-        textShadow: `0 0 8px ${THEME.starGold}66`,
-        pointerEvents: "none",
-        whiteSpace: "nowrap",
-        opacity: (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) > 0 ? 1 : 0,
-        transition: "opacity 160ms ease"
-      }
-    },
-    "リズム好機 +",
-    (quizFeedback == null ? void 0 : quizFeedback.rhythmBonus) || 0,
-    "G"
   )), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
     {
@@ -5916,16 +5927,28 @@ REQUEST_TEMPLATES.reduce((acc, t) => {
   acc[t.id] = t;
   return acc;
 }, {});
-const DEFAULT_BASE_SCORE = 100;
-function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE, rhythmBonus = 0 } = {}) {
+function calculateScore({ isCorrect, rhythmGood = false, fast = false } = {}) {
+  const isFastOrRhythmGood = rhythmGood || fast;
   if (isCorrect) {
-    return baseScore + Math.max(0, rhythmBonus);
+    if (rhythmGood && fast) return 20;
+    if (isFastOrRhythmGood) return 15;
+    return 10;
+  }
+  if (isFastOrRhythmGood) {
+    return 5;
   }
   return 0;
 }
+function getQuizStampInfo(score) {
+  if (score >= 20) return { label: "大成功", tone: "gold" };
+  if (score >= 15) return { label: "上出来", tone: "brass" };
+  if (score >= 10) return { label: "正解", tone: "teal" };
+  if (score >= 5) return { label: "惜しい", tone: "amber" };
+  return { label: "不正解", tone: "rose" };
+}
 function getRankInfo(correctCount) {
   if (correctCount >= 5) {
-    return { title: "星瓶堂の若店主", message: "客の求める品を見極める目が、もうしっかり育っています。星瓶堂の接客は、これからもっと磨けます。" };
+    return { title: "星瓶堂の若店主", message: "客の求める品を見極める目が、もうしっかり育っています。" };
   } else if (correctCount >= 4) {
     return { title: "若き錬金店主", message: "なかなか鋭いです。あと一歩で、さらに星瓶堂らしい判断ができそうです。" };
   } else if (correctCount >= 3) {
@@ -11426,9 +11449,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = /* @__PU
     correctItemId: correctItem.id
   };
 }
-function checkAnswer(question, selectedItemId, { rhythmBonus = 0 } = {}) {
+function checkAnswer(question, selectedItemId, { rhythmGood = false, fast = false } = {}) {
   const isCorrect = question.correctItemId === selectedItemId;
-  const gainedScore = calculateScore({ isCorrect, rhythmBonus });
+  const gainedScore = calculateScore({ isCorrect, rhythmGood, fast });
   return {
     questionId: question.id,
     selectedItemId,
@@ -12699,6 +12722,7 @@ function App() {
   const [bgmVolume, setBgmVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const [seVolume, setSeVolume] = useState(DEFAULT_AUDIO_VOLUME);
   const backlogScrollRef = useRef(null);
+  const quizQuestionStartAtRef = useRef(Date.now());
   const [showOptions, setShowOptions] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -13249,6 +13273,7 @@ function App() {
     }
     setActiveDailyTalk(null);
     setSession(createQuizSession({ questionCount: 5 }));
+    quizQuestionStartAtRef.current = Date.now();
     setScreen("QUIZ");
   };
   const handleCloseDailyTalk = () => {
@@ -13347,14 +13372,27 @@ function App() {
   };
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    const currentRhythmHit = getIsRhythmHitNow();
+    const answeredAt = Date.now();
+    const rhythmGood = getIsRhythmHitNow({
+      now: answeredAt,
+      noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
+      judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS
+    });
+    const fast = answeredAt - quizQuestionStartAtRef.current <= 3e3;
     const updatedSession = answerQuestion(session, itemId, {
-      rhythmBonus: currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0
+      rhythmGood,
+      fast
     });
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
-    const rhythmBonus = isCorrect && currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0;
-    setQuizFeedback({ itemId, isCorrect, rhythmBonus });
+    const stamp = getQuizStampInfo(lastAnswer.gainedScore);
+    setQuizFeedback({
+      itemId,
+      isCorrect,
+      stampLabel: stamp.label,
+      stampTone: stamp.tone,
+      stampScore: lastAnswer.gainedScore
+    });
     setTimeout(() => {
       if (isCorrect) {
         audioEngine.playSfx("quizCorrectStarChime");
@@ -13367,6 +13405,8 @@ function App() {
         if (updatedSession.isFinished) {
           const correctCount = updatedSession.answers.filter((a) => a.isCorrect).length;
           finishQuizWithResult(correctCount);
+        } else {
+          quizQuestionStartAtRef.current = Date.now();
         }
       }, 650);
     }, 150);
