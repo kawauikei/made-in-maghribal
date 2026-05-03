@@ -5364,7 +5364,7 @@ function CustomerSilhouette({ customer }) {
   } });
 }
 const DEFAULT_NOTE_INTERVAL_MS = 750;
-const DEFAULT_JUDGMENT_WINDOW_MS = 140;
+const DEFAULT_JUDGMENT_WINDOW_MS = 200;
 const DEFAULT_TRAVEL_DURATION_MS = 2e3;
 const DEFAULT_LANE_HEIGHT = 58;
 function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS) {
@@ -5492,8 +5492,8 @@ function RhythmMock({
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
-    width: "28px",
-    height: "28px",
+    width: "36px",
+    height: "36px",
     borderRadius: "50%",
     border: `2px solid ${THEME.starGold}`,
     background: isRhythmHit ? "rgba(255, 219, 128, 0.24)" : "rgba(255, 255, 255, 0.14)",
@@ -5504,8 +5504,8 @@ function RhythmMock({
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
-    width: "44px",
-    height: "44px",
+    width: "56px",
+    height: "56px",
     borderRadius: "50%",
     background: isRhythmHit ? `radial-gradient(circle, ${THEME.starGold}30 0%, transparent 68%)` : `radial-gradient(circle, ${THEME.starGold}18 0%, transparent 72%)`,
     zIndex: 1
@@ -5870,7 +5870,7 @@ function QuizScreen({
       heroineId: activeHeroineId,
       themeColor: activeHeroine == null ? void 0 : activeHeroine.themeColor,
       noteIntervalMs: 750,
-      judgmentWindowMs: 140
+      judgmentWindowMs: 200
     }
   )), /* @__PURE__ */ React.createElement(
     QuizChoiceList,
