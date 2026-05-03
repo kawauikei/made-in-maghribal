@@ -113,7 +113,7 @@ export default function QuizScreen({
             heroineId={activeHeroineId}
             themeColor={activeHeroine?.themeColor}
             noteIntervalMs={750}
-            judgmentWindowMs={140}
+            judgmentWindowMs={200}
           />
         </div>
 
