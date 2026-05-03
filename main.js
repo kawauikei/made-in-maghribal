@@ -940,7 +940,7 @@ const HEROINES = [
     assets: { standing: {}, face: {} }
   }
 ];
-const NADER = {
+const NADER$1 = {
   id: "nader",
   name: "ナーディル",
   role: "星瓶堂店主",
@@ -1395,2518 +1395,804 @@ const StartScreen = ({
     "記録を全て削除する"
   )));
 };
-const AFFECTION_EVENTS = {
-  hakima: [
-    {
-      id: "hakima_0",
-      heroineId: "hakima",
-      threshold: 0,
-      kind: "flashback_intro",
-      // route intro / flashback
-      title: "牙と天秤の出会い",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "開店前、ハキマとの出会いを思い出す。市場での香材を巡る小競り合いが、すべての始まりだった。",
-      pages: [
-        {
-          speaker: "ナーディル",
-          expression: "normal",
-          text: "今日はハキマが来る日か。……あいつと初めて会ったのも、市場に熱い風が吹いていた日だったな。",
-          backgroundId: "shopExteriorDay"
-        },
-        {
-          speaker: "ハキマ",
-          expression: "anger",
-          text: "「ちょっと、そこのあんた！ その樹脂、乾かし方が甘いわ。そんなの棚に並べるつもり？」\n市場の喧騒と香辛料の匂い。活気ある屋台の並ぶ通りで、見知らぬ狐獣人の女性にいきなり怒鳴られたんだ。",
-          backgroundId: "marketCentral"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "surprise",
-          text: "「え……？ ああ、確かに少し湿っているな。助かるよ」\n俺が素直に礼を言うと、彼女は拍子抜けしたような顔をしていた。",
-          backgroundId: "marketCentral"
-        },
-        {
-          speaker: "ハキマ",
-          expression: "normal",
-          text: "「……ふん、素直なだけが取り柄ね。星瓶堂の跡取りなら、もっと鼻を鍛えなさいよ」\n厳しい声だった。でも、不思議と嫌な感じはしなかった。",
-          backgroundId: "marketCentral"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "joy",
-          text: "あの頃から、ハキマはずっと鋭かった。今じゃ欠かせない協力者の一人だ。……よし、準備しよう。",
-          backgroundId: "shopExteriorDay"
-        }
+const NADER = "ナーディル";
+const HEROINE_LABELS = {
+  hakima: "ハキマ",
+  mira: "ミラ",
+  dariya: "ダリヤ"
+};
+const p = (speakerId, speaker, text, expression = "normal", extra = {}) => ({
+  speakerId,
+  speaker,
+  text,
+  expression,
+  ...extra
+});
+const talk = (id, meta, pages) => ({ id, ...meta, pages });
+const recap = {
+  hakima: {
+    normal: talk(
+      "hakima_recap_normal",
+      { kind: "recap", heroineId: "hakima", routeMode: "normal", title: "自己紹介の再確認" },
+      [
+        p("nader", NADER, "ハキマ、今日もいつもの手順でいこう。", "normal", { backgroundId: "shopExteriorDay" }),
+        p("hakima", HEROINE_LABELS.hakima, "ええ。まずは現状整理、次に一手。いつも通りで十分よ。", "joy"),
+        p("nader", NADER, "君のその短さは、逆に信頼できる。", "normal")
       ]
-    },
-    {
-      id: "hakima_5",
-      heroineId: "hakima",
-      threshold: 5,
-      title: "もう一度、隣に",
-      stillImageId: "hakimaMorningVisit01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01",
-        heroineExpressions: ["anger", "normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "sorrow"]
-      },
-      summary: "優等生だったナーディルを一方的に気にしていたハキマは、若店主としての彼の見立てを試しながら、その成長を認め始める。",
-      pages: [
-        { speaker: "", expression: "normal", text: "ハキマは薬草の束を抱え、星瓶堂の扉を勢いよく開けた。" },
-        { speaker: "ハキマ", expression: "anger", text: "今日は、あんたの目利きを見せてもらうから" },
-        { speaker: "ナーディル", expression: "normal", text: "卓上に並んだ香草は、どれも似た色をしている。\nけれど用途を尋ねると、乾いた土と甘い樹脂の違いが少しずつ見えてきた。" },
-        { speaker: "", expression: "sorrow", text: "「……ふうん。品だけじゃなく、使う人まで見るんだ」\nハキマの耳が、ほんの少しだけ揺れる。" },
-        { speaker: "ナーディル", expression: "joy", text: "優等生だった頃の癖かな。答えだけじゃなくて、理由まで知りたくなるんだ" },
-        { speaker: "", expression: "joy", text: "彼女は悔しそうに目をそらし、それでも小さく笑った。" },
-        { speaker: "ハキマ", expression: "joy", text: "まあ、今日のところは合格。少しだけ、頼りにしてあげる" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ハキマ", expression: "normal", text: "ハキマは薬草の束を置くなり、懐かしそうに鼻を鳴らした。\n「こういう勝負、昔はよくやったよね」" },
-          { speaker: "ハキマ", expression: "sorrow", text: "ナーディルが品を選ぶ手つきは、あの頃よりずっと落ち着いていた。\nそれが少し誇らしくて、少しだけ悔しい。" },
-          { speaker: "ハキマ", expression: "sorrow", text: "「先に行くなら、置いていかないでよ」\nハキマは小さくつぶやき、すぐに耳まで赤くした。" },
-          { speaker: "ハキマ", expression: "joy", text: "「今のは忘れて。……でも、隣で見立てるくらいは、許してあげる」\nその声は、怒ったふりをするには優しすぎた。" }
-        ]
-      }
-    },
-    {
-      id: "hakima_10",
-      heroineId: "hakima",
-      threshold: 10,
-      title: "狐の耳は嘘をつかない",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01",
-        heroineExpressions: ["anger", "surprise", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "素直になれないハキマは、ナーディルと同じ目線で品を選べたことに喜びを覚える。優等生だった彼を気にしていた過去が、少しだけにじむ。",
-      pages: [
-        { speaker: "", expression: "normal", text: "閉店後の店先に、まだ昼の熱を含んだ風が残っていた。市場の香料瓶を前に、ハキマは腕を組んでうなった。" },
-        { speaker: "ハキマ", expression: "anger", text: "この配合、悪くないけど……客には少し強すぎるわね" },
-        { speaker: "ナーディル", expression: "normal", text: "薄めるなら、砂蜜よりも乾いた柑橘皮かな。香りが丸くなると思う" },
-        { speaker: "", expression: "normal", text: "俺が言うと、ハキマは目を丸くした。" },
-        { speaker: "ハキマ", expression: "surprise", text: "同じこと、考えてた。……先に言わないでよ" },
-        { speaker: "", expression: "normal", text: "その声は不満そうなのに、耳だけは嬉しそうに立っている。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "昔からそう。あんた、涼しい顔で正解に近づくから、見てるこっちが焦るのよ" },
-        { speaker: "", expression: "normal", text: "彼女は慌てて背を向ける。" },
-        { speaker: "ハキマ", expression: "joy", text: "見てない！ あんたは何も見てない！ ……でも、また一緒に見立てるから" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "", expression: "normal", text: "市場の棚を前に、ふたりは同時に同じ香料瓶を指差した。" },
-          { speaker: "", expression: "normal", text: "ハキマは目を丸くし、やがて呆れたように笑う。" },
-          { speaker: "ハキマ", expression: "normal", text: "……昔は、あんたの方がいつも外してたのに" },
-          { speaker: "", expression: "normal", text: "少しだけ寂しそうに、でも誇らしげに彼女は言う。" },
-          { speaker: "ナーディル", expression: "fun", text: "君に負けたくなくて、ずっと覚えていたからな。香りの強さも、瓶の癖も" },
-          { speaker: "ハキマ", expression: "joy", text: "やっと追いついてきたってことね。なら、これからは対等だ" },
-          { speaker: "", expression: "normal", text: "狐の耳が、嬉しさを隠しきれずにぴんと立っていた。" },
-          { speaker: "ハキマ", expression: "joy", text: "言っとくけど、まだまだ負けないからね" },
-          { speaker: "", expression: "normal", text: "その顔は、市場のどの灯りよりも眩しかった。" }
-        ]
-      }
-    },
-    {
-      id: "hakima_20",
-      heroineId: "hakima",
-      threshold: 20,
-      title: "重なる目利き",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "ルハーン商会からの大口相談を巡り、ハキマはナーディルの目利きを認め、素直になれないながらも信頼を口にする。",
-      pages: [
-        { speaker: "", expression: "normal", text: "朝の光が店先の布幕を照らしていた。" },
-        { "speaker": "ハキマ", "expression": "normal", "text": "ルハーン商会から、大口の香材相談が来たの。星瓶堂の目利きも借りたいって。" },
-        { "speaker": "ナーディル", "expression": "surprise", "text": "君の商会から正式に？ それは責任重大だな。" },
-        { "speaker": "ハキマ", "expression": "anger", "text": "勘違いしないで。あんたが少しは信用できるって、私が報告しただけよ。" },
-        { "speaker": "ナーディル", "expression": "joy", "text": "それなら、なおさら嬉しいよ。ハキマが見てくれた星瓶堂の信用だ。" },
-        { "speaker": "ハキマ", "expression": "surprise", "text": "……そういう言い方、ずるい。怒る準備をしてたのに、調子が狂うじゃない。" },
-        { "speaker": "ハキマ", "expression": "joy", "text": "でも、まあ。あんたが昔から真面目に品を見てたのは知ってる。……だから推薦したのよ。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ハキマ", expression: "normal", text: "ルハーン商会から、大口の香材相談が来たの。……昔のあんたなら、聞いただけで逃げてたでしょうね。" },
-          { speaker: "ナーディル", expression: "fun", text: "否定しきれないな。昔は、君に香材の束を渡されるだけで身構えてた。" },
-          { speaker: "ハキマ", expression: "anger", text: "それでも最後まで付き合ったじゃない。悔しいけど、あんたの目利きは昔から当てにしてたのよ。" },
-          { speaker: "ナーディル", expression: "joy", text: "なら今回は、昔より胸を張って隣に立てるように頑張るよ。" },
-          { speaker: "ハキマ", expression: "sorrow", text: "……そういう言い方、ずるい。こっちは何年も前から、その隣を空けてたみたいじゃない。" },
-          { speaker: "ハキマ", expression: "joy", text: "でも、いいわ。今度こそ、私もちゃんと並ぶ。香材も、店も、あんたのことも見逃さないから。" }
-        ]
-      }
-    },
-    {
-      id: "hakima_climax",
-      heroineId: "hakima",
-      threshold: 30,
-      kind: "route_climax",
-      title: "隣に並ぶ覚悟",
-      stillImageId: "hakimaFestivalNight01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "成長するナーディルに焦りを感じるハキマに対し、ナーディルは共に歩む決意を伝え、二人は対等なパートナーとしての絆を深める。",
-      pages: [
-        { "speaker": "ハキマ", "expression": "sorrow", "text": "あんたが星瓶堂の店主らしくなるほど、少しだけ遠くに見える時があるの。" },
-        { "speaker": "ナーディル", "expression": "sorrow", "text": "遠くへ行きたいわけじゃない。俺は、この店で誰かと向き合える店主になりたいんだ。" },
-        { "speaker": "ハキマ", "expression": "anger", "text": "だったら、隣を空けておきなさいよ。勝手に一人で格好つけないで。" },
-        { "speaker": "ナーディル", "expression": "joy", "text": "分かった。難しい香材も、厄介な客も、君と一緒に見立てたい。" },
-        { "speaker": "ハキマ", "expression": "sorrow", "text": "優等生だったあんたを見て、勝手に焦って、勝手に悔しがってた。……そういうの、もう終わりにしたいの。" },
-        { "speaker": "ハキマ", "expression": "joy", "text": "これからは、ちゃんと隣で言うわ。間違ってる時は怒るし、良かった時は……少しだけ褒めてあげる。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ハキマ", expression: "sorrow", text: "子どもの頃、どっちが先に自分の店を持つかって勝負したの、覚えてる？" },
-          { speaker: "ナーディル", expression: "normal", text: "覚えてる。君は、負けた方が勝った方の棚を一緒に並べるって言ってた。" },
-          { speaker: "ハキマ", expression: "anger", text: "違うわよ。あれは負けた時の約束じゃない。……隣にいるための口実だったの。" },
-          { speaker: "ナーディル", expression: "surprise", text: "ハキマ……。俺は、君が隣にいるのを当たり前みたいに思いすぎていたのかもしれない。" },
-          { speaker: "ハキマ", expression: "sorrow", text: "当たり前だったのよ、私には。あんたが星瓶堂を継ぐなら、その隣で香りを見たいって、ずっと思ってた。" },
-          { speaker: "ナーディル", expression: "joy", text: "今度は、ちゃんと言うよ。星瓶堂の隣に、君がいてほしい。" },
-          { speaker: "ハキマ", expression: "joy", text: "今さら気づいたなら、遅れた分だけちゃんと空けておきなさい。そこは、私の場所なんだから。" }
-        ]
-      }
-    },
-    {
-      id: "hakima_long_market_dawn",
-      heroineId: "hakima",
-      routeMode: "long_history",
-      threshold: 10,
-      kind: "long_history_still",
-      title: "市場の朝駆け",
-      stillImageId: "hakimaMarketArgument01",
-      presentation: {
-        backgroundId: "marketCentral",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "昔、市場開き前に二人で香材を買い付けた朝。値切り合いの末、店主に笑われた思い出。",
-      pages: [
-        { speaker: "ハキマ", expression: "anger", text: "……昔、市場開き前に一緒に香材を買い付けた朝、覚えてる？" },
-        { speaker: "ナーディル", expression: "fun", text: "覚えてる。君の値切り方があまりに真剣で、店主まで笑っていた。" },
-        { speaker: "ハキマ", expression: "surprise", text: "あんたも横で妙な理屈を足すからでしょ。あの時、どっちが店主なんだか分からなかったわ。" },
-        { speaker: "ハキマ", expression: "joy", text: "でも、あんたの隣で香りを選ぶのは……昔から、悪くなかったのよ。" }
+    ),
+    long_history: talk(
+      "hakima_recap_long_history",
+      { kind: "recap", heroineId: "hakima", routeMode: "long_history", title: "長編側の自己紹介" },
+      [
+        p("nader", NADER, "長い付き合いのぶん、ハキマとは確認したいことが多い。", "normal", { backgroundId: "marketCentral" }),
+        p("hakima", HEROINE_LABELS.hakima, "昔話より、今の店の流れを見せて。そこから始めましょう。", "normal"),
+        p("nader", NADER, "その言い方、昔よりずっと自然だ。", "fun")
       ]
-    },
-    {
-      id: "hakima_long_rain_memory",
-      heroineId: "hakima",
-      routeMode: "long_history",
-      threshold: 20,
-      kind: "long_history_still",
-      title: "雨宿りの午後",
-      stillImageId: "hakimaRainShelter01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "突然の雨に濡れながら、軒下で乾くのを待った午後。濡れた狐の耳を拭いてやったらいじられた。",
-      pages: [
-        { speaker: "ハキマ", expression: "sorrow", text: "……あの雨の日は、本当に困った。香材は濡れるし、耳は重くなるし、散々だったわ。" },
-        { speaker: "ナーディル", expression: "normal", text: "君の耳がびしょ濡れで、ずいぶん寒そうだった。だから布を貸したんだ。" },
-        { speaker: "ハキマ", expression: "surprise", text: "貸しただけじゃないでしょ。あんた、何も言わずに耳まで拭いたじゃない。" },
-        { speaker: "ハキマ", expression: "joy", text: "……その、嬉しかったのよ。昔から。言わないけど。今のも忘れなさい。" }
+    )
+  },
+  mira: {
+    normal: talk(
+      "mira_recap_normal",
+      { kind: "recap", heroineId: "mira", routeMode: "normal", title: "自己紹介の再確認" },
+      [
+        p("nader", NADER, "ミラ、今日は落ち着いて話せそうだ。", "normal", { backgroundId: "shopExteriorNight" }),
+        p("mira", HEROINE_LABELS.mira, "うん。焦らなくていいなら、話もちゃんと届く。", "joy"),
+        p("nader", NADER, "それが君の強さだと思う。", "normal")
       ]
-    },
-    {
-      id: "hakima_long_merchant_report",
-      heroineId: "hakima",
-      routeMode: "long_history",
-      threshold: 5,
-      kind: "long_history_background",
-      title: "商会の近況",
-      presentation: {
-        backgroundId: "shopInteriorService",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "ルハーン商会の新しい仕入れ先について報告に来たハキマ。昔と同じように、細かい指摘をしてくる。",
-      pages: [
-        { speaker: "ハキマ", expression: "normal", text: "ルハーン商会の新しい仕入れ先、確認してきたわ。癖は強いけど、星瓶堂の棚に合いそうなのもあった。" },
-        { speaker: "ナーディル", expression: "fun", text: "君らしく、細かいところまで見てきたんだな。昔から仕入れ先の癖を見抜くのは得意だった。" },
-        { speaker: "ハキマ", expression: "anger", text: "当たり前よ。……でも、あんたが喜びそうなのを選んだのは、余計な一言だったかしら。" },
-        { speaker: "ナーディル", expression: "joy", text: "いや、嬉しいよ。昔から、君の選ぶ香材は俺の店に不思議と馴染むんだ。" }
+    ),
+    long_history: talk(
+      "mira_recap_long_history",
+      { kind: "recap", heroineId: "mira", routeMode: "long_history", title: "長編側の自己紹介" },
+      [
+        p("nader", NADER, "長い話を知っているぶん、今日は少し丁寧に始めたい。", "normal", { backgroundId: "spotStarView" }),
+        p("mira", HEROINE_LABELS.mira, "それなら、最初の一言はちゃんと残るようにして。", "fun"),
+        p("nader", NADER, "任せてくれ。", "joy")
       ]
-    },
-    {
-      id: "hakima_long_festival_prep",
-      heroineId: "hakima",
-      routeMode: "long_history",
-      threshold: 15,
-      kind: "long_history_background",
-      title: "祭りの香り",
-      presentation: {
-        backgroundId: "spotFestivalStreet",
-        bgmId: "HAKIMA-01"
-      },
-      summary: "街の祭りが近づき、ハキマが屋台の香材を買いに来た。昔も一緒に祭りに行ったっけ、と懐かしむ。",
-      pages: [
-        { speaker: "ハキマ", expression: "joy", text: "祭りが近いわね。屋台用の香材、今年もルハーン商会に相談が来てるの。" },
-        { speaker: "ナーディル", expression: "normal", text: "昔も一緒に祭りの屋台を回ったな。君は香りだけで、どこの菓子か当てていた。" },
-        { speaker: "ハキマ", expression: "fun", text: "あんたはすぐ外してたわね。……でも、外しても楽しそうだったから、少し悔しかった。" },
-        { speaker: "ハキマ", expression: "sorrow", text: "覚えてるなら、今年も付き合いなさいよ。別に、一緒じゃなきゃ嫌ってわけじゃ……ないけど。" }
+    )
+  },
+  dariya: {
+    normal: talk(
+      "dariya_recap_normal",
+      { kind: "recap", heroineId: "dariya", routeMode: "normal", title: "自己紹介の再確認" },
+      [
+        p("nader", NADER, "ダリヤ、今日は無理のない速度で進めよう。", "normal", { backgroundId: "shopInteriorService" }),
+        p("dariya", HEROINE_LABELS.dariya, "ええ。見た目より、手元の確かさを見せたいの。", "joy"),
+        p("nader", NADER, "なら、最初から最後まで安心して見ていられる。", "normal")
       ]
-    }
+    ),
+    long_history: talk(
+      "dariya_recap_long_history",
+      { kind: "recap", heroineId: "dariya", routeMode: "long_history", title: "長編側の自己紹介" },
+      [
+        p("nader", NADER, "ダリヤとは、昔から会話の温度が安定している。", "normal", { backgroundId: "shopExteriorNight" }),
+        p("dariya", HEROINE_LABELS.dariya, "安定しているのが、今は一番助かるでしょう？", "sorrow"),
+        p("nader", NADER, "その通りだ。", "fun")
+      ]
+    )
+  }
+};
+const openingScene = talk(
+  "opening_nader_intro",
+  { kind: "opening", title: "固定のナーディル自己紹介" },
+  [
+    p("nader", NADER, "星瓶堂の店主、ナーディル。今日は店の流れを整える日だ。", "normal", {
+      backgroundId: "shopExteriorDay",
+      bgmId: "MAIN-02"
+    }),
+    p("nader", NADER, "まずは自分の足元を確認して、それから客と向き合う。", "normal", {
+      backgroundId: "shopInteriorService"
+    })
+  ]
+);
+const introTalks = [
+  talk(
+    "hakima_preopen_1_weather",
+    {
+      kind: "pre_open_1",
+      stage: 1,
+      category: "work",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "intro",
+      routeMode: "both",
+      title: "いい天気の話題"
+    },
+    [
+      p("nader", NADER, "いい天気だ。今日は客足が読めそうだね。", "normal", { backgroundId: "marketCentral" }),
+      p("hakima", HEROINE_LABELS.hakima, "ええ、だからこそ店の表情も大事。明るく、でも軽すぎない。", "joy"),
+      p("nader", NADER, "それなら店先の並べ方を少し変えておく。", "normal")
+    ]
+  ),
+  talk(
+    "hakima_preopen_2_stock",
+    {
+      kind: "pre_open_2",
+      stage: 2,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "intro",
+      routeMode: "both",
+      title: "在庫の確認"
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "棚の並び、昨日より分かりやすくなった。こういうのは大事よ。", "normal"),
+      p("nader", NADER, "君にそう言われると、少しだけ自信が出る。", "joy")
+    ]
+  ),
+  talk(
+    "mira_preopen_1_weather",
+    {
+      kind: "pre_open_1",
+      stage: 1,
+      category: "work",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "intro",
+      routeMode: "both",
+      title: "雲の様子"
+    },
+    [
+      p("nader", NADER, "雲があるぶん、今日は見通しを立てやすいかもしれない。", "normal", { backgroundId: "shopExteriorNight" }),
+      p("mira", HEROINE_LABELS.mira, "なら、最初の一手は急がないで正解だね。", "joy"),
+      p("nader", NADER, "それでいこう。", "normal")
+    ]
+  ),
+  talk(
+    "mira_preopen_2_tone",
+    {
+      kind: "pre_open_2",
+      stage: 2,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "intro",
+      routeMode: "both",
+      title: "会話の温度"
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "今日は、少し静かな話し方が合ってる気がする。", "normal"),
+      p("nader", NADER, "了解。落ち着いて進めよう。", "joy")
+    ]
+  ),
+  talk(
+    "dariya_preopen_1_weather",
+    {
+      kind: "pre_open_1",
+      stage: 1,
+      category: "work",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "intro",
+      routeMode: "both",
+      title: "風の話題"
+    },
+    [
+      p("nader", NADER, "風向きは悪くない。今日は動きやすい日だ。", "normal", { backgroundId: "shopExteriorDay" }),
+      p("dariya", HEROINE_LABELS.dariya, "そうね。なら、最初の挨拶は短くていい。", "fun"),
+      p("nader", NADER, "必要なことだけ、きちんと伝える。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_preopen_2_hand",
+    {
+      kind: "pre_open_2",
+      stage: 2,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "intro",
+      routeMode: "both",
+      title: "手つきの確認"
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "手元は見ている。慌てないのが一番だもの。", "joy"),
+      p("nader", NADER, "その確認があるだけで、店の空気が整う。", "normal")
+    ]
+  )
+];
+const afterResultTalks = [
+  talk(
+    "hakima_after_result_high",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "after_result",
+      routeMode: "both",
+      title: "高評価の一言",
+      scoreMin: 50
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "今日はよくやったわ。見ていて安心できた。", "joy"),
+      p("nader", NADER, "君にそう言ってもらえるなら、十分だ。", "joy")
+    ]
+  ),
+  talk(
+    "hakima_after_result_low",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "after_result",
+      routeMode: "both",
+      title: "控えめな応援",
+      scoreMax: 49
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "次はもっと伸ばせる。焦らずに見直しましょう。", "normal"),
+      p("nader", NADER, "うん。次の手順を整える。", "normal")
+    ]
+  ),
+  talk(
+    "mira_after_result_high",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "after_result",
+      routeMode: "both",
+      title: "高評価の一言",
+      scoreMin: 50
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "いい流れだった。あの判断は素直に褒めたい。", "joy"),
+      p("nader", NADER, "ありがとう。積み上げた分が出た感じがする。", "normal")
+    ]
+  ),
+  talk(
+    "mira_after_result_low",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "after_result",
+      routeMode: "both",
+      title: "控えめな応援",
+      scoreMax: 49
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "まだ伸びる。だから、次もちゃんと見ていこう。", "normal"),
+      p("nader", NADER, "うん。慌てずに詰め直す。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_after_result_high",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "after_result",
+      routeMode: "both",
+      title: "高評価の一言",
+      scoreMin: 50
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "その調子。今日はちゃんと狙えていたわ。", "joy"),
+      p("nader", NADER, "次もこの感覚を忘れない。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_after_result_low",
+    {
+      kind: "post_close_1",
+      stage: 5,
+      category: "work",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "after_result",
+      routeMode: "both",
+      title: "控えめな応援",
+      scoreMax: 49
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "悪くない。だけど、もう一段は上げられる。", "normal"),
+      p("nader", NADER, "次はそこを狙う。", "joy")
+    ]
+  )
+];
+const dayEndTalks = [
+  talk(
+    "hakima_day_end_low_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ひかえめ",
+      minAffection: 0,
+      maxAffection: 19
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "今日はここまでで十分。続きはまた明日。", "normal"),
+      p("nader", NADER, "うん、明日の流れを整えておく。", "normal")
+    ]
+  ),
+  talk(
+    "hakima_day_end_mid_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ふつう",
+      minAffection: 20,
+      maxAffection: 59
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "少しずつ分かってきた気がする。だから、明日も見せて。", "joy"),
+      p("nader", NADER, "任せてくれ。", "joy")
+    ]
+  ),
+  talk(
+    "hakima_day_end_high_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "hakima",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度高め",
+      minAffection: 60
+    },
+    [
+      p("hakima", HEROINE_LABELS.hakima, "明日もまた隣で見ている。そう思えるだけで十分よ。", "joy"),
+      p("nader", NADER, "その一言は、かなり嬉しい。", "normal")
+    ]
+  ),
+  talk(
+    "mira_day_end_low_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ひかえめ",
+      minAffection: 0,
+      maxAffection: 19
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "今日はここまで。まだ言葉は残せるから、急がなくていい。", "normal"),
+      p("nader", NADER, "了解。次の会話のために整えておく。", "normal")
+    ]
+  ),
+  talk(
+    "mira_day_end_mid_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ふつう",
+      minAffection: 20,
+      maxAffection: 59
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "少しずつ近づいてる。焦らなくても、ちゃんと届くよ。", "joy"),
+      p("nader", NADER, "その感覚を大事にしたい。", "joy")
+    ]
+  ),
+  talk(
+    "mira_day_end_high_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "mira",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度高め",
+      minAffection: 60
+    },
+    [
+      p("mira", HEROINE_LABELS.mira, "明日も、今みたいに自然に話せるといい。", "joy"),
+      p("nader", NADER, "そうできるようにしておく。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_day_end_low_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ひかえめ",
+      minAffection: 0,
+      maxAffection: 19
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "今日はここまで。次に会うときは、もう少し踏み込めるはず。", "normal"),
+      p("nader", NADER, "なら、次回に向けて準備する。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_day_end_mid_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度ふつう",
+      minAffection: 20,
+      maxAffection: 59
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "うまくいったところは覚えておく。次もそこから始めましょう。", "joy"),
+      p("nader", NADER, "うん、そこは忘れない。", "normal")
+    ]
+  ),
+  talk(
+    "dariya_day_end_high_affection",
+    {
+      kind: "post_close_2",
+      stage: 6,
+      category: "personal",
+      scope: "heroine",
+      heroineId: "dariya",
+      timing: "day_end",
+      routeMode: "both",
+      title: "親密度高め",
+      minAffection: 60
+    },
+    [
+      p("dariya", HEROINE_LABELS.dariya, "明日も、今の距離感のままでいい。十分伝わっているから。", "joy"),
+      p("nader", NADER, "そのままの感じで続けたい。", "joy")
+    ]
+  )
+];
+const baseEnding = {
+  good: [
+    p("", "", "今日の積み重ねが、ちゃんと形になった。", "joy", { backgroundId: "shopExteriorNight" }),
+    p("nader", NADER, "明日も、この調子で店を続けよう。", "normal")
   ],
-  mira: [
-    {
-      id: "mira_0",
-      heroineId: "mira",
-      threshold: 0,
-      kind: "flashback_intro",
-      // route intro / flashback
-      title: "天才とノートの余白",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "MIRA-01"
-      },
-      summary: "開店前、ミラとの出会いを思い出す。大学の廊下で、彼女がナーディルのノートの余白に興味を持ったことがきっかけだった。",
-      pages: [
-        {
-          speaker: "ナーディル",
-          expression: "normal",
-          text: "ミラか。……あの子、最初はずいぶんと俺のノートを熱心に覗き込んでいたっけ。",
-          backgroundId: "shopExteriorDay"
-        },
-        {
-          speaker: "ミラ",
-          expression: "normal",
-          text: "「先輩、その計算式の横にある走り書き……星瓶堂の現場で使う調整式ですか？」\n噴水の水音が響く大学の広場。学年一の天才と名高いミラに呼び止められた時は、少し身構えた。",
-          backgroundId: "spotFountain"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "surprise",
-          text: "「え、ああ……。父が昔言っていたことを、自分なりにまとめてみただけだよ」\n俺がそう言うと、彼女の瞳は見たこともないほど輝いたんだ。",
-          backgroundId: "spotFountain"
-        },
-        {
-          speaker: "ミラ",
-          expression: "joy",
-          text: "「素晴らしいです。教科書にはない、実践的な知恵が詰まっています。もっと詳しく教えていただけませんか？」\nそれが、彼女との「先輩・後輩」の関係の始まりだった。",
-          backgroundId: "spotFountain"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "joy",
-          text: "今では商会や大学の話を、真っ先に持ってきてくれる。……俺も、頼れる先輩でいられるよう頑張ろう。",
-          backgroundId: "shopExteriorDay"
-        }
-      ]
-    },
-    {
-      id: "mira_5",
-      heroineId: "mira",
-      threshold: 5,
-      title: "普通の女の子として",
-      stillImageId: "miraAfterSchool01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01",
-        heroineExpressions: ["normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise"]
-      },
-      summary: "天才として常に正解を求められるミラが、星瓶堂でだけは「迷うこと」を許され、一人の少女に戻る。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "放課後、ミラは課題用の素材帳を抱えて星瓶堂を訪れた。\n「先輩、今日は正解を選びに来たわけではないんです」" },
-        { speaker: "ミラ", expression: "sorrow", text: "彼女は瓶を二つ並べ、困ったように眉を寄せる。\n「どちらも正しい。だから、どちらを選ぶべきか迷っています」" },
-        { speaker: "ナーディル", expression: "normal", text: "「迷っていいと思う。正解より先に、誰へ届けたい品なのかを考えてみよう」\nそう言うと、ミラは目を丸くした。" },
-        { speaker: "ミラ", expression: "surprise", text: "「天才なら即答すべきだと、ずっと思っていました」\n彼女の声は小さいのに、どこかほっとしていた。" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩は、少しずるいです。そんな言い方をされたら、私でいたくなります」\n彼女は小さく笑った。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "", expression: "normal", text: "ミラは古い課題帳を開き、懐かしそうに指でなぞった。" },
-          { speaker: "ミラ", expression: "normal", text: "この式、先輩に何度も直してもらいましたね" },
-          { speaker: "ミラ", expression: "sorrow", text: "みんなは答えだけを褒めました。でも先輩は、迷った跡を見てくれた" },
-          { speaker: "", expression: "normal", text: "彼女の声は、少しだけ震えていた。" },
-          { speaker: "ナーディル", expression: "normal", text: "俺は、君の迷い方が好きだったんだと思う。答えに向かって、ちゃんと考えていたから" },
-          { speaker: "", expression: "normal", text: "ミラは胸の前で帳面を抱きしめる。" },
-          { speaker: "ミラ", expression: "surprise", text: "そんなことを、昔から思ってくれていたんですか" },
-          { speaker: "ミラ", expression: "joy", text: "天才ではなく、ただの私として。……先輩の隣で、もう一度考えたいです" },
-          { speaker: "", expression: "normal", text: "その笑顔は、少し照れくさそうだった。" }
-        ]
-      }
-    },
-    {
-      id: "mira_10",
-      heroineId: "mira",
-      threshold: 10,
-      title: "商人の目利き",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01",
-        heroineExpressions: ["normal", "fun", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "商会としての効率と、店としての優しさ。ミラは星瓶堂で、数字では測れない答えを見つける。",
-      pages: [
-        { speaker: "", expression: "normal", text: "ミラは星瓶堂の帳面を開き、真剣な顔で数字を並べた。" },
-        { speaker: "ミラ", expression: "normal", text: "この配合なら、もっと多くの人に届けられます" },
-        { speaker: "ナーディル", expression: "sorrow", text: "けれど俺は、最後に客の手紙を読み返した。" },
-        { speaker: "", expression: "normal", text: "効率だけでは測れない願いが、そこには残っていた。" },
-        { speaker: "", expression: "normal", text: "ミラは少し悔しそうに、そして嬉しそうに笑った。" },
-        { speaker: "ミラ", expression: "fun", text: "商人の目だけでは、見落とすものがありますね" },
-        { speaker: "ナーディル", expression: "normal", text: "俺も、数字を見ないといけない。でも、手紙に残った迷いも無視したくないんだ" },
-        { speaker: "ミラ", expression: "joy", text: "先輩の隣でなら、正解を出す前の私でいられます" },
-        { speaker: "", expression: "normal", text: "その言葉は、星明かりよりも静かに輝いていた。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "", expression: "normal", text: "星空の下、ミラは帳面を閉じた。" },
-          { speaker: "ミラ", expression: "normal", text: "昔から、先輩は私の答えより、考えている顔を見ていました" },
-          { speaker: "ミラ", expression: "fun", text: "それが少し悔しくて、でも、とても嬉しかったんです" },
-          { speaker: "", expression: "normal", text: "彼女は夜風に揺れる布を押さえ、小さく笑う。" },
-          { speaker: "ナーディル", expression: "normal", text: "君が答えを出す前の時間は、静かで綺麗だった。急かすのがもったいなかったんだ" },
-          { speaker: "ミラ", expression: "joy", text: "私は天才としてではなく、私の夢として、星瓶堂の未来を考えたい" },
-          { speaker: "", expression: "normal", text: "その瞳は、もう迷っていなかった。" },
-          { speaker: "ミラ", expression: "joy", text: "先輩。これからも、私が答えを急ぎそうになったら止めてください" },
-          { speaker: "", expression: "normal", text: "ミラは照れながら、そっと隣に並んだ。" }
-        ]
-      }
-    },
-    {
-      id: "mira_20",
-      heroineId: "mira",
-      threshold: 20,
-      title: "暮らしの錬金術",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "MIRA-01"
-      },
-      summary: "ミラは大学の発表題材に星瓶堂を選び、ナーディルの「使う人の顔が見える品」という姿勢に自身の理想を重ねる。",
-      pages: [
-        { speaker: "", expression: "normal", text: "昼下がりの店先で、ミラは課題帳を抱えて立った。" },
-        { "speaker": "ミラ", "expression": "normal", "text": "先輩、星瓶堂の商品を学外発表の題材にしてもいいでしょうか。" },
-        { "speaker": "ナーディル", "expression": "surprise", "text": "うちの商品を？ もっと派手な研究の方が、評価されるんじゃないか。" },
-        { "speaker": "ミラ", "expression": "sorrow", "text": "派手さだけなら、そうかもしれません。でも私は、暮らしに届く錬金術を発表したいんです。" },
-        { "speaker": "ナーディル", "expression": "joy", "text": "それなら、星瓶堂はぴったりだ。使う人の顔が見える品ばかりだから。" },
-        { "speaker": "ミラ", "expression": "joy", "text": "はい。先輩がそう見ているから、私もこの店で学びたいと思えたんです。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "俺は大したことはしてないよ。ただ、客の話を聞いているだけだ。" },
-        { "speaker": "ミラ", "expression": "fun", "text": "その「ただ」が難しいんです。だから私は、先輩の隣で学びたいんです。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ミラ", expression: "normal", text: "先輩、覚えていますか。昔、星瓶堂の棚を題材にして、二人で小さな研究帳を作ったこと。" },
-          { speaker: "ナーディル", expression: "fun", text: "覚えてるよ。君は瓶の配置まで数式にしようとして、俺は途中で目を回した。" },
-          { speaker: "ミラ", expression: "joy", text: "でも先輩は、最後に言ってくれました。使う人が迷わない棚なら、それも立派な錬金術だって。" },
-          { speaker: "ナーディル", expression: "normal", text: "そんなことを言ったのか。今聞くと、ずいぶん星瓶堂らしい答えだな。" },
-          { speaker: "ミラ", expression: "sorrow", text: "私にとっては、研究の原点です。天才の発表ではなく、誰かの暮らしに届く錬金術を選びたいんです。" },
-          { speaker: "ミラ", expression: "joy", text: "そして、その原点にはいつも先輩がいます。だから私は、ここへ戻ってきたんです。" }
-        ]
-      }
-    },
-    {
-      id: "mira_climax",
-      heroineId: "mira",
-      threshold: 30,
-      kind: "route_climax",
-      title: "正解の前の私",
-      stillImageId: "miraStarryRooftop01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01"
-      },
-      summary: "天才ゆえの失敗への恐怖を吐露するミラに対し、ナーディルはその過程すべてを肯定し、彼女が「ただの自分」でいられる場所であることを示す。",
-      pages: [
-        { "speaker": "ミラ", "expression": "sorrow", "text": "天才だと言われるほど、間違えるのが怖くなります。期待を裏切るのが怖いんです。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "ミラが迷って、試して、失敗して、それでも考えるところを俺は見てきた。" },
-        { "speaker": "ミラ", "expression": "surprise", "text": "答えだけではなく、そこまで見てくれるんですね。" },
-        { "speaker": "ナーディル", "expression": "sorrow", "text": "俺は、君の全部を分かっているなんて言えない。でも、答えを出す前の君を見ていたいとは思う。" },
-        { "speaker": "ミラ", "expression": "joy", "text": "……先輩は、やっぱり少しずるいです。そんな言い方をされたら、もっと好きになってしまいます。" },
-        { "speaker": "ナーディル", "expression": "surprise", "text": "ミラ……。" },
-        { "speaker": "ミラ", "expression": "joy", "text": "先輩の前では、正解の前の私でいてもいいんですね。なら私は、ここにいたいです。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ミラ", expression: "sorrow", text: "昔、一度だけ実験に失敗して、もう飛び級なんて無理だと思った日がありました。" },
-          { speaker: "ナーディル", expression: "normal", text: "覚えてる。君は泣きそうな顔で、失敗した計算紙を全部抱えてきた。" },
-          { speaker: "ミラ", expression: "cry", text: "先輩は、答えを直すより先に、紙を捨てなかったことを褒めてくれました。" },
-          { speaker: "ナーディル", expression: "joy", text: "迷って、書き直して、それでも考える君を知っていたからだよ。天才だからじゃない。" },
-          { speaker: "ミラ", expression: "joy", text: "……昔から、先輩の前では正解の前の私でいられました。今も、その場所に帰ってきたいんです。" },
-          { speaker: "ナーディル", expression: "sorrow", text: "俺でいいのか、と少し思う。でも、君がそう言ってくれるなら、ここを空けておくよ。" },
-          { speaker: "ミラ", expression: "joy", text: "先輩がいいんです。昔から、ずっと。……だから、もう少しだけ隣にいさせてください。" }
-        ]
-      }
-    },
-    {
-      id: "mira_long_assignment_night",
-      heroineId: "mira",
-      routeMode: "long_history",
-      threshold: 10,
-      kind: "long_history_still",
-      title: "課題の夜更け",
-      stillImageId: "miraAssignmentConsult01",
-      presentation: {
-        backgroundId: "spotFountain",
-        bgmId: "MIRA-01"
-      },
-      summary: "大学の課題で行き詰まったミラが、ナーディルのノートを借りて夜更けまで考えた記憶。朝には二人で解決していた。",
-      pages: [
-        { speaker: "ミラ", expression: "sorrow", text: "先輩、この課題……どうしても解けなくて。答えに近いはずなのに、最後の一歩が見えません。" },
-        { speaker: "ナーディル", expression: "normal", text: "俺のノートでよければ、使ってくれ。あまり綺麗な字じゃないけど、現場の迷いは残っていると思う。" },
-        { speaker: "ミラ", expression: "joy", text: "……朝には解けていましたね。先輩と一緒に考えられて、本当に嬉しかったです。" },
-        { speaker: "ナーディル", expression: "fun", text: "俺は半分くらい、君の計算の速さについていけてなかったけどな。" },
-        { speaker: "ミラ", expression: "fun", text: "それでも、隣にいてくれました。私には、それが一番心強かったんです。" }
-      ]
-    },
-    {
-      id: "mira_long_sick_visit",
-      heroineId: "mira",
-      routeMode: "long_history",
-      threshold: 20,
-      kind: "long_history_still",
-      title: "見舞いの温もり",
-      stillImageId: "miraVisitSick01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-01"
-      },
-      summary: "ナーディルが風邪で寝込んだ日、ミラが処方箋と不器用な粥を持って訪ねてきた。味はともかく、その温かさは忘れられない。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "……風邪、大丈夫ですか。処方箋と、温かいものを持ってきました。" },
-        { speaker: "ナーディル", expression: "surprise", text: "ミラが来てくれるなんて。助かるよ。……この粥は、君が？" },
-        { speaker: "ミラ", expression: "sorrow", text: "はい。理論上は栄養の配分も完璧だったのですが、味が少し……個性的になりました。" },
-        { speaker: "ナーディル", expression: "fun", text: "熱は下がりそうだ。別の意味で目が覚める味だけど。" },
-        { speaker: "ミラ", expression: "joy", text: "ふふ。笑えるなら大丈夫ですね。先輩が元気になってくれるなら、また作ります。" }
-      ]
-    },
-    {
-      id: "mira_long_university_rumor",
-      heroineId: "mira",
-      routeMode: "long_history",
-      threshold: 5,
-      kind: "long_history_background",
-      title: "天才の噂",
-      presentation: {
-        backgroundId: "spotFountain",
-        bgmId: "MIRA-01"
-      },
-      summary: "大学で「ナーディル先輩の後輩」と噂されているとミラが言う。昔から二人は目立っていたから、と笑う。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "大学で、少し変な噂を聞きました。「ナーディル先輩の後輩」だそうです。" },
-        { speaker: "ナーディル", expression: "surprise", text: "俺の名前が先に来るのか。ミラの方がずっと目立っていると思うけど。" },
-        { speaker: "ミラ", expression: "fun", text: "ふふ。私も少し驚きました。でも、嫌ではありません。" },
-        { speaker: "ミラ", expression: "joy", text: "先輩の隣で考えてきた時間まで、ちゃんと覚えてもらえている気がしますから。" }
-      ]
-    },
-    {
-      id: "mira_long_stargazing",
-      heroineId: "mira",
-      routeMode: "long_history",
-      threshold: 15,
-      kind: "long_history_background",
-      title: "星の計算",
-      presentation: {
-        backgroundId: "spotStarView",
-        bgmId: "MIRA-01"
-      },
-      summary: "星見台で星の運行を計算するミラ。ナーディルは星瓶堂の瓶に閉じ込めた星の話をした。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "星の運行計算、終わりました。式は合っています。でも、今日は少しだけ眺めていたいです。" },
-        { speaker: "ナーディル", expression: "normal", text: "俺は、星を計算するより、瓶に閉じ込める方を選んだな。星瓶堂らしいだろう。" },
-        { speaker: "ミラ", expression: "joy", text: "はい。先輩らしいです。遠くの星を、誰かの手元に置こうとするところが。" },
-        { speaker: "ミラ", expression: "fun", text: "その瓶の星、私にも見せてください。昔みたいに、隣で。" }
-      ]
-    }
-  ],
-  dariya: [
-    {
-      id: "dariya_0",
-      heroineId: "dariya",
-      threshold: 0,
-      kind: "flashback_intro",
-      // route intro / flashback
-      title: "王宮の鑑定依頼",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "DARIYA-01"
-      },
-      summary: "開店前、ダリヤとの出会いを思い出す。王宮錬金局からの鑑定依頼が、彼女との始まりだった。",
-      pages: [
-        {
-          speaker: "ナーディル",
-          expression: "normal",
-          text: "ダリヤさんは……最初は本当に王宮の用事で、この店に来たんだよな。",
-          backgroundId: "shopExteriorDay"
-        },
-        {
-          speaker: "ダリヤ",
-          expression: "normal",
-          text: "「王宮錬金局のダリヤです。星瓶堂の技術を、少し確認させてもらえますか」\n整然と並んだ器具と、薬草の乾いた匂い。王宮錬金局の検証室で会った時の彼女は、落ち着いて見えた。でも、どこか疲れてもいた。",
-          backgroundId: "palaceLab"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "sorrow",
-          text: "「厳しいですね。でも、俺の作る品に嘘はありません」\n俺が試作瓶を差し出すと、彼女は少しだけ眉を下げて受け取った。",
-          backgroundId: "palaceLab"
-        },
-        {
-          speaker: "ダリヤ",
-          expression: "sorrow",
-          text: "「……不合格、かな。理論は古い。でも、使う人の体温まで考えてある」\nその声は冷たくなくて、むしろ少し困っているようだった。",
-          backgroundId: "palaceLab"
-        },
-        {
-          speaker: "ナーディル",
-          expression: "joy",
-          text: "それから何度か、彼女は星瓶堂に顔を出すようになった。完璧に見える人ほど、休む場所が必要なのかもしれない。",
-          backgroundId: "shopExteriorDay"
-        }
-      ]
-    },
-    {
-      id: "dariya_5",
-      heroineId: "dariya",
-      threshold: 5,
-      title: "安らぎの工房",
-      stillImageId: "dariyaAfterHours01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-01",
-        heroineExpressions: ["normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "sorrow"]
-      },
-      summary: "王宮での重圧を抱えるダリヤが、星瓶堂でだけは少し息をつく。彼女はまだ頼りなく、倒れそうな疲れを隠しきれない。",
-      pages: [
-        { speaker: "", expression: "normal", text: "閉店後の星瓶堂に、ダリヤは細い瓶を抱えて現れた。" },
-        { speaker: "ダリヤ", expression: "normal", text: "確認してほしいものがあって……少しだけ、いいかな" },
-        { speaker: "", expression: "sorrow", text: "王宮印の封蝋は冷たく、瓶の中身よりも重く見えた。" },
-        { speaker: "", expression: "normal", text: "ナーディルは黙って椅子を引き、温かい茶を置く。" },
-        { speaker: "", expression: "normal", text: "ダリヤは茶に手を伸ばしかけて、小さく息を吐いた。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "ごめんね。今日は少し、立っているのがつらくて" },
-        { speaker: "ナーディル", expression: "sorrow", text: "謝らなくていいです。まず座ってください。話は、それからで大丈夫です" },
-        { speaker: "", expression: "normal", text: "その笑みは弱々しかったが、少しだけ安心していた。" },
-        { speaker: "", expression: "normal", text: "星瓶堂の夜は、どんな薬より静かに彼女を休ませた。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "", expression: "normal", text: "ダリヤは扉を閉めるなり、小さく息を吐いた。" },
-          { speaker: "ダリヤ", expression: "normal", text: "ナーディル、今日はもうだめ。少し座らせて" },
-          { speaker: "", expression: "sorrow", text: "学生の頃も、王宮に入った後も。" },
-          { speaker: "", expression: "normal", text: "彼女は本当に疲れた時だけ、この店の灯を思い出していた。" },
-          { speaker: "ナーディル", expression: "sorrow", text: "大丈夫ですか、ダリヤさん。すぐ茶を淹れます" },
-          { speaker: "ダリヤ", expression: "joy", text: "そこは昔みたいに、お姉ちゃん、座ってて……でいいの" },
-          { speaker: "", expression: "normal", text: "彼女は弱々しく笑いながら、いつもの席に腰を下ろした。" },
-          { speaker: "ナーディル", expression: "joy", text: "分かりました。お姉ちゃん、座ってて。今日は俺が茶を淹れます" },
-          { speaker: "", expression: "normal", text: "その言葉に、ダリヤはようやく安心したように目を閉じた。" }
-        ]
-      }
-    },
-    {
-      id: "dariya_10",
-      heroineId: "dariya",
-      threshold: 10,
-      title: "共鳴する真理",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-01",
-        heroineExpressions: ["normal", "sorrow", "joy"],
-        naderExpressions: ["normal", "surprise", "joy"]
-      },
-      summary: "完璧でいようとして疲れきったダリヤが、ナーディルの前でだけ弱さを少し見せる。",
-      pages: [
-        { speaker: "", expression: "normal", text: "夜風が店先の布幕をゆっくり揺らしていた。ダリヤはふと、過去の検証室を思い出した。" },
-        { speaker: "", expression: "normal", text: "王宮錬金局の検証室は、音まで整いすぎていた。" },
-        { speaker: "", expression: "normal", text: "ダリヤは手順書を閉じ、少しだけ目を押さえる。" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "完璧な配合なのに、どうしてこんなに冷たく感じるんだろう" },
-        { speaker: "", expression: "normal", text: "彼女の声は、いつもの落ち着きよりずっと小さかった。" },
-        { speaker: "ナーディル", expression: "normal", text: "使う人の顔が見えないから、かもしれません。星瓶堂では、そこを見失いたくないんです" },
-        { speaker: "ダリヤ", expression: "sorrow", text: "君は簡単に言うね。……でも、そういう簡単なことが、今の私には難しい" },
-        { speaker: "ダリヤ", expression: "joy", text: "少しだけ、また君の店に行ってもいいかな。あそこなら、ちゃんと息ができる気がするの" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "", expression: "normal", text: "夜の検証室で、ダリヤはついに筆を置いた。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "昔なら、もう少し上手に隠せたと思うんだけど" },
-          { speaker: "", expression: "normal", text: "ナーディルは答えを急かさず、ただ隣に立った。" },
-          { speaker: "", expression: "normal", text: "その沈黙が、昔から彼女には何よりありがたかった。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "今日は、強い先輩のふりができない。ナーディル、少しだけ甘えていい？" },
-          { speaker: "ナーディル", expression: "normal", text: "もちろんです。ここでは無理しなくていいです" },
-          { speaker: "ダリヤ", expression: "joy", text: "また敬語。……お姉ちゃんって呼んでくれたら、もっと元気になるのに" },
-          { speaker: "", expression: "normal", text: "彼女は困ったように笑いながら、少しだけ肩を寄せた。" }
-        ]
-      }
-    },
-    {
-      id: "dariya_20",
-      heroineId: "dariya",
-      threshold: 20,
-      title: "当たり前の重み",
-      presentation: {
-        backgroundId: "shopExteriorDay",
-        bgmId: "DARIYA-01"
-      },
-      summary: "王宮の案件をナーディルに相談するダリヤ。王宮が忘れがちな「当たり前」を、彼女は弱々しくも大切にしようとする。",
-      pages: [
-        { speaker: "", expression: "normal", text: "午後の光が棚の瓶を淡く照らしていた。" },
-        { "speaker": "ダリヤ", "expression": "normal", "text": "王宮の検証案件を、星瓶堂にも相談したいの。君の目は、研究所と少し違うから。" },
-        { "speaker": "ナーディル", "expression": "surprise", "text": "王宮の案件を俺に？光栄ですけど、少し緊張します。" },
-        { "speaker": "ダリヤ", "expression": "sorrow", "text": "私も緊張しているよ。正直、ひとりで抱えるには少し重くて……君に見てもらいたかった。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "俺は、使う人が息をしやすい品かどうかを見たいです。それでよければ、一緒に考えます。" },
-        { "speaker": "ダリヤ", "expression": "joy", "text": "うん。だから君に頼みたいの。私が忘れそうになる当たり前を、君はまだ覚えていてくれるから。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ダリヤ", expression: "normal", text: "学生の頃、君と組んだ検証はいつも少し予定を外れたね。手順書通りには進まなかった。" },
-          { speaker: "ナーディル", expression: "fun", text: "ダリヤさんが怖い顔をして、最後には少し笑ってくれるまでが一組でしたね。" },
-          { speaker: "ダリヤ", expression: "fun", text: "もう。そういうことは覚えているんだから。……でも、君の発想に助けられたのは本当だよ。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "だから今回も、ひとりで抱えたくなかった。ナーディル、一緒に考えてほしいの。" },
-          { speaker: "ナーディル", expression: "normal", text: "もちろんです。俺でよければ、隣で見ます。" },
-          { speaker: "ダリヤ", expression: "joy", text: "ありがとう。……でも次は、お姉ちゃんのために頑張る、くらい言ってくれてもいいんだよ。" }
-        ]
-      }
-    },
-    {
-      id: "dariya_climax",
-      heroineId: "dariya",
-      threshold: 30,
-      kind: "route_climax",
-      title: "座らせてくれる場所",
-      stillImageId: "dariyaLimitNight01",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-01"
-      },
-      summary: "完璧でいようとして限界に近いダリヤに対し、ナーディルは弱さを許す場所を差し出す。",
-      pages: [
-        { "speaker": "ダリヤ", "expression": "sorrow", "text": "王宮では、優秀でいることに慣れすぎたの。できない私を、私自身が許せなくて。" },
-        { "speaker": "ナーディル", "expression": "sorrow", "text": "できない日があっても、ダリヤさんが積み重ねてきたものは消えません。" },
-        { "speaker": "ダリヤ", "expression": "cry", "text": "そう言ってもらえると、困るね。……ちゃんと立っていようと思っていたのに、力が抜けてしまう。" },
-        { "speaker": "ナーディル", "expression": "normal", "text": "ここでは、王宮錬金術師である前に、ダリヤさんとして座ってくれればいいです。" },
-        { "speaker": "ダリヤ", "expression": "sorrow", "text": "私、少し頼りないよ。思っているより弱いし、すぐ疲れるし、格好よくもない。" },
-        { "speaker": "ナーディル", "expression": "joy", "text": "それでも、ここに来てくれるダリヤさんを俺は大事にしたいです。" },
-        { "speaker": "ダリヤ", "expression": "joy", "text": "……なら、少しだけ座らせて。立ち上がる時は、君の茶を一杯もらってからにするね。" }
-      ],
-      routePages: {
-        long_history: [
-          { speaker: "ダリヤ", expression: "sorrow", text: "昔、一度だけ君に言ったね。特別でなくなった私は、何者でいればいいんだろうって。" },
-          { speaker: "ナーディル", expression: "normal", text: "覚えています。俺はその時、立派な答えを返せなかった。茶を出すくらいしかできなくて。" },
-          { speaker: "ダリヤ", expression: "cry", text: "それで十分だったよ。君は私を急かさず、責めず、ただ座らせてくれた。" },
-          { speaker: "ナーディル", expression: "sorrow", text: "今も同じです。完璧でいられない日も、ここではダリヤさんとして座ってくれればいい。" },
-          { speaker: "ダリヤ", expression: "sorrow", text: "……今日は、ダリヤさんじゃなくていい。昔みたいに、お姉ちゃんって呼んで。" },
-          { speaker: "ナーディル", expression: "surprise", text: "お姉ちゃん……。" },
-          { speaker: "ダリヤ", expression: "joy", text: "うん。ありがとう。そう呼ばれると、少しだけ立ち直れるの。情けないけど、私はそういう人なんだよ。" },
-          { speaker: "ナーディル", expression: "joy", text: "情けなくないです。お姉ちゃんが座っていられる場所なら、星瓶堂にちゃんと空けておきます。" },
-          { speaker: "ダリヤ", expression: "joy", text: "……なら、あの時と同じ茶をもらおうかな。立ち上がるのは、それを飲んでからにする。" }
-        ]
-      }
-    },
-    {
-      id: "dariya_long_collaboration",
-      heroineId: "dariya",
-      routeMode: "long_history",
-      threshold: 10,
-      kind: "long_history_still",
-      title: "共同研究の記憶",
-      stillImageId: "dariyaPalaceCollaboration01",
-      presentation: {
-        backgroundId: "palaceLab",
-        bgmId: "DARIYA-01"
-      },
-      summary: "学生時代、王宮の研究施設で一緒に実験した日。ナーディルの自由な発想が、ダリヤの堅実さを補った。",
-      pages: [
-        { speaker: "ダリヤ", expression: "normal", text: "……懐かしいな。学生時代、王宮で一緒に実験した日。" },
-        { speaker: "ナーディル", expression: "fun", text: "ダリヤさんの堅実さと、俺の自由な発想。悪くない組み合わせでした。" },
-        { speaker: "ダリヤ", expression: "joy", text: "ふん。今もその組み合わせは、生きているだろう？" }
-      ]
-    },
-    {
-      id: "dariya_long_rain_corridor",
-      heroineId: "dariya",
-      routeMode: "long_history",
-      threshold: 20,
-      kind: "long_history_still",
-      title: "回廊の雨音",
-      stillImageId: "dariyaRainCorridor01",
-      presentation: {
-        backgroundId: "palaceCorridor",
-        bgmId: "DARIYA-01"
-      },
-      summary: "王宮の長い回廊で雨宿りした日。ダリヤが初めて弱音を吐いた瞬間。ナーディルは何も聞かなかった。",
-      pages: [
-        { speaker: "ダリヤ", expression: "sorrow", text: "……王宮の回廊は、雨音がよく響く。" },
-        { speaker: "ナーディル", expression: "normal", text: "今日は何も聞きません。ただ、一緒に雨宿りしましょう。" },
-        { speaker: "ダリヤ", expression: "joy", text: "……ふん。それが一番、ありがたいな。" }
-      ]
-    },
-    {
-      id: "dariya_long_palace_break",
-      heroineId: "dariya",
-      routeMode: "long_history",
-      threshold: 5,
-      kind: "long_history_background",
-      title: "束の間の休息",
-      presentation: {
-        backgroundId: "palaceCorridor",
-        bgmId: "DARIYA-01"
-      },
-      summary: "王宮の公務の合間に、ダリヤが星瓶堂に立ち寄った。昔のように、一言も喋らず茶を飲む。",
-      pages: [
-        { speaker: "ダリヤ", expression: "normal", text: "公務の合間だ。少し、休ませてくれ。" },
-        { speaker: "ナーディル", expression: "fun", text: "昔のように、黙って茶を飲みましょうか。" },
-        { speaker: "ダリヤ", expression: "joy", text: "……ふん。君はそういうところが、本当に変わらないな。" }
-      ]
-    },
-    {
-      id: "dariya_long_oasis_view",
-      heroineId: "dariya",
-      routeMode: "long_history",
-      threshold: 15,
-      kind: "long_history_background",
-      title: "オアシスの約束",
-      presentation: {
-        backgroundId: "spotOasisView",
-        bgmId: "DARIYA-01"
-      },
-      summary: "オアシスを眺めながら、ダリヤが昔の約束を思い出した。二人で来たかった場所だと告げる。",
-      pages: [
-        { speaker: "ダリヤ", expression: "sorrow", text: "……オアシスか。昔、二人で来たかった場所だ。" },
-        { speaker: "ナーディル", expression: "normal", text: "ようやく来られましたな。" },
-        { speaker: "ダリヤ", expression: "joy", text: "……ふん。また来よう。公務を抜けてでも。" }
-      ]
-    }
+  normal: [
+    p("", "", "結果はまだ途中だが、前に進む足取りは見えている。", "normal", { backgroundId: "shopExteriorNight" }),
+    p("nader", NADER, "次はもう少し、うまくやれる。", "normal")
   ]
 };
-function getEventsByHeroine(heroineId) {
-  return AFFECTION_EVENTS[heroineId] || [];
-}
-const DAILY_TALKS = [
-  {
-    id: "common_father_camera_biz",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
-      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。客の仕草まで見てる。" },
-      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。でも、そういうところに気づけるのは悪くないわ。" }
-    ]
-  },
-  {
-    id: "common_shop_dust",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "営業前に棚を少し掃除した。古い天秤に積もった埃を払うと、昔の記憶も一緒に蘇るようだ。" },
-      { speaker: "ナーディル", expression: "joy", text: "俺もいつか、この道具に恥ずかしくない店主になりたいな。" }
-    ]
-  },
-  {
-    id: "common_shop_name_origin",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "星瓶堂って名前、父さんが若い頃につけたんだ。星を閉じ込めた瓶みたいな店にしたいって。" },
-      { speaker: "ナーディル", expression: "joy", text: "少し大げさだけど、子どもの頃の俺には本当にそう見えてたよ。" }
-    ]
-  },
-  {
-    id: "common_blue_ceramics",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "この青い陶器は、王都の職人が焼いたものだよ。薬瓶にも茶器にも使える。" },
-      { speaker: "ナーディル", expression: "joy", text: "砂の色が多い街だからかな。棚に青があるだけで、少し涼しく見えるんだ。" }
-    ]
-  },
-  {
-    id: "common_old_scale",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "この天秤、父さんが店を継ぐ前から使っているらしい。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "針の揺れを見るたびに、店って人より長く覚えているんだなと思うよ。" }
-    ]
-  },
-  {
-    id: "common_trade_district",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "星瓶堂の周りは交易街区だから、朝からいろんな匂いが混ざる。" },
-      { speaker: "ナーディル", expression: "fun", text: "香料、焼き菓子、革袋、たまに怪しい薬草。鼻だけで道案内できそうだ。" }
-    ]
-  },
-  {
-    id: "common_camera_letter",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父さんからまた写真が届いた。今度は海港都市ミナートの朝焼けだって。" },
-      { speaker: "ナーディル", expression: "joy", text: "遠い景色を瓶の中みたいに残せるんだから、錬金カメラって不思議だよな。" }
-    ]
-  },
-  {
-    id: "common_shop_old_bottle",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の奥から、古い保存瓶が出てきた。祖父の代から使っている型らしい。" },
-      { speaker: "ナーディル", expression: "joy", text: "派手な品じゃないけど、こういう瓶が暮らしを支えてきたんだと思うと悪くない。" }
-    ]
-  },
-  {
-    id: "common_market_weather",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "交易街区は、風向きで匂いが変わる。今日は香料市と焼き菓子の屋台が近いな。" },
-      { speaker: "ナーディル", expression: "fun", text: "腹が減る香りの隣で薬草を売るのは、なかなか難しい商いだよ。" }
-    ]
-  },
-  {
-    id: "common_camera_shadow",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "sorrow", text: "父さんの錬金カメラを目当てに来る客は、今でも少なくない。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも今日は、星瓶堂の若店主を頼って来たと言われた。……少し、胸を張っていいかな。" }
-    ]
-  },
-  {
-    id: "common_shop_after_rain",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "雨上がりの店先は、石畳と薬草の匂いが少しだけ濃くなる。" },
-      { speaker: "ナーディル", expression: "joy", text: "こういう日は、香り袋よりも温かい茶の調合がよく出るんだ。" }
-    ]
-  },
-  {
-    id: "hakima_morning_check",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "最近の仕入れ元はどこ？ 変なものを掴まされてないでしょうね。あんた、人を疑うのが少し遅いから。" },
-      { speaker: "ナーディル", expression: "normal", text: "ルハーン商会の目で見られると、背筋が伸びるな。今日は仕入れ帳も一緒に見てくれる？" },
-      { speaker: "ハキマ", expression: "fun", text: "最初からそう言えばいいのよ。……まあ、星瓶堂の棚が雑になると私も困るし、見てあげる。" }
-    ]
-  },
-  {
-    id: "hakima_spice_fake",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "市場で、安い樹脂に甘い香気を足した偽物が出てるの。色だけなら見分けにくいわ。" },
-      { speaker: "ナーディル", expression: "normal", text: "見た目だけなら、確かに上等な香材に見えるな。けど、奥の匂いが少し濁ってる。" },
-      { speaker: "ハキマ", expression: "anger", text: "そう。だから鼻と手触りで見るの。値札と見た目だけで選ぶ店主になったら、承知しないから。" }
-    ]
-  },
-  {
-    id: "hakima_little_brother",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "fun", text: "弟がね、星瓶堂の光る瓶を欲しがってるの。まったく、子どもって派手なものが好きよね。" },
-      { speaker: "ハキマ", expression: "normal", text: "……まあ、安全な小瓶なら一つくらい選んであげてもいいけど。" }
-    ]
-  },
-  {
-    id: "hakima_scent_memory",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "香りって不思議よね。少し嗅いだだけで、市場の朝や家の台所まで思い出すことがある。" },
-      { speaker: "ナーディル", expression: "normal", text: "分かるよ。星瓶堂の古い棚も、父さんの調合瓶も、それぞれ違う匂いを覚えてる気がする。" },
-      { speaker: "ハキマ", expression: "sorrow", text: "だから雑に扱う人を見ると、腹が立つの。香材には、誰かの暮らしが染みてるんだから。" }
-    ]
-  },
-  {
-    id: "hakima_quality_argument",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "anger", text: "この香材、見た目は上等だけど乾かし方が雑ね。贈答品には向かないわ。" },
-      { speaker: "ナーディル", expression: "normal", text: "確かに、瓶に移すと香りの立ち方が荒い。普段使いならまだしも、贈り物には強すぎるな。" },
-      { speaker: "ハキマ", expression: "joy", text: "分かってるじゃない。……悔しいけど、あんたの目利き、前よりずっと信用できるわ。" }
-    ]
-  },
-  {
-    id: "hakima_sibling_gift",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "fun", text: "弟がね、星瓶堂の光る小瓶を欲しがってるの。派手なものを見ると、すぐ目を輝かせるんだから。" },
-      { speaker: "ナーディル", expression: "normal", text: "子ども向けなら、光量を落として瓶を厚めにしよう。転がしても割れにくい方がいい。" },
-      { speaker: "ハキマ", expression: "joy", text: "……そういうところ、ちゃんと考えるのね。まあ、弟への土産なら任せてもいいかも。" }
-    ]
-  },
-  {
-    id: "hakima_next_to_you",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今日は難しい依頼が来そうな匂いがする。……何よ、勘じゃなくて経験よ。" },
-      { speaker: "ナーディル", expression: "fun", text: "なら、隣で見ていてくれると心強いな。" },
-      { speaker: "ハキマ", expression: "joy", text: "仕方ないわね。あんた一人に任せると、少しだけ心配だから。" }
-    ]
-  },
-  {
-    id: "hakima_long_old_market",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "昔、二人で市場の香材を当てる勝負をしたの、覚えてる？ あんた、妙に強かったのよね。" },
-      { speaker: "ナーディル", expression: "fun", text: "負けた時だけ、君は今よりずっと静かだった気がする。あれはあれで怖かったな。" },
-      { speaker: "ハキマ", expression: "anger", text: "余計なことまで覚えてなくていいの。……でも、あんたと隣で競うのは嫌いじゃなかったわ。" }
-    ]
-  },
-  {
-    id: "hakima_long_do_not_go_ahead",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "sorrow", text: "あんたは昔から、気づくと少し先にいるのよね。目利きも、調合も、店主の顔も。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "置いていったつもりはなかった。でも、そう見えていたならごめん。" },
-      { speaker: "ハキマ", expression: "joy", text: "謝るより、隣を空けておきなさいよ。今度は私が、そこに立つんだから。" }
-    ]
-  },
-  {
-    id: "mira_university_news",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、聞いてください。大学で新しい抽出法が発表されたんです。まだ実験段階ですが、とても面白くて。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは興味深いな。星瓶堂の品にも、いつか応用できるかもしれない。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、実際に使う人の顔まで考えてくれると思って、真っ先に話したくなりました。" }
-    ]
-  },
-  {
-    id: "mira_failed_formula",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "昨日の課題、計算は合っていたのに、実験では沈殿が出ました。" },
-      { speaker: "ミラ", expression: "sorrow", text: "理論上は正しい、だけでは足りないんですね。……少し悔しいです。" },
-      { speaker: "ナーディル", expression: "normal", text: "でも、沈殿が出た理由まで見れば、次の答えに近づける。ミラならきっと見つけられるよ。" }
-    ]
-  },
-  {
-    id: "mira_price_quality",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "高品質な素材を使えば、良い品は作れます。でも、それだけでは商売になりません。" },
-      { speaker: "ナーディル", expression: "normal", text: "必要な人に届く値にしないと、棚の上で眠るだけになるからね。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩のそういう考え方、好きです。品の向こうにいる人を忘れないところが。" }
-    ]
-  },
-  {
-    id: "mira_ordinary_choice",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "fun", text: "実は私、難しい器具より、色のきれいな小瓶を選ぶ方が迷うんです。" },
-      { speaker: "ナーディル", expression: "surprise", text: "それは少し意外だな。ミラなら、すぐ理屈で決めるのかと思ってた。" },
-      { speaker: "ミラ", expression: "joy", text: "ふふ。こういう迷い方くらい、私にもあります。先輩には、ちゃんと知っていてほしいです。" }
-    ]
-  },
-  {
-    id: "mira_material_doubt",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、この二つの素材、どちらも理論上は正解なんです。だから困っています。" },
-      { speaker: "ナーディル", expression: "normal", text: "なら、今日は正解じゃなくて、誰に届けたい品かを考えてみよう。" },
-      { speaker: "ミラ", expression: "surprise", text: "……そういう考え方、先輩らしいです。少し悔しいくらいに、優しい答えですね。" }
-    ]
-  },
-  {
-    id: "mira_trade_sample",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "商会から試作品を預かってきました。性能は良いのですが、少し高価すぎます。" },
-      { speaker: "ナーディル", expression: "normal", text: "良い品でも、必要な人に届かなければ意味が薄いからね。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、そう言ってくださると思っていました。だから、最初に相談したかったんです。" }
-    ]
-  },
-  {
-    id: "mira_not_only_genius",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "fun", text: "今日は課題でも商会の用事でもありません。……先輩と少し話したかっただけです。" },
-      { speaker: "ナーディル", expression: "surprise", text: "それなら、茶を淹れようか。相談じゃなくても、君の席はあるよ。" },
-      { speaker: "ミラ", expression: "joy", text: "ありがとうございます。そう言われると、天才でいるより嬉しいです。先輩の前では、私でいられますから。" }
-    ]
-  },
-  {
-    id: "mira_long_old_formula",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "昔、私の計算式に先輩が赤を入れてくれたこと、まだ覚えています。" },
-      { speaker: "ナーディル", expression: "fun", text: "褒めるところより、直すところを探してくれって言われたからね。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩だけは、私を天才ではなく後輩として見てくれました。それが、ずっと嬉しかったんです。" }
-    ]
-  },
-  {
-    id: "mira_long_same_seat",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "sorrow", text: "昔は、先輩の隣の席だけが少し静かでした。誰も私を急かさない席でした。" },
-      { speaker: "ナーディル", expression: "normal", text: "今も急がなくていい。答えが出るまで、ここで一緒に考えよう。" },
-      { speaker: "ミラ", expression: "joy", text: "……はい。やっぱり私は、この席が一番落ち着きます。昔から、ずっと。" }
-    ]
-  },
-  {
-    id: "dariya_palace_tea",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の茶葉は立派なんだけど、少し緊張する味がするの。ここの茶は、肩の力が抜けるね。" },
-      { speaker: "ナーディル", expression: "normal", text: "そう言ってもらえると嬉しいです。今日は急がなくていいので、ゆっくり飲んでください。" }
-    ]
-  },
-  {
-    id: "dariya_palace_protocol",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の書類って、どうしてあんなに重いんだろう。小瓶ひとつ確かめるのに、紙の束が増えるんだよ。" },
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日はその束を見ていたら、少し目が回ってしまって。……ここで息を整えさせてね。" }
-    ]
-  },
-  {
-    id: "dariya_resting_place",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ここは、王宮ほど静かじゃないのに落ち着くね。瓶の音も、人の声も、ちゃんと生きてる感じがする。" },
-      { speaker: "ダリヤ", expression: "fun", text: "完璧に整っていないからかな。……少し散らかっているくらいの方が、私は息をしやすいみたい。" }
-    ]
-  },
-  {
-    id: "dariya_oni_aesthetic",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "鬼族の里では、私は細すぎるって言われるの。王都では、背が高いだけで強そうに見られるけど。" },
-      { speaker: "ダリヤ", expression: "fun", text: "見た目って当てにならないね。本当は、少し歩いただけで疲れる日もあるのに。" }
-    ]
-  },
-  {
-    id: "dariya_verification_sample",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮から検証用の小瓶を預かってきたの。正式な依頼にする前に、少しだけ見てもらえるかな。" },
-      { speaker: "ナーディル", expression: "normal", text: "もちろんです。王宮の手続きになる前の確認ですね。俺でよければ手伝います。" },
-      { speaker: "ダリヤ", expression: "sorrow", text: "ありがとう。実は、書類にするほどの元気がなくて……先に君に見てもらいたかったんだ。" }
-    ]
-  },
-  {
-    id: "dariya_imperfect_shelf",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "この棚、瓶の高さが少しずつ違うね。王宮なら、すぐ揃えられてしまうと思う。" },
-      { speaker: "ナーディル", expression: "fun", text: "すみません。よく使う瓶だけ、どうしても前に出てくるんです。" },
-      { speaker: "ダリヤ", expression: "joy", text: "謝らないで。使われている感じがして、私は好きだよ。飾り棚より、ずっと落ち着く。" }
-    ]
-  },
-  {
-    id: "dariya_dress_choice",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "今日の服、少しだけきちんとしてきたの。王宮の会合があったから……似合ってるかな。" },
-      { speaker: "ナーディル", expression: "surprise", text: "似合っています。いつもより少し緊張しますけど、綺麗です。" },
-      { speaker: "ダリヤ", expression: "joy", text: "ふふ、ありがとう。そう言ってもらえると、会合で疲れた分まで少し報われるね。" }
-    ]
-  },
-  {
-    id: "dariya_tea_leaf",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "ナーディル、新しい茶葉を見つけたの。香りが優しくて、疲れた日にちょうどいいと思って。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは楽しみです。ダリヤさんが選ぶ茶葉は、いつも落ち着く香りがします。" },
-      { speaker: "ダリヤ", expression: "joy", text: "よかった。今日は私も少し疲れているから、一緒に試してくれると助かるよ。" }
-    ]
-  },
-  {
-    id: "dariya_not_perfect",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日は少し、王宮錬金術師らしくない顔をしているかもしれない。……うまく笑えているかな。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "ここでは無理に整えなくて大丈夫です。ダリヤさんが座ってくれるだけで十分です。" },
-      { speaker: "ダリヤ", expression: "joy", text: "そう言われると、力が抜けるね。……君は時々、困るくらい優しい。" }
-    ]
-  },
-  {
-    id: "dariya_long_old_chair",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "この椅子、昔より座り心地がよくなってない？ますます立ち上がれなくなるね。" },
-      { speaker: "ナーディル", expression: "fun", text: "昔から長居していたのは、椅子のせいだけじゃないでしょう。" },
-      { speaker: "ダリヤ", expression: "joy", text: "うん。ナーディルが、何も聞かずに茶を出してくれるからだよ。" }
-    ]
-  },
-  {
-    id: "dariya_long_seen_weakness",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "cry", text: "ナーディルは昔から、私が平気なふりをしている時ほど、何も聞かずに茶を出すんだよね。" },
-      { speaker: "ナーディル", expression: "normal", text: "聞かれたくない日もあるでしょう。でも、一人で戻らなくていい日はあっていいと思います。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……もう、そこは「お姉ちゃん、無理しないで」でいいのに。相変わらず少し遠慮するんだから。" }
-    ]
-  },
-  {
-    id: "common_market_snack",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "市場で焼き菓子を買ってきた。ここのデーツパイは、香草茶と相性がいいんだ。" },
-      { speaker: "ナーディル", expression: "fun", text: "営業の合間に少しつまめば、目利きにも甘さが戻る……気がする。" }
-    ]
-  },
-  {
-    id: "common_fountain_rest",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "広場の噴水に、白い鳩が集まっていたよ。" },
-      { speaker: "ナーディル", expression: "joy", text: "水音を聞いていると、砂漠の熱さも一瞬だけ忘れられる気がするな。" }
-    ]
-  },
-  {
-    id: "common_morning_mist",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今朝は珍しく霧が出ていた。マグリバルでは珍しい光景だ。" },
-      { speaker: "ナーディル", expression: "surprise", text: "瓶のガラスが曇って、まるで別の店に迷い込んだみたいだったよ。" }
-    ]
-  },
-  {
-    id: "common_mother_postcard",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "母さんから絵葉書が届いた。父さんの写真より、旅先の菓子の話の方が長い。" },
-      { speaker: "ナーディル", expression: "fun", text: "あの二人らしいよ。世界を見に行っても、結局は茶と甘い物の話になる。" }
-    ]
-  },
-  {
-    id: "common_sister_camera_shop",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "姉さんのカメラ会社は、また支店を増やすらしい。手紙の文字まで忙しそうだった。" },
-      { speaker: "ナーディル", expression: "joy", text: "すごいと思う。でも俺は、この棚の前で客と話す時間も悪くないと思ってる。" }
-    ]
-  },
-  {
-    id: "common_customer_gift",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来るらしい。香り袋か、青い小瓶か、相手の暮らしで変わるな。" },
-      { speaker: "ナーディル", expression: "joy", text: "品を選ぶのは、物を当てることじゃない。誰かの時間に、きちんと届く形を探すことなんだ。" }
-    ]
-  },
-  {
-    id: "hakima_forest_resin",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "ラウダの森から樹脂が届いたの。香りは良いけど、湿気を吸うとすぐ機嫌を損ねるわ。" },
-      { speaker: "ハキマ", expression: "fun", text: "誰かさんみたい？ ……違うわよ。私はもっと扱いやすいでしょ。" }
-    ]
-  },
-  {
-    id: "hakima_customer_habit",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "香材を選ぶ時は、客の手元を見るの。袋の持ち方で、普段使いか贈り物か分かるから。" },
-      { speaker: "ナーディル", expression: "joy", text: "君の目利きは、香りだけじゃないんだな。俺も見習わないと。" },
-      { speaker: "ハキマ", expression: "surprise", text: "素直に褒めないで。……調子が狂うでしょ。" }
-    ]
-  },
-  {
-    id: "hakima_long_family_table",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "昔、うちの食卓であんたが香辛料を間違えたの、まだ母さんが笑い話にしてるわ。" },
-      { speaker: "ナーディル", expression: "surprise", text: "あれ、まだ覚えられてるのか……。俺としては忘れてほしい記憶なんだけど。" },
-      { speaker: "ハキマ", expression: "joy", text: "無理ね。ああいう失敗まで含めて、昔からの付き合いなんだから。……嫌じゃないでしょ？" }
-    ]
-  },
-  {
-    id: "mira_preservation_bottle",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、この保存瓶の封止、少しだけ改良できそうです。輸送中の香り抜けを抑えられます。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは助かるな。遠くの街まで、星瓶堂の香りをそのまま届けられる。" },
-      { speaker: "ミラ", expression: "fun", text: "先輩のお店の香りが遠くまで届くなら、私も少し誇らしいです。" }
-    ]
-  },
-  {
-    id: "mira_small_failure",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "sorrow", text: "昨日、香草茶の配合を間違えました。理論上は綺麗だったのに、味が……とても個性的で。" },
-      { speaker: "ナーディル", expression: "fun", text: "個性的で済むなら、まだ商品名でごまかせるかもしれない。" },
-      { speaker: "ミラ", expression: "joy", text: "ふふ。先輩、失敗の扱い方が少し優しいです。だからここでは、間違えるのが怖くなくなります。" }
-    ]
-  },
-  {
-    id: "mira_long_after_class",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "放課後、先輩の机に課題を持っていく時間が、私は少し好きでした。" },
-      { speaker: "ナーディル", expression: "fun", text: "少し？ ずいぶん難しい課題を持ってきていた気がするけど。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。先輩なら、難しい顔をしながら最後まで付き合ってくれると知っていましたから。" }
-    ]
-  },
-  {
-    id: "dariya_palace_window",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の窓は綺麗なんだけど、磨かれすぎていて少し疲れるの。外の光まで緊張して見える。" },
-      { speaker: "ダリヤ", expression: "fun", text: "ここは少し埃っぽいけど、その分だけ光がやわらかいね。私は、こっちの方が落ち着くかも。" }
-    ]
-  },
-  {
-    id: "dariya_royal_safety",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮の調合品は、効き目より先に安全証明を求められるの。大事だけど、少し息が詰まるね。" },
-      { speaker: "ナーディル", expression: "normal", text: "暮らしに届く品ほど、安心して使えることが大事ですからね。" },
-      { speaker: "ダリヤ", expression: "joy", text: "うん。君は、王宮が時々忘れそうになる当たり前を、ちゃんと覚えていてくれる。" }
-    ]
-  },
-  {
-    id: "dariya_long_first_weakness",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "昔、君に一度だけ失敗した実験を見られたね。あの時は、本当に恥ずかしかった。" },
-      { speaker: "ナーディル", expression: "normal", text: "俺は、失敗よりも、その後で何度もやり直していたダリヤさんを覚えています。" },
-      { speaker: "ダリヤ", expression: "joy", text: "そういう覚え方をするから、君の前では格好つけにくいの。……でも、嫌じゃないよ。" }
-    ]
-  },
-  {
-    id: "common_result_reflection",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今回の接客を振り返ると、まだ見立てが甘かったところもある。だが、迷った手順も次の糧になる。" },
-      { speaker: "ナーディル", expression: "joy", text: "父さんも、最初は瓶を割ってばかりだったと言っていた。俺も少しずつ、星瓶堂の店主になっていこう。" }
-    ]
-  },
-  {
-    id: "common_result_customer_smile",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "fun", text: "品を受け取った客が、店先でふっと笑ってくれた。あの顔を見ると、疲れまで軽くなる。" },
-      { speaker: "ナーディル", expression: "joy", text: "星瓶堂の小瓶が、誰かの暮らしを少し明るくできたなら嬉しい。そういう営業を重ねたいな。" }
-    ]
-  },
-  {
-    id: "common_day_end_cleanup",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚を整えていると、父さんが作った星写しの器具が目に入った。今夜も、王都の空は澄んでいるだろうか。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "両親は旅先で、どんな星を見ているのだろう。遠い景色を思うたび、この店の灯も少し大事に見える。" }
-    ]
-  },
-  {
-    id: "common_day_end_closing",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "店の戸を閉める。砂の街に夜の静けさが降りて、真鍮の看板だけがほのかに光っている。" },
-      { speaker: "ナーディル", expression: "joy", text: "また次の営業でも、星瓶堂の灯が誰かの道しるべになりますように。" }
-    ]
-  },
-  {
-    id: "hakima_result_advice",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今回の品選び、悪くなかったわ。でも、香りの奥にある乾きまでは読み切れてなかったわね。" },
-      { speaker: "ナーディル", expression: "normal", text: "やっぱりそこか。見た目と客の用途ばかり追って、香りの後味を少し見落としてた。" },
-      { speaker: "ハキマ", expression: "joy", text: "ま、気づけたなら十分よ。あんたの目利きは、前より確実に良くなってるから。" }
-    ]
-  },
-  {
-    id: "hakima_day_end_departure",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "それじゃ、私は商会に戻るわ。預かってる香材の帳面も見なきゃいけないし。" },
-      { speaker: "ナーディル", expression: "normal", text: "今日は助かったよ。君の指摘がなかったら、棚の香りが少し荒れたままだった。" },
-      { speaker: "ハキマ", expression: "fun", text: "当然でしょ。……また近いうちに顔を出すわ。その時は、もっと面白い品を見せなさいよ。" }
-    ]
-  },
-  {
-    id: "mira_result_encouragement",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "joy", text: "先輩、今回の接客はとても勉強になりました。理論だけでは、客の迷いまでは拾えませんね。" },
-      { speaker: "ナーディル", expression: "normal", text: "俺もまだ迷うよ。けれど、迷いながらでも相手に届く品を探したいんだ。" },
-      { speaker: "ミラ", expression: "fun", text: "はい。星瓶堂で見る品選びは、大学の課題よりずっと生きています。次の相談も楽しみです。" }
-    ]
-  },
-  {
-    id: "mira_day_end_homework",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "今日の観察記録をまとめてから帰ります。先輩の店先での判断、全部メモしておきたいので。" },
-      { speaker: "ナーディル", expression: "fun", text: "全部か。あまり立派なものじゃないから、少し恥ずかしいな。" },
-      { speaker: "ミラ", expression: "joy", text: "ふふ。先生に提出する課題より、ずっと面白いです。星瓶堂には、答えの前の迷いがありますから。" }
-    ]
-  },
-  {
-    id: "dariya_result_evaluation",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "今回の見立て、よかったと思う。王宮の基準とは違うけど、使う人のことがちゃんと見えていた。" },
-      { speaker: "ダリヤ", expression: "fun", text: "……少し褒めすぎかな。でも、悪くないよ。星瓶堂らしい優しさがあった。" }
-    ]
-  },
-  {
-    id: "dariya_day_end_tea",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "そろそろ王宮へ戻らないと。夜の回廊は静かだけど、書類だけは待ってくれないから。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……でも、君の茶の香りがまだ袖に残ってる。少しだけ、戻る足取りが軽くなるね。" }
-    ]
-  },
-  {
-    id: "common_result_shelf_memory",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つ整理するたびに、父が並べた日のことを思い出す。あの手の温もりが、まだ残っているようだ。" },
-      { speaker: "ナーディル", expression: "joy", text: "俺もいつか、誰かに温もりを渡せる店主になりたい。今日の接客が、その一歩になればいい。" }
-    ]
-  },
-  {
-    id: "common_result_small_mistake",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "sorrow", text: "……一つ、見立てを誤った。あの瓶は、光の当たり方でもう少し深く見せるべきだった。" },
-      { speaker: "ナーディル", expression: "normal", text: "だが、落ち込んでいる暇はない。次の客には、今日の失敗を活かそう。" }
-    ]
-  },
-  {
-    id: "common_day_end_lamp",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "ランプの火を落とす。瓶たちが一斉に影を落とし、砂の街の夜が足元に広がった。" },
-      { speaker: "ナーディル", expression: "joy", text: "明日も、この灯りが誰かを導くだろう。……さて、閉店の支度をしよう。" }
-    ]
-  },
-  {
-    id: "common_day_end_star_map",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父の星写し図を巻く。あの地図には、星瓶堂の棚と同じ数の星が描かれている。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "旅先の空は、どんな星を見せるのだろう。……俺はここで、誰かの星を瓶に閉じ込めよう。" }
-    ]
-  },
-  {
-    id: "hakima_result_spice_reading",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "今日の香材、乾きが足りなかったわね。でも、香りの層までは悪くなかった。" },
-      { speaker: "ハキマ", expression: "fun", text: "……ま、次はもっと深く読めるでしょ。あんたの鼻は、私が保証するから。" }
-    ]
-  },
-  {
-    id: "hakima_day_end_market_return",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "市場の灯も落ちてきたし、そろそろ戻るわ。夜の香材は湿気を吸いやすいの。" },
-      { speaker: "ナーディル", expression: "joy", text: "そこまで気にするから、ルハーン商会の品は信用されるんだな。" },
-      { speaker: "ハキマ", expression: "surprise", text: "……急に褒めないで。帰りにくくなるでしょ。" }
-    ]
-  },
-  {
-    id: "mira_result_lesson_note",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "joy", text: "先輩、今回の接客をノートにまとめました。理論では学べない、客の迷いの拾い方です。" },
-      { speaker: "ナーディル", expression: "surprise", text: "そんなに書くことがあったのか。俺の判断なんて、まだ手探りばかりだよ。" },
-      { speaker: "ミラ", expression: "fun", text: "だから面白いんです。次は私も、実際に品を選んでみたいです。……先輩の隣で。" }
-    ]
-  },
-  {
-    id: "mira_day_end_cafe_note",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "店先の席を少し借りて、今回の記録を書いています。香草茶の香りが、思考を落ち着かせてくれます。" },
-      { speaker: "ナーディル", expression: "normal", text: "ゆっくり書いていって。閉める前に、もう一杯淹れるよ。" },
-      { speaker: "ミラ", expression: "joy", text: "ありがとうございます。先輩の店先は、大学の自習室よりずっと楽しいです。" }
-    ]
-  },
-  {
-    id: "dariya_result_palace_measure",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "王宮のものさしで測ると、星瓶堂の品は少し不思議に見えるの。きっちりしすぎていないのに、届く。" },
-      { speaker: "ダリヤ", expression: "fun", text: "その柔らかさは、王宮には少ないものだと思う。……私は、けっこう好きだよ。" }
-    ]
-  },
-  {
-    id: "dariya_day_end_quiet_tea",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "夜に飲む茶は、昼と少し味が違うね。君の淹れる茶は、特に優しく感じる。" },
-      { speaker: "ダリヤ", expression: "joy", text: "王宮の書類も、この香りを思い出せば少し軽くなるかな。また、寄らせてね。" }
-    ]
-  },
-  {
-    id: "hakima_long_result_old_habit",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "……あんたの棚の並べ方、昔から変わっていないわね。一番奥に、一番大切な瓶を置く。" },
-      { speaker: "ハキマ", expression: "joy", text: "その癖、好きよ。……これからも、そのままでいて。" }
-    ]
-  },
-  {
-    id: "mira_long_day_end_old_note",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、昔の課題帳を開いていました。この余白の走り書き、全部先輩の跡ですね。" },
-      { speaker: "ナーディル", expression: "fun", text: "そんなものまで残っていたのか。今見ると、少し恥ずかしいな。" },
-      { speaker: "ミラ", expression: "joy", text: "私は、このページが一番好きです。正解より前に、先輩が一緒に迷ってくれた跡ですから。" }
-    ]
-  },
-  {
-    id: "nader_after_result_lamp",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "客が帰った後、棚のランプを少し明るくした。" },
-      { speaker: "ナーディル", expression: "joy", text: "今日の品は、きっと誰かの役に立つはずだ。" }
-    ]
-  },
-  {
-    id: "nader_after_result_scale",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "天秤の針が落ち着くのを、いつもより長く見ていた。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "父さんなら、もっと早く見立てられたのかな。" }
-    ]
-  },
-  {
-    id: "nader_after_result_bottle",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "瓶の蓋を閉める音が、店内に小さく響く。" },
-      { speaker: "ナーディル", expression: "fun", text: "この音、父さんは「星の瞬き」って呼んでたっけ。" }
-    ]
-  },
-  {
-    id: "nader_day_end_ledger",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "帳面を閉じて、今日の売上を確かめる。" },
-      { speaker: "ナーディル", expression: "joy", text: "……まあまあだな。明日もこの調子でいこう。" }
-    ]
-  },
-  {
-    id: "nader_day_end_shelf",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を一つずつ確認して、明日の準備をしておく。" },
-      { speaker: "ナーディル", expression: "joy", text: "これで明日の朝も、すぐ営業を始められる。" }
-    ]
-  },
-  {
-    id: "nader_day_end_silent",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "閉店後の静けさが、店内に広がる。" },
-      { speaker: "ナーディル", expression: "sorrow", text: "……ふと、父さんのことを思い出す。元気かな。" }
-    ]
-  },
-  {
-    id: "nader_intro_morning_dust",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "朝一番に、棚の埃を拭いた。細かい瓶の隙間は、少し面倒だけど。" },
-      { speaker: "ナーディル", expression: "joy", text: "でも、光に透かすと気持ちいいくらい綺麗に見える。開店の準備は、これでよし。" }
-    ]
-  },
-  {
-    id: "nader_intro_key_sound",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "店の鍵を開ける音が、朝の街に小さく響く。" },
-      { speaker: "ナーディル", expression: "joy", text: "今日も星瓶堂は、ちゃんと始まった。" }
-    ]
-  },
-  {
-    id: "nader_intro_bottle_row",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を並べ直す。順番は、父さんのやり方を少し変えただけ。" },
-      { speaker: "ナーディル", expression: "fun", text: "使いやすさ重視で。これで俺らしい棚になったと思う。" }
-    ]
-  },
-  {
-    id: "nader_intro_ledger_open",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "intro",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "帳面を開いて、今日の仕入れを確認。" },
-      { speaker: "ナーディル", expression: "joy", text: "……よし、問題なさそうだ。営業を始めよう。" }
-    ]
-  },
-  {
-    id: "hakima_after_result_scent",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "香りの読み方は、正解を丸暗記するものじゃないわ。客の手、瓶の曇り、風向きまで見るの。" },
-      { speaker: "ナーディル", expression: "normal", text: "今日の結果を見ると、その意味が少し分かった気がする。香りだけを嗅いでいたら足りないんだな。" },
-      { speaker: "ハキマ", expression: "fun", text: "そういうこと。まあ、気づくのが遅いけど、気づかないよりはずっといいわ。" }
-    ]
-  },
-  {
-    id: "hakima_after_result_note",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "結果を帳面に残しておこう。どの客に、どの香りが合ったのか。忘れないように。" },
-      { speaker: "ハキマ", expression: "normal", text: "いい心がけね。商人の記録は、次の信用になるんだから。" },
-      { speaker: "ナーディル", expression: "fun", text: "君にそう言われると、帳面の字まで丁寧に書きたくなるな。" }
-    ]
-  },
-  {
-    id: "hakima_day_end_record",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今回の見立てを記録しておこう。香りの強さ、客の用途、君の指摘も。" },
-      { speaker: "ハキマ", expression: "normal", text: "私の指摘まで？ まあ、役に立つなら書いておきなさい。次に同じ間違いをしないためよ。" },
-      { speaker: "ナーディル", expression: "joy", text: "分かった。星瓶堂の帳面に、ルハーン商会式の目利きも少し借りておくよ。" }
-    ]
-  },
-  {
-    id: "hakima_day_end_incense",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "閉店前の棚に、今日扱った香材の匂いが少し残っているな。" },
-      { speaker: "ハキマ", expression: "sorrow", text: "良い香りも、雑に扱えばすぐ濁るわ。だから最後まで気を抜いちゃだめ。" },
-      { speaker: "ナーディル", expression: "joy", text: "うん。今日の香りも、ちゃんと次の営業に残せるように整えておく。" }
-    ]
-  },
-  {
-    id: "mira_after_result_color",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "joy", text: "今回選んだ品、色がとても綺麗でしたね。光に透かした時、棚の奥まで明るく見えました。" },
-      { speaker: "ナーディル", expression: "normal", text: "色で気持ちが変わることもあるからね。客の表情が少し柔らかくなった気がする。" },
-      { speaker: "ミラ", expression: "fun", text: "はい。先輩の選ぶ色は、ただ綺麗なだけじゃなくて、誰かの気分まで考えている気がします。" }
-    ]
-  },
-  {
-    id: "mira_after_result_market",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "この後、市場に寄って帰るつもりです。新しい色ガラスが入ったと聞いたので。" },
-      { speaker: "ナーディル", expression: "surprise", text: "市場まで？ なら、気をつけて。荷物が多くなるなら、途中まで持つよ。" },
-      { speaker: "ミラ", expression: "joy", text: "ありがとうございます、先輩。でも今日は見学だけです。……一緒に見てもらえるなら、少しだけ心強いです。" }
-    ]
-  },
-  {
-    id: "mira_day_end_snack",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "fun", text: "帰る前に、デーツ菓子を少しだけ買ってしまいました。観察記録を書くと、お腹が空くんです。" },
-      { speaker: "ナーディル", expression: "fun", text: "それなら、頭を使った分の補給だな。無理に我慢するより健全かもしれない。" },
-      { speaker: "ミラ", expression: "joy", text: "はい。明日の活力です。……先輩にも一つ、置いていきますね。" }
-    ]
-  },
-  {
-    id: "mira_day_end_street",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "帰り道の街灯、今日は綺麗に点いていますね。青い瓶に映ると、星みたいです。" },
-      { speaker: "ナーディル", expression: "normal", text: "星瓶堂の明かりも、あんなふうに誰かの道を照らせたらいいな。" },
-      { speaker: "ミラ", expression: "joy", text: "照らしていますよ。少なくとも、私には。ここへ来る道は、いつも少し明るく見えます。" }
-    ]
-  },
-  {
-    id: "dariya_after_result_craft",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "品の仕上げ、丁寧だったね。細かいところまで、ちゃんと手が入っていた。" },
-      { speaker: "ダリヤ", expression: "joy", text: "王宮の品みたいに完璧ではないけれど、使う人に近い温度があると思う。" }
-    ]
-  },
-  {
-    id: "dariya_after_result_material",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "素材の選び方、参考になったよ。高価なものを選べばいいわけではないんだね。" },
-      { speaker: "ダリヤ", expression: "fun", text: "王宮に戻ったら、少し真似してみようかな。……うまくできる自信は、あまりないけれど。" }
-    ]
-  },
-  {
-    id: "dariya_day_end_fire",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "帰りに、王宮の炉の様子を見てくるね。少しだけ火の色が気になっていて。" },
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日の私は、炎の色を見間違えそうなくらい疲れているけれど……確認だけはしておきたいの。" }
-    ]
-  },
-  {
-    id: "dariya_day_end_tool",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "星瓶堂の道具は、よく使われている感じがするね。新品より、少し安心する。" },
-      { speaker: "ダリヤ", expression: "joy", text: "ナーディルが大事にしているのが分かるよ。そういう道具のそばにいると、私も少し落ち着く。" }
-    ]
-  },
-  {
-    id: "common_after_result_guest",
-    category: "work",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "今日は贈答用の相談が来た。相手のことを考えて、少し丁寧に。" },
-      { speaker: "ナーディル", expression: "joy", text: "星瓶堂の品で、誰かが喜んでくれる。それが一番嬉しいな。" }
-    ]
-  },
-  {
-    id: "common_day_end_wind",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "both",
-    minAffection: 0,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "帰りに、夜の風が少し涼しくなったのを感じる。" },
-      { speaker: "ナーディル", expression: "joy", text: "明日もいい天気だといいな。" }
-    ]
-  },
-  {
-    id: "hakima_long_intro_incense_match",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "normal", text: "この香り、覚えてる？ 昔、あんたが「市場の夕方みたいだ」って言った配合に近いの。" },
-      { speaker: "ナーディル", expression: "fun", text: "覚えてるよ。君に、感想が雑すぎるって怒られたやつだ。" },
-      { speaker: "ハキマ", expression: "joy", text: "今でも少し雑だけどね。……でも、あの時の言葉は嫌いじゃなかったわ。" }
-    ]
-  },
-  {
-    id: "hakima_long_after_result_compare",
-    category: "work",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "昔の俺なら、今の結果で落ち込んで、君に全部聞きに行ってたかもしれない。" },
-      { speaker: "ハキマ", expression: "normal", text: "今でも聞きに来ればいいじゃない。……まあ、昔よりは自分で考える顔になったけど。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは君に鍛えられたからだな。悔しいけど、感謝してる。" }
-    ]
-  },
-  {
-    id: "hakima_long_day_end_rhythm",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "閉店前に君が棚を見る時のリズム、昔から変わらないな。瓶を二つ鳴らして、最後に香りを確かめる。" },
-      { speaker: "ハキマ", expression: "joy", text: "あんたの癖も変わらないわよ。悩むと天秤の針ばかり見て、答えを急がなくなる。" },
-      { speaker: "ナーディル", expression: "joy", text: "そういう癖を覚えられているのは、少し照れるな。でも、君と並ぶ時のリズムは嫌いじゃない。" }
-    ]
-  },
-  {
-    id: "mira_long_intro_calculation_seat",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩、昔私が使っていた計算机、まだ覚えていますか。" },
-      { speaker: "ナーディル", expression: "fun", text: "ああ。君が数字を並べると、なぜか店の中まで静かになった。" },
-      { speaker: "ミラ", expression: "joy", text: "……今日は、その机で少し計算させてください。懐かしくて、先輩の近くにいる感じがするんです。" }
-    ]
-  },
-  {
-    id: "mira_long_after_result_formula",
-    category: "work",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "今の配合、昔私が考えた式に似ていました。" },
-      { speaker: "ナーディル", expression: "normal", text: "覚えていたのか。君の式は、今でも星瓶堂で生きている。" },
-      { speaker: "ミラ", expression: "joy", text: "嬉しいです。私の計算が、先輩の棚で息をしているなんて。昔の私に教えてあげたいです。" }
-    ]
-  },
-  {
-    id: "mira_long_day_end_notebook",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "昔、ここに書き残した落書き、まだ消さないでいてくれたんですね。" },
-      { speaker: "ナーディル", expression: "fun", text: "消すのが惜しくなった。君の思考の跡だから。" },
-      { speaker: "ミラ", expression: "joy", text: "……先輩らしいです。でも、少し照れます。大切に残してくれて、嬉しいです。" }
-    ]
-  },
-  {
-    id: "dariya_long_intro_corner",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "fun", text: "この隅の席、まだ空けておいてくれるの？" },
-      { speaker: "ナーディル", expression: "fun", text: "ダリヤさんが座る場所くらい、覚えていますよ。" },
-      { speaker: "ダリヤ", expression: "joy", text: "じゃあ、今日は少し甘えるね。王宮より、この一角の方がずっと落ち着くの。" }
-    ]
-  },
-  {
-    id: "dariya_long_after_result_taste",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "今の見立て、昔と味が違っていないか。" },
-      { speaker: "ナーディル", expression: "normal", text: "味は変わらない。君の舌が、より鋭くなっただけだ。" },
-      { speaker: "ダリヤ", expression: "fun", text: "……そうか。なら、私もまだ成長しているということだな。" }
-    ]
-  },
-  {
-    id: "dariya_long_day_end_escape",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "王宮の重圧から、昔と同じように逃げ込んできてしまった。" },
-      { speaker: "ナーディル", expression: "normal", text: "逃げ場は、昔からここにあります。いつでも。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……ありがとう。おかげで、また明日を耐えられそうだ。" }
-    ]
-  },
-  {
-    id: "dariya_long_day_end_craft",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "昔、君が初めて作った小瓶を覚えているか。歪で、でも熱のこもった品だった。" },
-      { speaker: "ナーディル", expression: "fun", text: "恥ずかしい作品です。でも、あの熱だけは失わないようにしてきました。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……その熱が、今の星瓶堂の柔らかさになっている。悪くない工房だ。" }
-    ]
-  },
-  {
-    id: "hakima_long_intro_competitor",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ハキマ", expression: "fun", text: "あんたと競争したの、いつからだったかしら。香材、瓶選び、値切り方まで勝負にしてたわよね。" },
-      { speaker: "ナーディル", expression: "fun", text: "君が何でも勝負にするからだよ。でも、そのおかげで目利きはかなり鍛えられた。" },
-      { speaker: "ハキマ", expression: "joy", text: "だったら感謝しなさい。……それと、これからも勝手に一人で先に行かないこと。" }
-    ]
-  },
-  {
-    id: "mira_long_intro_teacher",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩に教わったこと、大学でもずっと役に立っています。" },
-      { speaker: "ナーディル", expression: "joy", text: "それは頼もしい。でも、君自身の力が一番大きいよ。" },
-      { speaker: "ミラ", expression: "joy", text: "そう言ってくださるところも、昔から変わりませんね。……でも、先輩がいなかったら今の私はいません。" }
-    ]
-  },
-  {
-    id: "dariya_long_intro_shelter",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "intro",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "sorrow", text: "今日は少しだけ、王宮の顔を外してもいいかな。ナーディルの前だと、気が抜けてしまうの。" },
-      { speaker: "ナーディル", expression: "normal", text: "もちろんです。ここでは、無理に強く見せなくて大丈夫ですよ。" },
-      { speaker: "ダリヤ", expression: "joy", text: "ありがとう。……でも、昔みたいに「お姉ちゃん、座って」って言ってくれたら、もっと安心するかも。" }
-    ]
-  },
-  {
-    id: "hakima_long_after_result_trust",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "hakima",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 10,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "ハキマは、俺の見立てを信じてくれてる？" },
-      { speaker: "ハキマ", expression: "anger", text: "今さら何を聞いてるの。信じてなかったら、大事な香材をあんたに見せたりしないわ。" },
-      { speaker: "ハキマ", expression: "joy", text: "……でも、一番信じるべきなのはあんた自身よ。私は昔から、そこを見てるんだから。" }
-    ]
-  },
-  {
-    id: "mira_long_after_result_legacy",
-    category: "personal",
-    scope: "heroine",
-    heroineId: "mira",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ミラ", expression: "normal", text: "先輩のやり方、私も少しずつ受け継いでいるみたいです。" },
-      { speaker: "ナーディル", expression: "joy", text: "君が選んだ道だよ。俺は少し隣で見ていただけだ。" },
-      { speaker: "ミラ", expression: "joy", text: "その少しが、私には大きかったんです。先輩の跡を辿っている自分、嫌いじゃありません。" }
-    ]
-  },
-  {
-    id: "nader_long_after_result_father",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "父さんからまた写真が届いた。今回は、海港都市の朝焼けだって。" },
-      { speaker: "ナーディル", expression: "joy", text: "……元気そうだ。俺もここで、ちゃんとやってるよ。" }
-    ]
-  },
-  {
-    id: "nader_long_day_end_continuity",
-    category: "personal",
-    scope: "common",
-    heroineId: null,
-    timing: "day_end",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ナーディル", expression: "normal", text: "棚の瓶を並べながら、父さんのやり方を少し思い出した。" },
-      { speaker: "ナーディル", expression: "joy", text: "……俺なりのやり方で、続けていこうと思う。" }
-    ]
-  },
-  {
-    id: "dariya_long_after_result_calm",
-    category: "work",
-    scope: "heroine",
-    heroineId: "dariya",
-    timing: "after_result",
-    routeMode: "long_history",
-    minAffection: 5,
-    priority: 1,
-    pages: [
-      { speaker: "ダリヤ", expression: "normal", text: "君の品は、昔から騒がないな。静かで、でも確かに仕事をしている。" },
-      { speaker: "ナーディル", expression: "normal", text: "派手さはなくても、誰かの役に立てばいい。" },
-      { speaker: "ダリヤ", expression: "joy", text: "……その静けさが、王宮にはない美しさだ。" }
-    ]
+const NARRATIVE_SCRIPT = {
+  opening: openingScene,
+  heroineSelectionRecaps: recap,
+  affectionEvents: {
+    hakima: [
+      {
+        id: "hakima_0",
+        heroineId: "hakima",
+        threshold: 0,
+        kind: "flashback_intro",
+        title: "はじめての挨拶",
+        presentation: { backgroundId: "shopExteriorDay", bgmId: "HAKIMA-01" },
+        summary: "ダミーの導入イベント。世界観清書前の置き場。",
+        pages: [
+          p("", "", "ハキマが店に入ってきた日のことを、ナーディルはまだ覚えている。", "normal", { backgroundId: "marketCentral" }),
+          p("hakima", HEROINE_LABELS.hakima, "まずは挨拶。それから話を聞く。", "joy"),
+          p("nader", NADER, "その一言で、店の空気が少し変わった。", "normal")
+        ]
+      },
+      {
+        id: "hakima_5",
+        heroineId: "hakima",
+        threshold: 5,
+        title: "市場の見立て",
+        presentation: { backgroundId: "marketCentral", bgmId: "HAKIMA-01" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("hakima", HEROINE_LABELS.hakima, "品を見る目は、少しずつ育つ。", "normal"),
+          p("nader", NADER, "君の言い方は、いつも要点だけ残る。", "joy")
+        ]
+      },
+      {
+        id: "hakima_10",
+        heroineId: "hakima",
+        threshold: 10,
+        title: "棚の確認",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "HAKIMA-02" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("nader", NADER, "棚を整えると、話の順番も整う気がする。", "normal"),
+          p("hakima", HEROINE_LABELS.hakima, "それはまあ、悪くない考え方ね。", "joy")
+        ]
+      },
+      {
+        id: "hakima_20",
+        heroineId: "hakima",
+        threshold: 20,
+        title: "協力のかたち",
+        presentation: { backgroundId: "shopInteriorService", bgmId: "HAKIMA-03" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("hakima", HEROINE_LABELS.hakima, "次は、手伝う側の目線も覚えておきなさい。", "normal"),
+          p("nader", NADER, "了解。覚えておく。", "normal")
+        ]
+      }
+    ],
+    mira: [
+      {
+        id: "mira_0",
+        heroineId: "mira",
+        threshold: 0,
+        kind: "flashback_intro",
+        title: "はじめての挨拶",
+        presentation: { backgroundId: "shopExteriorDay", bgmId: "MIRA-01" },
+        summary: "ダミーの導入イベント。",
+        pages: [
+          p("", "", "ミラは静かに店を見回してから、ゆっくり頷いた。", "normal", { backgroundId: "shopExteriorDay" }),
+          p("mira", HEROINE_LABELS.mira, "焦らず、順番に話そう。", "joy"),
+          p("nader", NADER, "その穏やかさが、最初から頼もしかった。", "normal")
+        ]
+      },
+      {
+        id: "mira_5",
+        heroineId: "mira",
+        threshold: 5,
+        title: "昼下がりの確認",
+        presentation: { backgroundId: "spotFountain", bgmId: "MIRA-01" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("mira", HEROINE_LABELS.mira, "落ち着いて見ると、違いが少し見える。", "normal"),
+          p("nader", NADER, "それが分かるだけでも進歩だ。", "joy")
+        ]
+      },
+      {
+        id: "mira_10",
+        heroineId: "mira",
+        threshold: 10,
+        title: "作業のリズム",
+        presentation: { backgroundId: "spotStarView", bgmId: "MIRA-02" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("nader", NADER, "慣れた作業ほど、声のかけ方が大事になる。", "normal"),
+          p("mira", HEROINE_LABELS.mira, "そう。だから、言葉は短くていい。", "joy")
+        ]
+      },
+      {
+        id: "mira_20",
+        heroineId: "mira",
+        threshold: 20,
+        title: "視線の合わせ方",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "MIRA-03" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("mira", HEROINE_LABELS.mira, "ちゃんと見てくれるなら、それでいい。", "normal"),
+          p("nader", NADER, "見るべきところは見ている。", "normal")
+        ]
+      }
+    ],
+    dariya: [
+      {
+        id: "dariya_0",
+        heroineId: "dariya",
+        threshold: 0,
+        kind: "flashback_intro",
+        title: "はじめての挨拶",
+        presentation: { backgroundId: "shopExteriorDay", bgmId: "DARIYA-01" },
+        summary: "ダミーの導入イベント。",
+        pages: [
+          p("", "", "ダリヤは最初から、言葉を選んで話していた。", "normal", { backgroundId: "shopExteriorDay" }),
+          p("dariya", HEROINE_LABELS.dariya, "急がないで。まずは、状況を見よう。", "joy"),
+          p("nader", NADER, "その落ち着きが、店を保っている。", "normal")
+        ]
+      },
+      {
+        id: "dariya_5",
+        heroineId: "dariya",
+        threshold: 5,
+        title: "朝の支度",
+        presentation: { backgroundId: "shopInteriorService", bgmId: "DARIYA-01" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("dariya", HEROINE_LABELS.dariya, "支度は早いほど楽になる。", "normal"),
+          p("nader", NADER, "その通りだ。", "normal")
+        ]
+      },
+      {
+        id: "dariya_10",
+        heroineId: "dariya",
+        threshold: 10,
+        title: "声の置き方",
+        presentation: { backgroundId: "spotPortView", bgmId: "DARIYA-02" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("nader", NADER, "声は小さくても、届く内容は変わる。", "normal"),
+          p("dariya", HEROINE_LABELS.dariya, "なら、届く形で話せばいい。", "joy")
+        ]
+      },
+      {
+        id: "dariya_20",
+        heroineId: "dariya",
+        threshold: 20,
+        title: "並べ方の工夫",
+        presentation: { backgroundId: "spotRuins", bgmId: "DARIYA-03" },
+        summary: "ダミーの通常イベント。",
+        pages: [
+          p("dariya", HEROINE_LABELS.dariya, "見せ方を変えるだけで、印象は変わる。", "normal"),
+          p("nader", NADER, "それは店でも同じだ。", "fun")
+        ]
+      }
+    ]
+  },
+  endings: {
+    hakima: {
+      good: {
+        title: "ハキマの良い結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "HAKIMA-04" },
+        pages: [
+          p("hakima", HEROINE_LABELS.hakima, "今日はちゃんと積み上がった。明日も続けられる。", "joy"),
+          p("nader", NADER, "その一歩を、次も崩さないようにする。", "normal")
+        ]
+      },
+      normal: {
+        title: "ハキマの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "HAKIMA-02" },
+        pages: baseEnding.normal
+      },
+      bad: {
+        title: "ハキマの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "HAKIMA-02" },
+        pages: baseEnding.normal
+      }
+    },
+    mira: {
+      good: {
+        title: "ミラの良い結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "MIRA-04" },
+        pages: [
+          p("mira", HEROINE_LABELS.mira, "うまくいったね。今日はちゃんと届いた。", "joy"),
+          p("nader", NADER, "その実感を、次に繋げたい。", "normal")
+        ]
+      },
+      normal: {
+        title: "ミラの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "MIRA-02" },
+        pages: baseEnding.normal
+      },
+      bad: {
+        title: "ミラの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "MIRA-02" },
+        pages: baseEnding.normal
+      }
+    },
+    dariya: {
+      good: {
+        title: "ダリヤの良い結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "DARIYA-04" },
+        pages: [
+          p("dariya", HEROINE_LABELS.dariya, "今日は十分。だから、次はもう少し欲張ってみる。", "joy"),
+          p("nader", NADER, "その欲張り方なら、きっと悪くない。", "normal")
+        ]
+      },
+      normal: {
+        title: "ダリヤの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "DARIYA-02" },
+        pages: baseEnding.normal
+      },
+      bad: {
+        title: "ダリヤの通常結末",
+        presentation: { backgroundId: "shopExteriorNight", bgmId: "DARIYA-02" },
+        pages: baseEnding.normal
+      }
+    }
+  },
+  resultComments: {
+    hakima: {
+      perfect: ["完璧。", "見事ね。"],
+      good: ["よくやった。", "安定していた。"],
+      ok: ["悪くない。", "次は伸びる。"],
+      bad: ["立て直せる。", "次で巻き返そう。"]
+    },
+    mira: {
+      perfect: ["よくできた。", "流れが綺麗だった。"],
+      good: ["十分いい。", "落ち着いていた。"],
+      ok: ["まだいける。", "次はもう少し上だ。"],
+      bad: ["ここからだ。", "焦らず整えよう。"]
+    },
+    dariya: {
+      perfect: ["狙い通り。", "かなり良い。"],
+      good: ["悪くない。", "筋が通っている。"],
+      ok: ["少し足りない。", "次は届く。"],
+      bad: ["まだ始まり。", "次で合わせる。"]
+    }
   }
-];
+};
+function getOpeningPages() {
+  return NARRATIVE_SCRIPT.opening.pages;
+}
+function getSelectionRecapPages(heroineId, routeMode) {
+  const recapByHeroine = NARRATIVE_SCRIPT.heroineSelectionRecaps[heroineId];
+  if (!recapByHeroine) return [];
+  const recap2 = recapByHeroine[routeMode] || recapByHeroine.normal || recapByHeroine.long_history;
+  return (recap2 == null ? void 0 : recap2.pages) ? recap2.pages : [];
+}
+function getIntroGreetingPages({ heroineId, routeMode, seenTalkIds = [] }) {
+  const pages = [];
+  if (!seenTalkIds || seenTalkIds.length === 0) {
+    pages.push(...getOpeningPages());
+  }
+  pages.push(...getSelectionRecapPages(heroineId, routeMode));
+  return pages;
+}
+function pickTalk(talks, seenTalkIds = []) {
+  const eligible = talks.filter((talk2) => !seenTalkIds.includes(talk2.id));
+  if (eligible.length > 0) return eligible[0];
+  return talks.length > 0 ? talks[0] : null;
+}
+function getIntroTalksForHeroine(heroineId, currentAffection, routeMode, seenTalkIds = []) {
+  const stage1 = introTalks.filter((talk2) => talk2.stage === 1 && talk2.heroineId === heroineId && (talk2.routeMode === "both" || talk2.routeMode === routeMode));
+  const stage2 = introTalks.filter((talk2) => talk2.stage === 2 && talk2.heroineId === heroineId && (talk2.routeMode === "both" || talk2.routeMode === routeMode));
+  const stage1Talk = pickTalk(stage1, seenTalkIds);
+  const stage2Talk = pickTalk(stage2, seenTalkIds);
+  const result = [];
+  if (stage1Talk) result.push(stage1Talk);
+  if (stage2Talk) result.push(stage2Talk);
+  return result;
+}
+function getAfterResultTalk(heroineId, score, routeMode, seenTalkIds = []) {
+  const talks = afterResultTalks.filter((talk2) => talk2.heroineId === heroineId && (talk2.routeMode === "both" || talk2.routeMode === routeMode));
+  const eligible = talks.filter((talk2) => {
+    if (typeof score !== "number") return true;
+    if (typeof talk2.scoreMin === "number" && score < talk2.scoreMin) return false;
+    if (typeof talk2.scoreMax === "number" && score > talk2.scoreMax) return false;
+    return true;
+  });
+  return pickTalk(eligible, seenTalkIds);
+}
+function getDayEndTalk(heroineId, currentAffection, routeMode, seenTalkIds = []) {
+  const talks = dayEndTalks.filter((talk2) => talk2.heroineId === heroineId && (talk2.routeMode === "both" || talk2.routeMode === routeMode));
+  const eligible = talks.filter((talk2) => {
+    if (typeof currentAffection !== "number") return true;
+    if (typeof talk2.minAffection === "number" && currentAffection < talk2.minAffection) return false;
+    if (typeof talk2.maxAffection === "number" && currentAffection > talk2.maxAffection) return false;
+    return true;
+  });
+  return pickTalk(eligible, seenTalkIds);
+}
+function getResultComment(heroineId, correctCount, totalQuestions = 5) {
+  const comments = NARRATIVE_SCRIPT.resultComments[heroineId];
+  if (!comments) return "";
+  const ratio = correctCount / totalQuestions;
+  let tier;
+  if (ratio >= 1) tier = "perfect";
+  else if (ratio >= 0.6) tier = "good";
+  else if (ratio >= 0.4) tier = "ok";
+  else tier = "bad";
+  const pool = comments[tier] || [];
+  return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : "";
+}
+const { affectionEvents: AFFECTION_EVENTS$2 } = NARRATIVE_SCRIPT;
+function getEventsByHeroine(heroineId) {
+  return AFFECTION_EVENTS$2[heroineId] || [];
+}
 function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode) {
   const events = getEventsByHeroine(heroineId);
   const eligibleEvents = events.filter(
@@ -3950,52 +2236,6 @@ function getRouteText(baseText, routeTexts, routeMode) {
     return routeTexts[routeMode];
   }
   return baseText;
-}
-function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode) {
-  const getEligible = (category, prioritizeHeroine = false) => {
-    return DAILY_TALKS.filter((talk) => {
-      if (talk.timing !== "intro") return false;
-      if (talk.category !== category) return false;
-      if (talk.scope === "heroine" && talk.heroineId !== heroineId) return false;
-      if (talk.routeMode !== "both" && talk.routeMode !== routeMode) return false;
-      if (talk.minAffection > currentAffection) return false;
-      if (seenTalkIds.includes(talk.id)) return false;
-      return true;
-    }).sort((a, b) => (b.priority || 1) - (a.priority || 1));
-  };
-  const getPreferredTalk = (category) => {
-    const heroineTalks = getEligible(category).filter((t) => t.scope === "heroine");
-    if (heroineTalks.length > 0) {
-      return heroineTalks[0];
-    }
-    const commonTalks = getEligible(category).filter((t) => t.scope === "common");
-    if (commonTalks.length > 0) {
-      return commonTalks[0];
-    }
-    return null;
-  };
-  const selected = [];
-  const workTalk = getPreferredTalk("work");
-  const personalTalk = getPreferredTalk("personal");
-  if (workTalk) selected.push(workTalk);
-  if (personalTalk) selected.push(personalTalk);
-  return selected;
-}
-function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode) {
-  const eligible = DAILY_TALKS.filter((talk) => {
-    if (talk.timing !== timing) return false;
-    if (talk.scope === "heroine") {
-      if (talk.heroineId !== heroineId) return false;
-    } else if (talk.scope === "common") ;
-    else {
-      return false;
-    }
-    if (talk.routeMode !== "both" && talk.routeMode !== routeMode) return false;
-    if (talk.minAffection > currentAffection) return false;
-    if (seenTalkIds.includes(talk.id)) return false;
-    return true;
-  });
-  return eligible.length > 0 ? eligible[0] : null;
 }
 function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
   const introEventId = `${heroineId}_0`;
@@ -4901,30 +3141,36 @@ const IntroScreen = ({
     }, config.delay);
   };
   const buildPages = () => {
+    var _a;
     const pages = [];
     const hId = activeHeroine.id;
-    const greet = activeGreeting || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
-    const reactions = greet.heroineReactions[hId] || { arrival: "こんにちは", response: "いらっしゃい" };
-    pages.push({
-      speakerId: "nader",
-      speaker: "ナーディル",
-      text: typeof greet.monologue === "function" ? greet.monologue(activeHeroine) : greet.monologue
-    });
-    pages.push({
-      speakerId: hId,
-      speaker: activeHeroine.name,
-      text: typeof reactions.arrival === "function" ? reactions.arrival(activeHeroine) : reactions.arrival
-    });
-    pages.push({
-      speakerId: "nader",
-      speaker: "ナーディル",
-      text: typeof reactions.response === "function" ? reactions.response(activeHeroine) : reactions.response
-    });
+    const greet = activeGreeting || {};
+    if (Array.isArray(greet.pages) && greet.pages.length > 0) {
+      pages.push(...greet.pages);
+    } else {
+      const legacyGreeting = greet || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
+      const reactions = ((_a = legacyGreeting.heroineReactions) == null ? void 0 : _a[hId]) || { arrival: "Hello", response: "Welcome" };
+      pages.push({
+        speakerId: "nader",
+        speaker: "NADER",
+        text: typeof legacyGreeting.monologue === "function" ? legacyGreeting.monologue(activeHeroine) : legacyGreeting.monologue
+      });
+      pages.push({
+        speakerId: hId,
+        speaker: activeHeroine.name,
+        text: typeof reactions.arrival === "function" ? reactions.arrival(activeHeroine) : reactions.arrival
+      });
+      pages.push({
+        speakerId: "nader",
+        speaker: "NADER",
+        text: typeof reactions.response === "function" ? reactions.response(activeHeroine) : reactions.response
+      });
+    }
     if (activeDailyTalk && activeDailyTalk.pages) {
       activeDailyTalk.pages.forEach((page) => {
         let inferredId = page.speakerId;
         if (!inferredId) {
-          if (page.speaker === "ナーディル") inferredId = "nader";
+          if (page.speaker === "NADER") inferredId = "nader";
           else if (page.speaker === activeHeroine.name) inferredId = hId;
         }
         pages.push({ ...page, speakerId: inferredId });
@@ -4933,12 +3179,12 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "「それじゃ、また営業が終わった頃に。今日の商い、期待しているわね」"
+      text: "See you tomorrow."
     });
     pages.push({
       speakerId: "nader",
-      speaker: "ナーディル",
-      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+      speaker: "NADER",
+      text: "Open the shop."
     });
     return pages;
   };
@@ -5081,74 +3327,6 @@ const IntroScreen = ({
     )))
   );
 };
-const RESULT_COMMENTS = {
-  hakima: {
-    perfect: [
-      "大成功ね。星瓶堂の目利き、なかなかやるじゃない。",
-      "ふん、悪くないわ。手つきも安定してきたじゃない。"
-    ],
-    good: [
-      "悪くないわね。客の話も、ちゃんと聞けていたわ。",
-      "まずまずよ。品を選ぶ感覚が、少しずつ戻ってきたわね。"
-    ],
-    ok: [
-      "もう少しね。焦らず相手の話を聞くところからよ。",
-      "惜しいわ。客の意図をつかめば、もっと楽になるわ。"
-    ],
-    bad: [
-      "品を見る前に、客の顔を見なさい。",
-      "今回はダメだったわ。でも、次で取り戻せばいい。"
-    ]
-  },
-  mira: {
-    perfect: [
-      "見事です、先輩。判断の再現性も高くなっています。",
-      "素晴らしいです。素材と依頼の対応が完璧でした。"
-    ],
-    good: [
-      "良い結果です。素材と依頼の対応が整理できていますね。",
-      "順調です、先輩。判断の根拠が少しずつ見えてきました。"
-    ],
-    ok: [
-      "あと少しです。判断材料を一つずつ確認しましょう。",
-      "大丈夫です、先輩。条件を分解すれば道は見えます。"
-    ],
-    bad: [
-      "焦らなくて大丈夫です。まず依頼条件を分解しましょう。",
-      "まだ早いだけです。素材の特徴から整理していきましょう。"
-    ]
-  },
-  dariya: {
-    perfect: [
-      "見事だ。今日の君の判断には、迷いが少なかった。",
-      "悪くない。精度も速度も、申し分ない。"
-    ],
-    good: [
-      "悪くない。客の意図を拾う手つきが安定している。",
-      "まずまずだ。判断の根拠が少しずつ固まってきたな。"
-    ],
-    ok: [
-      "もう一歩だな。判断の根拠を静かに積み上げるといい。",
-      "焦るな。条件を一つずつ確かめれば、道は開ける。"
-    ],
-    bad: [
-      "焦りが見えたな。まずは条件を一つずつ確かめよう。",
-      "今回は厳しかったな。だが、検証は次に活かせる。"
-    ]
-  }
-};
-function getResultComment(heroineId, correctCount, totalQuestions = 5) {
-  const comments = RESULT_COMMENTS[heroineId];
-  if (!comments) return "";
-  const ratio = correctCount / totalQuestions;
-  let tier;
-  if (ratio >= 1) tier = "perfect";
-  else if (ratio >= 0.6) tier = "good";
-  else if (ratio >= 0.4) tier = "ok";
-  else tier = "bad";
-  const pool = comments[tier];
-  return pool[Math.floor(Math.random() * pool.length)];
-}
 const ResultScreen = ({
   session,
   getRankInfo: getRankInfo2,
@@ -12191,92 +10369,15 @@ function saveAutoSkipQuizEnabled(value) {
 function loadDebugUnlockAllEnabled() {
   return loadBooleanFlag(DEBUG_UNLOCK_ALL_KEY, true);
 }
-const GREETING_VARIATIONS = [
-  {
-    id: "greet_sunny",
-    theme: "sunny_day",
-    monologue: "（いい天気だな。これだけ光があると、棚の瓶もいつもより少し得意そうに見える）",
-    heroineReactions: {
-      hakima: {
-        arrival: "来たわよ、ナーディル。店先の瓶、今日はずいぶん光ってるじゃない。……磨き方だけは合格ね。",
-        response: "いらっしゃい、ハキマ。ちょうど朝の光に透かして、色の出方を見てたんだ。"
-      },
-      mira: {
-        arrival: "こんにちは、先輩。今日は光が強くて、瓶の色がとても綺麗に見えますね。",
-        response: "いらっしゃい、ミラ。君にそう言われると、棚の瓶まで少し得意そうに見えるな。"
-      },
-      dariya: {
-        arrival: "こんにちは、ナーディル。……今日は日差しが強いね。少しだけ、店先で休んでもいいかな。",
-        response: "いらっしゃい、ダリヤさん。奥に冷たい茶を用意しています。無理せず座ってください。"
-      }
-    }
-  },
-  {
-    id: "greet_hot",
-    theme: "hot_day",
-    monologue: "（……暑い。今日は冷えた香草水を多めに用意しておこう。俺が先に飲み切らないようにしないとな）",
-    heroineReactions: {
-      hakima: {
-        arrival: "少し顔が赤いわよ。砂の熱に負けてたら、香りの違いも見落とすんだから。",
-        response: "面目ない。香草の冷茶を用意しておくよ。君も市場帰りなら、少し涼んでいって。"
-      },
-      mira: {
-        arrival: "先輩、顔色が少し赤いです。砂の熱は油断できませんよ。水分を取ってくださいね。",
-        response: "ありがとう、ミラ。君も無理しないで。奥に冷やした香草水があるから、少し休んでいって。"
-      },
-      dariya: {
-        arrival: "ナーディル……少し暑さに負けたかもしれない。王宮からここまで来るだけで、もうふらふらだよ。",
-        response: "大丈夫ですか、ダリヤさん。すぐ冷茶を出します。今日は少し休んでから話しましょう。"
-      }
-    }
-  },
-  {
-    id: "greet_calm",
-    theme: "calm_day",
-    monologue: "（今日は風が静かだ。瓶の鳴る音までよく聞こえる。こういう日は、棚を整えるだけで少し楽しい）",
-    heroineReactions: {
-      hakima: {
-        arrival: "今日は風が静かね。こういう日は、乾いた香材の癖がよく出るわ。棚、見せてもらうわよ。",
-        response: "もちろん。静かな日ほど、瓶の鳴りも香りの立ち方もよく分かるからね。"
-      },
-      mira: {
-        arrival: "こんにちは、先輩。今日は街が静かで、素材の小さな変化まで見つけられそうです。",
-        response: "そうだね。こういう日は、瓶の曇りや香りの立ち方までよく分かる。君の観察にも向いてそうだ。"
-      },
-      dariya: {
-        arrival: "こんにちは。今日は風が静かだね。こういう日は、王宮の音まで遠く感じて少し助かるよ。",
-        response: "いらっしゃい、ダリヤさん。静かな日は、星瓶堂の瓶の音も柔らかく聞こえます。"
-      }
-    }
-  },
-  {
-    id: "greet_cloudy",
-    theme: "cloudy_day",
-    monologue: "（曇りの日は地味だけど、石や瓶の色は見やすい。派手じゃない分、仕事はしやすいかもな）",
-    heroineReactions: {
-      hakima: {
-        arrival: "曇りの日に素材を眺めてるなんて、珍しいわね。何か見えるものでもあるの？",
-        response: "強い光がない分、石や瓶の地色が素直に見えるんだ。君の香材鑑定にも近いかもな。"
-      },
-      mira: {
-        arrival: "先輩、曇りの日は色が落ち着いて、素材の地肌が見やすいですね。少し好きです。",
-        response: "分かるよ。晴れた日ほど派手じゃないけど、こういう光の方が見えるものもあるんだ。"
-      },
-      dariya: {
-        arrival: "曇り空だね。強い光がないだけで、少し楽に歩ける気がするよ。",
-        response: "今日は無理をしない方がよさそうですね。素材を見る前に、まず座ってください。"
-      }
-    }
-  }
-];
-function getRandomGreeting(excludeIds = []) {
-  const eligible = GREETING_VARIATIONS.filter((g) => !excludeIds.includes(g.id));
-  const pool = eligible.length > 0 ? eligible : GREETING_VARIATIONS;
-  return pool[Math.floor(Math.random() * pool.length)];
-}
 function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const greeting = getRandomGreeting();
-  const talks = getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode);
+  const greeting = {
+    id: `intro_greeting_${heroineId}_${routeMode}`,
+    kind: "opening",
+    heroineId,
+    routeMode,
+    pages: getIntroGreetingPages({ heroineId, routeMode, seenTalkIds })
+  };
+  const talks = getIntroTalksForHeroine(heroineId, currentAffection, routeMode, seenTalkIds);
   const mergedTalk = talks.length > 0 ? {
     id: `merged_${talks.map((t) => t.id).join("_")}`,
     pages: talks.flatMap((t) => t.pages)
@@ -12284,146 +10385,16 @@ function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds, routeM
   const newSeenTalkIds = talks.map((t) => t.id);
   return { greeting, mergedTalk, newSeenTalkIds };
 }
-function prepareResultTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const talk = getNextDailyTalk(heroineId, "after_result", currentAffection, seenTalkIds, routeMode);
-  const newSeenTalkIds = talk ? [talk.id] : [];
-  return { talk, newSeenTalkIds };
+function prepareResultTalkSequence({ heroineId, score, seenTalkIds, routeMode }) {
+  const talk2 = getAfterResultTalk(heroineId, score, routeMode, seenTalkIds);
+  const newSeenTalkIds = talk2 ? [talk2.id] : [];
+  return { talk: talk2, newSeenTalkIds };
 }
 function prepareDayEndTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const talk = getNextDailyTalk(heroineId, "day_end", currentAffection, seenTalkIds, routeMode);
-  const newSeenTalkIds = talk ? [talk.id] : [];
-  return { talk, newSeenTalkIds };
+  const talk2 = getDayEndTalk(heroineId, currentAffection, routeMode, seenTalkIds);
+  const newSeenTalkIds = talk2 ? [talk2.id] : [];
+  return { talk: talk2, newSeenTalkIds };
 }
-const ENDINGS = {
-  hakima: {
-    good: {
-      title: "星瓶堂の灯が、やさしく続く",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-04"
-      },
-      summary: "星瓶堂の再出発は無事に軌道に乗った。ハキマは少しだけ素直な言葉を口にし、これからも関わっていくことを予感させる。",
-      pages: [
-        { speaker: "", expression: "joy", text: "星瓶堂の棚に、ルハーン商会の香り袋が並ぶようになった。\n客はその香りを、若店主と狐の鑑定士の品だと噂した。" },
-        { speaker: "ハキマ", expression: "joy", text: "「少しはマシな店になったわね。……まあ、私のおかげだけど」\nハキマは得意げに笑い、カウンターに身を乗り出す。" },
-        { speaker: "", expression: "joy", text: "星瓶堂の灯の下、ふたりの影が並ぶ。\n競い合う声も、笑い声も、これからの商いに溶けていった。" }
-      ]
-    },
-    normal: {
-      title: "いつもの一日が、少し特別になる",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "HAKIMA-02"
-      },
-      summary: "関係に大きな変化はないが、以前よりも確実に柔らかい空気が二人の間に流れている。",
-      pages: [
-        { speaker: "", expression: "normal", text: "営業を重ねるうち、ハキマの目は少しだけ柔らかくなった。\nそれでも口ぶりは、相変わらず手厳しい。" },
-        { speaker: "", expression: "normal", text: "ハキマはカウンターの向こうから、少しだけ顔をのぞき込む。" },
-        { speaker: "ハキマ", expression: "normal", text: "あんたの目利き、今日は少し甘かったわよ。\n……だから、明日も私が確かめてあげる" },
-        { speaker: "ハキマ", expression: "fun", text: "彼女は耳を揺らし、少しだけ照れたように笑う。" },
-        { speaker: "", expression: "normal", text: "星瓶堂の明日は、今日より少しだけ騒がしくなりそうだ。" }
-      ]
-    },
-    bad: {
-      title: "言えなかった言葉",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MAIN-01"
-      },
-      summary: "すれ違いはあったものの、二人が過ごした時間とハキマの残した香材は確かに星瓶堂の礎となっている。",
-      pages: [
-        { speaker: "", expression: "sorrow", text: "ハキマは最後まで、素直な言葉を選べなかった。\nそれでも棚の一角には、彼女が選んだ香材が残っている。" },
-        { speaker: "", expression: "sorrow", text: "扉が閉まる前、白い尻尾が一度だけ揺れた。\nまた来る、とは言わない。でも来ないとも言わなかった。" }
-      ]
-    }
-  },
-  mira: {
-    good: {
-      title: "ひらめきが、未来を照らす",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-04"
-      },
-      summary: "ミラは星瓶堂の商品企画に助言を続けるが、それは義務でも課題でもない。自分の夢としてナーディルの隣に立つ。",
-      pages: [
-        { speaker: "ミラ", expression: "joy", text: "ミラの提案で、星瓶堂の商品は少しずつ遠くの街へ届き始めた。\nそれでも彼女は、数字だけで喜ぶことはなかった。" },
-        { speaker: "ミラ", expression: "joy", text: "「先輩、この品を受け取った人の顔まで想像しましょう」\nそう言う彼女は、もう正解だけを追っていない。" },
-        { speaker: "ミラ", expression: "joy", text: "「天才だから、ではありません。私が、ここで考えたいんです」\nミラは少し頬を染め、まっすぐに笑った。" },
-        { speaker: "", expression: "joy", text: "星瓶堂の灯と、夜空の星。\nふたりで選ぶ未来は、どんな答えよりも温かかった。" }
-      ]
-    },
-    normal: {
-      title: "学びの途中で",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MIRA-02"
-      },
-      summary: "ミラはまだ商人としての「正解」を探し続けているが、星瓶堂を訪れること自体が彼女の喜びになっている。",
-      pages: [
-        { speaker: "ミラ", expression: "normal", text: "「今日の課題は終わりました。だから、明日の話をしましょう」\nミラは少しだけ背伸びをして、新しい帳面を開く。" },
-        { speaker: "", expression: "joy", text: "その声には、以前より少しだけ柔らかさがあった。\n答えより先に、話したい相手がいる。それだけで十分だった。" },
-        { speaker: "ミラ", expression: "fun", text: "「先輩、一緒に迷ってくださいね」\n彼女の笑顔は、どんな完璧な調合よりも明るかった。" }
-      ]
-    },
-    bad: {
-      title: "少し遠回り",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MAIN-01"
-      },
-      summary: "星瓶堂とミラの間に少し距離は残るが、彼女は再び答えを探しに来るはずだと確信できる。",
-      pages: [
-        { speaker: "", expression: "sorrow", text: "ミラは最後まで、完璧な答えを探そうとしていた。\nナーディルの前でさえ、少し肩の力が抜けなかった。" },
-        { speaker: "ミラ", expression: "sorrow", text: "「まだ、私の見立ては足りないみたいです」\nそう言って微笑む顔は、少しだけ寂しそうだった。" },
-        { speaker: "ミラ", expression: "normal", text: "「でも、また解き直せばいいんですよね」\n彼女は課題帳を抱え、それでもしっかりとした足取りで帰っていった。" }
-      ]
-    }
-  },
-  dariya: {
-    good: {
-      title: "静かな信頼",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-04"
-      },
-      summary: "ダリヤは王宮の重圧から逃げるのではなく、星瓶堂で息を整えながら向き合う道を選ぶ。",
-      pages: [
-        { speaker: "", expression: "joy", text: "ダリヤは王宮を去らなかった。\nただし、もう一人で重さを抱え込むことはやめた。" },
-        { speaker: "", expression: "normal", text: "検証品の相談という名目で、彼女は時折星瓶堂を訪れる。" },
-        { speaker: "", expression: "normal", text: "茶を飲み、少し皮肉を言い、少しだけ笑う。" },
-        { speaker: "ダリヤ", expression: "fun", text: "私はまだ完璧ではない" },
-        { speaker: "", expression: "normal", text: "ダリヤは静かに言った。" },
-        { speaker: "ダリヤ", expression: "joy", text: "だが、それを君に見られるのは、もう怖くない" },
-        { speaker: "", expression: "joy", text: "夜の工房に、柔らかな灯がともる。\nその明かりは、王宮へ戻る彼女の背中を静かに支えていた。" }
-      ]
-    },
-    normal: {
-      title: "気配を残して",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "DARIYA-02"
-      },
-      summary: "王宮での時間は相変わらず厳しいが、星瓶堂という「帰れる場所」ができたことで彼女の表情は和らいでいる。",
-      pages: [
-        { speaker: "", expression: "normal", text: "ダリヤは以前より少しだけ長く、星瓶堂に留まるようになった。\nそれでも本音は、まだ言葉になりきらない。" },
-        { speaker: "ダリヤ", expression: "normal", text: "「君の淹れる茶は、どうしてこうも香りが強いんだ」\n文句を言いながらも、彼女は空になった杯を置く。" },
-        { speaker: "ダリヤ", expression: "fun", text: "「……また明日、飲みに来てやる」\n言い残した言葉には、柔らかな約束が込められていた。" }
-      ]
-    },
-    bad: {
-      title: "まだほどけない心",
-      presentation: {
-        backgroundId: "shopExteriorNight",
-        bgmId: "MAIN-01"
-      },
-      summary: "ダリヤは再び王宮の重責に戻っていくが、星瓶堂で過ごした時間が完全に消えたわけではない。",
-      pages: [
-        { speaker: "", expression: "sorrow", text: "ダリヤは最後まで、疲れた顔を隠そうとした。\n王宮錬金術師としての姿は、美しく、少し遠かった。" },
-        { speaker: "", expression: "sorrow", text: "けれど夜の店先で、彼女は一度だけ足を止める。\n星瓶堂の灯を見つめる横顔に、言えなかった弱音が残っていた。" }
-      ]
-    }
-  }
-};
 const SFX = {
   // --- UI Interactions ---
   uiTapBottle: {
@@ -12538,6 +10509,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
     /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, c.id)
   ))))))));
 }
+const { affectionEvents: AFFECTION_EVENTS$1 } = NARRATIVE_SCRIPT;
 function DebugPanel({
   routeMode,
   setRouteMode,
@@ -12663,7 +10635,7 @@ function DebugPanel({
     }
   )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: "5px" } }, ["_20", "_climax"].map((suffix) => {
     const eventId = `${h.id}${suffix}`;
-    const ev = (AFFECTION_EVENTS[h.id] || []).find((e) => e.id === eventId);
+    const ev = (AFFECTION_EVENTS$1[h.id] || []).find((e) => e.id === eventId);
     if (!ev) return null;
     return /* @__PURE__ */ React.createElement(
       "button",
@@ -12738,6 +10710,7 @@ const TimePhaseBadge = ({ timePhase }) => {
     )
   );
 };
+const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT;
 const TEXT_SPEED_META = {
   slow: { label: "遅い", delay: 45 },
   normal: { label: "標準", delay: 30 },
@@ -13074,7 +11047,7 @@ function App() {
         else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
       }
       if (speakerId === "nader") {
-        return NADER;
+        return NADER$1;
       }
     }
     return activeHeroine;
@@ -13338,7 +11311,7 @@ function App() {
     } else {
       const { talk: resultTalk, newSeenTalkIds: newResultTalkIds } = prepareResultTalkSequence({
         heroineId: activeHeroineId,
-        currentAffection: affection[activeHeroineId] || 0,
+        score: (session == null ? void 0 : session.score) || 0,
         seenTalkIds,
         routeMode
       });
