@@ -2277,7 +2277,8 @@ const HeroineSelectScreen = ({
   renderThemeStyles,
   HeroineDisplay: HeroineDisplay2,
   getFullPath,
-  audioEngine: audioEngine2
+  audioEngine: audioEngine2,
+  heroineProgressSummary
 }) => {
   const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
   const routeMeta = getRouteModeMeta(routeMode);
@@ -2426,7 +2427,7 @@ const HeroineSelectScreen = ({
     background: THEME.parchment,
     border: `2px solid ${selectedHeroine.themeColor}`,
     position: "relative"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: selectedHeroine, type: "face", size: "medium", expression: routeMode === "long_history" ? "maid" : "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection ? affection[selectedHeroine.id] : 0)))), /* @__PURE__ */ React.createElement("div", { style: {
+  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: selectedHeroine, type: "face", size: "medium", expression: routeMode === "long_history" ? "maid" : "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px", fontWeight: "bold" } }, "新密度: ", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.textDark } }, heroineProgressSummary ? heroineProgressSummary.initialAffection : 0), " ", "（評判: ", heroineProgressSummary ? heroineProgressSummary.weeklyReputation : 0, ", 満足度: ", heroineProgressSummary ? heroineProgressSummary.weeklySatisfaction : 0, "）"))), /* @__PURE__ */ React.createElement("div", { style: {
     ...narrativeBoxStyle2,
     flex: 1,
     padding: "12px",
@@ -2926,7 +2927,7 @@ const TIME_PHASES = {
   OPEN: { key: "open", label: "営業中", icon: "🛍", color: "#10b981", description: "お客様対応中" },
   POST_OPEN: { key: "post_open", label: "営業後", icon: "🌆", color: "#f97316", description: "営業直後" },
   CLOSED: { key: "closed", label: "閉店後", icon: "🌙", color: "#6366f1", description: "夜の支度" },
-  FINALE: { key: "finale", label: "総決算", icon: "✨", color: "#8b5cf6", description: "10 日の総括" },
+  FINALE: { key: "finale", label: "総決算", icon: "✨", color: "#8b5cf6", description: "5 日の総括" },
   MEMORY: { key: "memory", label: "回想", icon: "📖", color: "#94a3b8", description: "愛着の記録" }
 };
 function resolveTimePhase(screen, activeDailyTalk = null, isRecallMode = false) {
@@ -10349,9 +10350,9 @@ function createDefaultHeroineProgress() {
   const routeStats = {};
   ROUTE_KEYS.forEach((routeMode) => {
     routeStats[routeMode] = {
-      bestSales: 0,
-      bestReputation: 0,
-      bestSatisfaction: 0
+      weeklySales: 0,
+      weeklyReputation: 0,
+      weeklySatisfaction: 0
     };
   });
   return {
@@ -10380,9 +10381,9 @@ function normalizeHeroineProgress(rawHeroineProgress) {
   ROUTE_KEYS.forEach((routeMode) => {
     const source = normalized.routeStats[routeMode] || {};
     normalized.routeStats[routeMode] = {
-      bestSales: normalizeStatNumber(source.bestSales),
-      bestReputation: normalizeStatNumber(source.bestReputation),
-      bestSatisfaction: normalizeStatNumber(source.bestSatisfaction)
+      weeklySales: normalizeStatNumber(source.weeklySales),
+      weeklyReputation: normalizeStatNumber(source.weeklyReputation),
+      weeklySatisfaction: normalizeStatNumber(source.weeklySatisfaction)
     };
   });
   normalized.unlockedRoutes = {
@@ -10440,21 +10441,21 @@ function unlockLongHistory(progress, heroineId) {
   normalized.heroines[heroineId].unlockedRoutes.long_history = true;
   return normalized;
 }
-function updateHeroineBestStats(progress, heroineId, routeMode, { sales = 0, reputation = 0, satisfaction = 0 } = {}) {
+function updateHeroineWeeklyStats(progress, heroineId, routeMode, { sales = 0, reputation = 0, satisfaction = 0 } = {}) {
   const normalized = normalizeCareerProgress(progress);
   const heroineProgress = normalized.heroines[heroineId];
   if (!heroineProgress) return normalized;
   const routeStats = heroineProgress.routeStats[routeMode] || heroineProgress.routeStats.normal;
-  routeStats.bestSales = Math.max(routeStats.bestSales, normalizeStatNumber(sales));
-  routeStats.bestReputation = Math.max(routeStats.bestReputation, normalizeStatNumber(reputation));
-  routeStats.bestSatisfaction = Math.max(routeStats.bestSatisfaction, normalizeStatNumber(satisfaction));
+  routeStats.weeklySales = Math.max(routeStats.weeklySales, normalizeStatNumber(sales));
+  routeStats.weeklyReputation = Math.max(routeStats.weeklyReputation, normalizeStatNumber(reputation));
+  routeStats.weeklySatisfaction = Math.max(routeStats.weeklySatisfaction, normalizeStatNumber(satisfaction));
   heroineProgress.routeStats[routeMode] = routeStats;
   return normalized;
 }
 function getHeroineProgressScore(progress, heroineId, routeMode, currentSales = 0) {
   const stats = getHeroineRouteStats(progress, heroineId, routeMode);
   const sales = normalizeStatNumber(currentSales);
-  const total = sales + stats.bestReputation + stats.bestSatisfaction;
+  const total = sales + stats.weeklyReputation + stats.weeklySatisfaction;
   return Math.min(100, Math.floor(total / 10));
 }
 const SFX = {
@@ -10777,6 +10778,43 @@ const TimePhaseBadge = ({ timePhase }) => {
   );
 };
 const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT;
+const QUIZ_EXTRA_BGM_IDS = [
+  "extra_joy_1",
+  "extra_joy_2",
+  "extra_fun_1",
+  "extra_fun_2",
+  "extra_surprise_1",
+  "extra_surprise_2",
+  "extra_anger_1",
+  "extra_anger_2",
+  "extra_sorrow_1",
+  "extra_sorrow_2"
+];
+const hashBgmSeed = (value) => {
+  let hash = 0;
+  const text = String(value || "");
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash << 5) - hash + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+};
+const getQuizExtraBgmId = (day, activeHeroineId, routeMode) => {
+  if (QUIZ_EXTRA_BGM_IDS.length === 0) return null;
+  const seed = hashBgmSeed(`${activeHeroineId}:${routeMode}:${day}`);
+  return QUIZ_EXTRA_BGM_IDS[seed % QUIZ_EXTRA_BGM_IDS.length];
+};
+const getQuizBgmId = ({ day, activeHeroineId, routeMode }) => {
+  const hPrefix = (activeHeroineId || "hakima").toUpperCase();
+  if (day <= 1) return "MAIN-03";
+  if (day === 2) {
+    return routeMode === "long_history" ? `${hPrefix}-04` : `${hPrefix}-02`;
+  }
+  if (day === 3 || day === 4) {
+    return getQuizExtraBgmId(day, activeHeroineId, routeMode);
+  }
+  return routeMode === "long_history" ? `${hPrefix}-05` : `${hPrefix}-03`;
+};
 const TEXT_SPEED_META = {
   slow: { label: "遅い", delay: 45 },
   normal: { label: "標準", delay: 30 },
@@ -10796,6 +10834,16 @@ const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, a
     );
   });
   return state;
+};
+const buildHeroineProgressSummary = (progress, heroineId, routeMode) => {
+  const stats = getHeroineRouteStats(progress, heroineId, routeMode);
+  const initialAffection = Math.min(20, Math.floor((stats.weeklyReputation + stats.weeklySatisfaction) / 10));
+  return {
+    weeklySales: stats.weeklySales,
+    weeklyReputation: stats.weeklyReputation,
+    weeklySatisfaction: stats.weeklySatisfaction,
+    initialAffection
+  };
 };
 function App() {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
@@ -10852,6 +10900,7 @@ function App() {
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE);
   const [bgTransitionPhase, setBgTransitionPhase] = useState("idle");
   const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0);
+  const quizExtraBgmPlanRef = useRef(/* @__PURE__ */ new Map());
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isHeroineLoading, setIsHeroineLoading] = useState(false);
@@ -11111,7 +11160,7 @@ function App() {
   }, [screen, activeDailyTalk, isRecallMode]);
   useEffect(() => {
     var _a2;
-    const isPassiveScreen = ["START", "HEROINE_SELECT", "MEMORIES", "PROLOGUE", "VISUAL_TEST"].includes(screen);
+    const isPassiveScreen = ["START", "HEROINE_SELECT", "MEMORIES", "VISUAL_TEST"].includes(screen);
     if (isPassiveScreen) {
       if (audioEngine.currentTrackSource !== "soundTest") {
         audioEngine.stop();
@@ -11123,17 +11172,26 @@ function App() {
     const hPrefix = (activeHeroineId || "hakima").toUpperCase();
     const eventPages = screen === "EVENT" && activeEvent ? getEventPages(activeEvent, routeMode) : [];
     const currentEventPage = eventPages[eventCurrentPageIndex];
-    if (screen === "QUIZ") {
-      if (day <= 2) {
-        trackId = "MAIN-03";
-      } else if (day <= 4) {
-        trackId = `${hPrefix}-02`;
-      } else if (day <= 6) {
-        trackId = `${hPrefix}-03`;
-      } else if (day <= 8) {
-        trackId = `${hPrefix}-04`;
+    if (screen === "PROLOGUE") {
+      trackId = "MAIN-01";
+    } else if (screen === "QUIZ") {
+      const quizBgmId = getQuizBgmId({ day, activeHeroineId, routeMode });
+      if (day === 3 || day === 4) {
+        const planKey = `${activeHeroineId}:${routeMode}`;
+        const existingPlan = quizExtraBgmPlanRef.current.get(planKey);
+        if (!existingPlan || existingPlan.day !== day || existingPlan.routeMode !== routeMode) {
+          const extraId = quizBgmId && TRACKS[quizBgmId] ? quizBgmId : "extra_joy_1";
+          quizExtraBgmPlanRef.current.set(planKey, {
+            day,
+            routeMode,
+            trackId: extraId
+          });
+          trackId = extraId;
+        } else {
+          trackId = existingPlan.trackId;
+        }
       } else {
-        trackId = `${hPrefix}-05`;
+        trackId = quizBgmId;
       }
     } else if (screen === "INTRO" || screen === "RESULT" || screen === "DAY_END") {
       trackId = "MAIN-02";
@@ -11539,11 +11597,11 @@ function App() {
   const applyQuizResultState = (result) => {
     const currentAffection = affection[activeHeroineId] || 0;
     const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
-    const nextProgress = updateHeroineBestStats(
+    const nextProgress = updateHeroineWeeklyStats(
       careerProgress,
       activeHeroineId,
       routeMode,
-      result.workshopResult
+      nextWorkshopState
     );
     const nextAffection = getHeroineProgressScore(
       nextProgress,
@@ -12429,7 +12487,8 @@ function App() {
         renderThemeStyles,
         HeroineDisplay,
         getFullPath,
-        audioEngine
+        audioEngine,
+        heroineProgressSummary: buildHeroineProgressSummary(careerProgress, previewHeroineId, routeMode)
       }
     );
   } else if (screen === "FINAL_RESULT") {
