@@ -909,7 +909,8 @@ export default function App() {
       isCorrect,
       stampLabel: stamp.label,
       stampTone: stamp.tone,
-      stampScore: lastAnswer.gainedScore,
+      tempoMark: rhythmGood ? '◎' : '△',
+      speedMark: fast ? '◎' : '△',
     });
 
     // Delay result sound slightly

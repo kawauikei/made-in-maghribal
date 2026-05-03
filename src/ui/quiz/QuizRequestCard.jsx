@@ -5,8 +5,9 @@ import ConditionBadges from './ConditionBadges';
 
 export default function QuizRequestCard({ currentQuestion, customerStyle, bubbleStyle, quizFeedback }) {
   const stampLabel = quizFeedback?.stampLabel;
-  const stampScore = quizFeedback?.stampScore;
   const stampTone = quizFeedback?.stampTone || 'gold';
+  const tempoMark = quizFeedback?.tempoMark || '△';
+  const speedMark = quizFeedback?.speedMark || '△';
   const stampColors = {
     gold: { border: 'rgba(198, 156, 66, 0.9)', text: '#8a5f14', fill: 'rgba(255, 244, 208, 0.92)' },
     brass: { border: 'rgba(162, 128, 64, 0.85)', text: '#7a4f10', fill: 'rgba(249, 236, 197, 0.92)' },
@@ -21,7 +22,7 @@ export default function QuizRequestCard({ currentQuestion, customerStyle, bubble
       <div style={{
         ...bubbleStyle,
         width: '90%',
-        height: '110px',
+        height: '136px',
         background: '#fff',
         color: '#333',
         border: `2px solid ${currentQuestion.request.customer?.color || THEME.brassDark}`,
@@ -42,13 +43,22 @@ export default function QuizRequestCard({ currentQuestion, customerStyle, bubble
         <CustomerSilhouette customer={currentQuestion.request.customer} />
         <div style={{
           display: 'flex',
-          flexDirection: 'column',
-          flex: 1,
-          height: '100%',
-          justifyContent: 'space-between'
-        }}>
+        flexDirection: 'column',
+        flex: 1,
+        height: '100%',
+        justifyContent: 'space-between'
+      }}>
           <div style={{ fontWeight: 500, flex: 1, display: 'flex', alignItems: 'center' }}>
-            <span>{currentQuestion.request.text}</span>
+            <span style={{
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
+              overflow: 'hidden',
+              lineHeight: '1.45',
+              maxHeight: '2.9em',
+            }}>
+              {currentQuestion.request.text}
+            </span>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingBottom: '2px' }}>
             <ConditionBadges criteria={currentQuestion.request.criteria} />
@@ -62,6 +72,49 @@ export default function QuizRequestCard({ currentQuestion, customerStyle, bubble
               right: '10px',
               bottom: '10px',
               transform: 'rotate(-8deg)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '6px',
+              borderRadius: '8px',
+              pointerEvents: 'none',
+              maxWidth: 'calc(100% - 18px)'
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '3px'
+            }}>
+              <div style={{
+                fontSize: '0.56em',
+                fontWeight: 800,
+                color: '#7a5a20',
+                background: 'rgba(255,255,255,0.88)',
+                border: `1px solid ${stampStyle.border}`,
+                borderRadius: '999px',
+                padding: '2px 7px',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                alignSelf: 'flex-end'
+              }}>
+                テンポ {tempoMark}
+              </div>
+              <div style={{
+                fontSize: '0.56em',
+                fontWeight: 800,
+                color: '#7a5a20',
+                background: 'rgba(255,255,255,0.88)',
+                border: `1px solid ${stampStyle.border}`,
+                borderRadius: '999px',
+                padding: '2px 7px',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                alignSelf: 'flex-end'
+              }}>
+                速度 {speedMark}
+              </div>
+            </div>
+            <div style={{
               minWidth: '84px',
               padding: '7px 10px 6px',
               borderRadius: '8px',
@@ -69,18 +122,12 @@ export default function QuizRequestCard({ currentQuestion, customerStyle, bubble
               background: stampStyle.fill,
               color: stampStyle.text,
               textAlign: 'center',
-              pointerEvents: 'none',
               boxShadow: '0 2px 0 rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.28)'
-            }}
-          >
-            <div style={{ fontSize: '0.92em', fontWeight: 900, letterSpacing: '0.05em' }}>
-              {stampLabel}
-            </div>
-            {stampScore > 0 && (
-              <div style={{ fontSize: '0.68em', fontWeight: 700, marginTop: '1px' }}>
-                +{stampScore}
+            }}>
+              <div style={{ fontSize: '0.92em', fontWeight: 900, letterSpacing: '0.05em' }}>
+                {stampLabel}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
