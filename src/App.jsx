@@ -13,7 +13,7 @@ import PrologueScreen from './ui/PrologueScreen';
 import IntroScreen from './ui/IntroScreen';
 import ResultScreen from './ui/ResultScreen';
 import QuizScreen from './ui/QuizScreen';
-import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS } from './ui/quiz/RhythmMock';
+import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS, DEFAULT_RHYTHM_PHASE_OFFSET_MS } from './ui/quiz/RhythmMock';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -893,6 +893,7 @@ export default function App() {
       now: answeredAt,
       noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
       judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
+      phaseOffsetMs: DEFAULT_RHYTHM_PHASE_OFFSET_MS,
     });
     const fast = answeredAt - quizQuestionStartAtRef.current <= 5000;
     const updatedSession = answerQuestion(session, itemId, {
