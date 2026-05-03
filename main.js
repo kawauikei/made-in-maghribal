@@ -11879,9 +11879,6 @@ const TRACKS = {
     category: "共通イベントBGM"
   }
 };
-function getTrackById(id) {
-  return TRACKS[id] || null;
-}
 const SAVE_DATA_VERSION = "1.0";
 const STORAGE_KEY = "made_in_maghribal_save";
 const DEFAULT_AUDIO_VOLUME$1 = 0.8;
@@ -12476,8 +12473,14 @@ const SFX = {
 };
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
+  const hasPreloadedTracksRef = useRef(false);
   const groups = [...new Set(SFX_CANDIDATES.map((c) => c.group))];
   const currentTrack = currentPlayingId ? Object.values(TRACKS).find((t) => t.id === currentPlayingId) : null;
+  useEffect(() => {
+    if (hasPreloadedTracksRef.current) return;
+    hasPreloadedTracksRef.current = true;
+    Object.values(TRACKS).forEach((track) => audioEngine.preloadTrack(track));
+  }, []);
   const handlePlayTrack = (track) => {
     audioEngine.playTrack(track);
     setCurrentPlayingId(track.id);
@@ -13157,8 +13160,9 @@ function App() {
   useEffect(() => {
     const asset = (type, src) => ({ type, src: `${"https://kawauikei.github.io/made-in-maghribal/"}${src}`.replace(/([^:])\/\//g, "$1/") });
     const expressions = ["normal", "joy", "fun", "sorrow", "anger", "surprise", "cry", "student", "social", "maid"];
+    const mainTracks = Object.values(TRACKS).filter((track) => track.id.startsWith("MAIN-"));
     const essentialAssets = [
-      ...Object.values(TRACKS).map((track) => asset("audio", track.src)),
+      ...mainTracks.map((track) => asset("audio", track.src)),
       ...Object.values(SFX).map((sfx) => asset("audio", sfx.src)),
       ...Object.values(BACKGROUND_IMAGES).map((bg) => asset("image", bg.src)),
       ...Object.values(STILL_IMAGES).map((still) => asset("image", still.src)),
@@ -13204,10 +13208,13 @@ function App() {
     audioEngine.playSfx("uiHeroineSelect");
     setIsHeroineLoading(true);
     setLoadingProgress(0);
-    const heroine = HEROINES.find((h) => h.id === heroineId);
-    const themeTrack = getTrackById(heroine.themeTrackId);
+    HEROINES.find((h) => h.id === heroineId);
+    const heroineTracks = Object.values(TRACKS).filter((track) => track.id.startsWith(`${heroineId.toUpperCase()}-`));
     const heroineAssets = [
-      { type: "audio", src: `${"https://kawauikei.github.io/made-in-maghribal/"}${themeTrack.src}`.replace(/([^:])\/\//g, "$1/") },
+      ...heroineTracks.map((track) => ({
+        type: "audio",
+        src: `${"https://kawauikei.github.io/made-in-maghribal/"}${track.src}`.replace(/([^:])\/\//g, "$1/")
+      })),
       { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}characters/${heroineId}/standing_proc/normal.png`.replace(/([^:])\/\//g, "$1/") },
       { type: "image", src: `${"https://kawauikei.github.io/made-in-maghribal/"}characters/${heroineId}/face_proc/normal.png`.replace(/([^:])\/\//g, "$1/") }
     ];
