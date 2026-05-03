@@ -315,9 +315,9 @@ function generateRandomQuestion(id, forcedType = null, excludeItemIds = new Set(
 /**
  * Checks if the selected item is correct for the given question.
  */
-export function checkAnswer(question, selectedItemId) {
+export function checkAnswer(question, selectedItemId, { rhythmBonus = 0 } = {}) {
   const isCorrect = question.correctItemId === selectedItemId;
-  const gainedScore = calculateScore({ isCorrect });
+  const gainedScore = calculateScore({ isCorrect, rhythmBonus });
 
   return {
     questionId: question.id,
@@ -331,11 +331,11 @@ export function checkAnswer(question, selectedItemId) {
 /**
  * Processes an answer and returns a new session state.
  */
-export function answerQuestion(session, selectedItemId) {
+export function answerQuestion(session, selectedItemId, options = {}) {
   if (session.isFinished) return session;
 
   const currentQuestion = session.questions[session.currentIndex];
-  const result = checkAnswer(currentQuestion, selectedItemId);
+  const result = checkAnswer(currentQuestion, selectedItemId, options);
 
   const nextIndex = session.currentIndex + 1;
   const isFinished = nextIndex >= session.questions.length;

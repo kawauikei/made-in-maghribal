@@ -7,9 +7,9 @@ export const DEFAULT_BASE_SCORE = 100;
  * @param {number} [params.baseScore=DEFAULT_BASE_SCORE] - Base score for correct answer.
  * @returns {number} The calculated score.
  */
-export function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE } = {}) {
+export function calculateScore({ isCorrect, baseScore = DEFAULT_BASE_SCORE, rhythmBonus = 0 } = {}) {
   if (isCorrect) {
-    return baseScore;
+    return baseScore + Math.max(0, rhythmBonus);
   }
   return 0;
 }

@@ -13,6 +13,7 @@ import PrologueScreen from './ui/PrologueScreen';
 import IntroScreen from './ui/IntroScreen';
 import ResultScreen from './ui/ResultScreen';
 import QuizScreen from './ui/QuizScreen';
+import { getIsRhythmHitNow, DEFAULT_RHYTHM_BONUS_GOLD } from './ui/quiz/RhythmMock';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -884,13 +885,17 @@ export default function App() {
   // Handle answer selection (Improved in M9-3)
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    
-    const updatedSession = answerQuestion(session, itemId);
+
+    const currentRhythmHit = getIsRhythmHitNow();
+    const updatedSession = answerQuestion(session, itemId, {
+      rhythmBonus: currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0
+    });
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
+    const rhythmBonus = isCorrect && currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0;
 
     // Trigger visual feedback
-    setQuizFeedback({ itemId, isCorrect });
+    setQuizFeedback({ itemId, isCorrect, rhythmBonus });
 
     // Delay result sound slightly
     setTimeout(() => {

@@ -1,38 +1,95 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { THEME } from '../theme';
 
-// M-QUIZ-RHYTHM-LANE-REGRESSION-1: Configurable rhythm lane timing
-const DEFAULT_LANE_DURATION_MS = 2400;
-const DEFAULT_BEAT_PULSE_MS = 800;
+export const DEFAULT_NOTE_INTERVAL_MS = 500;
+export const DEFAULT_JUDGMENT_WINDOW_MS = 140;
+export const DEFAULT_RHYTHM_BONUS_GOLD = 20;
+const DEFAULT_TRAVEL_DURATION_MS = 2000;
+const DEFAULT_LANE_HEIGHT = 58;
 
-export default function RhythmMock({ heroineId, themeColor, laneDurationMs = DEFAULT_LANE_DURATION_MS, beatPulseMs = DEFAULT_BEAT_PULSE_MS }) {
+export function getRhythmPhaseMs(now = Date.now(), noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS) {
+  const phase = now % noteIntervalMs;
+  return phase < 0 ? phase + noteIntervalMs : phase;
+}
+
+export function getIsRhythmHitNow({
+  now = Date.now(),
+  noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS,
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
+} = {}) {
+  const phase = getRhythmPhaseMs(now, noteIntervalMs);
+  return phase <= judgmentWindowMs || phase >= noteIntervalMs - judgmentWindowMs;
+}
+
+export default function RhythmMock({
+  heroineId,
+  themeColor,
+  noteIntervalMs = DEFAULT_NOTE_INTERVAL_MS,
+  judgmentWindowMs = DEFAULT_JUDGMENT_WINDOW_MS,
+  travelDurationMs = DEFAULT_TRAVEL_DURATION_MS,
+  laneHeight = DEFAULT_LANE_HEIGHT,
+}) {
   const naderFace = `./characters/nader/face_proc/normal.png`;
   const heroineFace = `./characters/${heroineId}/face_proc/normal.png`;
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    let frame = 0;
+    const tick = () => {
+      setNow(Date.now());
+      frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const isRhythmHit = getIsRhythmHitNow({ now, noteIntervalMs, judgmentWindowMs });
+  const noteStartIndex = Math.floor((now - travelDurationMs) / noteIntervalMs) - 1;
+  const noteEndIndex = Math.floor((now + 200) / noteIntervalMs) + 2;
+  const notes = useMemo(() => {
+    const items = [];
+    for (let index = noteStartIndex; index <= noteEndIndex; index += 1) {
+      const spawnTime = index * noteIntervalMs;
+      const age = now - spawnTime;
+      const progress = age / travelDurationMs;
+      if (progress < -0.15 || progress > 1.15) continue;
+      const left = 108 - (progress * 116);
+      const distanceToTarget = Math.abs(left - 50);
+      items.push({
+        index,
+        left,
+        isTargeting: distanceToTarget <= 4,
+        isVisible: progress >= 0 && progress <= 1,
+      });
+    }
+    return items;
+  }, [now, noteStartIndex, noteEndIndex, noteIntervalMs, travelDurationMs]);
 
   return (
     <div style={{
       width: '100%',
-      height: '64px',
+      minHeight: `${laneHeight}px`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '12px',
-      margin: '15px 0',
+      gap: '10px',
+      margin: '0',
+      padding: '0 4px',
       pointerEvents: 'none',
       userSelect: 'none',
       position: 'relative'
     }}>
       <div style={{
         position: 'absolute',
-        width: '70%',
+        width: '72%',
         height: '100%',
-        background: `radial-gradient(ellipse at center, ${THEME.brass}11 0%, transparent 70%)`,
+        background: `radial-gradient(ellipse at center, ${THEME.brass}12 0%, transparent 72%)`,
         zIndex: 0
       }} />
 
       <div style={{ 
-        width: '44px', 
-        height: '44px', 
+        width: '38px', 
+        height: '38px', 
         borderRadius: '50%', 
         overflow: 'hidden', 
         border: `2px solid ${THEME.brass}`, 
@@ -48,83 +105,107 @@ export default function RhythmMock({ heroineId, themeColor, laneDurationMs = DEF
 
       <div style={{
         flex: 1,
-        maxWidth: '420px',
-        height: '4px',
-        background: `rgba(255,255,255,0.05)`,
-        borderRadius: '2px',
+        maxWidth: '460px',
+        height: '32px',
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02))',
+        border: `1px solid ${THEME.brass}20`,
+        borderRadius: '999px',
         position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        overflow: 'hidden',
         zIndex: 1
       }}>
         <div style={{
           position: 'absolute',
           width: '100%',
-          height: '1px',
-          background: `linear-gradient(to right, transparent, ${THEME.brass} 20%, ${THEME.brass} 80%, transparent)`,
+          height: '2px',
+          background: `linear-gradient(to right, transparent, ${THEME.brass} 14%, ${THEME.brass} 86%, transparent)`,
           top: '50%',
           transform: 'translateY(-50%)'
         }} />
 
-        {[20, 35, 65, 80].map(pos => (
+        {[14, 28, 72, 86].map(pos => (
           <div key={pos} style={{ 
             position: 'absolute', 
             left: `${pos}%`, 
-            width: '6px', 
-            height: '6px', 
+            width: '5px', 
+            height: '5px', 
             transform: 'rotate(45deg)',
             background: THEME.brass, 
             boxShadow: `0 0 4px ${THEME.brass}88`,
-            opacity: 0.4 
+            opacity: 0.25 
           }} />
         ))}
 
-        {/* Scanline (Light Beam) - M-QUIZ-RHYTHM-LANE-REGRESSION-1 */}
         <div style={{
           position: 'absolute',
-          left: 0,
-          top: '-12px',
-          bottom: '-12px',
-          width: '2px',
+          top: '4px',
+          left: '50%',
+          bottom: '4px',
+          width: '3px',
+          transform: 'translateX(-50%)',
           background: `linear-gradient(to bottom, transparent, ${THEME.starGold}, transparent)`,
-          boxShadow: `0 0 8px ${THEME.starGold}`,
-          opacity: 0.8,
-          zIndex: 2,
-          animation: `beat-scanline ${laneDurationMs}ms linear infinite`
+          boxShadow: `0 0 10px ${THEME.starGold}`,
+          opacity: isRhythmHit ? 0.95 : 0.72,
+          zIndex: 2
         }} />
-        
-        {/* Center Indicator (Target) */}
-        <div 
-          className="beat-pulse"
-          style={{ 
-            width: '24px', 
-            height: '24px', 
-            borderRadius: '50%', 
-            border: `2px solid ${THEME.starGold}`, 
-            background: 'rgba(255,255,255,0.2)',
-            boxShadow: `0 0 15px ${THEME.starGold}aa`,
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 3
-          }} 
-        >
-          <div style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${THEME.starGold}66 0%, transparent 70%)`,
-            zIndex: -1
-          }} />
-        </div>
+
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '28px',
+          height: '28px',
+          borderRadius: '50%',
+          border: `2px solid ${THEME.starGold}`,
+          background: isRhythmHit ? 'rgba(255, 219, 128, 0.24)' : 'rgba(255, 255, 255, 0.14)',
+          boxShadow: isRhythmHit
+            ? `0 0 18px ${THEME.starGold}cc`
+            : `0 0 10px ${THEME.starGold}66`,
+          zIndex: 3
+        }} />
+
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          background: isRhythmHit
+            ? `radial-gradient(circle, ${THEME.starGold}30 0%, transparent 68%)`
+            : `radial-gradient(circle, ${THEME.starGold}18 0%, transparent 72%)`,
+          zIndex: 1
+        }} />
+
+        {notes.map(note => (
+          <div
+            key={note.index}
+            style={{
+              position: 'absolute',
+              left: `${note.left}%`,
+              top: '50%',
+              width: note.isTargeting ? '5px' : '4px',
+              height: note.isTargeting ? '28px' : '22px',
+              transform: 'translate(-50%, -50%)',
+              borderRadius: '999px',
+              background: note.isTargeting
+                ? `linear-gradient(180deg, ${THEME.starGold}, ${themeColor || THEME.brass})`
+                : `linear-gradient(180deg, rgba(255,255,255,0.88), rgba(221, 194, 128, 0.72))`,
+              boxShadow: note.isTargeting
+                ? `0 0 10px ${THEME.starGold}88`
+                : '0 0 5px rgba(255,255,255,0.16)',
+              opacity: note.isVisible ? 0.96 : 0.52,
+              zIndex: note.isTargeting ? 4 : 2
+            }}
+          />
+        ))}
       </div>
 
       <div style={{ 
-        width: '44px', 
-        height: '44px', 
+        width: '38px', 
+        height: '38px', 
         borderRadius: '50%', 
         overflow: 'hidden', 
         border: `2px solid ${themeColor || THEME.brass}`, 
@@ -136,22 +217,6 @@ export default function RhythmMock({ heroineId, themeColor, laneDurationMs = DEF
       }}>
         <img src={heroineFace} alt="H" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
-
-      {/* M-QUIZ-RHYTHM-LANE-REGRESSION-1: Keyframes for rhythm lane animation */}
-      <style>{`
-        @keyframes beat-scanline {
-          0% { left: 0%; opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.8; }
-          100% { left: 100%; opacity: 0; }
-        }
-        @keyframes beat-pulse {
-          0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-          50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px ${THEME.starGold}; }
-          100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 15px ${THEME.starGold}aa; }
-        }
-        .beat-pulse { animation: beat-pulse ${beatPulseMs}ms ease-in-out infinite; }
-      `}</style>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { getIsRhythmHitNow, DEFAULT_RHYTHM_BONUS_GOLD } from './ui/quiz/RhythmMock';
 
 const { useState, useEffect, useRef } = React;
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -2359,14 +2360,42 @@ function QuizScreen({
         
         <div className="quiz-rhythm-lane" style={{ 
           width: 'calc(100% + 40px)', 
-          margin: '15px -20px', 
+          margin: '8px -20px 6px', 
           background: 'rgba(26, 42, 58, 0.6)', 
           borderTop: `1px solid ${THEME.brass}44`,
           borderBottom: `1px solid ${THEME.brass}44`,
-          padding: '5px 0'
+          padding: '4px 0'
         }}>
-          <RhythmMock heroineId={activeHeroineId} themeColor={activeHeroine?.themeColor} />
+          <RhythmMock
+            heroineId={activeHeroineId}
+            themeColor={activeHeroine?.themeColor}
+            noteIntervalMs={500}
+            judgmentWindowMs={140}
+          />
         </div>
+        <div style={{
+          textAlign: 'center',
+          fontSize: '0.72em',
+          color: THEME.parchment,
+          opacity: 0.78,
+          marginTop: '2px',
+          marginBottom: '8px',
+          letterSpacing: '0.02em'
+        }}>
+          リズムに合わせて正解すると少しボーナス！
+        </div>
+        {quizFeedback?.rhythmBonus > 0 && (
+          <div style={{
+            textAlign: 'center',
+            fontSize: '0.78em',
+            fontWeight: '700',
+            color: THEME.starGold,
+            marginBottom: '6px',
+            textShadow: `0 0 8px ${THEME.starGold}66`
+          }}>
+            リズム好機 +{quizFeedback.rhythmBonus}G
+          </div>
+        )}
 
         <QuizChoiceList
           choices={currentQuestion.choices}
@@ -4155,13 +4184,17 @@ function App() {
   // Handle answer selection (Improved in M9-3)
   const handleSelect = (itemId) => {
     if (!session || session.isFinished || quizFeedback) return;
-    
-    const updatedSession = answerQuestion(session, itemId);
+
+    const currentRhythmHit = getIsRhythmHitNow();
+    const updatedSession = answerQuestion(session, itemId, {
+      rhythmBonus: currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0
+    });
     const lastAnswer = updatedSession.answers[updatedSession.answers.length - 1];
     const isCorrect = lastAnswer.isCorrect;
+    const rhythmBonus = isCorrect && currentRhythmHit ? DEFAULT_RHYTHM_BONUS_GOLD : 0;
 
     // Trigger visual feedback
-    setQuizFeedback({ itemId, isCorrect });
+    setQuizFeedback({ itemId, isCorrect, rhythmBonus });
 
     // Delay result sound slightly
     setTimeout(() => {
