@@ -1,5 +1,5 @@
 import React from 'react';
-import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS } from './ui/quiz/RhythmMock';
+import { getIsRhythmHitNow, DEFAULT_NOTE_INTERVAL_MS, DEFAULT_JUDGMENT_WINDOW_MS, DEFAULT_RHYTHM_PHASE_OFFSET_MS } from './ui/quiz/RhythmMock';
 
 const { useState, useEffect, useRef } = React;
 import { createQuizSession, answerQuestion } from './game/quizEngine';
@@ -4170,6 +4170,7 @@ function App() {
       now: answeredAt,
       noteIntervalMs: DEFAULT_NOTE_INTERVAL_MS,
       judgmentWindowMs: DEFAULT_JUDGMENT_WINDOW_MS,
+      phaseOffsetMs: DEFAULT_RHYTHM_PHASE_OFFSET_MS,
     });
     const fast = answeredAt - quizQuestionStartAtRef.current <= 5000;
     const updatedSession = answerQuestion(session, itemId, {
