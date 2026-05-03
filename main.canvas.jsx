@@ -28,8 +28,9 @@ import {
 import {
   loadCareerProgress,
   saveCareerProgress,
+  getHeroineRouteStats,
   getHeroineProgressScore,
-  updateHeroineBestStats,
+  updateHeroineWeeklyStats,
   unlockLongHistory,
   isLongHistoryUnlocked,
 } from './game/careerProgressStorage';
@@ -46,6 +47,47 @@ const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT
 
 const getBacklogRouteModeLabel = (routeMode) => {
   return routeMode === 'long_history' ? '過去の縁' : '現在の縁';
+};
+
+const QUIZ_EXTRA_BGM_IDS = [
+  'extra_joy_1',
+  'extra_joy_2',
+  'extra_fun_1',
+  'extra_fun_2',
+  'extra_surprise_1',
+  'extra_surprise_2',
+  'extra_anger_1',
+  'extra_anger_2',
+  'extra_sorrow_1',
+  'extra_sorrow_2',
+];
+
+const hashBgmSeed = (value) => {
+  let hash = 0;
+  const text = String(value || '');
+  for (let i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+};
+
+const getQuizExtraBgmId = (day, activeHeroineId, routeMode) => {
+  if (QUIZ_EXTRA_BGM_IDS.length === 0) return null;
+  const seed = hashBgmSeed(`${activeHeroineId}:${routeMode}:${day}`);
+  return QUIZ_EXTRA_BGM_IDS[seed % QUIZ_EXTRA_BGM_IDS.length];
+};
+
+const getQuizBgmId = ({ day, activeHeroineId, routeMode }) => {
+  const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
+  if (day <= 1) return 'MAIN-03';
+  if (day === 2) {
+    return routeMode === 'long_history' ? `${hPrefix}-04` : `${hPrefix}-02`;
+  }
+  if (day === 3 || day === 4) {
+    return getQuizExtraBgmId(day, activeHeroineId, routeMode);
+  }
+  return routeMode === 'long_history' ? `${hPrefix}-05` : `${hPrefix}-03`;
 };
 
 const TEXT_SPEED_META = {
@@ -69,6 +111,17 @@ const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, a
     );
   });
   return state;
+};
+
+const buildHeroineProgressSummary = (progress, heroineId, routeMode) => {
+  const stats = getHeroineRouteStats(progress, heroineId, routeMode);
+  const initialAffection = Math.min(20, Math.floor((stats.weeklyReputation + stats.weeklySatisfaction) / 10));
+  return {
+    weeklySales: stats.weeklySales,
+    weeklyReputation: stats.weeklyReputation,
+    weeklySatisfaction: stats.weeklySatisfaction,
+    initialAffection,
+  };
 };
 
 const CustomerSilhouette = ({ customer }) => {
@@ -1377,6 +1430,7 @@ const StartScreen = ({
 
 
 // --- Inlined: HeroineSelectScreen ---
+﻿import React from 'react';
 
 const HeroineSelectScreen = ({
   previewHeroineId,
@@ -1393,7 +1447,8 @@ const HeroineSelectScreen = ({
   renderThemeStyles,
   HeroineDisplay,
   getFullPath,
-  audioEngine
+  audioEngine,
+  heroineProgressSummary
 }) => {
   const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
   const routeMeta = getRouteModeMeta(routeMode);
@@ -1567,8 +1622,10 @@ const HeroineSelectScreen = ({
             <div style={{ textAlign: 'left', flex: 1 }}>
               <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
               <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
-              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
-                親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection ? affection[selectedHeroine.id] : 0}</span>
+              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px', fontWeight: 'bold' }}>
+                新密度: <span style={{ color: THEME.textDark }}>{heroineProgressSummary ? heroineProgressSummary.initialAffection : 0}</span>
+                {' '}
+                （評判: {heroineProgressSummary ? heroineProgressSummary.weeklyReputation : 0}, 満足度: {heroineProgressSummary ? heroineProgressSummary.weeklySatisfaction : 0}）
               </div>
             </div>
           </div>
@@ -3321,6 +3378,7 @@ function App() {
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE); // M-TIME-PHASE-UI-1: Current time phase
   const [bgTransitionPhase, setBgTransitionPhase] = useState("idle"); // M-EVENT-PRESENTATION-FIX-2: "idle" | "covering" | "covered" | "revealing"
   const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0); // M-EVENT-PRESENTATION-FIX-1: Track current page for heroine visibility
+  const quizExtraBgmPlanRef = useRef(new Map());
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -3626,7 +3684,7 @@ function App() {
 
   // Handle BGM per screen
   useEffect(() => {
-    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'PROLOGUE', 'VISUAL_TEST'].includes(screen);
+    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'VISUAL_TEST'].includes(screen);
     if (isPassiveScreen) {
       if (audioEngine.currentTrackSource !== 'soundTest') {
         audioEngine.stop();
@@ -3640,17 +3698,26 @@ function App() {
     const eventPages = screen === 'EVENT' && activeEvent ? getEventPages(activeEvent, routeMode) : [];
     const currentEventPage = eventPages[eventCurrentPageIndex];
 
-    if (screen === 'QUIZ') {
-      if (day <= 2) {
-        trackId = 'MAIN-03';
-      } else if (day <= 4) {
-        trackId = `${hPrefix}-02`;
-      } else if (day <= 6) {
-        trackId = `${hPrefix}-03`;
-      } else if (day <= 8) {
-        trackId = `${hPrefix}-04`;
+    if (screen === 'PROLOGUE') {
+      trackId = 'MAIN-01';
+    } else if (screen === 'QUIZ') {
+      const quizBgmId = getQuizBgmId({ day, activeHeroineId, routeMode });
+      if (day === 3 || day === 4) {
+        const planKey = `${activeHeroineId}:${routeMode}`;
+        const existingPlan = quizExtraBgmPlanRef.current.get(planKey);
+        if (!existingPlan || existingPlan.day !== day || existingPlan.routeMode !== routeMode) {
+          const extraId = quizBgmId && TRACKS[quizBgmId] ? quizBgmId : 'extra_joy_1';
+          quizExtraBgmPlanRef.current.set(planKey, {
+            day,
+            routeMode,
+            trackId: extraId
+          });
+          trackId = extraId;
+        } else {
+          trackId = existingPlan.trackId;
+        }
       } else {
-        trackId = `${hPrefix}-05`;
+        trackId = quizBgmId;
       }
     } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
       trackId = 'MAIN-02';
@@ -4135,11 +4202,11 @@ function App() {
   const applyQuizResultState = (result) => {
     const currentAffection = affection[activeHeroineId] || 0;
     const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
-    const nextProgress = updateHeroineBestStats(
+    const nextProgress = updateHeroineWeeklyStats(
       careerProgress,
       activeHeroineId,
       routeMode,
-      result.workshopResult
+      nextWorkshopState
     );
     const nextAffection = getHeroineProgressScore(
       nextProgress,
@@ -5142,6 +5209,7 @@ function App() {
         HeroineDisplay={HeroineDisplay}
         getFullPath={getFullPath}
         audioEngine={audioEngine}
+        heroineProgressSummary={buildHeroineProgressSummary(careerProgress, previewHeroineId, routeMode)}
       />
     );
 

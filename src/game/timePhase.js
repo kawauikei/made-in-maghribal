@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Time Phase Helper for Made in Maghribal
  * Resolves the time phase label/icon based on screen and context.
  */
@@ -9,7 +9,7 @@ export const TIME_PHASES = {
   OPEN: { key: 'open', label: '営業中', icon: '🛍', color: '#10b981', description: 'お客様対応中' },
   POST_OPEN: { key: 'post_open', label: '営業後', icon: '🌆', color: '#f97316', description: '営業直後' },
   CLOSED: { key: 'closed', label: '閉店後', icon: '🌙', color: '#6366f1', description: '夜の支度' },
-  FINALE: { key: 'finale', label: '総決算', icon: '✨', color: '#8b5cf6', description: '10 日の総括' },
+  FINALE: { key: 'finale', label: '総決算', icon: '✨', color: '#8b5cf6', description: '5 日の総括' },
   MEMORY: { key: 'memory', label: '回想', icon: '📖', color: '#94a3b8', description: '愛着の記録' }
 };
 

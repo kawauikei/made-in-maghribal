@@ -16,9 +16,9 @@ function createDefaultHeroineProgress() {
   const routeStats = {};
   ROUTE_KEYS.forEach(routeMode => {
     routeStats[routeMode] = {
-      bestSales: 0,
-      bestReputation: 0,
-      bestSatisfaction: 0,
+      weeklySales: 0,
+      weeklyReputation: 0,
+      weeklySatisfaction: 0,
     };
   });
 
@@ -53,9 +53,9 @@ function normalizeHeroineProgress(rawHeroineProgress) {
   ROUTE_KEYS.forEach(routeMode => {
     const source = normalized.routeStats[routeMode] || {};
     normalized.routeStats[routeMode] = {
-      bestSales: normalizeStatNumber(source.bestSales),
-      bestReputation: normalizeStatNumber(source.bestReputation),
-      bestSatisfaction: normalizeStatNumber(source.bestSatisfaction),
+      weeklySales: normalizeStatNumber(source.weeklySales),
+      weeklyReputation: normalizeStatNumber(source.weeklyReputation),
+      weeklySatisfaction: normalizeStatNumber(source.weeklySatisfaction),
     };
   });
 
@@ -137,15 +137,15 @@ export function unlockLongHistory(progress, heroineId) {
   return normalized;
 }
 
-export function updateHeroineBestStats(progress, heroineId, routeMode, { sales = 0, reputation = 0, satisfaction = 0 } = {}) {
+export function updateHeroineWeeklyStats(progress, heroineId, routeMode, { sales = 0, reputation = 0, satisfaction = 0 } = {}) {
   const normalized = normalizeCareerProgress(progress);
   const heroineProgress = normalized.heroines[heroineId];
   if (!heroineProgress) return normalized;
 
   const routeStats = heroineProgress.routeStats[routeMode] || heroineProgress.routeStats.normal;
-  routeStats.bestSales = Math.max(routeStats.bestSales, normalizeStatNumber(sales));
-  routeStats.bestReputation = Math.max(routeStats.bestReputation, normalizeStatNumber(reputation));
-  routeStats.bestSatisfaction = Math.max(routeStats.bestSatisfaction, normalizeStatNumber(satisfaction));
+  routeStats.weeklySales = Math.max(routeStats.weeklySales, normalizeStatNumber(sales));
+  routeStats.weeklyReputation = Math.max(routeStats.weeklyReputation, normalizeStatNumber(reputation));
+  routeStats.weeklySatisfaction = Math.max(routeStats.weeklySatisfaction, normalizeStatNumber(satisfaction));
 
   heroineProgress.routeStats[routeMode] = routeStats;
   return normalized;
@@ -154,6 +154,6 @@ export function updateHeroineBestStats(progress, heroineId, routeMode, { sales =
 export function getHeroineProgressScore(progress, heroineId, routeMode, currentSales = 0) {
   const stats = getHeroineRouteStats(progress, heroineId, routeMode);
   const sales = normalizeStatNumber(currentSales);
-  const total = sales + stats.bestReputation + stats.bestSatisfaction;
+  const total = sales + stats.weeklyReputation + stats.weeklySatisfaction;
   return Math.min(100, Math.floor(total / 10));
 }

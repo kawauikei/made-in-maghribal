@@ -42,8 +42,9 @@ import {
 import {
   loadCareerProgress,
   saveCareerProgress,
+  getHeroineRouteStats,
   getHeroineProgressScore,
-  updateHeroineBestStats,
+  updateHeroineWeeklyStats,
   unlockLongHistory,
   isLongHistoryUnlocked,
 } from './game/careerProgressStorage';
@@ -67,6 +68,47 @@ const getBacklogRouteModeLabel = (routeMode) => {
   return routeMode === 'long_history' ? '過去の縁' : '現在の縁';
 };
 
+const QUIZ_EXTRA_BGM_IDS = [
+  'extra_joy_1',
+  'extra_joy_2',
+  'extra_fun_1',
+  'extra_fun_2',
+  'extra_surprise_1',
+  'extra_surprise_2',
+  'extra_anger_1',
+  'extra_anger_2',
+  'extra_sorrow_1',
+  'extra_sorrow_2',
+];
+
+const hashBgmSeed = (value) => {
+  let hash = 0;
+  const text = String(value || '');
+  for (let i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+};
+
+const getQuizExtraBgmId = (day, activeHeroineId, routeMode) => {
+  if (QUIZ_EXTRA_BGM_IDS.length === 0) return null;
+  const seed = hashBgmSeed(`${activeHeroineId}:${routeMode}:${day}`);
+  return QUIZ_EXTRA_BGM_IDS[seed % QUIZ_EXTRA_BGM_IDS.length];
+};
+
+const getQuizBgmId = ({ day, activeHeroineId, routeMode }) => {
+  const hPrefix = (activeHeroineId || 'hakima').toUpperCase();
+  if (day <= 1) return 'MAIN-03';
+  if (day === 2) {
+    return routeMode === 'long_history' ? `${hPrefix}-04` : `${hPrefix}-02`;
+  }
+  if (day === 3 || day === 4) {
+    return getQuizExtraBgmId(day, activeHeroineId, routeMode);
+  }
+  return routeMode === 'long_history' ? `${hPrefix}-05` : `${hPrefix}-03`;
+};
+
 const TEXT_SPEED_META = {
   slow: { label: '遅い', delay: 45 },
   normal: { label: '標準', delay: 30 },
@@ -88,6 +130,17 @@ const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, a
     );
   });
   return state;
+};
+
+const buildHeroineProgressSummary = (progress, heroineId, routeMode) => {
+  const stats = getHeroineRouteStats(progress, heroineId, routeMode);
+  const initialAffection = Math.min(20, Math.floor((stats.weeklyReputation + stats.weeklySatisfaction) / 10));
+  return {
+    weeklySales: stats.weeklySales,
+    weeklyReputation: stats.weeklyReputation,
+    weeklySatisfaction: stats.weeklySatisfaction,
+    initialAffection,
+  };
 };
 
 const CustomerSilhouette = ({ customer }) => {
@@ -169,6 +222,7 @@ export default function App() {
   const [currentTimePhase, setCurrentTimePhase] = useState(TIME_PHASES.NONE); // M-TIME-PHASE-UI-1: Current time phase
   const [bgTransitionPhase, setBgTransitionPhase] = useState("idle"); // M-EVENT-PRESENTATION-FIX-2: "idle" | "covering" | "covered" | "revealing"
   const [eventCurrentPageIndex, setEventCurrentPageIndex] = useState(0); // M-EVENT-PRESENTATION-FIX-1: Track current page for heroine visibility
+  const quizExtraBgmPlanRef = useRef(new Map());
 
   // --- Asset Loading State (M8-28) ---
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -474,7 +528,7 @@ export default function App() {
 
   // Handle BGM per screen
   useEffect(() => {
-    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'PROLOGUE', 'VISUAL_TEST'].includes(screen);
+    const isPassiveScreen = ['START', 'HEROINE_SELECT', 'MEMORIES', 'VISUAL_TEST'].includes(screen);
     if (isPassiveScreen) {
       if (audioEngine.currentTrackSource !== 'soundTest') {
         audioEngine.stop();
@@ -488,17 +542,26 @@ export default function App() {
     const eventPages = screen === 'EVENT' && activeEvent ? getEventPages(activeEvent, routeMode) : [];
     const currentEventPage = eventPages[eventCurrentPageIndex];
 
-    if (screen === 'QUIZ') {
-      if (day <= 2) {
-        trackId = 'MAIN-03';
-      } else if (day <= 4) {
-        trackId = `${hPrefix}-02`;
-      } else if (day <= 6) {
-        trackId = `${hPrefix}-03`;
-      } else if (day <= 8) {
-        trackId = `${hPrefix}-04`;
+    if (screen === 'PROLOGUE') {
+      trackId = 'MAIN-01';
+    } else if (screen === 'QUIZ') {
+      const quizBgmId = getQuizBgmId({ day, activeHeroineId, routeMode });
+      if (day === 3 || day === 4) {
+        const planKey = `${activeHeroineId}:${routeMode}`;
+        const existingPlan = quizExtraBgmPlanRef.current.get(planKey);
+        if (!existingPlan || existingPlan.day !== day || existingPlan.routeMode !== routeMode) {
+          const extraId = quizBgmId && TRACKS[quizBgmId] ? quizBgmId : 'extra_joy_1';
+          quizExtraBgmPlanRef.current.set(planKey, {
+            day,
+            routeMode,
+            trackId: extraId
+          });
+          trackId = extraId;
+        } else {
+          trackId = existingPlan.trackId;
+        }
       } else {
-        trackId = `${hPrefix}-05`;
+        trackId = quizBgmId;
       }
     } else if (screen === 'INTRO' || screen === 'RESULT' || screen === 'DAY_END') {
       trackId = 'MAIN-02';
@@ -983,11 +1046,11 @@ export default function App() {
   const applyQuizResultState = (result) => {
     const currentAffection = affection[activeHeroineId] || 0;
     const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
-    const nextProgress = updateHeroineBestStats(
+    const nextProgress = updateHeroineWeeklyStats(
       careerProgress,
       activeHeroineId,
       routeMode,
-      result.workshopResult
+      nextWorkshopState
     );
     const nextAffection = getHeroineProgressScore(
       nextProgress,
@@ -1990,6 +2053,7 @@ export default function App() {
         HeroineDisplay={HeroineDisplay}
         getFullPath={getFullPath}
         audioEngine={audioEngine}
+        heroineProgressSummary={buildHeroineProgressSummary(careerProgress, previewHeroineId, routeMode)}
       />
     );
 

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { THEME } from './theme';
 import GameHud, { getRouteModeMeta } from './GameHud';
 import { HEROINES, getHeroineAsset } from '../data/heroines';
@@ -19,7 +19,8 @@ const HeroineSelectScreen = ({
   renderThemeStyles,
   HeroineDisplay,
   getFullPath,
-  audioEngine
+  audioEngine,
+  heroineProgressSummary
 }) => {
   const selectedHeroine = HEROINES.find(h => h.id === previewHeroineId) || HEROINES[0];
   const routeMeta = getRouteModeMeta(routeMode);
@@ -193,8 +194,10 @@ const HeroineSelectScreen = ({
             <div style={{ textAlign: 'left', flex: 1 }}>
               <h3 style={{ margin: 0, fontSize: '1.3em', color: THEME.textDark }}>{selectedHeroine.name}</h3>
               <div style={{ fontSize: '0.85em', color: selectedHeroine.themeColor, fontWeight: 'bold' }}>{selectedHeroine.role}</div>
-              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
-                親密度: <span style={{ fontWeight: 'bold', color: THEME.textDark }}>{affection ? affection[selectedHeroine.id] : 0}</span>
+              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px', fontWeight: 'bold' }}>
+                新密度: <span style={{ color: THEME.textDark }}>{heroineProgressSummary ? heroineProgressSummary.initialAffection : 0}</span>
+                {' '}
+                （評判: {heroineProgressSummary ? heroineProgressSummary.weeklyReputation : 0}, 満足度: {heroineProgressSummary ? heroineProgressSummary.weeklySatisfaction : 0}）
               </div>
             </div>
           </div>
