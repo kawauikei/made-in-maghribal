@@ -114,6 +114,7 @@ class SimpleAudioEngine {
     this.audio = null;
     this.lastSfx = null;
     this.currentTrackId = null;
+    this.currentTrackSource = null;
     this.isMuted = false;
     this.isUnlocked = false;
     this.bgmVolume = 0.8;
@@ -142,7 +143,7 @@ class SimpleAudioEngine {
    * Play a track by its manifest data
    * @param {Object} track - Track object from tracks.js
    */
-  playTrack(track) {
+  playTrack(track, source = "game") {
     if (!track || !track.src) {
       this.stop();
       return;
@@ -162,6 +163,7 @@ class SimpleAudioEngine {
       this.audio.volume = this.bgmVolume;
       this.audio.muted = this.isMuted;
       this.currentTrackId = track.id;
+      this.currentTrackSource = source;
       if (!this.isUnlocked || this.isMuted) {
         return;
       }
@@ -187,6 +189,7 @@ class SimpleAudioEngine {
       this.audio = null;
     }
     this.currentTrackId = null;
+    this.currentTrackSource = null;
   }
   /**
    * Toggle mute state
@@ -354,7 +357,17 @@ function LogModal({ isOpen, onClose, vnBacklog, scrollRef, getFaceIcon }) {
     audioEngine.playSfx("uiTapBottle");
     onClose();
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: { ...hudModalCard, maxWidth: "380px", padding: "16px 14px 14px", height: "85vh", display: "flex", flexDirection: "column" } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 15px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em", fontWeight: "bold" } }, "会話ログ"), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "backlog-modal", style: hudModalBackdrop }, /* @__PURE__ */ React.createElement("div", { style: {
+    ...hudModalCard,
+    width: "90vw",
+    maxWidth: "90vw",
+    height: "min(78vh, 560px)",
+    maxHeight: "calc(100dvh - 24px)",
+    padding: "16px 14px 14px",
+    display: "flex",
+    flexDirection: "column",
+    boxSizing: "border-box"
+  } }, hudCloseX(handleClose), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 15px 0", color: THEME.nightBlue, textAlign: "center", fontSize: "1.2em", fontWeight: "bold" } }, "会話ログ"), /* @__PURE__ */ React.createElement(
     "div",
     {
       ref: scrollRef,
@@ -490,7 +503,7 @@ function OptionsModal({
       }
     },
     isAudioEnabled ? "ON" : "OFF"
-  )), /* @__PURE__ */ React.createElement("div", { style: { background: "#f5f5f5", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", fontWeight: "bold", color: THEME.textDark } }, "SE"), /* @__PURE__ */ React.createElement(
+  )), /* @__PURE__ */ React.createElement("div", { style: { background: "#f5f5f5", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em", fontWeight: "bold", color: THEME.textDark } }, "効果音"), /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "se-enabled-toggle",
@@ -618,34 +631,6 @@ const ROUTE_MODE_META = {
   }
 };
 const getRouteModeMeta = (routeMode) => ROUTE_MODE_META[routeMode] || ROUTE_MODE_META.normal;
-const renderRouteModeBadge = (routeMode, compact = false) => {
-  const meta = getRouteModeMeta(routeMode);
-  return /* @__PURE__ */ React.createElement(
-    "div",
-    {
-      "data-testid": "route-mode-badge",
-      "data-route-mode": routeMode,
-      style: {
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: compact ? "5px 8px" : "6px 10px",
-        borderRadius: "999px",
-        border: `1px solid \${THEME.brass}`,
-        background: "rgba(255,255,255,0.9)",
-        color: THEME.nightBlue,
-        fontSize: compact ? "0.7em" : "0.78em",
-        fontWeight: "bold",
-        lineHeight: 1,
-        textAlign: "center",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
-        maxWidth: "100%",
-        whiteSpace: "nowrap"
-      }
-    },
-    meta.label
-  );
-};
 const GameHud = ({
   screen,
   routeMode,
@@ -799,7 +784,7 @@ const VisualTestScreen = ({
     margin: "10px 0",
     alignSelf: "flex-start"
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "TITLE"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "BG"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "STILL"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "330px", maxHeight: "440px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px auto" } }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "visual-test-screen", style: { ...containerStyle2, padding: "0 0 20px 0" } }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", padding: "10px 16px", background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", gap: "12px", zIndex: 100 } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-back", onClick: handleBackToTitle, style: { ...utilityBackButtonStyle, margin: 0, fontSize: "0.8em", padding: "6px 12px" } }, "タイトルへ"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, color: THEME.sand, fontWeight: "bold", fontSize: "0.9em" } }, "映像確認 Asset Test"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "4px" } }, /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-bg", onClick: () => setVisualTestMode("background"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "background" ? THEME.brass : "#333", color: visualTestMode === "background" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "背景"), /* @__PURE__ */ React.createElement("button", { "data-testid": "visual-test-tab-still", onClick: () => setVisualTestMode("still"), style: { ...utilityBackButtonStyle, margin: 0, background: visualTestMode === "still" ? THEME.brass : "#333", color: visualTestMode === "still" ? THEME.textDark : "#aaa", fontSize: "0.75em", padding: "4px 8px" } }, "立ち絵"))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, width: "100%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px" } }, visualTestMode === "background" ? /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "800px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "15px", textAlign: "left", minHeight: "46px" }, className: "selectable-text" }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.1em", fontWeight: "bold", color: THEME.brass, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, bg.label), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#888", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }, title: bg.src }, "ID: ", bg.id, " | Path: ", getFileName(bg.src))), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "330px", maxHeight: "440px", aspectRatio: "3/4", background: "#000", borderRadius: "8px", overflow: "hidden", border: `1px solid ${THEME.brass}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px auto" } }, /* @__PURE__ */ React.createElement(
     "img",
     {
       key: bg.id,
@@ -1107,7 +1092,7 @@ const MemoriesScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), renderUtilityHeader && renderUtilityHeader("Memories", onBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...memoriesTitleStyle, display: "none" } }, "思い出の記録"), unlockAll && /* @__PURE__ */ React.createElement("div", { style: {
+  ), renderUtilityHeader && renderUtilityHeader("思い出の記録", onBackToTitle, null, "memories"), /* @__PURE__ */ React.createElement("h1", { style: { ...memoriesTitleStyle, display: "none" } }, "思い出の記録"), unlockAll && /* @__PURE__ */ React.createElement("div", { style: {
     background: THEME.starGold,
     color: "#000",
     padding: "4px 10px",
@@ -1219,7 +1204,6 @@ const PROTAGONIST = {
 const StartScreen = ({
   screen,
   routeMode,
-  setRouteMode,
   hasSave,
   onContinue,
   onNewGame,
@@ -1237,26 +1221,25 @@ const StartScreen = ({
   const [logoTaps, setLogoTaps] = React.useState(0);
   const logoTapTimer = React.useRef(null);
   const handleLogoTap = () => {
-    setLogoTaps((prev) => {
-      const next = prev + 1;
-      if (next >= 5) {
-        onToggleDebug();
-        audioEngine.playSfx("uiConfirmChime");
-        return 0;
-      }
-      return next;
-    });
+    const next = logoTaps + 1;
+    if (next >= 5) {
+      onToggleDebug();
+      audioEngine.playSfx("uiConfirmChime");
+      setLogoTaps(0);
+    } else {
+      setLogoTaps(next);
+    }
     if (logoTapTimer.current) clearTimeout(logoTapTimer.current);
     logoTapTimer.current = setTimeout(() => setLogoTaps(0), 1e3);
   };
   const containerStyle2 = {
     width: "100%",
     height: "100%",
-    padding: "12px",
+    padding: "24px 12px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     overflow: "hidden",
     position: "relative",
     boxSizing: "border-box",
@@ -1301,7 +1284,19 @@ const StartScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: "20px", position: "relative", zIndex: 1 } }, /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { style: {
+    textAlign: "center",
+    marginBottom: "22px",
+    position: "relative",
+    zIndex: 1,
+    width: "100%",
+    maxWidth: "420px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px"
+  } }, /* @__PURE__ */ React.createElement(
     "h1",
     {
       onClick: handleLogoTap,
@@ -1309,34 +1304,7 @@ const StartScreen = ({
     },
     SHOP.name,
     debugModeEnabled && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "10px", color: THEME.starGold, verticalAlign: "middle", marginLeft: "5px" } }, "[DEBUG]")
-  ), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.76em", color: THEME.sand, opacity: 0.85, textAlign: "center" } }, "縁のかたち"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%" } }, Object.entries(ROUTE_MODE_META).map(([mode, meta]) => {
-    const isSelected = routeMode === mode;
-    return /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        key: mode,
-        "data-testid": `route-mode-${mode}`,
-        "aria-pressed": isSelected,
-        onClick: () => {
-          audioEngine.playSfx("uiTapBottle");
-          setRouteMode(mode);
-        },
-        style: {
-          ...buttonStyle2,
-          flex: 1,
-          margin: 0,
-          padding: "10px 8px",
-          fontSize: "0.74em",
-          lineHeight: 1.2,
-          background: isSelected ? THEME.starGold : "#2c3e50",
-          color: isSelected ? THEME.textDark : THEME.sand,
-          border: `1px solid ${isSelected ? THEME.starGold : THEME.brassDark}`,
-          boxShadow: isSelected ? "0 0 0 2px rgba(255, 204, 0, 0.2)" : "none"
-        }
-      },
-      meta.label
-    );
-  })), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-description", style: { fontSize: "0.7em", color: THEME.parchment, opacity: 0.7, textAlign: "center", marginTop: "2px", fontStyle: "italic" } }, getRouteModeMeta(routeMode).description), /* @__PURE__ */ React.createElement("div", { "data-testid": "route-mode-current", style: { display: "flex", justifyContent: "center" } }, renderRouteModeBadge(routeMode)), /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement("div", { style: { color: THEME.sand, fontSize: "0.9em", letterSpacing: "0.1em", opacity: 0.8 } }, "— ", SHOP.localName, " —")), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, background: "transparent", border: "none", boxShadow: "none", display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", padding: "0", width: "100%", maxWidth: "420px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", maxWidth: "260px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "stretch" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "start-new",
@@ -1353,7 +1321,15 @@ const StartScreen = ({
       style: { ...buttonStyle2, background: THEME.starGold, width: "100%", maxWidth: "260px", margin: 0 }
     },
     "つづきから"
-  ), /* @__PURE__ */ React.createElement("button", { "data-testid": "memories-open", onClick: onOpenMemories, style: { ...buttonStyle2, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 } }, "思い出の記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "memories-open",
+      onClick: onOpenMemories,
+      style: { ...buttonStyle2, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "260px", margin: 0 }
+    },
+    "思い出の記録"
+  ), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", width: "100%", maxWidth: "260px" } }, /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "start-options",
@@ -1368,7 +1344,7 @@ const StartScreen = ({
       onClick: onOpenSoundTest,
       style: { ...buttonStyle2, background: "#333", color: "#fff", fontSize: "0.85em", flex: 1, margin: 0 }
     },
-    "音設定"
+    "音源確認"
   ), /* @__PURE__ */ React.createElement(
     "button",
     {
@@ -2193,10 +2169,17 @@ const { affectionEvents: AFFECTION_EVENTS$2 } = NARRATIVE_SCRIPT;
 function getEventsByHeroine(heroineId) {
   return AFFECTION_EVENTS$2[heroineId] || [];
 }
-function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode) {
+function buildSeenEventSet(seenEventIds = [], persistentSeenEventIds = []) {
+  return /* @__PURE__ */ new Set([
+    ...Array.isArray(seenEventIds) ? seenEventIds : [],
+    ...Array.isArray(persistentSeenEventIds) ? persistentSeenEventIds : []
+  ]);
+}
+function checkNewEventUnlock(heroineId, currentAffection, seenEventIds, routeMode, persistentSeenEventIds = []) {
   const events = getEventsByHeroine(heroineId);
+  const seenEventSet = buildSeenEventSet(seenEventIds, persistentSeenEventIds);
   const eligibleEvents = events.filter(
-    (event) => event.kind !== "flashback_intro" && event.kind !== "route_climax" && currentAffection >= event.threshold && !seenEventIds.includes(event.id) && // routeMode filter: if event has routeMode, it must match
+    (event) => event.kind !== "flashback_intro" && event.kind !== "route_climax" && currentAffection >= event.threshold && !seenEventSet.has(event.id) && // routeMode filter: if event has routeMode, it must match
     // if event has no routeMode, it's treated as 'both' (matches any)
     (!event.routeMode || event.routeMode === "both" || event.routeMode === routeMode)
   );
@@ -2237,11 +2220,12 @@ function getRouteText(baseText, routeTexts, routeMode) {
   }
   return baseText;
 }
-function resolveHeroineSelectionEvent({ heroineId, seenEventIds }) {
+function resolveHeroineSelectionEvent({ heroineId, seenEventIds, persistentSeenEventIds = [] }) {
   const introEventId = `${heroineId}_0`;
   const events = getEventsByHeroine(heroineId);
   const introEvent = events.find((e) => e.id === introEventId);
-  if (introEvent && !seenEventIds.includes(introEventId)) {
+  const seenEventSet = buildSeenEventSet(seenEventIds, persistentSeenEventIds);
+  if (introEvent && !seenEventSet.has(introEventId)) {
     return introEvent;
   }
   return null;
@@ -2281,6 +2265,8 @@ function resolveEventCloseActions({ event, isRecallMode }) {
 const HeroineSelectScreen = ({
   previewHeroineId,
   onPreviewHeroineChange,
+  onToggleRouteMode,
+  canToggleRouteMode,
   onSelectHeroine,
   affection,
   routeMode,
@@ -2294,14 +2280,16 @@ const HeroineSelectScreen = ({
   audioEngine: audioEngine2
 }) => {
   const selectedHeroine = HEROINES.find((h) => h.id === previewHeroineId) || HEROINES[0];
+  const routeMeta = getRouteModeMeta(routeMode);
+  const isLongHistoryUnlocked2 = Boolean(canToggleRouteMode);
   const containerStyle2 = {
     width: "100%",
     height: "100%",
-    padding: "12px",
+    padding: "24px 12px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     overflow: "hidden",
     position: "relative",
     boxSizing: "border-box"
@@ -2344,6 +2332,17 @@ const HeroineSelectScreen = ({
     whiteSpace: "pre-wrap",
     color: THEME.textDark
   };
+  const handleHeroineIconClick = (heroineId) => {
+    if (audioEngine2) audioEngine2.playSfx("uiHeroineTab");
+    if (heroineId === previewHeroineId) {
+      if (isLongHistoryUnlocked2 && onToggleRouteMode) {
+        onToggleRouteMode(heroineId);
+      }
+      return;
+    }
+    if (onPreviewHeroineChange) onPreviewHeroineChange(heroineId);
+  };
+  const previewExpressionFor = (heroineId) => heroineId === previewHeroineId && routeMode === "long_history" ? "maid" : "normal";
   return /* @__PURE__ */ React.createElement("div", { "data-testid": "heroine-select-screen", style: containerStyle2 }, renderThemeStyles && renderThemeStyles(), /* @__PURE__ */ React.createElement(
     GameHud,
     {
@@ -2353,26 +2352,24 @@ const HeroineSelectScreen = ({
       onOpenOptions,
       onOpenHelp
     }
-  ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, marginBottom: "20px" } }, "誰との縁を深める？"), /* @__PURE__ */ React.createElement("div", { style: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "20px",
-    marginBottom: "20px",
+  ), /* @__PURE__ */ React.createElement("div", { style: {
     width: "100%",
-    maxWidth: "350px"
-  } }, HEROINES.map((h) => {
+    maxWidth: "420px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  } }, /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: "0 0 18px 0", textAlign: "center" } }, "ヒロインを選ぶ"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: "20px", marginBottom: "18px", width: "100%", maxWidth: "350px", flexWrap: "wrap" } }, HEROINES.map((h) => {
     var _a;
     const isSelected = previewHeroineId === h.id;
+    const previewExpression = previewExpressionFor(h.id);
     return /* @__PURE__ */ React.createElement(
       "div",
       {
         "data-testid": `heroine-tab-${h.id}`,
         key: h.id,
         className: "heroine-card",
-        onClick: () => {
-          if (audioEngine2) audioEngine2.playSfx("uiHeroineTab");
-          if (onPreviewHeroineChange) onPreviewHeroineChange(h.id);
-        },
+        onClick: () => handleHeroineIconClick(h.id),
         style: {
           width: "70px",
           height: "70px",
@@ -2393,7 +2390,7 @@ const HeroineSelectScreen = ({
       /* @__PURE__ */ React.createElement(
         "img",
         {
-          src: getFullPath ? getFullPath(getHeroineAsset(h.id, "face", "normal")) : "",
+          src: getFullPath ? getFullPath(getHeroineAsset(h.id, "face", previewExpression)) : "",
           alt: h.name,
           style: {
             width: "100%",
@@ -2429,18 +2426,27 @@ const HeroineSelectScreen = ({
     background: THEME.parchment,
     border: `2px solid ${selectedHeroine.themeColor}`,
     position: "relative"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: selectedHeroine, type: "face", size: "medium", expression: "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection ? affection[selectedHeroine.id] : 0)))), /* @__PURE__ */ React.createElement("div", { style: {
+  } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 0, left: 0, width: "100%", height: "4px", background: selectedHeroine.themeColor } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "15px", alignItems: "center", marginBottom: "15px" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(HeroineDisplay2, { heroine: selectedHeroine, type: "face", size: "medium", expression: routeMode === "long_history" ? "maid" : "normal" }), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", flex: 1 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: "1.3em", color: THEME.textDark } }, selectedHeroine.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: selectedHeroine.themeColor, fontWeight: "bold" } }, selectedHeroine.role), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", color: "#666", marginTop: "4px" } }, "親密度: ", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.textDark } }, affection ? affection[selectedHeroine.id] : 0)))), /* @__PURE__ */ React.createElement("div", { style: {
     ...narrativeBoxStyle2,
     flex: 1,
     padding: "12px",
     fontSize: "0.9em",
-    marginBottom: "15px",
+    marginBottom: "10px",
     overflowY: "auto",
     background: "rgba(255,255,255,0.4)",
     border: "1px solid rgba(0,0,0,0.05)",
     color: "#333",
     textAlign: "left"
-  } }, getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)), /* @__PURE__ */ React.createElement(
+  } }, getRouteText(selectedHeroine.description, { long_history: selectedHeroine.routeDescription }, routeMode)), /* @__PURE__ */ React.createElement("div", { style: {
+    fontSize: "0.75em",
+    color: THEME.textDark,
+    marginBottom: "10px",
+    lineHeight: 1.5,
+    background: "rgba(255,255,255,0.55)",
+    borderRadius: "8px",
+    padding: "8px 10px",
+    border: `1px solid ${THEME.brass}`
+  } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", color: selectedHeroine.themeColor } }, "ルート: ", routeMeta.label), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "4px" } }, isLongHistoryUnlocked2 ? "同じヒロインをもう一度押すと、解放済みルートへ切り替わります。" : "解放されたら、同じヒロインをもう一度押してルートを切り替えられます。")), /* @__PURE__ */ React.createElement(
     "button",
     {
       "data-testid": "heroine-start",
@@ -2456,13 +2462,8 @@ const HeroineSelectScreen = ({
       }
     },
     selectedHeroine.name,
-    "を頼む"
-  )), /* @__PURE__ */ React.createElement("div", { style: {
-    marginTop: "20px",
-    display: "flex",
-    gap: "20px",
-    opacity: 0.8
-  } }));
+    "で始める"
+  ))));
 };
 const VNBox = forwardRef(({ text, pages, speaker, hint, themeColor, onComplete, onPageChange, onPageComplete, speed = 30, skip = false, hideSkip = false, hideNext = false, getFaceIcon }, ref) => {
   const pageList = Array.isArray(pages) && pages.length > 0 ? pages : [text || ""];
@@ -3179,7 +3180,7 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "See you tomorrow."
+      text: "また明日。"
     });
     pages.push({
       speakerId: "nader",
@@ -3327,6 +3328,43 @@ const IntroScreen = ({
     )))
   );
 };
+const QUIZ_SCORE_TO_G = 1;
+function calculateScore({ isCorrect, rhythmGood = false, fast = false } = {}) {
+  const isFastOrRhythmGood = rhythmGood || fast;
+  if (isCorrect) {
+    if (rhythmGood && fast) return 20;
+    if (isFastOrRhythmGood) return 15;
+    return 10;
+  }
+  if (isFastOrRhythmGood) {
+    return 5;
+  }
+  return 0;
+}
+function getQuizStampInfo(score) {
+  if (score >= 20) return { label: "大成功", tone: "gold" };
+  if (score >= 15) return { label: "上出来", tone: "brass" };
+  if (score >= 10) return { label: "正解", tone: "teal" };
+  if (score >= 5) return { label: "惜しい", tone: "amber" };
+  return { label: "不正解", tone: "rose" };
+}
+function getRankInfo(correctCount, totalQuestions = 10) {
+  const perfectThreshold = Math.max(1, totalQuestions);
+  const greatThreshold = Math.max(1, Math.ceil(totalQuestions * 0.8));
+  const goodThreshold = Math.max(1, Math.ceil(totalQuestions * 0.6));
+  const okayThreshold = Math.max(1, Math.ceil(totalQuestions * 0.4));
+  if (correctCount >= perfectThreshold) {
+    return { title: "星瓶堂の若店主", message: "客の求める品を見極める目が、もうしっかり育っています。" };
+  } else if (correctCount >= greatThreshold) {
+    return { title: "若き錬金店主", message: "なかなか鋭いです。あと一歩で、さらに星瓶堂らしい判断ができそうです。" };
+  } else if (correctCount >= goodThreshold) {
+    return { title: "かけだし店主", message: "まずまずです。品選びの勘は、少しずつ形になっています。" };
+  } else if (correctCount >= okayThreshold) {
+    return { title: "星瓶堂の一歩目", message: "手応えはあります。星瓶堂の仕事に、だんだん慣れてきました。" };
+  } else {
+    return { title: "見習い錬金店主", message: "ここからです。星瓶堂の仕事は、ひとつずつ覚えていけば大丈夫です。" };
+  }
+}
 const ResultScreen = ({
   session,
   getRankInfo: getRankInfo2,
@@ -3358,182 +3396,49 @@ const ResultScreen = ({
   if (!session) return null;
   const correctCount = session.answers.filter((a) => a.isCorrect).length;
   getRankInfo2(correctCount);
-  const mgmt = getWorkshopResult2(correctCount);
+  const mgmt = getWorkshopResult2({ correctCount, answers: session.answers });
   const totalQuestions = session.questions.length;
   const comment = getResultComment(activeHeroine.id, correctCount, totalQuestions);
-  return /* @__PURE__ */ React.createElement(
-    "div",
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "result-screen", style: { ...containerStyle2, position: "relative" } }, renderThemeStyles && renderThemeStyles(), renderBackground && renderBackground(screen), /* @__PURE__ */ React.createElement("div", { style: { zIndex: 10, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", padding: "0 8px" } }, /* @__PURE__ */ React.createElement(
+    GameHud,
     {
-      "data-testid": "result-screen",
-      style: { ...containerStyle2, position: "relative" }
+      screen,
+      routeMode,
+      onOpenLog,
+      onOpenOptions,
+      onOpenHelp
+    }
+  ), /* @__PURE__ */ React.createElement("h1", { style: { ...titleStyle2, margin: "40px 0 0 4px", color: THEME.parchment, fontSize: "1.15em", textAlign: "left", zIndex: 10 } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "12px", marginBottom: "4px", justifyContent: "center", minHeight: "250px", overflow: "visible" } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
+    HeroineDisplay2,
+    {
+      heroine: activeHeroine,
+      type: "standing",
+      size: "large",
+      expression: getResultExpression2(correctCount, totalQuestions),
+      noBorder: true,
+      objectPosition: "center center",
+      style: {
+        filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
+        maxHeight: "none",
+        overflow: "visible",
+        transform: "translateX(12px) scale(0.88)",
+        transformOrigin: "center bottom"
+      }
+    }
+  ), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "0", background: "rgba(244, 233, 213, 0.92)", border: `1.5px solid ${THEME.brass}`, borderRadius: "12px", padding: "12px 10px", position: "relative", width: "84px", minHeight: "168px", maxHeight: "190px", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", display: "flex", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "-8px", top: "50%", transform: "translateY(-50%)", width: "0", height: "0", borderTop: "8px solid transparent", borderBottom: "8px solid transparent", borderRight: `8px solid ${THEME.brass}` } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: "-5px", top: "50%", transform: "translateY(-50%)", width: "0", height: "0", borderTop: "7px solid transparent", borderBottom: "7px solid transparent", borderRight: "7px solid rgba(244, 233, 213, 0.92)" } }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.86em", color: THEME.textDark, lineHeight: "1.9", fontStyle: "normal", fontWeight: 600, letterSpacing: "0.04em", writingMode: "vertical-rl", textOrientation: "mixed", maxHeight: "178px", overflow: "hidden", fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif' } }, comment))), /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle2, borderRadius: "10px", border: `2px solid ${THEME.brass}`, background: "rgba(244, 233, 213, 0.98)", padding: "12px 16px", marginTop: "-12px", width: "94%", maxWidth: "340px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "1.4em", fontWeight: "900", color: THEME.brassDark, lineHeight: 1.2 } }, session.score * QUIZ_SCORE_TO_G, "G"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.75em", color: "#666", marginBottom: "6px" } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4px", background: "rgba(0,0,0,0.04)", padding: "6px 4px", borderRadius: "6px", marginBottom: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: THEME.brassDark } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.95em", fontWeight: "bold", color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844" } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85em", fontWeight: "bold", color: activeHeroine.themeColor, padding: "3px 10px", background: `${activeHeroine.themeColor}15`, borderRadius: "999px", display: "inline-block" } }, activeHeroine.name, "との縁 +", lastAffectionGain)), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      "data-testid": "day-end-next",
+      onClick: handleEndDay,
+      className: "vn-button-reveal",
+      style: {
+        ...buttonStyle2,
+        width: "80%",
+        maxWidth: "240px"
+      }
     },
-    renderThemeStyles && renderThemeStyles(),
-    renderBackground && renderBackground(screen),
-    /* @__PURE__ */ React.createElement("div", { style: {
-      zIndex: 10,
-      position: "relative",
-      width: "100%",
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      padding: "0 8px"
-    } }, /* @__PURE__ */ React.createElement(
-      GameHud,
-      {
-        screen,
-        routeMode,
-        onOpenLog,
-        onOpenOptions,
-        onOpenHelp
-      }
-    ), /* @__PURE__ */ React.createElement("h1", { style: {
-      ...titleStyle2,
-      margin: "40px 0 0 4px",
-      color: THEME.parchment,
-      fontSize: "1.15em",
-      textAlign: "left",
-      zIndex: 10
-    } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "4px",
-      minWidth: 0
-    } }, /* @__PURE__ */ React.createElement("div", { style: {
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      marginBottom: "4px",
-      justifyContent: "center",
-      minHeight: "250px",
-      overflow: "visible"
-    } }, HeroineDisplay2 && /* @__PURE__ */ React.createElement(
-      HeroineDisplay2,
-      {
-        heroine: activeHeroine,
-        type: "standing",
-        size: "large",
-        expression: getResultExpression2(correctCount),
-        noBorder: true,
-        objectPosition: "center center",
-        style: {
-          filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
-          maxHeight: "none",
-          overflow: "visible",
-          transform: "translateX(12px) scale(0.88)",
-          transformOrigin: "center bottom"
-        }
-      }
-    ), /* @__PURE__ */ React.createElement("div", { style: {
-      marginTop: "0",
-      background: "rgba(244, 233, 213, 0.92)",
-      border: `1.5px solid ${THEME.brass}`,
-      borderRadius: "12px",
-      padding: "12px 10px",
-      position: "relative",
-      width: "84px",
-      minHeight: "168px",
-      maxHeight: "190px",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    } }, /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      left: "-8px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      width: "0",
-      height: "0",
-      borderTop: "8px solid transparent",
-      borderBottom: "8px solid transparent",
-      borderRight: `8px solid ${THEME.brass}`
-    } }), /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      left: "-5px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      width: "0",
-      height: "0",
-      borderTop: "7px solid transparent",
-      borderBottom: "7px solid transparent",
-      borderRight: "7px solid rgba(244, 233, 213, 0.92)"
-    } }), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.86em",
-      color: THEME.textDark,
-      lineHeight: "1.9",
-      fontStyle: "normal",
-      fontWeight: 600,
-      letterSpacing: "0.04em",
-      writingMode: "vertical-rl",
-      textOrientation: "mixed",
-      maxHeight: "178px",
-      overflow: "hidden",
-      fontFamily: '"Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif'
-    } }, comment))), /* @__PURE__ */ React.createElement("div", { style: {
-      ...cardStyle2,
-      borderRadius: "10px",
-      border: `2px solid ${THEME.brass}`,
-      background: "rgba(244, 233, 213, 0.98)",
-      padding: "12px 16px",
-      marginTop: "-12px",
-      width: "94%",
-      maxWidth: "340px",
-      textAlign: "center"
-    } }, /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "1.4em",
-      fontWeight: "900",
-      color: THEME.brassDark,
-      lineHeight: 1.2
-    } }, session.score, " 点"), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.75em",
-      color: "#666",
-      marginBottom: "6px"
-    } }, "依頼 ", session.questions.length, " 件中 ", correctCount, " 件達成"), /* @__PURE__ */ React.createElement("div", { style: {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      gap: "4px",
-      background: "rgba(0,0,0,0.04)",
-      padding: "6px 4px",
-      borderRadius: "6px",
-      marginBottom: "6px"
-    } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "評判"), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.95em",
-      fontWeight: "bold",
-      color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844"
-    } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "売上"), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.95em",
-      fontWeight: "bold",
-      color: THEME.brassDark
-    } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65em", color: "#888" } }, "満足度"), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.95em",
-      fontWeight: "bold",
-      color: mgmt.satisfaction >= 0 ? THEME.oasisTeal : "#844"
-    } }, mgmt.satisfaction >= 0 ? `+${mgmt.satisfaction}` : mgmt.satisfaction))), /* @__PURE__ */ React.createElement("div", { style: {
-      fontSize: "0.85em",
-      fontWeight: "bold",
-      color: activeHeroine.themeColor,
-      padding: "3px 10px",
-      background: `${activeHeroine.themeColor}15`,
-      borderRadius: "999px",
-      display: "inline-block"
-    } }, activeHeroine.name, "との縁 +", lastAffectionGain)), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        "data-testid": "day-end-next",
-        onClick: handleEndDay,
-        className: "vn-button-reveal",
-        style: {
-          ...buttonStyle2,
-          width: "80%",
-          maxWidth: "240px"
-        }
-      },
-      "次の営業へ"
-    )))
-  );
+    "次の営業へ"
+  ))));
 };
 function CustomerSilhouette({ customer }) {
   if (!customer) return null;
@@ -3740,7 +3645,7 @@ function QuizHeader({ screen, routeMode, onOpenLog, onOpenOptions, onOpenHelp, h
     justifyContent: "flex-start",
     gap: "20px",
     zIndex: 10
-  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score, " G")));
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "0.9em" } }, "依頼件数 ", session.currentIndex + 1, " / ", session.questions.length), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brass } }, "報酬見込: ", session.score * QUIZ_SCORE_TO_G, " G")));
 }
 const COLORS = [
   { id: "AS", name: "青色", label: "星明かり (Astral)" },
@@ -3828,8 +3733,8 @@ function QuizRequestCard({ currentQuestion, customerStyle: customerStyle2, bubbl
   var _a;
   const stampLabel = quizFeedback == null ? void 0 : quizFeedback.stampLabel;
   const stampTone = (quizFeedback == null ? void 0 : quizFeedback.stampTone) || "gold";
-  const tempoMark = (quizFeedback == null ? void 0 : quizFeedback.tempoMark) || "△";
-  const speedMark = (quizFeedback == null ? void 0 : quizFeedback.speedMark) || "△";
+  const tempoMark = (quizFeedback == null ? void 0 : quizFeedback.tempoMark) || "+0";
+  const speedMark = (quizFeedback == null ? void 0 : quizFeedback.speedMark) || "+0";
   const stampColors = {
     gold: { border: "rgba(198, 156, 66, 0.9)", text: "#8a5f14", fill: "rgba(255, 244, 208, 0.92)" },
     brass: { border: "rgba(162, 128, 64, 0.85)", text: "#7a4f10", fill: "rgba(249, 236, 197, 0.92)" },
@@ -4147,38 +4052,6 @@ REQUEST_TEMPLATES.reduce((acc, t) => {
   acc[t.id] = t;
   return acc;
 }, {});
-function calculateScore({ isCorrect, rhythmGood = false, fast = false } = {}) {
-  const isFastOrRhythmGood = rhythmGood || fast;
-  if (isCorrect) {
-    if (rhythmGood && fast) return 20;
-    if (isFastOrRhythmGood) return 15;
-    return 10;
-  }
-  if (isFastOrRhythmGood) {
-    return 5;
-  }
-  return 0;
-}
-function getQuizStampInfo(score) {
-  if (score >= 20) return { label: "大成功", tone: "gold" };
-  if (score >= 15) return { label: "上出来", tone: "brass" };
-  if (score >= 10) return { label: "正解", tone: "teal" };
-  if (score >= 5) return { label: "惜しい", tone: "amber" };
-  return { label: "不正解", tone: "rose" };
-}
-function getRankInfo(correctCount) {
-  if (correctCount >= 5) {
-    return { title: "星瓶堂の若店主", message: "客の求める品を見極める目が、もうしっかり育っています。" };
-  } else if (correctCount >= 4) {
-    return { title: "若き錬金店主", message: "なかなか鋭いです。あと一歩で、さらに星瓶堂らしい判断ができそうです。" };
-  } else if (correctCount >= 3) {
-    return { title: "かけだし店主", message: "まずまずです。品選びの勘は、少しずつ形になっています。" };
-  } else if (correctCount >= 2) {
-    return { title: "星瓶堂の一歩目", message: "手応えはあります。星瓶堂の仕事に、だんだん慣れてきました。" };
-  } else {
-    return { title: "見習い錬金店主", message: "ここからです。星瓶堂の仕事は、ひとつずつ覚えていけば大丈夫です。" };
-  }
-}
 const items = [
   {
     id: "IT_ARM_ME_01",
@@ -9506,7 +9379,7 @@ function isItemMatchingCriteria(item, criteria) {
   if (criteria.itemTypeId && item.typeId !== criteria.itemTypeId) return false;
   return true;
 }
-function createQuizSession({ questionCount = 20 } = {}) {
+function createQuizSession({ questionCount = 10 } = {}) {
   const questions = [];
   const typePlan = buildRequestTypePlan(questionCount);
   const usedCorrectItemIds = /* @__PURE__ */ new Set();
@@ -9677,6 +9550,8 @@ function checkAnswer(question, selectedItemId, { rhythmGood = false, fast = fals
     selectedItemId,
     correctItemId: question.correctItemId,
     isCorrect,
+    rhythmGood,
+    fast,
     gainedScore
   };
 }
@@ -9725,33 +9600,34 @@ function createInitialAffection(heroineIds) {
 function clampAffection(value) {
   return Math.max(AFFECTION_LIMITS.MIN, Math.min(AFFECTION_LIMITS.MAX, value));
 }
-function addAffection(affectionState, heroineId, amount) {
-  if (!(heroineId in affectionState)) {
-    console.warn(`Attempted to add affection to unknown heroineId: ${heroineId}`);
-    return affectionState;
-  }
-  return {
-    ...affectionState,
-    [heroineId]: clampAffection(affectionState[heroineId] + amount)
-  };
-}
 function calculateQuizAffectionGain(correctCount, totalQuestions = 5) {
   return Math.max(0, correctCount);
 }
-function getWorkshopResult(correctCount) {
-  if (correctCount >= 5) {
-    return { reputation: 3, sales: 120, satisfaction: 3 };
+function getWorkshopResult(input) {
+  if (typeof input === "number") {
+    const correctCount2 = input;
+    if (correctCount2 >= 5) {
+      return { reputation: 3, sales: 120, satisfaction: 3 };
+    }
+    if (correctCount2 === 4) {
+      return { reputation: 2, sales: 100, satisfaction: 2 };
+    }
+    if (correctCount2 === 3) {
+      return { reputation: 1, sales: 80, satisfaction: 1 };
+    }
+    if (correctCount2 === 2) {
+      return { reputation: 0, sales: 50, satisfaction: 0 };
+    }
+    return { reputation: -1, sales: 20, satisfaction: -1 };
   }
-  if (correctCount === 4) {
-    return { reputation: 2, sales: 100, satisfaction: 2 };
-  }
-  if (correctCount === 3) {
-    return { reputation: 1, sales: 80, satisfaction: 1 };
-  }
-  if (correctCount === 2) {
-    return { reputation: 0, sales: 50, satisfaction: 0 };
-  }
-  return { reputation: -1, sales: 20, satisfaction: -1 };
+  const correctCount = Number(input == null ? void 0 : input.correctCount) || 0;
+  const answers = Array.isArray(input == null ? void 0 : input.answers) ? input.answers : [];
+  const sales = answers.reduce((total, answer) => total + (Number(answer == null ? void 0 : answer.gainedScore) || 0), 0) * QUIZ_SCORE_TO_G;
+  const reputation = correctCount * 2;
+  const satisfaction = answers.reduce((total, answer) => {
+    return total + ((answer == null ? void 0 : answer.rhythmGood) ? 1 : 0) + ((answer == null ? void 0 : answer.fast) ? 1 : 0);
+  }, 0);
+  return { reputation, sales, satisfaction };
 }
 function createInitialWorkshopState() {
   return {
@@ -9776,13 +9652,24 @@ function resolveQuizCompletion({
   activeHeroineId,
   currentAffection,
   seenEventIds,
+  persistentSeenEventIds = [],
+  answers = [],
   routeMode
 }) {
-  const rank = getRankInfo(correctCount);
+  const rank = getRankInfo(correctCount, totalCount);
   const affectionGain = calculateQuizAffectionGain(correctCount, totalCount);
-  const workshopResult = getWorkshopResult(correctCount);
+  const workshopResult = getWorkshopResult({
+    correctCount,
+    answers
+  });
   const nextAffectionValue = currentAffection + affectionGain;
-  const unlockedEvent = checkNewEventUnlock(activeHeroineId, nextAffectionValue, seenEventIds, routeMode);
+  const unlockedEvent = checkNewEventUnlock(
+    activeHeroineId,
+    nextAffectionValue,
+    seenEventIds,
+    routeMode,
+    persistentSeenEventIds
+  );
   return {
     correctCount,
     totalCount,
@@ -9795,21 +9682,36 @@ function resolveQuizCompletion({
     isPerfect: correctCount === totalCount
   };
 }
-function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode) {
+function createPerfectQuizPayload(totalCount, activeHeroineId, currentAffection, seenEventIds, routeMode, persistentSeenEventIds = []) {
+  const answers = Array.from({ length: totalCount }, (_, index) => ({
+    questionId: `q_${String(index + 1).padStart(3, "0")}`,
+    selectedItemId: "perfect",
+    correctItemId: "perfect",
+    isCorrect: true,
+    rhythmGood: true,
+    fast: true,
+    gainedScore: 20
+  }));
   return resolveQuizCompletion({
     correctCount: totalCount,
     totalCount,
     activeHeroineId,
     currentAffection,
     seenEventIds,
-    routeMode
+    routeMode,
+    persistentSeenEventIds,
+    answers
   });
 }
-function getResultExpression(correctCount) {
-  if (correctCount >= 5) return "fun";
-  if (correctCount >= 4) return "joy";
-  if (correctCount >= 3) return "normal";
-  if (correctCount >= 2) return "sorrow";
+function getResultExpression(correctCount, totalQuestions = 10) {
+  const perfectThreshold = Math.max(1, totalQuestions);
+  const joyThreshold = Math.max(1, Math.ceil(totalQuestions * 0.8));
+  const normalThreshold = Math.max(1, Math.ceil(totalQuestions * 0.6));
+  const sorrowThreshold = Math.max(1, Math.ceil(totalQuestions * 0.4));
+  if (correctCount >= perfectThreshold) return "fun";
+  if (correctCount >= joyThreshold) return "joy";
+  if (correctCount >= normalThreshold) return "normal";
+  if (correctCount >= sorrowThreshold) return "sorrow";
   return "cry";
 }
 const TRACKS = {
@@ -10149,7 +10051,7 @@ function normalizeSaveData(raw) {
   }
   return normalized;
 }
-function isStorageAvailable$1() {
+function isStorageAvailable$3() {
   try {
     return typeof localStorage !== "undefined";
   } catch (e) {
@@ -10157,7 +10059,7 @@ function isStorageAvailable$1() {
   }
 }
 function saveGameData(data) {
-  if (!isStorageAvailable$1()) return false;
+  if (!isStorageAvailable$3()) return false;
   try {
     const serialized = JSON.stringify({
       ...data,
@@ -10171,7 +10073,7 @@ function saveGameData(data) {
   }
 }
 function loadSaveData() {
-  if (!isStorageAvailable$1()) return null;
+  if (!isStorageAvailable$3()) return null;
   try {
     const serialized = localStorage.getItem(STORAGE_KEY);
     if (!serialized) return null;
@@ -10183,7 +10085,7 @@ function loadSaveData() {
   }
 }
 function clearSaveData() {
-  if (!isStorageAvailable$1()) return;
+  if (!isStorageAvailable$3()) return;
   localStorage.removeItem(STORAGE_KEY);
 }
 function buildGameSavePayload({
@@ -10330,7 +10232,7 @@ function useGameSaveStatus() {
 const DEBUG_MODE_KEY = "made_in_maghribal_debug_mode";
 const AUTO_SKIP_QUIZ_KEY = "made_in_maghribal_auto_skip_quiz";
 const DEBUG_UNLOCK_ALL_KEY = "made_in_maghribal_debug_unlock_all";
-function isStorageAvailable() {
+function isStorageAvailable$2() {
   try {
     return typeof localStorage !== "undefined";
   } catch {
@@ -10338,7 +10240,7 @@ function isStorageAvailable() {
   }
 }
 function loadBooleanFlag(key, defaultValue = false) {
-  if (!isStorageAvailable()) return defaultValue;
+  if (!isStorageAvailable$2()) return defaultValue;
   try {
     const val = localStorage.getItem(key);
     if (val === null) return defaultValue;
@@ -10348,7 +10250,7 @@ function loadBooleanFlag(key, defaultValue = false) {
   }
 }
 function saveBooleanFlag(key, value) {
-  if (!isStorageAvailable()) return;
+  if (!isStorageAvailable$2()) return;
   try {
     localStorage.setItem(key, String(Boolean(value)));
   } catch {
@@ -10394,6 +10296,166 @@ function prepareDayEndTalkSequence({ heroineId, currentAffection, seenTalkIds, r
   const talk2 = getDayEndTalk(heroineId, currentAffection, routeMode, seenTalkIds);
   const newSeenTalkIds = talk2 ? [talk2.id] : [];
   return { talk: talk2, newSeenTalkIds };
+}
+const EVENT_MEMORY_KEY = "made_in_maghribal_event_memory";
+function isStorageAvailable$1() {
+  try {
+    return typeof localStorage !== "undefined";
+  } catch {
+    return false;
+  }
+}
+function normalizeIdList(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((id) => typeof id === "string" && id.length > 0))];
+}
+function loadPersistentSeenEventIds() {
+  if (!isStorageAvailable$1()) return [];
+  try {
+    const raw = localStorage.getItem(EVENT_MEMORY_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return normalizeIdList(parsed);
+  } catch {
+    return [];
+  }
+}
+function savePersistentSeenEventIds(seenEventIds) {
+  if (!isStorageAvailable$1()) return false;
+  try {
+    localStorage.setItem(EVENT_MEMORY_KEY, JSON.stringify(normalizeIdList(seenEventIds)));
+    return true;
+  } catch {
+    return false;
+  }
+}
+function clearPersistentSeenEventIds() {
+  if (!isStorageAvailable$1()) return;
+  try {
+    localStorage.removeItem(EVENT_MEMORY_KEY);
+  } catch {
+  }
+}
+const CAREER_PROGRESS_KEY = "made_in_maghribal_career_progress";
+const ROUTE_KEYS = ["normal", "long_history"];
+function isStorageAvailable() {
+  try {
+    return typeof localStorage !== "undefined";
+  } catch {
+    return false;
+  }
+}
+function createDefaultHeroineProgress() {
+  const routeStats = {};
+  ROUTE_KEYS.forEach((routeMode) => {
+    routeStats[routeMode] = {
+      bestSales: 0,
+      bestReputation: 0,
+      bestSatisfaction: 0
+    };
+  });
+  return {
+    routeStats,
+    unlockedRoutes: {
+      long_history: false
+    }
+  };
+}
+function createDefaultCareerProgress() {
+  const heroines = {};
+  HEROINES.forEach((heroine) => {
+    heroines[heroine.id] = createDefaultHeroineProgress();
+  });
+  return { heroines };
+}
+function normalizeStatNumber(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, numeric);
+}
+function normalizeHeroineProgress(rawHeroineProgress) {
+  const base = createDefaultHeroineProgress();
+  const normalized = { ...base, ...rawHeroineProgress || {} };
+  normalized.routeStats = { ...base.routeStats, ...(rawHeroineProgress == null ? void 0 : rawHeroineProgress.routeStats) || {} };
+  ROUTE_KEYS.forEach((routeMode) => {
+    const source = normalized.routeStats[routeMode] || {};
+    normalized.routeStats[routeMode] = {
+      bestSales: normalizeStatNumber(source.bestSales),
+      bestReputation: normalizeStatNumber(source.bestReputation),
+      bestSatisfaction: normalizeStatNumber(source.bestSatisfaction)
+    };
+  });
+  normalized.unlockedRoutes = {
+    ...base.unlockedRoutes,
+    ...(rawHeroineProgress == null ? void 0 : rawHeroineProgress.unlockedRoutes) || {}
+  };
+  normalized.unlockedRoutes.long_history = Boolean(normalized.unlockedRoutes.long_history);
+  return normalized;
+}
+function normalizeCareerProgress(raw) {
+  const base = createDefaultCareerProgress();
+  const normalized = { ...base, ...raw || {} };
+  const rawHeroines = (raw == null ? void 0 : raw.heroines) || {};
+  normalized.heroines = {};
+  HEROINES.forEach((heroine) => {
+    normalized.heroines[heroine.id] = normalizeHeroineProgress(rawHeroines[heroine.id]);
+  });
+  return normalized;
+}
+function loadCareerProgress() {
+  if (!isStorageAvailable()) {
+    return createDefaultCareerProgress();
+  }
+  try {
+    const raw = localStorage.getItem(CAREER_PROGRESS_KEY);
+    if (!raw) return createDefaultCareerProgress();
+    return normalizeCareerProgress(JSON.parse(raw));
+  } catch {
+    return createDefaultCareerProgress();
+  }
+}
+function saveCareerProgress(progress) {
+  if (!isStorageAvailable()) return false;
+  try {
+    localStorage.setItem(CAREER_PROGRESS_KEY, JSON.stringify(normalizeCareerProgress(progress)));
+    return true;
+  } catch {
+    return false;
+  }
+}
+function getHeroineProgress(progress, heroineId) {
+  const normalized = normalizeCareerProgress(progress);
+  return normalized.heroines[heroineId] || createDefaultHeroineProgress();
+}
+function getHeroineRouteStats(progress, heroineId, routeMode) {
+  const heroineProgress = getHeroineProgress(progress, heroineId);
+  return heroineProgress.routeStats[routeMode] || heroineProgress.routeStats.normal;
+}
+function isLongHistoryUnlocked(progress, heroineId) {
+  return Boolean(getHeroineProgress(progress, heroineId).unlockedRoutes.long_history);
+}
+function unlockLongHistory(progress, heroineId) {
+  const normalized = normalizeCareerProgress(progress);
+  if (!normalized.heroines[heroineId]) return normalized;
+  normalized.heroines[heroineId].unlockedRoutes.long_history = true;
+  return normalized;
+}
+function updateHeroineBestStats(progress, heroineId, routeMode, { sales = 0, reputation = 0, satisfaction = 0 } = {}) {
+  const normalized = normalizeCareerProgress(progress);
+  const heroineProgress = normalized.heroines[heroineId];
+  if (!heroineProgress) return normalized;
+  const routeStats = heroineProgress.routeStats[routeMode] || heroineProgress.routeStats.normal;
+  routeStats.bestSales = Math.max(routeStats.bestSales, normalizeStatNumber(sales));
+  routeStats.bestReputation = Math.max(routeStats.bestReputation, normalizeStatNumber(reputation));
+  routeStats.bestSatisfaction = Math.max(routeStats.bestSatisfaction, normalizeStatNumber(satisfaction));
+  heroineProgress.routeStats[routeMode] = routeStats;
+  return normalized;
+}
+function getHeroineProgressScore(progress, heroineId, routeMode, currentSales = 0) {
+  const stats = getHeroineRouteStats(progress, heroineId, routeMode);
+  const sales = normalizeStatNumber(currentSales);
+  const total = sales + stats.bestReputation + stats.bestSatisfaction;
+  return Math.min(100, Math.floor(total / 10));
 }
 const SFX = {
   // --- UI Interactions ---
@@ -10453,21 +10515,21 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
     Object.values(TRACKS).forEach((track) => audioEngine.preloadTrack(track));
   }, []);
   const handlePlayTrack = (track) => {
-    audioEngine.playTrack(track);
+    audioEngine.playTrack(track, "soundTest");
     setCurrentPlayingId(track.id);
   };
   const handleStop = () => {
     audioEngine.stop();
     setCurrentPlayingId(null);
   };
-  return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#1a1a1a", borderRadius: "12px", border: `1px solid ${THEME.brassDark}`, color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 16px", background: "rgba(26, 42, 58, 0.98)", borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: THEME.starGold, fontSize: "1.1rem", fontWeight: "bold" } }, "Sound Test"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "6px 12px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" } }, "閉じる")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "8px", borderRadius: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#888", textTransform: "uppercase" } }, "Now Playing"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85rem", color: currentTrack ? THEME.starGold : "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: "500" } }, currentTrack ? `${currentTrack.title} (${currentTrack.id})` : "None")), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { "data-testid": "sound-test-modal", style: { position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", zIndex: 2e3, display: "flex", flexDirection: "column", padding: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: "600px", width: "100%", height: "100%", margin: "0 auto", background: "#1a1a1a", borderRadius: "12px", border: `1px solid ${THEME.brassDark}`, color: "#eee", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 16px", background: "rgba(26, 42, 58, 0.98)", borderBottom: `1px solid ${THEME.brassDark}`, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, color: THEME.starGold, fontSize: "1.1rem", fontWeight: "bold" } }, "音源確認"), /* @__PURE__ */ React.createElement("button", { "data-testid": "sound-test-close", onClick: onClose, style: { padding: "6px 12px", background: "#444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" } }, "閉じる")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "8px", borderRadius: "6px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.65rem", color: "#888", textTransform: "uppercase" } }, "再生中"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.85rem", color: currentTrack ? THEME.starGold : "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: "500" } }, currentTrack ? `${currentTrack.title} (${currentTrack.id})` : "なし")), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: handleStop,
       style: { padding: "8px 16px", background: currentPlayingId ? "#e53935" : "#333", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "0.75rem", fontWeight: "bold", transition: "background 0.2s" }
     },
-    "STOP"
-  ))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "16px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "12px", marginBottom: "20px", borderRadius: "8px", color: "#f88", fontSize: "0.85rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #622" } }, /* @__PURE__ */ React.createElement("span", null, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("button", { onClick: onToggleAudio, style: { padding: "6px 12px", background: THEME.starGold, color: THEME.textDark, border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.8rem" } }, "音をONにする")), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "24px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "BGM (Music)"), [...new Set(Object.values(TRACKS).map((t) => t.category || "その他"))].map((category) => /* @__PURE__ */ React.createElement("div", { key: category, style: { marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, category), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" } }, Object.values(TRACKS).filter((t) => (t.category || "その他") === category).map((track) => {
+    "停止"
+  ))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto", padding: "16px" } }, !isAudioEnabled && /* @__PURE__ */ React.createElement("div", { style: { background: "#422", padding: "12px", marginBottom: "20px", borderRadius: "8px", color: "#f88", fontSize: "0.85rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #622" } }, /* @__PURE__ */ React.createElement("span", null, "音声がOFFのため、再生されません。"), /* @__PURE__ */ React.createElement("button", { onClick: onToggleAudio, style: { padding: "6px 12px", background: THEME.starGold, color: THEME.textDark, border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "0.8rem" } }, "音をONにする")), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "24px" } }, /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "BGM"), [...new Set(Object.values(TRACKS).map((t) => t.category || "その他"))].map((category) => /* @__PURE__ */ React.createElement("div", { key: category, style: { marginBottom: "16px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, category), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" } }, Object.values(TRACKS).filter((t) => (t.category || "その他") === category).map((track) => {
     const isPlaying = currentPlayingId === track.id;
     return /* @__PURE__ */ React.createElement(
       "button",
@@ -10491,7 +10553,7 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
       /* @__PURE__ */ React.createElement("div", { style: { fontWeight: "bold", fontSize: "0.7rem", color: isPlaying ? THEME.starGold : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, track.title),
       /* @__PURE__ */ React.createElement("div", { style: { fontSize: "0.6rem", color: "#666", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, track.id)
     );
-  }))))), /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "SFX (Sound Effects)"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement(
+  }))))), /* @__PURE__ */ React.createElement("h3", { style: { color: "#aaa", fontSize: "0.7rem", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.1em", fontWeight: "bold" } }, "効果音"), groups.map((group) => /* @__PURE__ */ React.createElement("div", { key: group, style: { marginBottom: "20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#777", fontSize: "0.7rem", marginBottom: "8px", borderLeft: `2px solid ${THEME.brassDark}`, paddingLeft: "8px", fontWeight: "bold" } }, group), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" } }, SFX_CANDIDATES.filter((c) => c.group === group).map((c) => /* @__PURE__ */ React.createElement(
     "button",
     {
       key: c.id,
@@ -10517,6 +10579,7 @@ function DebugPanel({
   setAffection,
   seenEventIds,
   setSeenEventIds,
+  onResetEventMemory = null,
   onTriggerEvent,
   autoSkipQuiz,
   setAutoSkipQuiz,
@@ -10543,7 +10606,7 @@ function DebugPanel({
           fontFamily: "monospace"
         }
       },
-      "DEBUG / ASSIST"
+      "デバッグ / 補助"
     );
   }
   return /* @__PURE__ */ React.createElement("div", { style: {
@@ -10569,7 +10632,7 @@ function DebugPanel({
     borderBottom: `1px solid ${THEME.brass}`,
     paddingBottom: "8px",
     flexShrink: 0
-  } }, /* @__PURE__ */ React.createElement("h2", { style: { color: THEME.starGold, margin: 0, fontSize: "0.9em", letterSpacing: "0.05em" } }, "DEBUG / ASSIST"), /* @__PURE__ */ React.createElement(
+  } }, /* @__PURE__ */ React.createElement("h2", { style: { color: THEME.starGold, margin: 0, fontSize: "0.9em", letterSpacing: "0.05em" } }, "デバッグ / 補助"), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => setExpanded(false),
@@ -10655,20 +10718,23 @@ function DebugPanel({
       "Jump ",
       suffix
     );
-  }))))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ FLAGS ]"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "10px", background: "#222", padding: "5px", maxHeight: "100px", overflowY: "auto", marginBottom: "5px" } }, "Seen: ", seenEventIds.join(", ") || "(none)"), /* @__PURE__ */ React.createElement(
+  }))))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { style: { color: THEME.brass, marginBottom: "5px" } }, "[ フラグ ]"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "10px", background: "#222", padding: "5px", maxHeight: "100px", overflowY: "auto", marginBottom: "5px" } }, "既読: ", seenEventIds.join(", ") || "(なし)"), /* @__PURE__ */ React.createElement(
     "button",
     {
-      onClick: () => setSeenEventIds([]),
+      onClick: () => {
+        setSeenEventIds([]);
+        onResetEventMemory && onResetEventMemory();
+      },
       style: { width: "100%", padding: "5px", background: "#622", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }
     },
-    "RESET SEEN FLAGS"
+    "既読フラグをリセット"
   )), /* @__PURE__ */ React.createElement(
     "button",
     {
       onClick: () => setExpanded(false),
       style: { marginTop: "auto", padding: "12px", background: "#333", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }
     },
-    "BACK TO GAME"
+    "ゲームに戻る"
   ));
 }
 const TimePhaseBadge = ({ timePhase }) => {
@@ -10719,6 +10785,18 @@ const TEXT_SPEED_META = {
 };
 const getTextSpeedMeta = (textSpeed) => TEXT_SPEED_META[textSpeed] || TEXT_SPEED_META.normal;
 const DEFAULT_AUDIO_VOLUME = 0.8;
+const buildAffectionStateFromProgress = (progress, routeMode, activeHeroineId, activeSales = 0) => {
+  const state = {};
+  HEROINES.forEach((heroine) => {
+    state[heroine.id] = getHeroineProgressScore(
+      progress,
+      heroine.id,
+      routeMode,
+      heroine.id === activeHeroineId ? activeSales : 0
+    );
+  });
+  return state;
+};
 function App() {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
   const [session, setSession] = useState(null);
@@ -10753,32 +10831,14 @@ function App() {
   useEffect(() => {
     saveAutoSkipQuizEnabled(autoSkipQuiz);
   }, [autoSkipQuiz]);
-  useEffect(() => {
-    if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
-      debugAutoSkipAppliedRef.current = true;
-      const timer = setTimeout(() => {
-        const totalCount = session.questions.length;
-        const result = createPerfectQuizPayload(
-          totalCount,
-          activeHeroineId,
-          affection[activeHeroineId] || 0,
-          seenEventIds,
-          routeMode
-        );
-        applyQuizResultState(result);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    if (screen !== "QUIZ") {
-      debugAutoSkipAppliedRef.current = false;
-    }
-  }, [screen, autoSkipQuiz, session]);
+  const [careerProgress, setCareerProgress] = useState(() => loadCareerProgress());
   const [affection, setAffection] = useState(
-    () => createInitialAffection(HEROINES.map((h) => h.id))
+    () => buildAffectionStateFromProgress(loadCareerProgress(), "normal", "hakima", 0)
   );
   const [lastAffectionGain, setLastAffectionGain] = useState(0);
   const [quizFeedback, setQuizFeedback] = useState(null);
   const [seenEventIds, setSeenEventIds] = useState([]);
+  const [persistentSeenEventIds, setPersistentSeenEventIds] = useState(() => loadPersistentSeenEventIds());
   const [seenTalkIds, setSeenTalkIds] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeDailyTalk, setActiveDailyTalk] = useState(null);
@@ -10800,6 +10860,56 @@ function App() {
   const debugAutoSkipAppliedRef = useRef(false);
   const memoriesScrollPositionRef = useRef(0);
   const prevEventBackgroundRef = useRef(null);
+  const prevEventBgmRef = useRef(null);
+  const effectiveSeenEventIds = [.../* @__PURE__ */ new Set([...seenEventIds, ...persistentSeenEventIds])];
+  useEffect(() => {
+    savePersistentSeenEventIds(persistentSeenEventIds);
+  }, [persistentSeenEventIds]);
+  useEffect(() => {
+    saveCareerProgress(careerProgress);
+  }, [careerProgress]);
+  useEffect(() => {
+    setAffection((prev) => {
+      const next = buildAffectionStateFromProgress(
+        careerProgress,
+        routeMode,
+        workshopState.activeHeroineId || activeHeroineId,
+        workshopState.sales || 0
+      );
+      const prevKeys = Object.keys(prev || {});
+      const nextKeys = Object.keys(next);
+      if (prevKeys.length === nextKeys.length && nextKeys.every((key) => prev[key] === next[key])) {
+        return prev;
+      }
+      return next;
+    });
+  }, [careerProgress, routeMode, workshopState.activeHeroineId, workshopState.sales, activeHeroineId]);
+  useEffect(() => {
+    if (screen === "HEROINE_SELECT" && routeMode === "long_history" && !isLongHistoryUnlocked(careerProgress, previewHeroineId)) {
+      setRouteMode("normal");
+    }
+  }, [screen, routeMode, careerProgress, previewHeroineId]);
+  useEffect(() => {
+    if (screen === "QUIZ" && autoSkipQuiz && session && !debugAutoSkipAppliedRef.current) {
+      debugAutoSkipAppliedRef.current = true;
+      const timer = setTimeout(() => {
+        const totalCount = session.questions.length;
+        const result = createPerfectQuizPayload(
+          totalCount,
+          activeHeroineId,
+          affection[activeHeroineId] || 0,
+          seenEventIds,
+          routeMode,
+          persistentSeenEventIds
+        );
+        applyQuizResultState(result);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    if (screen !== "QUIZ") {
+      debugAutoSkipAppliedRef.current = false;
+    }
+  }, [screen, autoSkipQuiz, session, activeHeroineId, affection, seenEventIds, routeMode, persistentSeenEventIds]);
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 780;
   const MAX_LOGICAL_WIDTH = 560;
@@ -10917,6 +11027,7 @@ function App() {
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setIsAudioEnabled(Boolean(data.isAudioEnabled));
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setSeenTalkIds(data.seenTalkIds || []);
     }
   }, []);
@@ -10999,12 +11110,20 @@ function App() {
     setCurrentTimePhase(phase);
   }, [screen, activeDailyTalk, isRecallMode]);
   useEffect(() => {
+    var _a2;
+    const isPassiveScreen = ["START", "HEROINE_SELECT", "MEMORIES", "PROLOGUE", "VISUAL_TEST"].includes(screen);
+    if (isPassiveScreen) {
+      if (audioEngine.currentTrackSource !== "soundTest") {
+        audioEngine.stop();
+      }
+      return;
+    }
     let trackId = null;
     const day = workshopState.day || 1;
     const hPrefix = (activeHeroineId || "hakima").toUpperCase();
-    if (screen === "START" || screen === "HEROINE_SELECT" || screen === "MEMORIES" || screen === "PROLOGUE") {
-      trackId = "MAIN-01";
-    } else if (screen === "QUIZ") {
+    const eventPages = screen === "EVENT" && activeEvent ? getEventPages(activeEvent, routeMode) : [];
+    const currentEventPage = eventPages[eventCurrentPageIndex];
+    if (screen === "QUIZ") {
       if (day <= 2) {
         trackId = "MAIN-03";
       } else if (day <= 4) {
@@ -11019,7 +11138,9 @@ function App() {
     } else if (screen === "INTRO" || screen === "RESULT" || screen === "DAY_END") {
       trackId = "MAIN-02";
     } else if (screen === "EVENT") {
-      trackId = `${hPrefix}-01`;
+      const eventBgmId = (currentEventPage == null ? void 0 : currentEventPage.bgmId) || ((_a2 = activeEvent == null ? void 0 : activeEvent.presentation) == null ? void 0 : _a2.bgmId) || (activeEvent == null ? void 0 : activeEvent.bgmId) || prevEventBgmRef.current || `${hPrefix}-01`;
+      trackId = TRACKS[eventBgmId] ? eventBgmId : `${hPrefix}-01`;
+      prevEventBgmRef.current = trackId;
     } else if (screen === "ENDING") {
       const finalAffection = affection[activeHeroineId];
       const finalReputation = workshopState.reputation;
@@ -11029,13 +11150,12 @@ function App() {
         trackId = `${hPrefix}-06`;
       }
     }
-    const isGatedOnStart = screen === "START" && isAudioGated;
-    if (isAudioEnabled && !isGatedOnStart && trackId && TRACKS[trackId]) {
-      audioEngine.playTrack(TRACKS[trackId]);
+    if (isAudioEnabled && trackId && TRACKS[trackId]) {
+      audioEngine.playTrack(TRACKS[trackId], "game");
     } else {
       audioEngine.stop();
     }
-  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, isAudioGated]);
+  }, [screen, workshopState.day, activeHeroineId, affection, workshopState.reputation, isAudioEnabled, activeEvent, eventCurrentPageIndex, routeMode]);
   const activeHeroine = HEROINES.find((h) => h.id === activeHeroineId) || HEROINES[0];
   const getMainCharacter = () => {
     var _a2;
@@ -11043,7 +11163,7 @@ function App() {
       const currentPage = (_a2 = activeDailyTalk.pages) == null ? void 0 : _a2[dailyTalkCurrentPage];
       let speakerId = currentPage == null ? void 0 : currentPage.speakerId;
       if (!speakerId && (currentPage == null ? void 0 : currentPage.speaker)) {
-        if (currentPage.speaker === "ナーディル") speakerId = "nader";
+        if (currentPage.speaker === "NADER") speakerId = "nader";
         else if (currentPage.speaker === activeHeroine.name) speakerId = activeHeroine.id;
       }
       if (speakerId === "nader") {
@@ -11062,11 +11182,13 @@ function App() {
     setActiveHeroineId("hakima");
     setPreviewHeroineId("hakima");
     setWorkshopState(createInitialWorkshopState());
-    setAffection(createInitialAffection(HEROINES.map((h) => h.id)));
+    setCareerProgress(loadCareerProgress());
     setSeenEventIds([]);
+    setPersistentSeenEventIds(loadPersistentSeenEventIds());
     setActiveEvent(null);
     setVnBacklog([]);
     setSession(null);
+    prevEventBgmRef.current = null;
     setScreen("PROLOGUE");
   };
   const handleContinue = () => {
@@ -11082,18 +11204,24 @@ function App() {
       setBgmVolume(Number.isFinite(data.bgmVolume) ? data.bgmVolume : DEFAULT_AUDIO_VOLUME);
       setSeVolume(Number.isFinite(data.seVolume) ? data.seVolume : DEFAULT_AUDIO_VOLUME);
       setWorkshopState(data.workshopState);
+      setCareerProgress(loadCareerProgress());
       setAffection(data.affection);
       setSeenEventIds(data.seenEventIds || []);
+      setPersistentSeenEventIds(loadPersistentSeenEventIds());
       setActiveEvent(data.activeEvent || null);
       setVnBacklog(data.vnBacklog || []);
       setIsAudioEnabled(data.isAudioEnabled);
+      prevEventBgmRef.current = null;
     }
   };
   const handleResetSave = () => {
     if (window.confirm("セーブデータを削除しますか？")) {
       clearSaveAndRefresh();
+      clearPersistentSeenEventIds();
       setSeenEventIds([]);
+      setPersistentSeenEventIds([]);
       setActiveEvent(null);
+      prevEventBgmRef.current = null;
     }
   };
   const handleCloseEvent = () => {
@@ -11106,9 +11234,11 @@ function App() {
     } = resolveEventCloseActions({ event: activeEvent, isRecallMode });
     if (shouldMarkSeen && activeEvent) {
       setSeenEventIds((prev) => [...prev, activeEvent.id]);
+      setPersistentSeenEventIds((prev) => prev.includes(activeEvent.id) ? prev : [...prev, activeEvent.id]);
     }
     setActiveEvent(null);
     setEventCurrentPageIndex(0);
+    prevEventBgmRef.current = null;
     if (shouldClearBackgroundOverride) {
       setEventBackgroundOverride(null);
       prevEventBackgroundRef.current = null;
@@ -11181,6 +11311,10 @@ function App() {
     audioEngine.playSfx("uiHeroineSelect");
     setIsHeroineLoading(true);
     setLoadingProgress(0);
+    const effectiveRouteMode = isLongHistoryUnlocked(careerProgress, heroineId) && routeMode === "long_history" ? "long_history" : "normal";
+    if (effectiveRouteMode !== routeMode) {
+      setRouteMode(effectiveRouteMode);
+    }
     HEROINES.find((h) => h.id === heroineId);
     const heroineTracks = Object.values(TRACKS).filter((track) => track.id.startsWith(`${heroineId.toUpperCase()}-`));
     const heroineAssets = [
@@ -11198,7 +11332,7 @@ function App() {
       heroineId,
       currentAffection: affection[heroineId] || 0,
       seenTalkIds,
-      routeMode
+      routeMode: effectiveRouteMode
     });
     setActiveGreeting(greeting);
     setActiveDailyTalk(mergedTalk);
@@ -11206,7 +11340,7 @@ function App() {
       setSeenTalkIds((prev) => [...prev, ...newSeenTalkIds]);
     }
     saveGameData(buildGameSavePayload({
-      routeMode,
+      routeMode: effectiveRouteMode,
       workshopState: { ...workshopState, activeHeroineId: heroineId },
       affection,
       textSpeed,
@@ -11221,7 +11355,11 @@ function App() {
       activeEvent: null,
       screen: "HEROINE_SELECT"
     }));
-    const flashbackEvent = resolveHeroineSelectionEvent({ heroineId, seenEventIds });
+    const flashbackEvent = resolveHeroineSelectionEvent({
+      heroineId,
+      seenEventIds,
+      persistentSeenEventIds
+    });
     setTimeout(() => {
       setIsHeroineLoading(false);
       if (flashbackEvent) {
@@ -11235,9 +11373,14 @@ function App() {
       }
     }, 500);
   };
+  const handleToggleRouteMode = (heroineId) => {
+    if (!isLongHistoryUnlocked(careerProgress, heroineId)) return;
+    audioEngine.playSfx("uiTapBottle");
+    setRouteMode((prev) => prev === "long_history" ? "normal" : "long_history");
+  };
   const handleNextDay = () => {
     audioEngine.playSfx("uiTapBottle");
-    if (workshopState.day >= 10) {
+    if (workshopState.day >= 5) {
       setScreen("FINAL_RESULT");
     } else {
       const nextDay = workshopState.day + 1;
@@ -11273,6 +11416,10 @@ function App() {
   };
   const handleSeeEnding = () => {
     audioEngine.playSfx("uiConfirmChime");
+    const finalAffection = affection[activeHeroineId] || 0;
+    if (finalAffection >= 70) {
+      setCareerProgress((prev) => unlockLongHistory(prev, activeHeroineId));
+    }
     setScreen("ENDING");
   };
   const handleFinishGame = () => {
@@ -11294,7 +11441,7 @@ function App() {
       });
     }
     setActiveDailyTalk(null);
-    setSession(createQuizSession({ questionCount: 5 }));
+    setSession(createQuizSession({ questionCount: 10 }));
     quizQuestionStartAtRef.current = Date.now();
     setScreen("QUIZ");
   };
@@ -11333,6 +11480,10 @@ function App() {
     setScreen("START");
     refreshHasSave();
     setEventBackgroundOverride(null);
+    prevEventBgmRef.current = null;
+    if (audioEngine.currentTrackSource === "game") {
+      audioEngine.stop();
+    }
     setShowOptions(false);
     setShowLog(false);
     setShowHelp(false);
@@ -11341,6 +11492,7 @@ function App() {
     audioEngine.playSfx("uiConfirmChime");
     setEventBackgroundOverride(null);
     prevEventBackgroundRef.current = null;
+    prevEventBgmRef.current = null;
     setEventCurrentPageIndex(0);
     setActiveEvent(event);
     setIsRecallMode(true);
@@ -11378,17 +11530,43 @@ function App() {
       activeHeroineId,
       currentAffection: affection[activeHeroineId] || 0,
       seenEventIds,
-      routeMode
+      persistentSeenEventIds,
+      routeMode,
+      answers: (session == null ? void 0 : session.answers) || []
     });
     applyQuizResultState(result);
   };
   const applyQuizResultState = (result) => {
-    const nextAffection = addAffection(affection, activeHeroineId, result.affectionGain);
-    setAffection(nextAffection);
-    setLastAffectionGain(result.affectionGain);
-    setWorkshopState((prev) => applyWorkshopResult(prev, result.workshopResult));
-    if (result.unlockedEvent) {
-      setActiveEvent(result.unlockedEvent);
+    const currentAffection = affection[activeHeroineId] || 0;
+    const nextWorkshopState = applyWorkshopResult(workshopState, result.workshopResult);
+    const nextProgress = updateHeroineBestStats(
+      careerProgress,
+      activeHeroineId,
+      routeMode,
+      result.workshopResult
+    );
+    const nextAffection = getHeroineProgressScore(
+      nextProgress,
+      activeHeroineId,
+      routeMode,
+      nextWorkshopState.sales
+    );
+    setCareerProgress(nextProgress);
+    setWorkshopState(nextWorkshopState);
+    setAffection((prev) => ({
+      ...prev,
+      [activeHeroineId]: nextAffection
+    }));
+    setLastAffectionGain(Math.max(0, nextAffection - currentAffection));
+    const unlockedEvent = checkNewEventUnlock(
+      activeHeroineId,
+      nextAffection,
+      effectiveSeenEventIds,
+      routeMode,
+      persistentSeenEventIds
+    );
+    if (unlockedEvent) {
+      setActiveEvent(unlockedEvent);
     }
     setScreen("RESULT");
   };
@@ -11414,8 +11592,8 @@ function App() {
       isCorrect,
       stampLabel: stamp.label,
       stampTone: stamp.tone,
-      tempoMark: rhythmGood ? "◎" : "△",
-      speedMark: fast ? "◎" : "△"
+      tempoMark: rhythmGood ? "+1" : "+0",
+      speedMark: fast ? "+1" : "+0"
     });
     setTimeout(() => {
       if (isCorrect) {
@@ -11703,7 +11881,6 @@ function App() {
       {
         screen,
         routeMode,
-        setRouteMode,
         hasSave,
         onContinue: handleContinue,
         onNewGame: handleStartGame,
@@ -11716,7 +11893,7 @@ function App() {
         onOpenHelp: () => setShowHelp(true),
         renderThemeStyles,
         debugModeEnabled,
-        onToggleDebug: () => setDebugModeEnabled(!debugModeEnabled)
+        onToggleDebug: () => setDebugModeEnabled((prev) => !prev)
       }
     );
   } else if (screen === "PROLOGUE") {
@@ -11812,7 +11989,10 @@ function App() {
     );
   } else if (screen === "DAY_END") {
     const correctCount = session ? session.answers.filter((a) => a.isCorrect).length : 0;
-    const mgmt = getWorkshopResult(correctCount);
+    const mgmt = getWorkshopResult({
+      correctCount,
+      answers: (session == null ? void 0 : session.answers) || []
+    });
     mainContent = /* @__PURE__ */ React.createElement(
       "div",
       {
@@ -11833,7 +12013,7 @@ function App() {
           screen
         }
       ),
-      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "50px" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判：", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房の状態 (第", workshopState.day, "回 営業終了)"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "総評判：", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度：", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の営業へ"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, className: "vn-button-reveal", style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る")))
+      /* @__PURE__ */ React.createElement("div", { style: { zIndex: 2, position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "50px" } }, /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, width: "90%", maxWidth: "300px", background: "rgba(255,255,255,0.95)", padding: "20px" } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 15px 0", fontSize: "1em", color: "#666", borderBottom: "1px solid #ddd", paddingBottom: "5px" } }, "今回の営業記録"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-around", marginBottom: "15px" } }, /* @__PURE__ */ React.createElement("div", null, "売上：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, mgmt.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判：", /* @__PURE__ */ React.createElement("span", { style: { color: mgmt.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, mgmt.reputation >= 0 ? `+${mgmt.reputation}` : mgmt.reputation))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left", fontSize: "0.85em", color: "#444", borderTop: "1px solid #ddd", paddingTop: "15px" } }, /* @__PURE__ */ React.createElement("strong", null, "現在の工房状況 (Day ", workshopState.day, ")"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginTop: "10px" } }, /* @__PURE__ */ React.createElement("div", null, "総売上：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, workshopState.sales, "G")), /* @__PURE__ */ React.createElement("div", null, "評判：", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.reputation >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.reputation >= 0 ? `+${workshopState.reputation}` : workshopState.reputation)), /* @__PURE__ */ React.createElement("div", null, "満足度：", /* @__PURE__ */ React.createElement("span", { style: { color: workshopState.satisfaction >= 0 ? THEME.oasisTeal : "#844", fontWeight: "bold" } }, workshopState.satisfaction >= 0 ? `+${workshopState.satisfaction}` : workshopState.satisfaction)), /* @__PURE__ */ React.createElement("div", null, "親密度：", /* @__PURE__ */ React.createElement("span", { style: { color: THEME.brassDark, fontWeight: "bold" } }, affection[activeHeroine.id], " / 100"))))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", marginTop: "20px" } }, /* @__PURE__ */ React.createElement("button", { onClick: handleNextDay, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px", margin: 0 } }, "次の営業へ"), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, className: "vn-button-reveal", style: { ...buttonStyle, background: THEME.nightBlue, color: THEME.sand, border: `2px solid ${THEME.brass}`, width: "100%", maxWidth: "280px", margin: 0 } }, "タイトルへ戻る")))
     );
   } else if (screen === "DAILY_TALK" && activeDailyTalk) {
     const talkHeroineId = activeDailyTalk.heroineId;
@@ -11850,7 +12030,7 @@ function App() {
       const dailyTalkPagesWithSpeakerId = activeDailyTalk.pages.map((page) => {
         let inferredId = page.speakerId;
         if (!inferredId) {
-          if (page.speaker === "ナーディル") inferredId = "nader";
+          if (page.speaker === "NADER") inferredId = "nader";
           else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
         }
         return { ...page, speakerId: inferredId };
@@ -11934,7 +12114,7 @@ function App() {
     const currentEventPage = rawEventPages[eventCurrentPageIndex];
     const currentPageExpression = (currentEventPage == null ? void 0 : currentEventPage.expression) || "normal";
     const normalizeSpeakerName = (value) => String(value || "").trim();
-    const activeHeroineShortName = (_f = (_e = activeHeroine == null ? void 0 : activeHeroine.name) == null ? void 0 : _e.split("・")) == null ? void 0 : _f[0];
+    const activeHeroineShortName = (_f = (_e = activeHeroine == null ? void 0 : activeHeroine.name) == null ? void 0 : _e.split(" ")) == null ? void 0 : _f[0];
     const isHeroineSpeakerPage = (page) => {
       if (!page || !activeHeroine) return false;
       const speakerName = normalizeSpeakerName(page == null ? void 0 : page.speaker);
@@ -12003,7 +12183,7 @@ function App() {
           ScreenHeader,
           {
             timePhase: currentTimePhase,
-            title: `愛着の記録：${activeEvent.title}`,
+            title: `イベント：${activeEvent.title}`,
             onOpenLog: () => setShowLog(true),
             onOpenOptions: () => setShowOptions(true),
             onOpenHelp: () => setShowHelp(true),
@@ -12030,13 +12210,13 @@ function App() {
             pages: rawEventPages.map((page) => {
               if (page.speakerId) return page;
               let inferredId = null;
-              if (page.speaker === "ナーディル") inferredId = "nader";
+              if (page.speaker === "NADER") inferredId = "nader";
               else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
               return { ...page, speakerId: inferredId };
             }),
             themeColor: activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
-            skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
+            skip: shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
               var _a2;
@@ -12144,7 +12324,7 @@ function App() {
           ScreenHeader,
           {
             timePhase: currentTimePhase,
-            title: `愛着の記録：${activeEvent.title}`,
+            title: `イベント：${activeEvent.title}`,
             onOpenLog: () => setShowLog(true),
             onOpenOptions: () => setShowOptions(true),
             onOpenHelp: () => setShowHelp(true),
@@ -12170,13 +12350,13 @@ function App() {
             pages: rawEventPages.map((page) => {
               if (page.speakerId) return page;
               let inferredId = null;
-              if (page.speaker === "ナーディル") inferredId = "nader";
+              if (page.speaker === "NADER") inferredId = "nader";
               else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
               return { ...page, speakerId: inferredId };
             }),
             themeColor: activeHeroine.themeColor,
             speed: textSpeedMeta.delay,
-            skip: shouldSkipTypewriter(isInstantTextSpeed, seenEventIds.includes(activeEvent.id)),
+            skip: shouldSkipTypewriter(isInstantTextSpeed, effectiveSeenEventIds.includes(activeEvent.id)),
             getFaceIcon,
             onPageChange: (index) => {
               setEventCurrentPageIndex(index);
@@ -12214,7 +12394,7 @@ function App() {
       {
         screen,
         routeMode,
-        seenEventIds,
+        seenEventIds: effectiveSeenEventIds,
         unlockAll: isUnlockAllDebug,
         heroines: HEROINES,
         affectionEvents: AFFECTION_EVENTS,
@@ -12237,6 +12417,8 @@ function App() {
       {
         previewHeroineId,
         onPreviewHeroineChange: setPreviewHeroineId,
+        onToggleRouteMode: handleToggleRouteMode,
+        canToggleRouteMode: isLongHistoryUnlocked(careerProgress, previewHeroineId),
         onSelectHeroine: handleSelectHeroine,
         affection,
         routeMode,
@@ -12272,14 +12454,14 @@ function App() {
           onOpenHelp: () => setShowHelp(true)
         }
       ),
-      /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "10回の営業総決算"),
-      /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, " との歩み")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上合計"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最終的な評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, " との縁"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.95em", marginBottom: "30px", lineHeight: "1.6" } }, "10回の営業を締めくくり、次の一歩へ進みます。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "結末を見届ける"))
+      /* @__PURE__ */ React.createElement("h1", { style: titleStyle }, "最終結果"),
+      /* @__PURE__ */ React.createElement("div", { style: { ...cardStyle, border: `3px double ${THEME.brass}`, padding: "25px" } }, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: "25px" } }, /* @__PURE__ */ React.createElement(HeroineDisplay, { heroine: activeHeroine, type: "face", size: "medium" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "1.2em", fontWeight: "bold", color: THEME.brassDark } }, activeHeroine.name, "との縁")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: "15px", marginBottom: "30px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "総売上"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold" } }, finalSales, " G")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, "最高評判"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: finalReputation >= 0 ? THEME.oasisTeal : "#844" } }, finalReputation >= 0 ? `+${finalReputation}` : finalReputation)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "8px" } }, /* @__PURE__ */ React.createElement("span", null, activeHeroine.name, "親密度"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: "bold", color: THEME.brassDark } }, finalAffection, " / 100"))), /* @__PURE__ */ React.createElement("p", { style: { fontStyle: "italic", color: "#666", fontSize: "0.95em", marginBottom: "30px", lineHeight: "1.6" } }, "全5ターンを終えると、次の節目に進みます。"), /* @__PURE__ */ React.createElement("button", { onClick: handleSeeEnding, className: "vn-button-reveal", style: { ...buttonStyle, width: "100%", maxWidth: "280px" } }, "エンディングを見る"))
     );
   } else if (screen === "ENDING") {
     const finalAffection = affection[activeHeroineId];
-    const finalReputation = workshopState.reputation;
+    workshopState.reputation;
     let endingType = "normal";
-    if (finalAffection >= 80 && finalReputation >= 40) {
+    if (finalAffection >= 70) {
       endingType = "good";
     } else if (finalAffection < 40) {
       endingType = "bad";
@@ -12333,7 +12515,7 @@ function App() {
           pages: endingData.pages.map((page) => {
             if (page.speakerId) return page;
             let inferredId = null;
-            if (page.speaker === "ナーディル") inferredId = "nader";
+            if (page.speaker === "NADER") inferredId = "nader";
             else if (page.speaker === activeHeroine.name) inferredId = activeHeroine.id;
             return { ...page, speakerId: inferredId };
           }),
@@ -12385,7 +12567,7 @@ function App() {
       }
     );
   }
-  const renderLoadingOverlay = (message = "Loading...") => /* @__PURE__ */ React.createElement("div", { style: {
+  const renderLoadingOverlay = (message = "読み込み中...") => /* @__PURE__ */ React.createElement("div", { style: {
     position: "absolute",
     top: 0,
     left: 0,
@@ -12411,7 +12593,7 @@ function App() {
     background: THEME.starGold,
     transition: "width 0.3s"
   } })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "0.8em", opacity: 0.7 } }, loadingProgress, "%"));
-  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT", "MEMORIES", "START", "HEROINE_SELECT", "PROLOGUE"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("星瓶堂を開店中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を待っています...`), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", { ref: outerWrapperRef, className: "game-root", style: outerWrapperStyle }, renderThemeStyles(), /* @__PURE__ */ React.createElement("div", { style: canvasContainerStyle }, /* @__PURE__ */ React.createElement("div", { style: canvasStyle }, !["INTRO", "EVENT", "MEMORIES", "START", "HEROINE_SELECT", "PROLOGUE"].includes(screen) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: "8px", left: "8px", zIndex: 1e3, pointerEvents: "none" } }, /* @__PURE__ */ React.createElement(TimePhaseBadge, { timePhase: currentTimePhase })), isInitialLoading && renderLoadingOverlay("ゲームデータを読み込み中..."), isHeroineLoading && renderLoadingOverlay(`${(_n = HEROINES.find((h) => h.id === previewHeroineId)) == null ? void 0 : _n.name}を読み込み中...`), /* @__PURE__ */ React.createElement(
     OptionsModal,
     {
       isOpen: showOptions,
@@ -12441,8 +12623,12 @@ function App() {
       setRouteMode,
       affection,
       setAffection,
-      seenEventIds,
+      seenEventIds: effectiveSeenEventIds,
       setSeenEventIds,
+      onResetEventMemory: () => {
+        clearPersistentSeenEventIds();
+        setPersistentSeenEventIds([]);
+      },
       autoSkipQuiz,
       setAutoSkipQuiz,
       onTriggerEvent: (ev) => {
@@ -12451,7 +12637,7 @@ function App() {
         setEventHeroineExpression("normal");
       }
     }
-  ), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "Loading..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
+  ), !isInitialLoading && /* @__PURE__ */ React.createElement("div", { key: screen, className: "screen-enter" }, mainContent || /* @__PURE__ */ React.createElement("div", { style: containerStyle }, /* @__PURE__ */ React.createElement("p", null, "読み込み中..."), /* @__PURE__ */ React.createElement("button", { onClick: handleBackToTitle, style: buttonStyle }, "タイトルへ戻る"))))));
 }
 function HeroineDisplay({ heroine, type, size = "large", expression = "normal", noBorder = false, style = {}, objectPosition }) {
   var _a;
