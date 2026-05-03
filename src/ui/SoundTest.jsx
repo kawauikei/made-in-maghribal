@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { audioEngine } from '../game/audioEngine';
 import { SFX_CANDIDATES } from '../data/sfxCandidates';
 import { TRACKS } from '../data/tracks';
@@ -7,8 +7,15 @@ import { THEME } from './theme';
 
 function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
   const [currentPlayingId, setCurrentPlayingId] = useState(audioEngine.currentTrackId);
+  const hasPreloadedTracksRef = useRef(false);
   const groups = [...new Set(SFX_CANDIDATES.map(c => c.group))];
   const currentTrack = currentPlayingId ? Object.values(TRACKS).find(t => t.id === currentPlayingId) : null;
+
+  useEffect(() => {
+    if (hasPreloadedTracksRef.current) return;
+    hasPreloadedTracksRef.current = true;
+    Object.values(TRACKS).forEach(track => audioEngine.preloadTrack(track));
+  }, []);
 
   const handlePlayTrack = (track) => {
     audioEngine.playTrack(track);

@@ -23,7 +23,7 @@ import { getWorkshopResult, createInitialWorkshopState, applyWorkshopResult } fr
 import { HEROINES, NADER, getHeroineAsset } from './data/heroines';
 import { getResultExpression, getDayEndExpression } from './game/presentation';
 import { WORLD, SHOP, PROTAGONIST } from './data/world';
-import { TRACKS, getTrackById } from './data/tracks';
+import { TRACKS } from './data/tracks';
 import { audioEngine } from './game/audioEngine';
 import { SFX_CANDIDATES, SELECTED_SFX } from './data/sfxCandidates';
 import { createInitialAffection, addAffection, calculateQuizAffectionGain } from './game/affection';
@@ -572,8 +572,9 @@ export default function App() {
   useEffect(() => {
     const asset = (type, src) => ({ type, src: `${import.meta.env.BASE_URL}${src}`.replace(/([^:])\/\//g, '$1/') });
     const expressions = ['normal', 'joy', 'fun', 'sorrow', 'anger', 'surprise', 'cry', 'student', 'social', 'maid'];
+    const mainTracks = Object.values(TRACKS).filter(track => track.id.startsWith('MAIN-'));
     const essentialAssets = [
-      ...Object.values(TRACKS).map(track => asset('audio', track.src)),
+      ...mainTracks.map(track => asset('audio', track.src)),
       ...Object.values(SFX).map(sfx => asset('audio', sfx.src)),
       ...Object.values(BACKGROUND_IMAGES).map(bg => asset('image', bg.src)),
       ...Object.values(STILL_IMAGES).map(still => asset('image', still.src)),
@@ -627,10 +628,13 @@ export default function App() {
     setLoadingProgress(0);
     
     const heroine = HEROINES.find(h => h.id === heroineId);
-    const themeTrack = getTrackById(heroine.themeTrackId);
+    const heroineTracks = Object.values(TRACKS).filter(track => track.id.startsWith(`${heroineId.toUpperCase()}-`));
     
     const heroineAssets = [
-      { type: 'audio', src: `${import.meta.env.BASE_URL}${themeTrack.src}`.replace(/([^:])\/\//g, '$1/') },
+      ...heroineTracks.map(track => ({
+        type: 'audio',
+        src: `${import.meta.env.BASE_URL}${track.src}`.replace(/([^:])\/\//g, '$1/')
+      })),
       { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/standing_proc/normal.png`.replace(/([^:])\/\//g, '$1/') },
       { type: 'image', src: `${import.meta.env.BASE_URL}characters/${heroineId}/face_proc/normal.png`.replace(/([^:])\/\//g, '$1/') }
     ];
