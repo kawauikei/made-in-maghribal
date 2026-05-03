@@ -2304,7 +2304,7 @@ function QuizScreen({
   return (
     <div data-testid="quiz-screen" style={containerStyle}>
       {renderThemeStyles()}
-      
+
       <div style={{
         position: 'absolute',
         top: 0,
@@ -2337,34 +2337,35 @@ function QuizScreen({
         session={session}
       />
 
-      <div style={{ 
-        ...cardStyle, 
-        maxWidth: '800px', 
-        marginTop: '5px', 
-        flexGrow: 1, 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
+      <div style={{
+        ...cardStyle,
+        maxWidth: '800px',
+        marginTop: '5px',
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         background: 'transparent',
         border: 'none',
         boxShadow: 'none',
         backdropFilter: 'none',
-        padding: '0 20px 20px 20px', 
-        zIndex: 5 
+        padding: '0 20px 20px 20px',
+        zIndex: 5
       }}>
         <QuizRequestCard
           currentQuestion={currentQuestion}
           customerStyle={customerStyle}
           bubbleStyle={bubbleStyle}
         />
-        
-        <div className="quiz-rhythm-lane" style={{ 
-          width: 'calc(100% + 40px)', 
-          margin: '8px -20px 6px', 
-          background: 'rgba(26, 42, 58, 0.6)', 
+
+        <div className="quiz-rhythm-lane" style={{
+          width: 'calc(100% + 40px)',
+          margin: '8px -20px 6px',
+          background: 'rgba(26, 42, 58, 0.6)',
           borderTop: `1px solid ${THEME.brass}44`,
           borderBottom: `1px solid ${THEME.brass}44`,
-          padding: '4px 0'
+          padding: '4px 0',
+          position: 'relative'
         }}>
           <RhythmMock
             heroineId={activeHeroineId}
@@ -2372,30 +2373,26 @@ function QuizScreen({
             noteIntervalMs={500}
             judgmentWindowMs={140}
           />
-        </div>
-        <div style={{
-          textAlign: 'center',
-          fontSize: '0.72em',
-          color: THEME.parchment,
-          opacity: 0.78,
-          marginTop: '2px',
-          marginBottom: '8px',
-          letterSpacing: '0.02em'
-        }}>
-          リズムに合わせて正解すると少しボーナス！
-        </div>
-        {quizFeedback?.rhythmBonus > 0 && (
-          <div style={{
-            textAlign: 'center',
-            fontSize: '0.78em',
-            fontWeight: '700',
-            color: THEME.starGold,
-            marginBottom: '6px',
-            textShadow: `0 0 8px ${THEME.starGold}66`
-          }}>
-            リズム好機 +{quizFeedback.rhythmBonus}G
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              fontSize: '0.76em',
+              fontWeight: '700',
+              color: THEME.starGold,
+              textShadow: `0 0 8px ${THEME.starGold}66`,
+              pointerEvents: 'none',
+              whiteSpace: 'nowrap',
+              opacity: quizFeedback?.rhythmBonus > 0 ? 1 : 0,
+              transition: 'opacity 160ms ease'
+            }}
+          >
+            リズム好機 +{quizFeedback?.rhythmBonus || 0}G
           </div>
-        )}
+        </div>
 
         <QuizChoiceList
           choices={currentQuestion.choices}
