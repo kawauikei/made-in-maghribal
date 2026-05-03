@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { THEME } from './theme';
 import { HEROINES } from '../data/heroines';
-import { AFFECTION_EVENTS } from '../data/affectionEvents';
+import { NARRATIVE_SCRIPT } from '../data/narrativeScript';
+
+const { affectionEvents: AFFECTION_EVENTS } = NARRATIVE_SCRIPT;
 
 /**
  * DebugPanel: Story Assist & Development Tools

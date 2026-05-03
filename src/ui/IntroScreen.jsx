@@ -63,37 +63,39 @@ const IntroScreen = ({
   const buildPages = () => {
     const pages = [];
     const hId = activeHeroine.id;
-    const greet = activeGreeting || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
-    const reactions = greet.heroineReactions[hId] || { arrival: "こんにちは", response: "いらっしゃい" };
+    const greet = activeGreeting || {};
 
-    // 1. Monologue (Nader)
-    pages.push({
-      speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: typeof greet.monologue === 'function' ? greet.monologue(activeHeroine) : greet.monologue
-    });
+    if (Array.isArray(greet.pages) && greet.pages.length > 0) {
+      pages.push(...greet.pages);
+    } else {
+      const legacyGreeting = greet || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
+      const reactions = legacyGreeting.heroineReactions?.[hId] || { arrival: "Hello", response: "Welcome" };
 
-    // 2. Arrival (Heroine)
-    pages.push({
-      speakerId: hId,
-      speaker: activeHeroine.name,
-      text: typeof reactions.arrival === 'function' ? reactions.arrival(activeHeroine) : reactions.arrival
-    });
+      pages.push({
+        speakerId: 'nader',
+        speaker: 'NADER',
+        text: typeof legacyGreeting.monologue === 'function' ? legacyGreeting.monologue(activeHeroine) : legacyGreeting.monologue
+      });
 
-    // 3. Initial Response (Nader)
-    pages.push({
-      speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: typeof reactions.response === 'function' ? reactions.response(activeHeroine) : reactions.response
-    });
+      pages.push({
+        speakerId: hId,
+        speaker: activeHeroine.name,
+        text: typeof reactions.arrival === 'function' ? reactions.arrival(activeHeroine) : reactions.arrival
+      });
+
+      pages.push({
+        speakerId: 'nader',
+        speaker: 'NADER',
+        text: typeof reactions.response === 'function' ? reactions.response(activeHeroine) : reactions.response
+      });
+    }
 
     // 4. Daily Talks (Merged work + personal topics)
     if (activeDailyTalk && activeDailyTalk.pages) {
       activeDailyTalk.pages.forEach(page => {
-        // Ensure speakerId is mapped correctly
         let inferredId = page.speakerId;
         if (!inferredId) {
-          if (page.speaker === 'ナーディル') inferredId = 'nader';
+          if (page.speaker === 'NADER') inferredId = 'nader';
           else if (page.speaker === activeHeroine.name) inferredId = hId;
         }
         pages.push({ ...page, speakerId: inferredId });
@@ -104,14 +106,14 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "「それじゃ、また営業が終わった頃に。今日の商い、期待しているわね」"
+      text: "See you tomorrow."
     });
 
     // 6. Start Business (Nader)
     pages.push({
       speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+      speaker: 'NADER',
+      text: "Open the shop."
     });
 
     return pages;

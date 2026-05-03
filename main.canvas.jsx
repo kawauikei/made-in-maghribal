@@ -20,14 +20,15 @@ import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence, prepareResultTalkSequence, prepareDayEndTalkSequence } from './game/introFlow';
-import { AFFECTION_EVENTS } from './data/affectionEvents';
+import { NARRATIVE_SCRIPT } from './data/narrativeScript';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
-import { ENDINGS } from './data/endings';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
 import { COLOR_BY_ID } from './data/principles';
 import { GENRE_BY_ID, ITEM_TYPE_BY_ID } from './data/itemTypes';
 import { resolveTimePhase, TIME_PHASES } from './game/timePhase';
+
+const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT;
 
 
 
@@ -1779,37 +1780,39 @@ const IntroScreen = ({
   const buildPages = () => {
     const pages = [];
     const hId = activeHeroine.id;
-    const greet = activeGreeting || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
-    const reactions = greet.heroineReactions[hId] || { arrival: "こんにちは", response: "いらっしゃい" };
+    const greet = activeGreeting || {};
 
-    // 1. Monologue (Nader)
-    pages.push({
-      speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: typeof greet.monologue === 'function' ? greet.monologue(activeHeroine) : greet.monologue
-    });
+    if (Array.isArray(greet.pages) && greet.pages.length > 0) {
+      pages.push(...greet.pages);
+    } else {
+      const legacyGreeting = greet || { monologue: "...", heroineReactions: { [hId]: { arrival: "...", response: "..." } } };
+      const reactions = legacyGreeting.heroineReactions?.[hId] || { arrival: "Hello", response: "Welcome" };
 
-    // 2. Arrival (Heroine)
-    pages.push({
-      speakerId: hId,
-      speaker: activeHeroine.name,
-      text: typeof reactions.arrival === 'function' ? reactions.arrival(activeHeroine) : reactions.arrival
-    });
+      pages.push({
+        speakerId: 'nader',
+        speaker: 'NADER',
+        text: typeof legacyGreeting.monologue === 'function' ? legacyGreeting.monologue(activeHeroine) : legacyGreeting.monologue
+      });
 
-    // 3. Initial Response (Nader)
-    pages.push({
-      speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: typeof reactions.response === 'function' ? reactions.response(activeHeroine) : reactions.response
-    });
+      pages.push({
+        speakerId: hId,
+        speaker: activeHeroine.name,
+        text: typeof reactions.arrival === 'function' ? reactions.arrival(activeHeroine) : reactions.arrival
+      });
+
+      pages.push({
+        speakerId: 'nader',
+        speaker: 'NADER',
+        text: typeof reactions.response === 'function' ? reactions.response(activeHeroine) : reactions.response
+      });
+    }
 
     // 4. Daily Talks (Merged work + personal topics)
     if (activeDailyTalk && activeDailyTalk.pages) {
       activeDailyTalk.pages.forEach(page => {
-        // Ensure speakerId is mapped correctly
         let inferredId = page.speakerId;
         if (!inferredId) {
-          if (page.speaker === 'ナーディル') inferredId = 'nader';
+          if (page.speaker === 'NADER') inferredId = 'nader';
           else if (page.speaker === activeHeroine.name) inferredId = hId;
         }
         pages.push({ ...page, speakerId: inferredId });
@@ -1820,14 +1823,14 @@ const IntroScreen = ({
     pages.push({
       speakerId: hId,
       speaker: activeHeroine.name,
-      text: "「それじゃ、また営業が終わった頃に。今日の商い、期待しているわね」"
+      text: "See you tomorrow."
     });
 
     // 6. Start Business (Nader)
     pages.push({
       speakerId: 'nader',
-      speaker: 'ナーディル',
-      text: "ああ、ありがとう。……よし、星瓶堂を開けよう。"
+      speaker: 'NADER',
+      text: "Open the shop."
     });
 
     return pages;
@@ -2959,6 +2962,8 @@ function SoundTest({ onClose, isAudioEnabled, onToggleAudio }) {
 
 // --- Inlined: DebugPanel ---
 
+const { affectionEvents: AFFECTION_EVENTS } = NARRATIVE_SCRIPT;
+
 /**
  * DebugPanel: Story Assist & Development Tools
  * 
@@ -4070,7 +4075,7 @@ function App() {
       // Check for after_result DailyTalk before going to DAY_END
       const { talk: resultTalk, newSeenTalkIds: newResultTalkIds } = prepareResultTalkSequence({
         heroineId: activeHeroineId,
-        currentAffection: affection[activeHeroineId] || 0,
+        score: session?.score || 0,
         seenTalkIds,
         routeMode,
       });

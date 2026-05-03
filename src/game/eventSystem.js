@@ -1,5 +1,10 @@
-import { getEventsByHeroine } from '../data/affectionEvents.js';
-import { DAILY_TALKS } from '../data/dailyTalks.js';
+import { NARRATIVE_SCRIPT } from '../data/narrativeScript.js';
+
+const { affectionEvents: AFFECTION_EVENTS, dailyTalks: DAILY_TALKS } = NARRATIVE_SCRIPT;
+
+function getEventsByHeroine(heroineId) {
+  return AFFECTION_EVENTS[heroineId] || [];
+}
 
 /**
  * Checks for any new events that should be unlocked based on current affection.
@@ -154,7 +159,7 @@ export function getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMod
  * @param {string} routeMode - 'normal' or 'long_history'
  * @returns {Object|null} The eligible daily talk or null
  */
-export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode) {
+export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkIds, routeMode, score = null) {
   const eligible = DAILY_TALKS.filter(talk => {
     // 1. Timing match
     if (talk.timing !== timing) return false;
@@ -176,6 +181,10 @@ export function getNextDailyTalk(heroineId, timing, currentAffection, seenTalkId
 
     // 4. Affection requirement
     if (talk.minAffection > currentAffection) return false;
+
+    // 4.5. Score requirement
+    if (typeof talk.scoreMin === 'number' && (score === null || score < talk.scoreMin)) return false;
+    if (typeof talk.scoreMax === 'number' && (score === null || score > talk.scoreMax)) return false;
 
     // 5. Unread only
     if (seenTalkIds.includes(talk.id)) return false;

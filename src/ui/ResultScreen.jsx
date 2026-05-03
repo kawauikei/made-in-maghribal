@@ -1,7 +1,7 @@
 import React from 'react';
 import { THEME } from './theme';
 import GameHud from './GameHud';
-import { getResultComment } from '../data/resultComments';
+import { getResultComment } from '../data/narrativeScript';
 
 /**
  * ResultScreen Component

@@ -1,5 +1,4 @@
-import { getRandomGreeting } from '../data/greetings.js';
-import { getIntroTalks, getNextDailyTalk } from './eventSystem.js';
+import { getIntroGreetingPages, getIntroTalksForHeroine, getAfterResultTalk, getDayEndTalk } from '../data/narrativeScript.js';
 
 /**
  * Prepare intro sequence data for IntroScreen.
@@ -13,9 +12,15 @@ import { getIntroTalks, getNextDailyTalk } from './eventSystem.js';
  * @returns {{ greeting: Object, mergedTalk: Object|null, newSeenTalkIds: string[] }}
  */
 export function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const greeting = getRandomGreeting();
+  const greeting = {
+    id: `intro_greeting_${heroineId}_${routeMode}`,
+    kind: 'opening',
+    heroineId,
+    routeMode,
+    pages: getIntroGreetingPages({ heroineId, routeMode, seenTalkIds }),
+  };
 
-  const talks = getIntroTalks(heroineId, currentAffection, seenTalkIds, routeMode);
+  const talks = getIntroTalksForHeroine(heroineId, currentAffection, routeMode, seenTalkIds);
 
   const mergedTalk = talks.length > 0
     ? {
@@ -40,8 +45,8 @@ export function prepareIntroSequence({ heroineId, currentAffection, seenTalkIds,
  * @param {string} params.routeMode - 'normal' or 'long_history'
  * @returns {{ talk: Object|null, newSeenTalkIds: string[] }}
  */
-export function prepareResultTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const talk = getNextDailyTalk(heroineId, 'after_result', currentAffection, seenTalkIds, routeMode);
+export function prepareResultTalkSequence({ heroineId, score, seenTalkIds, routeMode }) {
+  const talk = getAfterResultTalk(heroineId, score, routeMode, seenTalkIds);
 
   const newSeenTalkIds = talk ? [talk.id] : [];
 
@@ -60,7 +65,7 @@ export function prepareResultTalkSequence({ heroineId, currentAffection, seenTal
  * @returns {{ talk: Object|null, newSeenTalkIds: string[] }}
  */
 export function prepareDayEndTalkSequence({ heroineId, currentAffection, seenTalkIds, routeMode }) {
-  const talk = getNextDailyTalk(heroineId, 'day_end', currentAffection, seenTalkIds, routeMode);
+  const talk = getDayEndTalk(heroineId, currentAffection, routeMode, seenTalkIds);
 
   const newSeenTalkIds = talk ? [talk.id] : [];
 

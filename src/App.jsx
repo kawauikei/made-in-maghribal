@@ -34,9 +34,8 @@ import { useGameSaveStatus } from './hooks/useGameSaveStatus';
 import { loadDebugModeEnabled, saveDebugModeEnabled, loadAutoSkipQuizEnabled, saveAutoSkipQuizEnabled, loadDebugUnlockAllEnabled } from './game/debugAssistStorage';
 import { checkNewEventUnlock, getEventPages, getRouteText, getNextDailyTalk, resolveHeroineSelectionEvent, resolveEventCloseActions } from './game/eventSystem';
 import { prepareIntroSequence, prepareResultTalkSequence, prepareDayEndTalkSequence } from './game/introFlow';
-import { AFFECTION_EVENTS } from './data/affectionEvents';
+import { NARRATIVE_SCRIPT } from './data/narrativeScript';
 import { BACKGROUND_IMAGES, STILL_IMAGES } from './data/imageAssets';
-import { ENDINGS } from './data/endings';
 import { SFX } from './data/sfx';
 import itemsData from './data/generated/items.json';
 import { COLOR_BY_ID } from './data/principles';
@@ -47,6 +46,8 @@ import DebugPanel from './ui/DebugPanel';
 import ScreenHeader from './ui/ScreenHeader';
 import TimePhaseBadge from './ui/TimePhaseBadge';
 import { resolveTimePhase, TIME_PHASES } from './game/timePhase';
+
+const { affectionEvents: AFFECTION_EVENTS, endings: ENDINGS } = NARRATIVE_SCRIPT;
 
 
 
@@ -786,7 +787,7 @@ export default function App() {
       // Check for after_result DailyTalk before going to DAY_END
       const { talk: resultTalk, newSeenTalkIds: newResultTalkIds } = prepareResultTalkSequence({
         heroineId: activeHeroineId,
-        currentAffection: affection[activeHeroineId] || 0,
+        score: session?.score || 0,
         seenTalkIds,
         routeMode,
       });
