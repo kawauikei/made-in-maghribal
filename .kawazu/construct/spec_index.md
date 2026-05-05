@@ -3,7 +3,7 @@
 このファイルは KawazuConstructHub が生成した案内図です。手で編集しないでください。
 
 ## Project
-- generated_at: `2026-05-05T21:09:32.616112+09:00`
+- generated_at: `2026-05-05T23:24:27.083010+09:00`
 - root: `c:/AI/projects/P0007_MadeInMaghribalt3`
 - registry: `.kawazu\construct\contracts.json`
 
@@ -175,10 +175,10 @@
   - `tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs`
 - required_commands:
   - `node --test tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs`
-- latest_run: `.kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T210932+0900.json`
+- latest_run: `.kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T232420+0900.json`
 - latest_run_status: `passed`
-- last_verified_run: `.kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T210932+0900.json`
-- last_verified_at: `2026-05-05T21:09:32.384330+09:00`
+- last_verified_run: `.kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T232420+0900.json`
+- last_verified_at: `2026-05-05T23:24:20.530081+09:00`
 
 ### C010_GAME_SESSION_FLOW
 - kind: `module`

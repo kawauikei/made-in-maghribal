@@ -246,9 +246,9 @@
         "C008_RHYTHM_QUIZ_CORE"
       ],
       "used_by": [],
-      "last_verified_run": ".kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T210932+0900.json",
-      "last_verified_at": "2026-05-05T21:09:32.384330+09:00",
-      "updated_at": "2026-05-05T21:09:32.398888+09:00"
+      "last_verified_run": ".kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T232420+0900.json",
+      "last_verified_at": "2026-05-05T23:24:20.530081+09:00",
+      "updated_at": "2026-05-05T23:24:27.069881+09:00"
     },
     {
       "id": "C010_GAME_SESSION_FLOW",

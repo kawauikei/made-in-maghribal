@@ -1,0 +1,16 @@
+{
+  "name": "made-in-maghribal",
+  "version": "0.1.0",
+  "description": "Made In Maghribal - Browser VN/Rhythm Game",
+  "main": "browser/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "check:browser": "node --check browser/app.js && node tools/build-browser-bundle.cjs && node --check public/bundle.js",
+    "test:core": "node --test tests/core/*.test.cjs",
+    "test:browser": "playwright test tests/browser",
+    "verify": "npm run check:browser && npm run test:core && npm run test:browser"
+  },
+  "devDependencies": {
+    "@playwright/test": "latest"
+  }
+}
