@@ -6,10 +6,19 @@
 # Dependencies
 node_modules/
 
-# Kawazu Internal / Temporaries
+# Kawazu Internal / Temporaries (Volatile logs)
 .kawazu/construct/backups/
 .kawazu/construct/runs/
 .kawazu/construct/reviews/
+.kawazu/construct/logs/
+.kawazu/construct/blueprint_merge_report.json
+
+# Keep Essential:
+# .kawazu/construct/contracts.json
+# .kawazu/construct/project_blueprint.json
+# .kawazu/construct/blueprint_fragments/
+# .kawazu/construct/spec_index.md
+# .kawazu/construct/build_queue.json
 
 # OS / IDE
 .DS_Store
