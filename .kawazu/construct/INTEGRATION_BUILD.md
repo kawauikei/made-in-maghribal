@@ -4,7 +4,7 @@
 required contract が active / passed になった後、ブラウザ実動に必要な non_contract integration を作成してください。
 
 ## 目的
-- app_summary: VN/Rhythm game about a bazaar shop in Maghribal. Core logic (session, scoring, quiz, data) is implemented in CommonJS modules. Next is to build the browser UI and bundle these modules.
+- app_summary: ブラウザで動く小規模Webアプリ
 - contract source を壊さず、index / entrypoint / browser bundle / styles などの統合層で実動化する。
 - CommonJS/browser差、bundle require解決、viewport/canvas差分、演出の表示手順を non_contract 側で吸収する。
 
@@ -55,7 +55,7 @@ required contract が active / passed になった後、ブラウザ実動に必
   - required_commands: `node --test tests/core/C011_RENDER_MODEL.test.cjs`
 
 ## non_contract target files
-- blueprint の `non_contract_files` が空です。必要最小限として `index.html`, `src/browser-bundle.js`, `src/styles.css` などを検討してください。
+- `exists` `public/index.html`
 
 ## Detected integration hints
 - Canvas/viewport/input座標の統合リスクあり。logical座標とdisplay座標を分離してください。

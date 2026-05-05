@@ -22,3 +22,17 @@
 - testspec
 - source
 - test
+
+## Source Modification & Documentation
+
+ソースコードを変更した際は、必ず以下のセットを同期して更新してください。
+
+- 仕様書 (`specs/`)
+- テスト仕様書 (`testspecs/`)
+- `project_blueprint.json`
+- `spec_index.md`
+
+## Verification Policy
+
+- **ブラウザ操作ツールは使用しない:** Agent自身によるブラウザ操作テスト（Playwright等の自動ツール実行以外）は行わない。
+- **デバッグURLによる依頼:** 実装内容の目視確認が必要な場合は、デバッグ用URL（`?debug=1&jump=...`）を生成し、ユーザーに確認を依頼すること。
