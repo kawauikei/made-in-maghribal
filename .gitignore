@@ -12,6 +12,7 @@ node_modules/
 .kawazu/construct/reviews/
 .kawazu/construct/logs/
 .kawazu/construct/blueprint_merge_report.json
+test-results/
 
 # Keep Essential:
 # .kawazu/construct/contracts.json
