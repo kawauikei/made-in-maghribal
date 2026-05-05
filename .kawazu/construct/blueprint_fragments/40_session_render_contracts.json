@@ -1,0 +1,107 @@
+{
+  "fragment_type": "contracts",
+  "area": "session_render",
+  "contracts": [
+    {
+      "contract_id": "C010_GAME_SESSION_FLOW",
+      "title": "Game Session Flow",
+      "status": "required",
+      "summary": "タイトルから5ターン、エンディング、解放までの統合状態を管理する。",
+      "dependencies": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C005_AUDIO_MANIFEST",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C008_RHYTHM_QUIZ_CORE",
+        "C009_SCORE_AFFECTION_ENDING"
+      ],
+      "spec": "specs/modules/C010_GAME_SESSION_FLOW.spec.md",
+      "testspec": "specs/modules/C010_GAME_SESSION_FLOW.testspec.md",
+      "sources": [
+        "src/core/gameSessionFlow.cjs",
+        "src/core/stageSchedule.cjs",
+        "src/core/unlockState.cjs"
+      ],
+      "tests": [
+        "tests/core/C010_GAME_SESSION_FLOW.test.cjs"
+      ],
+      "allowed_to_create": {
+        "specs": [
+          "specs/modules/C010_GAME_SESSION_FLOW.spec.md"
+        ],
+        "testspecs": [
+          "specs/modules/C010_GAME_SESSION_FLOW.testspec.md"
+        ],
+        "sources": [
+          "src/core/gameSessionFlow.cjs",
+          "src/core/stageSchedule.cjs",
+          "src/core/unlockState.cjs"
+        ],
+        "tests": [
+          "tests/core/C010_GAME_SESSION_FLOW.test.cjs"
+        ]
+      },
+      "required_commands": [
+        "node --test tests/core/C010_GAME_SESSION_FLOW.test.cjs"
+      ],
+      "acceptance": [
+        "TITLE, OPENING, HEROINE_SELECT, MAIN_GAME, ENDING の遷移を扱える",
+        "1ターンは beforeOpen, rhythmQuiz, turnResult, afterClose, optionalDateEvent の順で進む",
+        "5ターン制を扱える",
+        "1ターン10問、合計50問のrun stateを扱える",
+        "Turn1は全員 main03_puzzle 固定",
+        "Turn2/Turn5はヒロインとrouteModeに応じたgame曲を選ぶ",
+        "Turn3/Turn4はextraから選ぶ",
+        "選曲結果をrun stateに保存する",
+        "Good Ending済みヒロインでextra route選択を許可できる"
+      ]
+    },
+    {
+      "contract_id": "C011_RENDER_MODEL",
+      "title": "Render Model",
+      "status": "required",
+      "summary": "現在状態から画面表示用JSONを作る。ブラウザDOM実装には依存しない。",
+      "dependencies": [
+        "C003_ASSET_MANIFEST",
+        "C004_ITEM_MASTER_AND_TEXT",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C010_GAME_SESSION_FLOW"
+      ],
+      "spec": "specs/modules/C011_RENDER_MODEL.spec.md",
+      "testspec": "specs/modules/C011_RENDER_MODEL.testspec.md",
+      "sources": [
+        "src/core/renderModel.cjs"
+      ],
+      "tests": [
+        "tests/core/C011_RENDER_MODEL.test.cjs"
+      ],
+      "allowed_to_create": {
+        "specs": [
+          "specs/modules/C011_RENDER_MODEL.spec.md"
+        ],
+        "testspecs": [
+          "specs/modules/C011_RENDER_MODEL.testspec.md"
+        ],
+        "sources": [
+          "src/core/renderModel.cjs"
+        ],
+        "tests": [
+          "tests/core/C011_RENDER_MODEL.test.cjs"
+        ]
+      },
+      "required_commands": [
+        "node --test tests/core/C011_RENDER_MODEL.test.cjs"
+      ],
+      "acceptance": [
+        "TITLE表示モデルを返せる",
+        "HEROINE_SELECT表示モデルでヒロイン説明、持ち越し値、extra解放状態を返せる",
+        "VN表示モデルで背景、中央立ち絵、話者名、話者アイコン、本文を返せる",
+        "中央立ち絵と話者アイコンが一致しないケースを表現できる",
+        "Rhythm Quiz表示モデルで現在問題、2択アイテム、リズムレーン、判定ライン、残り問題数を返せる",
+        "Turn Result表示モデルで売上、満足度、評判、正解数、早押し評価、リズム評価、総合評価、ヒロイン一言を返せる",
+        "Render ModelはDOM、CSS、Audio API、public path書き込みに依存しない"
+      ]
+    }
+  ]
+}

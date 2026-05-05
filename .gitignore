@@ -1,0 +1,19 @@
+# Made in Maghribal Root GitIgnore
+
+# Deployment directory (managed by its own git)
+/public/
+
+# Dependencies
+node_modules/
+
+# Kawazu Internal / Temporaries
+.kawazu/construct/backups/
+.kawazu/construct/runs/
+.kawazu/construct/reviews/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.tmp

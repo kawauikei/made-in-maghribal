@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "contracts": [
+    {
+      "id": "C001_DATA_ID_SCHEMA",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C001_DATA_ID_SCHEMA.spec.md",
+      "testspec": "specs/modules/C001_DATA_ID_SCHEMA.testspec.md",
+      "sources": [
+        "src/core/idSchema.cjs"
+      ],
+      "tests": [
+        "tests/core/C001_DATA_ID_SCHEMA.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C001_DATA_ID_SCHEMA.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C001_DATA_ID_SCHEMA/20260505T201538+0900.json",
+      "last_verified_at": "2026-05-05T20:15:38.336192+09:00",
+      "updated_at": "2026-05-05T20:15:47.273627+09:00"
+    },
+    {
+      "id": "C002_CHARACTER_AND_TONE_DATA",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C002_CHARACTER_AND_TONE_DATA.spec.md",
+      "testspec": "specs/modules/C002_CHARACTER_AND_TONE_DATA.testspec.md",
+      "sources": [
+        "src/data/characters.cjs",
+        "src/data/toneGuides.cjs",
+        "src/core/characterValidator.cjs",
+        "src/core/toneGuideValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C002_CHARACTER_AND_TONE_DATA.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C002_CHARACTER_AND_TONE_DATA.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C002_CHARACTER_AND_TONE_DATA/20260505T210931+0900.json",
+      "last_verified_at": "2026-05-05T21:09:31.640442+09:00",
+      "updated_at": "2026-05-05T21:09:31.668846+09:00"
+    },
+    {
+      "id": "C004_ITEM_MASTER_AND_TEXT",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C004_ITEM_MASTER_AND_TEXT.spec.md",
+      "testspec": "specs/modules/C004_ITEM_MASTER_AND_TEXT.testspec.md",
+      "sources": [
+        "src/data/itemTaxonomy.cjs",
+        "src/data/itemMaster.cjs",
+        "src/data/itemTexts.cjs",
+        "src/core/itemValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C004_ITEM_MASTER_AND_TEXT.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C004_ITEM_MASTER_AND_TEXT.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C004_ITEM_MASTER_AND_TEXT/20260505T210931+0900.json",
+      "last_verified_at": "2026-05-05T21:09:31.865161+09:00",
+      "updated_at": "2026-05-05T21:09:31.875023+09:00"
+    },
+    {
+      "id": "C003_ASSET_MANIFEST",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C003_ASSET_MANIFEST.spec.md",
+      "testspec": "specs/modules/C003_ASSET_MANIFEST.testspec.md",
+      "sources": [
+        "src/data/assets.cjs",
+        "src/core/assetValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C003_ASSET_MANIFEST.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C003_ASSET_MANIFEST.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C003_ASSET_MANIFEST/20260505T210931+0900.json",
+      "last_verified_at": "2026-05-05T21:09:31.753091+09:00",
+      "updated_at": "2026-05-05T21:09:31.771761+09:00"
+    },
+    {
+      "id": "C005_AUDIO_MANIFEST",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C005_AUDIO_MANIFEST.spec.md",
+      "testspec": "specs/modules/C005_AUDIO_MANIFEST.testspec.md",
+      "sources": [
+        "src/data/audioManifest.cjs",
+        "src/core/audioValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C005_AUDIO_MANIFEST.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C005_AUDIO_MANIFEST.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C005_AUDIO_MANIFEST/20260505T210931+0900.json",
+      "last_verified_at": "2026-05-05T21:09:31.973727+09:00",
+      "updated_at": "2026-05-05T21:09:31.986394+09:00"
+    },
+    {
+      "id": "C006_SCENARIO_AND_TALK_SCHEMA",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C006_SCENARIO_AND_TALK_SCHEMA.spec.md",
+      "testspec": "specs/modules/C006_SCENARIO_AND_TALK_SCHEMA.testspec.md",
+      "sources": [
+        "src/data/scenarioSamples.cjs",
+        "src/data/dailyTalkSamples.cjs",
+        "src/core/scenarioSchema.cjs",
+        "src/core/scenarioValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C006_SCENARIO_AND_TALK_SCHEMA.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C006_SCENARIO_AND_TALK_SCHEMA.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C003_ASSET_MANIFEST",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C006_SCENARIO_AND_TALK_SCHEMA/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.076876+09:00",
+      "updated_at": "2026-05-05T21:09:32.092603+09:00"
+    },
+    {
+      "id": "C007_QUIZ_REQUEST_MODEL",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C007_QUIZ_REQUEST_MODEL.spec.md",
+      "testspec": "specs/modules/C007_QUIZ_REQUEST_MODEL.testspec.md",
+      "sources": [
+        "src/data/quizRequestTemplates.cjs",
+        "src/core/quizRequestModel.cjs",
+        "src/core/quizValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C007_QUIZ_REQUEST_MODEL.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C007_QUIZ_REQUEST_MODEL.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C004_ITEM_MASTER_AND_TEXT"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C007_QUIZ_REQUEST_MODEL/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.190108+09:00",
+      "updated_at": "2026-05-05T21:09:32.203252+09:00"
+    },
+    {
+      "id": "C008_RHYTHM_QUIZ_CORE",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C008_RHYTHM_QUIZ_CORE.spec.md",
+      "testspec": "specs/modules/C008_RHYTHM_QUIZ_CORE.testspec.md",
+      "sources": [
+        "src/core/rhythmTiming.cjs",
+        "src/core/rhythmQuizCore.cjs"
+      ],
+      "tests": [
+        "tests/core/C008_RHYTHM_QUIZ_CORE.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C008_RHYTHM_QUIZ_CORE.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C008_RHYTHM_QUIZ_CORE/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.287247+09:00",
+      "updated_at": "2026-05-05T21:09:32.300061+09:00"
+    },
+    {
+      "id": "C009_SCORE_AFFECTION_ENDING",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C009_SCORE_AFFECTION_ENDING.spec.md",
+      "testspec": "specs/modules/C009_SCORE_AFFECTION_ENDING.testspec.md",
+      "sources": [
+        "src/core/scoreModel.cjs",
+        "src/core/affectionModel.cjs",
+        "src/core/endingBranch.cjs"
+      ],
+      "tests": [
+        "tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C008_RHYTHM_QUIZ_CORE"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C009_SCORE_AFFECTION_ENDING/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.384330+09:00",
+      "updated_at": "2026-05-05T21:09:32.398888+09:00"
+    },
+    {
+      "id": "C010_GAME_SESSION_FLOW",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C010_GAME_SESSION_FLOW.spec.md",
+      "testspec": "specs/modules/C010_GAME_SESSION_FLOW.testspec.md",
+      "sources": [
+        "src/core/gameSessionFlow.cjs",
+        "src/core/stageSchedule.cjs",
+        "src/core/unlockState.cjs"
+      ],
+      "tests": [
+        "tests/core/C010_GAME_SESSION_FLOW.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C010_GAME_SESSION_FLOW.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C005_AUDIO_MANIFEST",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C008_RHYTHM_QUIZ_CORE",
+        "C009_SCORE_AFFECTION_ENDING"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C010_GAME_SESSION_FLOW/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.484154+09:00",
+      "updated_at": "2026-05-05T21:09:32.502362+09:00"
+    },
+    {
+      "id": "C011_RENDER_MODEL",
+      "kind": "module",
+      "status": "active",
+      "spec": "specs/modules/C011_RENDER_MODEL.spec.md",
+      "testspec": "specs/modules/C011_RENDER_MODEL.testspec.md",
+      "sources": [
+        "src/core/renderModel.cjs"
+      ],
+      "tests": [
+        "tests/core/C011_RENDER_MODEL.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C011_RENDER_MODEL.test.cjs"
+      ],
+      "max_source_lines": 300,
+      "description": "",
+      "depends_on": [
+        "C003_ASSET_MANIFEST",
+        "C004_ITEM_MASTER_AND_TEXT",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C010_GAME_SESSION_FLOW"
+      ],
+      "used_by": [],
+      "last_verified_run": ".kawazu/construct/runs/C011_RENDER_MODEL/20260505T210932+0900.json",
+      "last_verified_at": "2026-05-05T21:09:32.588775+09:00",
+      "updated_at": "2026-05-05T21:09:32.601336+09:00"
+    }
+  ]
+}

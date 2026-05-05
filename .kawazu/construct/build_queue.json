@@ -1,0 +1,337 @@
+{
+  "status": "ready",
+  "workflow": "agent_first_serial_review_assist",
+  "queue_algorithm": "dependency_ready_single_next_v1",
+  "project_root": "c:\\AI\\projects\\P0007_MadeInMaghribalt3",
+  "priority": "required",
+  "mode": "next_wave",
+  "next_contract": "C002_CHARACTER_AND_TONE_DATA",
+  "next_command": "contract_build_attempt C002_CHARACTER_AND_TONE_DATA",
+  "ready_contracts": [
+    "C002_CHARACTER_AND_TONE_DATA",
+    "C004_ITEM_MASTER_AND_TEXT"
+  ],
+  "blocked_contracts": [
+    {
+      "contract_id": "C005_AUDIO_MANIFEST",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "blocked_by": [
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C003_ASSET_MANIFEST",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "blocked_by": [
+        "C002_CHARACTER_AND_TONE_DATA"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C007_QUIZ_REQUEST_MODEL",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C004_ITEM_MASTER_AND_TEXT"
+      ],
+      "blocked_by": [
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C004_ITEM_MASTER_AND_TEXT"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C008_RHYTHM_QUIZ_CORE",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "blocked_by": [
+        "C007_QUIZ_REQUEST_MODEL",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C006_SCENARIO_AND_TALK_SCHEMA",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C003_ASSET_MANIFEST",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "blocked_by": [
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C003_ASSET_MANIFEST",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C009_SCORE_AFFECTION_ENDING",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C008_RHYTHM_QUIZ_CORE"
+      ],
+      "blocked_by": [
+        "C008_RHYTHM_QUIZ_CORE"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C010_GAME_SESSION_FLOW",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C005_AUDIO_MANIFEST",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C008_RHYTHM_QUIZ_CORE",
+        "C009_SCORE_AFFECTION_ENDING"
+      ],
+      "blocked_by": [
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C005_AUDIO_MANIFEST",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C008_RHYTHM_QUIZ_CORE",
+        "C009_SCORE_AFFECTION_ENDING"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    },
+    {
+      "contract_id": "C011_RENDER_MODEL",
+      "depends_on": [
+        "C003_ASSET_MANIFEST",
+        "C004_ITEM_MASTER_AND_TEXT",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C010_GAME_SESSION_FLOW"
+      ],
+      "blocked_by": [
+        "C003_ASSET_MANIFEST",
+        "C004_ITEM_MASTER_AND_TEXT",
+        "C006_SCENARIO_AND_TALK_SCHEMA",
+        "C010_GAME_SESSION_FLOW"
+      ],
+      "reason": "依存contractがactiveではありません。"
+    }
+  ],
+  "completed_contracts": [
+    "C001_DATA_ID_SCHEMA"
+  ],
+  "items": [
+    {
+      "contract_id": "C002_CHARACTER_AND_TONE_DATA",
+      "depends_on": [
+        "C001_DATA_ID_SCHEMA"
+      ],
+      "allowed_to_create": [
+        "specs/modules/C002_CHARACTER_AND_TONE_DATA.spec.md",
+        "specs/modules/C002_CHARACTER_AND_TONE_DATA.testspec.md",
+        "src/data/characters.cjs",
+        "src/data/toneGuides.cjs",
+        "src/core/characterValidator.cjs",
+        "src/core/toneGuideValidator.cjs",
+        "tests/core/C002_CHARACTER_AND_TONE_DATA.test.cjs"
+      ],
+      "spec": "specs/modules/C002_CHARACTER_AND_TONE_DATA.spec.md",
+      "testspec": "specs/modules/C002_CHARACTER_AND_TONE_DATA.testspec.md",
+      "sources": [
+        "src/data/characters.cjs",
+        "src/data/toneGuides.cjs",
+        "src/core/characterValidator.cjs",
+        "src/core/toneGuideValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C002_CHARACTER_AND_TONE_DATA.test.cjs"
+      ],
+      "required_commands": [
+        "node --test tests/core/C002_CHARACTER_AND_TONE_DATA.test.cjs"
+      ],
+      "forbidden_to_edit": [
+        ".kawazu/construct/contracts.json",
+        ".kawazu/construct/project_blueprint.json",
+        ".kawazu/construct/spec_index.md",
+        ".kawazu/construct/runs/**",
+        ".kawazu/construct/backups/**",
+        "package.json",
+        "package-lock.json"
+      ],
+      "agent_execution_directive": [
+        "Agent-First直列製造です。host agentが4点セットの正本を作成します。",
+        "Gemma4はtestspec下書き補助、Google APIは簡易レビュー補助です。source/testの正本生成はhost agent担当です。",
+        "allowed_to_create内だけを編集してください。",
+        "4点セットが揃ったら contract register / verify / finalize を実行してください。"
+      ],
+      "after_done": [
+        "contract register C002_CHARACTER_AND_TONE_DATA",
+        "contract verify C002_CHARACTER_AND_TONE_DATA",
+        "contract finalize C002_CHARACTER_AND_TONE_DATA"
+      ]
+    }
+  ],
+  "resource_assist_policy": {
+    "spec": "host_agent",
+    "testspec": "local/remote Gemma4 draft optional; host agent finalizes",
+    "source": "host_agent",
+    "source_review": "Google API high model review only",
+    "test": "host_agent",
+    "test_review": "Google API low model review only",
+    "finalize": "host_agent + ContractHub"
+  },
+  "rules": [
+    "並走前提にしない。エージェント差異を吸収するため次の1件だけを返す。",
+    "Google APIにsource/test正本を生成させない。",
+    "Gemma4下書きやGoogleレビューは補助であり、正本はhost agentが判断する。"
+  ],
+  "command": "tick",
+  "queue_state_file": ".kawazu/construct/runs/current_build_queue.json",
+  "queue_event_log": ".kawazu/construct/logs/build_queue_events.jsonl",
+  "runner_note": "MCP側のqueue状態を保存します。生成本体はDevHelper.contract_build_attemptが担当します。",
+  "queue_state": {
+    "run_id": "20260505T201051",
+    "status": "prepared",
+    "workflow": "agent_first_serial_review_assist",
+    "queue_algorithm": "dependency_ready_single_next_v1",
+    "project_root": "c:\\AI\\projects\\P0007_MadeInMaghribalt3",
+    "created_at": "2026-05-05T20:10:51+0900",
+    "updated_at": "2026-05-05T20:19:43+0900",
+    "next_contract": "C002_CHARACTER_AND_TONE_DATA",
+    "ready_contracts": [
+      "C002_CHARACTER_AND_TONE_DATA",
+      "C004_ITEM_MASTER_AND_TEXT"
+    ],
+    "blocked_contracts": [
+      {
+        "contract_id": "C005_AUDIO_MANIFEST",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C002_CHARACTER_AND_TONE_DATA"
+        ],
+        "blocked_by": [
+          "C002_CHARACTER_AND_TONE_DATA"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C003_ASSET_MANIFEST",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C002_CHARACTER_AND_TONE_DATA"
+        ],
+        "blocked_by": [
+          "C002_CHARACTER_AND_TONE_DATA"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C007_QUIZ_REQUEST_MODEL",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C004_ITEM_MASTER_AND_TEXT"
+        ],
+        "blocked_by": [
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C004_ITEM_MASTER_AND_TEXT"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C008_RHYTHM_QUIZ_CORE",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C007_QUIZ_REQUEST_MODEL",
+          "C005_AUDIO_MANIFEST"
+        ],
+        "blocked_by": [
+          "C007_QUIZ_REQUEST_MODEL",
+          "C005_AUDIO_MANIFEST"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C006_SCENARIO_AND_TALK_SCHEMA",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C003_ASSET_MANIFEST",
+          "C005_AUDIO_MANIFEST"
+        ],
+        "blocked_by": [
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C003_ASSET_MANIFEST",
+          "C005_AUDIO_MANIFEST"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C009_SCORE_AFFECTION_ENDING",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C008_RHYTHM_QUIZ_CORE"
+        ],
+        "blocked_by": [
+          "C008_RHYTHM_QUIZ_CORE"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C010_GAME_SESSION_FLOW",
+        "depends_on": [
+          "C001_DATA_ID_SCHEMA",
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C005_AUDIO_MANIFEST",
+          "C006_SCENARIO_AND_TALK_SCHEMA",
+          "C007_QUIZ_REQUEST_MODEL",
+          "C008_RHYTHM_QUIZ_CORE",
+          "C009_SCORE_AFFECTION_ENDING"
+        ],
+        "blocked_by": [
+          "C002_CHARACTER_AND_TONE_DATA",
+          "C005_AUDIO_MANIFEST",
+          "C006_SCENARIO_AND_TALK_SCHEMA",
+          "C007_QUIZ_REQUEST_MODEL",
+          "C008_RHYTHM_QUIZ_CORE",
+          "C009_SCORE_AFFECTION_ENDING"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      },
+      {
+        "contract_id": "C011_RENDER_MODEL",
+        "depends_on": [
+          "C003_ASSET_MANIFEST",
+          "C004_ITEM_MASTER_AND_TEXT",
+          "C006_SCENARIO_AND_TALK_SCHEMA",
+          "C010_GAME_SESSION_FLOW"
+        ],
+        "blocked_by": [
+          "C003_ASSET_MANIFEST",
+          "C004_ITEM_MASTER_AND_TEXT",
+          "C006_SCENARIO_AND_TALK_SCHEMA",
+          "C010_GAME_SESSION_FLOW"
+        ],
+        "reason": "依存contractがactiveではありません。"
+      }
+    ],
+    "next_devhelper_command": "contract_build_attempt C002_CHARACTER_AND_TONE_DATA",
+    "logs": {
+      "queue": ".kawazu/construct/logs/build_queue_events.jsonl",
+      "contract_build": ".kawazu/construct/logs/contract_build_events.jsonl",
+      "latest_status": ".kawazu/construct/logs/LATEST_STATUS.md"
+    },
+    "bottleneck_hint": {
+      "reason": "次のready contractを1件ずつ処理します。",
+      "ready_count": 2,
+      "blocked_count": 8
+    }
+  }
+}

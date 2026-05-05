@@ -1,0 +1,150 @@
+{
+  "fragment_type": "contracts",
+  "area": "quiz_rhythm_score",
+  "contracts": [
+    {
+      "contract_id": "C007_QUIZ_REQUEST_MODEL",
+      "title": "Quiz Request Model",
+      "status": "required",
+      "summary": "客タイプ、要望テンプレート、簡単な2択問題生成、正解候補/不正解候補選定を管理する。",
+      "dependencies": [
+        "C001_DATA_ID_SCHEMA",
+        "C002_CHARACTER_AND_TONE_DATA",
+        "C004_ITEM_MASTER_AND_TEXT"
+      ],
+      "spec": "specs/modules/C007_QUIZ_REQUEST_MODEL.spec.md",
+      "testspec": "specs/modules/C007_QUIZ_REQUEST_MODEL.testspec.md",
+      "sources": [
+        "src/data/quizRequestTemplates.cjs",
+        "src/core/quizRequestModel.cjs",
+        "src/core/quizValidator.cjs"
+      ],
+      "tests": [
+        "tests/core/C007_QUIZ_REQUEST_MODEL.test.cjs"
+      ],
+      "allowed_to_create": {
+        "specs": [
+          "specs/modules/C007_QUIZ_REQUEST_MODEL.spec.md"
+        ],
+        "testspecs": [
+          "specs/modules/C007_QUIZ_REQUEST_MODEL.testspec.md"
+        ],
+        "sources": [
+          "src/data/quizRequestTemplates.cjs",
+          "src/core/quizRequestModel.cjs",
+          "src/core/quizValidator.cjs"
+        ],
+        "tests": [
+          "tests/core/C007_QUIZ_REQUEST_MODEL.test.cjs"
+        ]
+      },
+      "required_commands": [
+        "node --test tests/core/C007_QUIZ_REQUEST_MODEL.test.cjs"
+      ],
+      "acceptance": [
+        "conditionType は genre, itemType, principle, priceTier, quality を扱える",
+        "MVP通常難易度では原則1条件の問題を生成する",
+        "extra難易度では最大2条件を許可できる",
+        "各問題の正解候補は1つだけ",
+        "不正解候補は正解候補と重複しない",
+        "request template は存在するcustomerTypeのみ参照する",
+        "客タイプにより同じ条件でも文体を変えられる"
+      ]
+    },
+    {
+      "contract_id": "C008_RHYTHM_QUIZ_CORE",
+      "title": "Rhythm Quiz Core",
+      "status": "required",
+      "summary": "ノーツ、判定、回答速度、リズム評価、1問処理を管理する。",
+      "dependencies": [
+        "C001_DATA_ID_SCHEMA",
+        "C007_QUIZ_REQUEST_MODEL",
+        "C005_AUDIO_MANIFEST"
+      ],
+      "spec": "specs/modules/C008_RHYTHM_QUIZ_CORE.spec.md",
+      "testspec": "specs/modules/C008_RHYTHM_QUIZ_CORE.testspec.md",
+      "sources": [
+        "src/core/rhythmTiming.cjs",
+        "src/core/rhythmQuizCore.cjs"
+      ],
+      "tests": [
+        "tests/core/C008_RHYTHM_QUIZ_CORE.test.cjs"
+      ],
+      "allowed_to_create": {
+        "specs": [
+          "specs/modules/C008_RHYTHM_QUIZ_CORE.spec.md"
+        ],
+        "testspecs": [
+          "specs/modules/C008_RHYTHM_QUIZ_CORE.testspec.md"
+        ],
+        "sources": [
+          "src/core/rhythmTiming.cjs",
+          "src/core/rhythmQuizCore.cjs"
+        ],
+        "tests": [
+          "tests/core/C008_RHYTHM_QUIZ_CORE.test.cjs"
+        ]
+      },
+      "required_commands": [
+        "node --test tests/core/C008_RHYTHM_QUIZ_CORE.test.cjs"
+      ],
+      "acceptance": [
+        "1問は promptShownAt, answeredAt, selectedItemId, correctItemId, nearestBeatMs を評価できる",
+        "回答速度は3秒以内 +2, 5秒以内 +1, 5秒超過 +0 の満足度ボーナスに変換できる",
+        "リズム評価は良い +2, そこそこ +1, 合っていない +0 の評判ボーナスに変換できる",
+        "リズムが悪くても正解なら売上は入る",
+        "判定は PERFECT, GOOD, MISS, NONE を返せる",
+        "ノーツ密度は少なめを前提に生成・保持できる",
+        "±ms差分をデバッグ表示用に返せる"
+      ]
+    },
+    {
+      "contract_id": "C009_SCORE_AFFECTION_ENDING",
+      "title": "Score, Affection, and Ending",
+      "status": "required",
+      "summary": "売上、満足度、評判、持ち越し、好感度、エンディング分岐を管理する。",
+      "dependencies": [
+        "C001_DATA_ID_SCHEMA",
+        "C008_RHYTHM_QUIZ_CORE"
+      ],
+      "spec": "specs/modules/C009_SCORE_AFFECTION_ENDING.spec.md",
+      "testspec": "specs/modules/C009_SCORE_AFFECTION_ENDING.testspec.md",
+      "sources": [
+        "src/core/scoreModel.cjs",
+        "src/core/affectionModel.cjs",
+        "src/core/endingBranch.cjs"
+      ],
+      "tests": [
+        "tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs"
+      ],
+      "allowed_to_create": {
+        "specs": [
+          "specs/modules/C009_SCORE_AFFECTION_ENDING.spec.md"
+        ],
+        "testspecs": [
+          "specs/modules/C009_SCORE_AFFECTION_ENDING.testspec.md"
+        ],
+        "sources": [
+          "src/core/scoreModel.cjs",
+          "src/core/affectionModel.cjs",
+          "src/core/endingBranch.cjs"
+        ],
+        "tests": [
+          "tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs"
+        ]
+      },
+      "required_commands": [
+        "node --test tests/core/C009_SCORE_AFFECTION_ENDING.test.cjs"
+      ],
+      "acceptance": [
+        "正解時に売上 +10 を加算する",
+        "満足度最大100, 評判最大100, 売上最大500を扱える",
+        "好感度 = (売上 + 満足度 + 評判 + 過去最大満足度 + 過去最大評判) / 5 を計算できる",
+        "好感度は100で上限クリップする",
+        "通常ルートは好感度60以上でGood Ending",
+        "追加ルートは好感度80以上でGood Ending",
+        "Good Ending後の追加ルート/Free Play解放フラグを計算できる"
+      ]
+    }
+  ]
+}

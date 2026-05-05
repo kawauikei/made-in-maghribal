@@ -1,0 +1,27 @@
+{
+  "fragment_type": "dependency_order",
+  "project_name": "romance_rhythm_mvp",
+  "required_order": [
+    "C001_DATA_ID_SCHEMA",
+    "C002_CHARACTER_AND_TONE_DATA",
+    "C003_ASSET_MANIFEST",
+    "C004_ITEM_MASTER_AND_TEXT",
+    "C005_AUDIO_MANIFEST",
+    "C006_SCENARIO_AND_TALK_SCHEMA",
+    "C007_QUIZ_REQUEST_MODEL",
+    "C008_RHYTHM_QUIZ_CORE",
+    "C009_SCORE_AFFECTION_ENDING",
+    "C010_GAME_SESSION_FLOW",
+    "C011_RENDER_MODEL"
+  ],
+  "non_contract_after_required": [
+    "NC001_BROWSER_APP_SHELL",
+    "NC002_HD_PORTRAIT_SCALE_TO_FIT",
+    "NC003_GLOBAL_HUD_AND_DEBUG_GATE",
+    "NC004_VN_SCREEN_RENDERING",
+    "NC005_RHYTHM_QUIZ_SCREEN_RENDERING",
+    "NC006_RESULT_HELP_FREEPLAY_SOUNDTEST",
+    "NC007_PUBLIC_GITHUB_PAGES_BUILD"
+  ],
+  "first_contract_bundle_to_create": "C001_DATA_ID_SCHEMA"
+}

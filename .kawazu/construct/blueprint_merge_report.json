@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "dry_run": false,
+  "fragment_files": [
+    ".kawazu/construct/blueprint_fragments/00_project.json",
+    ".kawazu/construct/blueprint_fragments/10_data_schema_contracts.json",
+    ".kawazu/construct/blueprint_fragments/20_content_data_contracts.json",
+    ".kawazu/construct/blueprint_fragments/30_quiz_rhythm_score_contracts.json",
+    ".kawazu/construct/blueprint_fragments/40_session_render_contracts.json",
+    ".kawazu/construct/blueprint_fragments/90_non_contract_integration.json",
+    ".kawazu/construct/blueprint_fragments/dependency_order.json",
+    ".kawazu/construct/blueprint_fragments/split_manifest.json"
+  ],
+  "errors": [],
+  "warnings": [],
+  "would_write": ".kawazu\\construct\\project_blueprint.json",
+  "notes": [
+    "blueprint_merge は spec/testspec/source/test を作成しません。",
+    "blueprint_merge は contracts.json を編集しません。",
+    "merge/patch/decision_apply の内部で lint 相当の検証を行います。単独確認は blueprint_merge lint を使います。"
+  ]
+}
