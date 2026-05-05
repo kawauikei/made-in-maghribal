@@ -6,7 +6,7 @@ const { getBackgroundPath } = require('../utils/assetPaths.js');
 
 function renderTitle(controller, view) {
   view.innerHTML = `
-    <div class="title-screen">
+    <div class="title-screen title-screen-with-art">
       <h1 class="glow">Made in Maghribal</h1>
       <p class="blink">クリックして開始</p>
     </div>
