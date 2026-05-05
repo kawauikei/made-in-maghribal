@@ -41,14 +41,13 @@
  * @param {object} history - { maxSatisfaction, maxReputation }
  * @returns {number} affection (0-100)
  */
-function calculateAffection(score, history) {
-  const { revenue, satisfaction, reputation } = score;
-  const { maxSatisfaction, maxReputation } = history;
+function calculateAffection(score, history = {}) {
+  const { revenue = 0, satisfaction = 0, reputation = 0 } = score;
   
-  // Acceptance: 好感度 = (売上 + 満足度 + 評判 + 過去最大満足度 + 過去最大評判) / 5
-  let val = (revenue + satisfaction + reputation + maxSatisfaction + maxReputation) / 5;
+  // MVP Formula: 好感度 = (売上 + 満足度 + 評判) / 5
+  let val = (revenue + satisfaction + reputation) / 5;
   
-  // Acceptance: 好感度は100で上限クリップする
+  // Clip at 0-100
   if (val > 100) val = 100;
   if (val < 0) val = 0;
   
@@ -1015,6 +1014,3027 @@ module.exports = { DAILY_TALK_SAMPLES };
 
     };
 
+    // --- ./data/itemDisplayNames.cjs ---
+    modules['./data/itemDisplayNames.cjs'] = function(module, exports, require) {
+/**
+ * Quality-aware item display names for MadeInMaghribal.
+ * Generated from current genre/item-type structure.
+ * 250 item IDs × 3 qualities = 750 display names.
+ */
+
+const ITEM_DISPLAY_NAMES = {
+  "IT_ADN_AS_01": {
+    base: "蒼星の指輪",
+    normal: "蒼星の指輪",
+    success: "宵星の護り指輪",
+    great_success: "黎明星の名工指輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ADN_01",
+    itemTypeName: "指輪",
+  },
+  "IT_ADN_AS_02": {
+    base: "月影の耳飾り",
+    normal: "月影の耳飾り",
+    success: "星灯りの耳飾り",
+    great_success: "星王の王家耳飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ADN_02",
+    itemTypeName: "耳飾り",
+  },
+  "IT_ADN_AS_03": {
+    base: "星読みの首飾り",
+    normal: "星読みの首飾り",
+    success: "星導の守り首飾り",
+    great_success: "天穹の秘宝首飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ADN_03",
+    itemTypeName: "首飾り",
+  },
+  "IT_ADN_AS_04": {
+    base: "夜明けの腕輪",
+    normal: "夜明けの腕輪",
+    success: "星霊の旅腕輪",
+    great_success: "星詠みの名工腕輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ADN_04",
+    itemTypeName: "腕輪",
+  },
+  "IT_ADN_AS_05": {
+    base: "方位の留め具",
+    normal: "方位の留め具",
+    success: "天図の留め具",
+    great_success: "運命星の王家留め具",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ADN_05",
+    itemTypeName: "留め具",
+  },
+  "IT_ADN_EL_01": {
+    base: "薄荷の指輪",
+    normal: "薄荷の指輪",
+    success: "泡霊薬の旅指輪",
+    great_success: "天露の王家指輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ADN_01",
+    itemTypeName: "指輪",
+  },
+  "IT_ADN_EL_02": {
+    base: "青緑の耳飾り",
+    normal: "青緑の耳飾り",
+    success: "清泉の揺れ耳飾り",
+    great_success: "聖滴の秘宝耳飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ADN_02",
+    itemTypeName: "耳飾り",
+  },
+  "IT_ADN_EL_03": {
+    base: "霊液の首飾り",
+    normal: "霊液の首飾り",
+    success: "蒼露の旅首飾り",
+    great_success: "玻璃霊薬の名工首飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ADN_03",
+    itemTypeName: "首飾り",
+  },
+  "IT_ADN_EL_04": {
+    base: "涼香の腕輪",
+    normal: "涼香の腕輪",
+    success: "浄霧の腕輪",
+    great_success: "癒しの雫の王家腕輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ADN_04",
+    itemTypeName: "腕輪",
+  },
+  "IT_ADN_EL_05": {
+    base: "清滴の留め具",
+    normal: "清滴の留め具",
+    success: "澄み雫の装飾留め具",
+    great_success: "神泉の秘宝留め具",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ADN_05",
+    itemTypeName: "留め具",
+  },
+  "IT_ADN_LI_01": {
+    base: "芽吹きの指輪",
+    normal: "芽吹きの指輪",
+    success: "花芽の旅指輪",
+    great_success: "生命奔流の王家指輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ADN_01",
+    itemTypeName: "指輪",
+  },
+  "IT_ADN_LI_02": {
+    base: "若葉の耳飾り",
+    normal: "若葉の耳飾り",
+    success: "瑞葉の揺れ耳飾り",
+    great_success: "生命樹の秘宝耳飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ADN_02",
+    itemTypeName: "耳飾り",
+  },
+  "IT_ADN_LI_03": {
+    base: "生命の首飾り",
+    normal: "生命の首飾り",
+    success: "再生の旅首飾り",
+    great_success: "豊穣の名工首飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ADN_03",
+    itemTypeName: "首飾り",
+  },
+  "IT_ADN_LI_04": {
+    base: "蔦編みの腕輪",
+    normal: "蔦編みの腕輪",
+    success: "緑脈の腕輪",
+    great_success: "不死芽の王家腕輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ADN_04",
+    itemTypeName: "腕輪",
+  },
+  "IT_ADN_LI_05": {
+    base: "脈動の留め具",
+    normal: "脈動の留め具",
+    success: "活力の装飾留め具",
+    great_success: "大地脈の秘宝留め具",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ADN_05",
+    itemTypeName: "留め具",
+  },
+  "IT_ADN_ME_01": {
+    base: "錬鉄の指輪",
+    normal: "錬鉄の指輪",
+    success: "白鋼の護り指輪",
+    great_success: "星鍛えの名工指輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ADN_01",
+    itemTypeName: "指輪",
+  },
+  "IT_ADN_ME_02": {
+    base: "白錫の耳飾り",
+    normal: "白錫の耳飾り",
+    success: "銀磨きの耳飾り",
+    great_success: "月白銀の王家耳飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ADN_02",
+    itemTypeName: "耳飾り",
+  },
+  "IT_ADN_ME_03": {
+    base: "青銅の首飾り",
+    normal: "青銅の首飾り",
+    success: "金銀細工の守り首飾り",
+    great_success: "王工房の秘宝首飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ADN_03",
+    itemTypeName: "首飾り",
+  },
+  "IT_ADN_ME_04": {
+    base: "銀縁の腕輪",
+    normal: "銀縁の腕輪",
+    success: "鋼芯の旅腕輪",
+    great_success: "金剛の名工腕輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ADN_04",
+    itemTypeName: "腕輪",
+  },
+  "IT_ADN_ME_05": {
+    base: "鍛金の留め具",
+    normal: "鍛金の留め具",
+    success: "鏡銀の留め具",
+    great_success: "太陽鋼の王家留め具",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ADN_05",
+    itemTypeName: "留め具",
+  },
+  "IT_ADN_SA_01": {
+    base: "琥珀の指輪",
+    normal: "琥珀の指輪",
+    success: "琥珀磨きの細工指輪",
+    great_success: "蜃気楼の秘宝指輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ADN_01",
+    itemTypeName: "指輪",
+  },
+  "IT_ADN_SA_02": {
+    base: "砂風の耳飾り",
+    normal: "砂風の耳飾り",
+    success: "流砂の細工耳飾り",
+    great_success: "黄金砂の名工耳飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ADN_02",
+    itemTypeName: "耳飾り",
+  },
+  "IT_ADN_SA_03": {
+    base: "黄砂の首飾り",
+    normal: "黄砂の首飾り",
+    success: "乾き守りの首飾り",
+    great_success: "不朽砂の王家首飾り",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ADN_03",
+    itemTypeName: "首飾り",
+  },
+  "IT_ADN_SA_04": {
+    base: "砂紋の腕輪",
+    normal: "砂紋の腕輪",
+    success: "風紋の護腕輪",
+    great_success: "悠久砂丘の秘宝腕輪",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ADN_04",
+    itemTypeName: "腕輪",
+  },
+  "IT_ADN_SA_05": {
+    base: "乾砂の留め具",
+    normal: "乾砂の留め具",
+    success: "砂丘の旅留め具",
+    great_success: "砂王の名工留め具",
+    genre: "ADN",
+    genreName: "アクセサリー",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ADN_05",
+    itemTypeName: "留め具",
+  },
+  "IT_ARM_AS_01": {
+    base: "蒼星の短剣",
+    normal: "蒼星の短剣",
+    success: "宵星の護身短剣",
+    great_success: "黎明星の王工房短剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ARM_01",
+    itemTypeName: "短剣",
+  },
+  "IT_ARM_AS_02": {
+    base: "月影の直剣",
+    normal: "月影の直剣",
+    success: "星灯りの長刃直剣",
+    great_success: "星王の星剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ARM_02",
+    itemTypeName: "直剣",
+  },
+  "IT_ARM_AS_03": {
+    base: "星読みの小槍",
+    normal: "星読みの小槍",
+    success: "星導の鋭小槍",
+    great_success: "天穹の星槍",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ARM_03",
+    itemTypeName: "小槍",
+  },
+  "IT_ARM_AS_04": {
+    base: "夜明けの丸盾",
+    normal: "夜明けの丸盾",
+    success: "星霊の護り丸盾",
+    great_success: "星詠みの王盾",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ARM_04",
+    itemTypeName: "丸盾",
+  },
+  "IT_ARM_AS_05": {
+    base: "方位の魔導杖",
+    normal: "方位の魔導杖",
+    success: "天図の魔導杖",
+    great_success: "運命星の賢者杖",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "ARM_05",
+    itemTypeName: "魔導杖",
+  },
+  "IT_ARM_EL_01": {
+    base: "薄荷の短剣",
+    normal: "薄荷の短剣",
+    success: "泡霊薬の細刃短剣",
+    great_success: "天露の星剣短刃",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ARM_01",
+    itemTypeName: "短剣",
+  },
+  "IT_ARM_EL_02": {
+    base: "青緑の直剣",
+    normal: "青緑の直剣",
+    success: "清泉の鋭直剣",
+    great_success: "聖滴の名剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ARM_02",
+    itemTypeName: "直剣",
+  },
+  "IT_ARM_EL_03": {
+    base: "霊液の小槍",
+    normal: "霊液の小槍",
+    success: "蒼露の旅槍",
+    great_success: "玻璃霊薬の王家小槍",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ARM_03",
+    itemTypeName: "小槍",
+  },
+  "IT_ARM_EL_04": {
+    base: "涼香の丸盾",
+    normal: "涼香の丸盾",
+    success: "浄霧の受け丸盾",
+    great_success: "癒しの雫の星盾",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ARM_04",
+    itemTypeName: "丸盾",
+  },
+  "IT_ARM_EL_05": {
+    base: "清滴の魔導杖",
+    normal: "清滴の魔導杖",
+    success: "澄み雫の導き杖",
+    great_success: "神泉の大魔導杖",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "ARM_05",
+    itemTypeName: "魔導杖",
+  },
+  "IT_ARM_LI_01": {
+    base: "芽吹きの短剣",
+    normal: "芽吹きの短剣",
+    success: "花芽の細刃短剣",
+    great_success: "生命奔流の星剣短刃",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ARM_01",
+    itemTypeName: "短剣",
+  },
+  "IT_ARM_LI_02": {
+    base: "若葉の直剣",
+    normal: "若葉の直剣",
+    success: "瑞葉の鋭直剣",
+    great_success: "生命樹の名剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ARM_02",
+    itemTypeName: "直剣",
+  },
+  "IT_ARM_LI_03": {
+    base: "生命の小槍",
+    normal: "生命の小槍",
+    success: "再生の旅槍",
+    great_success: "豊穣の王家小槍",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ARM_03",
+    itemTypeName: "小槍",
+  },
+  "IT_ARM_LI_04": {
+    base: "蔦編みの丸盾",
+    normal: "蔦編みの丸盾",
+    success: "緑脈の受け丸盾",
+    great_success: "不死芽の星盾",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ARM_04",
+    itemTypeName: "丸盾",
+  },
+  "IT_ARM_LI_05": {
+    base: "脈動の魔導杖",
+    normal: "脈動の魔導杖",
+    success: "活力の導き杖",
+    great_success: "大地脈の大魔導杖",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "ARM_05",
+    itemTypeName: "魔導杖",
+  },
+  "IT_ARM_ME_01": {
+    base: "錬鉄の短剣",
+    normal: "錬鉄の短剣",
+    success: "白鋼の護身短剣",
+    great_success: "星鍛えの王工房短剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ARM_01",
+    itemTypeName: "短剣",
+  },
+  "IT_ARM_ME_02": {
+    base: "白錫の直剣",
+    normal: "白錫の直剣",
+    success: "銀磨きの長刃直剣",
+    great_success: "月白銀の星剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ARM_02",
+    itemTypeName: "直剣",
+  },
+  "IT_ARM_ME_03": {
+    base: "青銅の小槍",
+    normal: "青銅の小槍",
+    success: "金銀細工の鋭小槍",
+    great_success: "王工房の星槍",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ARM_03",
+    itemTypeName: "小槍",
+  },
+  "IT_ARM_ME_04": {
+    base: "銀縁の丸盾",
+    normal: "銀縁の丸盾",
+    success: "鋼芯の護り丸盾",
+    great_success: "金剛の王盾",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ARM_04",
+    itemTypeName: "丸盾",
+  },
+  "IT_ARM_ME_05": {
+    base: "鍛金の魔導杖",
+    normal: "鍛金の魔導杖",
+    success: "鏡銀の魔導杖",
+    great_success: "太陽鋼の賢者杖",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "ARM_05",
+    itemTypeName: "魔導杖",
+  },
+  "IT_ARM_SA_01": {
+    base: "琥珀の短剣",
+    normal: "琥珀の短剣",
+    success: "琥珀磨きの鋭短剣",
+    great_success: "蜃気楼の秘刃短剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ARM_01",
+    itemTypeName: "短剣",
+  },
+  "IT_ARM_SA_02": {
+    base: "砂風の直剣",
+    normal: "砂風の直剣",
+    success: "流砂の騎士剣",
+    great_success: "黄金砂の王家直剣",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ARM_02",
+    itemTypeName: "直剣",
+  },
+  "IT_ARM_SA_03": {
+    base: "黄砂の小槍",
+    normal: "黄砂の小槍",
+    success: "乾き守りの細穂小槍",
+    great_success: "不朽砂の秘槍",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ARM_03",
+    itemTypeName: "小槍",
+  },
+  "IT_ARM_SA_04": {
+    base: "砂紋の丸盾",
+    normal: "砂紋の丸盾",
+    success: "風紋の堅丸盾",
+    great_success: "悠久砂丘の守護丸盾",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ARM_04",
+    itemTypeName: "丸盾",
+  },
+  "IT_ARM_SA_05": {
+    base: "乾砂の魔導杖",
+    normal: "乾砂の魔導杖",
+    success: "砂丘の詠唱杖",
+    great_success: "砂王の星杖",
+    genre: "ARM",
+    genreName: "武具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "ARM_05",
+    itemTypeName: "魔導杖",
+  },
+  "IT_CLT_AS_01": {
+    base: "蒼星の外套",
+    normal: "蒼星の外套",
+    success: "宵星の防砂外套",
+    great_success: "黎明星の名工外套",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "AS",
+    principleName: "星",
+    itemType: "CLT_01",
+    itemTypeName: "外套",
+  },
+  "IT_CLT_AS_02": {
+    base: "月影のスカーフ",
+    normal: "月影のスカーフ",
+    success: "星灯りの首巻き",
+    great_success: "星王の王家スカーフ",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "AS",
+    principleName: "星",
+    itemType: "CLT_02",
+    itemTypeName: "スカーフ",
+  },
+  "IT_CLT_AS_03": {
+    base: "星読みの旅靴",
+    normal: "星読みの旅靴",
+    success: "星導の歩き旅靴",
+    great_success: "天穹の秘宝旅靴",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "AS",
+    principleName: "星",
+    itemType: "CLT_03",
+    itemTypeName: "旅靴",
+  },
+  "IT_CLT_AS_04": {
+    base: "夜明けの革帯",
+    normal: "夜明けの革帯",
+    success: "星霊の工具革帯",
+    great_success: "星詠みの名工革帯",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "AS",
+    principleName: "星",
+    itemType: "CLT_04",
+    itemTypeName: "革帯",
+  },
+  "IT_CLT_AS_05": {
+    base: "方位の頭巾",
+    normal: "方位の頭巾",
+    success: "天図の頭巾",
+    great_success: "運命星の王家頭巾",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "AS",
+    principleName: "星",
+    itemType: "CLT_05",
+    itemTypeName: "頭巾",
+  },
+  "IT_CLT_EL_01": {
+    base: "薄荷の外套",
+    normal: "薄荷の外套",
+    success: "泡霊薬の外套",
+    great_success: "天露の王家外套",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "CLT_01",
+    itemTypeName: "外套",
+  },
+  "IT_CLT_EL_02": {
+    base: "青緑のスカーフ",
+    normal: "青緑のスカーフ",
+    success: "清泉の旅スカーフ",
+    great_success: "聖滴の秘宝スカーフ",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "CLT_02",
+    itemTypeName: "スカーフ",
+  },
+  "IT_CLT_EL_03": {
+    base: "霊液の旅靴",
+    normal: "霊液の旅靴",
+    success: "蒼露の砂路靴",
+    great_success: "玻璃霊薬の名工旅靴",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "CLT_03",
+    itemTypeName: "旅靴",
+  },
+  "IT_CLT_EL_04": {
+    base: "涼香の革帯",
+    normal: "涼香の革帯",
+    success: "浄霧の革帯",
+    great_success: "癒しの雫の王家革帯",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "CLT_04",
+    itemTypeName: "革帯",
+  },
+  "IT_CLT_EL_05": {
+    base: "清滴の頭巾",
+    normal: "清滴の頭巾",
+    success: "澄み雫の旅頭巾",
+    great_success: "神泉の秘宝頭巾",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "CLT_05",
+    itemTypeName: "頭巾",
+  },
+  "IT_CLT_LI_01": {
+    base: "芽吹きの外套",
+    normal: "芽吹きの外套",
+    success: "花芽の外套",
+    great_success: "生命奔流の王家外套",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "CLT_01",
+    itemTypeName: "外套",
+  },
+  "IT_CLT_LI_02": {
+    base: "若葉のスカーフ",
+    normal: "若葉のスカーフ",
+    success: "瑞葉の旅スカーフ",
+    great_success: "生命樹の秘宝スカーフ",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "CLT_02",
+    itemTypeName: "スカーフ",
+  },
+  "IT_CLT_LI_03": {
+    base: "生命の旅靴",
+    normal: "生命の旅靴",
+    success: "再生の砂路靴",
+    great_success: "豊穣の名工旅靴",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "CLT_03",
+    itemTypeName: "旅靴",
+  },
+  "IT_CLT_LI_04": {
+    base: "蔦編みの革帯",
+    normal: "蔦編みの革帯",
+    success: "緑脈の革帯",
+    great_success: "不死芽の王家革帯",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "CLT_04",
+    itemTypeName: "革帯",
+  },
+  "IT_CLT_LI_05": {
+    base: "脈動の頭巾",
+    normal: "脈動の頭巾",
+    success: "活力の旅頭巾",
+    great_success: "大地脈の秘宝頭巾",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "CLT_05",
+    itemTypeName: "頭巾",
+  },
+  "IT_CLT_ME_01": {
+    base: "錬鉄の外套",
+    normal: "錬鉄の外套",
+    success: "白鋼の防砂外套",
+    great_success: "星鍛えの名工外套",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "CLT_01",
+    itemTypeName: "外套",
+  },
+  "IT_CLT_ME_02": {
+    base: "白錫のスカーフ",
+    normal: "白錫のスカーフ",
+    success: "銀磨きの首巻き",
+    great_success: "月白銀の王家スカーフ",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "CLT_02",
+    itemTypeName: "スカーフ",
+  },
+  "IT_CLT_ME_03": {
+    base: "青銅の旅靴",
+    normal: "青銅の旅靴",
+    success: "金銀細工の歩き旅靴",
+    great_success: "王工房の秘宝旅靴",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "CLT_03",
+    itemTypeName: "旅靴",
+  },
+  "IT_CLT_ME_04": {
+    base: "銀縁の革帯",
+    normal: "銀縁の革帯",
+    success: "鋼芯の工具革帯",
+    great_success: "金剛の名工革帯",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "CLT_04",
+    itemTypeName: "革帯",
+  },
+  "IT_CLT_ME_05": {
+    base: "鍛金の頭巾",
+    normal: "鍛金の頭巾",
+    success: "鏡銀の頭巾",
+    great_success: "太陽鋼の王家頭巾",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "CLT_05",
+    itemTypeName: "頭巾",
+  },
+  "IT_CLT_SA_01": {
+    base: "琥珀の外套",
+    normal: "琥珀の外套",
+    success: "琥珀磨きの旅外套",
+    great_success: "蜃気楼の秘宝外套",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "CLT_01",
+    itemTypeName: "外套",
+  },
+  "IT_CLT_SA_02": {
+    base: "砂風のスカーフ",
+    normal: "砂風のスカーフ",
+    success: "流砂の絹スカーフ",
+    great_success: "黄金砂の名工スカーフ",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "CLT_02",
+    itemTypeName: "スカーフ",
+  },
+  "IT_CLT_SA_03": {
+    base: "黄砂の旅靴",
+    normal: "黄砂の旅靴",
+    success: "乾き守りの旅靴",
+    great_success: "不朽砂の王家旅靴",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "CLT_03",
+    itemTypeName: "旅靴",
+  },
+  "IT_CLT_SA_04": {
+    base: "砂紋の革帯",
+    normal: "砂紋の革帯",
+    success: "風紋の旅革帯",
+    great_success: "悠久砂丘の秘宝革帯",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "CLT_04",
+    itemTypeName: "革帯",
+  },
+  "IT_CLT_SA_05": {
+    base: "乾砂の頭巾",
+    normal: "乾砂の頭巾",
+    success: "砂丘の防砂頭巾",
+    great_success: "砂王の名工頭巾",
+    genre: "CLT",
+    genreName: "衣服",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "CLT_05",
+    itemTypeName: "頭巾",
+  },
+  "IT_DAY_AS_01": {
+    base: "蒼星の油灯",
+    normal: "蒼星の油灯",
+    success: "宵星の手持ち油灯",
+    great_success: "黎明星の名工油灯",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "AS",
+    principleName: "星",
+    itemType: "DAY_01",
+    itemTypeName: "油灯",
+  },
+  "IT_DAY_AS_02": {
+    base: "月影の方位磁針",
+    normal: "月影の方位磁針",
+    success: "星灯りの方位磁針",
+    great_success: "星王の王家方位磁針",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "AS",
+    principleName: "星",
+    itemType: "DAY_02",
+    itemTypeName: "方位磁針",
+  },
+  "IT_DAY_AS_03": {
+    base: "星読みの手帳",
+    normal: "星読みの手帳",
+    success: "星導の旅手帳",
+    great_success: "天穹の秘宝手帳",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "AS",
+    principleName: "星",
+    itemType: "DAY_03",
+    itemTypeName: "手帳",
+  },
+  "IT_DAY_AS_04": {
+    base: "夜明けの寝袋",
+    normal: "夜明けの寝袋",
+    success: "星霊の保温寝袋",
+    great_success: "星詠みの名工寝袋",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "AS",
+    principleName: "星",
+    itemType: "DAY_04",
+    itemTypeName: "寝袋",
+  },
+  "IT_DAY_AS_05": {
+    base: "方位の小鍵",
+    normal: "方位の小鍵",
+    success: "天図の留め鍵",
+    great_success: "運命星の王家小鍵",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "AS",
+    principleName: "星",
+    itemType: "DAY_05",
+    itemTypeName: "小鍵",
+  },
+  "IT_DAY_EL_01": {
+    base: "薄荷の油灯",
+    normal: "薄荷の油灯",
+    success: "泡霊薬の油灯",
+    great_success: "天露の王家油灯",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "DAY_01",
+    itemTypeName: "油灯",
+  },
+  "IT_DAY_EL_02": {
+    base: "青緑の方位磁針",
+    normal: "青緑の方位磁針",
+    success: "清泉の旅磁針",
+    great_success: "聖滴の秘宝方位磁針",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "DAY_02",
+    itemTypeName: "方位磁針",
+  },
+  "IT_DAY_EL_03": {
+    base: "霊液の手帳",
+    normal: "霊液の手帳",
+    success: "蒼露の記録手帳",
+    great_success: "玻璃霊薬の名工手帳",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "DAY_03",
+    itemTypeName: "手帳",
+  },
+  "IT_DAY_EL_04": {
+    base: "涼香の寝袋",
+    normal: "涼香の寝袋",
+    success: "浄霧の寝袋",
+    great_success: "癒しの雫の王家寝袋",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "DAY_04",
+    itemTypeName: "寝袋",
+  },
+  "IT_DAY_EL_05": {
+    base: "清滴の小鍵",
+    normal: "清滴の小鍵",
+    success: "澄み雫の秘鍵",
+    great_success: "神泉の秘宝小鍵",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "DAY_05",
+    itemTypeName: "小鍵",
+  },
+  "IT_DAY_LI_01": {
+    base: "芽吹きの油灯",
+    normal: "芽吹きの油灯",
+    success: "花芽の油灯",
+    great_success: "生命奔流の王家油灯",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "DAY_01",
+    itemTypeName: "油灯",
+  },
+  "IT_DAY_LI_02": {
+    base: "若葉の方位磁針",
+    normal: "若葉の方位磁針",
+    success: "瑞葉の旅磁針",
+    great_success: "生命樹の秘宝方位磁針",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "DAY_02",
+    itemTypeName: "方位磁針",
+  },
+  "IT_DAY_LI_03": {
+    base: "生命の手帳",
+    normal: "生命の手帳",
+    success: "再生の記録手帳",
+    great_success: "豊穣の名工手帳",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "DAY_03",
+    itemTypeName: "手帳",
+  },
+  "IT_DAY_LI_04": {
+    base: "蔦編みの寝袋",
+    normal: "蔦編みの寝袋",
+    success: "緑脈の寝袋",
+    great_success: "不死芽の王家寝袋",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "DAY_04",
+    itemTypeName: "寝袋",
+  },
+  "IT_DAY_LI_05": {
+    base: "脈動の小鍵",
+    normal: "脈動の小鍵",
+    success: "活力の秘鍵",
+    great_success: "大地脈の秘宝小鍵",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "DAY_05",
+    itemTypeName: "小鍵",
+  },
+  "IT_DAY_ME_01": {
+    base: "錬鉄の油灯",
+    normal: "錬鉄の油灯",
+    success: "白鋼の手持ち油灯",
+    great_success: "星鍛えの名工油灯",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "DAY_01",
+    itemTypeName: "油灯",
+  },
+  "IT_DAY_ME_02": {
+    base: "白錫の方位磁針",
+    normal: "白錫の方位磁針",
+    success: "銀磨きの方位磁針",
+    great_success: "月白銀の王家方位磁針",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "DAY_02",
+    itemTypeName: "方位磁針",
+  },
+  "IT_DAY_ME_03": {
+    base: "青銅の手帳",
+    normal: "青銅の手帳",
+    success: "金銀細工の旅手帳",
+    great_success: "王工房の秘宝手帳",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "DAY_03",
+    itemTypeName: "手帳",
+  },
+  "IT_DAY_ME_04": {
+    base: "銀縁の寝袋",
+    normal: "銀縁の寝袋",
+    success: "鋼芯の保温寝袋",
+    great_success: "金剛の名工寝袋",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "DAY_04",
+    itemTypeName: "寝袋",
+  },
+  "IT_DAY_ME_05": {
+    base: "鍛金の小鍵",
+    normal: "鍛金の小鍵",
+    success: "鏡銀の留め鍵",
+    great_success: "太陽鋼の王家小鍵",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "DAY_05",
+    itemTypeName: "小鍵",
+  },
+  "IT_DAY_SA_01": {
+    base: "琥珀の油灯",
+    normal: "琥珀の油灯",
+    success: "琥珀磨きの旅油灯",
+    great_success: "蜃気楼の秘宝油灯",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "DAY_01",
+    itemTypeName: "油灯",
+  },
+  "IT_DAY_SA_02": {
+    base: "砂風の方位磁針",
+    normal: "砂風の方位磁針",
+    success: "流砂の方位盤",
+    great_success: "黄金砂の名工方位磁針",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "DAY_02",
+    itemTypeName: "方位磁針",
+  },
+  "IT_DAY_SA_03": {
+    base: "黄砂の手帳",
+    normal: "黄砂の手帳",
+    success: "乾き守りの手帳",
+    great_success: "不朽砂の王家手帳",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "DAY_03",
+    itemTypeName: "手帳",
+  },
+  "IT_DAY_SA_04": {
+    base: "砂紋の寝袋",
+    normal: "砂紋の寝袋",
+    success: "風紋の旅寝袋",
+    great_success: "悠久砂丘の秘宝寝袋",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "DAY_04",
+    itemTypeName: "寝袋",
+  },
+  "IT_DAY_SA_05": {
+    base: "乾砂の小鍵",
+    normal: "乾砂の小鍵",
+    success: "砂丘の小鍵",
+    great_success: "砂王の名工小鍵",
+    genre: "DAY",
+    genreName: "日用",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "DAY_05",
+    itemTypeName: "小鍵",
+  },
+  "IT_FOD_AS_01": {
+    base: "蒼星の旅パン",
+    normal: "蒼星の旅パン",
+    success: "宵星の香り旅パン",
+    great_success: "黎明星の王都旅パン",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "AS",
+    principleName: "星",
+    itemType: "FOD_01",
+    itemTypeName: "旅パン",
+  },
+  "IT_FOD_AS_02": {
+    base: "月影の干し果物",
+    normal: "月影の干し果物",
+    success: "星灯りの旅果実",
+    great_success: "星王の星蜜果",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "AS",
+    principleName: "星",
+    itemType: "FOD_02",
+    itemTypeName: "干し果物",
+  },
+  "IT_FOD_AS_03": {
+    base: "星読みの香辛料瓶",
+    normal: "星読みの香辛料瓶",
+    success: "星導の香辛料壺",
+    great_success: "天穹の秘香瓶",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "AS",
+    principleName: "星",
+    itemType: "FOD_03",
+    itemTypeName: "香辛料瓶",
+  },
+  "IT_FOD_AS_04": {
+    base: "夜明けの茶杯",
+    normal: "夜明けの茶杯",
+    success: "星霊の旅茶杯",
+    great_success: "星詠みの王家茶杯",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "AS",
+    principleName: "星",
+    itemType: "FOD_04",
+    itemTypeName: "茶杯",
+  },
+  "IT_FOD_AS_05": {
+    base: "方位の水筒",
+    normal: "方位の水筒",
+    success: "天図の清水筒",
+    great_success: "運命星の不朽水筒",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "AS",
+    principleName: "星",
+    itemType: "FOD_05",
+    itemTypeName: "水筒",
+  },
+  "IT_FOD_EL_01": {
+    base: "薄荷の旅パン",
+    normal: "薄荷の旅パン",
+    success: "泡霊薬の滋養パン",
+    great_success: "天露の豊穣パン",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "FOD_01",
+    itemTypeName: "旅パン",
+  },
+  "IT_FOD_EL_02": {
+    base: "青緑の干し果物",
+    normal: "青緑の干し果物",
+    success: "清泉の蜜干し果物",
+    great_success: "聖滴の宝果",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "FOD_02",
+    itemTypeName: "干し果物",
+  },
+  "IT_FOD_EL_03": {
+    base: "霊液の香辛料瓶",
+    normal: "霊液の香辛料瓶",
+    success: "蒼露の香料瓶",
+    great_success: "玻璃霊薬の王都香料瓶",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "FOD_03",
+    itemTypeName: "香辛料瓶",
+  },
+  "IT_FOD_EL_04": {
+    base: "涼香の茶杯",
+    normal: "涼香の茶杯",
+    success: "浄霧の湯気茶杯",
+    great_success: "癒しの雫の祝福茶杯",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "FOD_04",
+    itemTypeName: "茶杯",
+  },
+  "IT_FOD_EL_05": {
+    base: "清滴の水筒",
+    normal: "清滴の水筒",
+    success: "澄み雫の保冷水筒",
+    great_success: "神泉の聖水筒",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "FOD_05",
+    itemTypeName: "水筒",
+  },
+  "IT_FOD_LI_01": {
+    base: "芽吹きの旅パン",
+    normal: "芽吹きの旅パン",
+    success: "花芽の滋養パン",
+    great_success: "生命奔流の豊穣パン",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "FOD_01",
+    itemTypeName: "旅パン",
+  },
+  "IT_FOD_LI_02": {
+    base: "若葉の干し果物",
+    normal: "若葉の干し果物",
+    success: "瑞葉の蜜干し果物",
+    great_success: "生命樹の宝果",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "FOD_02",
+    itemTypeName: "干し果物",
+  },
+  "IT_FOD_LI_03": {
+    base: "生命の香辛料瓶",
+    normal: "生命の香辛料瓶",
+    success: "再生の香料瓶",
+    great_success: "豊穣の王都香料瓶",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "FOD_03",
+    itemTypeName: "香辛料瓶",
+  },
+  "IT_FOD_LI_04": {
+    base: "蔦編みの茶杯",
+    normal: "蔦編みの茶杯",
+    success: "緑脈の湯気茶杯",
+    great_success: "不死芽の祝福茶杯",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "FOD_04",
+    itemTypeName: "茶杯",
+  },
+  "IT_FOD_LI_05": {
+    base: "脈動の水筒",
+    normal: "脈動の水筒",
+    success: "活力の保冷水筒",
+    great_success: "大地脈の聖水筒",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "FOD_05",
+    itemTypeName: "水筒",
+  },
+  "IT_FOD_ME_01": {
+    base: "錬鉄の旅パン",
+    normal: "錬鉄の旅パン",
+    success: "白鋼の香り旅パン",
+    great_success: "星鍛えの王都旅パン",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "FOD_01",
+    itemTypeName: "旅パン",
+  },
+  "IT_FOD_ME_02": {
+    base: "白錫の干し果物",
+    normal: "白錫の干し果物",
+    success: "銀磨きの旅果実",
+    great_success: "月白銀の星蜜果",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "FOD_02",
+    itemTypeName: "干し果物",
+  },
+  "IT_FOD_ME_03": {
+    base: "青銅の香辛料瓶",
+    normal: "青銅の香辛料瓶",
+    success: "金銀細工の香辛料壺",
+    great_success: "王工房の秘香瓶",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "FOD_03",
+    itemTypeName: "香辛料瓶",
+  },
+  "IT_FOD_ME_04": {
+    base: "銀縁の茶杯",
+    normal: "銀縁の茶杯",
+    success: "鋼芯の旅茶杯",
+    great_success: "金剛の王家茶杯",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "FOD_04",
+    itemTypeName: "茶杯",
+  },
+  "IT_FOD_ME_05": {
+    base: "鍛金の水筒",
+    normal: "鍛金の水筒",
+    success: "鏡銀の清水筒",
+    great_success: "太陽鋼の不朽水筒",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "FOD_05",
+    itemTypeName: "水筒",
+  },
+  "IT_FOD_SA_01": {
+    base: "琥珀の旅パン",
+    normal: "琥珀の旅パン",
+    success: "琥珀磨きの焼き旅パン",
+    great_success: "蜃気楼の祝福旅パン",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "FOD_01",
+    itemTypeName: "旅パン",
+  },
+  "IT_FOD_SA_02": {
+    base: "砂風の干し果物",
+    normal: "砂風の干し果物",
+    success: "流砂の甘露果",
+    great_success: "黄金砂の豊穣果",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "FOD_02",
+    itemTypeName: "干し果物",
+  },
+  "IT_FOD_SA_03": {
+    base: "黄砂の香辛料瓶",
+    normal: "黄砂の香辛料瓶",
+    success: "乾き守りの調味瓶",
+    great_success: "不朽砂の香王瓶",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "FOD_03",
+    itemTypeName: "香辛料瓶",
+  },
+  "IT_FOD_SA_04": {
+    base: "砂紋の茶杯",
+    normal: "砂紋の茶杯",
+    success: "風紋の香茶杯",
+    great_success: "悠久砂丘の星茶杯",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "FOD_04",
+    itemTypeName: "茶杯",
+  },
+  "IT_FOD_SA_05": {
+    base: "乾砂の水筒",
+    normal: "乾砂の水筒",
+    success: "砂丘の旅水筒",
+    great_success: "砂王の星泉水筒",
+    genre: "FOD",
+    genreName: "食糧",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "FOD_05",
+    itemTypeName: "水筒",
+  },
+  "IT_MED_AS_01": {
+    base: "蒼星の薬瓶",
+    normal: "蒼星の薬瓶",
+    success: "宵星の救急薬瓶",
+    great_success: "黎明星の王薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "AS",
+    principleName: "星",
+    itemType: "MED_01",
+    itemTypeName: "薬瓶",
+  },
+  "IT_MED_AS_02": {
+    base: "月影の霊薬瓶",
+    normal: "月影の霊薬瓶",
+    success: "星灯りの清霊瓶",
+    great_success: "星王の王家霊薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "AS",
+    principleName: "星",
+    itemType: "MED_02",
+    itemTypeName: "霊薬瓶",
+  },
+  "IT_MED_AS_03": {
+    base: "星読みの軟膏壺",
+    normal: "星読みの軟膏壺",
+    success: "星導の癒し軟膏壺",
+    great_success: "天穹の秘薬膏壺",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "AS",
+    principleName: "星",
+    itemType: "MED_03",
+    itemTypeName: "軟膏壺",
+  },
+  "IT_MED_AS_04": {
+    base: "夜明けの粉薬瓶",
+    normal: "夜明けの粉薬瓶",
+    success: "星霊の細粉薬瓶",
+    great_success: "星詠みの星粉薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "AS",
+    principleName: "星",
+    itemType: "MED_04",
+    itemTypeName: "粉薬瓶",
+  },
+  "IT_MED_AS_05": {
+    base: "方位の丸薬箱",
+    normal: "方位の丸薬箱",
+    success: "天図の薬箱",
+    great_success: "運命星の王薬箱",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "AS",
+    principleName: "星",
+    itemType: "MED_05",
+    itemTypeName: "丸薬箱",
+  },
+  "IT_MED_EL_01": {
+    base: "薄荷の薬瓶",
+    normal: "薄荷の薬瓶",
+    success: "泡霊薬の小薬瓶",
+    great_success: "天露の星癒薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "MED_01",
+    itemTypeName: "薬瓶",
+  },
+  "IT_MED_EL_02": {
+    base: "青緑の霊薬瓶",
+    normal: "青緑の霊薬瓶",
+    success: "清泉の霊薬瓶",
+    great_success: "聖滴の聖霊薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "MED_02",
+    itemTypeName: "霊薬瓶",
+  },
+  "IT_MED_EL_03": {
+    base: "霊液の軟膏壺",
+    normal: "霊液の軟膏壺",
+    success: "蒼露の治療壺",
+    great_success: "玻璃霊薬の聖軟膏壺",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "MED_03",
+    itemTypeName: "軟膏壺",
+  },
+  "IT_MED_EL_04": {
+    base: "涼香の粉薬瓶",
+    normal: "涼香の粉薬瓶",
+    success: "浄霧の薬粉瓶",
+    great_success: "癒しの雫の王家粉薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "MED_04",
+    itemTypeName: "粉薬瓶",
+  },
+  "IT_MED_EL_05": {
+    base: "清滴の丸薬箱",
+    normal: "清滴の丸薬箱",
+    success: "澄み雫の丸薬箱",
+    great_success: "神泉の秘丸薬箱",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "MED_05",
+    itemTypeName: "丸薬箱",
+  },
+  "IT_MED_LI_01": {
+    base: "芽吹きの薬瓶",
+    normal: "芽吹きの薬瓶",
+    success: "花芽の小薬瓶",
+    great_success: "生命奔流の星癒薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "MED_01",
+    itemTypeName: "薬瓶",
+  },
+  "IT_MED_LI_02": {
+    base: "若葉の霊薬瓶",
+    normal: "若葉の霊薬瓶",
+    success: "瑞葉の霊薬瓶",
+    great_success: "生命樹の聖霊薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "MED_02",
+    itemTypeName: "霊薬瓶",
+  },
+  "IT_MED_LI_03": {
+    base: "生命の軟膏壺",
+    normal: "生命の軟膏壺",
+    success: "再生の治療壺",
+    great_success: "豊穣の聖軟膏壺",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "MED_03",
+    itemTypeName: "軟膏壺",
+  },
+  "IT_MED_LI_04": {
+    base: "蔦編みの粉薬瓶",
+    normal: "蔦編みの粉薬瓶",
+    success: "緑脈の薬粉瓶",
+    great_success: "不死芽の王家粉薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "MED_04",
+    itemTypeName: "粉薬瓶",
+  },
+  "IT_MED_LI_05": {
+    base: "脈動の丸薬箱",
+    normal: "脈動の丸薬箱",
+    success: "活力の丸薬箱",
+    great_success: "大地脈の秘丸薬箱",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "MED_05",
+    itemTypeName: "丸薬箱",
+  },
+  "IT_MED_ME_01": {
+    base: "錬鉄の薬瓶",
+    normal: "錬鉄の薬瓶",
+    success: "白鋼の救急薬瓶",
+    great_success: "星鍛えの王薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "MED_01",
+    itemTypeName: "薬瓶",
+  },
+  "IT_MED_ME_02": {
+    base: "白錫の霊薬瓶",
+    normal: "白錫の霊薬瓶",
+    success: "銀磨きの清霊瓶",
+    great_success: "月白銀の王家霊薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "MED_02",
+    itemTypeName: "霊薬瓶",
+  },
+  "IT_MED_ME_03": {
+    base: "青銅の軟膏壺",
+    normal: "青銅の軟膏壺",
+    success: "金銀細工の癒し軟膏壺",
+    great_success: "王工房の秘薬膏壺",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "MED_03",
+    itemTypeName: "軟膏壺",
+  },
+  "IT_MED_ME_04": {
+    base: "銀縁の粉薬瓶",
+    normal: "銀縁の粉薬瓶",
+    success: "鋼芯の細粉薬瓶",
+    great_success: "金剛の星粉薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "MED_04",
+    itemTypeName: "粉薬瓶",
+  },
+  "IT_MED_ME_05": {
+    base: "鍛金の丸薬箱",
+    normal: "鍛金の丸薬箱",
+    success: "鏡銀の薬箱",
+    great_success: "太陽鋼の王薬箱",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "MED_05",
+    itemTypeName: "丸薬箱",
+  },
+  "IT_MED_SA_01": {
+    base: "琥珀の薬瓶",
+    normal: "琥珀の薬瓶",
+    success: "琥珀磨きの調合薬瓶",
+    great_success: "蜃気楼の秘薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "MED_01",
+    itemTypeName: "薬瓶",
+  },
+  "IT_MED_SA_02": {
+    base: "砂風の霊薬瓶",
+    normal: "砂風の霊薬瓶",
+    success: "流砂の高霊薬瓶",
+    great_success: "黄金砂の星霊薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "MED_02",
+    itemTypeName: "霊薬瓶",
+  },
+  "IT_MED_SA_03": {
+    base: "黄砂の軟膏壺",
+    normal: "黄砂の軟膏壺",
+    success: "乾き守りの薬膏壺",
+    great_success: "不朽砂の王薬壺",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "MED_03",
+    itemTypeName: "軟膏壺",
+  },
+  "IT_MED_SA_04": {
+    base: "砂紋の粉薬瓶",
+    normal: "砂紋の粉薬瓶",
+    success: "風紋の粉薬瓶",
+    great_success: "悠久砂丘の秘粉薬瓶",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "MED_04",
+    itemTypeName: "粉薬瓶",
+  },
+  "IT_MED_SA_05": {
+    base: "乾砂の丸薬箱",
+    normal: "乾砂の丸薬箱",
+    success: "砂丘の携帯丸薬箱",
+    great_success: "砂王の聖丸薬箱",
+    genre: "MED",
+    genreName: "薬品",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "MED_05",
+    itemTypeName: "丸薬箱",
+  },
+  "IT_RIT_AS_01": {
+    base: "蒼星の香炉",
+    normal: "蒼星の香炉",
+    success: "宵星の携帯香炉",
+    great_success: "黎明星の名工香炉",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "AS",
+    principleName: "星",
+    itemType: "RIT_01",
+    itemTypeName: "香炉",
+  },
+  "IT_RIT_AS_02": {
+    base: "月影の護符飾り",
+    normal: "月影の護符飾り",
+    success: "星灯りの祈り飾り",
+    great_success: "星王の王家護符飾り",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "AS",
+    principleName: "星",
+    itemType: "RIT_02",
+    itemTypeName: "護符飾り",
+  },
+  "IT_RIT_AS_03": {
+    base: "星読みの儀礼小刀",
+    normal: "星読みの儀礼小刀",
+    success: "星導の儀礼小刀",
+    great_success: "天穹の秘宝儀礼小刀",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "AS",
+    principleName: "星",
+    itemType: "RIT_03",
+    itemTypeName: "儀礼小刀",
+  },
+  "IT_RIT_AS_04": {
+    base: "夜明けの小鈴",
+    normal: "夜明けの小鈴",
+    success: "星霊の祭礼鈴",
+    great_success: "星詠みの名工小鈴",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "AS",
+    principleName: "星",
+    itemType: "RIT_04",
+    itemTypeName: "小鈴",
+  },
+  "IT_RIT_AS_05": {
+    base: "方位の香木箱",
+    normal: "方位の香木箱",
+    success: "天図の香箱",
+    great_success: "運命星の王家香木箱",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "AS",
+    principleName: "星",
+    itemType: "RIT_05",
+    itemTypeName: "香木箱",
+  },
+  "IT_RIT_EL_01": {
+    base: "薄荷の香炉",
+    normal: "薄荷の香炉",
+    success: "泡霊薬の香炉",
+    great_success: "天露の王家香炉",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "RIT_01",
+    itemTypeName: "香炉",
+  },
+  "IT_RIT_EL_02": {
+    base: "青緑の護符飾り",
+    normal: "青緑の護符飾り",
+    success: "清泉の守護符",
+    great_success: "聖滴の秘宝護符飾り",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "RIT_02",
+    itemTypeName: "護符飾り",
+  },
+  "IT_RIT_EL_03": {
+    base: "霊液の儀礼小刀",
+    normal: "霊液の儀礼小刀",
+    success: "蒼露の祭具小刀",
+    great_success: "玻璃霊薬の名工儀礼小刀",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "RIT_03",
+    itemTypeName: "儀礼小刀",
+  },
+  "IT_RIT_EL_04": {
+    base: "涼香の小鈴",
+    normal: "涼香の小鈴",
+    success: "浄霧の小鈴",
+    great_success: "癒しの雫の王家小鈴",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "RIT_04",
+    itemTypeName: "小鈴",
+  },
+  "IT_RIT_EL_05": {
+    base: "清滴の香木箱",
+    normal: "清滴の香木箱",
+    success: "澄み雫の香木箱",
+    great_success: "神泉の秘宝香木箱",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "RIT_05",
+    itemTypeName: "香木箱",
+  },
+  "IT_RIT_LI_01": {
+    base: "芽吹きの香炉",
+    normal: "芽吹きの香炉",
+    success: "花芽の香炉",
+    great_success: "生命奔流の王家香炉",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "RIT_01",
+    itemTypeName: "香炉",
+  },
+  "IT_RIT_LI_02": {
+    base: "若葉の護符飾り",
+    normal: "若葉の護符飾り",
+    success: "瑞葉の守護符",
+    great_success: "生命樹の秘宝護符飾り",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "RIT_02",
+    itemTypeName: "護符飾り",
+  },
+  "IT_RIT_LI_03": {
+    base: "生命の儀礼小刀",
+    normal: "生命の儀礼小刀",
+    success: "再生の祭具小刀",
+    great_success: "豊穣の名工儀礼小刀",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "RIT_03",
+    itemTypeName: "儀礼小刀",
+  },
+  "IT_RIT_LI_04": {
+    base: "蔦編みの小鈴",
+    normal: "蔦編みの小鈴",
+    success: "緑脈の小鈴",
+    great_success: "不死芽の王家小鈴",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "RIT_04",
+    itemTypeName: "小鈴",
+  },
+  "IT_RIT_LI_05": {
+    base: "脈動の香木箱",
+    normal: "脈動の香木箱",
+    success: "活力の香木箱",
+    great_success: "大地脈の秘宝香木箱",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "RIT_05",
+    itemTypeName: "香木箱",
+  },
+  "IT_RIT_ME_01": {
+    base: "錬鉄の香炉",
+    normal: "錬鉄の香炉",
+    success: "白鋼の携帯香炉",
+    great_success: "星鍛えの名工香炉",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "RIT_01",
+    itemTypeName: "香炉",
+  },
+  "IT_RIT_ME_02": {
+    base: "白錫の護符飾り",
+    normal: "白錫の護符飾り",
+    success: "銀磨きの祈り飾り",
+    great_success: "月白銀の王家護符飾り",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "RIT_02",
+    itemTypeName: "護符飾り",
+  },
+  "IT_RIT_ME_03": {
+    base: "青銅の儀礼小刀",
+    normal: "青銅の儀礼小刀",
+    success: "金銀細工の儀礼小刀",
+    great_success: "王工房の秘宝儀礼小刀",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "RIT_03",
+    itemTypeName: "儀礼小刀",
+  },
+  "IT_RIT_ME_04": {
+    base: "銀縁の小鈴",
+    normal: "銀縁の小鈴",
+    success: "鋼芯の祭礼鈴",
+    great_success: "金剛の名工小鈴",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "RIT_04",
+    itemTypeName: "小鈴",
+  },
+  "IT_RIT_ME_05": {
+    base: "鍛金の香木箱",
+    normal: "鍛金の香木箱",
+    success: "鏡銀の香箱",
+    great_success: "太陽鋼の王家香木箱",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "RIT_05",
+    itemTypeName: "香木箱",
+  },
+  "IT_RIT_SA_01": {
+    base: "琥珀の香炉",
+    normal: "琥珀の香炉",
+    success: "琥珀磨きの儀式香炉",
+    great_success: "蜃気楼の秘宝香炉",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "RIT_01",
+    itemTypeName: "香炉",
+  },
+  "IT_RIT_SA_02": {
+    base: "砂風の護符飾り",
+    normal: "砂風の護符飾り",
+    success: "流砂の護符飾り",
+    great_success: "黄金砂の名工護符飾り",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "RIT_02",
+    itemTypeName: "護符飾り",
+  },
+  "IT_RIT_SA_03": {
+    base: "黄砂の儀礼小刀",
+    normal: "黄砂の儀礼小刀",
+    success: "乾き守りの祈祷小刀",
+    great_success: "不朽砂の王家儀礼小刀",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "RIT_03",
+    itemTypeName: "儀礼小刀",
+  },
+  "IT_RIT_SA_04": {
+    base: "砂紋の小鈴",
+    normal: "砂紋の小鈴",
+    success: "風紋の祈り小鈴",
+    great_success: "悠久砂丘の秘宝小鈴",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "RIT_04",
+    itemTypeName: "小鈴",
+  },
+  "IT_RIT_SA_05": {
+    base: "乾砂の香木箱",
+    normal: "乾砂の香木箱",
+    success: "砂丘の祈香箱",
+    great_success: "砂王の名工香木箱",
+    genre: "RIT",
+    genreName: "儀式",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "RIT_05",
+    itemTypeName: "香木箱",
+  },
+  "IT_TRD_AS_01": {
+    base: "蒼星の硬貨袋",
+    normal: "蒼星の硬貨袋",
+    success: "宵星の革硬貨袋",
+    great_success: "黎明星の名工硬貨袋",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRD_01",
+    itemTypeName: "硬貨袋",
+  },
+  "IT_TRD_AS_02": {
+    base: "月影の商人秤",
+    normal: "月影の商人秤",
+    success: "星灯りの精密秤",
+    great_success: "星王の王家商人秤",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRD_02",
+    itemTypeName: "商人秤",
+  },
+  "IT_TRD_AS_03": {
+    base: "星読みの封蝋印",
+    normal: "星読みの封蝋印",
+    success: "星導の商印",
+    great_success: "天穹の秘宝封蝋印",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRD_03",
+    itemTypeName: "封蝋印",
+  },
+  "IT_TRD_AS_04": {
+    base: "夜明けの帳簿",
+    normal: "夜明けの帳簿",
+    success: "星霊の旅帳簿",
+    great_success: "星詠みの名工帳簿",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRD_04",
+    itemTypeName: "帳簿",
+  },
+  "IT_TRD_AS_05": {
+    base: "方位の小宝箱",
+    normal: "方位の小宝箱",
+    success: "天図の鍵付き小箱",
+    great_success: "運命星の王家小宝箱",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRD_05",
+    itemTypeName: "小宝箱",
+  },
+  "IT_TRD_EL_01": {
+    base: "薄荷の硬貨袋",
+    normal: "薄荷の硬貨袋",
+    success: "泡霊薬の硬貨袋",
+    great_success: "天露の王家硬貨袋",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRD_01",
+    itemTypeName: "硬貨袋",
+  },
+  "IT_TRD_EL_02": {
+    base: "青緑の商人秤",
+    normal: "青緑の商人秤",
+    success: "清泉の商人秤",
+    great_success: "聖滴の秘宝商人秤",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRD_02",
+    itemTypeName: "商人秤",
+  },
+  "IT_TRD_EL_03": {
+    base: "霊液の封蝋印",
+    normal: "霊液の封蝋印",
+    success: "蒼露の封蝋印",
+    great_success: "玻璃霊薬の名工封蝋印",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRD_03",
+    itemTypeName: "封蝋印",
+  },
+  "IT_TRD_EL_04": {
+    base: "涼香の帳簿",
+    normal: "涼香の帳簿",
+    success: "浄霧の帳簿",
+    great_success: "癒しの雫の王家帳簿",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRD_04",
+    itemTypeName: "帳簿",
+  },
+  "IT_TRD_EL_05": {
+    base: "清滴の小宝箱",
+    normal: "清滴の小宝箱",
+    success: "澄み雫の小宝箱",
+    great_success: "神泉の秘宝小宝箱",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRD_05",
+    itemTypeName: "小宝箱",
+  },
+  "IT_TRD_LI_01": {
+    base: "芽吹きの硬貨袋",
+    normal: "芽吹きの硬貨袋",
+    success: "花芽の硬貨袋",
+    great_success: "生命奔流の王家硬貨袋",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRD_01",
+    itemTypeName: "硬貨袋",
+  },
+  "IT_TRD_LI_02": {
+    base: "若葉の商人秤",
+    normal: "若葉の商人秤",
+    success: "瑞葉の商人秤",
+    great_success: "生命樹の秘宝商人秤",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRD_02",
+    itemTypeName: "商人秤",
+  },
+  "IT_TRD_LI_03": {
+    base: "生命の封蝋印",
+    normal: "生命の封蝋印",
+    success: "再生の封蝋印",
+    great_success: "豊穣の名工封蝋印",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRD_03",
+    itemTypeName: "封蝋印",
+  },
+  "IT_TRD_LI_04": {
+    base: "蔦編みの帳簿",
+    normal: "蔦編みの帳簿",
+    success: "緑脈の帳簿",
+    great_success: "不死芽の王家帳簿",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRD_04",
+    itemTypeName: "帳簿",
+  },
+  "IT_TRD_LI_05": {
+    base: "脈動の小宝箱",
+    normal: "脈動の小宝箱",
+    success: "活力の小宝箱",
+    great_success: "大地脈の秘宝小宝箱",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRD_05",
+    itemTypeName: "小宝箱",
+  },
+  "IT_TRD_ME_01": {
+    base: "錬鉄の硬貨袋",
+    normal: "錬鉄の硬貨袋",
+    success: "白鋼の革硬貨袋",
+    great_success: "星鍛えの名工硬貨袋",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRD_01",
+    itemTypeName: "硬貨袋",
+  },
+  "IT_TRD_ME_02": {
+    base: "白錫の商人秤",
+    normal: "白錫の商人秤",
+    success: "銀磨きの精密秤",
+    great_success: "月白銀の王家商人秤",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRD_02",
+    itemTypeName: "商人秤",
+  },
+  "IT_TRD_ME_03": {
+    base: "青銅の封蝋印",
+    normal: "青銅の封蝋印",
+    success: "金銀細工の商印",
+    great_success: "王工房の秘宝封蝋印",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRD_03",
+    itemTypeName: "封蝋印",
+  },
+  "IT_TRD_ME_04": {
+    base: "銀縁の帳簿",
+    normal: "銀縁の帳簿",
+    success: "鋼芯の旅帳簿",
+    great_success: "金剛の名工帳簿",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRD_04",
+    itemTypeName: "帳簿",
+  },
+  "IT_TRD_ME_05": {
+    base: "鍛金の小宝箱",
+    normal: "鍛金の小宝箱",
+    success: "鏡銀の鍵付き小箱",
+    great_success: "太陽鋼の王家小宝箱",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRD_05",
+    itemTypeName: "小宝箱",
+  },
+  "IT_TRD_SA_01": {
+    base: "琥珀の硬貨袋",
+    normal: "琥珀の硬貨袋",
+    success: "琥珀磨きの商い硬貨袋",
+    great_success: "蜃気楼の秘宝硬貨袋",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRD_01",
+    itemTypeName: "硬貨袋",
+  },
+  "IT_TRD_SA_02": {
+    base: "砂風の商人秤",
+    normal: "砂風の商人秤",
+    success: "流砂の旅秤",
+    great_success: "黄金砂の名工商人秤",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRD_02",
+    itemTypeName: "商人秤",
+  },
+  "IT_TRD_SA_03": {
+    base: "黄砂の封蝋印",
+    normal: "黄砂の封蝋印",
+    success: "乾き守りの証印",
+    great_success: "不朽砂の王家封蝋印",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRD_03",
+    itemTypeName: "封蝋印",
+  },
+  "IT_TRD_SA_04": {
+    base: "砂紋の帳簿",
+    normal: "砂紋の帳簿",
+    success: "風紋の商い帳簿",
+    great_success: "悠久砂丘の秘宝帳簿",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRD_04",
+    itemTypeName: "帳簿",
+  },
+  "IT_TRD_SA_05": {
+    base: "乾砂の小宝箱",
+    normal: "乾砂の小宝箱",
+    success: "砂丘の商い宝箱",
+    great_success: "砂王の名工小宝箱",
+    genre: "TRD",
+    genreName: "貿易",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRD_05",
+    itemTypeName: "小宝箱",
+  },
+  "IT_TRV_AS_01": {
+    base: "蒼星の地図筒",
+    normal: "蒼星の地図筒",
+    success: "宵星の防湿地図筒",
+    great_success: "黎明星の名工地図筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRV_01",
+    itemTypeName: "地図筒",
+  },
+  "IT_TRV_AS_02": {
+    base: "月影の携帯水筒",
+    normal: "月影の携帯水筒",
+    success: "星灯りの肩掛け水筒",
+    great_success: "星王の王家携帯水筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRV_02",
+    itemTypeName: "携帯水筒",
+  },
+  "IT_TRV_AS_03": {
+    base: "星読みの縄束",
+    normal: "星読みの縄束",
+    success: "星導の旅縄束",
+    great_success: "天穹の秘宝縄束",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRV_03",
+    itemTypeName: "縄束",
+  },
+  "IT_TRV_AS_04": {
+    base: "夜明けの旅袋",
+    normal: "夜明けの旅袋",
+    success: "星霊の大旅袋",
+    great_success: "星詠みの名工旅袋",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRV_04",
+    itemTypeName: "旅袋",
+  },
+  "IT_TRV_AS_05": {
+    base: "方位の小ランタン",
+    normal: "方位の小ランタン",
+    success: "天図の手提げランタン",
+    great_success: "運命星の王家小ランタン",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "TRV_05",
+    itemTypeName: "小ランタン",
+  },
+  "IT_TRV_EL_01": {
+    base: "薄荷の地図筒",
+    normal: "薄荷の地図筒",
+    success: "泡霊薬の地図筒",
+    great_success: "天露の王家地図筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRV_01",
+    itemTypeName: "地図筒",
+  },
+  "IT_TRV_EL_02": {
+    base: "青緑の携帯水筒",
+    normal: "青緑の携帯水筒",
+    success: "清泉の携帯水筒",
+    great_success: "聖滴の秘宝携帯水筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRV_02",
+    itemTypeName: "携帯水筒",
+  },
+  "IT_TRV_EL_03": {
+    base: "霊液の縄束",
+    normal: "霊液の縄束",
+    success: "蒼露の丈夫な縄束",
+    great_success: "玻璃霊薬の名工縄束",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRV_03",
+    itemTypeName: "縄束",
+  },
+  "IT_TRV_EL_04": {
+    base: "涼香の旅袋",
+    normal: "涼香の旅袋",
+    success: "浄霧の旅袋",
+    great_success: "癒しの雫の王家旅袋",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRV_04",
+    itemTypeName: "旅袋",
+  },
+  "IT_TRV_EL_05": {
+    base: "清滴の小ランタン",
+    normal: "清滴の小ランタン",
+    success: "澄み雫の旅ランタン",
+    great_success: "神泉の秘宝小ランタン",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "TRV_05",
+    itemTypeName: "小ランタン",
+  },
+  "IT_TRV_LI_01": {
+    base: "芽吹きの地図筒",
+    normal: "芽吹きの地図筒",
+    success: "花芽の地図筒",
+    great_success: "生命奔流の王家地図筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRV_01",
+    itemTypeName: "地図筒",
+  },
+  "IT_TRV_LI_02": {
+    base: "若葉の携帯水筒",
+    normal: "若葉の携帯水筒",
+    success: "瑞葉の携帯水筒",
+    great_success: "生命樹の秘宝携帯水筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRV_02",
+    itemTypeName: "携帯水筒",
+  },
+  "IT_TRV_LI_03": {
+    base: "生命の縄束",
+    normal: "生命の縄束",
+    success: "再生の丈夫な縄束",
+    great_success: "豊穣の名工縄束",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRV_03",
+    itemTypeName: "縄束",
+  },
+  "IT_TRV_LI_04": {
+    base: "蔦編みの旅袋",
+    normal: "蔦編みの旅袋",
+    success: "緑脈の旅袋",
+    great_success: "不死芽の王家旅袋",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRV_04",
+    itemTypeName: "旅袋",
+  },
+  "IT_TRV_LI_05": {
+    base: "脈動の小ランタン",
+    normal: "脈動の小ランタン",
+    success: "活力の旅ランタン",
+    great_success: "大地脈の秘宝小ランタン",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "TRV_05",
+    itemTypeName: "小ランタン",
+  },
+  "IT_TRV_ME_01": {
+    base: "錬鉄の地図筒",
+    normal: "錬鉄の地図筒",
+    success: "白鋼の防湿地図筒",
+    great_success: "星鍛えの名工地図筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRV_01",
+    itemTypeName: "地図筒",
+  },
+  "IT_TRV_ME_02": {
+    base: "白錫の携帯水筒",
+    normal: "白錫の携帯水筒",
+    success: "銀磨きの肩掛け水筒",
+    great_success: "月白銀の王家携帯水筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRV_02",
+    itemTypeName: "携帯水筒",
+  },
+  "IT_TRV_ME_03": {
+    base: "青銅の縄束",
+    normal: "青銅の縄束",
+    success: "金銀細工の旅縄束",
+    great_success: "王工房の秘宝縄束",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRV_03",
+    itemTypeName: "縄束",
+  },
+  "IT_TRV_ME_04": {
+    base: "銀縁の旅袋",
+    normal: "銀縁の旅袋",
+    success: "鋼芯の大旅袋",
+    great_success: "金剛の名工旅袋",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRV_04",
+    itemTypeName: "旅袋",
+  },
+  "IT_TRV_ME_05": {
+    base: "鍛金の小ランタン",
+    normal: "鍛金の小ランタン",
+    success: "鏡銀の手提げランタン",
+    great_success: "太陽鋼の王家小ランタン",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "TRV_05",
+    itemTypeName: "小ランタン",
+  },
+  "IT_TRV_SA_01": {
+    base: "琥珀の地図筒",
+    normal: "琥珀の地図筒",
+    success: "琥珀磨きの旅地図筒",
+    great_success: "蜃気楼の秘宝地図筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRV_01",
+    itemTypeName: "地図筒",
+  },
+  "IT_TRV_SA_02": {
+    base: "砂風の携帯水筒",
+    normal: "砂風の携帯水筒",
+    success: "流砂の旅水筒",
+    great_success: "黄金砂の名工携帯水筒",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRV_02",
+    itemTypeName: "携帯水筒",
+  },
+  "IT_TRV_SA_03": {
+    base: "黄砂の縄束",
+    normal: "黄砂の縄束",
+    success: "乾き守りの縄束",
+    great_success: "不朽砂の王家縄束",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRV_03",
+    itemTypeName: "縄束",
+  },
+  "IT_TRV_SA_04": {
+    base: "砂紋の旅袋",
+    normal: "砂紋の旅袋",
+    success: "風紋の肩掛け旅袋",
+    great_success: "悠久砂丘の秘宝旅袋",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRV_04",
+    itemTypeName: "旅袋",
+  },
+  "IT_TRV_SA_05": {
+    base: "乾砂の小ランタン",
+    normal: "乾砂の小ランタン",
+    success: "砂丘の小ランタン",
+    great_success: "砂王の名工小ランタン",
+    genre: "TRV",
+    genreName: "旅具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "TRV_05",
+    itemTypeName: "小ランタン",
+  },
+  "IT_WRK_AS_01": {
+    base: "蒼星の乳鉢",
+    normal: "蒼星の乳鉢",
+    success: "宵星の薬研乳鉢",
+    great_success: "黎明星の名工乳鉢",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "WRK_01",
+    itemTypeName: "乳鉢",
+  },
+  "IT_WRK_AS_02": {
+    base: "月影のトング",
+    normal: "月影のトング",
+    success: "星灯りのトング",
+    great_success: "星王の王家トング",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "WRK_02",
+    itemTypeName: "トング",
+  },
+  "IT_WRK_AS_03": {
+    base: "星読みのるつぼ",
+    normal: "星読みのるつぼ",
+    success: "星導の錬成るつぼ",
+    great_success: "天穹の秘宝るつぼ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "WRK_03",
+    itemTypeName: "るつぼ",
+  },
+  "IT_WRK_AS_04": {
+    base: "夜明けの計量匙",
+    normal: "夜明けの計量匙",
+    success: "星霊の計量匙",
+    great_success: "星詠みの名工計量匙",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "WRK_04",
+    itemTypeName: "計量匙",
+  },
+  "IT_WRK_AS_05": {
+    base: "方位のフラスコ",
+    normal: "方位のフラスコ",
+    success: "天図のフラスコ",
+    great_success: "運命星の王家フラスコ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "AS",
+    principleName: "星",
+    itemType: "WRK_05",
+    itemTypeName: "フラスコ",
+  },
+  "IT_WRK_EL_01": {
+    base: "薄荷の乳鉢",
+    normal: "薄荷の乳鉢",
+    success: "泡霊薬の乳鉢",
+    great_success: "天露の王家乳鉢",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "WRK_01",
+    itemTypeName: "乳鉢",
+  },
+  "IT_WRK_EL_02": {
+    base: "青緑のトング",
+    normal: "青緑のトング",
+    success: "清泉の鍛冶トング",
+    great_success: "聖滴の秘宝トング",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "WRK_02",
+    itemTypeName: "トング",
+  },
+  "IT_WRK_EL_03": {
+    base: "霊液のるつぼ",
+    normal: "霊液のるつぼ",
+    success: "蒼露の耐熱るつぼ",
+    great_success: "玻璃霊薬の名工るつぼ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "WRK_03",
+    itemTypeName: "るつぼ",
+  },
+  "IT_WRK_EL_04": {
+    base: "涼香の計量匙",
+    normal: "涼香の計量匙",
+    success: "浄霧の精密匙",
+    great_success: "癒しの雫の王家計量匙",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "WRK_04",
+    itemTypeName: "計量匙",
+  },
+  "IT_WRK_EL_05": {
+    base: "清滴のフラスコ",
+    normal: "清滴のフラスコ",
+    success: "澄み雫の調合フラスコ",
+    great_success: "神泉の秘宝フラスコ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "EL",
+    principleName: "霊薬",
+    itemType: "WRK_05",
+    itemTypeName: "フラスコ",
+  },
+  "IT_WRK_LI_01": {
+    base: "芽吹きの乳鉢",
+    normal: "芽吹きの乳鉢",
+    success: "花芽の乳鉢",
+    great_success: "生命奔流の王家乳鉢",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "WRK_01",
+    itemTypeName: "乳鉢",
+  },
+  "IT_WRK_LI_02": {
+    base: "若葉のトング",
+    normal: "若葉のトング",
+    success: "瑞葉の鍛冶トング",
+    great_success: "生命樹の秘宝トング",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "WRK_02",
+    itemTypeName: "トング",
+  },
+  "IT_WRK_LI_03": {
+    base: "生命のるつぼ",
+    normal: "生命のるつぼ",
+    success: "再生の耐熱るつぼ",
+    great_success: "豊穣の名工るつぼ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "WRK_03",
+    itemTypeName: "るつぼ",
+  },
+  "IT_WRK_LI_04": {
+    base: "蔦編みの計量匙",
+    normal: "蔦編みの計量匙",
+    success: "緑脈の精密匙",
+    great_success: "不死芽の王家計量匙",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "WRK_04",
+    itemTypeName: "計量匙",
+  },
+  "IT_WRK_LI_05": {
+    base: "脈動のフラスコ",
+    normal: "脈動のフラスコ",
+    success: "活力の調合フラスコ",
+    great_success: "大地脈の秘宝フラスコ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "LI",
+    principleName: "生命",
+    itemType: "WRK_05",
+    itemTypeName: "フラスコ",
+  },
+  "IT_WRK_ME_01": {
+    base: "錬鉄の乳鉢",
+    normal: "錬鉄の乳鉢",
+    success: "白鋼の薬研乳鉢",
+    great_success: "星鍛えの名工乳鉢",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "WRK_01",
+    itemTypeName: "乳鉢",
+  },
+  "IT_WRK_ME_02": {
+    base: "白錫のトング",
+    normal: "白錫のトング",
+    success: "銀磨きのトング",
+    great_success: "月白銀の王家トング",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "WRK_02",
+    itemTypeName: "トング",
+  },
+  "IT_WRK_ME_03": {
+    base: "青銅のるつぼ",
+    normal: "青銅のるつぼ",
+    success: "金銀細工の錬成るつぼ",
+    great_success: "王工房の秘宝るつぼ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "WRK_03",
+    itemTypeName: "るつぼ",
+  },
+  "IT_WRK_ME_04": {
+    base: "銀縁の計量匙",
+    normal: "銀縁の計量匙",
+    success: "鋼芯の計量匙",
+    great_success: "金剛の名工計量匙",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "WRK_04",
+    itemTypeName: "計量匙",
+  },
+  "IT_WRK_ME_05": {
+    base: "鍛金のフラスコ",
+    normal: "鍛金のフラスコ",
+    success: "鏡銀のフラスコ",
+    great_success: "太陽鋼の王家フラスコ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "ME",
+    principleName: "金属",
+    itemType: "WRK_05",
+    itemTypeName: "フラスコ",
+  },
+  "IT_WRK_SA_01": {
+    base: "琥珀の乳鉢",
+    normal: "琥珀の乳鉢",
+    success: "琥珀磨きの調合乳鉢",
+    great_success: "蜃気楼の秘宝乳鉢",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "WRK_01",
+    itemTypeName: "乳鉢",
+  },
+  "IT_WRK_SA_02": {
+    base: "砂風のトング",
+    normal: "砂風のトング",
+    success: "流砂の調合トング",
+    great_success: "黄金砂の名工トング",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "WRK_02",
+    itemTypeName: "トング",
+  },
+  "IT_WRK_SA_03": {
+    base: "黄砂のるつぼ",
+    normal: "黄砂のるつぼ",
+    success: "乾き守りのるつぼ",
+    great_success: "不朽砂の王家るつぼ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "WRK_03",
+    itemTypeName: "るつぼ",
+  },
+  "IT_WRK_SA_04": {
+    base: "砂紋の計量匙",
+    normal: "砂紋の計量匙",
+    success: "風紋の調合匙",
+    great_success: "悠久砂丘の秘宝計量匙",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "WRK_04",
+    itemTypeName: "計量匙",
+  },
+  "IT_WRK_SA_05": {
+    base: "乾砂のフラスコ",
+    normal: "乾砂のフラスコ",
+    success: "砂丘の蒸留フラスコ",
+    great_success: "砂王の名工フラスコ",
+    genre: "WRK",
+    genreName: "道具",
+    principle: "SA",
+    principleName: "砂",
+    itemType: "WRK_05",
+    itemTypeName: "フラスコ",
+  },
+};
+
+function getItemDisplayName(itemId, quality = 'base') {
+  const item = ITEM_DISPLAY_NAMES[itemId];
+  if (!item) return itemId;
+  return item[quality] || item.base || itemId;
+}
+
+module.exports = { ITEM_DISPLAY_NAMES, getItemDisplayName };
+
+    };
+
     // --- ./data/itemMaster.cjs ---
     modules['./data/itemMaster.cjs'] = function(module, exports, require) {
 /**
@@ -1194,44 +4214,395 @@ module.exports = { TONE_GUIDES };
     (function() {
         const entry = function(require) {
 /**
- * Browser Entry Point for MadeInMaghribal (Fixed)
+ * ============================================================================
+ * Made In Maghribal - Browser Game Controller
+ * ============================================================================
+ * Core architecture: Fixed-shell with differential content updates.
+ * Supports: Debug jumps, Quiz interactions, and VN storytelling.
  */
+
 const { GameSession } = require('./core/gameSessionFlow.cjs');
 const { getVnRenderModel } = require('./core/renderModel.cjs');
 const { SCENARIO_SAMPLES } = require('./data/scenarioSamples.cjs');
+const { QUIZ_REQUEST_TEMPLATES } = require('./data/quizRequestTemplates.cjs');
+const { generateQuestion } = require('./core/quizRequestModel.cjs');
+const { processQuestionResult } = require('./core/rhythmQuizCore.cjs');
+const { updateGameScore } = require('./core/scoreModel.cjs');
+const { calculateAffection } = require('./core/affectionModel.cjs');
+const { evaluateEnding } = require('./core/endingBranch.cjs');
+const { ITEM_MASTER } = require('./data/itemMaster.cjs');
+const { getItemDisplayName: getQualityItemDisplayName } = require('./data/itemDisplayNames.cjs');
 
-console.log('MadeInMaghribal App Initializing...');
+/** Constants */
+const RESULT_TRANSITION_DELAY_MS = 2500;
+const SESSION_STORAGE_KEY = 'maghribal_session_state';
 
 class GameController {
+  /**
+   * --------------------------------------------------------------------------
+   * 1. Initialization & Lifecycle
+   * --------------------------------------------------------------------------
+   */
   constructor() {
     this.session = new GameSession();
     this.container = document.getElementById('app');
+    
+    // Integration State
+    this.quizState = this.createInitialQuizState();
+
     this.init();
+    this.applyDebugJumpFromUrl();
+    this.update();
   }
 
+  createInitialQuizState() {
+    return {
+      questionIndex: 0,
+      totalQuestions: 10,
+      currentQuestion: null,
+      promptShownAt: 0,
+      lastResult: null,
+      turnStartScore: null,
+      inputLocked: false,
+      currentChoices: []
+    };
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 2. Core Update Logic (Routing & Shell Management)
+   * --------------------------------------------------------------------------
+   */
+  update() {
+    const phase = this.session.phase;
+    const newClassName = `phase-${phase.toLowerCase()}`;
+    if (this.container.className !== newClassName) {
+      this.container.className = newClassName;
+    }
+
+    if (phase === 'MAIN_GAME') {
+      this.renderMainGame(this.container);
+      return;
+    }
+
+    this.container.innerHTML = '';
+    const view = document.createElement('div');
+    view.className = 'view-container';
+
+    if (phase === 'TITLE') {
+      this.renderTitle(view);
+    } else if (phase === 'OPENING') {
+      this.renderOpening(view);
+    } else if (phase === 'HEROINE_SELECT') {
+      this.renderHeroineSelect(view);
+    } else if (phase === 'ENDING') {
+      this.renderEnding(view);
+    }
+
+    this.container.appendChild(view);
+  }
+
+  renderMainGame(container) {
+    let view = container.querySelector('.view-container');
+    if (!view) {
+      view = document.createElement('div');
+      view.className = 'view-container';
+      container.appendChild(view);
+    }
+
+    const subPhase = this.session.subPhase;
+    const currentScreen = view.querySelector('[data-screen]');
+    const targetScreen = (subPhase === 'QUIZ') ? 'quiz' : (subPhase === 'TURN_RESULT' ? 'turn-result' : 'vn');
+
+    if (!currentScreen || currentScreen.getAttribute('data-screen') !== targetScreen) {
+      if (subPhase === 'BEFORE_OPEN' || subPhase === 'AFTER_CLOSE') {
+        this.renderVnShell(view);
+      } else if (subPhase === 'QUIZ') {
+        this.renderQuiz(view);
+      } else if (subPhase === 'TURN_RESULT') {
+        this.renderTurnResult(view);
+      }
+    }
+
+    if (subPhase === 'BEFORE_OPEN') {
+      this.updateHud();
+      this.updateVnContent({
+        speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
+        text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`
+      });
+    } else if (subPhase === 'AFTER_CLOSE') {
+      this.updateHud();
+      this.updateVnContent({
+        speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
+        text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`
+      });
+    } else if (subPhase === 'QUIZ') {
+      this.updateHud();
+      this.updateQuizContent();
+    }
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 3. Shell Renderers (Static Layouts)
+   * --------------------------------------------------------------------------
+   */
+  renderTitle(view) {
+    view.innerHTML = `
+      <div class="title-screen">
+        <h1 class="glow">Made in Maghribal</h1>
+        <p class="blink">クリックして開始</p>
+      </div>
+    `;
+  }
+
+  renderOpening(view) {
+    view.innerHTML = `
+      <div class="opening-screen title-screen">
+        <div class="result-card" style="padding: 40px; max-width: 85%;">
+          <h2 class="glow" style="color: var(--sand-2); margin-bottom: 20px;">プロローグ</h2>
+          <div style="text-align: left; line-height: 1.8;">
+            <p>マグリバル砂漠の黄金の砂は、多くの物語を秘めています。</p>
+            <p>あなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？</p>
+          </div>
+          <p class="blink" style="margin-top: 30px; color: var(--sand-2);">クリックして進む</p>
+        </div>
+      </div>
+    `;
+  }
+
+  renderHeroineSelect(view) {
+    view.innerHTML = `
+      <div class="heroine-select title-screen">
+        <h2 class="glow" style="margin-bottom: 30px; color: var(--star-1);">営業パートナーを選択</h2>
+        <div class="heroine-list">
+          <div class="heroine-card" data-id="HAKIMA">ハキマ（優雅な賢者）</div>
+          <div class="heroine-card" data-id="MIRA">ミラ（元気な看板娘）</div>
+          <div class="heroine-card" data-id="DARIYA">ダリヤ（神秘的な踊り子）</div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderVnShell(view) {
+    view.innerHTML = `
+      <div class="vn-screen" data-screen="vn">
+        <div class="stats" data-hud></div>
+        <div class="message-box">
+          <div class="speaker-name" data-vn-speaker></div>
+          <div class="message-text-wrap">
+            <div class="message-text" data-vn-text></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderQuiz(view) {
+    view.innerHTML = `
+      <div class="quiz-screen" data-screen="quiz">
+        <div class="stats" data-hud></div>
+        
+        <section class="quiz-order-card">
+          <div class="quiz-order-label">お客さんの要望</div>
+          <div class="quiz-order-text" data-quiz-prompt></div>
+          <div class="quiz-progress" data-quiz-progress></div>
+        </section>
+
+        <section class="rhythm-lane-placeholder" aria-label="リズム判定エリア">
+          <div class="rhythm-guide-line"></div>
+          <div class="rhythm-guide-note"></div>
+          <div class="rhythm-guide-caption">リズム判定</div>
+        </section>
+
+        <section class="choice-list">
+          <div class="choice-card" data-choice-slot="0">
+            <div class="item-icon-wrap">
+              <img class="item-icon" alt="" loading="eager" />
+            </div>
+            <div class="choice-name"></div>
+            <div class="choice-label">おすすめ</div>
+          </div>
+          <div class="choice-card" data-choice-slot="1">
+            <div class="item-icon-wrap">
+              <img class="item-icon" alt="" loading="eager" />
+            </div>
+            <div class="choice-name"></div>
+            <div class="choice-label">おすすめ</div>
+          </div>
+        </section>
+      </div>
+    `;
+    this.updateQuizContent();
+  }
+
+  renderTurnResult(view) {
+    const s = this.session.scores;
+    const start = this.quizState.turnStartScore;
+    const dR = s.revenue - start.revenue;
+    const dS = s.satisfaction - start.satisfaction;
+    const dRep = s.reputation - start.reputation;
+    const rank = this.getTurnRank(dR, dS, dRep);
+    
+    view.innerHTML = `
+      <div class="result-screen" data-screen="turn-result">
+        <div class="result-card">
+          <h2>${this.session.turn}日目の営業結果</h2>
+          <div style="font-size: 1.8rem; font-weight: 900; color: var(--sand-2); margin-bottom: 25px; letter-spacing: 2px;">
+            評価: ${rank}
+          </div>
+          <div class="score-row"><span>売上</span> <span>+${dR} (計: ${s.revenue})</span></div>
+          <div class="score-row"><span>満足度</span> <span>+${dS} (計: ${s.satisfaction})</span></div>
+          <div class="score-row"><span>評判</span> <span>+${dRep} (計: ${s.reputation})</span></div>
+          <button class="btn-primary btn-next">次のフェーズへ</button>
+        </div>
+      </div>
+    `;
+  }
+
+  renderEnding(view) {
+    const history = { maxSatisfaction: 100, maxReputation: 100 }; // Dummy history
+    const affection = calculateAffection(this.session.scores, history);
+    const endingType = evaluateEnding(affection, this.session.routeMode === 'extra');
+    const typeLabel = endingType === 'GOOD' ? 'GOOD ENDING' : 'NORMAL ENDING';
+
+    view.innerHTML = `
+      <div class="ending-screen">
+        <div class="ending-card">
+          <h1 style="color: var(--sand-2); margin-bottom: 10px; font-size: 1.2rem;">終幕</h1>
+          <h2 class="glow" style="font-size: 2.2rem; color: var(--star-1); margin-bottom: 20px;">${typeLabel}</h2>
+          <div style="margin: 25px 0; font-size: 1.1rem;">
+            <p>パートナー: ${this.getHeroineDisplayName(this.session.selectedHeroineId)}</p>
+            <p>好感度: ${Math.round(affection)}%</p>
+          </div>
+          <div class="score-row"><span>最終売上</span> <span>${this.session.scores.revenue}</span></div>
+          <div class="score-row"><span>最終満足度</span> <span>${this.session.scores.satisfaction}</span></div>
+          <div class="score-row"><span>最終評判</span> <span>${this.session.scores.reputation}</span></div>
+          <button class="btn-primary btn-next">タイトルへ戻る</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 4. Content Updaters (Dynamic Data Infill)
+   * --------------------------------------------------------------------------
+   */
+  updateHud() {
+    const hud = this.container.querySelector('[data-hud]');
+    if (!hud) return;
+    const s = this.session.scores;
+    const label = (this.session.subPhase === 'QUIZ') ? '接客' : (this.session.subPhase === 'TURN_RESULT' ? '結果' : this.session.subPhase);
+    hud.innerHTML = `
+      <div>${this.session.turn}日目 | ${label}${this.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : ''}</div>
+      <div>売上: ${s.revenue} | 満足: ${s.satisfaction}</div>
+    `;
+  }
+
+  updateVnContent({ speakerName, text }) {
+    const speakerEl = this.container.querySelector('[data-vn-speaker]');
+    const textEl = this.container.querySelector('[data-vn-text]');
+    if (speakerEl) speakerEl.textContent = speakerName || '';
+    if (textEl) textEl.textContent = text || '';
+  }
+
+  updateQuizContent() {
+    const q = this.quizState.currentQuestion;
+    const promptEl = this.container.querySelector('[data-quiz-prompt]');
+    const progressEl = this.container.querySelector('[data-quiz-progress]');
+    
+    if (promptEl) promptEl.textContent = q.promptText;
+    if (progressEl) progressEl.textContent = `${this.quizState.questionIndex + 1} / ${this.quizState.totalQuestions}`;
+
+    const choices = this.quizState.currentChoices;
+    choices.forEach((c, idx) => {
+      const card = this.container.querySelector(`[data-choice-slot="${idx}"]`);
+      if (card) {
+        card.setAttribute('data-item-id', c.id);
+        const nameEl = card.querySelector('.choice-name');
+        const iconEl = card.querySelector('.item-icon');
+        const wrapEl = card.querySelector('.item-icon-wrap');
+
+        if (nameEl) nameEl.textContent = c.name;
+        if (iconEl) {
+          iconEl.style.display = '';
+          iconEl.src = this.getItemIconPath(c.id);
+          iconEl.onerror = () => {
+            iconEl.style.display = 'none';
+            if (wrapEl) wrapEl.classList.add('missing-icon');
+          };
+        }
+        if (wrapEl) wrapEl.classList.remove('missing-icon');
+      }
+    });
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 5. Event Handlers & User Actions
+   * --------------------------------------------------------------------------
+   */
   init() {
     console.log('Controller Initialized');
-    this.update();
     
+    // Selection/Drag Guards
+    document.addEventListener('selectstart', (e) => {
+      if (e.target.closest('#game-viewport')) {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('dragstart', (e) => {
+      if (e.target.closest('#game-viewport')) {
+        e.preventDefault();
+      }
+    });
+
     // Global click to advance phase/text
     document.addEventListener('click', (e) => {
       const target = e.target;
       
-      // Handle Heroine Selection clicks specifically
+      // Safety: Input lock check
+      if (this.quizState.inputLocked) return;
+
+      // Handle Choice Selection
+      if (target.closest('.choice-card')) {
+        const card = target.closest('.choice-card');
+        const id = card.getAttribute('data-item-id');
+        e.stopPropagation();
+        this.answerQuiz(id);
+        return;
+      }
+
+      // Handle Heroine Selection
       if (target.classList.contains('heroine-card')) {
         const id = target.getAttribute('data-id');
+        e.stopPropagation();
         this.selectHeroine(id);
         return;
       }
 
-      // Don't advance if clicking other buttons (if any)
-      if (target.tagName === 'BUTTON') return;
+      // Handle Buttons
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        e.stopPropagation();
+        // Specific button logic if needed
+        if (target.classList.contains('btn-next')) {
+          this.onGlobalAction();
+        }
+        return;
+      }
+
+      if (this.session.phase === 'HEROINE_SELECT') {
+        return;
+      }
       
       this.onGlobalAction();
     });
   }
 
   selectHeroine(id) {
+    if (this.quizState.inputLocked) return;
     console.log('Selecting Heroine:', id);
     this.session.selectHeroine(id, 'normal');
     this.session.nextPhase(); // -> MAIN_GAME
@@ -1239,79 +4610,274 @@ class GameController {
   }
 
   onGlobalAction() {
+    if (this.quizState.inputLocked) return;
     const phase = this.session.phase;
-    console.log('Global Action on Phase:', phase);
+    const subPhase = this.session.subPhase;
+    console.log('Global Action on Phase:', phase, 'SubPhase:', subPhase);
     
     if (phase === 'TITLE') {
       this.session.nextPhase(); // -> OPENING
     } else if (phase === 'OPENING') {
       this.session.nextPhase(); // -> HEROINE_SELECT
     } else if (phase === 'MAIN_GAME') {
-      // For now, just advance sub-phase
+      if (subPhase === 'QUIZ') {
+        return;
+      }
+
+      // Check if we should transition to ENDING
+      if (this.session.turn === 5 && subPhase === 'AFTER_CLOSE') {
+        this.session.nextPhase(); // -> ENDING
+        this.update();
+        return;
+      }
+
+      // Advance sub-phase
       this.session.nextSubPhase();
+
+      // Trigger side effects when entering a sub-phase
+      if (this.session.subPhase === 'QUIZ') {
+        this.startQuiz();
+      }
+    } else if (phase === 'ENDING') {
+      // Restart game
+      this.session = new GameSession();
+      this.quizState = this.createInitialQuizState();
+      this.update();
+      return;
     }
     
     this.update();
   }
 
-  update() {
-    const phase = this.session.phase;
-    this.container.className = `phase-${phase.toLowerCase()}`;
-    this.container.innerHTML = '';
+  startQuiz() {
+    console.log('Starting Quiz...');
+    this.quizState.questionIndex = 0;
+    this.quizState.lastResult = null;
+    this.quizState.inputLocked = false;
+    this.quizState.turnStartScore = { ...this.session.scores };
+    this.generateNextQuestion();
+  }
 
-    const view = document.createElement('div');
-    view.className = 'view-container';
-
-    if (phase === 'TITLE') {
-      view.innerHTML = `
-        <div class="title-screen">
-          <h1 class="glow">Made in Maghribal</h1>
-          <p class="blink">Click to Start Adventure</p>
-        </div>
-      `;
-    } else if (phase === 'OPENING') {
-      view.innerHTML = `
-        <div class="opening-screen">
-          <h2 class="glow">Prologue</h2>
-          <p>The desert wind whispers secrets...</p>
-          <p class="blink">Click to continue</p>
-        </div>
-      `;
-    } else if (phase === 'HEROINE_SELECT') {
-      view.innerHTML = `
-        <div class="heroine-select">
-          <h2 class="glow">Select Your Heroine</h2>
-          <div class="heroine-list">
-            <div class="heroine-card" data-id="HAKIMA">HAKIMA</div>
-            <div class="heroine-card" data-id="MIRA">MIRA</div>
-            <div class="heroine-card" data-id="DARIYA">DARIYA</div>
-          </div>
-        </div>
-      `;
-    } else if (phase === 'MAIN_GAME') {
-      // Fix: Use correct key SCENARIO_SAMPLES.SC_OP_OPENING
-      const sampleStep = SCENARIO_SAMPLES.SC_OP_OPENING[0];
-      const model = getVnRenderModel(this.session, sampleStep);
-      
-      view.innerHTML = `
-        <div class="vn-screen">
-          <div class="stats">
-            Turn: ${this.session.turn} | 
-            Heroine: ${this.session.selectedHeroineId} | 
-            Gold: ${this.session.scores.revenue}
-          </div>
-          <div class="scene-overlay"></div>
-          <div class="message-box">
-            <div class="speaker-name">${model.speaker ? model.speaker.name : '???'}</div>
-            <div class="message-text">${model.text}</div>
-          </div>
-        </div>
-      `;
+  generateNextQuestion() {
+    const template = QUIZ_REQUEST_TEMPLATES[this.quizState.questionIndex % QUIZ_REQUEST_TEMPLATES.length];
+    const question = generateQuestion(template);
+    
+    if (!question) {
+      // Fallback
+      this.quizState.currentQuestion = {
+        promptText: "何かもっとリフレッシュできるものはあるかしら？",
+        correctItemId: "ITEM_001",
+        wrongItemId: "ITEM_002"
+      };
     } else {
-      view.innerHTML = `<h2>Phase: ${phase}</h2><p>Coming Soon...</p>`;
+      this.quizState.currentQuestion = question;
     }
 
-    this.container.appendChild(view);
+    const q = this.quizState.currentQuestion;
+    const choices = [
+      { id: q.correctItemId, name: this.getItemDisplayName(q.correctItemId) },
+      { id: q.wrongItemId, name: this.getItemDisplayName(q.wrongItemId) }
+    ];
+    this.quizState.currentChoices = this.shuffleChoices(choices);
+    
+    this.quizState.promptShownAt = performance.now();
+    this.quizState.inputLocked = false; // Unlock for next question
+  }
+
+  answerQuiz(itemId) {
+    if (this.quizState.inputLocked) return;
+    this.quizState.inputLocked = true; // Lock briefly
+
+    const now = performance.now();
+    const beatInterval = 600;
+    const nearestBeatMs = Math.round(now / beatInterval) * beatInterval;
+
+    const result = processQuestionResult({
+      promptShownAt: this.quizState.promptShownAt,
+      answeredAt: now,
+      selectedItemId: itemId,
+      correctItemId: this.quizState.currentQuestion.correctItemId,
+      nearestBeatMs
+    });
+
+    this.session.scores = updateGameScore(this.session.scores, result);
+    this.quizState.lastResult = result;
+    this.quizState.questionIndex++;
+
+    console.log('Result:', result, 'New Scores:', this.session.scores);
+
+    // Show receipt-style result stamp briefly
+    this.showResultStamp(result);
+
+    if (this.quizState.questionIndex < this.quizState.totalQuestions) {
+      // Next question
+      setTimeout(() => {
+        this.generateNextQuestion();
+        this.updateQuizContent();
+      }, 100); // Very short pause
+    } else {
+      // End quiz
+      setTimeout(() => {
+        this.session.nextSubPhase(); // -> TURN_RESULT
+        this.quizState.inputLocked = false; // Final unlock
+        this.update();
+      }, RESULT_TRANSITION_DELAY_MS);
+    }
+  }
+
+  showResultStamp(result) {
+    const root = document.getElementById('game-viewport') || this.container;
+    if (!root) return;
+
+    const el = document.createElement('div');
+    el.className = `result-stamp ${result.isCorrect ? 'is-correct' : 'is-wrong'}`;
+    el.innerHTML = `
+      <div class="stamp-main">${this.getCorrectLabel(result)}</div>
+      <div class="stamp-row"><span>スピード</span><strong>${this.getSpeedMark(result)}</strong></div>
+      <div class="stamp-row"><span>テンポ</span><strong>${this.getTempoMark(result)}</strong></div>
+    `;
+
+    root.appendChild(el);
+    setTimeout(() => {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }, 520);
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 6. Helpers & Data Retrieval
+   * --------------------------------------------------------------------------
+   */
+  getItemDisplayName(itemId, quality = 'base') {
+    const name = getQualityItemDisplayName(itemId, quality);
+    if (name && name !== itemId) return name;
+
+    const item = ITEM_MASTER.find(i => i.itemId === itemId);
+    return item ? item.name : itemId;
+  }
+
+  getHeroineDisplayName(id) {
+    const names = {
+      HAKIMA: 'ハキマ',
+      MIRA: 'ミラ',
+      DARIYA: 'ダリヤ'
+    };
+    return names[id] || id;
+  }
+
+  getItemIconPath(itemId) {
+    return `images/items/${itemId}.png`;
+  }
+
+  getTurnRank(dR, dS, dRep) {
+    const total = dR + dS + dRep;
+    if (total >= 90) return '大成功';
+    if (total >= 60) return '成功';
+    if (total >= 30) return 'まずまず';
+    return '要改善';
+  }
+
+  shuffleChoices(choices) {
+    return [...choices].sort(() => Math.random() - 0.5);
+  }
+
+  getSpeedMark(result) {
+    if ((result.satisfactionBonus || 0) >= 2) return '◎';
+    if ((result.satisfactionBonus || 0) >= 1) return '○';
+    return '△';
+  }
+
+  getTempoMark(result) {
+    if (result.rating === 'PERFECT') return '◎';
+    if (result.rating === 'GOOD') return '○';
+    return '△';
+  }
+
+  getCorrectLabel(result) {
+    return result.isCorrect ? '正解' : '不正解';
+  }
+
+  isDebugMode() {
+    return new URLSearchParams(window.location.search).get('debug') === '1';
+  }
+
+  applyDebugJumpFromUrl() {
+    if (!this.isDebugMode()) return;
+    const params = new URLSearchParams(window.location.search);
+    const jump = params.get('jump');
+    if (!jump) return;
+    this.applyDebugJump(jump);
+  }
+
+  applyDebugJump(jump) {
+    const heroine = 'HAKIMA';
+    console.log('Applying debug jump:', jump);
+
+    if (jump === 'heroine_select') {
+      this.session.phase = 'HEROINE_SELECT';
+      return;
+    }
+
+    if (jump === 'quiz') {
+      this.session.phase = 'MAIN_GAME';
+      this.session.selectedHeroineId = heroine;
+      this.session.routeMode = 'normal';
+      this.session.turn = 1;
+      this.session.subPhase = 'QUIZ';
+      this.startQuiz();
+      return;
+    }
+
+    if (jump === 'turn_result') {
+      this.session.phase = 'MAIN_GAME';
+      this.session.selectedHeroineId = heroine;
+      this.session.routeMode = 'normal';
+      this.session.turn = 1;
+      this.session.subPhase = 'TURN_RESULT';
+      this.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
+      this.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
+      this.quizState.lastResult = {
+        isCorrect: true,
+        rating: 'GOOD',
+        satisfactionBonus: 2,
+        reputationBonus: 1,
+        diffMs: 88,
+        responseTime: 1200
+      };
+      return;
+    }
+
+    if (jump === 'turn5_after_close') {
+      this.session.phase = 'MAIN_GAME';
+      this.session.selectedHeroineId = heroine;
+      this.session.routeMode = 'normal';
+      this.session.turn = 5;
+      this.session.subPhase = 'AFTER_CLOSE';
+      this.session.scores = { revenue: 420, satisfaction: 80, reputation: 70 };
+      return;
+    }
+
+    if (jump === 'ending_good') {
+      this.session.phase = 'ENDING';
+      this.session.selectedHeroineId = heroine;
+      this.session.routeMode = 'normal';
+      this.session.turn = 5;
+      this.session.subPhase = 'AFTER_CLOSE';
+      this.session.scores = { revenue: 500, satisfaction: 100, reputation: 100 };
+      return;
+    }
+
+    if (jump === 'ending_normal') {
+      this.session.phase = 'ENDING';
+      this.session.selectedHeroineId = heroine;
+      this.session.routeMode = 'normal';
+      this.session.turn = 5;
+      this.session.subPhase = 'AFTER_CLOSE';
+      this.session.scores = { revenue: 100, satisfaction: 10, reputation: 10 };
+      return;
+    }
+
+    console.warn('Unknown debug jump:', jump);
   }
 }
 
