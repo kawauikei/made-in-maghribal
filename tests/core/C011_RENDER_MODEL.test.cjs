@@ -13,7 +13,7 @@ test('C011_RENDER_MODEL: VN model with speaker and standing', () => {
     text: 'Hello!'
   };
   const model = getVnRenderModel(session, step);
-  assert.strictEqual(model.speaker.name, 'ハキーマ', "Speaker name mismatch");
+  assert.strictEqual(model.speaker.name, 'ハキマ', "Speaker name mismatch");
   assert.strictEqual(model.speaker.iconAssetId, 'AS_IC_CH_HAKIMA_joy', "Icon asset ID mismatch");
   assert.strictEqual(model.standing.characterId, 'CH_HAKIMA', "Standing character ID mismatch");
   assert.strictEqual(model.text, 'Hello!', "Dialogue text mismatch");

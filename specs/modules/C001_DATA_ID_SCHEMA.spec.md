@@ -11,7 +11,7 @@
 ## Data Types and Enums
 
 ### ヒロインID (HeroineId)
-- `hakima`: ハキーマ
+- `hakima`: ハキマ
 - `mira`: ミラ
 - `dariya`: ダリヤ
 

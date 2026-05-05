@@ -1,0 +1,31 @@
+/* 
+ * ============================================================================
+ * RESULT & ENDING SCREENS
+ * ============================================================================
+ */
+.result-screen,
+.ending-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.result-card,
+.ending-card {
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.result-card h2,
+.ending-card h2 {
+  margin-bottom: 20px;
+  color: var(--sand-2);
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

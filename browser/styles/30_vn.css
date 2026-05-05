@@ -1,0 +1,145 @@
+/* 
+ * ============================================================================
+ * VN / ADV SCREEN
+ * ============================================================================
+ */
+.vn-screen {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  background: var(--night-2);
+  overflow: hidden;
+}
+
+/* 
+ * Layer 0: Background (3:4 Aspect Ratio, Top Aligned)
+ */
+.vn-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 133.33vw; /* 3:4 aspect ratio (4/3 = 1.333) */
+  max-height: 75%;
+  background-size: cover;
+  background-position: center top;
+  z-index: 1;
+  transition: background-image 0.4s ease-in-out;
+}
+
+.vn-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, var(--night-2) 95%);
+  pointer-events: none;
+}
+
+/* 
+ * Layer 1: Character Standing
+ */
+.vn-character-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+  padding-bottom: 120px; /* Offset to sit above message box */
+}
+
+.standing-char {
+  height: clamp(300px, 60vh, 550px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  animation: charFadeIn 0.3s ease-out;
+}
+
+@keyframes charFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 
+ * Layer 2: Message Box & HUD
+ */
+.vn-screen .message-box {
+  padding: 28px 20px 20px;
+  height: 150px;
+  min-height: 150px;
+  max-height: 150px;
+  overflow: visible;
+  position: relative;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.vn-screen .stats {
+  z-index: 30;
+}
+
+.vn-screen .score-strip {
+  z-index: 30;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.speaker-name {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  min-width: 96px;
+  text-align: center;
+  background: var(--sand-1);
+  color: var(--ink);
+  padding: 4px 16px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.message-text-wrap {
+  height: 100%;
+  overflow: hidden;
+}
+
+.message-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* 
+ * Skip Button (Inside Message Box)
+ */
+.message-skip-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 22;
+  border: 1px solid rgba(183,131,53,0.5);
+  background: rgba(244,230,200,0.85);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.message-skip-btn:active {
+  transform: scale(0.95);
+  background: var(--sand-1);
+}
+
+.message-skip-btn:hover {
+  background: rgba(244,230,200,1);
+  border-color: var(--sand-1);
+}

@@ -11,13 +11,19 @@
 
 ## Data Structures
 
+### Naming Conventions
+- **キャラクターフォルダ:** 小文字 (`hakima`, `mira`, `dariya`, `nader`)
+- **背景画像:** 小文字 + `.jpeg` (例: `bg_spot_oasis_view.jpeg`)
+- **アイテム画像:** IDそのまま + `.png` (例: `IT_ADN_AS_01.png`)
+
 ### Expression Sets
 - **通常表情 (Scenario Use):** `normal`, `joy`, `fun`, `surprise`, `sorrow`, `cry`, `anger`
 - **UI専用表情 (UI Only):** `maid`, `social`, `student`
+- **ファイル階層:** `characters/{char}/standing_proc/{expr}.png`
 
 ### Asset Manifest
-- `AS_BG_{NAME}`: 背景
-- `AS_ST_{CHAR}_{EXPR}`: 立ち絵
+- `AS_BG_{NAME}`: 背景 (実ファイル名は `bg_{type}_{name}.jpeg`)
+- `AS_ST_{CHAR}_{EXPR}`: 立ち絵 (実ファイル名は `{expr}.png`)
 - `AS_IC_{CHAR}_{EXPR}`: 話者アイコン
 - `AS_UI_{NAME}`: UIパーツ
 - `AS_ITEM_{NAME}`: アイテムアイコン

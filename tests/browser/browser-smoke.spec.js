@@ -3,8 +3,8 @@ const path = require('path');
 
 test.describe('MadeInMaghribal Browser Smoke Test', () => {
   test.beforeEach(async ({ page }) => {
-    // Open the local index.html
-    const filePath = 'file://' + path.resolve(__dirname, '../../public/index.html');
+    // Open the local index.html with instant text speed for faster/reliable testing
+    const filePath = 'file://' + path.resolve(__dirname, '../../public/index.html') + '?textSpeed=instant';
     await page.goto(filePath);
   });
 

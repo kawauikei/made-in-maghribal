@@ -11,12 +11,18 @@ BGM/SE、ヒロイン別曲、Turn1固定曲、extra曲、Free Play対象、Endi
 
 ## Data Structures
 
+### Audio Resource Object
+全ての音声リソースは以下のオブジェクト形式、またはパスを含む構造で定義される。
+- `id`: 文字列 (一意識別子)
+- `path`: 文字列 (public/ からの相対パス)
+- `title`: 文字列 (任意。表示用タイトル)
+
 ### BGM Categories
 - **System:** `main01_title`, `main02_shop`, `main03_puzzle`
 - **Heroine Themes:** `BGM_THEME_{HEROINE}`
 - **Game Songs:** `BGM_GAME_{HEROINE}_{N}` (1-4)
 - **Ending Songs:** `BGM_ED_{HEROINE}_{TYPE}` (NORMAL/GOOD)
-- **Extra:** その他演出用BGM
+- **Extra:** その他演出用BGM (mood属性を含む)
 
 ### SE Categories
 - `SE_QUIZ_{NAME}`: クイズ演出（正解、不正解、カウントダウン等）

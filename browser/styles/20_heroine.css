@@ -1,0 +1,47 @@
+/* 
+ * ============================================================================
+ * HEROINE SELECTION SCREEN
+ * ============================================================================
+ */
+.heroine-select {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: var(--night-1);
+}
+
+.heroine-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.heroine-card {
+  background: var(--glass-sand);
+  color: var(--ink);
+  border: 1px solid var(--sand-1);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.heroine-card:hover {
+  background: var(--sand-0);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(158, 232, 220, 0.4);
+  border-color: var(--oasis-1);
+}
+
+.glow {
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}

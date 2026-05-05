@@ -1,0 +1,116 @@
+/* 
+ * ============================================================================
+ * BASE STYLES & LAYOUT
+ * ============================================================================
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000;
+  color: var(--white-soft);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game-viewport {
+  width: 100vw;
+  height: 100vh;
+  max-width: 56.25vh; /* 9:16 aspect ratio */
+  background: var(--night-0);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#game-viewport * {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+img {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.view-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.12s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.9; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 
+ * Animated Starry Background (Shared)
+ */
+.title-screen,
+.quiz-screen,
+.ending-screen {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--night-2) 0%, var(--night-1) 42%, var(--night-0) 100%);
+}
+
+.title-screen::before,
+.quiz-screen::before,
+.ending-screen::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,247,194,0.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 12%, rgba(255,247,194,0.65) 0 1px, transparent 2px),
+    radial-gradient(circle at 85% 34%, rgba(158,232,220,0.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 60%, rgba(255,255,255,0.4) 0 0.5px, transparent 1px),
+    radial-gradient(circle at 28% 78%, rgba(246,211,107,0.48) 0 1px, transparent 2px),
+    radial-gradient(circle at 58% 46%, rgba(255,255,255,0.32) 0 0.5px, transparent 1px);
+  animation: starDrift 48s linear infinite;
+  opacity: 0.85;
+}
+
+.title-screen::after,
+.quiz-screen::after,
+.ending-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 105%, rgba(216,180,106,0.20), transparent 55%),
+    radial-gradient(ellipse at 12% 88%, rgba(54,183,170,0.12), transparent 42%);
+}
+
+@keyframes starDrift {
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(-2%, 2%, 0) rotate(1deg); }
+}

@@ -10,7 +10,7 @@ const CHARACTERS = [
   },
   {
     characterId: "CH_HAKIMA",
-    name: "ハキーマ",
+    name: "ハキマ",
     role: "heroine",
     toneGuideId: "TG_HAKIMA"
   },
