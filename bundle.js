@@ -2,9 +2,7 @@
     const modules = {};
     const cache = {};
 
-    // Internal require function for the browser
     function require(name, fromPath) {
-        // Normalize path resolution
         let resolvedName = name;
         if (name.startsWith('.')) {
             const dir = fromPath ? fromPath.substring(0, fromPath.lastIndexOf('/')) : '.';
@@ -15,7 +13,12 @@
                 else if (part !== '.' && part !== '') stack.push(part);
             }
             resolvedName = './' + stack.join('/');
-            if (!resolvedName.endsWith('.cjs')) resolvedName += '.cjs';
+            
+            // Try extensions
+            if (!modules[resolvedName]) {
+                if (modules[resolvedName + '.js']) resolvedName += '.js';
+                else if (modules[resolvedName + '.cjs']) resolvedName += '.cjs';
+            }
         }
 
         if (cache[resolvedName]) return cache[resolvedName].exports;
@@ -898,43 +901,77 @@ module.exports = { EXPRESSIONS, ASSET_MANIFEST };
     modules['./data/audioManifest.cjs'] = function(module, exports, require) {
 /**
  * Audio Manifest for MadeInMaghribal project.
+ * Verified against actual filesystem paths in public/audio/.
  */
 const AUDIO_MANIFEST = {
   bgm: {
     system: [
-      { id: 'main01_title', title: 'Title Theme' },
-      { id: 'main02_shop', title: 'Daily Alchemy Shop' },
-      { id: 'main03_puzzle', title: 'Mixing Rhythms' }
+      { id: 'main01_title', title: 'Title Theme', path: 'audio/bgm/main/main01_title.mp3' },
+      { id: 'main02_shop', title: 'Daily Alchemy Shop', path: 'audio/bgm/main/main02_shop.mp3' },
+      { id: 'main03_puzzle', title: 'Mixing Rhythms', path: 'audio/bgm/main/main03_puzzle.mp3' }
     ],
     heroines: {
       HAKIMA: {
-        theme: 'BGM_THEME_HAKIMA',
-        game: ['BGM_GAME_HAKIMA_1', 'BGM_GAME_HAKIMA_2', 'BGM_GAME_HAKIMA_3', 'BGM_GAME_HAKIMA_4'],
-        ending: { normal: 'BGM_ED_HAKIMA_NORMAL', good: 'BGM_ED_HAKIMA_GOOD' },
-        free_play: true
+        theme: { id: 'BGM_THEME_HAKIMA', path: 'audio/bgm/hakima/hakima01_theme.mp3' },
+        game: [
+          { id: 'BGM_GAME_HAKIMA_1', path: 'audio/bgm/hakima/hakima02_game_a.mp3' },
+          { id: 'BGM_GAME_HAKIMA_2', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
+          { id: 'BGM_GAME_HAKIMA_3', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
+          { id: 'BGM_GAME_HAKIMA_4', path: 'audio/bgm/hakima/hakima05_game_d.mp3' }
+        ],
+        ending: { 
+          normal: { id: 'BGM_ED_HAKIMA_NORMAL', path: 'audio/bgm/hakima/hakima06_ending.mp3' },
+          good: { id: 'BGM_ED_HAKIMA_GOOD', path: 'audio/bgm/hakima/hakima07_ending2.mp3' }
+        }
       },
       MIRA: {
-        theme: 'BGM_THEME_MIRA',
-        game: ['BGM_GAME_MIRA_1', 'BGM_GAME_MIRA_2', 'BGM_GAME_MIRA_3', 'BGM_GAME_MIRA_4'],
-        ending: { normal: 'BGM_ED_MIRA_NORMAL', good: 'BGM_ED_MIRA_GOOD' },
-        free_play: true
+        theme: { id: 'BGM_THEME_MIRA', path: 'audio/bgm/mira/mira01_theme.mp3' },
+        game: [
+          { id: 'BGM_GAME_MIRA_1', path: 'audio/bgm/mira/mira02_game_a.mp3' },
+          { id: 'BGM_GAME_MIRA_2', path: 'audio/bgm/mira/mira03_game_b.mp3' },
+          { id: 'BGM_GAME_MIRA_3', path: 'audio/bgm/mira/mira04_game_c.mp3' },
+          { id: 'BGM_GAME_MIRA_4', path: 'audio/bgm/mira/mira05_game_d.mp3' }
+        ],
+        ending: { 
+          normal: { id: 'BGM_ED_MIRA_NORMAL', path: 'audio/bgm/mira/mira06_ending.mp3' },
+          good: { id: 'BGM_ED_MIRA_GOOD', path: 'audio/bgm/mira/mira07_ending2.mp3' }
+        }
       },
       DARIYA: {
-        theme: 'BGM_THEME_DARIYA',
-        game: ['BGM_GAME_DARIYA_1', 'BGM_GAME_DARIYA_2', 'BGM_GAME_DARIYA_3', 'BGM_GAME_DARIYA_4'],
-        ending: { normal: 'BGM_ED_DARIYA_NORMAL', good: 'BGM_ED_DARIYA_GOOD' },
-        free_play: true
+        theme: { id: 'BGM_THEME_DARIYA', path: 'audio/bgm/dariya/dariya01_theme.mp3' },
+        game: [
+          { id: 'BGM_GAME_DARIYA_1', path: 'audio/bgm/dariya/dariya02_game_a.mp3' },
+          { id: 'BGM_GAME_DARIYA_2', path: 'audio/bgm/dariya/dariya03_game_b.mp3' },
+          { id: 'BGM_GAME_DARIYA_3', path: 'audio/bgm/dariya/dariya04_game_c.mp3' },
+          { id: 'BGM_GAME_DARIYA_4', path: 'audio/bgm/dariya/dariya05_game_d.mp3' }
+        ],
+        ending: { 
+          normal: { id: 'BGM_ED_DARIYA_NORMAL', path: 'audio/bgm/dariya/dariya06_ending.mp3' },
+          good: { id: 'BGM_ED_DARIYA_GOOD', path: 'audio/bgm/dariya/dariya07_ending2.mp3' }
+        }
       }
     },
     extra: [
-      { id: 'BGM_EXTRA_ROMANCE', mood: 'romantic' },
-      { id: 'BGM_EXTRA_TENSE', mood: 'tense' }
+      { id: 'BGM_EXTRA_JOY', mood: 'joy', path: 'audio/bgm/extra/joy1.mp3' },
+      { id: 'BGM_EXTRA_FUN', mood: 'fun', path: 'audio/bgm/extra/fun1.mp3' },
+      { id: 'BGM_EXTRA_SORROW', mood: 'sorrow', path: 'audio/bgm/extra/sorrow1.mp3' },
+      { id: 'BGM_EXTRA_ANGER', mood: 'anger', path: 'audio/bgm/extra/anger1.mp3' },
+      { id: 'BGM_EXTRA_SURPRISE', mood: 'surprise', path: 'audio/bgm/extra/surprise1.mp3' }
     ]
   },
   se: {
-    quiz: ['SE_QUIZ_CORRECT', 'SE_QUIZ_WRONG', 'SE_QUIZ_TICK'],
-    ui: ['SE_UI_DECIDE', 'SE_UI_CANCEL', 'SE_UI_MOVE'],
-    day_end: ['SE_DAY_END_REST']
+    quiz: [
+      { id: 'SE_QUIZ_CORRECT', path: 'audio/se/quiz_correct_star_chime_01.mp3' },
+      { id: 'SE_QUIZ_WRONG', path: 'audio/se/quiz_wrong_sand_tap_01.mp3' },
+      { id: 'SE_QUIZ_TICK', path: 'audio/se/quiz_choice_pick_01.mp3' }
+    ],
+    ui: [
+      { id: 'SE_UI_DECIDE', path: 'audio/se/ui_confirm_chime_01.mp3' },
+      { id: 'SE_UI_TAP', path: 'audio/se/ui_tap_bottle_01.mp3' }
+    ],
+    day_end: [
+      { id: 'SE_DAY_END_REST', path: 'audio/se/workshop_day_end_01.mp3' }
+    ]
   }
 };
 
@@ -956,7 +993,7 @@ const CHARACTERS = [
   },
   {
     characterId: "CH_HAKIMA",
-    name: "ハキーマ",
+    name: "ハキマ",
     role: "heroine",
     toneGuideId: "TG_HAKIMA"
   },
@@ -4210,32 +4247,682 @@ module.exports = { TONE_GUIDES };
 
     };
 
+    // --- ./screens/endingScreen.js ---
+    modules['./screens/endingScreen.js'] = function(module, exports, require) {
+/**
+ * Result and Ending screens for MadeInMaghribal.
+ */
+const { calculateAffection } = require('../core/affectionModel.cjs');
+const { evaluateEnding } = require('../core/endingBranch.cjs');
+
+function renderTurnResult(controller, view) {
+  const s = controller.session.scores;
+  const start = controller.quizState.turnStartScore;
+  const dR = s.revenue - start.revenue;
+  const dS = s.satisfaction - start.satisfaction;
+  const dRep = s.reputation - start.reputation;
+  const rank = controller.getTurnRank(dR, dS, dRep);
+  
+  view.innerHTML = `
+    <div class="result-screen" data-screen="turn-result">
+      <div class="result-card">
+        <h2>${controller.session.turn}日目の営業結果</h2>
+        <div style="font-size: 1.8rem; font-weight: 900; color: var(--sand-2); margin-bottom: 25px; letter-spacing: 2px;">
+          評価: ${rank}
+        </div>
+        <div class="score-row"><span>売上</span> <span>+${dR} (計: ${s.revenue})</span></div>
+        <div class="score-row"><span>満足度</span> <span>+${dS} (計: ${s.satisfaction})</span></div>
+        <div class="score-row"><span>評判</span> <span>+${dRep} (計: ${s.reputation})</span></div>
+        <button class="btn-primary btn-next">次のフェーズへ</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEnding(controller, view) {
+  const history = { maxSatisfaction: 100, maxReputation: 100 }; // Dummy history
+  const affection = calculateAffection(controller.session.scores, history);
+  const endingType = evaluateEnding(affection, controller.session.routeMode === 'extra');
+  const typeLabel = endingType === 'GOOD' ? 'GOOD ENDING' : 'NORMAL ENDING';
+
+  view.innerHTML = `
+    <div class="ending-screen">
+      <div class="ending-card">
+        <h1 style="color: var(--sand-2); margin-bottom: 10px; font-size: 1.2rem;">終幕</h1>
+        <h2 class="glow" style="font-size: 2.2rem; color: var(--star-1); margin-bottom: 20px;">${typeLabel}</h2>
+        <div style="margin: 25px 0; font-size: 1.1rem;">
+          <p>パートナー: ${controller.getHeroineDisplayName(controller.session.selectedHeroineId)}</p>
+          <p>好感度: ${Math.round(affection)}%</p>
+        </div>
+        <div class="score-row"><span>最終売上</span> <span>${controller.session.scores.revenue}</span></div>
+        <div class="score-row"><span>最終満足度</span> <span>${controller.session.scores.satisfaction}</span></div>
+        <div class="score-row"><span>最終評判</span> <span>${controller.session.scores.reputation}</span></div>
+        <button class="btn-primary btn-next">タイトルへ戻る</button>
+      </div>
+    </div>
+  `;
+}
+
+module.exports = {
+  renderTurnResult,
+  renderEnding
+};
+
+    };
+
+    // --- ./screens/heroineSelectScreen.js ---
+    modules['./screens/heroineSelectScreen.js'] = function(module, exports, require) {
+/**
+ * Heroine Selection screen for MadeInMaghribal.
+ */
+
+function renderHeroineSelect(controller, view) {
+  view.innerHTML = `
+    <div class="heroine-select title-screen">
+      <h2 class="glow" style="margin-bottom: 30px; color: var(--star-1);">営業パートナーを選択</h2>
+      <div class="heroine-list">
+        <div class="heroine-card" data-id="HAKIMA">ハキマ（優雅な賢者）</div>
+        <div class="heroine-card" data-id="MIRA">ミラ（元気な看板娘）</div>
+        <div class="heroine-card" data-id="DARIYA">ダリヤ（神秘的な踊り子）</div>
+      </div>
+    </div>
+  `;
+}
+
+module.exports = {
+  renderHeroineSelect
+};
+
+    };
+
+    // --- ./screens/quizScreen.js ---
+    modules['./screens/quizScreen.js'] = function(module, exports, require) {
+/**
+ * Quiz / Rhythm screen for MadeInMaghribal.
+ */
+
+function renderQuiz(controller, view) {
+  view.innerHTML = `
+    <div class="quiz-screen" data-screen="quiz">
+      <div class="stats" data-hud></div>
+      
+      <section class="quiz-order-card">
+        <div class="quiz-order-label">お客さんの要望</div>
+        <div class="quiz-order-text" data-quiz-prompt></div>
+        <div class="quiz-progress" data-quiz-progress></div>
+        <div class="score-strip" data-score-strip></div>
+      </section>
+
+      <section class="rhythm-lane-placeholder" aria-label="リズム判定エリア">
+        <div class="rhythm-guide-line"></div>
+        <div class="rhythm-guide-note"></div>
+        <div class="rhythm-guide-caption">リズム判定</div>
+      </section>
+
+      <section class="choice-list">
+        <div class="choice-card" data-choice-slot="0">
+          <div class="item-icon-wrap">
+            <img class="item-icon" alt="" loading="eager" />
+          </div>
+          <div class="choice-name"></div>
+          <div class="choice-label">おすすめ</div>
+        </div>
+        <div class="choice-card" data-choice-slot="1">
+          <div class="item-icon-wrap">
+            <img class="item-icon" alt="" loading="eager" />
+          </div>
+          <div class="choice-name"></div>
+          <div class="choice-label">おすすめ</div>
+        </div>
+      </section>
+    </div>
+  `;
+  updateQuizContent(controller);
+}
+
+function updateQuizContent(controller) {
+  const q = controller.quizState.currentQuestion;
+  const promptEl = controller.container.querySelector('[data-quiz-prompt]');
+  const progressEl = controller.container.querySelector('[data-quiz-progress]');
+  
+  if (promptEl) promptEl.textContent = q.promptText;
+  if (progressEl) progressEl.textContent = `${controller.quizState.questionIndex + 1} / ${controller.quizState.totalQuestions}`;
+
+  const choices = controller.quizState.currentChoices;
+  choices.forEach((c, idx) => {
+    const card = controller.container.querySelector(`[data-choice-slot="${idx}"]`);
+    if (card) {
+      card.setAttribute('data-item-id', c.id);
+      const nameEl = card.querySelector('.choice-name');
+      const iconEl = card.querySelector('.item-icon');
+      const wrapEl = card.querySelector('.item-icon-wrap');
+
+      if (nameEl) nameEl.textContent = c.name;
+      if (iconEl) {
+        iconEl.style.display = '';
+        iconEl.src = controller.getItemIconPath(c.id);
+        iconEl.onerror = () => {
+          iconEl.style.display = 'none';
+          if (wrapEl) wrapEl.classList.add('missing-icon');
+        };
+      }
+      if (wrapEl) wrapEl.classList.remove('missing-icon');
+    }
+  });
+
+  // Ensure HUD (and thus the score strip) is updated with current session scores
+  controller.updateHud();
+}
+
+module.exports = {
+  renderQuiz,
+  updateQuizContent
+};
+
+    };
+
+    // --- ./screens/titleScreen.js ---
+    modules['./screens/titleScreen.js'] = function(module, exports, require) {
+/**
+ * Title and Opening screens for MadeInMaghribal.
+ */
+
+const { getBackgroundPath } = require('../utils/assetPaths.js');
+
+function renderTitle(controller, view) {
+  view.innerHTML = `
+    <div class="title-screen">
+      <h1 class="glow">Made in Maghribal</h1>
+      <p class="blink">クリックして開始</p>
+    </div>
+  `;
+}
+
+function renderOpening(controller, view) {
+  const text = `マグリバル砂漠の黄金の砂は、多くの物語を秘めています。\n\nあなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？`;
+  const bgPath = getBackgroundPath('OASIS');
+
+  view.innerHTML = `
+    <div class="opening-screen title-screen" style="background-image: url(${bgPath}); background-size: cover; background-position: center;">
+      <div class="text-controls">
+        <button class="text-control-btn" data-action="skip-text">スキップ</button>
+        <button class="text-control-btn" data-action="cycle-text-speed">速度: <span data-text-speed-label>${controller.getTextSpeedLabel()}</span></button>
+      </div>
+
+      <div class="result-card" style="padding: 40px; max-width: 85%; position: relative;">
+        <h2 class="glow" style="color: var(--sand-2); margin-bottom: 20px;">プロローグ</h2>
+        <button class="message-skip-btn" data-action="skip-text">スキップ</button>
+        <div style="text-align: left; line-height: 1.8; min-height: 120px; white-space: pre-wrap;" data-vn-text></div>
+        <p class="blink" style="margin-top: 30px; color: var(--sand-2);">クリックして進む</p>
+      </div>
+    </div>
+  `;
+
+  const textEl = view.querySelector('[data-vn-text]');
+  if (textEl) {
+    controller.startTypewriter(text, textEl);
+  }
+}
+
+module.exports = {
+  renderTitle,
+  renderOpening
+};
+
+    };
+
+    // --- ./screens/vnScreen.js ---
+    modules['./screens/vnScreen.js'] = function(module, exports, require) {
+/**
+ * VN / ADV Screen for MadeInMaghribal.
+ */
+
+const { getCharacterStandingPath, getBackgroundPath } = require('../utils/assetPaths.js');
+
+function renderVnShell(controller, view) {
+  view.innerHTML = `
+    <div class="vn-screen" data-screen="vn">
+      <div class="vn-bg" data-vn-bg></div>
+      <div class="vn-character-layer" data-vn-char-layer>
+        <img class="standing-char" data-vn-char src="" style="display: none;" />
+      </div>
+      
+      <div class="stats" data-hud></div>
+      <div class="score-strip" data-score-strip></div>
+      
+      <div class="message-box">
+        <div class="speaker-name" data-vn-speaker></div>
+        <button class="message-skip-btn" data-action="skip-text">スキップ</button>
+        <div class="message-text-wrap">
+          <div class="message-text" data-vn-text></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function updateVnContent(controller, { speakerName, text, charId, bgId, expression }) {
+  const bgEl = controller.container.querySelector('[data-vn-bg]');
+  const charEl = controller.container.querySelector('[data-vn-char]');
+  const speakerEl = controller.container.querySelector('[data-vn-speaker]');
+  const textEl = controller.container.querySelector('[data-vn-text]');
+
+  // Update Background
+  if (bgEl && bgId) {
+    const bgPath = getBackgroundPath(bgId);
+    bgEl.style.backgroundImage = `url(${bgPath})`;
+  }
+
+  // Update Character Standing
+  if (charEl) {
+    if (charId) {
+      charEl.src = getCharacterStandingPath(charId, expression || 'normal');
+      charEl.style.display = 'block';
+      charEl.onerror = () => { charEl.style.display = 'none'; };
+    } else {
+      charEl.style.display = 'none';
+    }
+  }
+
+  // Update Speaker
+  if (speakerEl) speakerEl.textContent = speakerName || '';
+  
+  // Update Typewriter Text
+  if (textEl && text) {
+    if (controller.typewriter.fullText !== text) {
+      controller.startTypewriter(text, textEl);
+    }
+  }
+}
+
+module.exports = {
+  renderVnShell,
+  updateVnContent
+};
+
+    };
+
+    // --- ./ui/hud.js ---
+    modules['./ui/hud.js'] = function(module, exports, require) {
+/**
+ * HUD / Stats display component for MadeInMaghribal.
+ */
+
+function updateHud(controller) {
+  const hud = controller.container.querySelector('[data-hud]');
+  if (!hud) return;
+  
+  const s = controller.session.scores;
+  const sub = controller.session.subPhase;
+  const label = (sub === 'QUIZ') ? '接客' : (sub === 'TURN_RESULT' ? '結果' : sub);
+  const debug = controller.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : '';
+
+  hud.innerHTML = `<div class="hud-main">${controller.session.turn}日目 | ${label}${debug}</div>`;
+
+  const scoreStrip = controller.container.querySelector('[data-score-strip]');
+  if (scoreStrip) {
+    scoreStrip.textContent = `売上: ${s.revenue} / 満足: ${s.satisfaction} / 評判: ${s.reputation}`;
+  }
+}
+
+function renderGlobalUi(controller) {
+  let globalUi = controller.container.querySelector('.global-ui');
+  if (!globalUi) {
+    globalUi = document.createElement('div');
+    globalUi.className = 'global-ui';
+    controller.container.appendChild(globalUi);
+  }
+
+  globalUi.innerHTML = `
+    <button class="global-ui-btn" data-action="open-options" title="設定">⚙</button>
+    <button class="global-ui-btn" data-action="open-help" title="ヘルプ">？</button>
+    <button class="global-ui-btn" data-action="toggle-fullscreen" title="全画面">⛶</button>
+  `;
+}
+
+function renderModal(controller) {
+  const modalName = controller.uiState.modal;
+  let backdrop = controller.container.querySelector('.ui-modal-backdrop');
+
+  if (!modalName) {
+    if (backdrop) backdrop.remove();
+    return;
+  }
+
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'ui-modal-backdrop';
+    controller.container.appendChild(backdrop);
+  }
+
+  if (modalName === 'options') {
+    renderOptionsModal(controller, backdrop);
+  } else if (modalName === 'help') {
+    renderHelpModal(controller, backdrop);
+  }
+}
+
+function renderOptionsModal(controller, container) {
+  const speed = controller.settings.textSpeed;
+  const speeds = [
+    { id: 'slow', label: '遅い' },
+    { id: 'normal', label: '標準' },
+    { id: 'fast', label: '速い' },
+    { id: 'instant', label: '瞬時' }
+  ];
+
+  container.innerHTML = `
+    <div class="ui-modal">
+      <h2>設定</h2>
+      <div class="option-row">
+        <p style="margin-bottom: 10px; font-weight: 800;">テキスト速度</p>
+        <div class="option-buttons">
+          ${speeds.map(s => `
+            <button class="option-button ${speed === s.id ? 'is-active' : ''}" 
+                    data-action="set-text-speed" data-speed="${s.id}">${s.label}</button>
+          `).join('')}
+        </div>
+      </div>
+      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    </div>
+  `;
+}
+
+function renderHelpModal(controller, container) {
+  container.innerHTML = `
+    <div class="ui-modal">
+      <h2>ヘルプ</h2>
+      <div style="line-height: 1.8; font-size: 0.95rem;">
+        <p>・クイズではお客さんの要望に合う品を選びます。</p>
+        <p>・リズムよく答えると評判が上がります。</p>
+        <p>・早く答えると満足度が上がります。</p>
+      </div>
+      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    </div>
+  `;
+}
+
+module.exports = {
+  updateHud,
+  renderGlobalUi,
+  renderModal
+};
+
+    };
+
+    // --- ./ui/resultStamp.js ---
+    modules['./ui/resultStamp.js'] = function(module, exports, require) {
+/**
+ * Result stamp (receipt style) component for MadeInMaghribal.
+ */
+
+function getSpeedMark(result) {
+  if ((result.satisfactionBonus || 0) >= 2) return '◎';
+  if ((result.satisfactionBonus || 0) >= 1) return '○';
+  return '△';
+}
+
+function getTempoMark(result) {
+  if (result.rating === 'PERFECT') return '◎';
+  if (result.rating === 'GOOD') return '○';
+  return '△';
+}
+
+function getCorrectLabel(result) {
+  return result.isCorrect ? '正解' : '不正解';
+}
+
+function showResultStamp(controller, result) {
+  const root = document.getElementById('game-viewport') || controller.container;
+  if (!root) return;
+
+  const el = document.createElement('div');
+  el.className = `result-stamp ${result.isCorrect ? 'is-correct' : 'is-wrong'}`;
+  el.innerHTML = `
+    <div class="stamp-main">${getCorrectLabel(result)}</div>
+    <div class="stamp-row"><span>スピード</span><strong>${getSpeedMark(result)}</strong></div>
+    <div class="stamp-row"><span>テンポ</span><strong>${getTempoMark(result)}</strong></div>
+  `;
+
+  root.appendChild(el);
+  setTimeout(() => {
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }, 520);
+}
+
+module.exports = {
+  showResultStamp,
+  getSpeedMark,
+  getTempoMark,
+  getCorrectLabel
+};
+
+    };
+
+    // --- ./utils/assetPaths.js ---
+    modules['./utils/assetPaths.js'] = function(module, exports, require) {
+/**
+ * Asset path utilities for MadeInMaghribal.
+ * Verified against actual filesystem structure.
+ */
+
+function getCharacterStandingPath(id, expression = 'normal') {
+  if (!id) return '';
+  const charDir = id.toLowerCase();
+  // Valid expressions from filesystem: normal, joy, fun, anger, cry, sorrow, surprise, etc.
+  const expFile = expression.toLowerCase();
+  return `characters/${charDir}/standing_proc/${expFile}.png`;
+}
+
+function getCharacterIconPath(id) {
+  if (!id) return '';
+  const charDir = id.toLowerCase();
+  return `characters/${charDir}/standing_proc/normal.png`;
+}
+
+function getBackgroundPath(sceneId) {
+  const backgrounds = {
+    MARKET: 'images/background/bg_market_central.jpeg',
+    TEA_ROOM: 'images/background/bg_shop_interior_service.jpeg',
+    OASIS: 'images/background/bg_spot_oasis_view.jpeg'
+  };
+  return backgrounds[sceneId] || backgrounds.TEA_ROOM;
+}
+
+module.exports = {
+  getCharacterStandingPath,
+  getCharacterIconPath,
+  getBackgroundPath
+};
+
+    };
+
+    // --- ./utils/debugJump.js ---
+    modules['./utils/debugJump.js'] = function(module, exports, require) {
+/**
+ * Debug jump utilities for MadeInMaghribal.
+ */
+
+function isDebugMode() {
+  return new URLSearchParams(window.location.search).get('debug') === '1';
+}
+
+function applyDebugJumpFromUrl(controller) {
+  if (!isDebugMode()) return;
+  const params = new URLSearchParams(window.location.search);
+  const jump = params.get('jump');
+  if (!jump) return;
+  applyDebugJump(controller, jump);
+}
+
+function applyDebugJump(controller, jump) {
+  const heroine = 'HAKIMA';
+  console.log('Applying debug jump:', jump);
+
+  if (jump === 'heroine_select') {
+    controller.session.phase = 'HEROINE_SELECT';
+    return;
+  }
+
+  if (jump === 'quiz') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = 1;
+    controller.session.subPhase = 'QUIZ';
+    controller.startQuiz();
+    return;
+  }
+
+  if (jump === 'turn_result') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = 1;
+    controller.session.subPhase = 'TURN_RESULT';
+    controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
+    controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
+    controller.quizState.lastResult = {
+      isCorrect: true,
+      rating: 'GOOD',
+      satisfactionBonus: 2,
+      reputationBonus: 1,
+      diffMs: 88,
+      responseTime: 1200
+    };
+    return;
+  }
+
+  if (jump === 'turn5_after_close') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = 5;
+    controller.session.subPhase = 'AFTER_CLOSE';
+    controller.session.scores = { revenue: 420, satisfaction: 80, reputation: 70 };
+    return;
+  }
+
+  if (jump === 'ending_good') {
+    controller.session.phase = 'ENDING';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = 5;
+    controller.session.subPhase = 'AFTER_CLOSE';
+    controller.session.scores = { revenue: 500, satisfaction: 100, reputation: 100 };
+    return;
+  }
+
+  if (jump === 'ending_normal') {
+    controller.session.phase = 'ENDING';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = 5;
+    controller.session.subPhase = 'AFTER_CLOSE';
+    controller.session.scores = { revenue: 100, satisfaction: 10, reputation: 10 };
+    return;
+  }
+
+  console.warn('Unknown debug jump:', jump);
+}
+
+module.exports = {
+  isDebugMode,
+  applyDebugJumpFromUrl,
+  applyDebugJump
+};
+
+    };
+
+    // --- ./utils/displayNames.js ---
+    modules['./utils/displayNames.js'] = function(module, exports, require) {
+/**
+ * Display name and icon utilities for MadeInMaghribal.
+ */
+
+function getHeroineDisplayName(id) {
+  const names = {
+    HAKIMA: 'ハキマ',
+    MIRA: 'ミラ',
+    DARIYA: 'ダリヤ'
+  };
+  return names[id] || id;
+}
+
+function getItemDisplayName(controller, itemId, quality = 'base') {
+  const { getItemDisplayName: getRawName } = require('../data/itemDisplayNames.cjs');
+  const { ITEM_MASTER } = require('../data/itemMaster.cjs');
+
+  const name = getRawName(itemId, quality);
+  if (name && name !== itemId) return name;
+
+  const item = ITEM_MASTER.find(i => i.itemId === itemId);
+  return item ? item.name : itemId;
+}
+
+function getItemIconPath(itemId) {
+  return `images/items/${itemId}.png`;
+}
+
+function getTurnRank(dR, dS, dRep) {
+  const total = dR + dS + dRep;
+  if (total >= 90) return '大成功';
+  if (total >= 60) return '成功';
+  if (total >= 30) return 'まずまず';
+  return '要改善';
+}
+
+module.exports = {
+  getHeroineDisplayName,
+  getItemDisplayName,
+  getItemIconPath,
+  getTurnRank
+};
+
+    };
+
     // --- Entry Point (browser/app.js) ---
     (function() {
         const entry = function(require) {
 /**
  * ============================================================================
- * Made In Maghribal - Browser Game Controller
+ * Made In Maghribal - Browser Game Controller (Modularized)
  * ============================================================================
- * Core architecture: Fixed-shell with differential content updates.
- * Supports: Debug jumps, Quiz interactions, and VN storytelling.
  */
 
 const { GameSession } = require('./core/gameSessionFlow.cjs');
-const { getVnRenderModel } = require('./core/renderModel.cjs');
-const { SCENARIO_SAMPLES } = require('./data/scenarioSamples.cjs');
 const { QUIZ_REQUEST_TEMPLATES } = require('./data/quizRequestTemplates.cjs');
 const { generateQuestion } = require('./core/quizRequestModel.cjs');
 const { processQuestionResult } = require('./core/rhythmQuizCore.cjs');
 const { updateGameScore } = require('./core/scoreModel.cjs');
-const { calculateAffection } = require('./core/affectionModel.cjs');
-const { evaluateEnding } = require('./core/endingBranch.cjs');
-const { ITEM_MASTER } = require('./data/itemMaster.cjs');
-const { getItemDisplayName: getQualityItemDisplayName } = require('./data/itemDisplayNames.cjs');
+
+// Modularized Screen Renderers
+const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
+const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
+const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
+const { renderQuiz, updateQuizContent } = require('./screens/quizScreen.js');
+const { renderTurnResult, renderEnding } = require('./screens/endingScreen.js');
+
+// Modularized UI Components
+const { updateHud, renderGlobalUi, renderModal } = require('./ui/hud.js');
+const { showResultStamp } = require('./ui/resultStamp.js');
+
+// Modularized Utilities
+const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
+const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
+const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 2500;
-const SESSION_STORAGE_KEY = 'maghribal_session_state';
+
+const TEXT_SPEED_MS = {
+  slow: 55,
+  normal: 32,
+  fast: 16,
+  instant: 0
+};
+
+const SETTINGS_KEY = 'madeinmaghribal.settings';
 
 class GameController {
   /**
@@ -4247,11 +4934,25 @@ class GameController {
     this.session = new GameSession();
     this.container = document.getElementById('app');
     
-    // Integration State
+    this.settings = this.loadSettings();
+    this.uiState = {
+      modal: null // 'options' | 'help' | null
+    };
+
+    this.typewriter = {
+      fullText: '',
+      visibleText: '',
+      index: 0,
+      timerId: null,
+      isTyping: false,
+      targetEl: null
+    };
+
     this.quizState = this.createInitialQuizState();
 
     this.init();
-    this.applyDebugJumpFromUrl();
+    applyDebugJumpFromUrl(this);
+    this.applySettingsFromUrl();
     this.update();
   }
 
@@ -4268,9 +4969,82 @@ class GameController {
     };
   }
 
+  loadSettings() {
+    const defaults = { textSpeed: 'normal' };
+    try {
+      const raw = localStorage.getItem(SETTINGS_KEY);
+      if (!raw) return defaults;
+      return { ...defaults, ...JSON.parse(raw) };
+    } catch (e) {
+      console.warn('Failed to load settings:', e);
+      return defaults;
+    }
+  }
+
+  saveSettings() {
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settings));
+    } catch (e) {
+      console.warn('Failed to save settings:', e);
+    }
+  }
+
+  applySettingsFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const speed = params.get('textSpeed');
+    if (TEXT_SPEED_MS[speed] !== undefined) {
+      this.settings.textSpeed = speed;
+    }
+  }
+
+  getTextSpeedLabel() {
+    const labels = {
+      slow: '遅い',
+      normal: '標準',
+      fast: '速い',
+      instant: '瞬時'
+    };
+    return labels[this.settings.textSpeed] || '標準';
+  }
+
   /**
    * --------------------------------------------------------------------------
-   * 2. Core Update Logic (Routing & Shell Management)
+   * 2. UI Actions & Modals
+   * --------------------------------------------------------------------------
+   */
+  openModal(name) {
+    this.uiState.modal = name;
+    this.renderModal();
+  }
+
+  closeModal() {
+    this.uiState.modal = null;
+    this.renderModal();
+  }
+
+  setTextSpeed(speed) {
+    if (TEXT_SPEED_MS[speed] === undefined) return;
+    this.settings.textSpeed = speed;
+    this.saveSettings();
+    this.renderModal(); // Refresh modal state
+  }
+
+  toggleFullscreen() {
+    const root = document.getElementById('game-viewport');
+    if (!document.fullscreenElement) {
+      if (root?.requestFullscreen) root.requestFullscreen();
+      else if (root?.webkitRequestFullscreen) root.webkitRequestFullscreen();
+      else if (root?.msRequestFullscreen) root.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+  }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 3. Core Update Logic (Routing & Shell Management)
    * --------------------------------------------------------------------------
    */
   update() {
@@ -4282,24 +5056,27 @@ class GameController {
 
     if (phase === 'MAIN_GAME') {
       this.renderMainGame(this.container);
-      return;
+    } else {
+      this.container.innerHTML = '';
+      const view = document.createElement('div');
+      view.className = 'view-container';
+
+      if (phase === 'TITLE') {
+        renderTitle(this, view);
+      } else if (phase === 'OPENING') {
+        renderOpening(this, view);
+      } else if (phase === 'HEROINE_SELECT') {
+        renderHeroineSelect(this, view);
+      } else if (phase === 'ENDING') {
+        renderEnding(this, view);
+      }
+
+      this.container.appendChild(view);
     }
 
-    this.container.innerHTML = '';
-    const view = document.createElement('div');
-    view.className = 'view-container';
-
-    if (phase === 'TITLE') {
-      this.renderTitle(view);
-    } else if (phase === 'OPENING') {
-      this.renderOpening(view);
-    } else if (phase === 'HEROINE_SELECT') {
-      this.renderHeroineSelect(view);
-    } else if (phase === 'ENDING') {
-      this.renderEnding(view);
-    }
-
-    this.container.appendChild(view);
+    // Always ensure global UI and Modals are layered on top
+    this.renderGlobalUi();
+    this.renderModal();
   }
 
   renderMainGame(container) {
@@ -4315,12 +5092,13 @@ class GameController {
     const targetScreen = (subPhase === 'QUIZ') ? 'quiz' : (subPhase === 'TURN_RESULT' ? 'turn-result' : 'vn');
 
     if (!currentScreen || currentScreen.getAttribute('data-screen') !== targetScreen) {
+      this.clearTypewriter();
       if (subPhase === 'BEFORE_OPEN' || subPhase === 'AFTER_CLOSE') {
-        this.renderVnShell(view);
+        renderVnShell(this, view);
       } else if (subPhase === 'QUIZ') {
-        this.renderQuiz(view);
+        renderQuiz(this, view);
       } else if (subPhase === 'TURN_RESULT') {
-        this.renderTurnResult(view);
+        renderTurnResult(this, view);
       }
     }
 
@@ -4328,13 +5106,17 @@ class GameController {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
-        text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`
+        text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`,
+        charId: this.session.selectedHeroineId,
+        bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'AFTER_CLOSE') {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
-        text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`
+        text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`,
+        charId: this.session.selectedHeroineId,
+        bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'QUIZ') {
       this.updateHud();
@@ -4344,238 +5126,144 @@ class GameController {
 
   /**
    * --------------------------------------------------------------------------
-   * 3. Shell Renderers (Static Layouts)
+   * 4. Typewriter Methods
    * --------------------------------------------------------------------------
    */
-  renderTitle(view) {
-    view.innerHTML = `
-      <div class="title-screen">
-        <h1 class="glow">Made in Maghribal</h1>
-        <p class="blink">クリックして開始</p>
-      </div>
-    `;
+  startTypewriter(text, el) {
+    this.clearTypewriter();
+    this.typewriter.fullText = text;
+    this.typewriter.targetEl = el;
+    this.typewriter.index = 0;
+    this.typewriter.isTyping = true;
+
+    if (this.settings.textSpeed === 'instant') {
+      this.finishTypewriter();
+      return;
+    }
+
+    this.tickTypewriter();
   }
 
-  renderOpening(view) {
-    view.innerHTML = `
-      <div class="opening-screen title-screen">
-        <div class="result-card" style="padding: 40px; max-width: 85%;">
-          <h2 class="glow" style="color: var(--sand-2); margin-bottom: 20px;">プロローグ</h2>
-          <div style="text-align: left; line-height: 1.8;">
-            <p>マグリバル砂漠の黄金の砂は、多くの物語を秘めています。</p>
-            <p>あなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？</p>
-          </div>
-          <p class="blink" style="margin-top: 30px; color: var(--sand-2);">クリックして進む</p>
-        </div>
-      </div>
-    `;
-  }
-
-  renderHeroineSelect(view) {
-    view.innerHTML = `
-      <div class="heroine-select title-screen">
-        <h2 class="glow" style="margin-bottom: 30px; color: var(--star-1);">営業パートナーを選択</h2>
-        <div class="heroine-list">
-          <div class="heroine-card" data-id="HAKIMA">ハキマ（優雅な賢者）</div>
-          <div class="heroine-card" data-id="MIRA">ミラ（元気な看板娘）</div>
-          <div class="heroine-card" data-id="DARIYA">ダリヤ（神秘的な踊り子）</div>
-        </div>
-      </div>
-    `;
-  }
-
-  renderVnShell(view) {
-    view.innerHTML = `
-      <div class="vn-screen" data-screen="vn">
-        <div class="stats" data-hud></div>
-        <div class="message-box">
-          <div class="speaker-name" data-vn-speaker></div>
-          <div class="message-text-wrap">
-            <div class="message-text" data-vn-text></div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  renderQuiz(view) {
-    view.innerHTML = `
-      <div class="quiz-screen" data-screen="quiz">
-        <div class="stats" data-hud></div>
-        
-        <section class="quiz-order-card">
-          <div class="quiz-order-label">お客さんの要望</div>
-          <div class="quiz-order-text" data-quiz-prompt></div>
-          <div class="quiz-progress" data-quiz-progress></div>
-        </section>
-
-        <section class="rhythm-lane-placeholder" aria-label="リズム判定エリア">
-          <div class="rhythm-guide-line"></div>
-          <div class="rhythm-guide-note"></div>
-          <div class="rhythm-guide-caption">リズム判定</div>
-        </section>
-
-        <section class="choice-list">
-          <div class="choice-card" data-choice-slot="0">
-            <div class="item-icon-wrap">
-              <img class="item-icon" alt="" loading="eager" />
-            </div>
-            <div class="choice-name"></div>
-            <div class="choice-label">おすすめ</div>
-          </div>
-          <div class="choice-card" data-choice-slot="1">
-            <div class="item-icon-wrap">
-              <img class="item-icon" alt="" loading="eager" />
-            </div>
-            <div class="choice-name"></div>
-            <div class="choice-label">おすすめ</div>
-          </div>
-        </section>
-      </div>
-    `;
-    this.updateQuizContent();
-  }
-
-  renderTurnResult(view) {
-    const s = this.session.scores;
-    const start = this.quizState.turnStartScore;
-    const dR = s.revenue - start.revenue;
-    const dS = s.satisfaction - start.satisfaction;
-    const dRep = s.reputation - start.reputation;
-    const rank = this.getTurnRank(dR, dS, dRep);
-    
-    view.innerHTML = `
-      <div class="result-screen" data-screen="turn-result">
-        <div class="result-card">
-          <h2>${this.session.turn}日目の営業結果</h2>
-          <div style="font-size: 1.8rem; font-weight: 900; color: var(--sand-2); margin-bottom: 25px; letter-spacing: 2px;">
-            評価: ${rank}
-          </div>
-          <div class="score-row"><span>売上</span> <span>+${dR} (計: ${s.revenue})</span></div>
-          <div class="score-row"><span>満足度</span> <span>+${dS} (計: ${s.satisfaction})</span></div>
-          <div class="score-row"><span>評判</span> <span>+${dRep} (計: ${s.reputation})</span></div>
-          <button class="btn-primary btn-next">次のフェーズへ</button>
-        </div>
-      </div>
-    `;
-  }
-
-  renderEnding(view) {
-    const history = { maxSatisfaction: 100, maxReputation: 100 }; // Dummy history
-    const affection = calculateAffection(this.session.scores, history);
-    const endingType = evaluateEnding(affection, this.session.routeMode === 'extra');
-    const typeLabel = endingType === 'GOOD' ? 'GOOD ENDING' : 'NORMAL ENDING';
-
-    view.innerHTML = `
-      <div class="ending-screen">
-        <div class="ending-card">
-          <h1 style="color: var(--sand-2); margin-bottom: 10px; font-size: 1.2rem;">終幕</h1>
-          <h2 class="glow" style="font-size: 2.2rem; color: var(--star-1); margin-bottom: 20px;">${typeLabel}</h2>
-          <div style="margin: 25px 0; font-size: 1.1rem;">
-            <p>パートナー: ${this.getHeroineDisplayName(this.session.selectedHeroineId)}</p>
-            <p>好感度: ${Math.round(affection)}%</p>
-          </div>
-          <div class="score-row"><span>最終売上</span> <span>${this.session.scores.revenue}</span></div>
-          <div class="score-row"><span>最終満足度</span> <span>${this.session.scores.satisfaction}</span></div>
-          <div class="score-row"><span>最終評判</span> <span>${this.session.scores.reputation}</span></div>
-          <button class="btn-primary btn-next">タイトルへ戻る</button>
-        </div>
-      </div>
-    `;
-  }
-
-  /**
-   * --------------------------------------------------------------------------
-   * 4. Content Updaters (Dynamic Data Infill)
-   * --------------------------------------------------------------------------
-   */
-  updateHud() {
-    const hud = this.container.querySelector('[data-hud]');
-    if (!hud) return;
-    const s = this.session.scores;
-    const label = (this.session.subPhase === 'QUIZ') ? '接客' : (this.session.subPhase === 'TURN_RESULT' ? '結果' : this.session.subPhase);
-    hud.innerHTML = `
-      <div>${this.session.turn}日目 | ${label}${this.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : ''}</div>
-      <div>売上: ${s.revenue} | 満足: ${s.satisfaction}</div>
-    `;
-  }
-
-  updateVnContent({ speakerName, text }) {
-    const speakerEl = this.container.querySelector('[data-vn-speaker]');
-    const textEl = this.container.querySelector('[data-vn-text]');
-    if (speakerEl) speakerEl.textContent = speakerName || '';
-    if (textEl) textEl.textContent = text || '';
-  }
-
-  updateQuizContent() {
-    const q = this.quizState.currentQuestion;
-    const promptEl = this.container.querySelector('[data-quiz-prompt]');
-    const progressEl = this.container.querySelector('[data-quiz-progress]');
-    
-    if (promptEl) promptEl.textContent = q.promptText;
-    if (progressEl) progressEl.textContent = `${this.quizState.questionIndex + 1} / ${this.quizState.totalQuestions}`;
-
-    const choices = this.quizState.currentChoices;
-    choices.forEach((c, idx) => {
-      const card = this.container.querySelector(`[data-choice-slot="${idx}"]`);
-      if (card) {
-        card.setAttribute('data-item-id', c.id);
-        const nameEl = card.querySelector('.choice-name');
-        const iconEl = card.querySelector('.item-icon');
-        const wrapEl = card.querySelector('.item-icon-wrap');
-
-        if (nameEl) nameEl.textContent = c.name;
-        if (iconEl) {
-          iconEl.style.display = '';
-          iconEl.src = this.getItemIconPath(c.id);
-          iconEl.onerror = () => {
-            iconEl.style.display = 'none';
-            if (wrapEl) wrapEl.classList.add('missing-icon');
-          };
-        }
-        if (wrapEl) wrapEl.classList.remove('missing-icon');
+  tickTypewriter() {
+    const delay = TEXT_SPEED_MS[this.settings.textSpeed] || 32;
+    this.typewriter.timerId = setTimeout(() => {
+      this.typewriter.index++;
+      this.typewriter.visibleText = this.typewriter.fullText.substring(0, this.typewriter.index);
+      if (this.typewriter.targetEl) {
+        this.typewriter.targetEl.textContent = this.typewriter.visibleText;
       }
-    });
+
+      if (this.typewriter.index < this.typewriter.fullText.length) {
+        this.tickTypewriter();
+      } else {
+        this.typewriter.isTyping = false;
+      }
+    }, delay);
+  }
+
+  finishTypewriter() {
+    this.clearTypewriter();
+    this.typewriter.index = this.typewriter.fullText.length;
+    this.typewriter.isTyping = false;
+    if (this.typewriter.targetEl) {
+      this.typewriter.targetEl.textContent = this.typewriter.fullText;
+    }
+  }
+
+  clearTypewriter() {
+    if (this.typewriter.timerId) {
+      clearTimeout(this.typewriter.timerId);
+      this.typewriter.timerId = null;
+    }
+    this.typewriter.isTyping = false;
+  }
+
+  isTypewriterActive() {
+    return this.typewriter.isTyping;
   }
 
   /**
    * --------------------------------------------------------------------------
-   * 5. Event Handlers & User Actions
+   * 5. Wrappers for Modularized Functions
+   * --------------------------------------------------------------------------
+   */
+  updateHud() { updateHud(this); }
+  renderGlobalUi() { renderGlobalUi(this); }
+  renderModal() { renderModal(this); }
+  updateVnContent(payload) { updateVnContent(this, payload); }
+  updateQuizContent() { updateQuizContent(this); }
+  showResultStamp(result) { showResultStamp(this, result); }
+
+  isDebugMode() { return isDebugMode(); }
+  getItemDisplayName(itemId, quality) { return getItemDisplayName(this, itemId, quality); }
+  getHeroineDisplayName(id) { return getHeroineDisplayName(id); }
+  getItemIconPath(itemId) { return getItemIconPath(itemId); }
+  getTurnRank(dR, dS, dRep) { return getTurnRank(dR, dS, dRep); }
+  getCharacterStandingPath(id, expression) { return getCharacterStandingPath(id, expression); }
+  getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 6. Event Handlers & User Actions
    * --------------------------------------------------------------------------
    */
   init() {
     console.log('Controller Initialized');
     
-    // Selection/Drag Guards
     document.addEventListener('selectstart', (e) => {
-      if (e.target.closest('#game-viewport')) {
-        e.preventDefault();
-      }
+      if (e.target.closest('#game-viewport')) e.preventDefault();
     });
 
     document.addEventListener('dragstart', (e) => {
-      if (e.target.closest('#game-viewport')) {
-        e.preventDefault();
-      }
+      if (e.target.closest('#game-viewport')) e.preventDefault();
     });
 
-    // Global click to advance phase/text
     document.addEventListener('click', (e) => {
       const target = e.target;
-      
-      // Safety: Input lock check
       if (this.quizState.inputLocked) return;
 
-      // Handle Choice Selection
+      // Global UI Actions
+      if (target.closest('[data-action="open-options"]')) {
+        e.stopPropagation();
+        this.openModal('options');
+        return;
+      }
+      if (target.closest('[data-action="open-help"]')) {
+        e.stopPropagation();
+        this.openModal('help');
+        return;
+      }
+      if (target.closest('[data-action="close-modal"]')) {
+        e.stopPropagation();
+        this.closeModal();
+        return;
+      }
+      if (target.closest('[data-action="toggle-fullscreen"]')) {
+        e.stopPropagation();
+        this.toggleFullscreen();
+        return;
+      }
+      const speedBtn = target.closest('[data-action="set-text-speed"]');
+      if (speedBtn) {
+        e.stopPropagation();
+        this.setTextSpeed(speedBtn.getAttribute('data-speed'));
+        return;
+      }
+
+      // Skip Actions
+      if (target.closest('[data-action="skip-text"]')) {
+        e.stopPropagation();
+        this.onGlobalAction();
+        return;
+      }
+
       if (target.closest('.choice-card')) {
-        const card = target.closest('.choice-card');
-        const id = card.getAttribute('data-item-id');
+        const id = target.closest('.choice-card').getAttribute('data-item-id');
         e.stopPropagation();
         this.answerQuiz(id);
         return;
       }
 
-      // Handle Heroine Selection
       if (target.classList.contains('heroine-card')) {
         const id = target.getAttribute('data-id');
         e.stopPropagation();
@@ -4583,19 +5271,23 @@ class GameController {
         return;
       }
 
-      // Handle Buttons
       if (target.tagName === 'BUTTON' || target.closest('button')) {
         e.stopPropagation();
-        // Specific button logic if needed
         if (target.classList.contains('btn-next')) {
           this.onGlobalAction();
         }
         return;
       }
 
-      if (this.session.phase === 'HEROINE_SELECT') {
+      // Prevent modal backdrop from closing or interfering with text advancement
+      if (this.uiState.modal) {
+        if (!target.closest('.ui-modal')) {
+          this.closeModal();
+        }
         return;
       }
+
+      if (this.session.phase === 'HEROINE_SELECT') return;
       
       this.onGlobalAction();
     });
@@ -4603,43 +5295,43 @@ class GameController {
 
   selectHeroine(id) {
     if (this.quizState.inputLocked) return;
+    this.clearTypewriter();
     console.log('Selecting Heroine:', id);
     this.session.selectHeroine(id, 'normal');
-    this.session.nextPhase(); // -> MAIN_GAME
+    this.session.nextPhase();
     this.update();
   }
 
   onGlobalAction() {
-    if (this.quizState.inputLocked) return;
-    const phase = this.session.phase;
-    const subPhase = this.session.subPhase;
+    if (this.quizState.inputLocked || this.uiState.modal) return;
+    const { phase, subPhase } = this.session;
+
+    // Handle Typewriter "Finish on Click"
+    if ((phase === 'OPENING' || (phase === 'MAIN_GAME' && (subPhase === 'BEFORE_OPEN' || subPhase === 'AFTER_CLOSE'))) && this.isTypewriterActive()) {
+      this.finishTypewriter();
+      return;
+    }
+
     console.log('Global Action on Phase:', phase, 'SubPhase:', subPhase);
     
     if (phase === 'TITLE') {
-      this.session.nextPhase(); // -> OPENING
+      this.session.nextPhase();
     } else if (phase === 'OPENING') {
-      this.session.nextPhase(); // -> HEROINE_SELECT
+      this.session.nextPhase();
     } else if (phase === 'MAIN_GAME') {
-      if (subPhase === 'QUIZ') {
-        return;
-      }
+      if (subPhase === 'QUIZ') return;
 
-      // Check if we should transition to ENDING
       if (this.session.turn === 5 && subPhase === 'AFTER_CLOSE') {
-        this.session.nextPhase(); // -> ENDING
+        this.session.nextPhase();
         this.update();
         return;
       }
 
-      // Advance sub-phase
       this.session.nextSubPhase();
-
-      // Trigger side effects when entering a sub-phase
       if (this.session.subPhase === 'QUIZ') {
         this.startQuiz();
       }
     } else if (phase === 'ENDING') {
-      // Restart game
       this.session = new GameSession();
       this.quizState = this.createInitialQuizState();
       this.update();
@@ -4650,6 +5342,7 @@ class GameController {
   }
 
   startQuiz() {
+    this.clearTypewriter();
     console.log('Starting Quiz...');
     this.quizState.questionIndex = 0;
     this.quizState.lastResult = null;
@@ -4662,16 +5355,11 @@ class GameController {
     const template = QUIZ_REQUEST_TEMPLATES[this.quizState.questionIndex % QUIZ_REQUEST_TEMPLATES.length];
     const question = generateQuestion(template);
     
-    if (!question) {
-      // Fallback
-      this.quizState.currentQuestion = {
-        promptText: "何かもっとリフレッシュできるものはあるかしら？",
-        correctItemId: "ITEM_001",
-        wrongItemId: "ITEM_002"
-      };
-    } else {
-      this.quizState.currentQuestion = question;
-    }
+    this.quizState.currentQuestion = question || {
+      promptText: "何かもっとリフレッシュできるものはあるかしら？",
+      correctItemId: "ITEM_001",
+      wrongItemId: "ITEM_002"
+    };
 
     const q = this.quizState.currentQuestion;
     const choices = [
@@ -4681,203 +5369,44 @@ class GameController {
     this.quizState.currentChoices = this.shuffleChoices(choices);
     
     this.quizState.promptShownAt = performance.now();
-    this.quizState.inputLocked = false; // Unlock for next question
-  }
-
-  answerQuiz(itemId) {
-    if (this.quizState.inputLocked) return;
-    this.quizState.inputLocked = true; // Lock briefly
-
-    const now = performance.now();
-    const beatInterval = 600;
-    const nearestBeatMs = Math.round(now / beatInterval) * beatInterval;
-
-    const result = processQuestionResult({
-      promptShownAt: this.quizState.promptShownAt,
-      answeredAt: now,
-      selectedItemId: itemId,
-      correctItemId: this.quizState.currentQuestion.correctItemId,
-      nearestBeatMs
-    });
-
-    this.session.scores = updateGameScore(this.session.scores, result);
-    this.quizState.lastResult = result;
-    this.quizState.questionIndex++;
-
-    console.log('Result:', result, 'New Scores:', this.session.scores);
-
-    // Show receipt-style result stamp briefly
-    this.showResultStamp(result);
-
-    if (this.quizState.questionIndex < this.quizState.totalQuestions) {
-      // Next question
-      setTimeout(() => {
-        this.generateNextQuestion();
-        this.updateQuizContent();
-      }, 100); // Very short pause
-    } else {
-      // End quiz
-      setTimeout(() => {
-        this.session.nextSubPhase(); // -> TURN_RESULT
-        this.quizState.inputLocked = false; // Final unlock
-        this.update();
-      }, RESULT_TRANSITION_DELAY_MS);
-    }
-  }
-
-  showResultStamp(result) {
-    const root = document.getElementById('game-viewport') || this.container;
-    if (!root) return;
-
-    const el = document.createElement('div');
-    el.className = `result-stamp ${result.isCorrect ? 'is-correct' : 'is-wrong'}`;
-    el.innerHTML = `
-      <div class="stamp-main">${this.getCorrectLabel(result)}</div>
-      <div class="stamp-row"><span>スピード</span><strong>${this.getSpeedMark(result)}</strong></div>
-      <div class="stamp-row"><span>テンポ</span><strong>${this.getTempoMark(result)}</strong></div>
-    `;
-
-    root.appendChild(el);
-    setTimeout(() => {
-      if (el && el.parentNode) el.parentNode.removeChild(el);
-    }, 520);
-  }
-
-  /**
-   * --------------------------------------------------------------------------
-   * 6. Helpers & Data Retrieval
-   * --------------------------------------------------------------------------
-   */
-  getItemDisplayName(itemId, quality = 'base') {
-    const name = getQualityItemDisplayName(itemId, quality);
-    if (name && name !== itemId) return name;
-
-    const item = ITEM_MASTER.find(i => i.itemId === itemId);
-    return item ? item.name : itemId;
-  }
-
-  getHeroineDisplayName(id) {
-    const names = {
-      HAKIMA: 'ハキマ',
-      MIRA: 'ミラ',
-      DARIYA: 'ダリヤ'
-    };
-    return names[id] || id;
-  }
-
-  getItemIconPath(itemId) {
-    return `images/items/${itemId}.png`;
-  }
-
-  getTurnRank(dR, dS, dRep) {
-    const total = dR + dS + dRep;
-    if (total >= 90) return '大成功';
-    if (total >= 60) return '成功';
-    if (total >= 30) return 'まずまず';
-    return '要改善';
+    this.quizState.inputLocked = false;
   }
 
   shuffleChoices(choices) {
     return [...choices].sort(() => Math.random() - 0.5);
   }
 
-  getSpeedMark(result) {
-    if ((result.satisfactionBonus || 0) >= 2) return '◎';
-    if ((result.satisfactionBonus || 0) >= 1) return '○';
-    return '△';
-  }
+  answerQuiz(itemId) {
+    if (this.quizState.inputLocked) return;
+    this.quizState.inputLocked = true;
 
-  getTempoMark(result) {
-    if (result.rating === 'PERFECT') return '◎';
-    if (result.rating === 'GOOD') return '○';
-    return '△';
-  }
+    const now = performance.now();
+    const result = processQuestionResult({
+      promptShownAt: this.quizState.promptShownAt,
+      answeredAt: now,
+      selectedItemId: itemId,
+      correctItemId: this.quizState.currentQuestion.correctItemId,
+      nearestBeatMs: Math.round(now / 600) * 600
+    });
 
-  getCorrectLabel(result) {
-    return result.isCorrect ? '正解' : '不正解';
-  }
+    this.session.scores = updateGameScore(this.session.scores, result);
+    this.quizState.lastResult = result;
+    this.quizState.questionIndex++;
 
-  isDebugMode() {
-    return new URLSearchParams(window.location.search).get('debug') === '1';
-  }
+    this.showResultStamp(result);
 
-  applyDebugJumpFromUrl() {
-    if (!this.isDebugMode()) return;
-    const params = new URLSearchParams(window.location.search);
-    const jump = params.get('jump');
-    if (!jump) return;
-    this.applyDebugJump(jump);
-  }
-
-  applyDebugJump(jump) {
-    const heroine = 'HAKIMA';
-    console.log('Applying debug jump:', jump);
-
-    if (jump === 'heroine_select') {
-      this.session.phase = 'HEROINE_SELECT';
-      return;
+    if (this.quizState.questionIndex < this.quizState.totalQuestions) {
+      setTimeout(() => {
+        this.generateNextQuestion();
+        this.updateQuizContent();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.session.nextSubPhase();
+        this.quizState.inputLocked = false;
+        this.update();
+      }, RESULT_TRANSITION_DELAY_MS);
     }
-
-    if (jump === 'quiz') {
-      this.session.phase = 'MAIN_GAME';
-      this.session.selectedHeroineId = heroine;
-      this.session.routeMode = 'normal';
-      this.session.turn = 1;
-      this.session.subPhase = 'QUIZ';
-      this.startQuiz();
-      return;
-    }
-
-    if (jump === 'turn_result') {
-      this.session.phase = 'MAIN_GAME';
-      this.session.selectedHeroineId = heroine;
-      this.session.routeMode = 'normal';
-      this.session.turn = 1;
-      this.session.subPhase = 'TURN_RESULT';
-      this.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
-      this.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
-      this.quizState.lastResult = {
-        isCorrect: true,
-        rating: 'GOOD',
-        satisfactionBonus: 2,
-        reputationBonus: 1,
-        diffMs: 88,
-        responseTime: 1200
-      };
-      return;
-    }
-
-    if (jump === 'turn5_after_close') {
-      this.session.phase = 'MAIN_GAME';
-      this.session.selectedHeroineId = heroine;
-      this.session.routeMode = 'normal';
-      this.session.turn = 5;
-      this.session.subPhase = 'AFTER_CLOSE';
-      this.session.scores = { revenue: 420, satisfaction: 80, reputation: 70 };
-      return;
-    }
-
-    if (jump === 'ending_good') {
-      this.session.phase = 'ENDING';
-      this.session.selectedHeroineId = heroine;
-      this.session.routeMode = 'normal';
-      this.session.turn = 5;
-      this.session.subPhase = 'AFTER_CLOSE';
-      this.session.scores = { revenue: 500, satisfaction: 100, reputation: 100 };
-      return;
-    }
-
-    if (jump === 'ending_normal') {
-      this.session.phase = 'ENDING';
-      this.session.selectedHeroineId = heroine;
-      this.session.routeMode = 'normal';
-      this.session.turn = 5;
-      this.session.subPhase = 'AFTER_CLOSE';
-      this.session.scores = { revenue: 100, satisfaction: 10, reputation: 10 };
-      return;
-    }
-
-    console.warn('Unknown debug jump:', jump);
   }
 }
 
@@ -4885,6 +5414,7 @@ class GameController {
 window.game = new GameController();
 
         };
+        // Entry point base path is '.'
         entry((n) => require(n, './index.js'));
     })();
 
