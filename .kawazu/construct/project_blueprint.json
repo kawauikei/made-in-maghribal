@@ -1,8 +1,8 @@
 {
   "project": {
     "name": "romance_rhythm_mvp",
-    "path": "C:\\AI\\projects\\P0010_romance_rhythm_mvp",
-    "summary": "ブラウザで遊べる、中東ファンタジー恋愛VN＋接客リズムクイズゲーム。舞台はマグリバル王国。主人公ナーディルは若い錬金術師で、錬金術店を営む。ゲームはADV/VNを本体とし、BGMに合わせて客へ商品を売る横スクロール型音ゲー＋2択クイズの営業ミニゲームを挟む。ヒロインは3人。ゲーム開始時に1人を選び、5ターン制の本編を一周し、営業成績から算出される好感度で2種類のエンディングへ分岐する。Good Ending後には追加ルートとFree Playを解放する。",
+    "path": "C:\\AI\\projects\\P0007_MadeInMaghribalt3",
+    "summary": "ブラウザで遊べる、中東ファンタジー恋愛VN＋接客リズムクイズゲーム。舞台はマグリバル王国。主人公ナーディルは若い錬金術師で、錬金術店を営む。ゲームはADV/VNを本体とし、BGMに合わせて客へ商品を売る横スクロール型音ゲー＋2択クイズの営業ミニゲームを挟む。ヒロインは3人。ゲーム開始時に1人を選び、5ターン制の本編を一周し、営業成績から算出される好感度で2種類のエンディングへ分岐する。Good Ending後には追加ルートとFree Playを解放する。デバッグ用URLパラメータによる特定フェーズへのジャンプ機能を備え、ブラウザSmokeテスト(Playwright)による品質検証をサポートする。",
     "target_platform": "browser",
     "language": "ja",
     "repository_policy": {
@@ -155,7 +155,7 @@
         "全characterがtoneGuideIdを参照する",
         "toneGuideは通常ルートと追加ルートの差分を持てる",
         "customer type別の口調ガイドを参照できる",
-        "シナリオ本文をcharacter/tone guideに含めない"
+        "シナシナリオ本文をcharacter/tone guideに含めない"
       ]
     },
     {
@@ -216,6 +216,7 @@
         "src/data/itemTaxonomy.cjs",
         "src/data/itemMaster.cjs",
         "src/data/itemTexts.cjs",
+        "src/data/itemDisplayNames.cjs",
         "src/core/itemValidator.cjs"
       ],
       "tests": [
@@ -232,6 +233,7 @@
           "src/data/itemTaxonomy.cjs",
           "src/data/itemMaster.cjs",
           "src/data/itemTexts.cjs",
+          "src/data/itemDisplayNames.cjs",
           "src/core/itemValidator.cjs"
         ],
         "tests": [
@@ -594,7 +596,16 @@
       ]
     }
   ],
-  "non_contract_files": [],
+  "non_contract_files": [
+    "browser/app.js",
+    "public/style.css",
+    "public/bundle.js",
+    "public/index.html",
+    "tools/build-browser-bundle.cjs",
+    "package.json",
+    "playwright.config.js",
+    "tests/browser/browser-smoke.spec.js"
+  ],
   "deferred": [],
   "implementation_order": [
     "C001_DATA_ID_SCHEMA",

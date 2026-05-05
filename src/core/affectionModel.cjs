@@ -8,14 +8,13 @@
  * @param {object} history - { maxSatisfaction, maxReputation }
  * @returns {number} affection (0-100)
  */
-function calculateAffection(score, history) {
-  const { revenue, satisfaction, reputation } = score;
-  const { maxSatisfaction, maxReputation } = history;
+function calculateAffection(score, history = {}) {
+  const { revenue = 0, satisfaction = 0, reputation = 0 } = score;
   
-  // Acceptance: 好感度 = (売上 + 満足度 + 評判 + 過去最大満足度 + 過去最大評判) / 5
-  let val = (revenue + satisfaction + reputation + maxSatisfaction + maxReputation) / 5;
+  // MVP Formula: 好感度 = (売上 + 満足度 + 評判) / 5
+  let val = (revenue + satisfaction + reputation) / 5;
   
-  // Acceptance: 好感度は100で上限クリップする
+  // Clip at 0-100
   if (val > 100) val = 100;
   if (val < 0) val = 0;
   

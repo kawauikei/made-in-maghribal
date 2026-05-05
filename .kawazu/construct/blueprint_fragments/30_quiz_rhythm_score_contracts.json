@@ -102,7 +102,7 @@
       "contract_id": "C009_SCORE_AFFECTION_ENDING",
       "title": "Score, Affection, and Ending",
       "status": "required",
-      "summary": "売上、満足度、評判、持ち越し、好感度、エンディング分岐を管理する。",
+      "summary": "売上、満足度、評判、好感度((売上+満足度+評判)/5)、エンディング分岐を管理する。",
       "dependencies": [
         "C001_DATA_ID_SCHEMA",
         "C008_RHYTHM_QUIZ_CORE"

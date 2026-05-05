@@ -18,13 +18,13 @@ test('C009_SCORE_AFFECTION_ENDING: Affection calculation', () => {
   const score = { revenue: 500, satisfaction: 100, reputation: 100 };
   const history = { maxSatisfaction: 100, maxReputation: 100 };
   
-  // (500 + 100 + 100 + 100 + 100) / 5 = 900 / 5 = 180 -> clipped to 100
+  // (500 + 100 + 100) / 5 = 700 / 5 = 140 -> clipped to 100
   assert.strictEqual(calculateAffection(score, history), 100);
 
   const lowScore = { revenue: 100, satisfaction: 50, reputation: 50 };
   const lowHistory = { maxSatisfaction: 50, maxReputation: 50 };
-  // (100 + 50 + 50 + 50 + 50) / 5 = 300 / 5 = 60
-  assert.strictEqual(calculateAffection(lowScore, lowHistory), 60);
+  // (100 + 50 + 50) / 5 = 200 / 5 = 40
+  assert.strictEqual(calculateAffection(lowScore, lowHistory), 40);
 });
 
 test('C009_SCORE_AFFECTION_ENDING: Ending evaluation', () => {
