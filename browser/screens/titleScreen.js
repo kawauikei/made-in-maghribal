@@ -4,13 +4,15 @@
 
 const { renderVnShell } = require('./vnScreen.js');
 const { getBackgroundPath } = require('../utils/assetPaths.js');
+const { getTitleRenderModel } = require('../core/renderModel.cjs');
 
 function renderTitle(controller, view) {
   const debugButton = controller.isDebugMode()
     ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
     : '';
-  const canContinue = controller.hasSaveData ? controller.hasSaveData() : false;
-  const continueAttrs = canContinue
+  const saveSummary = controller.getSaveSummary ? controller.getSaveSummary() : null;
+  const titleModel = getTitleRenderModel({ saveSummary });
+  const continueAttrs = titleModel.canContinue
     ? 'data-action="title-continue"'
     : 'disabled aria-disabled="true"';
 
@@ -29,9 +31,9 @@ function renderTitle(controller, view) {
       <div class="title-clock-crop" aria-hidden="true">
         <img class="title-clock-image" src="images/ui/clock.png" alt="" />
       </div>
-      <h1 class="title-logo-anchor" aria-label="Made in Maghribal">
+      <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
         <span class="title-logo-water">
-          <img class="title-logo-image" src="images/ui/logo.png" alt="Made in Maghribal" />
+          <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
         </span>
       </h1>
       <div class="title-content-panel">

@@ -4,6 +4,7 @@
 const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
 const { getResultComment, getResultExpression } = require('../data/resultComments.js');
+const { getTurnResultRenderModel } = require('../core/renderModel.cjs');
 
 const SCORE_MAX_PER_TURN = {
   revenue: 100,
@@ -266,12 +267,17 @@ function setupResultReveal(controller, view, speechText) {
 function renderTurnResult(controller, view) {
   const s = controller.session.scores;
   const start = controller.quizState.turnStartScore;
-  const dR = s.revenue - start.revenue;
-  const dS = s.satisfaction - start.satisfaction;
-  const dRep = s.reputation - start.reputation;
+  const resultModel = getTurnResultRenderModel({
+    turn: controller.session.turn,
+    scores: s,
+    startScores: start
+  });
+  const dR = resultModel.stats.delta.revenue;
+  const dS = resultModel.stats.delta.satisfaction;
+  const dRep = resultModel.stats.delta.reputation;
   const rank = controller.getTurnRank(dR, dS, dRep);
   const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
-  const currentTurn = controller.session.turn;
+  const currentTurn = resultModel.turn;
   const reportLabel = `第${currentTurn}期営業報告`;
   const rawTurnItems = flattenTurnItemLog(controller.quizState.turnItemLog);
   const turnItems = rawTurnItems.length ? rawTurnItems : buildDebugResultItems(controller);

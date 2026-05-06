@@ -4,6 +4,7 @@
 
 const { getCharacterIconPath, getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme, getCharacterVisualProfile } = require('../utils/characterVisualProfiles.js');
+const { getHeroineSelectRenderModel } = require('../core/renderModel.cjs');
 
 const HEROINES = [
   {
@@ -78,9 +79,19 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
   }).join('');
 }
 
-  function renderHeroineSelect(controller, view) {
-  const initial = HEROINES[0];
+function renderHeroineSelect(controller, view) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
+  const model = getHeroineSelectRenderModel({
+    heroines: HEROINES,
+    progressSummary: progress
+  });
+  const heroines = model.heroines.map((heroine) => ({
+    id: heroine.heroineId,
+    name: heroine.name,
+    title: heroine.title,
+    desc: heroine.description
+  }));
+  const initial = heroines[0];
   if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(initial.id);
 
   view.innerHTML = `
@@ -99,7 +110,7 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
       </div>
 
       <div class="heroine-icon-row" aria-label="営業パートナー候補">
-        ${HEROINES.map((h) => `
+        ${heroines.map((h) => `
           <button class="heroine-icon-btn${h.id === initial.id ? ' is-selected' : ''}" data-preview-heroine="${h.id}" type="button" aria-label="${h.name}を表示">
             <img src="${getCharacterIconPath(h.id, 'normal')}" alt="" onerror="this.style.display='none'" />
             <span>${h.name}</span>
@@ -156,7 +167,7 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
       event.stopPropagation();
       if (controller.playSfx) controller.playSfx('uiTapBottle');
 
-      const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
+      const heroine = heroines.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
       if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(heroine.id);
       iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));
 
