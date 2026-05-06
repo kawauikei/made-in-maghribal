@@ -12,7 +12,8 @@
 const DEFAULT_THEME = {
   primary: '#f6d36b',
   secondary: '#d68a35',
-  textStroke: 'rgba(74, 42, 12, 0.45)'
+  textStroke: 'rgba(74, 42, 12, 0.45)',
+  stampFont: '"Yu Mincho", "Hiragino Mincho ProN", serif'
 };
 
 const DEFAULT_VISUAL_MODE = {
@@ -44,7 +45,7 @@ const DEFAULT_PROFILE = {
 
 const CHARACTER_VISUAL_PROFILES = {
   MIRA: {
-    theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)' },
+    theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)', stampFont: '"Klee", "Hannotate SC", "Hiragino Maru Gothic ProN", "Yu Gothic", cursive' },
     standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: -86, height: 520 },
     bustup: { image: 'standing', scale: 1.42, x: 0, y: 0, bottom: -260, height: 660 },
@@ -54,7 +55,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.00, x: 50, y: 50 }
   },
   HAKIMA: {
-    theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)' },
+    theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)', stampFont: '"UD Digi Kyokasho N-R", "Yu Mincho", "Hiragino Mincho ProN", serif' },
     // Ear height makes her effective top taller; keep a small downward nudge.
     standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.14, x: 0, y: 10, bottom: -98, height: 520 },
@@ -65,7 +66,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
   },
   DARIYA: {
-    theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)' },
+    theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)', stampFont: '"Yu Mincho", "Hiragino Mincho ProN", "HGS明朝E", serif' },
     // Horn height needs a stronger downward nudge after face-size scaling.
     standing: { image: 'standing', scale: 1.22, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.28, x: 0, y: 20, bottom: -118, height: 520 },
@@ -76,7 +77,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.02, x: 50, y: 47 }
   },
   NADIR: {
-    theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)' },
+    theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)', stampFont: '"Yu Gothic", "Hiragino Sans", system-ui, sans-serif' },
     standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: -96, height: 520 },
     bustup: { image: 'standing', scale: 1.56, x: 0, y: 14, bottom: -278, height: 660 },
@@ -135,6 +136,7 @@ function applyCharacterTheme(el, id) {
   el.style.setProperty('--heroine-theme-primary', theme.primary);
   el.style.setProperty('--heroine-theme-secondary', theme.secondary);
   el.style.setProperty('--heroine-theme-stroke', theme.textStroke);
+  el.style.setProperty('--heroine-stamp-font', theme.stampFont || DEFAULT_THEME.stampFont);
 }
 
 module.exports = {

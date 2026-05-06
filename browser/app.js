@@ -26,6 +26,7 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { registerSeenItems } = require('./utils/itemCollection.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -78,6 +79,7 @@ class GameController {
       totalQuestions: 10,
       currentQuestion: null,
       promptShownAt: 0,
+      turnItemLog: [],
       lastResult: null,
       turnStartScore: null,
       inputLocked: false,
@@ -439,6 +441,7 @@ class GameController {
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ') return;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'TURN_RESULT') return;
       
       this.playSfx('uiTapBottle');
       this.onGlobalAction();
@@ -501,6 +504,7 @@ class GameController {
     this.quizState.lastResult = null;
     this.quizState.inputLocked = false;
     this.quizState.turnStartScore = { ...this.session.scores };
+    this.quizState.turnItemLog = [];
     this.generateNextQuestion();
   }
 
@@ -529,6 +533,38 @@ class GameController {
     return [...choices].sort(() => Math.random() - 0.5);
   }
 
+
+  recordQuizItemLog(selectedItemId, result) {
+    const q = this.quizState.currentQuestion;
+    const questionIndex = this.quizState.questionIndex;
+    const choices = this.quizState.currentChoices.map((choice) => ({
+      itemId: choice.id,
+      displayName: choice.name || this.getItemDisplayName(choice.id),
+      iconPath: this.getItemIconPath(choice.id),
+      selected: choice.id === selectedItemId,
+      correct: q && choice.id === q.correctItemId
+    }));
+
+    const collectionUpdates = registerSeenItems(
+      choices.map((choice) => choice.itemId),
+      { turn: this.session.turn, questionIndex }
+    );
+    const newItemIds = new Set(collectionUpdates.filter((entry) => entry.isNew).map((entry) => entry.itemId));
+
+    this.quizState.turnItemLog.push({
+      turn: this.session.turn,
+      questionIndex,
+      promptText: q ? q.promptText : '',
+      selectedItemId,
+      correctItemId: q ? q.correctItemId : '',
+      result,
+      choices: choices.map((choice) => ({
+        ...choice,
+        isNew: newItemIds.has(choice.itemId)
+      }))
+    });
+  }
+
   answerQuiz(itemId) {
     if (this.quizState.inputLocked) return;
     this.quizState.inputLocked = true;
@@ -542,6 +578,8 @@ class GameController {
       correctItemId: this.quizState.currentQuestion.correctItemId,
       nearestBeatMs: Math.round(now / 600) * 600
     });
+
+    this.recordQuizItemLog(itemId, result);
 
     this.session.scores = updateGameScore(this.session.scores, result);
     this.quizState.lastResult = result;
