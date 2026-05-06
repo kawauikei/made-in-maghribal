@@ -2,9 +2,9 @@
 
 ## Overview
 
-`src/core/renderModel.cjs` が、現行実装範囲である VN 表示モデルと RHYTHM QUIZ 表示モデルを、ブラウザ環境に依存しない純粋なJSONとして返すことを検証する。
+`src/core/renderModel.cjs` が、現行実装範囲である TITLE 表示モデル、VN 表示モデル、RHYTHM QUIZ 表示モデルを、ブラウザ環境に依存しない純粋なJSONとして返すことを検証する。
 
-TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装のため、本テスト仕様の対象外とする。
+HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装のため、本テスト仕様の対象外とする。
 
 ## Test Environment
 
@@ -15,7 +15,28 @@ TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未�
 
 ## Test Cases
 
-### T1: VN model with speaker and standing
+### T1: Title model without save data
+
+- 入力:
+  - なし。
+- 期待結果:
+  - `title` は `Made in Maghribal`。
+  - `backgroundId` は `AS_BG_TITLE`。
+  - `canContinue` は `false`。
+  - `lastHeroineId` は `null`。
+
+### T2: Title model with save summary
+
+- 入力:
+  - `saveSummary.selectedHeroineId`
+  - `saveSummary.turn`
+  - `saveSummary.phase`
+- 期待結果:
+  - `canContinue` は `true`。
+  - `lastHeroineId` は `saveSummary.selectedHeroineId`。
+  - `saveSummary` は入力オブジェクトと一致する。
+
+### T3: VN model with speaker and standing
 
 - 入力:
   - `speakerId`: `CH_HAKIMA`
@@ -30,7 +51,7 @@ TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未�
   - `standing.characterId` と `standing.expressionId` が入力どおりになる。
   - `text` が入力どおりになる。
 
-### T2: VN model without speaker or standing
+### T4: VN model without speaker or standing
 
 - 入力:
   - `speakerId` なし。
@@ -41,7 +62,7 @@ TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未�
   - `standing` は `null`。
   - `choices` は入力された配列。
 
-### T3: Rhythm quiz model
+### T5: Rhythm quiz model
 
 - 入力:
   - `session.currentSong`
@@ -60,7 +81,6 @@ TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未�
 
 ## Out of Scope
 
-- TITLE表示モデル。
 - HEROINE_SELECT表示モデル。
 - TURN_RESULT表示モデル。
 - セーブデータ有無に基づくTITLEの `canContinue` モデル。

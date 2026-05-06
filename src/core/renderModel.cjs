@@ -3,6 +3,19 @@
  */
 const { CHARACTERS } = require('../data/characters.cjs');
 
+const DEFAULT_TITLE = 'Made in Maghribal';
+
+function getTitleRenderModel(state = {}) {
+  const saveSummary = state.saveSummary || null;
+  return {
+    title: state.title || DEFAULT_TITLE,
+    backgroundId: state.backgroundId || 'AS_BG_TITLE',
+    canContinue: Boolean(saveSummary),
+    lastHeroineId: saveSummary?.selectedHeroineId || null,
+    saveSummary
+  };
+}
+
 function findCharacter(characterId) {
   return CHARACTERS.find((character) => character.characterId === characterId) || null;
 }
@@ -66,4 +79,4 @@ function getRhythmRenderModel(session, question) {
   };
 }
 
-module.exports = { getVnRenderModel, getRhythmRenderModel };
+module.exports = { getTitleRenderModel, getVnRenderModel, getRhythmRenderModel };

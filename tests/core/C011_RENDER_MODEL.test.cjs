@@ -1,6 +1,22 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { getVnRenderModel, getRhythmRenderModel } = require('../../src/core/renderModel.cjs');
+const { getTitleRenderModel, getVnRenderModel, getRhythmRenderModel } = require('../../src/core/renderModel.cjs');
+
+test('C011_RENDER_MODEL: Title model without save data', () => {
+  const model = getTitleRenderModel();
+  assert.strictEqual(model.title, 'Made in Maghribal', "Title mismatch");
+  assert.strictEqual(model.backgroundId, 'AS_BG_TITLE', "Background ID mismatch");
+  assert.strictEqual(model.canContinue, false, "canContinue should be false without save data");
+  assert.strictEqual(model.lastHeroineId, null, "lastHeroineId should be null without save data");
+});
+
+test('C011_RENDER_MODEL: Title model with save summary', () => {
+  const saveSummary = { selectedHeroineId: 'HAKIMA', turn: 2, phase: 'MAIN_GAME' };
+  const model = getTitleRenderModel({ saveSummary });
+  assert.strictEqual(model.canContinue, true, "canContinue should be true with save data");
+  assert.strictEqual(model.lastHeroineId, 'HAKIMA', "lastHeroineId mismatch");
+  assert.deepStrictEqual(model.saveSummary, saveSummary, "saveSummary mismatch");
+});
 
 test('C011_RENDER_MODEL: VN model with speaker and standing', () => {
   const session = {};
