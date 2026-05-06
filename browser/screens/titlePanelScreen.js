@@ -49,16 +49,16 @@ const HEROINE_LABELS = {
 
 
 const QUALITY_LABELS = {
-  normal: '通常品質',
-  success: '成功品質',
-  great_success: '大成功品質'
+  normal: 'NORMAL',
+  success: 'SUCCESS',
+  great_success: 'GREAT SUCCESS'
 };
 
 const QUALITY_ORDER = ['normal', 'success', 'great_success'];
 
 const SOUND_GROUP_ICONS = {
   system: { id: 'NADER', expression: 'normal', label: '共通' },
-  extra: { id: 'NADER', expression: 'joy', label: '表情' },
+  extra: { id: 'NADER', expression: 'joy', label: '汎用' },
   HAKIMA: { id: 'HAKIMA', expression: 'social', label: 'ハキマ' },
   MIRA: { id: 'MIRA', expression: 'social', label: 'ミラ' },
   DARIYA: { id: 'DARIYA', expression: 'social', label: 'ダリヤ' },
@@ -221,6 +221,7 @@ function renderItemDetailModal(controller, seenItems) {
   const texts = ITEM_TEXTS[model.item.itemId] || {};
   const qualityCards = QUALITY_ORDER.map((quality) => `
     <section class="item-detail-quality item-detail-quality-${quality}">
+      <div class="item-detail-quality-label">${QUALITY_LABELS[quality]}</div>
       <p>${formatItemQualityText(texts[quality])}</p>
     </section>
   `).join('');
@@ -369,11 +370,27 @@ function makeSoundHeading(key, fallbackLabel) {
   `;
 }
 
+function formatTrackButtonLabel(kind, title) {
+  const safeKind = String(kind || '').trim();
+  const safeTitle = String(title || '').trim();
+  if (safeKind && safeTitle) return `${safeKind}「${safeTitle}」`;
+  return safeTitle || safeKind || '未設定';
+}
+
+function getBgmDisplayTitle(path) {
+  const groups = buildBgmGroups();
+  for (const group of groups) {
+    const found = group.tracks.find((track) => track.path === path);
+    if (found) return found.title || found.label || found.id || path;
+  }
+  return path ? path.split('/').pop() : '';
+}
+
 function renderBgmTrackButton(track) {
+  const label = formatTrackButtonLabel(track.kind, track.title || track.label || track.id);
   return `
-    <button class="sound-test-row" type="button" data-sound-bgm-path="${track.path}" data-sound-id="${track.id}">
-      <span>${escapeHtml(track.label)}</span>
-      <small>BGM</small>
+    <button class="sound-test-row sound-test-row-bgm" type="button" data-sound-bgm-path="${track.path}" data-sound-id="${track.id}" data-sound-title="${escapeHtml(track.title || track.label || track.id || track.path)}">
+      <span class="sound-track-label">${escapeHtml(label)}</span>
     </button>
   `;
 }
@@ -390,49 +407,52 @@ function renderSoundGroup(key, label, tracks, renderTrack) {
 
 function buildBgmGroups() {
   const groups = [];
-  const system = (AUDIO_MANIFEST?.bgm?.system || []).map((track) => ({
+  const systemKinds = ['オープニング', 'ゲームテーマ', 'クイズ'];
+  const system = (AUDIO_MANIFEST?.bgm?.system || []).map((track, index) => ({
     ...track,
+    kind: systemKinds[index] || '共通',
     label: track.title || track.id
   }));
   groups.push({ key: 'system', label: '共通', tracks: system });
 
+  const heroineKinds = ['クイズA', 'クイズB', 'クイズC', 'クイズD'];
+  const endingKinds = { normal: '通常エンド', good: 'グッドエンドA', secret: 'グッドエンドB' };
   for (const heroineId of ['HAKIMA', 'MIRA', 'DARIYA']) {
     const group = AUDIO_MANIFEST?.bgm?.heroines?.[heroineId] || {};
     const heroineTracks = [];
-    if (group.theme) heroineTracks.push({ ...group.theme, label: 'テーマ' });
-    (group.game || []).forEach((track, index) => heroineTracks.push({ ...track, label: `ゲーム曲 ${index + 1}` }));
-    if (group.ending?.normal) heroineTracks.push({ ...group.ending.normal, label: '通常エンディング' });
-    if (group.ending?.good) heroineTracks.push({ ...group.ending.good, label: 'グッドエンディング' });
+    if (group.theme) heroineTracks.push({ ...group.theme, kind: 'テーマ', label: group.theme.title || 'テーマ' });
+    (group.game || []).forEach((track, index) => heroineTracks.push({ ...track, kind: heroineKinds[index] || `クイズ${index + 1}`, label: track.title || heroineKinds[index] || `クイズ${index + 1}` }));
+    for (const key of ['normal', 'good', 'secret']) {
+      const track = group.ending?.[key];
+      if (track?.path) heroineTracks.push({ ...track, kind: endingKinds[key] || 'エンディング', label: track.title || track.id || 'エンディング' });
+    }
     groups.push({ key: heroineId, label: HEROINE_LABELS[heroineId], tracks: heroineTracks });
   }
 
   const extra = (AUDIO_MANIFEST?.bgm?.extra || []).map((track) => ({
     ...track,
+    kind: `${track.mood || '汎用'}${track.variant ? track.variant : ''}`,
     label: track.title || `${track.mood || track.id}${track.variant ? ` ${track.variant}` : ''}`
   }));
-  groups.push({ key: 'extra', label: '表情', tracks: extra });
+  groups.push({ key: 'extra', label: '汎用', tracks: extra });
   return groups;
 }
 
 function renderSfxTrackButton(track) {
   return `
-    <button class="sound-test-row" type="button" data-sound-sfx-key="${track.key}">
-      <span>${escapeHtml(track.title || track.key)}</span>
-      <small>${escapeHtml(track.key)}</small>
+    <button class="sound-test-row sound-test-row-sfx" type="button" data-sound-sfx-path="${track.path}" data-sound-sfx-key="${track.key}">
+      <span class="sound-track-label">${escapeHtml(track.title || track.key || track.id)}</span>
     </button>
   `;
 }
 
 function buildSfxGroups() {
-  const groups = AUDIO_MANIFEST?.se || {};
-  const tracks = Object.entries(groups).flatMap(([groupName, groupTracks]) => (
-    (groupTracks || [])
-      .filter((track) => track.key)
-      .map((track) => ({
-        ...track,
-        title: `${SE_GROUP_LABELS[groupName] || groupName} / ${track.id || track.key}`
-      }))
-  ));
+  const tracks = (AUDIO_MANIFEST?.se?.all || [])
+    .filter((track) => track.path)
+    .map((track) => ({
+      ...track,
+      title: track.title || track.path.split('/').pop() || track.id || track.key
+    }));
   return [{ key: 'se', label: 'SE', tracks }];
 }
 
@@ -446,10 +466,12 @@ function renderSoundTest(controller) {
     .map((group) => renderSoundGroup(group.key, group.label, group.tracks, renderSfxTrackButton))
     .join('');
 
+  const currentTitle = currentPath ? getBgmDisplayTitle(currentPath) : '';
+
   return `
     <div class="sound-test-panel">
       <div class="sound-test-toolbar">
-        <p data-sound-test-message>${currentPath ? `BGM: ${escapeHtml(currentPath)}` : 'BGMを選ぶとフェード付きで試聴します。'}</p>
+        <p data-sound-test-message>${currentTitle ? escapeHtml(currentTitle) : 'BGMを選ぶとフェード付きで試聴します。'}</p>
         <button class="title-menu-btn" type="button" data-action="sound-stop-bgm">BGM停止</button>
       </div>
       <div class="sound-test-scroll">

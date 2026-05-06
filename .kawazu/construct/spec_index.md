@@ -3,7 +3,7 @@
 このファイルは KawazuConstructHub が生成した案内図です。手で編集しないでください。
 
 ## Project
-- generated_at: `2026-05-05T23:24:27.083010+09:00`
+- generated_at: `2026-05-06T20:53:17.083689+09:00`
 - root: `c:/AI/projects/P0007_MadeInMaghribalt3`
 - registry: `.kawazu\construct\contracts.json`
 
@@ -31,10 +31,10 @@
   - `tests/core/C001_DATA_ID_SCHEMA.test.cjs`
 - required_commands:
   - `node --test tests/core/C001_DATA_ID_SCHEMA.test.cjs`
-- latest_run: `.kawazu/construct/runs/C001_DATA_ID_SCHEMA/20260505T201538+0900.json`
+- latest_run: `.kawazu/construct/runs/C001_DATA_ID_SCHEMA/20260506T205313+0900.json`
 - latest_run_status: `passed`
-- last_verified_run: `.kawazu/construct/runs/C001_DATA_ID_SCHEMA/20260505T201538+0900.json`
-- last_verified_at: `2026-05-05T20:15:38.336192+09:00`
+- last_verified_run: `.kawazu/construct/runs/C001_DATA_ID_SCHEMA/20260506T205313+0900.json`
+- last_verified_at: `2026-05-06T20:53:13.417556+09:00`
 
 ### C002_CHARACTER_AND_TONE_DATA
 - kind: `module`
@@ -86,10 +86,10 @@
   - `tests/core/C003_ASSET_MANIFEST.test.cjs`
 - required_commands:
   - `node --test tests/core/C003_ASSET_MANIFEST.test.cjs`
-- latest_run: `.kawazu/construct/runs/C003_ASSET_MANIFEST/20260505T210931+0900.json`
+- latest_run: `.kawazu/construct/runs/C003_ASSET_MANIFEST/20260506T205313+0900.json`
 - latest_run_status: `passed`
-- last_verified_run: `.kawazu/construct/runs/C003_ASSET_MANIFEST/20260505T210931+0900.json`
-- last_verified_at: `2026-05-05T21:09:31.753091+09:00`
+- last_verified_run: `.kawazu/construct/runs/C003_ASSET_MANIFEST/20260506T205313+0900.json`
+- last_verified_at: `2026-05-06T20:53:13.685260+09:00`
 
 ### C005_AUDIO_MANIFEST
 - kind: `module`
@@ -103,10 +103,10 @@
   - `tests/core/C005_AUDIO_MANIFEST.test.cjs`
 - required_commands:
   - `node --test tests/core/C005_AUDIO_MANIFEST.test.cjs`
-- latest_run: `.kawazu/construct/runs/C005_AUDIO_MANIFEST/20260505T210931+0900.json`
+- latest_run: `.kawazu/construct/runs/C005_AUDIO_MANIFEST/20260506T205313+0900.json`
 - latest_run_status: `passed`
-- last_verified_run: `.kawazu/construct/runs/C005_AUDIO_MANIFEST/20260505T210931+0900.json`
-- last_verified_at: `2026-05-05T21:09:31.973727+09:00`
+- last_verified_run: `.kawazu/construct/runs/C005_AUDIO_MANIFEST/20260506T205313+0900.json`
+- last_verified_at: `2026-05-06T20:53:13.786432+09:00`
 
 ### C006_SCENARIO_AND_TALK_SCHEMA
 - kind: `module`
@@ -209,10 +209,10 @@
   - `tests/core/C011_RENDER_MODEL.test.cjs`
 - required_commands:
   - `node --test tests/core/C011_RENDER_MODEL.test.cjs`
-- latest_run: `.kawazu/construct/runs/C011_RENDER_MODEL/20260505T210932+0900.json`
+- latest_run: `.kawazu/construct/runs/C011_RENDER_MODEL/20260506T205313+0900.json`
 - latest_run_status: `passed`
-- last_verified_run: `.kawazu/construct/runs/C011_RENDER_MODEL/20260505T210932+0900.json`
-- last_verified_at: `2026-05-05T21:09:32.588775+09:00`
+- last_verified_run: `.kawazu/construct/runs/C011_RENDER_MODEL/20260506T205313+0900.json`
+- last_verified_at: `2026-05-06T20:53:13.889218+09:00`
 
 ## Source Lookup
 | Source | Contract | Spec | TestSpec |
@@ -250,7 +250,9 @@
 ## Gaps
 - layout_missing_count: 0
 - registry_error_count: 0
-- registry_warning_count: 0
+- registry_warning_count: 1
+- registry warnings:
+  - C004_ITEM_MASTER_AND_TEXT: 行数上限超過 src/data/itemTexts.cjs (1258 > 300)
 
 ## Chat Context Order
 1. `.kawazu/construct/spec_index.md`

@@ -11,11 +11,13 @@
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 const { calculateAffection } = require('../core/affectionModel.cjs');
 const { evaluateEnding } = require('../core/endingBranch.cjs');
+const { loadRhythmNoteMaps, getRhythmMapForPath: getLoadedRhythmMapForPath } = require('./rhythmNoteMaps.js');
 
 const DEFAULT_BGM_VOLUME = 0.22;
 const BGM_FADE_OUT_MS = 260;
 const BGM_FADE_IN_MS = 420;
 const BGM_FADE_STEP_MS = 40;
+const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 
 function findSystemTrack(id) {
   return (AUDIO_MANIFEST?.bgm?.system || []).find((track) => track.id === id) || null;
@@ -65,6 +67,17 @@ function getTrackForSession(session) {
   return findSystemTrack('main01_title');
 }
 
+
+function getPlaybackTrimForTrack(track) {
+  const map = getLoadedRhythmMapForPath(RHYTHM_NOTE_MAPS, track?.path || '');
+  const trim = map && map.playbackTrim;
+  if (!trim || !trim.enabled) return null;
+  const startMs = Number(trim.startMs);
+  const endMs = Number(trim.endMs);
+  if (!Number.isFinite(startMs) || !Number.isFinite(endMs) || endMs <= startMs + 500) return null;
+  return { startMs: Math.max(0, startMs), endMs };
+}
+
 function clampVolume(value) {
   if (typeof value !== 'number' || Number.isNaN(value)) return DEFAULT_BGM_VOLUME;
   return Math.max(0, Math.min(1, value));
@@ -81,6 +94,13 @@ function createBgmEngine(options = {}) {
   let pendingStartTimer = null;
   const managedAudios = new Set();
   const fadeTimers = new Map();
+  const loopTrimTimers = new Map();
+
+  function clearLoopTrimTimer(audio) {
+    const timerId = loopTrimTimers.get(audio);
+    if (timerId) window.clearInterval(timerId);
+    loopTrimTimers.delete(audio);
+  }
 
   function clearFadeTimer(audio) {
     const timerId = fadeTimers.get(audio);
@@ -98,6 +118,7 @@ function createBgmEngine(options = {}) {
   function stopAudio(audio) {
     if (!audio) return;
     clearFadeTimer(audio);
+    clearLoopTrimTimer(audio);
     try {
       audio.pause();
       audio.currentTime = 0;
@@ -152,6 +173,51 @@ function createBgmEngine(options = {}) {
     fadeTimers.set(audio, timerId);
   }
 
+
+  function seekTrimStart(audio, trim) {
+    if (!audio || !trim) return;
+    const startSec = trim.startMs / 1000;
+    const endSec = trim.endMs / 1000;
+    try {
+      const current = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+      if (current < startSec || current >= endSec) audio.currentTime = startSec;
+    } catch (error) {
+      console.warn('Failed to seek trimmed BGM start:', error);
+    }
+  }
+
+  function applyPlaybackTrim(audio, track) {
+    const trim = getPlaybackTrimForTrack(track);
+    if (!audio || !trim) {
+      if (audio) {
+        audio.loop = true;
+        audio.__playbackTrim = null;
+      }
+      return;
+    }
+
+    audio.loop = false;
+    audio.__playbackTrim = trim;
+    const startSec = trim.startMs / 1000;
+    const endSec = trim.endMs / 1000;
+
+    const syncTrimStart = () => seekTrimStart(audio, trim);
+    audio.addEventListener('loadedmetadata', syncTrimStart, { once: true });
+    audio.addEventListener('canplay', syncTrimStart, { once: true });
+    seekTrimStart(audio, trim);
+
+    clearLoopTrimTimer(audio);
+    const timerId = window.setInterval(() => {
+      if (currentAudio !== audio || audio.paused) return;
+      const current = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+      if (current >= endSec || current < startSec - 0.25) {
+        try { audio.currentTime = startSec; }
+        catch (error) { console.warn('Failed to loop trimmed BGM region:', error); }
+      }
+    }, 50);
+    loopTrimTimers.set(audio, timerId);
+  }
+
   function stopAllExcept(audioToKeep = null, fade = false) {
     Array.from(managedAudios).forEach((audio) => {
       if (audio === audioToKeep) return;
@@ -164,9 +230,9 @@ function createBgmEngine(options = {}) {
     if (token !== requestSerial || !track?.path) return;
 
     const audio = new Audio(track.path);
-    audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0;
+    applyPlaybackTrim(audio, track);
 
     currentAudio = audio;
     currentPath = track.path;
@@ -263,6 +329,12 @@ function createBgmEngine(options = {}) {
   }
 
   function getState() {
+    const currentTime = currentAudio && Number.isFinite(currentAudio.currentTime)
+      ? currentAudio.currentTime
+      : 0;
+    const duration = currentAudio && Number.isFinite(currentAudio.duration)
+      ? currentAudio.duration
+      : 0;
     return {
       enabled,
       unlocked,
@@ -271,7 +343,11 @@ function createBgmEngine(options = {}) {
       managedAudioCount: managedAudios.size,
       volume: baseVolume,
       fadeOutMs: BGM_FADE_OUT_MS,
-      fadeInMs: BGM_FADE_IN_MS
+      fadeInMs: BGM_FADE_IN_MS,
+      currentTimeMs: Math.round(currentTime * 1000),
+      durationMs: Math.round(duration * 1000),
+      paused: currentAudio ? currentAudio.paused : true,
+      playbackTrim: currentAudio?.__playbackTrim || null
     };
   }
 

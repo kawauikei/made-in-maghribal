@@ -5,10 +5,10 @@ const { processQuestionResult } = require('../../src/core/rhythmQuizCore.cjs');
 test('C008_RHYTHM_QUIZ_CORE: Perfect timing and fast response', () => {
   const state = {
     promptShownAt: 1000,
-    answeredAt: 2000, // 1000ms response (<3000)
+    answeredAt: 2000, // 1000ms response (<4000)
     selectedItemId: 'IT_ARM_AS_01',
     correctItemId: 'IT_ARM_AS_01',
-    nearestBeatMs: 2020 // 20ms diff (<=50)
+    nearestBeatMs: 2020 // 20ms diff (<=100)
   };
   const result = processQuestionResult(state);
   assert.strictEqual(result.isCorrect, true);
@@ -20,10 +20,10 @@ test('C008_RHYTHM_QUIZ_CORE: Perfect timing and fast response', () => {
 test('C008_RHYTHM_QUIZ_CORE: Good timing and medium response', () => {
   const state = {
     promptShownAt: 1000,
-    answeredAt: 4500, // 3500ms response (<5000)
+    answeredAt: 5500, // 4500ms response (<6000)
     selectedItemId: 'IT_ARM_AS_01',
     correctItemId: 'IT_ARM_AS_01',
-    nearestBeatMs: 4400 // 100ms diff (<=150)
+    nearestBeatMs: 5350 // 150ms diff (<=200)
   };
   const result = processQuestionResult(state);
   assert.strictEqual(result.rating, 'GOOD');
@@ -33,10 +33,10 @@ test('C008_RHYTHM_QUIZ_CORE: Good timing and medium response', () => {
 test('C008_RHYTHM_QUIZ_CORE: Miss timing and slow response', () => {
   const state = {
     promptShownAt: 1000,
-    answeredAt: 7000, // 6000ms response (>5000)
+    answeredAt: 7000, // 6000ms response (>=6000)
     selectedItemId: 'IT_ARM_AS_01',
     correctItemId: 'IT_ARM_AS_01',
-    nearestBeatMs: 6000 // 1000ms diff (>150)
+    nearestBeatMs: 6000 // 1000ms diff (>200)
   };
   const result = processQuestionResult(state);
   assert.strictEqual(result.rating, 'MISS');

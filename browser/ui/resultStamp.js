@@ -19,7 +19,7 @@ function getCorrectLabel(result) {
 }
 
 function showResultStamp(controller, result) {
-  const root = document.getElementById('game-viewport') || controller.container;
+  const root = controller.container.querySelector('.quiz-order-card') || document.getElementById('game-viewport') || controller.container;
   if (!root) return;
 
   const el = document.createElement('div');

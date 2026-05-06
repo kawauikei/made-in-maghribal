@@ -13,11 +13,11 @@ function calculateJudgement(answeredAt, nearestBeatMs) {
   let rating = 'MISS';
   let bonus = 0;
 
-  // Acceptance: ±50ms -> PERFECT, ±150ms -> GOOD
-  if (diff <= 50) {
+  // Acceptance: ±100ms -> PERFECT, ±200ms -> GOOD
+  if (diff <= 100) {
     rating = 'PERFECT';
     bonus = 2;
-  } else if (diff <= 150) {
+  } else if (diff <= 200) {
     rating = 'GOOD';
     bonus = 1;
   }

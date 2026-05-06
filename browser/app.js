@@ -5,7 +5,6 @@
  */
 
 const { GameSession, TOTAL_TURNS } = require('./core/gameSessionFlow.cjs');
-const { QUIZ_REQUEST_TEMPLATES } = require('./data/quizRequestTemplates.cjs');
 const { generateQuestion } = require('./core/quizRequestModel.cjs');
 const { processQuestionResult } = require('./core/rhythmQuizCore.cjs');
 const { updateGameScore } = require('./core/scoreModel.cjs');
@@ -31,6 +30,12 @@ const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank 
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
 const { createBgmEngine } = require('./utils/bgmEngine.js');
+const {
+  loadRhythmNoteMaps,
+  getRhythmMapForPath: getLoadedRhythmMapForPath,
+  findNearestRhythmNoteMs
+} = require('./utils/rhythmNoteMaps.js');
+const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
@@ -38,6 +43,26 @@ const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/play
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
+
+const QUIZ_QUALITIES = ['normal', 'success', 'great_success'];
+
+function normalizeQuizQuality(quality) {
+  return QUIZ_QUALITIES.includes(quality) ? quality : 'normal';
+}
+
+function getQuizChoiceKey(itemId, quality) {
+  return `${itemId}::${normalizeQuizQuality(quality)}`;
+}
+
+function getQuizQualityForIndex(index) {
+  return QUIZ_QUALITIES[Math.max(0, index) % QUIZ_QUALITIES.length];
+}
+
+function getWrongQuizQuality(requiredQuality, index) {
+  const offset = (index % 2) + 1;
+  const baseIndex = QUIZ_QUALITIES.indexOf(normalizeQuizQuality(requiredQuality));
+  return QUIZ_QUALITIES[(baseIndex + offset) % QUIZ_QUALITIES.length];
+}
 
 const TEXT_SPEED_MS = {
   slow: 55,
@@ -47,6 +72,11 @@ const TEXT_SPEED_MS = {
 };
 
 const SETTINGS_KEY = 'madeinmaghribal.settings';
+
+function getRhythmMapForPath(pathValue) {
+  return getLoadedRhythmMapForPath(RHYTHM_NOTE_MAPS, pathValue);
+}
+
 
 class GameController {
   /**
@@ -496,16 +526,19 @@ class GameController {
 
 
   updateSoundTestStatus(path) {
-    const messageEl = this.container.querySelector('[data-sound-test-message]');
-    if (messageEl) {
-      messageEl.textContent = path ? `BGM: ${path}` : 'BGMを停止しました。';
-    }
+    let activeTitle = '';
     this.container.querySelectorAll('[data-sound-bgm-path]').forEach((button) => {
       const active = Boolean(path) && button.getAttribute('data-sound-bgm-path') === path;
       button.classList.toggle('is-active', active);
-      const badge = button.querySelector('small');
-      if (badge) badge.textContent = active ? '再生中' : 'BGM';
+      if (active) {
+        activeTitle = button.getAttribute('data-sound-title') || button.textContent.trim();
+      }
     });
+
+    const messageEl = this.container.querySelector('[data-sound-test-message]');
+    if (messageEl) {
+      messageEl.textContent = path ? (activeTitle || path.split('/').pop() || path) : 'BGMを停止しました。';
+    }
   }
 
   /**
@@ -604,10 +637,22 @@ class GameController {
         this.updateSoundTestStatus(path);
         return;
       }
-      const soundSfxBtn = target.closest('[data-sound-sfx-key]');
+      const soundSfxBtn = target.closest('[data-sound-sfx-path], [data-sound-sfx-key]');
       if (soundSfxBtn) {
         e.stopPropagation();
-        this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+        const previewPath = soundSfxBtn.getAttribute('data-sound-sfx-path');
+        if (previewPath) {
+          try {
+            const audio = new Audio(previewPath);
+            audio.volume = Math.max(0, Math.min(1, this.sfx?.volume ?? 0.7));
+            const playPromise = audio.play();
+            if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+          } catch (error) {
+            this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+          }
+        } else {
+          this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+        }
         return;
       }
       if (target.closest('[data-action="sound-stop-bgm"]')) {
@@ -682,9 +727,11 @@ class GameController {
       }
 
       if (target.closest('.choice-card')) {
-        const id = target.closest('.choice-card').getAttribute('data-item-id');
+        const choiceCard = target.closest('.choice-card');
+        const id = choiceCard.getAttribute('data-item-id');
+        const quality = choiceCard.getAttribute('data-item-quality') || 'normal';
         e.stopPropagation();
-        this.answerQuiz(id);
+        this.answerQuiz(id, quality);
         return;
       }
 
@@ -789,25 +836,49 @@ class GameController {
     this.quizState.questionIndex = 0;
     this.quizState.lastResult = null;
     this.quizState.inputLocked = false;
+    this.quizState.rhythmStartedAt = null;
+    this.quizState.rhythmVisualFrameId = null;
     this.quizState.turnStartScore = { ...this.session.scores };
     this.quizState.turnItemLog = [];
     this.generateNextQuestion();
   }
 
   generateNextQuestion() {
-    const template = QUIZ_REQUEST_TEMPLATES[this.quizState.questionIndex % QUIZ_REQUEST_TEMPLATES.length];
-    const question = generateQuestion(template);
+    const question = generateQuestion(null, {
+      questionIndex: this.quizState.questionIndex,
+      totalQuestions: this.quizState.totalQuestions,
+      turn: this.session.turn,
+      routeMode: this.session.routeMode || 'normal',
+      heroineId: this.session.selectedHeroineId || 'HAKIMA'
+    });
     
     this.quizState.currentQuestion = question || {
-      promptText: "何かもっとリフレッシュできるものはあるかしら？",
-      correctItemId: "ITEM_001",
-      wrongItemId: "ITEM_002"
+      promptText: "何かもっとリフレッシュできるものを見せてもらえる？",
+      correctItemId: "IT_MED_EL_01",
+      wrongItemId: "IT_FOD_SA_01",
+      correctQuality: getQuizQualityForIndex(this.quizState.questionIndex),
+      customerIconTone: 'amber',
+      customerType: 'fallback'
     };
 
     const q = this.quizState.currentQuestion;
+    q.correctQuality = normalizeQuizQuality(q.correctQuality || q.requiredQuality || getQuizQualityForIndex(this.quizState.questionIndex));
+    q.wrongQuality = getWrongQuizQuality(q.correctQuality, this.quizState.questionIndex);
+    q.correctChoiceKey = getQuizChoiceKey(q.correctItemId, q.correctQuality);
+
     const choices = [
-      { id: q.correctItemId, name: this.getItemDisplayName(q.correctItemId) },
-      { id: q.wrongItemId, name: this.getItemDisplayName(q.wrongItemId) }
+      {
+        id: q.correctItemId,
+        quality: q.correctQuality,
+        choiceKey: q.correctChoiceKey,
+        name: this.getItemDisplayName(q.correctItemId, q.correctQuality)
+      },
+      {
+        id: q.wrongItemId,
+        quality: q.wrongQuality,
+        choiceKey: getQuizChoiceKey(q.wrongItemId, q.wrongQuality),
+        name: this.getItemDisplayName(q.wrongItemId, q.wrongQuality)
+      }
     ];
     this.quizState.currentChoices = this.shuffleChoices(choices);
     
@@ -825,10 +896,11 @@ class GameController {
     const questionIndex = this.quizState.questionIndex;
     const choices = this.quizState.currentChoices.map((choice) => ({
       itemId: choice.id,
-      displayName: choice.name || this.getItemDisplayName(choice.id),
+      displayName: choice.name || this.getItemDisplayName(choice.id, choice.quality),
       iconPath: this.getItemIconPath(choice.id),
+      quality: normalizeQuizQuality(choice.quality),
       selected: choice.id === selectedItemId,
-      correct: q && choice.id === q.correctItemId
+      correct: q && getQuizChoiceKey(choice.id, choice.quality) === (q.correctChoiceKey || getQuizChoiceKey(q.correctItemId, q.correctQuality))
     }));
 
     const collectionUpdates = registerSeenItems(
@@ -851,18 +923,39 @@ class GameController {
     });
   }
 
-  answerQuiz(itemId) {
+  getNearestVisualBeatMs(now) {
+    const bgmState = this.getBgmState ? this.getBgmState() : null;
+    const noteMap = getRhythmMapForPath(bgmState?.currentPath || bgmState?.pendingPath || '');
+    const audioTimeMs = Number(bgmState?.currentTimeMs);
+    const nearestNoteMs = findNearestRhythmNoteMs(noteMap, audioTimeMs);
+    if (nearestNoteMs !== null) {
+      return now + (nearestNoteMs - audioTimeMs);
+    }
+
+    const beatIntervalMs = this.quizState.rhythmBeatIntervalMs || 600;
+    const rhythmStartedAt = this.quizState.rhythmStartedAt || this.quizState.promptShownAt || now;
+    const elapsed = now - rhythmStartedAt;
+    return rhythmStartedAt + Math.round(elapsed / beatIntervalMs) * beatIntervalMs;
+  }
+
+  answerQuiz(itemId, quality = 'normal') {
     if (this.quizState.inputLocked) return;
     this.quizState.inputLocked = true;
     this.playSfx('quizChoicePick');
 
     const now = performance.now();
+    const q = this.quizState.currentQuestion;
+    const selectedQuality = normalizeQuizQuality(quality);
+    const selectedChoiceKey = getQuizChoiceKey(itemId, selectedQuality);
+    const correctChoiceKey = q.correctChoiceKey || getQuizChoiceKey(q.correctItemId, q.correctQuality);
     const result = processQuestionResult({
       promptShownAt: this.quizState.promptShownAt,
       answeredAt: now,
       selectedItemId: itemId,
-      correctItemId: this.quizState.currentQuestion.correctItemId,
-      nearestBeatMs: Math.round(now / 600) * 600
+      correctItemId: q.correctItemId,
+      selectedChoiceKey,
+      correctChoiceKey,
+      nearestBeatMs: this.getNearestVisualBeatMs(now)
     });
 
     this.recordQuizItemLog(itemId, result);
@@ -878,7 +971,8 @@ class GameController {
       setTimeout(() => {
         this.generateNextQuestion();
         this.updateQuizContent();
-      }, 100);
+        this.quizState.inputLocked = false;
+      }, RESULT_TRANSITION_DELAY_MS);
     } else {
       setTimeout(() => {
         this.session.nextSubPhase();
