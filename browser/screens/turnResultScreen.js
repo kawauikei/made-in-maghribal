@@ -99,6 +99,7 @@ function renderResultItemList(items) {
     `;
   }
 
+  const selectedCount = visibleItems.filter((item) => item.selected).length;
   const rows = visibleItems.map((item) => `
     <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
       ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
@@ -109,6 +110,7 @@ function renderResultItemList(items) {
   return `
     <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
       <div class="result-item-log-title">今回の品物</div>
+      <div class="result-item-log-note">光る枠＝選んだ品 / ${selectedCount}個</div>
       <div class="result-item-log-grid">
         ${rows}
       </div>
@@ -126,11 +128,11 @@ function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) 
     <div class="result-score-bar-row">
       <div class="result-score-bar-label">${label}</div>
       <div class="result-score-bar-stack" aria-label="${label} score graph">
-        <div class="result-score-bar-track result-score-bar-track-total">
-          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
-        </div>
         <div class="result-score-bar-track result-score-bar-track-turn">
           <div class="result-score-bar-fill result-score-bar-fill-turn" style="width:${turnPct}%"></div>
+        </div>
+        <div class="result-score-bar-track result-score-bar-track-total">
+          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
         </div>
       </div>
       <div class="result-score-bar-value">
@@ -153,6 +155,7 @@ function setupResultReveal(controller, view, speechText) {
   const timers = [];
   let typingTimer = null;
   let expressionTimer = null;
+  let expressionApplied = false;
   let done = false;
 
   const playStepSfx = () => {
@@ -160,14 +163,14 @@ function setupResultReveal(controller, view, speechText) {
     // Keep the hook as a no-op so reveal timing remains unchanged.
   };
 
-  const reveal = (step, play = true) => {
-    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
-      el.classList.add('is-visible');
-    });
-    if (step === 'rank') {
-      if (heroineEl?.dataset.resultExpressionSrc) {
+  const applyResultExpression = (withAura = true) => {
+    if (expressionApplied) return;
+    expressionApplied = true;
+
+    if (heroineEl?.dataset.resultExpressionSrc) {
+      if (withAura) {
         auraEl?.classList.remove('is-active');
-        // Restart aura animation reliably even when reveal is skipped.
+        // Restart aura animation reliably for the actual expression change only.
         void auraEl?.offsetWidth;
         auraEl?.classList.add('is-active');
         heroineEl.classList.add('is-expression-changing');
@@ -179,11 +182,25 @@ function setupResultReveal(controller, view, speechText) {
           heroineEl.classList.remove('is-expression-changing');
           heroineEl.classList.add('is-expression-shifted');
         }, 90);
+      } else {
+        heroineEl.src = heroineEl.dataset.resultExpressionSrc;
+        heroineEl.classList.remove('is-expression-changing');
+        heroineEl.classList.add('is-expression-shifted');
       }
-      if (nadirEl?.dataset.resultExpressionSrc) {
-        nadirEl.src = nadirEl.dataset.resultExpressionSrc;
-        nadirEl.classList.add('is-expression-shifted');
-      }
+    }
+
+    if (nadirEl?.dataset.resultExpressionSrc) {
+      nadirEl.src = nadirEl.dataset.resultExpressionSrc;
+      nadirEl.classList.add('is-expression-shifted');
+    }
+  };
+
+  const reveal = (step, play = true) => {
+    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
+      el.classList.add('is-visible');
+    });
+    if (step === 'rank') {
+      applyResultExpression(true);
     }
     if (play) playStepSfx();
   };
@@ -219,16 +236,7 @@ function setupResultReveal(controller, view, speechText) {
       clearTimeout(expressionTimer);
       expressionTimer = null;
     }
-    if (heroineEl?.dataset.resultExpressionSrc) {
-      heroineEl.src = heroineEl.dataset.resultExpressionSrc;
-      heroineEl.classList.remove('is-expression-changing');
-      heroineEl.classList.add('is-expression-shifted');
-    }
-    if (nadirEl?.dataset.resultExpressionSrc) {
-      nadirEl.src = nadirEl.dataset.resultExpressionSrc;
-      nadirEl.classList.add('is-expression-shifted');
-    }
-    auraEl?.classList.add('is-active');
+    applyResultExpression(false);
     finishSpeech();
     revealSteps.forEach((step) => reveal(step, false));
   };
@@ -296,8 +304,8 @@ function renderTurnResult(controller, view) {
 
         <section class="result-card result-rich-card" data-reveal-step="graph" aria-label="営業成果グラフ">
           <div class="result-score-legend">
-            <span class="legend-dot legend-total"></span>累計 / 満点
             <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
+            <span class="legend-dot legend-total"></span>累計 / 満点
           </div>
 
           <div class="result-score-graph">

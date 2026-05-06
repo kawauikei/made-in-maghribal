@@ -560,6 +560,15 @@
   text-align: center;
 }
 
+
+.result-item-log-note {
+  margin: -6px 0 10px;
+  color: rgba(44,34,18,0.62);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-align: center;
+}
+
 .result-item-log-empty {
   padding: 18px 12px;
   text-align: center;

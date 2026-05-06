@@ -44,6 +44,12 @@ const SELECTED_SFX = {
     volume: 0.40,
     start: 0,
     end: null
+  },
+  turnClockTick: {
+    path: 'audio/se/clock_ticking_4.mp3',
+    volume: 0.56,
+    start: 0,
+    end: null
   }
 };
 

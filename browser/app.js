@@ -33,7 +33,9 @@ const { createBgmEngine } = require('./utils/bgmEngine.js');
 const {
   loadRhythmNoteMaps,
   getRhythmMapForPath: getLoadedRhythmMapForPath,
-  findNearestRhythmNoteMs
+  findNearestRhythmNoteMs,
+  getRhythmSilenceGraceMs,
+  getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
@@ -103,7 +105,9 @@ class GameController {
 
     this.turnTransition = {
       timerId: null,
-      callback: null
+      tickTimerIds: [],
+      callback: null,
+      finishing: false
     };
 
     this.typewriter = {
@@ -473,6 +477,8 @@ class GameController {
 
     this.uiState.turnTransitionActive = true;
     this.turnTransition.callback = callback;
+    this.turnTransition.tickTimerIds = [];
+    this.turnTransition.finishing = false;
 
     const viewport = document.getElementById('game-viewport') || this.container;
     const oldOverlay = viewport.querySelector('.turn-transition-overlay');
@@ -487,41 +493,82 @@ class GameController {
     overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
     overlay.setAttribute('data-action', 'skip-turn-transition');
     overlay.innerHTML = `
-      <div class="turn-transition-sky" aria-hidden="true">
-        <div class="turn-transition-orbit">
-          <div class="turn-transition-sun"></div>
-          <div class="turn-transition-moon"></div>
-        </div>
-        <div class="turn-transition-horizon"></div>
+      <div class="turn-transition-darkness" aria-hidden="true"></div>
+      <div class="turn-transition-clock-wrap" aria-hidden="true">
+        <img class="turn-transition-clock" src="images/ui/turn_clock.png" alt="" draggable="false">
+        <div class="turn-transition-clock-glow"></div>
+        <div class="turn-transition-clock-shadow"></div>
       </div>
       <div class="turn-transition-copy">
         <p class="turn-transition-label">${title}</p>
         <p class="turn-transition-subtitle">${subtitle}</p>
+        <p class="turn-transition-skip">クリックでスキップ</p>
       </div>
     `;
     viewport.appendChild(overlay);
 
+    const fadeInMs = 1000;
+    const introHoldMs = 500;
+    const stepMs = 1000;
+    const restMs = 200;
+    const stepCount = 5;
+    const postHoldMs = 500;
+    const fadeOutMs = 1000;
+    const rotateStartMs = fadeInMs + introHoldMs;
+    const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
+    const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
+
+    Array.from({ length: stepCount }, (_, index) => rotateStartMs + (index * (stepMs + restMs))).forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        if (this.uiState.turnTransitionActive && !this.turnTransition.finishing) this.playSfx('turnClockTick');
+      }, delay);
+      this.turnTransition.tickTimerIds.push(timerId);
+    });
+
     this.turnTransition.timerId = window.setTimeout(() => {
-      this.finishTurnTransition();
-    }, 1850);
+      this.finishTurnTransition(false);
+    }, exitStartMs);
+
+    this.turnTransition.fadeOutMs = fadeOutMs;
   }
 
-  finishTurnTransition() {
-    if (!this.uiState.turnTransitionActive) return;
+  finishTurnTransition(skip = false) {
+    if (!this.uiState.turnTransitionActive || this.turnTransition.finishing) return;
+    this.turnTransition.finishing = true;
 
     if (this.turnTransition.timerId) {
       window.clearTimeout(this.turnTransition.timerId);
       this.turnTransition.timerId = null;
     }
 
-    const callback = this.turnTransition.callback;
-    this.turnTransition.callback = null;
-    this.uiState.turnTransitionActive = false;
+    if (Array.isArray(this.turnTransition.tickTimerIds)) {
+      this.turnTransition.tickTimerIds.forEach((timerId) => window.clearTimeout(timerId));
+      this.turnTransition.tickTimerIds = [];
+    }
 
     const overlay = document.querySelector('.turn-transition-overlay');
-    if (overlay) overlay.remove();
+    const fadeMs = skip ? 500 : (this.turnTransition.fadeOutMs || 1000);
 
-    if (typeof callback === 'function') callback();
+    const complete = () => {
+      const callback = this.turnTransition.callback;
+      this.turnTransition.callback = null;
+      this.turnTransition.finishing = false;
+      this.turnTransition.fadeOutMs = null;
+      this.uiState.turnTransitionActive = false;
+
+      if (overlay) overlay.remove();
+      if (typeof callback === 'function') callback();
+    };
+
+    if (!overlay) {
+      complete();
+      return;
+    }
+
+    overlay.classList.add('is-exiting');
+    if (skip) overlay.classList.add('is-skipping');
+
+    this.turnTransition.timerId = window.setTimeout(complete, fadeMs);
   }
 
 
@@ -566,7 +613,7 @@ class GameController {
       const target = e.target;
       if (this.uiState.turnTransitionActive) {
         e.stopPropagation();
-        this.finishTurnTransition();
+        this.finishTurnTransition(true);
         return;
       }
       if (this.quizState.inputLocked) return;
@@ -923,10 +970,15 @@ class GameController {
     });
   }
 
-  getNearestVisualBeatMs(now) {
+  getCurrentRhythmMapState() {
     const bgmState = this.getBgmState ? this.getBgmState() : null;
     const noteMap = getRhythmMapForPath(bgmState?.currentPath || bgmState?.pendingPath || '');
     const audioTimeMs = Number(bgmState?.currentTimeMs);
+    return { bgmState, noteMap, audioTimeMs };
+  }
+
+  getNearestVisualBeatMs(now) {
+    const { noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
     const nearestNoteMs = findNearestRhythmNoteMs(noteMap, audioTimeMs);
     if (nearestNoteMs !== null) {
       return now + (nearestNoteMs - audioTimeMs);
@@ -936,6 +988,21 @@ class GameController {
     const rhythmStartedAt = this.quizState.rhythmStartedAt || this.quizState.promptShownAt || now;
     const elapsed = now - rhythmStartedAt;
     return rhythmStartedAt + Math.round(elapsed / beatIntervalMs) * beatIntervalMs;
+  }
+
+  getRhythmSpeedGraceMs() {
+    const { noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
+    return getRhythmSilenceGraceMs(noteMap, audioTimeMs);
+  }
+
+  getRhythmSpeedGraceDebug() {
+    const { bgmState, noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
+    return {
+      ...getRhythmSilenceGraceDebug(noteMap, audioTimeMs),
+      bgmPath: bgmState?.currentPath || bgmState?.pendingPath || '',
+      questionIndex: this.quizState.questionIndex + 1,
+      turn: this.session.turn
+    };
   }
 
   answerQuiz(itemId, quality = 'normal') {
@@ -948,6 +1015,8 @@ class GameController {
     const selectedQuality = normalizeQuizQuality(quality);
     const selectedChoiceKey = getQuizChoiceKey(itemId, selectedQuality);
     const correctChoiceKey = q.correctChoiceKey || getQuizChoiceKey(q.correctItemId, q.correctQuality);
+    const speedGraceDebug = this.getRhythmSpeedGraceDebug();
+    const nearestBeatMs = this.getNearestVisualBeatMs(now);
     const result = processQuestionResult({
       promptShownAt: this.quizState.promptShownAt,
       answeredAt: now,
@@ -955,8 +1024,21 @@ class GameController {
       correctItemId: q.correctItemId,
       selectedChoiceKey,
       correctChoiceKey,
-      nearestBeatMs: this.getNearestVisualBeatMs(now)
+      nearestBeatMs,
+      speedGraceMs: speedGraceDebug.speedGraceMs
     });
+
+    if (typeof console !== 'undefined' && console.log) {
+      console.log('[rhythm-speed-grace]', {
+        ...speedGraceDebug,
+        responseTime: Math.round(result.responseTime),
+        effectiveResponseTime: Math.round(result.effectiveResponseTime),
+        speedBonus: result.satisfactionBonus,
+        rhythmRating: result.rating,
+        rhythmDiffMs: result.diffMs,
+        nearestBeatOffsetMs: Math.round(nearestBeatMs - now)
+      });
+    }
 
     this.recordQuizItemLog(itemId, result);
 

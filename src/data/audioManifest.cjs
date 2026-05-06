@@ -15,7 +15,7 @@ const AUDIO_MANIFEST = {
         game: [
           { id: 'BGM_GAME_HAKIMA_1', title: 'Copper and Cumin', path: 'audio/bgm/hakima/hakima02_game_a.mp3' },
           { id: 'BGM_GAME_HAKIMA_2', title: 'Copper and Sand', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
-          { id: 'BGM_GAME_HAKIMA_3', title: 'Saffron Hour', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
+          { id: 'BGM_GAME_HAKIMA_3', title: 'The Copper Still', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
           { id: 'BGM_GAME_HAKIMA_4', title: "The Alchemist's Pace", path: 'audio/bgm/hakima/hakima05_game_d.mp3' }
         ],
         ending: {

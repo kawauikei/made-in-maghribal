@@ -3,7 +3,7 @@
 このファイルは KawazuConstructHub が生成した案内図です。手で編集しないでください。
 
 ## Project
-- generated_at: `2026-05-06T20:53:17.083689+09:00`
+- generated_at: `2026-05-07T00:43:40.741763+09:00`
 - root: `c:/AI/projects/P0007_MadeInMaghribalt3`
 - registry: `.kawazu\construct\contracts.json`
 
@@ -250,9 +250,11 @@
 ## Gaps
 - layout_missing_count: 0
 - registry_error_count: 0
-- registry_warning_count: 1
+- registry_warning_count: 3
 - registry warnings:
   - C004_ITEM_MASTER_AND_TEXT: 行数上限超過 src/data/itemTexts.cjs (1258 > 300)
+  - C007_QUIZ_REQUEST_MODEL: 行数上限超過 src/data/quizRequestTemplates.cjs (301 > 300)
+  - C007_QUIZ_REQUEST_MODEL: 行数上限超過 src/core/quizRequestModel.cjs (353 > 300)
 
 ## Chat Context Order
 1. `.kawazu/construct/spec_index.md`

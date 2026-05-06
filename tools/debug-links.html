@@ -7,146 +7,433 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #111827;
-      --panel: #1f2937;
-      --ink: #f9fafb;
-      --muted: #cbd5e1;
-      --accent: #f6d36b;
-      --line: rgba(255,255,255,.14);
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-hover: #334155;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #fbbf24;
+      --accent-hover: #f59e0b;
+      --success: #10b981;
+      --line: rgba(255, 255, 255, 0.08);
+      --glass: rgba(30, 41, 59, 0.7);
     }
+
     * { box-sizing: border-box; }
+    
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 20% 0%, rgba(246,211,107,.18), transparent 28%), var(--bg);
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.05), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.05), transparent 40%);
       color: var(--ink);
-      line-height: 1.6;
+      line-height: 1.5;
+      min-height: 100vh;
     }
-    main { width: min(1120px, calc(100% - 32px)); margin: 32px auto 64px; }
-    h1 { margin: 0 0 8px; font-size: 2rem; color: var(--accent); }
-    .note { color: var(--muted); margin: 0 0 24px; }
-    .toolbar {
-      display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 24px;
+
+    main {
+      width: min(960px, calc(100% - 40px));
+      margin: 40px auto;
     }
-    button, a.link {
+
+    header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Configuration Panel */
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, input[type="text"] {
+      background: rgba(15, 23, 42, 0.6);
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: rgba(255,255,255,.06);
+      padding: 12px 16px;
       color: var(--ink);
-      padding: 10px 14px;
-      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.2s;
       cursor: pointer;
-      font-weight: 700;
+      width: 100%;
     }
-    button:active, a.link:active { transform: translateY(1px); }
-    section {
-      background: rgba(31,41,55,.92);
+
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+    }
+
+    /* Action Buttons */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .jump-btn {
+      background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      margin: 18px 0;
-      box-shadow: 0 18px 40px rgba(0,0,0,.24);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
-    h2 { margin: 0 0 12px; font-size: 1.25rem; }
-    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
-    th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
-    th { color: var(--accent); font-size: .92rem; }
-    tr:last-child td { border-bottom: 0; }
-    code { color: #bae6fd; word-break: break-all; }
-    .small { color: var(--muted); font-size: .9rem; }
+
+    .jump-btn:hover {
+      background: var(--panel-hover);
+      border-color: var(--muted);
+      transform: translateY(-2px);
+    }
+
+    .jump-btn:active {
+      transform: translateY(0);
+    }
+
+    .jump-btn .name {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .jump-btn .key {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .jump-btn.primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border: none;
+      color: #000;
+      align-items: center;
+      justify-content: center;
+      grid-column: span 2;
+    }
+
+    .jump-btn.primary .name { font-size: 1.25rem; }
+
+    @media (max-width: 600px) {
+      .jump-btn.primary { grid-column: span 1; }
+    }
+
+    /* Preview Section */
+    .preview {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 40px;
+      border: 1px solid var(--line);
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .preview-url {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 0.875rem;
+      color: #7dd3fc;
+      word-break: break-all;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: var(--muted);
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--ink);
+    }
+
+    /* Legend/Sections */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 32px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .card-group {
+      margin-bottom: 40px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-top: 80px;
+      padding-bottom: 40px;
+    }
+
+    code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
+
 <main>
-  <h1>MadeInMaghribal Debug Links</h1>
-  <p class="note">基準URL: <code id="baseText">http://localhost:8000/</code> / textSpeed=instant 付き。必要に応じて <code>heroine=HAKIMA|MIRA|DARIYA</code> や <code>turn=1..5</code> を変更。</p>
-  <div class="toolbar">
-    <button type="button" onclick="setBase('http://localhost:8000/')">localhost:8000</button>
-    <button type="button" onclick="setBase(prompt('Base URL', baseUrl) || baseUrl)">Base URL変更</button>
-    <button type="button" onclick="copyAll()">全URLコピー</button>
+  <header>
+    <h1>MadeInMaghribal Debug Links</h1>
+    <p class="subtitle">開発・検証用デバッグダッシュボード</p>
+  </header>
+
+  <div class="config-grid">
+    <div class="field">
+      <label for="baseUrl">Base URL</label>
+      <input type="text" id="baseUrl" value="http://localhost:8000/" placeholder="http://..." oninput="updateAll()">
+    </div>
+    <div class="field">
+      <label for="heroine">Heroine</label>
+      <select id="heroine" onchange="updateAll()">
+        <option value="HAKIMA">HAKIMA (ハキマ)</option>
+        <option value="MIRA">MIRA (ミラ)</option>
+        <option value="DARIYA">DARIYA (ダリヤ)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="turn">Turn (Difficulty)</label>
+      <select id="turn" onchange="updateAll()">
+        <option value="1">Turn 1 (初級)</option>
+        <option value="2">Turn 2</option>
+        <option value="3">Turn 3</option>
+        <option value="4">Turn 4</option>
+        <option value="5">Turn 5 (上級)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="textSpeed">Text Speed</label>
+      <select id="textSpeed" onchange="updateAll()">
+        <option value="instant">Instant (瞬時)</option>
+        <option value="fast">Fast (速い)</option>
+        <option value="normal" selected>Normal (標準)</option>
+        <option value="slow">Slow (遅い)</option>
+      </select>
+    </div>
   </div>
 
-  <section>
-    <h2>基本</h2>
-    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="basic"></tbody></table>
-  </section>
-  <section>
-    <h2>画面ジャンプ</h2>
-    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="screens"></tbody></table>
-  </section>
-  <section>
-    <h2>営業結果 3段階</h2>
-    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="results"></tbody></table>
-  </section>
-  <section>
-    <h2>エンディング</h2>
-    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="endings"></tbody></table>
-  </section>
+  <div class="preview">
+    <div class="preview-header">
+      <label>Generated Jump URL</label>
+      <button class="btn-copy" onclick="copyJumpUrl()">Copy Link</button>
+    </div>
+    <div class="preview-url" id="previewUrl">...</div>
+  </div>
+
+  <div class="card-group">
+    <div class="section-title">基本 / 起動</div>
+    <div class="actions">
+      <a href="#" class="jump-btn primary" id="launchBtn" target="_blank" rel="noopener">
+        <span class="name">🚀 Launch Game</span>
+        <span class="key">Standard Start</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="title">
+        <span class="name">タイトル画面</span>
+        <span class="key">jump=title</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="opening">
+        <span class="name">プロローグ</span>
+        <span class="key">jump=opening</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="heroine_select">
+        <span class="name">ヒロイン選択</span>
+        <span class="key">jump=heroine_select</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-group">
+    <div class="section-title">営業フェーズ</div>
+    <div class="actions">
+      <a href="#" class="jump-btn" data-jump="before_open">
+        <span class="name">開店前会話</span>
+        <span class="key">jump=before_open</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="quiz">
+        <span class="name">クイズ開始</span>
+        <span class="key">jump=quiz</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="after_close">
+        <span class="name">閉店後会話</span>
+        <span class="key">jump=after_close</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="turn_result">
+        <span class="name">ターンリザルト</span>
+        <span class="key">jump=turn_result</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-group">
+    <div class="section-title">結果・評価別</div>
+    <div class="actions">
+      <a href="#" class="jump-btn" data-jump="result_low">
+        <span class="name">結果: 低評価</span>
+        <span class="key">jump=result_low</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="result_mid">
+        <span class="name">結果: 中評価</span>
+        <span class="key">jump=result_mid</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="result_high">
+        <span class="name">結果: 高評価</span>
+        <span class="key">jump=result_high</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-group">
+    <div class="section-title">終盤・エンディング</div>
+    <div class="actions">
+      <a href="#" class="jump-btn" data-jump="turn5_after_close">
+        <span class="name">5ターン終了後</span>
+        <span class="key">jump=turn5_after_close</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="ending_good">
+        <span class="name">Good Ending</span>
+        <span class="key">jump=ending_good</span>
+      </a>
+      <a href="#" class="jump-btn" data-jump="ending_normal">
+        <span class="name">Normal Ending</span>
+        <span class="key">jump=ending_normal</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 MadeInMaghribal Project. Debugging Mode active if <code>debug=1</code>.</p>
+  </footer>
 </main>
+
 <script>
-let baseUrl = 'http://localhost:8000/';
-const rows = {
-  basic: [
-    ['通常起動', ''],
-    ['通常起動 instant', '?textSpeed=instant'],
-  ],
-  screens: [
-    ['タイトル', '?debug=1&jump=title&textSpeed=instant'],
-    ['プロローグ', '?debug=1&jump=opening&textSpeed=instant'],
-    ['ヒロイン選択', '?debug=1&jump=heroine_select&textSpeed=instant'],
-    ['開店前 ハキマ', '?debug=1&jump=before_open&heroine=HAKIMA&turn=1&textSpeed=instant'],
-    ['開店前 ミラ', '?debug=1&jump=before_open&heroine=MIRA&turn=1&textSpeed=instant'],
-    ['開店前 ダリヤ', '?debug=1&jump=before_open&heroine=DARIYA&turn=1&textSpeed=instant'],
-    ['クイズ ハキマ', '?debug=1&jump=quiz&heroine=HAKIMA&turn=1&textSpeed=instant'],
-    ['クイズ ミラ', '?debug=1&jump=quiz&heroine=MIRA&turn=2&textSpeed=instant'],
-    ['クイズ ダリヤ', '?debug=1&jump=quiz&heroine=DARIYA&turn=3&textSpeed=instant'],
-    ['閉店後 5ターン目', '?debug=1&jump=turn5_after_close&heroine=HAKIMA&textSpeed=instant'],
-    ['閉店後', '?debug=1&jump=after_close&heroine=HAKIMA&turn=1&textSpeed=instant'],
-  ],
-  results: [
-    ['結果: 励まし / ハキマ', '?debug=1&jump=result_low&heroine=HAKIMA&textSpeed=instant'],
-    ['結果: 評価 / ハキマ', '?debug=1&jump=result_mid&heroine=HAKIMA&textSpeed=instant'],
-    ['結果: 驚き / ハキマ', '?debug=1&jump=result_high&heroine=HAKIMA&textSpeed=instant'],
-    ['結果: 励まし / ミラ', '?debug=1&jump=result_low&heroine=MIRA&textSpeed=instant'],
-    ['結果: 評価 / ミラ', '?debug=1&jump=result_mid&heroine=MIRA&textSpeed=instant'],
-    ['結果: 驚き / ミラ', '?debug=1&jump=result_high&heroine=MIRA&textSpeed=instant'],
-    ['結果: 励まし / ダリヤ', '?debug=1&jump=result_low&heroine=DARIYA&textSpeed=instant'],
-    ['結果: 評価 / ダリヤ', '?debug=1&jump=result_mid&heroine=DARIYA&textSpeed=instant'],
-    ['結果: 驚き / ダリヤ', '?debug=1&jump=result_high&heroine=DARIYA&textSpeed=instant'],
-    ['旧別名: result_encourage', '?debug=1&jump=result_encourage&heroine=HAKIMA&textSpeed=instant'],
-    ['旧別名: result_evaluate', '?debug=1&jump=result_evaluate&heroine=MIRA&textSpeed=instant'],
-    ['旧別名: result_surprise', '?debug=1&jump=result_surprise&heroine=DARIYA&textSpeed=instant'],
-    ['旧: turn_result', '?debug=1&jump=turn_result&heroine=HAKIMA&textSpeed=instant'],
-  ],
-  endings: [
-    ['Good Ending ハキマ', '?debug=1&jump=ending_good&heroine=HAKIMA&textSpeed=instant'],
-    ['Normal Ending ハキマ', '?debug=1&jump=ending_normal&heroine=HAKIMA&textSpeed=instant'],
-    ['Good Ending ミラ', '?debug=1&jump=ending_good&heroine=MIRA&textSpeed=instant'],
-    ['Normal Ending ミラ', '?debug=1&jump=ending_normal&heroine=MIRA&textSpeed=instant'],
-    ['Good Ending ダリヤ', '?debug=1&jump=ending_good&heroine=DARIYA&textSpeed=instant'],
-    ['Normal Ending ダリヤ', '?debug=1&jump=ending_normal&heroine=DARIYA&textSpeed=instant'],
-  ]
-};
-function full(path) { return new URL(path || '.', baseUrl).href; }
-function render() {
-  document.getElementById('baseText').textContent = baseUrl;
-  for (const [id, list] of Object.entries(rows)) {
-    document.getElementById(id).innerHTML = list.map(([label, path]) => {
-      const url = full(path);
-      return `<tr><td>${label}</td><td><a class="link" href="${url}" target="_blank" rel="noopener">開く</a> <code>${url}</code></td></tr>`;
-    }).join('');
+  const elBase = document.getElementById('baseUrl');
+  const elHeroine = document.getElementById('heroine');
+  const elTurn = document.getElementById('turn');
+  const elTextSpeed = document.getElementById('textSpeed');
+  const elPreview = document.getElementById('previewUrl');
+  const elLaunch = document.getElementById('launchBtn');
+
+  function getBase() {
+    let b = elBase.value.trim();
+    if (b && !b.endsWith('/')) b += '/';
+    return b || 'http://localhost:8000/';
   }
-}
-function setBase(url) {
-  if (!url.endsWith('/')) url += '/';
-  baseUrl = url;
-  render();
-}
-async function copyAll() {
-  const all = Object.values(rows).flat().map(([label, path]) => `${label}: ${full(path)}`).join('\n');
-  await navigator.clipboard.writeText(all);
-}
-render();
+
+  function buildUrl(jump = null) {
+    const base = getBase();
+    const params = new URLSearchParams();
+    params.set('debug', '1');
+    if (jump) params.set('jump', jump);
+    params.set('heroine', elHeroine.value);
+    params.set('turn', elTurn.value);
+    params.set('textSpeed', elTextSpeed.value);
+
+    return base + '?' + params.toString();
+  }
+
+  function updateAll() {
+    const currentJump = null; // We'll update the live preview to show a "Standard" launch
+    elPreview.textContent = buildUrl();
+    elLaunch.href = buildUrl();
+
+    // Update all jump buttons
+    document.querySelectorAll('.jump-btn[data-jump]').forEach(btn => {
+      const jumpKey = btn.getAttribute('data-jump');
+      btn.href = buildUrl(jumpKey);
+    });
+  }
+
+  async function copyJumpUrl() {
+    try {
+      await navigator.clipboard.writeText(elPreview.textContent);
+      const btn = document.querySelector('.btn-copy');
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.style.color = '#10b981';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.color = '';
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  // Initialize
+  updateAll();
 </script>
+
 </body>
 </html>

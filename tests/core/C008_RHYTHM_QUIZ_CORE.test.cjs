@@ -56,3 +56,36 @@ test('C008_RHYTHM_QUIZ_CORE: Wrong item but perfect timing', () => {
   assert.strictEqual(result.isCorrect, false, "Result should be incorrect");
   assert.strictEqual(result.rating, 'PERFECT', "Timing should still be PERFECT");
 });
+
+test('C008_RHYTHM_QUIZ_CORE: silence grace only improves speed bonus', () => {
+  const state = {
+    promptShownAt: 1000,
+    answeredAt: 7000, // 6000ms raw response
+    selectedItemId: 'IT_ARM_AS_01',
+    correctItemId: 'IT_ARM_AS_01',
+    nearestBeatMs: 7000,
+    speedGraceMs: 1500
+  };
+  const result = processQuestionResult(state);
+  assert.strictEqual(result.rating, 'PERFECT');
+  assert.strictEqual(result.reputationBonus, 2);
+  assert.strictEqual(result.responseTime, 6000);
+  assert.strictEqual(result.effectiveResponseTime, 4500);
+  assert.strictEqual(result.speedGraceMs, 1500);
+  assert.strictEqual(result.satisfactionBonus, 1);
+});
+
+test('C008_RHYTHM_QUIZ_CORE: speed grace is capped to 3000ms', () => {
+  const state = {
+    promptShownAt: 1000,
+    answeredAt: 8500, // 7500ms raw response
+    selectedItemId: 'IT_ARM_AS_01',
+    correctItemId: 'IT_ARM_AS_01',
+    nearestBeatMs: 8500,
+    speedGraceMs: 9999
+  };
+  const result = processQuestionResult(state);
+  assert.strictEqual(result.speedGraceMs, 3000);
+  assert.strictEqual(result.effectiveResponseTime, 4500);
+  assert.strictEqual(result.satisfactionBonus, 1);
+});

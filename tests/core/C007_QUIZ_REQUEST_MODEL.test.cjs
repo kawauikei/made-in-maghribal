@@ -88,3 +88,38 @@ test('C007_QUIZ_REQUEST_MODEL: generated prompts avoid known unnatural request f
     }
   }
 });
+
+test('C007_QUIZ_REQUEST_MODEL: generated prompts include a situation for item-type requests', () => {
+  const question = generateQuestion({
+    templateId: 'TEST_RICH_ITEMTYPE',
+    customerType: 'test',
+    customerProfile: { id: 'test', speechStyle: 'young_male', iconTone: 'sky', label: '若い客' },
+    difficultyLevel: 'easy',
+    decoyDifficulty: 'near_match',
+    seedItemId: 'IT_DAY_AS_01',
+    conditionPatternId: 'itemType',
+    conditions: [{ type: 'itemType', value: 'DAY_01' }],
+    text: null
+  });
+
+  assert.ok(question.promptText.includes('。'), `Prompt should include situation text: ${question.promptText}`);
+  assert.match(question.promptText, /(油灯|品|暮らし|用事|店先)/);
+});
+
+test('C007_QUIZ_REQUEST_MODEL: near-match decoy chooses a similar but incorrect item', () => {
+  const question = generateQuestion({
+    templateId: 'TEST_NEAR_DECOY',
+    customerType: 'test',
+    customerProfile: { id: 'test', speechStyle: 'young_male', iconTone: 'sky', label: '若い客' },
+    difficultyLevel: 'easy',
+    decoyDifficulty: 'near_match',
+    seedItemId: 'IT_ARM_AS_01',
+    conditionPatternId: 'itemType',
+    conditions: [{ type: 'itemType', value: 'ARM_01' }],
+    text: null
+  });
+
+  assert.notStrictEqual(question.correctItemId, question.wrongItemId);
+  assert.ok(question.decoySimilarityScore >= 4, `Expected similar decoy, got score ${question.decoySimilarityScore}`);
+  assert.strictEqual(validateQuestion(question).ok, true);
+});

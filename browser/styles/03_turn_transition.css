@@ -10,105 +10,128 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(circle at 50% 20%, rgba(255, 244, 188, 0.16), transparent 34%),
-    linear-gradient(180deg, rgba(9, 18, 42, 0.96) 0%, rgba(31, 38, 80, 0.93) 46%, rgba(188, 118, 64, 0.88) 100%);
+  background: #000;
   color: var(--sand-2);
   cursor: pointer;
-  animation: turnTransitionFadeIn 180ms ease-out both;
+  opacity: 0;
+  animation: turnTransitionFadeIn 1000ms ease-out both;
 }
 
-.turn-transition-sky {
+.turn-transition-overlay.is-exiting {
+  pointer-events: none;
+  animation: turnTransitionFadeOut 1000ms ease-in both;
+}
+
+.turn-transition-overlay.is-skipping.is-exiting {
+  animation-duration: 500ms;
+}
+
+.turn-transition-darkness {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-}
-
-.turn-transition-orbit {
-  position: absolute;
-  left: 50%;
-  bottom: 22%;
-  width: 620px;
-  height: 620px;
-  margin-left: -310px;
-  border-radius: 999px;
-  animation: turnTransitionOrbit 1650ms cubic-bezier(0.33, 0, 0.2, 1) both;
-  opacity: 0.96;
-}
-
-.turn-transition-sun,
-.turn-transition-moon {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
-}
-
-.turn-transition-sun {
-  width: 118px;
-  height: 118px;
-  margin-left: -250px;
-  background: radial-gradient(circle at 35% 30%, #fff7b8 0%, #ffd266 44%, #f59b3c 78%);
-  box-shadow: 0 0 44px rgba(255, 204, 96, 0.75), 0 0 96px rgba(245, 155, 60, 0.32);
-}
-
-.turn-transition-moon {
-  width: 98px;
-  height: 98px;
-  margin-left: 250px;
-  background: radial-gradient(circle at 35% 30%, #f8f6d4 0%, #d8d6c8 64%, #a9b3c7 100%);
-  box-shadow: 0 0 34px rgba(225, 239, 255, 0.62), 0 0 90px rgba(138, 179, 228, 0.22);
-}
-
-.turn-transition-horizon {
-  position: absolute;
-  left: -10%;
-  right: -10%;
-  bottom: 0;
-  height: 32%;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 218, 124, 0.36), transparent 48%),
-    linear-gradient(180deg, rgba(216, 153, 82, 0.0), rgba(67, 45, 54, 0.58));
+    radial-gradient(circle at 50% 42%, rgba(245, 184, 82, 0.10), transparent 32%),
+    radial-gradient(circle at 50% 52%, rgba(35, 51, 92, 0.16), transparent 45%),
+    #000;
+}
+
+.turn-transition-clock-wrap {
+  position: relative;
+  z-index: 2;
+  width: min(82%, 620px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  animation: turnClockArrival 1000ms cubic-bezier(0.16, 0.82, 0.22, 1) both;
+}
+
+.turn-transition-clock {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 50% 50%;
+  filter:
+    drop-shadow(0 24px 32px rgba(0, 0, 0, 0.62))
+    drop-shadow(0 0 24px rgba(235, 177, 65, 0.22));
+  animation: turnClockAntiqueRotate 5800ms cubic-bezier(0.18, 0.78, 0.20, 1) 1500ms both;
+}
+
+.turn-transition-clock-glow {
+  position: absolute;
+  z-index: 1;
+  inset: 13%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 45% 58%, rgba(255, 200, 82, 0.32), transparent 34%),
+    radial-gradient(circle, rgba(44, 79, 139, 0.24), transparent 62%);
+  filter: blur(18px);
+  opacity: 0.86;
+  animation: turnClockGlow 5800ms ease-in-out 1500ms both;
+}
+
+.turn-transition-clock-shadow {
+  position: absolute;
+  z-index: 0;
+  left: 12%;
+  right: 12%;
+  bottom: 5%;
+  height: 14%;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.62);
+  filter: blur(20px);
+  transform: scaleX(0.88);
+  opacity: 0.74;
 }
 
 .turn-transition-copy {
-  position: relative;
-  z-index: 2;
-  width: min(78%, 520px);
-  padding: 34px 42px;
-  border: 2px solid rgba(246, 211, 107, 0.74);
-  border-radius: 28px;
-  background: rgba(16, 24, 52, 0.62);
-  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.46), inset 0 0 28px rgba(255, 233, 160, 0.10);
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 7.5%;
+  width: min(82%, 520px);
+  transform: translateX(-50%);
   text-align: center;
-  animation: turnTransitionCopy 1250ms ease-out both;
+  pointer-events: none;
+  animation: turnTransitionCopy 8800ms ease-in-out both;
 }
 
 .turn-transition-label {
   margin: 0;
-  font-size: 3.1rem;
+  font-size: 2.65rem;
   font-weight: 1000;
-  letter-spacing: 0.16em;
-  text-shadow: 0 0 16px rgba(255, 230, 150, 0.55), 0 4px 18px rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.12em;
+  color: rgba(255, 231, 158, 0.96);
+  text-shadow: 0 0 18px rgba(235, 177, 65, 0.52), 0 4px 20px rgba(0, 0, 0, 0.85);
 }
 
 .turn-transition-subtitle {
-  margin: 16px 0 0;
-  font-size: 1.15rem;
+  margin: 10px 0 0;
+  font-size: 1.02rem;
   font-weight: 800;
-  color: rgba(255, 244, 210, 0.88);
+  color: rgba(255, 246, 218, 0.84);
   letter-spacing: 0.06em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.82);
 }
 
-.turn-transition-overlay.is-ending {
+.turn-transition-skip {
+  margin: 12px 0 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: rgba(255, 246, 218, 0.54);
+  letter-spacing: 0.08em;
+}
+
+.turn-transition-overlay.is-ending .turn-transition-clock {
+  animation-direction: reverse;
+}
+
+.turn-transition-overlay.is-ending .turn-transition-darkness {
   background:
-    radial-gradient(circle at 50% 22%, rgba(255, 244, 188, 0.16), transparent 36%),
-    linear-gradient(180deg, rgba(6, 12, 34, 0.97) 0%, rgba(26, 20, 55, 0.95) 56%, rgba(82, 49, 76, 0.90) 100%);
-}
-
-.turn-transition-overlay.is-ending .turn-transition-orbit {
-  animation-duration: 1900ms;
+    radial-gradient(circle at 50% 42%, rgba(141, 116, 218, 0.13), transparent 34%),
+    radial-gradient(circle at 50% 52%, rgba(42, 50, 116, 0.18), transparent 48%),
+    #000;
 }
 
 @keyframes turnTransitionFadeIn {
@@ -116,15 +139,47 @@
   to { opacity: 1; }
 }
 
-@keyframes turnTransitionOrbit {
-  0% { transform: rotate(-18deg) scale(0.96); filter: brightness(0.92); }
-  45% { filter: brightness(1.18); }
-  100% { transform: rotate(198deg) scale(1.02); filter: brightness(0.98); }
+@keyframes turnTransitionFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes turnClockArrival {
+  0% { opacity: 0; transform: scale(0.86); filter: brightness(0.72); }
+  72% { opacity: 1; transform: scale(1.018); filter: brightness(1.08); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes turnClockAntiqueRotate {
+  0% { transform: rotate(-180deg) scale(0.992); filter: brightness(0.84) saturate(0.96); }
+  14.66% { transform: rotate(-142deg) scale(1.004); }
+  17.24% { transform: rotate(-144deg) scale(1); filter: brightness(0.92) saturate(0.98); }
+  20.69% { transform: rotate(-144deg) scale(1); }
+  35.35% { transform: rotate(-106deg) scale(1.005); }
+  37.93% { transform: rotate(-108deg) scale(1); filter: brightness(1.00) saturate(1); }
+  41.38% { transform: rotate(-108deg) scale(1); }
+  56.03% { transform: rotate(-70deg) scale(1.005); }
+  58.62% { transform: rotate(-72deg) scale(1); filter: brightness(1.08) saturate(1.04); }
+  62.07% { transform: rotate(-72deg) scale(1); }
+  76.72% { transform: rotate(-34deg) scale(1.006); }
+  79.31% { transform: rotate(-36deg) scale(1); filter: brightness(1.14) saturate(1.08); }
+  82.76% { transform: rotate(-36deg) scale(1); }
+  97.41% { transform: rotate(2deg) scale(1.006); }
+  100% { transform: rotate(0deg) scale(1); filter: brightness(1.22) saturate(1.10); }
+}
+
+@keyframes turnClockGlow {
+  0% { opacity: 0.28; transform: scale(0.84); }
+  20% { opacity: 0.36; transform: scale(0.90); }
+  40% { opacity: 0.48; transform: scale(0.96); }
+  60% { opacity: 0.62; transform: scale(1.02); }
+  80% { opacity: 0.75; transform: scale(1.08); }
+  100% { opacity: 0.92; transform: scale(1.14); }
 }
 
 @keyframes turnTransitionCopy {
-  0% { opacity: 0; transform: translateY(18px) scale(0.97); }
-  22% { opacity: 1; }
-  80% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-8px) scale(1.01); }
+  0% { opacity: 0; transform: translate(-50%, 16px); }
+  11% { opacity: 1; transform: translate(-50%, 0); }
+  89% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -8px); }
 }

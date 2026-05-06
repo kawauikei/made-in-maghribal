@@ -13,6 +13,10 @@ const {
   SOCIAL_QUALITY_ALIASES,
   SOCIAL_QUALITY_LEADS,
   REQUEST_GENRE_NAMES,
+  REQUEST_SCENES,
+  PRINCIPLE_REQUEST_HINTS,
+  QUALITY_REQUEST_HINTS,
+  DECOY_DIFFICULTY_WEIGHTS,
   PRINCIPLE_PHRASE_SUFFIX,
   SPEECH_PATTERNS
 } = require('../data/quizRequestTemplates.cjs');
@@ -114,6 +118,29 @@ function pickQualityLead(quality, customerProfile = null, targetGenre = null) {
     || 'よい品を探しています';
 }
 
+function pickRequestScene(genre) {
+  return pickRandom(REQUEST_SCENES?.[genre]) || '少し用があって品を探している';
+}
+
+function pickPrincipleHint(principle) {
+  return pickRandom(PRINCIPLE_REQUEST_HINTS?.[principle]) || getDisplayPrincipleName(principle);
+}
+
+function pickQualityHint(quality, customerProfile = null, targetGenre = null) {
+  const social = customerProfile?.social;
+  const useSocial = isSocialTargetAllowed(customerProfile, targetGenre);
+  return (useSocial ? pickRandom(SOCIAL_QUALITY_ALIASES?.[social]?.[quality]) : null)
+    || pickRandom(QUALITY_REQUEST_HINTS?.[quality])
+    || pickQualityAlias(quality, customerProfile, targetGenre);
+}
+
+function joinTargetModifiers(modifiers, targetName) {
+  const safeModifiers = modifiers.filter(Boolean);
+  if (safeModifiers.length === 0) return targetName;
+  if (safeModifiers.length === 1) return `${safeModifiers[0]}${targetName}`;
+  return `${safeModifiers[0]}、${safeModifiers[1]}${targetName}`;
+}
+
 function buildRequestPhrase(conditions, customerProfile = null) {
   const quality = conditions.find((condition) => condition.type === 'quality')?.value;
   const principle = conditions.find((condition) => condition.type === 'principle')?.value;
@@ -122,19 +149,27 @@ function buildRequestPhrase(conditions, customerProfile = null) {
 
   const targetGenre = genre || getGenreFromItemType(itemType);
   const targetName = itemType ? getDisplayItemTypeName(itemType) : getRequestGenreName(genre);
-  const principleTarget = principle
-    ? `${getDisplayPrincipleName(principle)}${PRINCIPLE_PHRASE_SUFFIX}${targetName}`
-    : targetName;
+  const scene = pickRequestScene(targetGenre);
+  const modifiers = [];
+
+  if (principle) modifiers.push(pickPrincipleHint(principle));
+  if (quality) modifiers.push(pickQualityHint(quality, customerProfile, targetGenre));
+
+  const targetPhrase = joinTargetModifiers(modifiers, targetName);
 
   if (quality && principle) {
-    return `${pickQualityLead(quality, customerProfile, targetGenre)}。${principleTarget}`;
+    return `${scene}。${targetPhrase}`;
   }
 
-  if (quality) {
-    return `${pickQualityAlias(quality, customerProfile, targetGenre)}${targetName}`;
+  if (quality || principle) {
+    return `${scene}。${targetPhrase}`;
   }
 
-  return principleTarget;
+  if (itemType) {
+    return `${scene}。${targetName}`;
+  }
+
+  return `${scene}。${targetName}`;
 }
 
 function getDisplayGenreName(genre) {
@@ -175,9 +210,58 @@ function selectDifficulty(context = {}) {
   return pickWeighted(DIFFICULTY_WEIGHTS[route]?.[bucket] || DIFFICULTY_WEIGHTS.normal.early) || 'easy';
 }
 
+function selectDecoyDifficulty(context = {}) {
+  const route = normalizeRouteMode(context.routeMode);
+  const bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+  return pickWeighted(DECOY_DIFFICULTY_WEIGHTS[route]?.[bucket] || DECOY_DIFFICULTY_WEIGHTS.normal.early) || 'loose';
+}
+
+function getItemTypeValue(item) {
+  return getItemConditionValue(item, 'itemType');
+}
+
+function getDecoySimilarityScore(candidate, correctItem) {
+  if (!candidate || !correctItem) return 0;
+  let score = 0;
+  if (candidate.genre === correctItem.genre) score += 4;
+  if (candidate.principle === correctItem.principle) score += 3;
+  if (candidate.rank === correctItem.rank) score += 2;
+  if (Math.abs((candidate.rank || 0) - (correctItem.rank || 0)) === 1) score += 1;
+  const candidateType = getItemTypeValue(candidate);
+  const correctType = getItemTypeValue(correctItem);
+  if (candidateType && candidateType === correctType) score += 5;
+  return score;
+}
+
+function pickDecoyItem(candidates, correctItem, decoyDifficulty = 'same_family') {
+  if (!Array.isArray(candidates) || candidates.length === 0) return null;
+
+  const scored = candidates
+    .map((item) => ({ item, score: getDecoySimilarityScore(item, correctItem) }))
+    .sort((a, b) => a.score - b.score);
+
+  if (decoyDifficulty === 'loose') {
+    const loosePool = scored.filter((entry) => entry.score <= 3);
+    return pickRandom((loosePool.length ? loosePool : scored.slice(0, Math.max(1, Math.ceil(scored.length / 3)))).map((entry) => entry.item));
+  }
+
+  if (decoyDifficulty === 'near_match') {
+    const bestScore = scored[scored.length - 1]?.score ?? 0;
+    const nearPool = scored.filter((entry) => entry.score >= bestScore);
+    return pickRandom(nearPool.map((entry) => entry.item));
+  }
+
+  const familyPool = scored.filter((entry) => entry.score >= 3);
+  if (familyPool.length) return pickRandom(familyPool.map((entry) => entry.item));
+
+  const upperStart = Math.max(0, Math.floor(scored.length * 0.5));
+  return pickRandom(scored.slice(upperStart).map((entry) => entry.item));
+}
+
 function createGeneratedTemplate(context = {}) {
   const customerProfile = pickRandom(CUSTOMER_PROFILES) || CUSTOMER_PROFILES[0];
   const difficulty = selectDifficulty(context);
+  const decoyDifficulty = selectDecoyDifficulty(context);
   const pattern = pickWeighted(CONDITION_PATTERN_WEIGHTS[difficulty] || CONDITION_PATTERN_WEIGHTS.easy) || CONDITION_PATTERN_WEIGHTS.easy[0];
   const seedItem = pickRandom(ITEM_MASTER);
   const conditions = getConditionValuesForPattern(pattern, seedItem);
@@ -188,6 +272,7 @@ function createGeneratedTemplate(context = {}) {
     customerType: customerProfile.id,
     customerProfile,
     difficultyLevel: difficulty,
+    decoyDifficulty,
     conditionPatternId: pattern.id,
     seedItemId: seedItem?.itemId || null,
     conditions,
@@ -195,7 +280,7 @@ function createGeneratedTemplate(context = {}) {
   };
 }
 
-function buildQuestionFromTemplate(template) {
+function buildQuestionFromTemplate(template, context = {}) {
   const correctCandidates = ITEM_MASTER.filter((item) => itemMatchesConditions(item, template.conditions));
   if (correctCandidates.length === 0) return null;
 
@@ -211,12 +296,18 @@ function buildQuestionFromTemplate(template) {
     return !itemMatchesConditions(item, template.conditions);
   });
   const fallbackWrongCandidates = ITEM_MASTER.filter((item) => item.itemId !== correctItem.itemId);
-  const wrongItem = pickRandom(wrongCandidates.length ? wrongCandidates : fallbackWrongCandidates);
+  const decoyDifficulty = template.decoyDifficulty || selectDecoyDifficulty(context);
+  const wrongItem = pickDecoyItem(wrongCandidates.length ? wrongCandidates : fallbackWrongCandidates, correctItem, decoyDifficulty);
   if (!wrongItem) return null;
+
+  const promptText = template.text || renderPrompt(
+    template.customerProfile || CUSTOMER_PROFILES[0],
+    buildRequestPhrase(template.conditions || [], template.customerProfile || CUSTOMER_PROFILES[0])
+  );
 
   return {
     questionId: `Q_${template.templateId}_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
-    promptText: template.text,
+    promptText,
     correctItemId: correctItem.itemId,
     wrongItemId: wrongItem.itemId,
     requiredQuality: qualityCondition,
@@ -227,6 +318,8 @@ function buildQuestionFromTemplate(template) {
     conditions: template.conditions,
     conditionPatternId: template.conditionPatternId || template.templateId,
     difficultyLevel: template.difficultyLevel || difficultyNameForCount(template.conditions.length),
+    decoyDifficulty,
+    decoySimilarityScore: getDecoySimilarityScore(wrongItem, correctItem),
     difficulty: (template.conditions || []).length
   };
 }
@@ -247,7 +340,7 @@ function generateQuestion(template = null, context = {}) {
   const effectiveTemplate = template && Array.isArray(template.conditions) && template.conditions.length
     ? template
     : createGeneratedTemplate(context);
-  return buildQuestionFromTemplate(effectiveTemplate);
+  return buildQuestionFromTemplate(effectiveTemplate, context);
 }
 
 module.exports = {
@@ -255,5 +348,6 @@ module.exports = {
   createGeneratedTemplate,
   itemMatchesConditions,
   getItemConditionValue,
-  selectDifficulty
+  selectDifficulty,
+  selectDecoyDifficulty
 };

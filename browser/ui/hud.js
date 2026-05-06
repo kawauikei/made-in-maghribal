@@ -2,6 +2,14 @@
  * HUD / Stats display component for MadeInMaghribal.
  */
 
+function formatScoreMetric(label, value, key, previousScores) {
+  const prev = previousScores ? Number(previousScores[key]) : Number(value);
+  const current = Number(value) || 0;
+  const delta = current - (Number.isFinite(prev) ? prev : current);
+  const badge = delta > 0 ? `<span class="score-delta">+${delta}</span>` : '';
+  return `<span class="score-metric" data-score-key="${key}"><span class="score-label">${label}</span><strong>${current}</strong>${badge}</span>`;
+}
+
 function updateHud(controller) {
   const hud = controller.container.querySelector('[data-hud]');
   if (!hud) return;
@@ -21,7 +29,20 @@ function updateHud(controller) {
 
   const scoreStrip = controller.container.querySelector('[data-score-strip]');
   if (scoreStrip) {
-    scoreStrip.textContent = `売上: ${s.revenue} / 満足: ${s.satisfaction} / 評判: ${s.reputation}`;
+    const previousScores = controller.uiState?.previousScoresForHud || null;
+    scoreStrip.innerHTML = [
+      formatScoreMetric('売上', s.revenue, 'revenue', previousScores),
+      formatScoreMetric('満足', s.satisfaction, 'satisfaction', previousScores),
+      formatScoreMetric('評判', s.reputation, 'reputation', previousScores)
+    ].join('');
+  }
+
+  if (controller.uiState) {
+    controller.uiState.previousScoresForHud = {
+      revenue: s.revenue,
+      satisfaction: s.satisfaction,
+      reputation: s.reputation
+    };
   }
 }
 

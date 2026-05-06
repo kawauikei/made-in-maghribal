@@ -183,6 +183,46 @@ const REQUEST_GENRE_NAMES = {
   WRK: ['工房道具', '調合道具']
 };
 
+const REQUEST_SCENES = {
+  ADN: ['贈り物にしたいんだ', '晴れの席に持っていきたい', '人前に出る用がある'],
+  ARM: ['道中が少し物騒でな', '護衛の支度を整えている', '身を守る備えをしておきたい'],
+  CLT: ['外出の支度を整えている', '人に会う予定がある', '砂風の強い日に着ていくものを探している'],
+  DAY: ['家の用事で使いたい', '毎日の暮らしで役立つものを探している', '店先で長く使えるものが欲しい'],
+  FOD: ['砂漠越えに持たせたい', '長旅の荷に入れたい', '腹を空かせた連れがいる'],
+  MED: ['具合の悪い者に持たせたい', '旅先で使える備えが欲しい', '工房で使う薬の支度をしている'],
+  RIT: ['祈りの場に持っていきたい', '祭壇に供える品を探している', '小さな儀礼に使うものがいる'],
+  TRD: ['帳場で使えるものを探している', '取引先に見せても恥ずかしくないものが欲しい', '商いの支度をしている'],
+  TRV: ['旅支度を整えている', '隊商に加わる予定がある', '砂道で使えるものを探している'],
+  WRK: ['工房の手元に置きたい', '調合の支度をしている', '細かな作業に使えるものが欲しい']
+};
+
+const PRINCIPLE_REQUEST_HINTS = {
+  AS: ['夜道で頼りになる', '星明かりに縁がある', '方角を見失わずに済みそうな'],
+  EL: ['薬草の香りがする', '癒やしに使えそうな', '清らかな気配のある'],
+  LI: ['体を持ち直せそうな', '活力を感じる', '病み上がりにも渡しやすい'],
+  ME: ['細工の確かな', '金具や仕立てが頼もしい', '長く使っても崩れにくい'],
+  SA: ['砂風に強そうな', '乾いた土地で扱いやすい', '砂漠の旅に向いた']
+};
+
+const QUALITY_REQUEST_HINTS = {
+  normal: ['手頃で扱いやすい', '普段使いしやすい', '肩肘張らずに使える'],
+  success: ['上等な', '目利きに見せても恥ずかしくない', '丁寧に仕上げた'],
+  great_success: ['とびきり見事な', '晴れの席に出せる', '王宮に納めても恥ずかしくない']
+};
+
+const DECOY_DIFFICULTY_WEIGHTS = {
+  normal: {
+    early: { loose: 58, same_family: 34, near_match: 8 },
+    middle: { loose: 28, same_family: 52, near_match: 20 },
+    late: { loose: 14, same_family: 46, near_match: 40 }
+  },
+  long_history: {
+    early: { loose: 42, same_family: 44, near_match: 14 },
+    middle: { loose: 18, same_family: 50, near_match: 32 },
+    late: { loose: 8, same_family: 40, near_match: 52 }
+  }
+};
+
 const PRINCIPLE_PHRASE_SUFFIX = 'の術理を帯びた';
 
 // Item type / genre / principle names must come from ITEM_DISPLAY_NAMES.
@@ -252,6 +292,10 @@ module.exports = {
   SOCIAL_QUALITY_ALIASES,
   SOCIAL_QUALITY_LEADS,
   REQUEST_GENRE_NAMES,
+  REQUEST_SCENES,
+  PRINCIPLE_REQUEST_HINTS,
+  QUALITY_REQUEST_HINTS,
+  DECOY_DIFFICULTY_WEIGHTS,
   PRINCIPLE_PHRASE_SUFFIX,
   SPEECH_PATTERNS
 };

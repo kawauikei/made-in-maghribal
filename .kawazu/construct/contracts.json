@@ -50,7 +50,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C002_CHARACTER_AND_TONE_DATA/20260505T210931+0900.json",
       "last_verified_at": "2026-05-05T21:09:31.640442+09:00",
-      "updated_at": "2026-05-06T20:53:09.427284+09:00"
+      "updated_at": "2026-05-07T00:43:39.429846+09:00"
     },
     {
       "id": "C004_ITEM_MASTER_AND_TEXT",
@@ -78,7 +78,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C004_ITEM_MASTER_AND_TEXT/20260505T210931+0900.json",
       "last_verified_at": "2026-05-05T21:09:31.865161+09:00",
-      "updated_at": "2026-05-06T20:53:10.101820+09:00"
+      "updated_at": "2026-05-07T00:43:39.730367+09:00"
     },
     {
       "id": "C003_ASSET_MANIFEST",
@@ -132,7 +132,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C005_AUDIO_MANIFEST/20260506T205313+0900.json",
       "last_verified_at": "2026-05-06T20:53:13.786432+09:00",
-      "updated_at": "2026-05-06T20:53:17.020191+09:00"
+      "updated_at": "2026-05-07T00:43:40.013312+09:00"
     },
     {
       "id": "C006_SCENARIO_AND_TALK_SCHEMA",
@@ -163,7 +163,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C006_SCENARIO_AND_TALK_SCHEMA/20260505T210932+0900.json",
       "last_verified_at": "2026-05-05T21:09:32.076876+09:00",
-      "updated_at": "2026-05-06T20:53:10.741628+09:00"
+      "updated_at": "2026-05-07T00:43:40.307680+09:00"
     },
     {
       "id": "C007_QUIZ_REQUEST_MODEL",
@@ -192,7 +192,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C007_QUIZ_REQUEST_MODEL/20260505T210932+0900.json",
       "last_verified_at": "2026-05-05T21:09:32.190108+09:00",
-      "updated_at": "2026-05-06T20:53:03.232579+09:00"
+      "updated_at": "2026-05-07T00:43:40.613625+09:00"
     },
     {
       "id": "C008_RHYTHM_QUIZ_CORE",
@@ -220,7 +220,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C008_RHYTHM_QUIZ_CORE/20260505T210932+0900.json",
       "last_verified_at": "2026-05-05T21:09:32.287247+09:00",
-      "updated_at": "2026-05-06T20:53:06.374674+09:00"
+      "updated_at": "2026-05-07T00:43:40.671459+09:00"
     },
     {
       "id": "C009_SCORE_AFFECTION_ENDING",
@@ -281,7 +281,7 @@
       "used_by": [],
       "last_verified_run": ".kawazu/construct/runs/C010_GAME_SESSION_FLOW/20260505T210932+0900.json",
       "last_verified_at": "2026-05-05T21:09:32.484154+09:00",
-      "updated_at": "2026-05-06T20:53:10.784976+09:00"
+      "updated_at": "2026-05-07T00:43:40.729679+09:00"
     },
     {
       "id": "C011_RENDER_MODEL",

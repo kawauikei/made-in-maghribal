@@ -33,6 +33,103 @@ function getRhythmActiveRange(noteMap) {
   return { startMs: 0, endMs: fallbackEnd, durationMs: fallbackEnd };
 }
 
+const RHYTHM_SILENCE_GRACE_THRESHOLD_MS = 2000;
+const RHYTHM_SILENCE_GRACE_STEP_MS = 1500;
+const RHYTHM_SILENCE_GRACE_MAX_MS = 3000;
+
+function getActiveNoteTimes(noteMap) {
+  const sourceNotes = noteMap && Array.isArray(noteMap.notes) ? noteMap.notes : [];
+  if (!sourceNotes.length) return [];
+
+  const range = getRhythmActiveRange(noteMap);
+  const times = [];
+  for (const note of sourceNotes) {
+    const timeMs = Number(note.timeMs);
+    if (!Number.isFinite(timeMs)) continue;
+    if (range.durationMs && (timeMs < range.startMs || timeMs > range.endMs)) continue;
+    times.push(Math.round(timeMs));
+  }
+
+  return [...new Set(times)].sort((a, b) => a - b);
+}
+
+function calculateSilenceGraceFromElapsedMs(noNoteElapsedMs) {
+  const elapsed = Number(noNoteElapsedMs);
+  if (!Number.isFinite(elapsed) || elapsed < RHYTHM_SILENCE_GRACE_THRESHOLD_MS) return 0;
+  const steps = Math.floor(elapsed / RHYTHM_SILENCE_GRACE_THRESHOLD_MS);
+  return Math.min(RHYTHM_SILENCE_GRACE_MAX_MS, steps * RHYTHM_SILENCE_GRACE_STEP_MS);
+}
+
+function getRhythmSilenceGraceDebug(noteMap, audioTimeMs) {
+  const noteTimes = getActiveNoteTimes(noteMap);
+  const empty = {
+    speedGraceMs: 0,
+    audioTimeMs: Number.isFinite(audioTimeMs) ? Math.round(audioTimeMs) : null,
+    audioLoopMs: null,
+    prevNoteMs: null,
+    nextNoteMs: null,
+    nearestNoteMs: null,
+    gapElapsedMs: 0,
+    gapToNearestMs: 0,
+    graceBasisMs: 0,
+    reason: 'no-note-map'
+  };
+  if (!noteTimes.length || !Number.isFinite(audioTimeMs)) return empty;
+
+  const range = getRhythmActiveRange(noteMap);
+  if (!range.durationMs) return { ...empty, reason: 'no-active-range' };
+
+  const audioLoopMs = wrapLoopPositionMs(audioTimeMs, noteMap);
+  if (!Number.isFinite(audioLoopMs)) return empty;
+
+  let prevIndex = -1;
+  let nextIndex = -1;
+  for (let index = 0; index < noteTimes.length; index += 1) {
+    const timeMs = noteTimes[index];
+    if (timeMs <= audioLoopMs) prevIndex = index;
+    if (timeMs > audioLoopMs) {
+      nextIndex = index;
+      break;
+    }
+  }
+
+  const prevNoteMs = prevIndex >= 0 ? noteTimes[prevIndex] : range.startMs;
+  const nextNoteMs = nextIndex >= 0 ? noteTimes[nextIndex] : noteTimes[0] + range.durationMs;
+  const prevDistanceMs = Math.abs(audioLoopMs - prevNoteMs);
+  const nextDistanceMs = Math.abs(nextNoteMs - audioLoopMs);
+  const nearestIndex = prevDistanceMs <= nextDistanceMs ? prevIndex : nextIndex;
+  const nearestNoteMs = nearestIndex >= 0 ? noteTimes[nearestIndex] : nextNoteMs;
+  const noteBeforeNearestMs = nearestIndex > 0 ? noteTimes[nearestIndex - 1] : range.startMs;
+
+  const elapsedFromPrevMs = Math.max(0, audioLoopMs - prevNoteMs);
+  const nearestDistanceMs = Math.min(prevDistanceMs, nextDistanceMs);
+  const gapToNearestMs = Math.max(0, nearestNoteMs - noteBeforeNearestMs);
+
+  // 長い無音後の第一ノーツで押した場合、従来の「直前ノーツから現在まで」は0ms近くに戻る。
+  // そのため、現在までの経過に加え、最寄りノーツの直前無音幅も速度猶予候補に入れる。
+  // ただし遠い未来のノーツで早押し補正が暴れないよう、最寄りノーツ±250ms以内だけ採用する。
+  const nearNoteGapMs = nearestDistanceMs <= 250 ? gapToNearestMs : 0;
+  const graceBasisMs = Math.max(elapsedFromPrevMs, nearNoteGapMs);
+  const speedGraceMs = calculateSilenceGraceFromElapsedMs(graceBasisMs);
+
+  return {
+    speedGraceMs,
+    audioTimeMs: Math.round(audioTimeMs),
+    audioLoopMs: Math.round(audioLoopMs),
+    prevNoteMs: Math.round(prevNoteMs),
+    nextNoteMs: Math.round(nextNoteMs),
+    nearestNoteMs: Math.round(nearestNoteMs),
+    gapElapsedMs: Math.round(elapsedFromPrevMs),
+    gapToNearestMs: Math.round(gapToNearestMs),
+    graceBasisMs: Math.round(graceBasisMs),
+    reason: speedGraceMs > 0 ? 'silence-grace' : 'no-grace'
+  };
+}
+
+function getRhythmSilenceGraceMs(noteMap, audioTimeMs) {
+  return getRhythmSilenceGraceDebug(noteMap, audioTimeMs).speedGraceMs;
+}
+
 function wrapLoopPositionMs(audioTimeMs, noteMap) {
   if (!Number.isFinite(audioTimeMs)) return null;
   const range = getRhythmActiveRange(noteMap);
@@ -116,5 +213,9 @@ module.exports = {
   getLoopDiffMs,
   buildLoopedVisibleNotes,
   findNearestRhythmNoteDiffMs,
-  findNearestRhythmNoteMs
+  findNearestRhythmNoteMs,
+  getActiveNoteTimes,
+  calculateSilenceGraceFromElapsedMs,
+  getRhythmSilenceGraceMs,
+  getRhythmSilenceGraceDebug
 };

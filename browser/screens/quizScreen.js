@@ -4,6 +4,7 @@
 
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
 
 const RHYTHM_VISUAL_BEAT_MS = 600;
@@ -142,6 +143,70 @@ function getChoiceMeta(choice = {}) {
   return ITEM_DISPLAY_NAMES[choice.id] || {};
 }
 
+
+function collectBgmTracks() {
+  const tracks = [];
+  const pushTrack = (track, categoryPath) => {
+    if (!track || !track.path) return;
+    tracks.push({
+      path: track.path,
+      title: track.title || track.id || track.path,
+      categoryPath
+    });
+  };
+
+  (AUDIO_MANIFEST?.bgm?.system || []).forEach((track, index) => {
+    pushTrack(track, `bgm.system.${index}`);
+  });
+
+  const heroines = AUDIO_MANIFEST?.bgm?.heroines || {};
+  Object.entries(heroines).forEach(([heroineId, group]) => {
+    pushTrack(group?.theme, `bgm.heroines.${heroineId}.theme`);
+    (group?.game || []).forEach((track, index) => {
+      pushTrack(track, `bgm.heroines.${heroineId}.game.${index + 1}`);
+    });
+    Object.entries(group?.ending || {}).forEach(([endingKey, track]) => {
+      pushTrack(track, `bgm.heroines.${heroineId}.ending.${endingKey}`);
+    });
+  });
+
+  (AUDIO_MANIFEST?.bgm?.extra || []).forEach((track, index) => {
+    const mood = track?.mood || 'extra';
+    pushTrack(track, `bgm.extra.${mood}.${index + 1}`);
+  });
+
+  return tracks;
+}
+
+const BGM_TRACKS = collectBgmTracks();
+
+function getCurrentBgmInfo(controller) {
+  const bgmState = controller?.getBgmState ? controller.getBgmState() : null;
+  const currentPath = bgmState?.currentPath || bgmState?.pendingPath || '';
+  const track = BGM_TRACKS.find((entry) => entry.path === currentPath);
+  if (!currentPath) {
+    return { categoryPath: 'bgm.none', title: '未再生' };
+  }
+  return {
+    categoryPath: track?.categoryPath || 'bgm.unknown',
+    title: track?.title || currentPath
+  };
+}
+
+function updateQuizTrackInfo(controller) {
+  const trackEl = controller.container.querySelector('[data-quiz-track-info]');
+  if (!trackEl) return;
+  const bgmInfo = getCurrentBgmInfo(controller);
+  trackEl.innerHTML = `
+    <span class="quiz-track-category">♪ ${bgmInfo.categoryPath}</span>
+    <strong class="quiz-track-title">${bgmInfo.title}</strong>
+  `;
+}
+
+function getCustomerAppearanceLabel(q) {
+  return q?.customerProfile?.label || q?.customerTypeLabel || '旅の客';
+}
+
 function getScoreExpression(controller) {
   const scores = controller?.session?.scores || {};
   const total = (scores.revenue || 0) + (scores.satisfaction || 0) + (scores.reputation || 0);
@@ -159,15 +224,11 @@ function renderQuiz(controller, view) {
       <section class="quiz-order-card">
         <div class="quiz-order-head">
           <span class="quiz-person-icon" aria-hidden="true"><span></span></span>
-          <span class="quiz-order-label">問題文</span>
+          <span class="quiz-order-label" data-quiz-customer-label>旅の客</span>
         </div>
         <div class="quiz-order-body">
           <div class="quiz-order-text" data-quiz-prompt></div>
           <div class="quiz-request-chip" data-quiz-quality-request></div>
-        </div>
-        <div class="quiz-order-footer">
-          <div class="quiz-progress" data-quiz-progress></div>
-          <div class="score-strip" data-score-strip></div>
         </div>
       </section>
 
@@ -212,6 +273,12 @@ function renderQuiz(controller, view) {
           </div>
         </div>
       </section>
+
+      <section class="quiz-status-panel" aria-label="接客状況">
+        <div class="quiz-progress" data-quiz-progress></div>
+        <div class="score-strip" data-score-strip></div>
+        <div class="quiz-track-info" data-quiz-track-info></div>
+      </section>
     </div>
   `;
   updateQuizContent(controller);
@@ -233,17 +300,21 @@ function updateQuizContent(controller) {
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const qualityRequestEl = controller.container.querySelector('[data-quiz-quality-request]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
+  const customerLabelEl = controller.container.querySelector('[data-quiz-customer-label]');
   
   if (!q) {
     if (promptEl) promptEl.textContent = '接客の準備中です。';
+    if (customerLabelEl) customerLabelEl.textContent = '旅の客';
     if (qualityRequestEl) qualityRequestEl.textContent = '';
     if (progressEl) progressEl.textContent = `0 / ${controller.quizState.totalQuestions}`;
     updateFaceExpressions(controller);
     controller.updateHud();
+    updateQuizTrackInfo(controller);
     return;
   }
 
   if (promptEl) promptEl.textContent = q.promptText;
+  if (customerLabelEl) customerLabelEl.textContent = getCustomerAppearanceLabel(q);
   const personIconEl = controller.container.querySelector('.quiz-person-icon');
   if (personIconEl) {
     personIconEl.setAttribute('data-customer-tone', q.customerIconTone || q.customerProfile?.iconTone || 'amber');
@@ -293,8 +364,9 @@ function updateQuizContent(controller) {
     }
   });
 
-  // Ensure HUD (and thus the score strip) is updated with current session scores
+  // Ensure HUD (and thus the detached score strip) is updated with current session scores.
   controller.updateHud();
+  updateQuizTrackInfo(controller);
   startRhythmVisual(controller);
 }
 
