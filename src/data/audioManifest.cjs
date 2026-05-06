@@ -60,16 +60,16 @@ const AUDIO_MANIFEST = {
   },
   se: {
     quiz: [
-      { id: 'SE_QUIZ_CORRECT', path: 'audio/se/quiz_correct_star_chime_01.mp3' },
-      { id: 'SE_QUIZ_WRONG', path: 'audio/se/quiz_wrong_sand_tap_01.mp3' },
-      { id: 'SE_QUIZ_TICK', path: 'audio/se/quiz_choice_pick_01.mp3' }
+      { id: 'SE_QUIZ_CHOICE_PICK', key: 'quizChoicePick', path: 'audio/se/quiz_choice_pick_01_3.mp3', volume: 0.36, start: 0, end: 1.0 },
+      { id: 'SE_QUIZ_CORRECT', key: 'quizCorrectStarChime', path: 'audio/se/quiz_correct_star_chime_01.mp3', volume: 0.46, start: 0, end: null },
+      { id: 'SE_QUIZ_WRONG', key: 'quizWrongSandTap', path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3', volume: 0.42, start: 0, end: null }
     ],
     ui: [
-      { id: 'SE_UI_DECIDE', path: 'audio/se/ui_confirm_chime_01.mp3' },
-      { id: 'SE_UI_TAP', path: 'audio/se/ui_tap_bottle_01.mp3' }
+      { id: 'SE_UI_TAP', key: 'uiTapBottle', path: 'audio/se/ui_tap_bottle_01_3.mp3', volume: 0.50, start: 0, end: null },
+      { id: 'SE_UI_DECIDE', key: 'uiConfirmChime', path: 'audio/se/ui_confirm_chime_01_3.mp3', volume: 0.42, start: 0, end: null }
     ],
     day_end: [
-      { id: 'SE_DAY_END_REST', path: 'audio/se/workshop_day_end_01.mp3' }
+      { id: 'SE_DAY_END_REST', key: 'workshopDayEnd', path: 'audio/se/workshop_day_end_01_2.mp3', volume: 0.40, start: 0, end: null }
     ]
   }
 };

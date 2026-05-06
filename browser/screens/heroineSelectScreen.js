@@ -85,6 +85,7 @@ function renderHeroineSelect(controller, view) {
     button.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
+      if (controller.playSfx) controller.playSfx('uiTapBottle');
 
       const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
       iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));

@@ -25,6 +25,7 @@ const { showResultStamp } = require('./ui/resultStamp.js');
 const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
+const { createSfxEngine } = require('./utils/sfxEngine.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -47,6 +48,7 @@ class GameController {
   constructor() {
     this.session = new GameSession();
     this.container = document.getElementById('app');
+    this.sfx = createSfxEngine();
     
     this.settings = this.loadSettings();
     this.uiState = {
@@ -317,6 +319,7 @@ class GameController {
   getTurnRank(dR, dS, dRep) { return getTurnRank(dR, dS, dRep); }
   getCharacterStandingPath(id, expression) { return getCharacterStandingPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
+  playSfx(id) { if (this.sfx) this.sfx.play(id); }
 
   /**
    * --------------------------------------------------------------------------
@@ -338,6 +341,7 @@ class GameController {
     });
 
     document.addEventListener('click', (e) => {
+      if (this.sfx) this.sfx.unlock();
       const target = e.target;
       if (this.quizState.inputLocked) return;
 
@@ -345,12 +349,14 @@ class GameController {
 
       if (target.closest('[data-action="title-start"]')) {
         e.stopPropagation();
+        this.playSfx('uiConfirmChime');
         this.onGlobalAction();
         return;
       }
       const titleStub = target.closest('[data-title-stub]');
       if (titleStub) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         const messageEl = this.container.querySelector('[data-title-stub-message]');
         if (messageEl) {
           messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
@@ -359,27 +365,32 @@ class GameController {
       }
       if (target.closest('[data-action="open-options"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.openModal('options');
         return;
       }
       if (target.closest('[data-action="open-help"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.openModal('help');
         return;
       }
       if (target.closest('[data-action="close-modal"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.closeModal();
         return;
       }
       if (target.closest('[data-action="toggle-fullscreen"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.toggleFullscreen();
         return;
       }
       const speedBtn = target.closest('[data-action="set-text-speed"]');
       if (speedBtn) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.setTextSpeed(speedBtn.getAttribute('data-speed'));
         return;
       }
@@ -387,6 +398,7 @@ class GameController {
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.onGlobalAction();
         return;
       }
@@ -408,6 +420,7 @@ class GameController {
       if (target.tagName === 'BUTTON' || target.closest('button')) {
         e.stopPropagation();
         if (target.classList.contains('btn-next')) {
+          this.playSfx('uiTapBottle');
           this.onGlobalAction();
         }
         return;
@@ -416,6 +429,7 @@ class GameController {
       // Prevent modal backdrop from closing or interfering with text advancement
       if (this.uiState.modal) {
         if (!target.closest('.ui-modal')) {
+          this.playSfx('uiTapBottle');
           this.closeModal();
         }
         return;
@@ -424,6 +438,7 @@ class GameController {
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       
+      this.playSfx('uiTapBottle');
       this.onGlobalAction();
     });
   }
@@ -431,6 +446,7 @@ class GameController {
   selectHeroine(id) {
     if (this.quizState.inputLocked) return;
     this.clearTypewriter();
+    this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
     this.session.selectHeroine(id, 'normal');
     this.session.nextPhase();
@@ -514,6 +530,7 @@ class GameController {
   answerQuiz(itemId) {
     if (this.quizState.inputLocked) return;
     this.quizState.inputLocked = true;
+    this.playSfx('quizChoicePick');
 
     const now = performance.now();
     const result = processQuestionResult({
@@ -529,6 +546,7 @@ class GameController {
     this.quizState.questionIndex++;
 
     this.showResultStamp(result);
+    this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
 
     if (this.quizState.questionIndex < this.quizState.totalQuestions) {
       setTimeout(() => {
@@ -538,6 +556,7 @@ class GameController {
     } else {
       setTimeout(() => {
         this.session.nextSubPhase();
+        this.playSfx('workshopDayEnd');
         this.quizState.inputLocked = false;
         this.update();
       }, RESULT_TRANSITION_DELAY_MS);
