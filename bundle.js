@@ -472,6 +472,10 @@ const {
   SOCIAL_QUALITY_ALIASES,
   SOCIAL_QUALITY_LEADS,
   REQUEST_GENRE_NAMES,
+  REQUEST_SCENES,
+  PRINCIPLE_REQUEST_HINTS,
+  QUALITY_REQUEST_HINTS,
+  DECOY_DIFFICULTY_WEIGHTS,
   PRINCIPLE_PHRASE_SUFFIX,
   SPEECH_PATTERNS
 } = require('../data/quizRequestTemplates.cjs');
@@ -573,6 +577,29 @@ function pickQualityLead(quality, customerProfile = null, targetGenre = null) {
     || 'よい品を探しています';
 }
 
+function pickRequestScene(genre) {
+  return pickRandom(REQUEST_SCENES?.[genre]) || '少し用があって品を探している';
+}
+
+function pickPrincipleHint(principle) {
+  return pickRandom(PRINCIPLE_REQUEST_HINTS?.[principle]) || getDisplayPrincipleName(principle);
+}
+
+function pickQualityHint(quality, customerProfile = null, targetGenre = null) {
+  const social = customerProfile?.social;
+  const useSocial = isSocialTargetAllowed(customerProfile, targetGenre);
+  return (useSocial ? pickRandom(SOCIAL_QUALITY_ALIASES?.[social]?.[quality]) : null)
+    || pickRandom(QUALITY_REQUEST_HINTS?.[quality])
+    || pickQualityAlias(quality, customerProfile, targetGenre);
+}
+
+function joinTargetModifiers(modifiers, targetName) {
+  const safeModifiers = modifiers.filter(Boolean);
+  if (safeModifiers.length === 0) return targetName;
+  if (safeModifiers.length === 1) return `${safeModifiers[0]}${targetName}`;
+  return `${safeModifiers[0]}、${safeModifiers[1]}${targetName}`;
+}
+
 function buildRequestPhrase(conditions, customerProfile = null) {
   const quality = conditions.find((condition) => condition.type === 'quality')?.value;
   const principle = conditions.find((condition) => condition.type === 'principle')?.value;
@@ -581,19 +608,27 @@ function buildRequestPhrase(conditions, customerProfile = null) {
 
   const targetGenre = genre || getGenreFromItemType(itemType);
   const targetName = itemType ? getDisplayItemTypeName(itemType) : getRequestGenreName(genre);
-  const principleTarget = principle
-    ? `${getDisplayPrincipleName(principle)}${PRINCIPLE_PHRASE_SUFFIX}${targetName}`
-    : targetName;
+  const scene = pickRequestScene(targetGenre);
+  const modifiers = [];
+
+  if (principle) modifiers.push(pickPrincipleHint(principle));
+  if (quality) modifiers.push(pickQualityHint(quality, customerProfile, targetGenre));
+
+  const targetPhrase = joinTargetModifiers(modifiers, targetName);
 
   if (quality && principle) {
-    return `${pickQualityLead(quality, customerProfile, targetGenre)}。${principleTarget}`;
+    return `${scene}。${targetPhrase}`;
   }
 
-  if (quality) {
-    return `${pickQualityAlias(quality, customerProfile, targetGenre)}${targetName}`;
+  if (quality || principle) {
+    return `${scene}。${targetPhrase}`;
   }
 
-  return principleTarget;
+  if (itemType) {
+    return `${scene}。${targetName}`;
+  }
+
+  return `${scene}。${targetName}`;
 }
 
 function getDisplayGenreName(genre) {
@@ -634,9 +669,58 @@ function selectDifficulty(context = {}) {
   return pickWeighted(DIFFICULTY_WEIGHTS[route]?.[bucket] || DIFFICULTY_WEIGHTS.normal.early) || 'easy';
 }
 
+function selectDecoyDifficulty(context = {}) {
+  const route = normalizeRouteMode(context.routeMode);
+  const bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+  return pickWeighted(DECOY_DIFFICULTY_WEIGHTS[route]?.[bucket] || DECOY_DIFFICULTY_WEIGHTS.normal.early) || 'loose';
+}
+
+function getItemTypeValue(item) {
+  return getItemConditionValue(item, 'itemType');
+}
+
+function getDecoySimilarityScore(candidate, correctItem) {
+  if (!candidate || !correctItem) return 0;
+  let score = 0;
+  if (candidate.genre === correctItem.genre) score += 4;
+  if (candidate.principle === correctItem.principle) score += 3;
+  if (candidate.rank === correctItem.rank) score += 2;
+  if (Math.abs((candidate.rank || 0) - (correctItem.rank || 0)) === 1) score += 1;
+  const candidateType = getItemTypeValue(candidate);
+  const correctType = getItemTypeValue(correctItem);
+  if (candidateType && candidateType === correctType) score += 5;
+  return score;
+}
+
+function pickDecoyItem(candidates, correctItem, decoyDifficulty = 'same_family') {
+  if (!Array.isArray(candidates) || candidates.length === 0) return null;
+
+  const scored = candidates
+    .map((item) => ({ item, score: getDecoySimilarityScore(item, correctItem) }))
+    .sort((a, b) => a.score - b.score);
+
+  if (decoyDifficulty === 'loose') {
+    const loosePool = scored.filter((entry) => entry.score <= 3);
+    return pickRandom((loosePool.length ? loosePool : scored.slice(0, Math.max(1, Math.ceil(scored.length / 3)))).map((entry) => entry.item));
+  }
+
+  if (decoyDifficulty === 'near_match') {
+    const bestScore = scored[scored.length - 1]?.score ?? 0;
+    const nearPool = scored.filter((entry) => entry.score >= bestScore);
+    return pickRandom(nearPool.map((entry) => entry.item));
+  }
+
+  const familyPool = scored.filter((entry) => entry.score >= 3);
+  if (familyPool.length) return pickRandom(familyPool.map((entry) => entry.item));
+
+  const upperStart = Math.max(0, Math.floor(scored.length * 0.5));
+  return pickRandom(scored.slice(upperStart).map((entry) => entry.item));
+}
+
 function createGeneratedTemplate(context = {}) {
   const customerProfile = pickRandom(CUSTOMER_PROFILES) || CUSTOMER_PROFILES[0];
   const difficulty = selectDifficulty(context);
+  const decoyDifficulty = selectDecoyDifficulty(context);
   const pattern = pickWeighted(CONDITION_PATTERN_WEIGHTS[difficulty] || CONDITION_PATTERN_WEIGHTS.easy) || CONDITION_PATTERN_WEIGHTS.easy[0];
   const seedItem = pickRandom(ITEM_MASTER);
   const conditions = getConditionValuesForPattern(pattern, seedItem);
@@ -647,6 +731,7 @@ function createGeneratedTemplate(context = {}) {
     customerType: customerProfile.id,
     customerProfile,
     difficultyLevel: difficulty,
+    decoyDifficulty,
     conditionPatternId: pattern.id,
     seedItemId: seedItem?.itemId || null,
     conditions,
@@ -654,7 +739,7 @@ function createGeneratedTemplate(context = {}) {
   };
 }
 
-function buildQuestionFromTemplate(template) {
+function buildQuestionFromTemplate(template, context = {}) {
   const correctCandidates = ITEM_MASTER.filter((item) => itemMatchesConditions(item, template.conditions));
   if (correctCandidates.length === 0) return null;
 
@@ -670,12 +755,18 @@ function buildQuestionFromTemplate(template) {
     return !itemMatchesConditions(item, template.conditions);
   });
   const fallbackWrongCandidates = ITEM_MASTER.filter((item) => item.itemId !== correctItem.itemId);
-  const wrongItem = pickRandom(wrongCandidates.length ? wrongCandidates : fallbackWrongCandidates);
+  const decoyDifficulty = template.decoyDifficulty || selectDecoyDifficulty(context);
+  const wrongItem = pickDecoyItem(wrongCandidates.length ? wrongCandidates : fallbackWrongCandidates, correctItem, decoyDifficulty);
   if (!wrongItem) return null;
+
+  const promptText = template.text || renderPrompt(
+    template.customerProfile || CUSTOMER_PROFILES[0],
+    buildRequestPhrase(template.conditions || [], template.customerProfile || CUSTOMER_PROFILES[0])
+  );
 
   return {
     questionId: `Q_${template.templateId}_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
-    promptText: template.text,
+    promptText,
     correctItemId: correctItem.itemId,
     wrongItemId: wrongItem.itemId,
     requiredQuality: qualityCondition,
@@ -686,6 +777,8 @@ function buildQuestionFromTemplate(template) {
     conditions: template.conditions,
     conditionPatternId: template.conditionPatternId || template.templateId,
     difficultyLevel: template.difficultyLevel || difficultyNameForCount(template.conditions.length),
+    decoyDifficulty,
+    decoySimilarityScore: getDecoySimilarityScore(wrongItem, correctItem),
     difficulty: (template.conditions || []).length
   };
 }
@@ -706,7 +799,7 @@ function generateQuestion(template = null, context = {}) {
   const effectiveTemplate = template && Array.isArray(template.conditions) && template.conditions.length
     ? template
     : createGeneratedTemplate(context);
-  return buildQuestionFromTemplate(effectiveTemplate);
+  return buildQuestionFromTemplate(effectiveTemplate, context);
 }
 
 module.exports = {
@@ -714,7 +807,8 @@ module.exports = {
   createGeneratedTemplate,
   itemMatchesConditions,
   getItemConditionValue,
-  selectDifficulty
+  selectDifficulty,
+  selectDecoyDifficulty
 };
 
     };
@@ -833,13 +927,22 @@ module.exports = { getVnRenderModel, getRhythmRenderModel };
  */
 const { calculateJudgement } = require('./rhythmTiming.cjs');
 
+const SPEED_GRACE_MAX_MS = 3000;
+
+function normalizeSpeedGraceMs(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric <= 0) return 0;
+  return Math.min(SPEED_GRACE_MAX_MS, Math.round(numeric));
+}
+
 /**
  * Processes a single question result and returns performance metrics.
- * @param {object} state - Includes promptShownAt, answeredAt, selectedItemId, correctItemId, nearestBeatMs
+ * @param {object} state - Includes promptShownAt, answeredAt, selectedItemId, correctItemId, nearestBeatMs, speedGraceMs
  * @returns {object}
  */
 function processQuestionResult(state) {
   const { promptShownAt, answeredAt, selectedItemId, correctItemId, selectedChoiceKey, correctChoiceKey, nearestBeatMs } = state;
+  const speedGraceMs = normalizeSpeedGraceMs(state.speedGraceMs);
   
   // Acceptance: リズムが悪くても正解なら売上は入る（isCorrectを返す）
   const isCorrect = (selectedChoiceKey && correctChoiceKey)
@@ -851,10 +954,11 @@ function processQuestionResult(state) {
   
   // Acceptance: 回答速度は4秒未満 +2, 6秒未満 +1, 6秒以上 +0 の満足度ボーナスに変換
   const responseTime = answeredAt - promptShownAt;
+  const effectiveResponseTime = Math.max(0, responseTime - speedGraceMs);
   let speedBonus = 0;
-  if (responseTime < 4000) {
+  if (effectiveResponseTime < 4000) {
     speedBonus = 2;
-  } else if (responseTime < 6000) {
+  } else if (effectiveResponseTime < 6000) {
     speedBonus = 1;
   }
 
@@ -864,11 +968,13 @@ function processQuestionResult(state) {
     reputationBonus: timing.bonus, // 評判ボーナス
     satisfactionBonus: speedBonus, // 満足度ボーナス
     diffMs: timing.diffMs,         // ±ms差分（デバッグ用）
-    responseTime
+    responseTime,
+    effectiveResponseTime,
+    speedGraceMs
   };
 }
 
-module.exports = { processQuestionResult };
+module.exports = { processQuestionResult, normalizeSpeedGraceMs, SPEED_GRACE_MAX_MS };
 
     };
 
@@ -1148,7 +1254,7 @@ const AUDIO_MANIFEST = {
         game: [
           { id: 'BGM_GAME_HAKIMA_1', title: 'Copper and Cumin', path: 'audio/bgm/hakima/hakima02_game_a.mp3' },
           { id: 'BGM_GAME_HAKIMA_2', title: 'Copper and Sand', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
-          { id: 'BGM_GAME_HAKIMA_3', title: 'Saffron Hour', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
+          { id: 'BGM_GAME_HAKIMA_3', title: 'The Copper Still', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
           { id: 'BGM_GAME_HAKIMA_4', title: "The Alchemist's Pace", path: 'audio/bgm/hakima/hakima05_game_d.mp3' }
         ],
         ending: {
@@ -1849,7 +1955,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya02_game_a.mp3": {
     "id": "dariya02_game_a",
@@ -2519,7 +2625,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya03_game_b.mp3": {
     "id": "dariya03_game_b",
@@ -2924,7 +3030,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.156
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya04_game_c.mp3": {
     "id": "dariya04_game_c",
@@ -3364,7 +3470,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya05_game_d.mp3": {
     "id": "dariya05_game_d",
@@ -3869,7 +3975,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya06_ending.mp3": {
     "id": "dariya06_ending",
@@ -4344,7 +4450,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya07_ending2.mp3": {
     "id": "dariya07_ending2",
@@ -5109,7 +5215,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.173
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/dariya/dariya08_ending3.mp3": {
     "id": "dariya08_ending3",
@@ -5914,7 +6020,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.159
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/anger1.mp3": {
     "id": "anger1",
@@ -6294,7 +6400,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.217
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/anger2.mp3": {
     "id": "anger2",
@@ -6794,7 +6900,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/fun1.mp3": {
     "id": "fun1",
@@ -7244,7 +7350,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.343
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/fun2.mp3": {
     "id": "fun2",
@@ -7744,7 +7850,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/joy1.mp3": {
     "id": "joy1",
@@ -8249,7 +8355,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/joy2.mp3": {
     "id": "joy2",
@@ -8649,7 +8755,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/sorrow1.mp3": {
     "id": "sorrow1",
@@ -9154,7 +9260,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.329
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/sorrow2.mp3": {
     "id": "sorrow2",
@@ -9599,7 +9705,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/surprise1.mp3": {
     "id": "surprise1",
@@ -10104,7 +10210,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.524
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/extra/surprise2.mp3": {
     "id": "surprise2",
@@ -10504,7 +10610,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima01_theme.mp3": {
     "id": "hakima01_theme",
@@ -10789,7 +10895,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.439
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima02_game_a.mp3": {
     "id": "hakima02_game_a",
@@ -11109,7 +11215,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.144
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima03_game_b.mp3": {
     "id": "hakima03_game_b",
@@ -11479,487 +11585,282 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima04_game_c.mp3": {
     "id": "hakima04_game_c",
     "path": "audio/bgm/hakima/hakima04_game_c.mp3",
     "source": "public/audio/bgm/hakima/hakima04_game_c.mp3",
     "analyzer": "onset-energy-v2",
-    "durationMs": 48823,
-    "beatIntervalMs": 474,
+    "durationMs": 29257,
+    "beatIntervalMs": 500,
     "playbackTrim": {
       "enabled": true,
-      "startMs": 355,
-      "endMs": 48823,
-      "leadingMs": 355,
-      "trailingMs": 0,
-      "threshold": 0.018327
+      "startMs": 0,
+      "endMs": 28157,
+      "leadingMs": 0,
+      "trailingMs": 1100,
+      "threshold": 0.053948
     },
-    "noteCount": 92,
+    "noteCount": 51,
     "notes": [
       {
-        "timeMs": 2049,
+        "timeMs": 125,
         "lane": "center",
-        "strength": 0.989
+        "strength": 0.179
       },
       {
-        "timeMs": 2374,
+        "timeMs": 600,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.276
       },
       {
-        "timeMs": 2799,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 3074,
+        "timeMs": 875,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 3548,
+        "timeMs": 2099,
         "lane": "center",
-        "strength": 0.152
+        "strength": 0.861
       },
       {
-        "timeMs": 4048,
-        "lane": "center",
-        "strength": 0.912
-      },
-      {
-        "timeMs": 4548,
-        "lane": "center",
-        "strength": 0.507
-      },
-      {
-        "timeMs": 5073,
+        "timeMs": 2599,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 5423,
+        "timeMs": 2874,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 5797,
-        "lane": "center",
-        "strength": 0.412
-      },
-      {
-        "timeMs": 6447,
+        "timeMs": 4123,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 7072,
+        "timeMs": 4873,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.321
       },
       {
-        "timeMs": 7547,
-        "lane": "center",
-        "strength": 0.299
-      },
-      {
-        "timeMs": 8046,
-        "lane": "center",
-        "strength": 0.943
-      },
-      {
-        "timeMs": 8521,
+        "timeMs": 5622,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 8796,
-        "lane": "center",
-        "strength": 0.709
-      },
-      {
-        "timeMs": 9421,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 9696,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10045,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 10420,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 11045,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 11545,
-        "lane": "center",
-        "strength": 0.352
-      },
-      {
-        "timeMs": 12045,
-        "lane": "center",
-        "strength": 0.804
-      },
-      {
-        "timeMs": 12544,
-        "lane": "center",
-        "strength": 0.412
-      },
-      {
-        "timeMs": 12819,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 13169,
-        "lane": "center",
-        "strength": 0.411
-      },
-      {
-        "timeMs": 13544,
-        "lane": "center",
-        "strength": 0.614
-      },
-      {
-        "timeMs": 14044,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 14543,
-        "lane": "center",
-        "strength": 0.508
-      },
-      {
-        "timeMs": 14818,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 15293,
-        "lane": "center",
-        "strength": 0.265
-      },
-      {
-        "timeMs": 16043,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 16542,
-        "lane": "center",
-        "strength": 0.122
-      },
-      {
-        "timeMs": 16892,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17342,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17617,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 18042,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 18367,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 19041,
-        "lane": "center",
-        "strength": 0.254
-      },
-      {
-        "timeMs": 19541,
-        "lane": "center",
-        "strength": 0.555
-      },
-      {
-        "timeMs": 20291,
-        "lane": "center",
-        "strength": 0.222
-      },
-      {
-        "timeMs": 20791,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 21290,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 21665,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22040,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 22540,
-        "lane": "center",
-        "strength": 0.165
-      },
-      {
-        "timeMs": 22815,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 23289,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24039,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 24539,
-        "lane": "center",
-        "strength": 0.153
-      },
-      {
-        "timeMs": 25039,
-        "lane": "center",
-        "strength": 0.138
-      },
-      {
-        "timeMs": 25538,
-        "lane": "center",
-        "strength": 0.262
-      },
-      {
-        "timeMs": 26038,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 26538,
-        "lane": "center",
-        "strength": 0.202
-      },
-      {
-        "timeMs": 27538,
-        "lane": "center",
-        "strength": 0.615
-      },
-      {
-        "timeMs": 28212,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 28787,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 34060,
-        "lane": "center",
-        "strength": 0.492
-      },
-      {
-        "timeMs": 34384,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 34809,
-        "lane": "center",
-        "strength": 0.534
-      },
-      {
-        "timeMs": 35284,
-        "lane": "center",
-        "strength": 0.341
-      },
-      {
-        "timeMs": 35559,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 36059,
-        "lane": "center",
-        "strength": 0.158
-      },
-      {
-        "timeMs": 36533,
-        "lane": "center",
-        "strength": 0.497
-      },
-      {
-        "timeMs": 37058,
-        "lane": "center",
-        "strength": 0.252
-      },
-      {
-        "timeMs": 37533,
-        "lane": "center",
-        "strength": 0.912
-      },
-      {
-        "timeMs": 37808,
-        "lane": "center",
-        "strength": 0.195
-      },
-      {
-        "timeMs": 38233,
-        "lane": "center",
-        "strength": 0.157
-      },
-      {
-        "timeMs": 38558,
-        "lane": "center",
-        "strength": 0.175
-      },
-      {
-        "timeMs": 39057,
-        "lane": "center",
-        "strength": 0.147
-      },
-      {
-        "timeMs": 39557,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 40132,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 40532,
-        "lane": "center",
-        "strength": 0.236
-      },
-      {
-        "timeMs": 41056,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41406,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41806,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42531,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42831,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43280,
-        "lane": "center",
-        "strength": 0.373
-      },
-      {
-        "timeMs": 43555,
-        "lane": "center",
-        "strength": 0.569
-      },
-      {
-        "timeMs": 44055,
-        "lane": "center",
-        "strength": 0.464
-      },
-      {
-        "timeMs": 44530,
-        "lane": "center",
-        "strength": 0.256
-      },
-      {
-        "timeMs": 44805,
-        "lane": "center",
-        "strength": 0.322
-      },
-      {
-        "timeMs": 45180,
-        "lane": "center",
-        "strength": 0.327
-      },
-      {
-        "timeMs": 45479,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45804,
+        "timeMs": 6097,
         "lane": "center",
         "strength": 0.238
       },
       {
-        "timeMs": 46079,
-        "lane": "center",
-        "strength": 0.189
-      },
-      {
-        "timeMs": 46879,
-        "lane": "center",
-        "strength": 0.258
-      },
-      {
-        "timeMs": 47304,
-        "lane": "center",
-        "strength": 0.25
-      },
-      {
-        "timeMs": 47653,
+        "timeMs": 6472,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 48053,
+        "timeMs": 6847,
         "lane": "center",
-        "strength": 0.616
+        "strength": 0.291
       },
       {
-        "timeMs": 48428,
+        "timeMs": 8096,
+        "lane": "center",
+        "strength": 0.475
+      },
+      {
+        "timeMs": 8596,
+        "lane": "center",
+        "strength": 0.742
+      },
+      {
+        "timeMs": 9096,
+        "lane": "center",
+        "strength": 0.243
+      },
+      {
+        "timeMs": 9571,
+        "lane": "center",
+        "strength": 0.792
+      },
+      {
+        "timeMs": 9846,
+        "lane": "center",
+        "strength": 0.427
+      },
+      {
+        "timeMs": 10345,
         "lane": "center",
         "strength": 0.12
+      },
+      {
+        "timeMs": 10820,
+        "lane": "center",
+        "strength": 0.848
+      },
+      {
+        "timeMs": 11095,
+        "lane": "center",
+        "strength": 0.203
+      },
+      {
+        "timeMs": 11570,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 11870,
+        "lane": "center",
+        "strength": 0.155
+      },
+      {
+        "timeMs": 12319,
+        "lane": "center",
+        "strength": 0.277
+      },
+      {
+        "timeMs": 12819,
+        "lane": "center",
+        "strength": 0.489
+      },
+      {
+        "timeMs": 13094,
+        "lane": "center",
+        "strength": 0.938
+      },
+      {
+        "timeMs": 13569,
+        "lane": "center",
+        "strength": 0.171
+      },
+      {
+        "timeMs": 14144,
+        "lane": "center",
+        "strength": 0.136
+      },
+      {
+        "timeMs": 14818,
+        "lane": "center",
+        "strength": 0.172
+      },
+      {
+        "timeMs": 15568,
+        "lane": "center",
+        "strength": 0.425
+      },
+      {
+        "timeMs": 16118,
+        "lane": "center",
+        "strength": 0.628
+      },
+      {
+        "timeMs": 16867,
+        "lane": "center",
+        "strength": 0.358
+      },
+      {
+        "timeMs": 17192,
+        "lane": "center",
+        "strength": 0.452
+      },
+      {
+        "timeMs": 17492,
+        "lane": "center",
+        "strength": 0.29
+      },
+      {
+        "timeMs": 18317,
+        "lane": "center",
+        "strength": 0.532
+      },
+      {
+        "timeMs": 18866,
+        "lane": "center",
+        "strength": 0.688
+      },
+      {
+        "timeMs": 19566,
+        "lane": "center",
+        "strength": 0.431
+      },
+      {
+        "timeMs": 20116,
+        "lane": "center",
+        "strength": 0.612
+      },
+      {
+        "timeMs": 20616,
+        "lane": "center",
+        "strength": 0.149
+      },
+      {
+        "timeMs": 21115,
+        "lane": "center",
+        "strength": 0.63
+      },
+      {
+        "timeMs": 21490,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 22090,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 22615,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 22990,
+        "lane": "center",
+        "strength": 0.545
+      },
+      {
+        "timeMs": 23564,
+        "lane": "center",
+        "strength": 0.435
+      },
+      {
+        "timeMs": 24089,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 25114,
+        "lane": "center",
+        "strength": 0.815
+      },
+      {
+        "timeMs": 25613,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 26188,
+        "lane": "center",
+        "strength": 0.687
+      },
+      {
+        "timeMs": 26613,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 27113,
+        "lane": "center",
+        "strength": 0.882
+      },
+      {
+        "timeMs": 27612,
+        "lane": "center",
+        "strength": 0.694
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima05_game_d.mp3": {
     "id": "hakima05_game_d",
@@ -12459,7 +12360,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.715
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima06_ending.mp3": {
     "id": "hakima06_ending",
@@ -12934,7 +12835,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima07_ending2.mp3": {
     "id": "hakima07_ending2",
@@ -13714,7 +13615,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/hakima/hakima08_ending3.mp3": {
     "id": "hakima08_ending3",
@@ -14559,7 +14460,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.495
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/main/main01_title.mp3": {
     "id": "main01_title",
@@ -14839,7 +14740,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/main/main02_shop.mp3": {
     "id": "main02_shop",
@@ -15439,7 +15340,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.166
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/main/main03_puzzle.mp3": {
     "id": "main03_puzzle",
@@ -16219,7 +16120,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira01_theme.mp3": {
     "id": "mira01_theme",
@@ -16854,7 +16755,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.459
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira02_game_a.mp3": {
     "id": "mira02_game_a",
@@ -17174,7 +17075,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.962
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira03_game_b.mp3": {
     "id": "mira03_game_b",
@@ -17449,7 +17350,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.718
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira04_game_c.mp3": {
     "id": "mira04_game_c",
@@ -17979,7 +17880,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira05_game_d.mp3": {
     "id": "mira05_game_d",
@@ -18419,7 +18320,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.863
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira06_ending.mp3": {
     "id": "mira06_ending",
@@ -18929,7 +18830,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira07_ending2.mp3": {
     "id": "mira07_ending2",
@@ -19679,7 +19580,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   },
   "audio/bgm/mira/mira08_ending3.mp3": {
     "id": "mira08_ending3",
@@ -20559,7 +20460,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-06T11:45:53.778Z"
+    "generatedAt": "2026-05-06T15:30:15.680Z"
   }
 };
 
@@ -25079,6 +24980,46 @@ const REQUEST_GENRE_NAMES = {
   WRK: ['工房道具', '調合道具']
 };
 
+const REQUEST_SCENES = {
+  ADN: ['贈り物にしたいんだ', '晴れの席に持っていきたい', '人前に出る用がある'],
+  ARM: ['道中が少し物騒でな', '護衛の支度を整えている', '身を守る備えをしておきたい'],
+  CLT: ['外出の支度を整えている', '人に会う予定がある', '砂風の強い日に着ていくものを探している'],
+  DAY: ['家の用事で使いたい', '毎日の暮らしで役立つものを探している', '店先で長く使えるものが欲しい'],
+  FOD: ['砂漠越えに持たせたい', '長旅の荷に入れたい', '腹を空かせた連れがいる'],
+  MED: ['具合の悪い者に持たせたい', '旅先で使える備えが欲しい', '工房で使う薬の支度をしている'],
+  RIT: ['祈りの場に持っていきたい', '祭壇に供える品を探している', '小さな儀礼に使うものがいる'],
+  TRD: ['帳場で使えるものを探している', '取引先に見せても恥ずかしくないものが欲しい', '商いの支度をしている'],
+  TRV: ['旅支度を整えている', '隊商に加わる予定がある', '砂道で使えるものを探している'],
+  WRK: ['工房の手元に置きたい', '調合の支度をしている', '細かな作業に使えるものが欲しい']
+};
+
+const PRINCIPLE_REQUEST_HINTS = {
+  AS: ['夜道で頼りになる', '星明かりに縁がある', '方角を見失わずに済みそうな'],
+  EL: ['薬草の香りがする', '癒やしに使えそうな', '清らかな気配のある'],
+  LI: ['体を持ち直せそうな', '活力を感じる', '病み上がりにも渡しやすい'],
+  ME: ['細工の確かな', '金具や仕立てが頼もしい', '長く使っても崩れにくい'],
+  SA: ['砂風に強そうな', '乾いた土地で扱いやすい', '砂漠の旅に向いた']
+};
+
+const QUALITY_REQUEST_HINTS = {
+  normal: ['手頃で扱いやすい', '普段使いしやすい', '肩肘張らずに使える'],
+  success: ['上等な', '目利きに見せても恥ずかしくない', '丁寧に仕上げた'],
+  great_success: ['とびきり見事な', '晴れの席に出せる', '王宮に納めても恥ずかしくない']
+};
+
+const DECOY_DIFFICULTY_WEIGHTS = {
+  normal: {
+    early: { loose: 58, same_family: 34, near_match: 8 },
+    middle: { loose: 28, same_family: 52, near_match: 20 },
+    late: { loose: 14, same_family: 46, near_match: 40 }
+  },
+  long_history: {
+    early: { loose: 42, same_family: 44, near_match: 14 },
+    middle: { loose: 18, same_family: 50, near_match: 32 },
+    late: { loose: 8, same_family: 40, near_match: 52 }
+  }
+};
+
 const PRINCIPLE_PHRASE_SUFFIX = 'の術理を帯びた';
 
 // Item type / genre / principle names must come from ITEM_DISPLAY_NAMES.
@@ -25148,6 +25089,10 @@ module.exports = {
   SOCIAL_QUALITY_ALIASES,
   SOCIAL_QUALITY_LEADS,
   REQUEST_GENRE_NAMES,
+  REQUEST_SCENES,
+  PRINCIPLE_REQUEST_HINTS,
+  QUALITY_REQUEST_HINTS,
+  DECOY_DIFFICULTY_WEIGHTS,
   PRINCIPLE_PHRASE_SUFFIX,
   SPEECH_PATTERNS
 };
@@ -25579,6 +25524,7 @@ module.exports = {
 
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
 
 const RHYTHM_VISUAL_BEAT_MS = 600;
@@ -25717,6 +25663,70 @@ function getChoiceMeta(choice = {}) {
   return ITEM_DISPLAY_NAMES[choice.id] || {};
 }
 
+
+function collectBgmTracks() {
+  const tracks = [];
+  const pushTrack = (track, categoryPath) => {
+    if (!track || !track.path) return;
+    tracks.push({
+      path: track.path,
+      title: track.title || track.id || track.path,
+      categoryPath
+    });
+  };
+
+  (AUDIO_MANIFEST?.bgm?.system || []).forEach((track, index) => {
+    pushTrack(track, `bgm.system.${index}`);
+  });
+
+  const heroines = AUDIO_MANIFEST?.bgm?.heroines || {};
+  Object.entries(heroines).forEach(([heroineId, group]) => {
+    pushTrack(group?.theme, `bgm.heroines.${heroineId}.theme`);
+    (group?.game || []).forEach((track, index) => {
+      pushTrack(track, `bgm.heroines.${heroineId}.game.${index + 1}`);
+    });
+    Object.entries(group?.ending || {}).forEach(([endingKey, track]) => {
+      pushTrack(track, `bgm.heroines.${heroineId}.ending.${endingKey}`);
+    });
+  });
+
+  (AUDIO_MANIFEST?.bgm?.extra || []).forEach((track, index) => {
+    const mood = track?.mood || 'extra';
+    pushTrack(track, `bgm.extra.${mood}.${index + 1}`);
+  });
+
+  return tracks;
+}
+
+const BGM_TRACKS = collectBgmTracks();
+
+function getCurrentBgmInfo(controller) {
+  const bgmState = controller?.getBgmState ? controller.getBgmState() : null;
+  const currentPath = bgmState?.currentPath || bgmState?.pendingPath || '';
+  const track = BGM_TRACKS.find((entry) => entry.path === currentPath);
+  if (!currentPath) {
+    return { categoryPath: 'bgm.none', title: '未再生' };
+  }
+  return {
+    categoryPath: track?.categoryPath || 'bgm.unknown',
+    title: track?.title || currentPath
+  };
+}
+
+function updateQuizTrackInfo(controller) {
+  const trackEl = controller.container.querySelector('[data-quiz-track-info]');
+  if (!trackEl) return;
+  const bgmInfo = getCurrentBgmInfo(controller);
+  trackEl.innerHTML = `
+    <span class="quiz-track-category">♪ ${bgmInfo.categoryPath}</span>
+    <strong class="quiz-track-title">${bgmInfo.title}</strong>
+  `;
+}
+
+function getCustomerAppearanceLabel(q) {
+  return q?.customerProfile?.label || q?.customerTypeLabel || '旅の客';
+}
+
 function getScoreExpression(controller) {
   const scores = controller?.session?.scores || {};
   const total = (scores.revenue || 0) + (scores.satisfaction || 0) + (scores.reputation || 0);
@@ -25734,15 +25744,11 @@ function renderQuiz(controller, view) {
       <section class="quiz-order-card">
         <div class="quiz-order-head">
           <span class="quiz-person-icon" aria-hidden="true"><span></span></span>
-          <span class="quiz-order-label">問題文</span>
+          <span class="quiz-order-label" data-quiz-customer-label>旅の客</span>
         </div>
         <div class="quiz-order-body">
           <div class="quiz-order-text" data-quiz-prompt></div>
           <div class="quiz-request-chip" data-quiz-quality-request></div>
-        </div>
-        <div class="quiz-order-footer">
-          <div class="quiz-progress" data-quiz-progress></div>
-          <div class="score-strip" data-score-strip></div>
         </div>
       </section>
 
@@ -25787,6 +25793,12 @@ function renderQuiz(controller, view) {
           </div>
         </div>
       </section>
+
+      <section class="quiz-status-panel" aria-label="接客状況">
+        <div class="quiz-progress" data-quiz-progress></div>
+        <div class="score-strip" data-score-strip></div>
+        <div class="quiz-track-info" data-quiz-track-info></div>
+      </section>
     </div>
   `;
   updateQuizContent(controller);
@@ -25808,17 +25820,21 @@ function updateQuizContent(controller) {
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const qualityRequestEl = controller.container.querySelector('[data-quiz-quality-request]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
+  const customerLabelEl = controller.container.querySelector('[data-quiz-customer-label]');
   
   if (!q) {
     if (promptEl) promptEl.textContent = '接客の準備中です。';
+    if (customerLabelEl) customerLabelEl.textContent = '旅の客';
     if (qualityRequestEl) qualityRequestEl.textContent = '';
     if (progressEl) progressEl.textContent = `0 / ${controller.quizState.totalQuestions}`;
     updateFaceExpressions(controller);
     controller.updateHud();
+    updateQuizTrackInfo(controller);
     return;
   }
 
   if (promptEl) promptEl.textContent = q.promptText;
+  if (customerLabelEl) customerLabelEl.textContent = getCustomerAppearanceLabel(q);
   const personIconEl = controller.container.querySelector('.quiz-person-icon');
   if (personIconEl) {
     personIconEl.setAttribute('data-customer-tone', q.customerIconTone || q.customerProfile?.iconTone || 'amber');
@@ -25868,8 +25884,9 @@ function updateQuizContent(controller) {
     }
   });
 
-  // Ensure HUD (and thus the score strip) is updated with current session scores
+  // Ensure HUD (and thus the detached score strip) is updated with current session scores.
   controller.updateHud();
+  updateQuizTrackInfo(controller);
   startRhythmVisual(controller);
 }
 
@@ -26569,6 +26586,7 @@ function renderResultItemList(items) {
     `;
   }
 
+  const selectedCount = visibleItems.filter((item) => item.selected).length;
   const rows = visibleItems.map((item) => `
     <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
       ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
@@ -26579,6 +26597,7 @@ function renderResultItemList(items) {
   return `
     <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
       <div class="result-item-log-title">今回の品物</div>
+      <div class="result-item-log-note">光る枠＝選んだ品 / ${selectedCount}個</div>
       <div class="result-item-log-grid">
         ${rows}
       </div>
@@ -26596,11 +26615,11 @@ function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) 
     <div class="result-score-bar-row">
       <div class="result-score-bar-label">${label}</div>
       <div class="result-score-bar-stack" aria-label="${label} score graph">
-        <div class="result-score-bar-track result-score-bar-track-total">
-          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
-        </div>
         <div class="result-score-bar-track result-score-bar-track-turn">
           <div class="result-score-bar-fill result-score-bar-fill-turn" style="width:${turnPct}%"></div>
+        </div>
+        <div class="result-score-bar-track result-score-bar-track-total">
+          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
         </div>
       </div>
       <div class="result-score-bar-value">
@@ -26623,6 +26642,7 @@ function setupResultReveal(controller, view, speechText) {
   const timers = [];
   let typingTimer = null;
   let expressionTimer = null;
+  let expressionApplied = false;
   let done = false;
 
   const playStepSfx = () => {
@@ -26630,14 +26650,14 @@ function setupResultReveal(controller, view, speechText) {
     // Keep the hook as a no-op so reveal timing remains unchanged.
   };
 
-  const reveal = (step, play = true) => {
-    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
-      el.classList.add('is-visible');
-    });
-    if (step === 'rank') {
-      if (heroineEl?.dataset.resultExpressionSrc) {
+  const applyResultExpression = (withAura = true) => {
+    if (expressionApplied) return;
+    expressionApplied = true;
+
+    if (heroineEl?.dataset.resultExpressionSrc) {
+      if (withAura) {
         auraEl?.classList.remove('is-active');
-        // Restart aura animation reliably even when reveal is skipped.
+        // Restart aura animation reliably for the actual expression change only.
         void auraEl?.offsetWidth;
         auraEl?.classList.add('is-active');
         heroineEl.classList.add('is-expression-changing');
@@ -26649,11 +26669,25 @@ function setupResultReveal(controller, view, speechText) {
           heroineEl.classList.remove('is-expression-changing');
           heroineEl.classList.add('is-expression-shifted');
         }, 90);
+      } else {
+        heroineEl.src = heroineEl.dataset.resultExpressionSrc;
+        heroineEl.classList.remove('is-expression-changing');
+        heroineEl.classList.add('is-expression-shifted');
       }
-      if (nadirEl?.dataset.resultExpressionSrc) {
-        nadirEl.src = nadirEl.dataset.resultExpressionSrc;
-        nadirEl.classList.add('is-expression-shifted');
-      }
+    }
+
+    if (nadirEl?.dataset.resultExpressionSrc) {
+      nadirEl.src = nadirEl.dataset.resultExpressionSrc;
+      nadirEl.classList.add('is-expression-shifted');
+    }
+  };
+
+  const reveal = (step, play = true) => {
+    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
+      el.classList.add('is-visible');
+    });
+    if (step === 'rank') {
+      applyResultExpression(true);
     }
     if (play) playStepSfx();
   };
@@ -26689,16 +26723,7 @@ function setupResultReveal(controller, view, speechText) {
       clearTimeout(expressionTimer);
       expressionTimer = null;
     }
-    if (heroineEl?.dataset.resultExpressionSrc) {
-      heroineEl.src = heroineEl.dataset.resultExpressionSrc;
-      heroineEl.classList.remove('is-expression-changing');
-      heroineEl.classList.add('is-expression-shifted');
-    }
-    if (nadirEl?.dataset.resultExpressionSrc) {
-      nadirEl.src = nadirEl.dataset.resultExpressionSrc;
-      nadirEl.classList.add('is-expression-shifted');
-    }
-    auraEl?.classList.add('is-active');
+    applyResultExpression(false);
     finishSpeech();
     revealSteps.forEach((step) => reveal(step, false));
   };
@@ -26766,8 +26791,8 @@ function renderTurnResult(controller, view) {
 
         <section class="result-card result-rich-card" data-reveal-step="graph" aria-label="営業成果グラフ">
           <div class="result-score-legend">
-            <span class="legend-dot legend-total"></span>累計 / 満点
             <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
+            <span class="legend-dot legend-total"></span>累計 / 満点
           </div>
 
           <div class="result-score-graph">
@@ -26913,6 +26938,14 @@ module.exports = {
  * HUD / Stats display component for MadeInMaghribal.
  */
 
+function formatScoreMetric(label, value, key, previousScores) {
+  const prev = previousScores ? Number(previousScores[key]) : Number(value);
+  const current = Number(value) || 0;
+  const delta = current - (Number.isFinite(prev) ? prev : current);
+  const badge = delta > 0 ? `<span class="score-delta">+${delta}</span>` : '';
+  return `<span class="score-metric" data-score-key="${key}"><span class="score-label">${label}</span><strong>${current}</strong>${badge}</span>`;
+}
+
 function updateHud(controller) {
   const hud = controller.container.querySelector('[data-hud]');
   if (!hud) return;
@@ -26932,7 +26965,20 @@ function updateHud(controller) {
 
   const scoreStrip = controller.container.querySelector('[data-score-strip]');
   if (scoreStrip) {
-    scoreStrip.textContent = `売上: ${s.revenue} / 満足: ${s.satisfaction} / 評判: ${s.reputation}`;
+    const previousScores = controller.uiState?.previousScoresForHud || null;
+    scoreStrip.innerHTML = [
+      formatScoreMetric('売上', s.revenue, 'revenue', previousScores),
+      formatScoreMetric('満足', s.satisfaction, 'satisfaction', previousScores),
+      formatScoreMetric('評判', s.reputation, 'reputation', previousScores)
+    ].join('');
+  }
+
+  if (controller.uiState) {
+    controller.uiState.previousScoresForHud = {
+      revenue: s.revenue,
+      satisfaction: s.satisfaction,
+      reputation: s.reputation
+    };
   }
 }
 
@@ -28379,6 +28425,103 @@ function getRhythmActiveRange(noteMap) {
   return { startMs: 0, endMs: fallbackEnd, durationMs: fallbackEnd };
 }
 
+const RHYTHM_SILENCE_GRACE_THRESHOLD_MS = 2000;
+const RHYTHM_SILENCE_GRACE_STEP_MS = 1500;
+const RHYTHM_SILENCE_GRACE_MAX_MS = 3000;
+
+function getActiveNoteTimes(noteMap) {
+  const sourceNotes = noteMap && Array.isArray(noteMap.notes) ? noteMap.notes : [];
+  if (!sourceNotes.length) return [];
+
+  const range = getRhythmActiveRange(noteMap);
+  const times = [];
+  for (const note of sourceNotes) {
+    const timeMs = Number(note.timeMs);
+    if (!Number.isFinite(timeMs)) continue;
+    if (range.durationMs && (timeMs < range.startMs || timeMs > range.endMs)) continue;
+    times.push(Math.round(timeMs));
+  }
+
+  return [...new Set(times)].sort((a, b) => a - b);
+}
+
+function calculateSilenceGraceFromElapsedMs(noNoteElapsedMs) {
+  const elapsed = Number(noNoteElapsedMs);
+  if (!Number.isFinite(elapsed) || elapsed < RHYTHM_SILENCE_GRACE_THRESHOLD_MS) return 0;
+  const steps = Math.floor(elapsed / RHYTHM_SILENCE_GRACE_THRESHOLD_MS);
+  return Math.min(RHYTHM_SILENCE_GRACE_MAX_MS, steps * RHYTHM_SILENCE_GRACE_STEP_MS);
+}
+
+function getRhythmSilenceGraceDebug(noteMap, audioTimeMs) {
+  const noteTimes = getActiveNoteTimes(noteMap);
+  const empty = {
+    speedGraceMs: 0,
+    audioTimeMs: Number.isFinite(audioTimeMs) ? Math.round(audioTimeMs) : null,
+    audioLoopMs: null,
+    prevNoteMs: null,
+    nextNoteMs: null,
+    nearestNoteMs: null,
+    gapElapsedMs: 0,
+    gapToNearestMs: 0,
+    graceBasisMs: 0,
+    reason: 'no-note-map'
+  };
+  if (!noteTimes.length || !Number.isFinite(audioTimeMs)) return empty;
+
+  const range = getRhythmActiveRange(noteMap);
+  if (!range.durationMs) return { ...empty, reason: 'no-active-range' };
+
+  const audioLoopMs = wrapLoopPositionMs(audioTimeMs, noteMap);
+  if (!Number.isFinite(audioLoopMs)) return empty;
+
+  let prevIndex = -1;
+  let nextIndex = -1;
+  for (let index = 0; index < noteTimes.length; index += 1) {
+    const timeMs = noteTimes[index];
+    if (timeMs <= audioLoopMs) prevIndex = index;
+    if (timeMs > audioLoopMs) {
+      nextIndex = index;
+      break;
+    }
+  }
+
+  const prevNoteMs = prevIndex >= 0 ? noteTimes[prevIndex] : range.startMs;
+  const nextNoteMs = nextIndex >= 0 ? noteTimes[nextIndex] : noteTimes[0] + range.durationMs;
+  const prevDistanceMs = Math.abs(audioLoopMs - prevNoteMs);
+  const nextDistanceMs = Math.abs(nextNoteMs - audioLoopMs);
+  const nearestIndex = prevDistanceMs <= nextDistanceMs ? prevIndex : nextIndex;
+  const nearestNoteMs = nearestIndex >= 0 ? noteTimes[nearestIndex] : nextNoteMs;
+  const noteBeforeNearestMs = nearestIndex > 0 ? noteTimes[nearestIndex - 1] : range.startMs;
+
+  const elapsedFromPrevMs = Math.max(0, audioLoopMs - prevNoteMs);
+  const nearestDistanceMs = Math.min(prevDistanceMs, nextDistanceMs);
+  const gapToNearestMs = Math.max(0, nearestNoteMs - noteBeforeNearestMs);
+
+  // 長い無音後の第一ノーツで押した場合、従来の「直前ノーツから現在まで」は0ms近くに戻る。
+  // そのため、現在までの経過に加え、最寄りノーツの直前無音幅も速度猶予候補に入れる。
+  // ただし遠い未来のノーツで早押し補正が暴れないよう、最寄りノーツ±250ms以内だけ採用する。
+  const nearNoteGapMs = nearestDistanceMs <= 250 ? gapToNearestMs : 0;
+  const graceBasisMs = Math.max(elapsedFromPrevMs, nearNoteGapMs);
+  const speedGraceMs = calculateSilenceGraceFromElapsedMs(graceBasisMs);
+
+  return {
+    speedGraceMs,
+    audioTimeMs: Math.round(audioTimeMs),
+    audioLoopMs: Math.round(audioLoopMs),
+    prevNoteMs: Math.round(prevNoteMs),
+    nextNoteMs: Math.round(nextNoteMs),
+    nearestNoteMs: Math.round(nearestNoteMs),
+    gapElapsedMs: Math.round(elapsedFromPrevMs),
+    gapToNearestMs: Math.round(gapToNearestMs),
+    graceBasisMs: Math.round(graceBasisMs),
+    reason: speedGraceMs > 0 ? 'silence-grace' : 'no-grace'
+  };
+}
+
+function getRhythmSilenceGraceMs(noteMap, audioTimeMs) {
+  return getRhythmSilenceGraceDebug(noteMap, audioTimeMs).speedGraceMs;
+}
+
 function wrapLoopPositionMs(audioTimeMs, noteMap) {
   if (!Number.isFinite(audioTimeMs)) return null;
   const range = getRhythmActiveRange(noteMap);
@@ -28462,7 +28605,11 @@ module.exports = {
   getLoopDiffMs,
   buildLoopedVisibleNotes,
   findNearestRhythmNoteDiffMs,
-  findNearestRhythmNoteMs
+  findNearestRhythmNoteMs,
+  getActiveNoteTimes,
+  calculateSilenceGraceFromElapsedMs,
+  getRhythmSilenceGraceMs,
+  getRhythmSilenceGraceDebug
 };
 
     };
@@ -28707,6 +28854,12 @@ const SELECTED_SFX = {
     volume: 0.40,
     start: 0,
     end: null
+  },
+  turnClockTick: {
+    path: 'audio/se/clock_ticking_4.mp3',
+    volume: 0.56,
+    start: 0,
+    end: null
   }
 };
 
@@ -28829,7 +28982,9 @@ const { createBgmEngine } = require('./utils/bgmEngine.js');
 const {
   loadRhythmNoteMaps,
   getRhythmMapForPath: getLoadedRhythmMapForPath,
-  findNearestRhythmNoteMs
+  findNearestRhythmNoteMs,
+  getRhythmSilenceGraceMs,
+  getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
@@ -28899,7 +29054,9 @@ class GameController {
 
     this.turnTransition = {
       timerId: null,
-      callback: null
+      tickTimerIds: [],
+      callback: null,
+      finishing: false
     };
 
     this.typewriter = {
@@ -29269,6 +29426,8 @@ class GameController {
 
     this.uiState.turnTransitionActive = true;
     this.turnTransition.callback = callback;
+    this.turnTransition.tickTimerIds = [];
+    this.turnTransition.finishing = false;
 
     const viewport = document.getElementById('game-viewport') || this.container;
     const oldOverlay = viewport.querySelector('.turn-transition-overlay');
@@ -29283,41 +29442,82 @@ class GameController {
     overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
     overlay.setAttribute('data-action', 'skip-turn-transition');
     overlay.innerHTML = `
-      <div class="turn-transition-sky" aria-hidden="true">
-        <div class="turn-transition-orbit">
-          <div class="turn-transition-sun"></div>
-          <div class="turn-transition-moon"></div>
-        </div>
-        <div class="turn-transition-horizon"></div>
+      <div class="turn-transition-darkness" aria-hidden="true"></div>
+      <div class="turn-transition-clock-wrap" aria-hidden="true">
+        <img class="turn-transition-clock" src="images/ui/turn_clock.png" alt="" draggable="false">
+        <div class="turn-transition-clock-glow"></div>
+        <div class="turn-transition-clock-shadow"></div>
       </div>
       <div class="turn-transition-copy">
         <p class="turn-transition-label">${title}</p>
         <p class="turn-transition-subtitle">${subtitle}</p>
+        <p class="turn-transition-skip">クリックでスキップ</p>
       </div>
     `;
     viewport.appendChild(overlay);
 
+    const fadeInMs = 1000;
+    const introHoldMs = 500;
+    const stepMs = 1000;
+    const restMs = 200;
+    const stepCount = 5;
+    const postHoldMs = 500;
+    const fadeOutMs = 1000;
+    const rotateStartMs = fadeInMs + introHoldMs;
+    const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
+    const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
+
+    Array.from({ length: stepCount }, (_, index) => rotateStartMs + (index * (stepMs + restMs))).forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        if (this.uiState.turnTransitionActive && !this.turnTransition.finishing) this.playSfx('turnClockTick');
+      }, delay);
+      this.turnTransition.tickTimerIds.push(timerId);
+    });
+
     this.turnTransition.timerId = window.setTimeout(() => {
-      this.finishTurnTransition();
-    }, 1850);
+      this.finishTurnTransition(false);
+    }, exitStartMs);
+
+    this.turnTransition.fadeOutMs = fadeOutMs;
   }
 
-  finishTurnTransition() {
-    if (!this.uiState.turnTransitionActive) return;
+  finishTurnTransition(skip = false) {
+    if (!this.uiState.turnTransitionActive || this.turnTransition.finishing) return;
+    this.turnTransition.finishing = true;
 
     if (this.turnTransition.timerId) {
       window.clearTimeout(this.turnTransition.timerId);
       this.turnTransition.timerId = null;
     }
 
-    const callback = this.turnTransition.callback;
-    this.turnTransition.callback = null;
-    this.uiState.turnTransitionActive = false;
+    if (Array.isArray(this.turnTransition.tickTimerIds)) {
+      this.turnTransition.tickTimerIds.forEach((timerId) => window.clearTimeout(timerId));
+      this.turnTransition.tickTimerIds = [];
+    }
 
     const overlay = document.querySelector('.turn-transition-overlay');
-    if (overlay) overlay.remove();
+    const fadeMs = skip ? 500 : (this.turnTransition.fadeOutMs || 1000);
 
-    if (typeof callback === 'function') callback();
+    const complete = () => {
+      const callback = this.turnTransition.callback;
+      this.turnTransition.callback = null;
+      this.turnTransition.finishing = false;
+      this.turnTransition.fadeOutMs = null;
+      this.uiState.turnTransitionActive = false;
+
+      if (overlay) overlay.remove();
+      if (typeof callback === 'function') callback();
+    };
+
+    if (!overlay) {
+      complete();
+      return;
+    }
+
+    overlay.classList.add('is-exiting');
+    if (skip) overlay.classList.add('is-skipping');
+
+    this.turnTransition.timerId = window.setTimeout(complete, fadeMs);
   }
 
 
@@ -29362,7 +29562,7 @@ class GameController {
       const target = e.target;
       if (this.uiState.turnTransitionActive) {
         e.stopPropagation();
-        this.finishTurnTransition();
+        this.finishTurnTransition(true);
         return;
       }
       if (this.quizState.inputLocked) return;
@@ -29719,10 +29919,15 @@ class GameController {
     });
   }
 
-  getNearestVisualBeatMs(now) {
+  getCurrentRhythmMapState() {
     const bgmState = this.getBgmState ? this.getBgmState() : null;
     const noteMap = getRhythmMapForPath(bgmState?.currentPath || bgmState?.pendingPath || '');
     const audioTimeMs = Number(bgmState?.currentTimeMs);
+    return { bgmState, noteMap, audioTimeMs };
+  }
+
+  getNearestVisualBeatMs(now) {
+    const { noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
     const nearestNoteMs = findNearestRhythmNoteMs(noteMap, audioTimeMs);
     if (nearestNoteMs !== null) {
       return now + (nearestNoteMs - audioTimeMs);
@@ -29732,6 +29937,21 @@ class GameController {
     const rhythmStartedAt = this.quizState.rhythmStartedAt || this.quizState.promptShownAt || now;
     const elapsed = now - rhythmStartedAt;
     return rhythmStartedAt + Math.round(elapsed / beatIntervalMs) * beatIntervalMs;
+  }
+
+  getRhythmSpeedGraceMs() {
+    const { noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
+    return getRhythmSilenceGraceMs(noteMap, audioTimeMs);
+  }
+
+  getRhythmSpeedGraceDebug() {
+    const { bgmState, noteMap, audioTimeMs } = this.getCurrentRhythmMapState();
+    return {
+      ...getRhythmSilenceGraceDebug(noteMap, audioTimeMs),
+      bgmPath: bgmState?.currentPath || bgmState?.pendingPath || '',
+      questionIndex: this.quizState.questionIndex + 1,
+      turn: this.session.turn
+    };
   }
 
   answerQuiz(itemId, quality = 'normal') {
@@ -29744,6 +29964,8 @@ class GameController {
     const selectedQuality = normalizeQuizQuality(quality);
     const selectedChoiceKey = getQuizChoiceKey(itemId, selectedQuality);
     const correctChoiceKey = q.correctChoiceKey || getQuizChoiceKey(q.correctItemId, q.correctQuality);
+    const speedGraceDebug = this.getRhythmSpeedGraceDebug();
+    const nearestBeatMs = this.getNearestVisualBeatMs(now);
     const result = processQuestionResult({
       promptShownAt: this.quizState.promptShownAt,
       answeredAt: now,
@@ -29751,8 +29973,21 @@ class GameController {
       correctItemId: q.correctItemId,
       selectedChoiceKey,
       correctChoiceKey,
-      nearestBeatMs: this.getNearestVisualBeatMs(now)
+      nearestBeatMs,
+      speedGraceMs: speedGraceDebug.speedGraceMs
     });
+
+    if (typeof console !== 'undefined' && console.log) {
+      console.log('[rhythm-speed-grace]', {
+        ...speedGraceDebug,
+        responseTime: Math.round(result.responseTime),
+        effectiveResponseTime: Math.round(result.effectiveResponseTime),
+        speedBonus: result.satisfactionBonus,
+        rhythmRating: result.rating,
+        rhythmDiffMs: result.diffMs,
+        nearestBeatOffsetMs: Math.round(nearestBeatMs - now)
+      });
+    }
 
     this.recordQuizItemLog(itemId, result);
 
