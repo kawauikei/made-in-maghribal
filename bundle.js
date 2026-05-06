@@ -961,16 +961,16 @@ const AUDIO_MANIFEST = {
   },
   se: {
     quiz: [
-      { id: 'SE_QUIZ_CORRECT', path: 'audio/se/quiz_correct_star_chime_01.mp3' },
-      { id: 'SE_QUIZ_WRONG', path: 'audio/se/quiz_wrong_sand_tap_01.mp3' },
-      { id: 'SE_QUIZ_TICK', path: 'audio/se/quiz_choice_pick_01.mp3' }
+      { id: 'SE_QUIZ_CHOICE_PICK', key: 'quizChoicePick', path: 'audio/se/quiz_choice_pick_01_3.mp3', volume: 0.36, start: 0, end: 1.0 },
+      { id: 'SE_QUIZ_CORRECT', key: 'quizCorrectStarChime', path: 'audio/se/quiz_correct_star_chime_01.mp3', volume: 0.46, start: 0, end: null },
+      { id: 'SE_QUIZ_WRONG', key: 'quizWrongSandTap', path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3', volume: 0.42, start: 0, end: null }
     ],
     ui: [
-      { id: 'SE_UI_DECIDE', path: 'audio/se/ui_confirm_chime_01.mp3' },
-      { id: 'SE_UI_TAP', path: 'audio/se/ui_tap_bottle_01.mp3' }
+      { id: 'SE_UI_TAP', key: 'uiTapBottle', path: 'audio/se/ui_tap_bottle_01_3.mp3', volume: 0.50, start: 0, end: null },
+      { id: 'SE_UI_DECIDE', key: 'uiConfirmChime', path: 'audio/se/ui_confirm_chime_01_3.mp3', volume: 0.42, start: 0, end: null }
     ],
     day_end: [
-      { id: 'SE_DAY_END_REST', path: 'audio/se/workshop_day_end_01.mp3' }
+      { id: 'SE_DAY_END_REST', key: 'workshopDayEnd', path: 'audio/se/workshop_day_end_01_2.mp3', volume: 0.40, start: 0, end: null }
     ]
   }
 };
@@ -4410,6 +4410,7 @@ function renderHeroineSelect(controller, view) {
     button.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
+      if (controller.playSfx) controller.playSfx('uiTapBottle');
 
       const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
       iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));
@@ -5188,6 +5189,133 @@ module.exports = {
 
     };
 
+    // --- ./utils/sfxEngine.js ---
+    modules['./utils/sfxEngine.js'] = function(module, exports, require) {
+/**
+ * Lightweight SFX engine for browser UI.
+ *
+ * Notes:
+ * - Audio files are under public/audio/se.
+ * - Each selected SE can have independent volume and trim settings.
+ * - Playback is best-effort; browser autoplay restrictions are handled by
+ *   unlocking on the first user gesture and by only playing from user actions.
+ */
+
+const SELECTED_SFX = {
+  uiTapBottle: {
+    path: 'audio/se/ui_tap_bottle_01_3.mp3',
+    volume: 1.10,
+    start: 0,
+    end: null
+  },
+  uiConfirmChime: {
+    path: 'audio/se/ui_confirm_chime_01_3.mp3',
+    volume: 0.30,
+    start: 0,
+    end: null
+  },
+  quizChoicePick: {
+    path: 'audio/se/quiz_choice_pick_01_3.mp3',
+    volume: 0.36,
+    start: 0,
+    end: 1.0
+  },
+  quizCorrectStarChime: {
+    path: 'audio/se/quiz_correct_star_chime_01.mp3',
+    volume: 0.46,
+    start: 0,
+    end: null
+  },
+  quizWrongSandTap: {
+    path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3',
+    volume: 0.42,
+    start: 0,
+    end: null
+  },
+  workshopDayEnd: {
+    path: 'audio/se/workshop_day_end_01_2.mp3',
+    volume: 0.40,
+    start: 0,
+    end: null
+  }
+};
+
+class SfxEngine {
+  constructor(config = SELECTED_SFX) {
+    this.config = config;
+    this.enabled = true;
+    this.unlocked = false;
+    this.active = new Set();
+  }
+
+  unlock() {
+    this.unlocked = true;
+  }
+
+  setEnabled(enabled) {
+    this.enabled = Boolean(enabled);
+  }
+
+  play(id) {
+    if (!this.enabled || !this.unlocked) return;
+    const spec = this.config[id];
+    if (!spec || !spec.path) return;
+
+    try {
+      const audio = new Audio(spec.path);
+      audio.volume = clampVolume(spec.volume);
+      audio.preload = 'auto';
+
+      const cleanup = () => {
+        audio.pause();
+        audio.src = '';
+        this.active.delete(audio);
+      };
+
+      const startPlayback = () => {
+        if (typeof spec.start === 'number' && spec.start > 0) {
+          audio.currentTime = spec.start;
+        }
+
+        const playPromise = audio.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => cleanup());
+        }
+      };
+
+      if (typeof spec.end === 'number') {
+        audio.addEventListener('timeupdate', () => {
+          if (audio.currentTime >= spec.end) cleanup();
+        });
+      }
+
+      audio.addEventListener('ended', cleanup, { once: true });
+      audio.addEventListener('error', cleanup, { once: true });
+      this.active.add(audio);
+      startPlayback();
+    } catch (e) {
+      // SFX must never break gameplay.
+    }
+  }
+}
+
+function clampVolume(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return 0.4;
+  return Math.max(0, Math.min(1, value));
+}
+
+function createSfxEngine() {
+  return new SfxEngine();
+}
+
+module.exports = {
+  SELECTED_SFX,
+  SfxEngine,
+  createSfxEngine
+};
+
+    };
+
     // --- Entry Point (browser/app.js) ---
     (function() {
         const entry = function(require) {
@@ -5218,6 +5346,7 @@ const { showResultStamp } = require('./ui/resultStamp.js');
 const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
+const { createSfxEngine } = require('./utils/sfxEngine.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -5240,6 +5369,7 @@ class GameController {
   constructor() {
     this.session = new GameSession();
     this.container = document.getElementById('app');
+    this.sfx = createSfxEngine();
     
     this.settings = this.loadSettings();
     this.uiState = {
@@ -5510,6 +5640,7 @@ class GameController {
   getTurnRank(dR, dS, dRep) { return getTurnRank(dR, dS, dRep); }
   getCharacterStandingPath(id, expression) { return getCharacterStandingPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
+  playSfx(id) { if (this.sfx) this.sfx.play(id); }
 
   /**
    * --------------------------------------------------------------------------
@@ -5531,6 +5662,7 @@ class GameController {
     });
 
     document.addEventListener('click', (e) => {
+      if (this.sfx) this.sfx.unlock();
       const target = e.target;
       if (this.quizState.inputLocked) return;
 
@@ -5538,12 +5670,14 @@ class GameController {
 
       if (target.closest('[data-action="title-start"]')) {
         e.stopPropagation();
+        this.playSfx('uiConfirmChime');
         this.onGlobalAction();
         return;
       }
       const titleStub = target.closest('[data-title-stub]');
       if (titleStub) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         const messageEl = this.container.querySelector('[data-title-stub-message]');
         if (messageEl) {
           messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
@@ -5552,27 +5686,32 @@ class GameController {
       }
       if (target.closest('[data-action="open-options"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.openModal('options');
         return;
       }
       if (target.closest('[data-action="open-help"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.openModal('help');
         return;
       }
       if (target.closest('[data-action="close-modal"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.closeModal();
         return;
       }
       if (target.closest('[data-action="toggle-fullscreen"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.toggleFullscreen();
         return;
       }
       const speedBtn = target.closest('[data-action="set-text-speed"]');
       if (speedBtn) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.setTextSpeed(speedBtn.getAttribute('data-speed'));
         return;
       }
@@ -5580,6 +5719,7 @@ class GameController {
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
         e.stopPropagation();
+        this.playSfx('uiTapBottle');
         this.onGlobalAction();
         return;
       }
@@ -5601,6 +5741,7 @@ class GameController {
       if (target.tagName === 'BUTTON' || target.closest('button')) {
         e.stopPropagation();
         if (target.classList.contains('btn-next')) {
+          this.playSfx('uiTapBottle');
           this.onGlobalAction();
         }
         return;
@@ -5609,6 +5750,7 @@ class GameController {
       // Prevent modal backdrop from closing or interfering with text advancement
       if (this.uiState.modal) {
         if (!target.closest('.ui-modal')) {
+          this.playSfx('uiTapBottle');
           this.closeModal();
         }
         return;
@@ -5617,6 +5759,7 @@ class GameController {
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       
+      this.playSfx('uiTapBottle');
       this.onGlobalAction();
     });
   }
@@ -5624,6 +5767,7 @@ class GameController {
   selectHeroine(id) {
     if (this.quizState.inputLocked) return;
     this.clearTypewriter();
+    this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
     this.session.selectHeroine(id, 'normal');
     this.session.nextPhase();
@@ -5707,6 +5851,7 @@ class GameController {
   answerQuiz(itemId) {
     if (this.quizState.inputLocked) return;
     this.quizState.inputLocked = true;
+    this.playSfx('quizChoicePick');
 
     const now = performance.now();
     const result = processQuestionResult({
@@ -5722,6 +5867,7 @@ class GameController {
     this.quizState.questionIndex++;
 
     this.showResultStamp(result);
+    this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
 
     if (this.quizState.questionIndex < this.quizState.totalQuestions) {
       setTimeout(() => {
@@ -5731,6 +5877,7 @@ class GameController {
     } else {
       setTimeout(() => {
         this.session.nextSubPhase();
+        this.playSfx('workshopDayEnd');
         this.quizState.inputLocked = false;
         this.update();
       }, RESULT_TRANSITION_DELAY_MS);
