@@ -39,9 +39,9 @@ const {
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
+const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary, clearPlayerProgress } = require('./utils/playerProgress.js');
+const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -92,6 +92,7 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
+    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -99,14 +100,8 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false,
-      loadingMessage: '共通データ読込中…'
+      turnTransitionActive: false
     };
-
-    Promise.resolve(this.assetPreloader.preloadOpeningAssets()).finally(() => {
-      this.uiState.loadingMessage = null;
-      this.renderLoadingOverlay();
-    });
 
     this.turnTransition = {
       timerId: null,
@@ -297,6 +292,7 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
+        this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
@@ -309,7 +305,6 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
-    this.renderLoadingOverlay();
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
@@ -427,22 +422,6 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
-  renderLoadingOverlay() {
-    const root = document.getElementById('game-viewport') || this.container;
-    if (!root) return;
-    let overlay = root.querySelector('.asset-loading-overlay');
-    const message = this.uiState.loadingMessage;
-    if (!message) {
-      if (overlay) overlay.remove();
-      return;
-    }
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'asset-loading-overlay';
-      root.appendChild(overlay);
-    }
-    overlay.innerHTML = `<div class="asset-loading-card"><div class="asset-loading-spinner"></div><p>${message}</p></div>`;
-  }
   updateVnContent(payload) { updateVnContent(this, payload); }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
@@ -489,19 +468,9 @@ class GameController {
     }
     return applied;
   }
-  preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
+  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
-  clearAllSaveData() {
-    clearRunSave();
-    clearItemCollection();
-    clearPlayerProgress();
-    this.session = new GameSession();
-    this.quizState = this.createInitialQuizState();
-    this.endingProgressRecorded = false;
-    this.uiState.itemDetailModal = null;
-    this.uiState.titlePanel = null;
-  }
 
   playTurnTransition(callback, mode = 'next') {
     if (this.uiState.turnTransitionActive) return;
@@ -625,9 +594,14 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   init() {
-    this.updateViewportScale();
-    window.addEventListener('resize', () => this.updateViewportScale());
-    window.addEventListener('orientationchange', () => this.updateViewportScale());
+    this.scheduleViewportScaleUpdate();
+    window.addEventListener('resize', () => this.scheduleViewportScaleUpdate());
+    window.addEventListener('orientationchange', () => this.scheduleViewportScaleUpdate());
+    document.addEventListener('fullscreenchange', () => this.scheduleViewportScaleUpdate());
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => this.scheduleViewportScaleUpdate());
+      window.visualViewport.addEventListener('scroll', () => this.scheduleViewportScaleUpdate());
+    }
     console.log('Controller Initialized');
     
     document.addEventListener('selectstart', (e) => {
@@ -682,11 +656,6 @@ class GameController {
         return;
       }
       if (target.closest('[data-action="title-panel-back"]')) {
-        e.stopPropagation();
-        this.closeTitlePanel();
-        return;
-      }
-      if (this.uiState.titlePanel && target.classList?.contains('title-panel-screen') && !target.closest('.title-panel-card')) {
         e.stopPropagation();
         this.closeTitlePanel();
         return;
@@ -773,12 +742,6 @@ class GameController {
         this.closeModal();
         return;
       }
-      if (this.uiState.modal && target.classList?.contains('ui-modal-backdrop') && !target.closest('.ui-modal')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.closeModal();
-        return;
-      }
       if (target.closest('[data-action="toggle-fullscreen"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
@@ -806,23 +769,12 @@ class GameController {
         this.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
         return;
       }
-      if (target.closest('[data-action="clear-all-save-data"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        const ok = window.confirm('セーブデータ、イベント既読、アイテム収集、ヒロイン別記録を削除します。よろしいですか？');
-        if (ok) {
-          this.clearAllSaveData();
-          this.openModal('options');
-          this.update();
-        }
-        return;
-      }
 
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
-        this.skipCurrentScene();
+        this.onGlobalAction();
         return;
       }
 
@@ -871,28 +823,15 @@ class GameController {
     });
   }
 
-  async selectHeroine(id, routeMode = 'normal') {
-    if (this.quizState.inputLocked || this.uiState.loadingMessage) return;
+  selectHeroine(id, routeMode = 'normal') {
+    if (this.quizState.inputLocked) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
-    this.uiState.loadingMessage = 'ヒロインデータ読込中…';
-    this.renderLoadingOverlay();
-    try {
-      await Promise.resolve(this.preloadHeroineSelectAssets(id));
-    } finally {
-      this.uiState.loadingMessage = null;
-    }
     this.endingProgressRecorded = false;
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
-  }
-
-  skipCurrentScene() {
-    const wasTyping = this.isTypewriterActive();
-    if (wasTyping) this.finishTypewriter();
-    this.onGlobalAction();
   }
 
   onGlobalAction() {
@@ -1131,15 +1070,48 @@ class GameController {
     }
   }
 
+  scheduleViewportScaleUpdate() {
+    if (this.viewportScaleFrame) window.cancelAnimationFrame(this.viewportScaleFrame);
+    this.viewportScaleFrame = window.requestAnimationFrame(() => {
+      this.viewportScaleFrame = null;
+      this.updateViewportScale();
+      window.setTimeout(() => this.updateViewportScale(), 80);
+      window.setTimeout(() => this.updateViewportScale(), 240);
+    });
+  }
+
+  getAvailableViewportRect() {
+    const visualViewport = window.visualViewport;
+    const width = Math.max(1, visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || 720);
+    const height = Math.max(1, visualViewport?.height || window.innerHeight || document.documentElement.clientHeight || 1280);
+    return {
+      width,
+      height,
+      offsetLeft: visualViewport?.offsetLeft || 0,
+      offsetTop: visualViewport?.offsetTop || 0
+    };
+  }
+
   updateViewportScale() {
     const baseWidth = 720;
     const baseHeight = 1280;
-    const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+    const { width, height, offsetLeft, offsetTop } = this.getAvailableViewportRect();
+    const scale = Math.min(width / baseWidth, height / baseHeight);
     const viewport = document.getElementById('game-viewport');
     if (viewport) {
+      const scaledWidth = baseWidth * scale;
+      const scaledHeight = baseHeight * scale;
+      const left = offsetLeft + Math.max(0, (width - scaledWidth) / 2);
+      const top = offsetTop + Math.max(0, (height - scaledHeight) / 2);
+      viewport.style.position = 'fixed';
+      viewport.style.left = `${left}px`;
+      viewport.style.top = `${top}px`;
+      viewport.style.transformOrigin = 'top left';
       viewport.style.transform = `scale(${scale})`;
     }
     document.documentElement.style.setProperty('--viewport-scale', String(scale));
+    document.documentElement.style.setProperty('--app-available-width', `${width}px`);
+    document.documentElement.style.setProperty('--app-available-height', `${height}px`);
   }
 }
 
