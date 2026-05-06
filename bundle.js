@@ -25914,10 +25914,9 @@ const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 
 const PANEL_TITLES = {
-  load: 'ロード',
-  event: 'イベントギャラリー',
-  image: '画像ギャラリー',
-  sound: 'サウンドテスト',
+  event: 'イベント集',
+  image: '画像集',
+  sound: '音楽集',
   item: 'アイテム図鑑'
 };
 
@@ -26009,7 +26008,6 @@ function renderTitlePanel(controller, view) {
 function renderPanelBody(controller, panel) {
   if (panel === 'item') return renderItemGallery(controller);
   if (panel === 'sound') return renderSoundTest(controller);
-  if (panel === 'load') return renderLoadPanel(controller);
   if (panel === 'event') return renderEventGallery(controller);
   if (panel === 'image') return renderImageGallery(controller);
   return renderPlaceholder(panel);
@@ -26435,12 +26433,12 @@ function renderTitle(controller, view) {
           <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
         </div>
         <div class="title-menu-grid" aria-label="Title menu">
-          <button class="title-menu-btn" type="button" data-title-panel="load">ロード</button>
-          <button class="title-menu-btn" type="button" data-title-panel="event">イベント</button>
-          <button class="title-menu-btn" type="button" data-title-panel="image">画像</button>
-          <button class="title-menu-btn" type="button" data-title-panel="sound">音楽</button>
-          <button class="title-menu-btn" type="button" data-title-panel="item">図鑑</button>
-          <button class="title-menu-btn" type="button" data-action="open-options">設定</button>
+          <button class="title-menu-btn" type="button" data-title-panel="event">イベント集</button>
+          <button class="title-menu-btn" type="button" data-title-panel="image">画像集</button>
+          <button class="title-menu-btn" type="button" data-title-panel="sound">音楽集</button>
+          <button class="title-menu-btn" type="button" data-title-panel="item">アイテム図鑑</button>
+          <button class="title-menu-btn" type="button" data-action="open-options">設定画面</button>
+          <button class="title-menu-btn" type="button" data-title-stub="フリープレイ">フリープレイ</button>
           ${debugButton}
         </div>
         <p class="title-stub-message" data-title-stub-message></p>
@@ -27049,7 +27047,7 @@ function renderOptionsModal(controller, container) {
 
   container.innerHTML = `
     <div class="ui-modal options-modal">
-      <h2>設定</h2>
+      <h2>設定画面</h2>
       <div class="option-row">
         <p style="margin-bottom: 10px; font-weight: 800;">テキスト速度</p>
         <div class="option-buttons">
@@ -27063,6 +27061,11 @@ function renderOptionsModal(controller, container) {
         <p style="margin-bottom: 10px; font-weight: 800;">音量</p>
         ${renderAudioRow('bgm', 'BGM', bgmOn, bgmVol)}
         ${renderAudioRow('sfx', 'SE', sfxOn, sfxVol)}
+      </div>
+      <div class="option-row option-danger-row">
+        <p style="margin-bottom: 8px; font-weight: 900;">セーブデータ</p>
+        <p class="option-help-text">イベント既読・アイテム収集・ヒロイン別満足度/評判・現在の自動保存を削除します。ヒロイン別記録は通常/幼馴染モード別に保存されています。</p>
+        <button class="option-button option-danger-button" data-action="clear-all-save-data">セーブデータ削除</button>
       </div>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>
@@ -27971,6 +27974,17 @@ function saveItemCollection(collection) {
   }
 }
 
+function clearItemCollection() {
+  if (!canUseStorage()) return false;
+  try {
+    localStorage.removeItem(ITEM_COLLECTION_KEY);
+    return true;
+  } catch (e) {
+    console.warn('Failed to clear item collection:', e);
+    return false;
+  }
+}
+
 function registerSeenItems(itemIds, context = {}) {
   const collection = loadItemCollection();
   const now = new Date().toISOString();
@@ -27998,6 +28012,7 @@ module.exports = {
   ITEM_COLLECTION_KEY,
   loadItemCollection,
   saveItemCollection,
+  clearItemCollection,
   registerSeenItems
 };
 
@@ -28123,6 +28138,17 @@ function loadPlayerProgress() {
   }
 }
 
+function clearPlayerProgress() {
+  if (!canUseStorage()) return false;
+  try {
+    localStorage.removeItem(PLAYER_PROGRESS_KEY);
+    return true;
+  } catch (e) {
+    console.warn('Failed to clear player progress:', e);
+    return false;
+  }
+}
+
 function savePlayerProgress(progress) {
   if (!canUseStorage()) return false;
   try {
@@ -28198,6 +28224,7 @@ module.exports = {
   getDefaultPlayerProgress,
   loadPlayerProgress,
   savePlayerProgress,
+  clearPlayerProgress,
   recordEndingProgress,
   getPlayerProgressSummary
 };
@@ -28233,26 +28260,42 @@ const HEROINE_EXPRESSIONS = [
   'student'
 ];
 const RESULT_EXPRESSIONS = ['normal', 'sorrow', 'fun', 'joy'];
-const GAME_START_EXPRESSIONS = ['normal', 'maid', 'social', 'student'];
+const GAME_START_EXPRESSIONS = ['normal'];
 
 function compactUnique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
-function collectHeroineBgmPaths() {
-  const heroines = AUDIO_MANIFEST?.bgm?.heroines || {};
-  return Object.values(heroines).flatMap((entry) => {
-    const paths = [];
-    if (entry?.theme?.path) paths.push(entry.theme.path);
-    if (Array.isArray(entry?.game)) {
-      entry.game.forEach((track) => {
-        if (track?.path) paths.push(track.path);
-      });
-    }
-    if (entry?.ending?.normal?.path) paths.push(entry.ending.normal.path);
-    if (entry?.ending?.good?.path) paths.push(entry.ending.good.path);
-    return paths;
+
+function collectCommonBgmPaths() {
+  const bgm = AUDIO_MANIFEST?.bgm || {};
+  const paths = [];
+  (bgm.system || []).forEach((track) => { if (track?.path) paths.push(track.path); });
+  (bgm.extra || []).forEach((track) => { if (track?.path) paths.push(track.path); });
+  return paths;
+}
+
+function collectSePaths() {
+  const se = AUDIO_MANIFEST?.se || {};
+  const paths = [];
+  Object.values(se).forEach((group) => {
+    if (Array.isArray(group)) group.forEach((track) => { if (track?.path) paths.push(track.path); });
   });
+  return paths;
+}
+
+function collectHeroineBgmPaths(heroineId) {
+  const entry = AUDIO_MANIFEST?.bgm?.heroines?.[heroineId] || null;
+  if (!entry) return [];
+  const paths = [];
+  if (entry?.theme?.path) paths.push(entry.theme.path);
+  if (Array.isArray(entry?.game)) {
+    entry.game.forEach((track) => { if (track?.path) paths.push(track.path); });
+  }
+  if (entry?.ending?.normal?.path) paths.push(entry.ending.normal.path);
+  if (entry?.ending?.good?.path) paths.push(entry.ending.good.path);
+  if (entry?.ending?.secret?.path) paths.push(entry.ending.secret.path);
+  return paths;
 }
 
 function createAssetPreloader() {
@@ -28322,28 +28365,27 @@ function createAssetPreloader() {
     if (openingStarted) return;
     openingStarted = true;
 
-    // ゲーム開始時点で使う基本衣装/表情を先に温める。個別BGMはまだ読まない。
-    const startImagePaths = HEROINE_IDS.flatMap((id) => (
-      GAME_START_EXPRESSIONS.flatMap((expression) => [
-        getCharacterVisualImagePath(id, expression, 'standing'),
-        getCharacterVisualImagePath(id, expression, 'face')
-      ])
-    ));
-    preloadImages(startImagePaths);
+    // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
+    // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
+    const startImagePaths = HEROINE_IDS.flatMap((id) => ([
+      ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
+      ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
+    ]));
+    preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]);
+    return preloadImages(startImagePaths);
   }
 
-  function preloadHeroineSelectAssets() {
-    if (heroineSelectStarted) return;
+  function preloadHeroineSelectAssets(heroineId) {
+    const id = HEROINE_IDS.includes(heroineId) ? heroineId : null;
+    if (!id) return Promise.resolve([]);
     heroineSelectStarted = true;
 
-    const heroineImagePaths = HEROINE_IDS.flatMap((id) => (
-      HEROINE_EXPRESSIONS.flatMap((expression) => [
-        getCharacterVisualImagePath(id, expression, 'standing'),
-        getCharacterVisualImagePath(id, expression, 'face')
-      ])
-    ));
-    preloadImages(heroineImagePaths);
-    preloadAudioPaths(collectHeroineBgmPaths());
+    const heroineImagePaths = HEROINE_EXPRESSIONS.flatMap((expression) => [
+      getCharacterVisualImagePath(id, expression, 'standing'),
+      getCharacterVisualImagePath(id, expression, 'face')
+    ]);
+    preloadAudioPaths(collectHeroineBgmPaths(id));
+    return preloadImages(heroineImagePaths);
   }
 
   function preloadResultExpressions(heroineId, resultExpression) {
@@ -28988,9 +29030,9 @@ const {
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems } = require('./utils/itemCollection.js');
+const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
+const { recordEndingProgress, getPlayerProgressSummary, clearPlayerProgress } = require('./utils/playerProgress.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -29041,7 +29083,6 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
-    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -29049,8 +29090,14 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false
+      turnTransitionActive: false,
+      loadingMessage: '共通データ読込中…'
     };
+
+    Promise.resolve(this.assetPreloader.preloadOpeningAssets()).finally(() => {
+      this.uiState.loadingMessage = null;
+      this.renderLoadingOverlay();
+    });
 
     this.turnTransition = {
       timerId: null,
@@ -29241,7 +29288,6 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
-        this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
@@ -29254,6 +29300,7 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.renderLoadingOverlay();
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
@@ -29371,6 +29418,22 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
+  renderLoadingOverlay() {
+    const root = document.getElementById('game-viewport') || this.container;
+    if (!root) return;
+    let overlay = root.querySelector('.asset-loading-overlay');
+    const message = this.uiState.loadingMessage;
+    if (!message) {
+      if (overlay) overlay.remove();
+      return;
+    }
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'asset-loading-overlay';
+      root.appendChild(overlay);
+    }
+    overlay.innerHTML = `<div class="asset-loading-card"><div class="asset-loading-spinner"></div><p>${message}</p></div>`;
+  }
   updateVnContent(payload) { updateVnContent(this, payload); }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
@@ -29417,9 +29480,19 @@ class GameController {
     }
     return applied;
   }
-  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
+  preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
+  clearAllSaveData() {
+    clearRunSave();
+    clearItemCollection();
+    clearPlayerProgress();
+    this.session = new GameSession();
+    this.quizState = this.createInitialQuizState();
+    this.endingProgressRecorded = false;
+    this.uiState.itemDetailModal = null;
+    this.uiState.titlePanel = null;
+  }
 
   playTurnTransition(callback, mode = 'next') {
     if (this.uiState.turnTransitionActive) return;
@@ -29604,6 +29677,11 @@ class GameController {
         this.closeTitlePanel();
         return;
       }
+      if (this.uiState.titlePanel && target.classList?.contains('title-panel-screen') && !target.closest('.title-panel-card')) {
+        e.stopPropagation();
+        this.closeTitlePanel();
+        return;
+      }
 
       const itemDetailBtn = target.closest('[data-item-detail-index]');
       if (itemDetailBtn) {
@@ -29686,6 +29764,12 @@ class GameController {
         this.closeModal();
         return;
       }
+      if (this.uiState.modal && target.classList?.contains('ui-modal-backdrop') && !target.closest('.ui-modal')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.closeModal();
+        return;
+      }
       if (target.closest('[data-action="toggle-fullscreen"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
@@ -29713,12 +29797,23 @@ class GameController {
         this.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
         return;
       }
+      if (target.closest('[data-action="clear-all-save-data"]')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        const ok = window.confirm('セーブデータ、イベント既読、アイテム収集、ヒロイン別記録を削除します。よろしいですか？');
+        if (ok) {
+          this.clearAllSaveData();
+          this.openModal('options');
+          this.update();
+        }
+        return;
+      }
 
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
-        this.onGlobalAction();
+        this.skipCurrentScene();
         return;
       }
 
@@ -29767,15 +29862,28 @@ class GameController {
     });
   }
 
-  selectHeroine(id, routeMode = 'normal') {
-    if (this.quizState.inputLocked) return;
+  async selectHeroine(id, routeMode = 'normal') {
+    if (this.quizState.inputLocked || this.uiState.loadingMessage) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
+    this.uiState.loadingMessage = 'ヒロインデータ読込中…';
+    this.renderLoadingOverlay();
+    try {
+      await Promise.resolve(this.preloadHeroineSelectAssets(id));
+    } finally {
+      this.uiState.loadingMessage = null;
+    }
     this.endingProgressRecorded = false;
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
+  }
+
+  skipCurrentScene() {
+    const wasTyping = this.isTypewriterActive();
+    if (wasTyping) this.finishTypewriter();
+    this.onGlobalAction();
   }
 
   onGlobalAction() {
