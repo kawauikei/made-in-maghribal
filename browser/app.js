@@ -15,7 +15,8 @@ const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
 const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
 const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
 const { renderQuiz, updateQuizContent } = require('./screens/quizScreen.js');
-const { renderTurnResult, renderEnding } = require('./screens/endingScreen.js');
+const { renderTurnResult } = require('./screens/turnResultScreen.js');
+const { renderEnding } = require('./screens/endingScreen.js');
 
 // Modularized UI Components
 const { updateHud, renderGlobalUi, renderModal } = require('./ui/hud.js');
@@ -26,6 +27,7 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 
 /** Constants */
@@ -50,6 +52,8 @@ class GameController {
     this.session = new GameSession();
     this.container = document.getElementById('app');
     this.sfx = createSfxEngine();
+    this.assetPreloader = createAssetPreloader();
+    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.uiState = {
@@ -184,6 +188,7 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
+        this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         renderEnding(this, view);
@@ -323,6 +328,9 @@ class GameController {
   getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
+  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
+  preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
+  getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
   /**
    * --------------------------------------------------------------------------
