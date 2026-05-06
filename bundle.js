@@ -1523,6 +1523,49 @@ module.exports = { DAILY_TALK_SAMPLES };
 
     };
 
+    // --- ./data/eventMaster.cjs ---
+    modules['./data/eventMaster.cjs'] = function(module, exports, require) {
+/**
+ * Event Master Data
+ * One file to rule them all (for the scenario writer).
+ */
+const EVENT_MASTER = [
+  {
+    id: 'EV_OP_01',
+    heroineId: 'COMMON',
+    title: '砂漠の再会',
+    summary: 'オアシスの街に到着し、懐かしい再会を果たすプロローグ。',
+    condition: '初期解放'
+  },
+  {
+    id: 'EV_HAKIMA_01',
+    heroineId: 'HAKIMA',
+    title: '秘密の茶会',
+    summary: 'ハキマとの距離が縮まる、放課後の特別なひととき。',
+    condition: 'ハキマ 満足度 50以上でクリア'
+  },
+  {
+    id: 'EV_MIRA_01',
+    heroineId: 'MIRA',
+    title: 'バザールの喧騒',
+    summary: 'ミラと一緒に市場を巡り、彼女の意外な一面を知る。',
+    condition: 'ミラ 満足度 50以上でクリア'
+  },
+  {
+    id: 'EV_DARIYA_01',
+    heroineId: 'DARIYA',
+    title: '星降る夜の願い',
+    summary: 'ダリヤと星空を眺めながら、彼女の夢について語り合う。',
+    condition: 'ダリヤ 満足度 50以上でクリア'
+  }
+];
+
+if (typeof module !== 'undefined') {
+  module.exports = { EVENT_MASTER };
+}
+
+    };
+
     // --- ./data/generated/rhythmNoteMaps.cjs ---
     modules['./data/generated/rhythmNoteMaps.cjs'] = function(module, exports, require) {
 /**
@@ -25330,6 +25373,16 @@ function bindInputHandlers(controller) {
       controller.closeTitlePanel();
       return;
     }
+    if (target.closest('[data-action="start-freeplay"]')) {
+      event.stopPropagation();
+      const bgmEl = document.getElementById('freeplay-bgm');
+      const countEl = document.getElementById('freeplay-count');
+      controller.startFreePlay({
+        bgmPath: bgmEl ? bgmEl.value : null,
+        questionCount: countEl ? Number(countEl.value) : 10
+      });
+      return;
+    }
 
     const itemDetailBtn = target.closest('[data-item-detail-index]');
     if (itemDetailBtn) {
@@ -25712,6 +25765,165 @@ function createTypewriterController(options = {}) {
 module.exports = {
   createTypewriterController
 };
+
+    };
+
+    // --- ./data/galleryManifest.js ---
+    modules['./data/galleryManifest.js'] = function(module, exports, require) {
+/**
+ * Generated Gallery Manifest
+ * Do not edit manually. Use tools/sync-gallery.cjs
+ */
+const GALLERY_MANIFEST = [
+  {
+    "id": "bg_market_central",
+    "path": "images/background/bg_market_central.jpeg",
+    "title": "bg market central",
+    "category": "背景"
+  },
+  {
+    "id": "bg_palace_corridor",
+    "path": "images/background/bg_palace_corridor.jpeg",
+    "title": "bg palace corridor",
+    "category": "背景"
+  },
+  {
+    "id": "bg_palace_lab",
+    "path": "images/background/bg_palace_lab.jpeg",
+    "title": "bg palace lab",
+    "category": "背景"
+  },
+  {
+    "id": "bg_shop_exterior_day",
+    "path": "images/background/bg_shop_exterior_day.jpeg",
+    "title": "bg shop exterior day",
+    "category": "背景"
+  },
+  {
+    "id": "bg_shop_exterior_night",
+    "path": "images/background/bg_shop_exterior_night.jpeg",
+    "title": "bg shop exterior night",
+    "category": "背景"
+  },
+  {
+    "id": "bg_shop_interior_service",
+    "path": "images/background/bg_shop_interior_service.jpeg",
+    "title": "bg shop interior service",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_festival_street",
+    "path": "images/background/bg_spot_festival_street.jpeg",
+    "title": "bg spot festival street",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_fountain",
+    "path": "images/background/bg_spot_fountain.jpeg",
+    "title": "bg spot fountain",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_oasis_view",
+    "path": "images/background/bg_spot_oasis_view.jpeg",
+    "title": "bg spot oasis view",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_port_view",
+    "path": "images/background/bg_spot_port_view.jpeg",
+    "title": "bg spot port view",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_ruins",
+    "path": "images/background/bg_spot_ruins.jpeg",
+    "title": "bg spot ruins",
+    "category": "背景"
+  },
+  {
+    "id": "bg_spot_star_view",
+    "path": "images/background/bg_spot_star_view.jpeg",
+    "title": "bg spot star view",
+    "category": "背景"
+  },
+  {
+    "id": "still_dariya_after_hours_01",
+    "path": "images/still/still_dariya_after_hours_01.jpeg",
+    "title": "still dariya after hours 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_dariya_limit_night_01",
+    "path": "images/still/still_dariya_limit_night_01.jpeg",
+    "title": "still dariya limit night 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_dariya_palace_collaboration_01",
+    "path": "images/still/still_dariya_palace_collaboration_01.jpeg",
+    "title": "still dariya palace collaboration 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_dariya_rain_corridor_01",
+    "path": "images/still/still_dariya_rain_corridor_01.jpeg",
+    "title": "still dariya rain corridor 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_hakima_festival_night_01",
+    "path": "images/still/still_hakima_festival_night_01.jpeg",
+    "title": "still hakima festival night 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_hakima_market_argument_01",
+    "path": "images/still/still_hakima_market_argument_01.jpeg",
+    "title": "still hakima market argument 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_hakima_morning_visit_01",
+    "path": "images/still/still_hakima_morning_visit_01.jpeg",
+    "title": "still hakima morning visit 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_hakima_rain_shelter_01",
+    "path": "images/still/still_hakima_rain_shelter_01.jpeg",
+    "title": "still hakima rain shelter 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_mira_after_school_01",
+    "path": "images/still/still_mira_after_school_01.jpeg",
+    "title": "still mira after school 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_mira_assignment_consult_01",
+    "path": "images/still/still_mira_assignment_consult_01.jpeg",
+    "title": "still mira assignment consult 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_mira_starry_rooftop_01",
+    "path": "images/still/still_mira_starry_rooftop_01.jpeg",
+    "title": "still mira starry rooftop 01",
+    "category": "スチル"
+  },
+  {
+    "id": "still_mira_visit_sick_01",
+    "path": "images/still/still_mira_visit_sick_01.jpeg",
+    "title": "still mira visit sick 01",
+    "category": "スチル"
+  }
+];
+
+if (typeof module !== 'undefined') {
+    module.exports = { GALLERY_MANIFEST };
+}
 
     };
 
@@ -26459,12 +26671,15 @@ const { ITEM_TEXTS } = require('../data/itemTexts.cjs');
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
+const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
+const { EVENT_MASTER } = require('../data/eventMaster.cjs');
 
 const PANEL_TITLES = {
   event: 'イベント集',
   image: '画像集',
   sound: '音楽集',
-  item: 'アイテム図鑑'
+  item: 'アイテム図鑑',
+  freeplay: 'フリープレイ'
 };
 
 const GENRE_LABELS = {
@@ -26557,6 +26772,7 @@ function renderPanelBody(controller, panel) {
   if (panel === 'sound') return renderSoundTest(controller);
   if (panel === 'event') return renderEventGallery(controller);
   if (panel === 'image') return renderImageGallery(controller);
+  if (panel === 'freeplay') return renderFreePlay(controller);
   return renderPlaceholder(panel);
 }
 
@@ -26756,52 +26972,91 @@ function renderItemGallery(controller) {
 
 function renderEventGallery(controller) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const cards = Object.entries(HEROINE_LABELS).map(([heroineId, name]) => {
-    const normal = progress?.endings?.[heroineId]?.normal || {};
-    const longHistory = progress?.endings?.[heroineId]?.long_history || {};
-    const unlocked = progress?.heroineModeUnlocks?.[heroineId]?.long_history;
-    const best = progress?.bestRecords?.[heroineId]?.normal || {};
+  const cards = EVENT_MASTER.map((ev) => {
+    const isCommon = ev.heroineId === 'COMMON';
+    // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
+    const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+    
     return `
-      <div class="locked-gallery-card${normal.normalCleared || longHistory.normalCleared ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">✦</div>
-        <h3>${name}</h3>
-        <p>通常: ${normal.goodCleared ? 'GOOD済み' : (normal.normalCleared ? 'CLEAR済み' : '未クリア')}</p>
-        <p>IF: ${unlocked ? '解放済み' : '未解放'} / ${longHistory.goodCleared ? 'GOOD済み' : (longHistory.normalCleared ? 'CLEAR済み' : '未クリア')}</p>
-        <small>最高 満足度${best.satisfaction || 0} / 評判${best.reputation || 0}</small>
+      <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
+        <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
+        <div class="locked-gallery-content">
+          <h3>${isCleared ? escapeHtml(ev.title) : '？？？？'}</h3>
+          <p>${isCleared ? escapeHtml(ev.summary) : '営業をクリアして解放'}</p>
+          <small>${isCleared ? escapeHtml(HEROINE_LABELS[ev.heroineId] || '共通') : ev.condition}</small>
+        </div>
       </div>
     `;
   }).join('');
 
   return `
     <div class="locked-gallery-panel">
-      <div class="title-panel-summary">エンディング記録とモード解放状態を保存中</div>
+      <div class="title-panel-summary">物語の記録</div>
       <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">イベント単位の閲覧フラグは後続接続です。現在はヒロイン別のクリア記録を先に表示します。</p>
+      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます（現在リスト表示のみ）。</p>
     </div>
   `;
 }
 
 function renderImageGallery(controller) {
-  const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const imageSeenCount = progress?.imageSeenCount || 0;
-  const cards = [
-    ['背景', 'タイトル・店内・オアシスなどの解放済み背景'],
-    ['スチル', 'エンディングやイベント用の一枚絵'],
-    ['キャラ', 'standing/face_proc 参照の確認用一覧']
-  ].map(([title, note]) => `
-    <div class="locked-gallery-card">
-      <div class="locked-gallery-mark">◇</div>
-      <h3>${title}</h3>
-      <p>${note}</p>
-      <small>Coming Later</small>
-    </div>
-  `).join('');
+  const items = GALLERY_MANIFEST.map((img) => {
+    // For now, background images are mostly unlocked, stills are locked if not cleared
+    const isStill = img.category === 'スチル';
+    const isUnlocked = !isStill; // Simplified for now
+    
+    return `
+      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}">
+        <div class="locked-gallery-mark">${isStill ? '🖼️' : '🏞️'}</div>
+        <div class="locked-gallery-content">
+          <h3>${isUnlocked ? escapeHtml(img.title) : '？？？？'}</h3>
+          <p>${escapeHtml(img.category)}</p>
+          ${isUnlocked ? `<img src="${img.path}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-top: 8px;" />` : '<small>Locked</small>'}
+        </div>
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="locked-gallery-panel">
-      <div class="title-panel-summary">画像ギャラリーの入口を固定済み / 解放 ${imageSeenCount}件</div>
-      <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">bustup_proc は使わず、既存の standing_proc / face_proc 方針に合わせて後続接続します。</p>
+      <div class="title-panel-summary">視覚の記録</div>
+      <div class="locked-gallery-grid">${items}</div>
+      <p class="title-panel-note">解放済みの背景やスチルを閲覧できます。</p>
+    </div>
+  `;
+}
+
+function renderFreePlay(controller) {
+  const bgmGroups = buildBgmGroups();
+  const options = bgmGroups.flatMap(g => g.tracks).map(track => {
+    const label = formatTrackButtonLabel(track.kind, track.title || track.label || track.id);
+    return `<option value="${track.path}">${escapeHtml(label)}</option>`;
+  }).join('');
+
+  return `
+    <div class="title-panel-empty">
+      <div class="load-save-card">
+        <h3>フリー接客設定</h3>
+        <div class="load-save-meta">
+          <div class="load-save-row">
+            <span>BGM</span>
+            <select id="freeplay-bgm" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+              ${options}
+            </select>
+          </div>
+          <div class="load-save-row">
+            <span>問題数</span>
+            <select id="freeplay-count" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+              <option value="5">5問</option>
+              <option value="10" selected>10問</option>
+              <option value="20">20問</option>
+            </select>
+          </div>
+        </div>
+        <div class="load-save-actions">
+          <button class="title-start-btn" type="button" data-action="start-freeplay">接客開始</button>
+        </div>
+        <p class="title-panel-note">好きなBGMで接客の練習ができます。</p>
+      </div>
     </div>
   `;
 }
@@ -26987,8 +27242,7 @@ function renderTitle(controller, view) {
           <button class="title-menu-btn" type="button" data-title-panel="sound">音楽集</button>
           <button class="title-menu-btn" type="button" data-title-panel="item">アイテム図鑑</button>
           <button class="title-menu-btn" type="button" data-action="open-options">設定画面</button>
-          <button class="title-menu-btn" type="button" data-title-stub="フリープレイ">フリープレイ</button>
-          ${debugButton}
+          <button class="title-menu-btn" type="button" data-title-panel="freeplay">フリープレイ</button>
         </div>
         <p class="title-stub-message" data-title-stub-message></p>
       </div>
@@ -28346,7 +28600,7 @@ function applyDebugJump(controller, jump) {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
     controller.session.routeMode = 'normal';
-    controller.session.turn = 1;
+    controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'QUIZ';
     controller.startQuiz();
     return;
@@ -29796,7 +30050,7 @@ class GameController {
   }
 
   toggleFullscreen() {
-    const root = document.getElementById('game-viewport');
+    const root = document.documentElement;
     if (!document.fullscreenElement) {
       if (root?.requestFullscreen) root.requestFullscreen();
       else if (root?.webkitRequestFullscreen) root.webkitRequestFullscreen();
@@ -29974,6 +30228,30 @@ class GameController {
     return applied;
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
+  
+  startFreePlay({ bgmPath, questionCount }) {
+    this.clearTypewriter();
+    this.playSfx('uiConfirmChime');
+    
+    // Setup free play session
+    this.session.phase = 'MAIN_GAME';
+    this.session.subPhase = 'QUIZ';
+    this.session.selectedHeroineId = 'HAKIMA'; // Default
+    this.session.turn = 1; 
+    
+    this.quizState = this.createInitialQuizState();
+    this.quizState.totalQuestions = questionCount || 10;
+    
+    // Force specific BGM if provided
+    if (bgmPath && this.bgm) {
+        this.bgm.play({ path: bgmPath, id: 'freeplay' });
+    }
+    
+    this.uiState.titlePanel = null;
+    this.startQuiz();
+    this.update();
+  }
+
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
