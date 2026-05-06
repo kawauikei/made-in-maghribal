@@ -43,6 +43,7 @@ const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
+const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -104,12 +105,8 @@ class GameController {
       turnTransitionActive: false
     };
 
-    this.turnTransition = {
-      timerId: null,
-      tickTimerIds: [],
-      callback: null,
-      finishing: false
-    };
+    this.totalTurns = TOTAL_TURNS;
+    this.turnTransition = createTurnTransitionController(this);
 
     this.typewriter = createTypewriterController({
       getDelayMs: () => TEXT_SPEED_MS[this.settings.textSpeed] || 32,
@@ -433,102 +430,11 @@ class GameController {
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
   playTurnTransition(callback, mode = 'next') {
-    if (this.uiState.turnTransitionActive) return;
-
-    this.uiState.turnTransitionActive = true;
-    this.turnTransition.callback = callback;
-    this.turnTransition.tickTimerIds = [];
-    this.turnTransition.finishing = false;
-
-    const viewport = document.getElementById('game-viewport') || this.container;
-    const oldOverlay = viewport.querySelector('.turn-transition-overlay');
-    if (oldOverlay) oldOverlay.remove();
-
-    const nextTurn = Math.min(TOTAL_TURNS, this.session.turn + 1);
-    const isEnding = mode === 'ending';
-    const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
-    const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
-
-    const overlay = document.createElement('div');
-    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
-    overlay.setAttribute('data-action', 'skip-turn-transition');
-    overlay.innerHTML = `
-      <div class="turn-transition-darkness" aria-hidden="true"></div>
-      <div class="turn-transition-clock-wrap" aria-hidden="true">
-        <img class="turn-transition-clock" src="images/ui/turn_clock.png" alt="" draggable="false">
-        <div class="turn-transition-clock-glow"></div>
-        <div class="turn-transition-clock-shadow"></div>
-      </div>
-      <div class="turn-transition-copy">
-        <p class="turn-transition-label">${title}</p>
-        <p class="turn-transition-subtitle">${subtitle}</p>
-        <p class="turn-transition-skip">クリックでスキップ</p>
-      </div>
-    `;
-    viewport.appendChild(overlay);
-
-    const fadeInMs = 1000;
-    const introHoldMs = 500;
-    const stepMs = 1000;
-    const restMs = 200;
-    const stepCount = 5;
-    const postHoldMs = 500;
-    const fadeOutMs = 1000;
-    const rotateStartMs = fadeInMs + introHoldMs;
-    const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
-    const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
-
-    Array.from({ length: stepCount }, (_, index) => rotateStartMs + (index * (stepMs + restMs))).forEach((delay) => {
-      const timerId = window.setTimeout(() => {
-        if (this.uiState.turnTransitionActive && !this.turnTransition.finishing) this.playSfx('turnClockTick');
-      }, delay);
-      this.turnTransition.tickTimerIds.push(timerId);
-    });
-
-    this.turnTransition.timerId = window.setTimeout(() => {
-      this.finishTurnTransition(false);
-    }, exitStartMs);
-
-    this.turnTransition.fadeOutMs = fadeOutMs;
+    this.turnTransition.play(callback, mode);
   }
 
   finishTurnTransition(skip = false) {
-    if (!this.uiState.turnTransitionActive || this.turnTransition.finishing) return;
-    this.turnTransition.finishing = true;
-
-    if (this.turnTransition.timerId) {
-      window.clearTimeout(this.turnTransition.timerId);
-      this.turnTransition.timerId = null;
-    }
-
-    if (Array.isArray(this.turnTransition.tickTimerIds)) {
-      this.turnTransition.tickTimerIds.forEach((timerId) => window.clearTimeout(timerId));
-      this.turnTransition.tickTimerIds = [];
-    }
-
-    const overlay = document.querySelector('.turn-transition-overlay');
-    const fadeMs = skip ? 500 : (this.turnTransition.fadeOutMs || 1000);
-
-    const complete = () => {
-      const callback = this.turnTransition.callback;
-      this.turnTransition.callback = null;
-      this.turnTransition.finishing = false;
-      this.turnTransition.fadeOutMs = null;
-      this.uiState.turnTransitionActive = false;
-
-      if (overlay) overlay.remove();
-      if (typeof callback === 'function') callback();
-    };
-
-    if (!overlay) {
-      complete();
-      return;
-    }
-
-    overlay.classList.add('is-exiting');
-    if (skip) overlay.classList.add('is-skipping');
-
-    this.turnTransition.timerId = window.setTimeout(complete, fadeMs);
+    this.turnTransition.finish(skip);
   }
 
 
