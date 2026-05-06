@@ -113,7 +113,7 @@ function renderOptionsModal(controller, container) {
 
   container.innerHTML = `
     <div class="ui-modal options-modal">
-      <h2>設定</h2>
+      <h2>設定画面</h2>
       <div class="option-row">
         <p style="margin-bottom: 10px; font-weight: 800;">テキスト速度</p>
         <div class="option-buttons">
@@ -127,6 +127,11 @@ function renderOptionsModal(controller, container) {
         <p style="margin-bottom: 10px; font-weight: 800;">音量</p>
         ${renderAudioRow('bgm', 'BGM', bgmOn, bgmVol)}
         ${renderAudioRow('sfx', 'SE', sfxOn, sfxVol)}
+      </div>
+      <div class="option-row option-danger-row">
+        <p style="margin-bottom: 8px; font-weight: 900;">セーブデータ</p>
+        <p class="option-help-text">イベント既読・アイテム収集・ヒロイン別満足度/評判・現在の自動保存を削除します。ヒロイン別記録は通常/幼馴染モード別に保存されています。</p>
+        <button class="option-button option-danger-button" data-action="clear-all-save-data">セーブデータ削除</button>
       </div>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>

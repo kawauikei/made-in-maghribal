@@ -245,3 +245,14 @@
     inset 0 1px 0 rgba(255,241,179,0.30),
     inset 0 -1px 0 rgba(0,0,0,0.42);
 }
+
+/* CHARACTER-SOFTEN-1: soften enlarged standing sprites without editing source images. */
+.standing-char,
+.heroine-preview-standing img,
+.result-heroine-standing {
+  image-rendering: auto;
+}
+
+.standing-char {
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px);
+}

@@ -13,10 +13,9 @@ const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 
 const PANEL_TITLES = {
-  load: 'ロード',
-  event: 'イベントギャラリー',
-  image: '画像ギャラリー',
-  sound: 'サウンドテスト',
+  event: 'イベント集',
+  image: '画像集',
+  sound: '音楽集',
   item: 'アイテム図鑑'
 };
 
@@ -108,7 +107,6 @@ function renderTitlePanel(controller, view) {
 function renderPanelBody(controller, panel) {
   if (panel === 'item') return renderItemGallery(controller);
   if (panel === 'sound') return renderSoundTest(controller);
-  if (panel === 'load') return renderLoadPanel(controller);
   if (panel === 'event') return renderEventGallery(controller);
   if (panel === 'image') return renderImageGallery(controller);
   return renderPlaceholder(panel);

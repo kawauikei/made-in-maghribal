@@ -25,26 +25,42 @@ const HEROINE_EXPRESSIONS = [
   'student'
 ];
 const RESULT_EXPRESSIONS = ['normal', 'sorrow', 'fun', 'joy'];
-const GAME_START_EXPRESSIONS = ['normal', 'maid', 'social', 'student'];
+const GAME_START_EXPRESSIONS = ['normal'];
 
 function compactUnique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
-function collectHeroineBgmPaths() {
-  const heroines = AUDIO_MANIFEST?.bgm?.heroines || {};
-  return Object.values(heroines).flatMap((entry) => {
-    const paths = [];
-    if (entry?.theme?.path) paths.push(entry.theme.path);
-    if (Array.isArray(entry?.game)) {
-      entry.game.forEach((track) => {
-        if (track?.path) paths.push(track.path);
-      });
-    }
-    if (entry?.ending?.normal?.path) paths.push(entry.ending.normal.path);
-    if (entry?.ending?.good?.path) paths.push(entry.ending.good.path);
-    return paths;
+
+function collectCommonBgmPaths() {
+  const bgm = AUDIO_MANIFEST?.bgm || {};
+  const paths = [];
+  (bgm.system || []).forEach((track) => { if (track?.path) paths.push(track.path); });
+  (bgm.extra || []).forEach((track) => { if (track?.path) paths.push(track.path); });
+  return paths;
+}
+
+function collectSePaths() {
+  const se = AUDIO_MANIFEST?.se || {};
+  const paths = [];
+  Object.values(se).forEach((group) => {
+    if (Array.isArray(group)) group.forEach((track) => { if (track?.path) paths.push(track.path); });
   });
+  return paths;
+}
+
+function collectHeroineBgmPaths(heroineId) {
+  const entry = AUDIO_MANIFEST?.bgm?.heroines?.[heroineId] || null;
+  if (!entry) return [];
+  const paths = [];
+  if (entry?.theme?.path) paths.push(entry.theme.path);
+  if (Array.isArray(entry?.game)) {
+    entry.game.forEach((track) => { if (track?.path) paths.push(track.path); });
+  }
+  if (entry?.ending?.normal?.path) paths.push(entry.ending.normal.path);
+  if (entry?.ending?.good?.path) paths.push(entry.ending.good.path);
+  if (entry?.ending?.secret?.path) paths.push(entry.ending.secret.path);
+  return paths;
 }
 
 function createAssetPreloader() {
@@ -114,28 +130,27 @@ function createAssetPreloader() {
     if (openingStarted) return;
     openingStarted = true;
 
-    // ゲーム開始時点で使う基本衣装/表情を先に温める。個別BGMはまだ読まない。
-    const startImagePaths = HEROINE_IDS.flatMap((id) => (
-      GAME_START_EXPRESSIONS.flatMap((expression) => [
-        getCharacterVisualImagePath(id, expression, 'standing'),
-        getCharacterVisualImagePath(id, expression, 'face')
-      ])
-    ));
-    preloadImages(startImagePaths);
+    // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
+    // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
+    const startImagePaths = HEROINE_IDS.flatMap((id) => ([
+      ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
+      ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
+    ]));
+    preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]);
+    return preloadImages(startImagePaths);
   }
 
-  function preloadHeroineSelectAssets() {
-    if (heroineSelectStarted) return;
+  function preloadHeroineSelectAssets(heroineId) {
+    const id = HEROINE_IDS.includes(heroineId) ? heroineId : null;
+    if (!id) return Promise.resolve([]);
     heroineSelectStarted = true;
 
-    const heroineImagePaths = HEROINE_IDS.flatMap((id) => (
-      HEROINE_EXPRESSIONS.flatMap((expression) => [
-        getCharacterVisualImagePath(id, expression, 'standing'),
-        getCharacterVisualImagePath(id, expression, 'face')
-      ])
-    ));
-    preloadImages(heroineImagePaths);
-    preloadAudioPaths(collectHeroineBgmPaths());
+    const heroineImagePaths = HEROINE_EXPRESSIONS.flatMap((expression) => [
+      getCharacterVisualImagePath(id, expression, 'standing'),
+      getCharacterVisualImagePath(id, expression, 'face')
+    ]);
+    preloadAudioPaths(collectHeroineBgmPaths(id));
+    return preloadImages(heroineImagePaths);
   }
 
   function preloadResultExpressions(heroineId, resultExpression) {

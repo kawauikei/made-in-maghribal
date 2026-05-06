@@ -39,9 +39,9 @@ const {
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems } = require('./utils/itemCollection.js');
+const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
+const { recordEndingProgress, getPlayerProgressSummary, clearPlayerProgress } = require('./utils/playerProgress.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -92,7 +92,6 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
-    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -100,8 +99,14 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false
+      turnTransitionActive: false,
+      loadingMessage: '共通データ読込中…'
     };
+
+    Promise.resolve(this.assetPreloader.preloadOpeningAssets()).finally(() => {
+      this.uiState.loadingMessage = null;
+      this.renderLoadingOverlay();
+    });
 
     this.turnTransition = {
       timerId: null,
@@ -292,7 +297,6 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
-        this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
@@ -305,6 +309,7 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.renderLoadingOverlay();
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
@@ -422,6 +427,22 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
+  renderLoadingOverlay() {
+    const root = document.getElementById('game-viewport') || this.container;
+    if (!root) return;
+    let overlay = root.querySelector('.asset-loading-overlay');
+    const message = this.uiState.loadingMessage;
+    if (!message) {
+      if (overlay) overlay.remove();
+      return;
+    }
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'asset-loading-overlay';
+      root.appendChild(overlay);
+    }
+    overlay.innerHTML = `<div class="asset-loading-card"><div class="asset-loading-spinner"></div><p>${message}</p></div>`;
+  }
   updateVnContent(payload) { updateVnContent(this, payload); }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
@@ -468,9 +489,19 @@ class GameController {
     }
     return applied;
   }
-  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
+  preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
+  clearAllSaveData() {
+    clearRunSave();
+    clearItemCollection();
+    clearPlayerProgress();
+    this.session = new GameSession();
+    this.quizState = this.createInitialQuizState();
+    this.endingProgressRecorded = false;
+    this.uiState.itemDetailModal = null;
+    this.uiState.titlePanel = null;
+  }
 
   playTurnTransition(callback, mode = 'next') {
     if (this.uiState.turnTransitionActive) return;
@@ -655,6 +686,11 @@ class GameController {
         this.closeTitlePanel();
         return;
       }
+      if (this.uiState.titlePanel && target.classList?.contains('title-panel-screen') && !target.closest('.title-panel-card')) {
+        e.stopPropagation();
+        this.closeTitlePanel();
+        return;
+      }
 
       const itemDetailBtn = target.closest('[data-item-detail-index]');
       if (itemDetailBtn) {
@@ -737,6 +773,12 @@ class GameController {
         this.closeModal();
         return;
       }
+      if (this.uiState.modal && target.classList?.contains('ui-modal-backdrop') && !target.closest('.ui-modal')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.closeModal();
+        return;
+      }
       if (target.closest('[data-action="toggle-fullscreen"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
@@ -764,12 +806,23 @@ class GameController {
         this.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
         return;
       }
+      if (target.closest('[data-action="clear-all-save-data"]')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        const ok = window.confirm('セーブデータ、イベント既読、アイテム収集、ヒロイン別記録を削除します。よろしいですか？');
+        if (ok) {
+          this.clearAllSaveData();
+          this.openModal('options');
+          this.update();
+        }
+        return;
+      }
 
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
-        this.onGlobalAction();
+        this.skipCurrentScene();
         return;
       }
 
@@ -818,15 +871,28 @@ class GameController {
     });
   }
 
-  selectHeroine(id, routeMode = 'normal') {
-    if (this.quizState.inputLocked) return;
+  async selectHeroine(id, routeMode = 'normal') {
+    if (this.quizState.inputLocked || this.uiState.loadingMessage) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
+    this.uiState.loadingMessage = 'ヒロインデータ読込中…';
+    this.renderLoadingOverlay();
+    try {
+      await Promise.resolve(this.preloadHeroineSelectAssets(id));
+    } finally {
+      this.uiState.loadingMessage = null;
+    }
     this.endingProgressRecorded = false;
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
+  }
+
+  skipCurrentScene() {
+    const wasTyping = this.isTypewriterActive();
+    if (wasTyping) this.finishTypewriter();
+    this.onGlobalAction();
   }
 
   onGlobalAction() {

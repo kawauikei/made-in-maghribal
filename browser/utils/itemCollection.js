@@ -37,6 +37,17 @@ function saveItemCollection(collection) {
   }
 }
 
+function clearItemCollection() {
+  if (!canUseStorage()) return false;
+  try {
+    localStorage.removeItem(ITEM_COLLECTION_KEY);
+    return true;
+  } catch (e) {
+    console.warn('Failed to clear item collection:', e);
+    return false;
+  }
+}
+
 function registerSeenItems(itemIds, context = {}) {
   const collection = loadItemCollection();
   const now = new Date().toISOString();
@@ -64,5 +75,6 @@ module.exports = {
   ITEM_COLLECTION_KEY,
   loadItemCollection,
   saveItemCollection,
+  clearItemCollection,
   registerSeenItems
 };

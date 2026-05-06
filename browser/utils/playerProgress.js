@@ -116,6 +116,17 @@ function loadPlayerProgress() {
   }
 }
 
+function clearPlayerProgress() {
+  if (!canUseStorage()) return false;
+  try {
+    localStorage.removeItem(PLAYER_PROGRESS_KEY);
+    return true;
+  } catch (e) {
+    console.warn('Failed to clear player progress:', e);
+    return false;
+  }
+}
+
 function savePlayerProgress(progress) {
   if (!canUseStorage()) return false;
   try {
@@ -191,6 +202,7 @@ module.exports = {
   getDefaultPlayerProgress,
   loadPlayerProgress,
   savePlayerProgress,
+  clearPlayerProgress,
   recordEndingProgress,
   getPlayerProgressSummary
 };

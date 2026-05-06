@@ -1218,3 +1218,9 @@
   border-radius: inherit;
   pointer-events: none;
 }
+
+/* CHARACTER-SOFTEN-1: result standing uses the same soft display policy. */
+.result-heroine-standing {
+  image-rendering: auto;
+  filter: blur(0.34px) drop-shadow(0 12px 24px rgba(0,0,0,0.35));
+}

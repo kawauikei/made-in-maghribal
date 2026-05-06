@@ -3,7 +3,7 @@
 このファイルは KawazuConstructHub が生成した案内図です。手で編集しないでください。
 
 ## Project
-- generated_at: `2026-05-07T00:43:40.741763+09:00`
+- generated_at: `2026-05-07T00:54:34.509211+09:00`
 - root: `c:/AI/projects/P0007_MadeInMaghribalt3`
 - registry: `.kawazu\construct\contracts.json`
 
