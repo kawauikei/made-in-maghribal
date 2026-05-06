@@ -18,6 +18,7 @@ const FILES_ORDER = [
   '30_vn.css',
   '40_quiz.css',
   '50_result_ending.css',
+  '51_turn_result.css',
   '90_debug.css'
 ];
 
