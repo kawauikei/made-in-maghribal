@@ -1,58 +1,64 @@
 # Contract Specification: C011_RENDER_MODEL
 
 ## Overview
-現在状態（GameSession等）から画面表示用JSONを作る。ブラウザDOM実装には依存しない。
+
+現在の実装範囲では、VNシナリオステップおよびリズムクイズ問題を、ブラウザDOMに依存しない画面表示用JSONへ変換する。
+
+TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装であり、本コントラクトの完了済み範囲には含めない。必要になった段階で、仕様、実装、テストを同時に追加する。
 
 ## Responsibility
-- ゲームの論理状態（Session, Data）をUIコンポーネントが消費しやすい「描画モデル（JSON）」に変換する。
-- フェーズに応じた必要な表示情報の集計。
-- 立ち絵と話者アイコンの整合性確保。
-- ブラウザ環境（DOM, CSS, Canvas, Audio API）から完全に分離された純粋な変換ロジック。
+
+- VN表示に必要な背景、立ち絵、話者、本文、選択肢を描画モデルへ変換する。
+- RHYTHM QUIZ表示に必要な楽曲ID、問題文、2択アイテム、進行状況、スコアを描画モデルへ変換する。
+- ブラウザ環境（DOM、CSS、Canvas、Audio API）から分離された純粋な変換ロジックとして動作する。
 
 ## Data Structures
 
-### Render Models
+### VN Render Model
 
-#### TITLE 表示モデル
-- `title`: ゲームタイトル
-- `backgroundId`: 背景画像ID
-- `canContinue`: セーブデータが存在し、続きから可能か
-- `lastHeroineId`: 前回選択したヒロインID
+- `backgroundId`: 背景画像ID。未指定時は `AS_BG_SHOP`。
+- `standing`: 中央立ち絵。存在しない場合は `null`。
+  - `characterId`: キャラクターID。
+  - `expressionId`: 表情ID。
+- `speaker`: 話者情報。話者がいない場合、または不明な話者IDの場合は `null`。
+  - `name`: 話者名。
+  - `iconAssetId`: `AS_IC_{speakerId}_{expression}` 形式のアイコンID。
+- `text`: 表示本文。
+- `choices`: 選択肢配列。未指定時は空配列。
 
-#### HEROINE_SELECT 表示モデル
-- `heroines`: ヒロイン情報リスト（ID, 名前, 説明, 解放状態, アイコン, 持ち越し値）
-- `canSelectExtra`: Extra Routeが選択可能か
+### Rhythm Quiz Render Model
 
-#### VN 表示モデル
-- `backgroundId`: 背景画像ID
-- `standing`: { characterId, expressionId, visualProfile } (中央立ち絵)
-- `speaker`: { name, iconAssetId, visualProfile } (話者)
-- `text`: 表示本文
-- `choices`: 選択肢リスト（テキスト, ID）
-
-#### RHYTHM QUIZ 表示モデル
-- `songId`: 再生中の楽曲ID
-- `question`: { promptText, choices: [{ itemId, name, iconAssetId }] }
-- `progress`: { current, total }
-- `stats`: { revenue, satisfaction, reputation }
-- `visuals`: { stageType, effectType }
-
-#### TURN RESULT 表示モデル
-- `turn`: 対象ターン
-- `stats`: { revenue, satisfaction, reputation, totalScore, rank }
-- `heroineComment`: ヒロインからの一言
-- `unlocks`: 解放されたアイテムや実績情報
+- `songId`: `session.currentSong`。
+- `question`: 現在問題。
+  - `promptText`: 問題文。
+  - `choices`: 正解アイテムと不正解アイテムの2択。
+- `progress`: 進行状況。
+  - `current`: `session.turnProgress`。未指定時は `0`。
+  - `total`: 現行実装では `10`。
+- `stats`: `session.scores`。
 
 ## Logic Rules
-- `GameSession` インスタンスおよび `SaveData` 状態を入力として受け取り、描画モデルを構築する。
-- 立ち絵表示には `characterVisualProfiles.js` で定義されたプロファイル情報を付与し、ブラウザ側での正確な描画を支援する。
-- `RenderModel` 自体は変換器であり、副作用（描画実行）を持たない。
+
+- `RenderModel` は変換器であり、副作用を持たない。
+- DOM、CSS、Canvas、Audio API、`public/` への書き込みに依存しない。
+- VN話者は `src/data/characters.cjs` の `CHARACTERS` から解決する。
+- VN話者表情が未指定の場合、話者アイコンIDの表情部分は `normal` とする。
+- VN選択肢が未指定の場合、`choices` は `[]` とする。
+
+## Out of Scope
+
+以下は現ソースでは未実装のため、本コントラクトの完了済み範囲から除外する。
+
+- TITLE表示モデル。
+- HEROINE_SELECT表示モデル。
+- TURN_RESULT表示モデル。
+- セーブデータ有無に基づくTITLE画面の「続きから」状態モデル化。
+- ブラウザ具体層のDOM生成、CSS適用、Audio制御。
 
 ## Acceptance Criteria
-- [x] TITLE表示モデルを返せる。
-- [x] HEROINE_SELECT表示モデルでヒロイン説明、解放状態、持ち越し値を返せる。
-- [x] VN表示モデルで背景、中央立ち絵、話者名、話者アイコン、本文を返せる。
-- [x] RHYTHM表示モデルで現在問題、2択アイテム、楽曲ID、残り問題数を返せる。
-- [x] TURN RESULT表示モデルで売上、満足度、評判、ヒロイン一言、ランクを返せる。
+
+- [x] VN表示モデルで背景、中央立ち絵、話者名、話者アイコン、本文、選択肢を返せる。
+- [x] VN表示モデルで話者または立ち絵が無い場合に `null` を返せる。
+- [x] RHYTHM表示モデルで現在問題、2択アイテム、楽曲ID、進行状況、スコアを返せる。
 - [x] Render ModelはDOM、CSS、Audio API、public path書き込みに依存しない。
-- [ ] **セーブデータの有無に基づき、TITLE画面での「続きから」状態を正確にモデル化できる。**
+- [ ] TITLE / HEROINE_SELECT / TURN_RESULT の表示モデルを正式に扱う場合は、仕様、実装、テストを追加する。

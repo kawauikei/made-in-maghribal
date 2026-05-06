@@ -3,6 +3,35 @@
  */
 const { CHARACTERS } = require('../data/characters.cjs');
 
+function findCharacter(characterId) {
+  return CHARACTERS.find((character) => character.characterId === characterId) || null;
+}
+
+function buildSpeakerModel(step) {
+  if (!step.speakerId) return null;
+  const speakerChar = findCharacter(step.speakerId);
+  if (!speakerChar) return null;
+  return {
+    name: speakerChar.name,
+    iconAssetId: `AS_IC_${step.speakerId}_${step.speakerExpression || 'normal'}`
+  };
+}
+
+function buildStandingModel(step) {
+  if (!step.standingCharacterId) return null;
+  return {
+    characterId: step.standingCharacterId,
+    expressionId: step.standingExpression
+  };
+}
+
+function buildRhythmChoices(question) {
+  return [
+    { itemId: question.correctItemId, name: "Correct Option" },
+    { itemId: question.wrongItemId, name: "Wrong Option" }
+  ];
+}
+
 /**
  * Transforms VN scenario step and session state into a render model.
  * @param {object} session 
@@ -10,18 +39,10 @@ const { CHARACTERS } = require('../data/characters.cjs');
  * @returns {object}
  */
 function getVnRenderModel(session, step) {
-  const speakerChar = step.speakerId ? CHARACTERS.find(c => c.characterId === step.speakerId) : null;
-  
   return {
     backgroundId: step.backgroundId || 'AS_BG_SHOP',
-    standing: step.standingCharacterId ? {
-      characterId: step.standingCharacterId,
-      expressionId: step.standingExpression
-    } : null,
-    speaker: speakerChar ? {
-      name: speakerChar.name,
-      iconAssetId: `AS_IC_${step.speakerId}_${step.speakerExpression || 'normal'}`
-    } : null,
+    standing: buildStandingModel(step),
+    speaker: buildSpeakerModel(step),
     text: step.text,
     choices: step.choice || []
   };
@@ -38,10 +59,7 @@ function getRhythmRenderModel(session, question) {
     songId: session.currentSong,
     question: {
       promptText: question.promptText,
-      choices: [
-        { itemId: question.correctItemId, name: "Correct Option" },
-        { itemId: question.wrongItemId, name: "Wrong Option" }
-      ]
+      choices: buildRhythmChoices(question)
     },
     progress: { current: session.turnProgress || 0, total: 10 },
     stats: session.scores

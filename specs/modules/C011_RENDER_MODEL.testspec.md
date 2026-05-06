@@ -1,85 +1,72 @@
-```markdown
-# テスト仕様書：C011_RENDER_MODEL
+# Test Specification: C011_RENDER_MODEL
 
-## 概要
-本仕様書は、ゲームの現在の状態（`GameSession`など）を、UIコンポーネントが直接利用できる「描画モデル（JSON）」に変換するロジックのテスト仕様を定義する。この変換ロジックは、特定のブラウザDOM実装やCSS、Audio APIへの依存を排除し、純粋なデータ変換機能を提供する。
+## Overview
 
-## 責務 (Responsibility)
-本モジュールは以下の責務を担う。
+`src/core/renderModel.cjs` が、現行実装範囲である VN 表示モデルと RHYTHM QUIZ 表示モデルを、ブラウザ環境に依存しない純粋なJSONとして返すことを検証する。
 
-1.  **描画モデルへの変換:** ゲームの論理状態（`GameSession`、`Data`）を、UIコンポーネントが消費しやすい描画モデル（JSON）に変換する。
-2.  **情報集計:** フェーズに応じた必要な表示情報（例：現在の選択肢、楽曲情報）を正確に集計する。
-3.  **整合性確保:** 立ち絵（キャラクター）と話者アイコンの整合性を保証する。
-4.  **環境分離:** ブラウザ環境（DOM, CSS, Canvas, Audio API）から完全に分離された、純粋なデータ変換ロジックを提供する。
+TITLE、HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装のため、本テスト仕様の対象外とする。
 
-## データ構造 (Data Structures)
+## Test Environment
 
-### 描画モデル定義
+- Runtime: Node.js
+- Test runner: `node:test`
+- Target: `src/core/renderModel.cjs`
+- Test file: `tests/core/C011_RENDER_MODEL.test.cjs`
 
-#### TITLE 表示モデル
-ゲームのタイトル画面表示に必要な情報。
-- `title`: ゲームタイトル（文字列）
-- `backgroundId`: 背景画像ID（文字列）
-- `canContinue`: 続きから可能か（ブール値）
+## Test Cases
 
-#### HEROINE_SELECT 表示モデル
-ヒロイン選択画面に必要な情報。
-- `heroines`: ヒロイン情報リスト（配列）
-    - 各要素は以下の情報を含む: `ID`, `名前`, `説明`, `解放状態`
-- `canSelectExtra`: Extra Routeが選択可能か（ブール値）
+### T1: VN model with speaker and standing
 
-#### VN 表示モデル (Visual Novel)
-物語の進行表示に必要な情報。
-- `backgroundId`: 背景画像ID（文字列）
-- `standing`: 中央立ち絵情報（オブジェクト）
-    - `characterId`: キャラクターID
-    - `expressionId`: 表情ID
-- `speaker`: 話者情報（オブジェクト）
-    - `name`: 話者名（文字列）
-    - `iconAssetId`: 話者アイコンID（文字列）
-- `text`: 表示本文（文字列）
-- `choices`: 選択肢リスト（配列）
-    - 各要素は: `テキスト`, `ID`
+- 入力:
+  - `speakerId`: `CH_HAKIMA`
+  - `speakerExpression`: `joy`
+  - `standingCharacterId`: `CH_HAKIMA`
+  - `standingExpression`: `joy`
+  - `backgroundId`: `AS_BG_SHOP`
+  - `text`: 任意の本文
+- 期待結果:
+  - 話者名が `CHARACTERS` から解決される。
+  - `speaker.iconAssetId` が `AS_IC_CH_HAKIMA_joy` になる。
+  - `standing.characterId` と `standing.expressionId` が入力どおりになる。
+  - `text` が入力どおりになる。
 
-#### RHYTHM QUIZ 表示モデル (リズムゲーム)
-楽曲と問題の進行状況を管理する情報。
-- `songId`: 再生中の楽曲ID（文字列）
-- `question`: 現在の問題情報（オブジェクト）
-    - `promptText`: 問題文（文字列）
-    - `choices`: 選択肢リスト（配列）
-        - 各要素は: `itemId`, `name`, `iconAssetId`
-- `progress`: 進行状況（オブジェクト）
-    - `current`: 現在の問題番号
-    - `total`: 総問題数
-- `stats`: 統計情報（オブジェクト）
-    - `revenue`: 売上
-    - `satisfaction`: 満足度
-    - `reputation`: 評判
+### T2: VN model without speaker or standing
 
-#### TURN RESULT 表示モデル (ターン結果)
-ターン終了時の結果表示に必要な情報。
-- `turn`: 対象ターン（整数）
-- `stats`: 統計情報（オブジェクト）
-    - `revenue`: 売上
-    - `satisfaction`: 満足度
-    - `reputation`: 評判
-    - `totalScore`: 総スコア
-- `heroineComment`: ヒロインからの一言（文字列）
+- 入力:
+  - `speakerId` なし。
+  - `standingCharacterId` なし。
+  - `choice` に選択肢配列を指定。
+- 期待結果:
+  - `speaker` は `null`。
+  - `standing` は `null`。
+  - `choices` は入力された配列。
 
-## ロジックルール (Logic Rules)
-1.  **入力依存性:** `GameSession` インスタンスを唯一の入力として受け取り、その状態に基づき描画モデルを構築する。
-2.  **話者情報:** 話者がいない（地の文）場合、`speaker` フィールドは `null` または空のオブジェクトとして返される。
-3.  **整合性:** 中央立ち絵と話者アイコンが一致しないケース（例：ナーディルが喋っているが画面にはヒロインがいる）を正しく表現できること。
+### T3: Rhythm quiz model
 
-## 受け入れ基準 (Acceptance Criteria)
-以下のテストケースが成功することを保証する。
+- 入力:
+  - `session.currentSong`
+  - `session.scores`
+  - `session.turnProgress`
+  - `question.promptText`
+  - `question.correctItemId`
+  - `question.wrongItemId`
+- 期待結果:
+  - `songId` が `session.currentSong` と一致する。
+  - `question.promptText` が入力どおりになる。
+  - `question.choices` が正解/不正解の2択を含む。
+  - `progress.current` が `session.turnProgress` と一致する。
+  - `progress.total` は現行実装どおり `10`。
+  - `stats` が `session.scores` と一致する。
 
-- [ ] **TITLE表示モデル**：ゲームタイトル、背景ID、継続可否が正しく返せること。
-- [ ] **HEROINE_SELECT表示モデル**：ヒロインの説明文と解放状態が正確に返せること。
-- [ ] **VN表示モデル**：背景ID、中央立ち絵情報、話者名、話者アイコン、本文が全て正しく返せること。
-- [ ] **RHYTHM表示モデル**：現在問題、2択アイテム、楽曲ID、残り問題数が正しく返せること。
-- [ ] **TURN RESULT表示モデル**：売上、満足度、評判、ヒロイン一言が正しく返せること。
-- [ ] **環境依存性**：Render ModelがDOM、CSS、Audio API、およびpublic pathへの依存を一切持たないこと。
+## Out of Scope
 
----
-```
+- TITLE表示モデル。
+- HEROINE_SELECT表示モデル。
+- TURN_RESULT表示モデル。
+- セーブデータ有無に基づくTITLEの `canContinue` モデル。
+- DOM、CSS、Canvas、Audio API、ブラウザイベントの検証。
+
+## Success Criteria
+
+- `node --test tests/core/C011_RENDER_MODEL.test.cjs` が成功する。
+- `npm run test:core` に含まれるC011テストが成功する。
