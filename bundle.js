@@ -4247,6 +4247,76 @@ module.exports = { TONE_GUIDES };
 
     };
 
+    // --- ./data/resultComments.js ---
+    modules['./data/resultComments.js'] = function(module, exports, require) {
+/**
+ * Heroine-specific result lines and expression stages.
+ *
+ * The result stage is intentionally 3-step only:
+ * - encourage: low result / gentle recovery line / sorrow expression
+ * - evaluate: normal-good result / practical evaluation / fun expression
+ * - surprise: excellent result / delighted or impressed line / joy expression
+ */
+const RESULT_STAGES = {
+  encourage: { expression: 'sorrow' },
+  evaluate: { expression: 'fun' },
+  surprise: { expression: 'joy' }
+};
+
+function getResultStage(rank) {
+  if (rank === '大成功') return 'surprise';
+  if (rank === '成功') return 'evaluate';
+  return 'encourage';
+}
+
+const RESULT_COMMENTS = {
+  HAKIMA: {
+    encourage: '焦らなくていいわ。次の手応えを、ここから整えましょう。',
+    evaluate: '悪くないわ。棚の流れも、だいぶ読めてきたみたいね。',
+    surprise: '完璧ね。ここまで綺麗に噛み合うなら、次も任せられるわ。'
+  },
+  MIRA: {
+    encourage: '大丈夫。流れは悪くないよ、次でぱっと取り返そう。',
+    evaluate: 'いい感じ！店の空気も明るくなってきたね。',
+    surprise: 'すごいすごい！今の流れなら、次のお客さんも呼び込めるよ。'
+  },
+  DARIYA: {
+    encourage: '少し星が曇ったみたい。次は品の声をよく聞きましょう。',
+    evaluate: '静かだけれど、良い手応え。次の品も見えてきたわ。',
+    surprise: '星の巡りも味方しているわ。この流れは逃さないで。'
+  }
+};
+
+function normalizeHeroineId(id) {
+  if (!id) return 'HAKIMA';
+  return String(id).replace(/^CH_/i, '').toUpperCase();
+}
+
+function getResultComment(heroineId, rank) {
+  const normalized = normalizeHeroineId(heroineId);
+  const stage = getResultStage(rank);
+  return (
+    RESULT_COMMENTS[normalized]?.[stage] ||
+    RESULT_COMMENTS.HAKIMA[stage] ||
+    '次の営業に向けて、静かに帳簿を整えよう。'
+  );
+}
+
+function getResultExpression(rank) {
+  const stage = getResultStage(rank);
+  return RESULT_STAGES[stage]?.expression || 'fun';
+}
+
+module.exports = {
+  RESULT_STAGES,
+  RESULT_COMMENTS,
+  getResultStage,
+  getResultComment,
+  getResultExpression
+};
+
+    };
+
     // --- ./screens/endingScreen.js ---
     modules['./screens/endingScreen.js'] = function(module, exports, require) {
 /**
@@ -4254,6 +4324,50 @@ module.exports = { TONE_GUIDES };
  */
 const { calculateAffection } = require('../core/affectionModel.cjs');
 const { evaluateEnding } = require('../core/endingBranch.cjs');
+const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
+const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
+const { getResultComment, getResultExpression } = require('../data/resultComments.js');
+
+const SCORE_MAX_PER_TURN = {
+  revenue: 100,
+  satisfaction: 20,
+  reputation: 20
+};
+
+function getCumulativeMax(metric, turn) {
+  const rawMax = SCORE_MAX_PER_TURN[metric] * Math.max(1, turn);
+  if (metric === 'revenue') return Math.min(500, rawMax);
+  return Math.min(100, rawMax);
+}
+function clampPct(value, maxValue) {
+  return Math.max(0, Math.min(100, Math.round((value / Math.max(1, maxValue)) * 100)));
+}
+
+function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) {
+  const turnMax = SCORE_MAX_PER_TURN[metric];
+  const cumulativeMax = getCumulativeMax(metric, currentTurn);
+  const turnPct = clampPct(turnValue, turnMax);
+  const cumulativePct = clampPct(cumulativeValue, cumulativeMax);
+
+  return `
+    <div class="result-score-bar-row">
+      <div class="result-score-bar-label">${label}</div>
+      <div class="result-score-bar-stack" aria-label="${label} score graph">
+        <div class="result-score-bar-track result-score-bar-track-total">
+          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
+        </div>
+        <div class="result-score-bar-track result-score-bar-track-turn">
+          <div class="result-score-bar-fill result-score-bar-fill-turn" style="width:${turnPct}%"></div>
+        </div>
+      </div>
+      <div class="result-score-bar-value">
+        <span class="result-score-now">今回 +${turnValue}</span>
+        <span class="result-score-total">累計 ${cumulativeValue}</span>
+      </div>
+    </div>
+  `;
+}
+
 
 function renderTurnResult(controller, view) {
   const s = controller.session.scores;
@@ -4262,20 +4376,48 @@ function renderTurnResult(controller, view) {
   const dS = s.satisfaction - start.satisfaction;
   const dRep = s.reputation - start.reputation;
   const rank = controller.getTurnRank(dR, dS, dRep);
+  const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
+  const currentTurn = controller.session.turn;
+  const reportLabel = `第${currentTurn}期営業報告`;
   
   view.innerHTML = `
     <div class="result-screen" data-screen="turn-result">
-      <div class="result-card">
-        <h2>${controller.session.turn}日目の営業結果</h2>
-        <div class="result-rank">評価: ${rank}</div>
-        <div class="score-row"><span>売上</span> <span>+${dR} (計: ${s.revenue})</span></div>
-        <div class="score-row"><span>満足度</span> <span>+${dS} (計: ${s.satisfaction})</span></div>
-        <div class="score-row"><span>評判</span> <span>+${dRep} (計: ${s.reputation})</span></div>
-        <button class="btn-primary btn-next">次のフェーズへ</button>
+      <div class="result-stage" data-result-theme-root>
+        <div class="result-heroine-wrap">
+          <img class="result-heroine-standing" data-result-heroine src="${getCharacterVisualImagePath(heroineId, getResultExpression(rank), 'standing')}" alt="" />
+        </div>
+
+        <div class="result-report-stamp" aria-label="${reportLabel}">${reportLabel}</div>
+
+        <section class="result-card result-rich-card">
+          <div class="result-kicker">第${currentTurn}ターン 営業結果</div>
+          <div class="result-rank result-rank-${rank}">評価: ${rank}</div>
+
+          <div class="result-score-legend">
+            <span class="legend-dot legend-total"></span>累計 / 満点
+            <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
+          </div>
+
+          <div class="result-score-graph">
+            ${renderScoreBar('売上', 'revenue', dR, s.revenue, currentTurn)}
+            ${renderScoreBar('満足度', 'satisfaction', dS, s.satisfaction, currentTurn)}
+            ${renderScoreBar('評判', 'reputation', dRep, s.reputation, currentTurn)}
+          </div>
+        </section>
+
+        <div class="result-speech result-speech-lower">${getResultComment(heroineId, rank)}</div>
+
+        <button class="btn-primary btn-next result-next-button">次へ</button>
       </div>
     </div>
   `;
+
+  const root = view.querySelector('[data-result-theme-root]');
+  const heroineEl = view.querySelector('[data-result-heroine]');
+  applyCharacterTheme(root, heroineId);
+  applyCharacterVisualProfile(heroineEl, heroineId, 'result');
 }
+
 
 function formatAverage(value, count) {
   if (!count) return '0';
@@ -4300,7 +4442,7 @@ function renderEnding(controller, view) {
           <p>パートナー: ${partnerName}</p>
           <p>好感度: ${Math.round(affection)}%</p>
         </div>
-        <div class="ending-score-heading">5回の営業総決算</div>
+        <div class="ending-score-heading">5ターンの営業総決算</div>
         <div class="score-row"><span>売上通算</span> <span>${scores.revenue}</span></div>
         <div class="score-row"><span>満足度通算</span> <span>${scores.satisfaction}</span></div>
         <div class="score-row"><span>評判通算</span> <span>${scores.reputation}</span></div>
@@ -4442,6 +4584,8 @@ module.exports = {
  * Quiz / Rhythm screen for MadeInMaghribal.
  */
 
+const { getCharacterIconPath } = require('../utils/assetPaths.js');
+
 function renderQuiz(controller, view) {
   view.innerHTML = `
     <div class="quiz-screen" data-screen="quiz">
@@ -4455,8 +4599,14 @@ function renderQuiz(controller, view) {
       </section>
 
       <section class="rhythm-lane-placeholder" aria-label="リズム判定エリア">
+        <div class="rhythm-party-face rhythm-party-face-left">
+          <img src="${getCharacterIconPath('NADIR')}" alt="ナーディル" onerror="this.style.display='none'" />
+        </div>
         <div class="rhythm-guide-line"></div>
         <div class="rhythm-guide-note"></div>
+        <div class="rhythm-party-face rhythm-party-face-right">
+          <img data-quiz-heroine-face src="${getCharacterIconPath(controller.session.selectedHeroineId || 'HAKIMA')}" alt="" onerror="this.style.display='none'" />
+        </div>
         <div class="rhythm-guide-caption">リズム判定</div>
       </section>
 
@@ -4488,6 +4638,11 @@ function updateQuizContent(controller) {
   
   if (promptEl) promptEl.textContent = q.promptText;
   if (progressEl) progressEl.textContent = `${controller.quizState.questionIndex + 1} / ${controller.quizState.totalQuestions}`;
+
+  const heroineFaceEl = controller.container.querySelector('[data-quiz-heroine-face]');
+  if (heroineFaceEl && controller.session.selectedHeroineId) {
+    heroineFaceEl.src = getCharacterIconPath(controller.session.selectedHeroineId);
+  }
 
   const choices = controller.quizState.currentChoices;
   choices.forEach((c, idx) => {
@@ -4535,12 +4690,19 @@ function renderTitle(controller, view) {
   const debugButton = controller.isDebugMode()
     ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
     : '';
+  const canContinue = controller.hasSaveData ? controller.hasSaveData() : false;
+  const continueAttrs = canContinue
+    ? 'data-action="title-continue"'
+    : 'disabled aria-disabled="true"';
 
   view.innerHTML = `
     <div class="title-screen title-screen-with-art">
       <div class="title-content-panel">
         <h1 class="glow">Made in Maghribal</h1>
-        <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+        <div class="title-primary-actions">
+          <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+          <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
+        </div>
         <div class="title-menu-grid" aria-label="Title menu">
           <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
           <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
@@ -4645,11 +4807,16 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
   if (charEl) {
     if (charId) {
-      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
+      charEl.classList.remove('is-visible');
       charEl.style.display = 'block';
       applyCharacterVisualProfile(charEl, charId, 'standing');
+      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
       charEl.onerror = () => { charEl.style.display = 'none'; };
+      requestAnimationFrame(() => {
+        charEl.classList.add('is-visible');
+      });
     } else {
+      charEl.classList.remove('is-visible');
       charEl.removeAttribute('src');
       charEl.style.display = 'none';
     }
@@ -4702,10 +4869,16 @@ function updateHud(controller) {
   
   const s = controller.session.scores;
   const sub = controller.session.subPhase;
-  const label = (sub === 'QUIZ') ? '接客' : (sub === 'TURN_RESULT' ? '結果' : sub);
+  const labels = {
+    BEFORE_OPEN: '開店前',
+    QUIZ: '接客',
+    TURN_RESULT: '営業結果',
+    AFTER_CLOSE: '閉店後'
+  };
+  const label = labels[sub] || sub || '';
   const debug = controller.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : '';
 
-  hud.innerHTML = `<div class="hud-main">${controller.session.turn}日目 | ${label}${debug}</div>`;
+  hud.innerHTML = `<div class="hud-main">第${controller.session.turn}ターン | ${label}${debug}</div>`;
 
   const scoreStrip = controller.container.querySelector('[data-score-strip]');
   if (scoreStrip) {
@@ -4855,7 +5028,15 @@ module.exports = {
  */
 
 function normalizeCharacterDir(id) {
-  return String(id).replace(/^CH_/i, '').toLowerCase();
+  const normalized = String(id).replace(/^CH_/i, '').toUpperCase();
+  const folderNames = {
+    NADIR: 'nader',
+    NADER: 'nader',
+    HAKIMA: 'hakima',
+    MIRA: 'mira',
+    DARIYA: 'dariya'
+  };
+  return folderNames[normalized] || normalized.toLowerCase();
 }
 
 function getCharacterStandingPath(id, expression = 'normal') {
@@ -4935,10 +5116,11 @@ const DEFAULT_ICON_MODE = {
 
 const DEFAULT_PROFILE = {
   theme: DEFAULT_THEME,
-  standing: { ...DEFAULT_VISUAL_MODE, height: 560, bottom: 128 },
+  standing: { ...DEFAULT_VISUAL_MODE, height: 980, bottom: 0 },
   heroineSelect: { ...DEFAULT_VISUAL_MODE, height: 520, bottom: -86 },
   bustup: { ...DEFAULT_VISUAL_MODE, height: 660, bottom: -260, scale: 1.45 },
   eventClose: { ...DEFAULT_VISUAL_MODE, height: 700, bottom: -300, scale: 1.62 },
+  result: { ...DEFAULT_VISUAL_MODE, height: 900, bottom: -20, scale: 0.92 },
   selectIcon: DEFAULT_ICON_MODE,
   speakerIcon: DEFAULT_ICON_MODE
 };
@@ -4946,39 +5128,43 @@ const DEFAULT_PROFILE = {
 const CHARACTER_VISUAL_PROFILES = {
   MIRA: {
     theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)' },
-    standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 128, height: 560 },
+    standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: -86, height: 520 },
     bustup: { image: 'standing', scale: 1.42, x: 0, y: 0, bottom: -260, height: 660 },
     eventClose: { image: 'standing', scale: 1.58, x: 0, y: 0, bottom: -300, height: 700 },
+    result: { image: 'standing', scale: 0.94, x: -12, y: 0, bottom: -28, height: 900 },
     selectIcon: { image: 'face', scale: 1.00, x: 50, y: 50 },
     speakerIcon: { image: 'face', scale: 1.00, x: 50, y: 50 }
   },
   HAKIMA: {
     theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)' },
     // Ear height makes her effective top taller; keep a small downward nudge.
-    standing: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: 124, height: 560 },
+    standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.14, x: 0, y: 10, bottom: -98, height: 520 },
     bustup: { image: 'standing', scale: 1.56, x: 0, y: 16, bottom: -278, height: 660 },
     eventClose: { image: 'standing', scale: 1.74, x: 0, y: 18, bottom: -318, height: 700 },
+    result: { image: 'standing', scale: 0.98, x: -10, y: 0, bottom: -34, height: 900 },
     selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
     speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
   },
   DARIYA: {
     theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)' },
     // Horn height needs a stronger downward nudge after face-size scaling.
-    standing: { image: 'standing', scale: 1.24, x: 0, y: 14, bottom: 118, height: 560 },
+    standing: { image: 'standing', scale: 1.22, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.28, x: 0, y: 20, bottom: -118, height: 520 },
     bustup: { image: 'standing', scale: 1.72, x: 0, y: 28, bottom: -300, height: 660 },
     eventClose: { image: 'standing', scale: 1.90, x: 0, y: 32, bottom: -342, height: 700 },
+    result: { image: 'standing', scale: 1.04, x: -18, y: 0, bottom: -44, height: 900 },
     selectIcon: { image: 'face', scale: 1.02, x: 50, y: 47 },
     speakerIcon: { image: 'face', scale: 1.02, x: 50, y: 47 }
   },
   NADIR: {
     theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)' },
-    standing: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: 124, height: 560 },
+    standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: -96, height: 520 },
     bustup: { image: 'standing', scale: 1.56, x: 0, y: 14, bottom: -278, height: 660 },
     eventClose: { image: 'standing', scale: 1.72, x: 0, y: 18, bottom: -318, height: 700 },
+    result: { image: 'standing', scale: 0.96, x: -10, y: 0, bottom: -34, height: 900 },
     selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
     speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
   }
@@ -5064,7 +5250,8 @@ function applyDebugJumpFromUrl(controller) {
 }
 
 function applyDebugJump(controller, jump) {
-  const heroine = 'HAKIMA';
+  const params = new URLSearchParams(window.location.search);
+  const heroine = (params.get('heroine') || 'HAKIMA').toUpperCase();
   console.log('Applying debug jump:', jump);
 
   if (jump === 'heroine_select') {
@@ -5096,6 +5283,32 @@ function applyDebugJump(controller, jump) {
       satisfactionBonus: 2,
       reputationBonus: 1,
       diffMs: 88,
+      responseTime: 1200
+    };
+    return;
+  }
+
+
+  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise') {
+    const presets = {
+      result_encourage: { revenue: 10, satisfaction: 4, reputation: 3 },
+      result_evaluate: { revenue: 40, satisfaction: 14, reputation: 10 },
+      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 }
+    };
+    const score = presets[jump];
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'TURN_RESULT';
+    controller.session.scores = { ...score };
+    controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
+    controller.quizState.lastResult = {
+      isCorrect: jump !== 'result_encourage',
+      rating: jump === 'result_surprise' ? 'GREAT' : (jump === 'result_evaluate' ? 'GOOD' : 'MISS'),
+      satisfactionBonus: score.satisfaction,
+      reputationBonus: score.reputation,
+      diffMs: 80,
       responseTime: 1200
     };
     return;
@@ -5345,7 +5558,7 @@ const { showResultStamp } = require('./ui/resultStamp.js');
 // Modularized Utilities
 const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
-const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
+const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
 
 /** Constants */
@@ -5543,7 +5756,7 @@ class GameController {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
-        text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`,
+        text: `おはよう！ 第${this.session.turn}ターンの営業がもうすぐ始まるわ。準備はいいかしら？`,
         charId: this.session.selectedHeroineId,
         speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
@@ -5639,6 +5852,7 @@ class GameController {
   getItemIconPath(itemId) { return getItemIconPath(itemId); }
   getTurnRank(dR, dS, dRep) { return getTurnRank(dR, dS, dRep); }
   getCharacterStandingPath(id, expression) { return getCharacterStandingPath(id, expression); }
+  getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
 
@@ -5758,6 +5972,7 @@ class GameController {
 
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ') return;
       
       this.playSfx('uiTapBottle');
       this.onGlobalAction();
