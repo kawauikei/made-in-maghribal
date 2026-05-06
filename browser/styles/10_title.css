@@ -110,3 +110,32 @@
   font-size: 1.0rem;
   text-shadow: 0 1px 4px rgba(0,0,0,0.55);
 }
+
+/* TODO2: title layout tune / autosave continue stub */
+.title-content-panel {
+  transform: translateY(-26px);
+}
+
+.title-screen-with-art h1 {
+  margin-bottom: 1.2rem;
+}
+
+.title-primary-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.title-primary-actions .title-start-btn {
+  width: 100%;
+}
+
+.title-continue-btn:disabled,
+.title-continue-btn[aria-disabled="true"] {
+  opacity: 0.48;
+  filter: grayscale(0.75);
+  cursor: default;
+  background: linear-gradient(180deg, rgba(244,230,200,0.72), rgba(190,178,150,0.72));
+  color: rgba(27,26,21,0.58);
+}

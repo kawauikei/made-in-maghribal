@@ -51,11 +51,16 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
   if (charEl) {
     if (charId) {
-      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
+      charEl.classList.remove('is-visible');
       charEl.style.display = 'block';
       applyCharacterVisualProfile(charEl, charId, 'standing');
+      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
       charEl.onerror = () => { charEl.style.display = 'none'; };
+      requestAnimationFrame(() => {
+        charEl.classList.add('is-visible');
+      });
     } else {
+      charEl.classList.remove('is-visible');
       charEl.removeAttribute('src');
       charEl.style.display = 'none';
     }

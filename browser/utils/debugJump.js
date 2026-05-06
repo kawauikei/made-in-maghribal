@@ -15,7 +15,8 @@ function applyDebugJumpFromUrl(controller) {
 }
 
 function applyDebugJump(controller, jump) {
-  const heroine = 'HAKIMA';
+  const params = new URLSearchParams(window.location.search);
+  const heroine = (params.get('heroine') || 'HAKIMA').toUpperCase();
   console.log('Applying debug jump:', jump);
 
   if (jump === 'heroine_select') {
@@ -47,6 +48,32 @@ function applyDebugJump(controller, jump) {
       satisfactionBonus: 2,
       reputationBonus: 1,
       diffMs: 88,
+      responseTime: 1200
+    };
+    return;
+  }
+
+
+  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise') {
+    const presets = {
+      result_encourage: { revenue: 10, satisfaction: 4, reputation: 3 },
+      result_evaluate: { revenue: 40, satisfaction: 14, reputation: 10 },
+      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 }
+    };
+    const score = presets[jump];
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'TURN_RESULT';
+    controller.session.scores = { ...score };
+    controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
+    controller.quizState.lastResult = {
+      isCorrect: jump !== 'result_encourage',
+      rating: jump === 'result_surprise' ? 'GREAT' : (jump === 'result_evaluate' ? 'GOOD' : 'MISS'),
+      satisfactionBonus: score.satisfaction,
+      reputationBonus: score.reputation,
+      diffMs: 80,
       responseTime: 1200
     };
     return;

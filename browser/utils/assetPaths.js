@@ -4,7 +4,15 @@
  */
 
 function normalizeCharacterDir(id) {
-  return String(id).replace(/^CH_/i, '').toLowerCase();
+  const normalized = String(id).replace(/^CH_/i, '').toUpperCase();
+  const folderNames = {
+    NADIR: 'nader',
+    NADER: 'nader',
+    HAKIMA: 'hakima',
+    MIRA: 'mira',
+    DARIYA: 'dariya'
+  };
+  return folderNames[normalized] || normalized.toLowerCase();
 }
 
 function getCharacterStandingPath(id, expression = 'normal') {

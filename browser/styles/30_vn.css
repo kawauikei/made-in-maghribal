@@ -45,8 +45,8 @@
 .standing-char {
   position: absolute;
   left: 50%;
-  bottom: var(--char-bottom, 188px);
-  height: var(--char-height, 560px);
+  bottom: var(--char-bottom, 0px);
+  height: var(--char-height, 980px);
   width: auto;
   max-height: none;
   object-fit: contain;
@@ -165,4 +165,69 @@
   object-position: var(--icon-x, 50%) var(--icon-y, 50%);
   transform: scale(var(--char-face-scale, 1));
   transform-origin: center center;
+}
+
+/* TODO2: ADV readability / speaker icon / standing entrance tune */
+.vn-screen .message-box {
+  height: 260px;
+  min-height: 260px;
+  max-height: 260px;
+  padding: 56px 38px 34px;
+}
+
+.message-text {
+  font-size: 1.42rem;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+}
+
+.vn-scene-title {
+  top: 76px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(10,18,38,0.46);
+  color: #f7d67b;
+  font-size: 1.75rem;
+  text-shadow: 0 2px 0 rgba(63,37,10,0.55), 0 0 12px rgba(246,211,107,0.55);
+}
+
+.speaker-name {
+  left: 54px;
+  min-height: 54px;
+  min-width: 156px;
+  padding: 8px 22px 8px 58px;
+  font-size: 1.22rem;
+  border-radius: 8px;
+}
+
+.speaker-icon {
+  position: absolute;
+  left: -38px;
+  top: 50%;
+  width: 76px;
+  height: 76px;
+  border: 3px solid rgba(183,131,53,0.72);
+  transform: translateY(-50%) scale(var(--char-face-scale, 1));
+  box-shadow: 0 8px 18px rgba(0,0,0,0.30);
+}
+
+.message-skip-btn {
+  top: -18px;
+  min-height: 54px;
+  padding: 8px 22px;
+  font-size: 1.08rem;
+}
+
+.standing-char {
+  opacity: 0;
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.18px);
+  transition: opacity 0.28s ease-out, transform 0.34s ease-out;
+}
+
+.standing-char.is-visible {
+  opacity: 1;
+}
+
+.standing-char {
+  animation: none;
 }

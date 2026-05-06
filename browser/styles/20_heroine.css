@@ -175,3 +175,65 @@
   transform: scale(var(--char-face-scale, 1));
   transform-origin: center center;
 }
+
+/* TODO2: HD heroine select tune */
+.heroine-select-rich {
+  justify-content: center;
+  padding: 72px 34px 42px;
+  gap: 16px;
+}
+
+.heroine-select-title {
+  font-size: 1.8rem;
+}
+
+.heroine-preview-card {
+  width: min(100%, 560px);
+  min-height: 720px;
+  grid-template-rows: 540px auto;
+}
+
+.heroine-preview-standing {
+  height: 540px;
+}
+
+.heroine-preview-copy {
+  padding: 22px 28px 24px;
+}
+
+.heroine-preview-copy h3 {
+  font-size: 1.82rem;
+}
+
+.heroine-preview-title {
+  font-size: 1.12rem;
+}
+
+.heroine-preview-copy p {
+  font-size: 1.08rem;
+  line-height: 1.62;
+}
+
+.heroine-icon-row,
+.heroine-confirm-btn {
+  width: min(100%, 560px);
+}
+
+.heroine-icon-btn {
+  min-height: 112px;
+  border-radius: 22px;
+}
+
+.heroine-icon-btn img {
+  width: 62px;
+  height: 62px;
+}
+
+.heroine-icon-btn span {
+  font-size: 1.05rem;
+}
+
+.heroine-confirm-btn {
+  min-height: 70px;
+  font-size: 1.24rem;
+}

@@ -8,10 +8,16 @@ function updateHud(controller) {
   
   const s = controller.session.scores;
   const sub = controller.session.subPhase;
-  const label = (sub === 'QUIZ') ? '接客' : (sub === 'TURN_RESULT' ? '結果' : sub);
+  const labels = {
+    BEFORE_OPEN: '開店前',
+    QUIZ: '接客',
+    TURN_RESULT: '営業結果',
+    AFTER_CLOSE: '閉店後'
+  };
+  const label = labels[sub] || sub || '';
   const debug = controller.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : '';
 
-  hud.innerHTML = `<div class="hud-main">${controller.session.turn}日目 | ${label}${debug}</div>`;
+  hud.innerHTML = `<div class="hud-main">第${controller.session.turn}ターン | ${label}${debug}</div>`;
 
   const scoreStrip = controller.container.querySelector('[data-score-strip]');
   if (scoreStrip) {

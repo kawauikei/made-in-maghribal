@@ -2,6 +2,8 @@
  * Quiz / Rhythm screen for MadeInMaghribal.
  */
 
+const { getCharacterIconPath } = require('../utils/assetPaths.js');
+
 function renderQuiz(controller, view) {
   view.innerHTML = `
     <div class="quiz-screen" data-screen="quiz">
@@ -15,8 +17,14 @@ function renderQuiz(controller, view) {
       </section>
 
       <section class="rhythm-lane-placeholder" aria-label="リズム判定エリア">
+        <div class="rhythm-party-face rhythm-party-face-left">
+          <img src="${getCharacterIconPath('NADIR')}" alt="ナーディル" onerror="this.style.display='none'" />
+        </div>
         <div class="rhythm-guide-line"></div>
         <div class="rhythm-guide-note"></div>
+        <div class="rhythm-party-face rhythm-party-face-right">
+          <img data-quiz-heroine-face src="${getCharacterIconPath(controller.session.selectedHeroineId || 'HAKIMA')}" alt="" onerror="this.style.display='none'" />
+        </div>
         <div class="rhythm-guide-caption">リズム判定</div>
       </section>
 
@@ -48,6 +56,11 @@ function updateQuizContent(controller) {
   
   if (promptEl) promptEl.textContent = q.promptText;
   if (progressEl) progressEl.textContent = `${controller.quizState.questionIndex + 1} / ${controller.quizState.totalQuestions}`;
+
+  const heroineFaceEl = controller.container.querySelector('[data-quiz-heroine-face]');
+  if (heroineFaceEl && controller.session.selectedHeroineId) {
+    heroineFaceEl.src = getCharacterIconPath(controller.session.selectedHeroineId);
+  }
 
   const choices = controller.quizState.currentChoices;
   choices.forEach((c, idx) => {

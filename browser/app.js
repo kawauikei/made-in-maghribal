@@ -24,7 +24,7 @@ const { showResultStamp } = require('./ui/resultStamp.js');
 // Modularized Utilities
 const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
-const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
+const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
 
 /** Constants */
@@ -222,7 +222,7 @@ class GameController {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
-        text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`,
+        text: `おはよう！ 第${this.session.turn}ターンの営業がもうすぐ始まるわ。準備はいいかしら？`,
         charId: this.session.selectedHeroineId,
         speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
@@ -318,6 +318,7 @@ class GameController {
   getItemIconPath(itemId) { return getItemIconPath(itemId); }
   getTurnRank(dR, dS, dRep) { return getTurnRank(dR, dS, dRep); }
   getCharacterStandingPath(id, expression) { return getCharacterStandingPath(id, expression); }
+  getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
 
@@ -437,6 +438,7 @@ class GameController {
 
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ') return;
       
       this.playSfx('uiTapBottle');
       this.onGlobalAction();

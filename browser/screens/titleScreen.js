@@ -9,12 +9,19 @@ function renderTitle(controller, view) {
   const debugButton = controller.isDebugMode()
     ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
     : '';
+  const canContinue = controller.hasSaveData ? controller.hasSaveData() : false;
+  const continueAttrs = canContinue
+    ? 'data-action="title-continue"'
+    : 'disabled aria-disabled="true"';
 
   view.innerHTML = `
     <div class="title-screen title-screen-with-art">
       <div class="title-content-panel">
         <h1 class="glow">Made in Maghribal</h1>
-        <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+        <div class="title-primary-actions">
+          <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+          <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
+        </div>
         <div class="title-menu-grid" aria-label="Title menu">
           <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
           <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
