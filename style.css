@@ -47,15 +47,21 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   background-color: #000;
+}
+
+body {
   color: var(--white-soft);
   font-family: 'Inter', sans-serif;
-  overflow: hidden;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  inset: 0;
+  touch-action: manipulation;
+  overscroll-behavior: none;
 }
 
 #game-viewport {
@@ -66,7 +72,7 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 50px rgba(0,0,0,0.8);
-  transform-origin: center center;
+  transform-origin: top left;
   will-change: transform;
   
   user-select: none;
@@ -1081,7 +1087,7 @@ img {
   text-shadow: 0 1px 4px rgba(0,0,0,0.55);
 }
 
-/* TODO2: title layout tune / autosave continue stub */
+/* TODO2: title layout tune / continue-save UI polish */
 .title-content-panel {
   transform: translateY(-26px);
 }

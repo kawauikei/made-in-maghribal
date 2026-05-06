@@ -871,6 +871,99 @@ module.exports = { validateQuestion };
  */
 const { CHARACTERS } = require('../data/characters.cjs');
 
+const DEFAULT_TITLE = 'Made in Maghribal';
+
+function getTitleRenderModel(state = {}) {
+  const saveSummary = state.saveSummary || null;
+  return {
+    title: state.title || DEFAULT_TITLE,
+    backgroundId: state.backgroundId || 'AS_BG_TITLE',
+    canContinue: Boolean(saveSummary),
+    lastHeroineId: saveSummary?.selectedHeroineId || null,
+    saveSummary
+  };
+}
+
+function getHeroineSelectRenderModel(state = {}) {
+  const heroines = Array.isArray(state.heroines) ? state.heroines : [];
+  const progressSummary = state.progressSummary || {};
+  return {
+    heroines: heroines.map((heroine) => {
+      const heroineId = heroine.heroineId || heroine.id;
+      const routeUnlocks = progressSummary.heroineModeUnlocks?.[heroineId] || {};
+      return {
+        heroineId,
+        name: heroine.name || '',
+        title: heroine.title || '',
+        description: heroine.description || heroine.desc || '',
+        iconAssetId: heroine.iconAssetId || null,
+        routeModes: {
+          normal: true,
+          long_history: Boolean(routeUnlocks.long_history)
+        },
+        carryover: heroine.carryover || null
+      };
+    }),
+    canSelectExtra: heroines.some((heroine) => {
+      const heroineId = heroine.heroineId || heroine.id;
+      return Boolean(progressSummary.heroineModeUnlocks?.[heroineId]?.long_history);
+    })
+  };
+}
+
+function getTurnResultRenderModel(state = {}) {
+  const scores = state.scores || {};
+  const startScores = state.startScores || {};
+  const delta = {
+    revenue: (scores.revenue || 0) - (startScores.revenue || 0),
+    satisfaction: (scores.satisfaction || 0) - (startScores.satisfaction || 0),
+    reputation: (scores.reputation || 0) - (startScores.reputation || 0)
+  };
+  const totalScore = (scores.revenue || 0) + (scores.satisfaction || 0) + (scores.reputation || 0);
+  return {
+    turn: state.turn || 1,
+    stats: {
+      revenue: scores.revenue || 0,
+      satisfaction: scores.satisfaction || 0,
+      reputation: scores.reputation || 0,
+      delta,
+      totalScore,
+      rank: state.rank || null
+    },
+    heroineComment: state.heroineComment || '',
+    unlocks: Array.isArray(state.unlocks) ? state.unlocks : []
+  };
+}
+
+function findCharacter(characterId) {
+  return CHARACTERS.find((character) => character.characterId === characterId) || null;
+}
+
+function buildSpeakerModel(step) {
+  if (!step.speakerId) return null;
+  const speakerChar = findCharacter(step.speakerId);
+  if (!speakerChar) return null;
+  return {
+    name: speakerChar.name,
+    iconAssetId: `AS_IC_${step.speakerId}_${step.speakerExpression || 'normal'}`
+  };
+}
+
+function buildStandingModel(step) {
+  if (!step.standingCharacterId) return null;
+  return {
+    characterId: step.standingCharacterId,
+    expressionId: step.standingExpression
+  };
+}
+
+function buildRhythmChoices(question) {
+  return [
+    { itemId: question.correctItemId, name: "Correct Option" },
+    { itemId: question.wrongItemId, name: "Wrong Option" }
+  ];
+}
+
 /**
  * Transforms VN scenario step and session state into a render model.
  * @param {object} session 
@@ -878,18 +971,10 @@ const { CHARACTERS } = require('../data/characters.cjs');
  * @returns {object}
  */
 function getVnRenderModel(session, step) {
-  const speakerChar = step.speakerId ? CHARACTERS.find(c => c.characterId === step.speakerId) : null;
-  
   return {
     backgroundId: step.backgroundId || 'AS_BG_SHOP',
-    standing: step.standingCharacterId ? {
-      characterId: step.standingCharacterId,
-      expressionId: step.standingExpression
-    } : null,
-    speaker: speakerChar ? {
-      name: speakerChar.name,
-      iconAssetId: `AS_IC_${step.speakerId}_${step.speakerExpression || 'normal'}`
-    } : null,
+    standing: buildStandingModel(step),
+    speaker: buildSpeakerModel(step),
     text: step.text,
     choices: step.choice || []
   };
@@ -906,17 +991,20 @@ function getRhythmRenderModel(session, question) {
     songId: session.currentSong,
     question: {
       promptText: question.promptText,
-      choices: [
-        { itemId: question.correctItemId, name: "Correct Option" },
-        { itemId: question.wrongItemId, name: "Wrong Option" }
-      ]
+      choices: buildRhythmChoices(question)
     },
     progress: { current: session.turnProgress || 0, total: 10 },
     stats: session.scores
   };
 }
 
-module.exports = { getVnRenderModel, getRhythmRenderModel };
+module.exports = {
+  getTitleRenderModel,
+  getHeroineSelectRenderModel,
+  getVnRenderModel,
+  getRhythmRenderModel,
+  getTurnResultRenderModel
+};
 
     };
 
@@ -25181,6 +25269,452 @@ module.exports = { TONE_GUIDES };
 
     };
 
+    // --- ./controllers/inputController.js ---
+    modules['./controllers/inputController.js'] = function(module, exports, require) {
+/**
+ * Browser input bindings for global gameplay/UI actions.
+ */
+
+function bindInputHandlers(controller) {
+  document.addEventListener('selectstart', (event) => {
+    if (event.target.closest('#game-viewport')) event.preventDefault();
+  });
+
+  document.addEventListener('dragstart', (event) => {
+    if (event.target.closest('#game-viewport')) event.preventDefault();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (controller.sfx) controller.sfx.unlock();
+    if (controller.bgm) controller.bgm.unlock();
+    const target = event.target;
+    if (controller.uiState.turnTransitionActive) {
+      event.stopPropagation();
+      controller.finishTurnTransition(true);
+      return;
+    }
+    if (controller.quizState.inputLocked) return;
+
+    if (target.closest('[data-action="title-start"]')) {
+      event.stopPropagation();
+      controller.clearRunSaveData();
+      controller.endingProgressRecorded = false;
+      controller.playSfx('uiConfirmChime');
+      controller.onGlobalAction();
+      return;
+    }
+    if (target.closest('[data-action="title-continue"]')) {
+      event.stopPropagation();
+      if (!controller.continueFromSave()) {
+        controller.playSfx('uiTapBottle');
+        const messageEl = controller.container.querySelector('[data-title-stub-message]');
+        if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
+      }
+      return;
+    }
+    if (target.closest('[data-action="title-clear-save"]')) {
+      event.stopPropagation();
+      controller.clearRunSaveData();
+      controller.playSfx('uiTapBottle');
+      controller.update();
+      return;
+    }
+    const titlePanelBtn = target.closest('[data-title-panel]');
+    if (titlePanelBtn) {
+      event.stopPropagation();
+      controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
+      return;
+    }
+    if (target.closest('[data-action="title-panel-back"]')) {
+      event.stopPropagation();
+      controller.closeTitlePanel();
+      return;
+    }
+
+    const itemDetailBtn = target.closest('[data-item-detail-index]');
+    if (itemDetailBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      const index = Number(itemDetailBtn.getAttribute('data-item-detail-index')) || 0;
+      controller.uiState.itemDetailModal = { index };
+      controller.update();
+      return;
+    }
+    if (target.getAttribute && target.getAttribute('data-action') === 'item-detail-close') {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.itemDetailModal = null;
+      controller.update();
+      return;
+    }
+    const soundBgmBtn = target.closest('[data-sound-bgm-path]');
+    if (soundBgmBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      const path = soundBgmBtn.getAttribute('data-sound-bgm-path');
+      controller.bgm?.play({
+        path,
+        id: soundBgmBtn.getAttribute('data-sound-id') || 'preview'
+      });
+      controller.updateSoundTestStatus(path);
+      return;
+    }
+    const soundSfxBtn = target.closest('[data-sound-sfx-path], [data-sound-sfx-key]');
+    if (soundSfxBtn) {
+      event.stopPropagation();
+      const previewPath = soundSfxBtn.getAttribute('data-sound-sfx-path');
+      if (previewPath) {
+        try {
+          const audio = new Audio(previewPath);
+          audio.volume = Math.max(0, Math.min(1, controller.sfx?.volume ?? 0.7));
+          const playPromise = audio.play();
+          if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+        } catch (error) {
+          controller.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+        }
+      } else {
+        controller.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+      }
+      return;
+    }
+    if (target.closest('[data-action="sound-stop-bgm"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.bgm?.stop();
+      controller.updateSoundTestStatus('');
+      return;
+    }
+    const titleStub = target.closest('[data-title-stub]');
+    if (titleStub) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      const messageEl = controller.container.querySelector('[data-title-stub-message]');
+      if (messageEl) {
+        messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
+      }
+      return;
+    }
+    if (target.closest('[data-action="open-options"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.openModal('options');
+      return;
+    }
+    if (target.closest('[data-action="open-help"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.openModal('help');
+      return;
+    }
+    if (target.closest('[data-action="close-modal"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.closeModal();
+      return;
+    }
+    if (target.closest('[data-action="toggle-fullscreen"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.toggleFullscreen();
+      return;
+    }
+    const speedBtn = target.closest('[data-action="set-text-speed"]');
+    if (speedBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.setTextSpeed(speedBtn.getAttribute('data-speed'));
+      return;
+    }
+    const audioToggleBtn = target.closest('[data-action="set-audio-enabled"]');
+    if (audioToggleBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.setAudioEnabled(audioToggleBtn.getAttribute('data-audio-kind'), audioToggleBtn.getAttribute('data-enabled') === 'true');
+      return;
+    }
+    const audioVolumeBtn = target.closest('[data-action="adjust-audio-volume"]');
+    if (audioVolumeBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
+      return;
+    }
+
+    if (target.closest('[data-action="skip-text"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.onGlobalAction();
+      return;
+    }
+
+    if (target.closest('.choice-card')) {
+      const choiceCard = target.closest('.choice-card');
+      const id = choiceCard.getAttribute('data-item-id');
+      const quality = choiceCard.getAttribute('data-item-quality') || 'normal';
+      event.stopPropagation();
+      controller.answerQuiz(id, quality);
+      return;
+    }
+
+    if (target.classList.contains('heroine-card')) {
+      const id = target.getAttribute('data-id');
+      const routeMode = target.getAttribute('data-route-mode-selected') || 'normal';
+      event.stopPropagation();
+      controller.selectHeroine(id, routeMode);
+      return;
+    }
+
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      event.stopPropagation();
+      if (target.classList.contains('btn-next')) {
+        controller.playSfx('uiTapBottle');
+        controller.onGlobalAction();
+      }
+      return;
+    }
+
+    if (controller.uiState.modal) {
+      if (!target.closest('.ui-modal')) {
+        controller.playSfx('uiTapBottle');
+        controller.closeModal();
+      }
+      return;
+    }
+
+    if (controller.session.phase === 'TITLE') return;
+    if (controller.session.phase === 'HEROINE_SELECT') return;
+    if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'QUIZ') return;
+    if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'TURN_RESULT') return;
+
+    controller.playSfx('uiTapBottle');
+    controller.onGlobalAction();
+  });
+}
+
+module.exports = {
+  bindInputHandlers
+};
+
+    };
+
+    // --- ./controllers/turnTransitionController.js ---
+    modules['./controllers/turnTransitionController.js'] = function(module, exports, require) {
+/**
+ * Turn transition overlay controller.
+ *
+ * Owns transition timers and overlay lifecycle. It intentionally receives the
+ * GameController instance so this extraction stays behavior-preserving.
+ */
+
+function createTurnTransitionController(controller) {
+  const state = {
+    timerId: null,
+    tickTimerIds: [],
+    callback: null,
+    finishing: false,
+    fadeOutMs: null
+  };
+
+  function play(callback, mode = 'next') {
+    if (controller.uiState.turnTransitionActive) return;
+
+    controller.uiState.turnTransitionActive = true;
+    state.callback = callback;
+    state.tickTimerIds = [];
+    state.finishing = false;
+
+    const viewport = document.getElementById('game-viewport') || controller.container;
+    const oldOverlay = viewport.querySelector('.turn-transition-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    const nextTurn = Math.min(controller.totalTurns, controller.session.turn + 1);
+    const isEnding = mode === 'ending';
+    const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
+    const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
+
+    const overlay = document.createElement('div');
+    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
+    overlay.setAttribute('data-action', 'skip-turn-transition');
+    overlay.innerHTML = `
+      <div class="turn-transition-darkness" aria-hidden="true"></div>
+      <div class="turn-transition-clock-wrap" aria-hidden="true">
+        <img class="turn-transition-clock" src="images/ui/turn_clock.png" alt="" draggable="false">
+        <div class="turn-transition-clock-glow"></div>
+        <div class="turn-transition-clock-shadow"></div>
+      </div>
+      <div class="turn-transition-copy">
+        <p class="turn-transition-label">${title}</p>
+        <p class="turn-transition-subtitle">${subtitle}</p>
+        <p class="turn-transition-skip">クリックでスキップ</p>
+      </div>
+    `;
+    viewport.appendChild(overlay);
+
+    const fadeInMs = 1000;
+    const introHoldMs = 500;
+    const stepMs = 1000;
+    const restMs = 200;
+    const stepCount = 5;
+    const postHoldMs = 500;
+    const fadeOutMs = 1000;
+    const rotateStartMs = fadeInMs + introHoldMs;
+    const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
+    const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
+
+    Array.from({ length: stepCount }, (_, index) => rotateStartMs + (index * (stepMs + restMs))).forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        if (controller.uiState.turnTransitionActive && !state.finishing) controller.playSfx('turnClockTick');
+      }, delay);
+      state.tickTimerIds.push(timerId);
+    });
+
+    state.timerId = window.setTimeout(() => {
+      finish(false);
+    }, exitStartMs);
+
+    state.fadeOutMs = fadeOutMs;
+  }
+
+  function finish(skip = false) {
+    if (!controller.uiState.turnTransitionActive || state.finishing) return;
+    state.finishing = true;
+
+    if (state.timerId) {
+      window.clearTimeout(state.timerId);
+      state.timerId = null;
+    }
+
+    if (Array.isArray(state.tickTimerIds)) {
+      state.tickTimerIds.forEach((timerId) => window.clearTimeout(timerId));
+      state.tickTimerIds = [];
+    }
+
+    const overlay = document.querySelector('.turn-transition-overlay');
+    const fadeMs = skip ? 500 : (state.fadeOutMs || 1000);
+
+    const complete = () => {
+      const callback = state.callback;
+      state.callback = null;
+      state.finishing = false;
+      state.fadeOutMs = null;
+      controller.uiState.turnTransitionActive = false;
+
+      if (overlay) overlay.remove();
+      if (typeof callback === 'function') callback();
+    };
+
+    if (!overlay) {
+      complete();
+      return;
+    }
+
+    overlay.classList.add('is-exiting');
+    if (skip) overlay.classList.add('is-skipping');
+
+    state.timerId = window.setTimeout(complete, fadeMs);
+  }
+
+  return {
+    play,
+    finish
+  };
+}
+
+module.exports = {
+  createTurnTransitionController
+};
+
+    };
+
+    // --- ./controllers/typewriterController.js ---
+    modules['./controllers/typewriterController.js'] = function(module, exports, require) {
+/**
+ * Typewriter text controller.
+ *
+ * Keeps text reveal timers out of the main GameController while preserving the
+ * same public operations: start, finish, clear, and isActive.
+ */
+
+function createTypewriterController(options = {}) {
+  const getDelayMs = typeof options.getDelayMs === 'function' ? options.getDelayMs : () => 32;
+  const isInstant = typeof options.isInstant === 'function' ? options.isInstant : () => false;
+
+  const state = {
+    fullText: '',
+    visibleText: '',
+    index: 0,
+    timerId: null,
+    isTyping: false,
+    targetEl: null
+  };
+
+  function clear() {
+    if (state.timerId) {
+      clearTimeout(state.timerId);
+      state.timerId = null;
+    }
+    state.isTyping = false;
+  }
+
+  function finish() {
+    clear();
+    state.index = state.fullText.length;
+    state.isTyping = false;
+    if (state.targetEl) {
+      state.targetEl.textContent = state.fullText;
+    }
+  }
+
+  function tick() {
+    const delay = getDelayMs();
+    state.timerId = setTimeout(() => {
+      state.index++;
+      state.visibleText = state.fullText.substring(0, state.index);
+      if (state.targetEl) {
+        state.targetEl.textContent = state.visibleText;
+      }
+
+      if (state.index < state.fullText.length) {
+        tick();
+      } else {
+        state.isTyping = false;
+      }
+    }, delay);
+  }
+
+  function start(text, el) {
+    clear();
+    state.fullText = text;
+    state.targetEl = el;
+    state.index = 0;
+    state.isTyping = true;
+
+    if (isInstant()) {
+      finish();
+      return;
+    }
+
+    tick();
+  }
+
+  function isActive() {
+    return state.isTyping;
+  }
+
+  return {
+    start,
+    finish,
+    clear,
+    isActive
+  };
+}
+
+module.exports = {
+  createTypewriterController
+};
+
+    };
+
     // --- ./data/resultComments.js ---
     modules['./data/resultComments.js'] = function(module, exports, require) {
 /**
@@ -25338,6 +25872,7 @@ module.exports = {
 
 const { getCharacterIconPath, getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme, getCharacterVisualProfile } = require('../utils/characterVisualProfiles.js');
+const { getHeroineSelectRenderModel } = require('../core/renderModel.cjs');
 
 const HEROINES = [
   {
@@ -25413,8 +25948,19 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
 }
 
 function renderHeroineSelect(controller, view) {
-  const initial = HEROINES[0];
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
+  const model = getHeroineSelectRenderModel({
+    heroines: HEROINES,
+    progressSummary: progress
+  });
+  const heroines = model.heroines.map((heroine) => ({
+    id: heroine.heroineId,
+    name: heroine.name,
+    title: heroine.title,
+    desc: heroine.description
+  }));
+  const initial = heroines[0];
+  if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(initial.id);
 
   view.innerHTML = `
     <div class="heroine-select title-screen heroine-select-rich">
@@ -25432,7 +25978,7 @@ function renderHeroineSelect(controller, view) {
       </div>
 
       <div class="heroine-icon-row" aria-label="営業パートナー候補">
-        ${HEROINES.map((h) => `
+        ${heroines.map((h) => `
           <button class="heroine-icon-btn${h.id === initial.id ? ' is-selected' : ''}" data-preview-heroine="${h.id}" type="button" aria-label="${h.name}を表示">
             <img src="${getCharacterIconPath(h.id, 'normal')}" alt="" onerror="this.style.display='none'" />
             <span>${h.name}</span>
@@ -25489,7 +26035,8 @@ function renderHeroineSelect(controller, view) {
       event.stopPropagation();
       if (controller.playSfx) controller.playSfx('uiTapBottle');
 
-      const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
+      const heroine = heroines.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
+      if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(heroine.id);
       iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));
 
       if (root) applyCharacterTheme(root, heroine.id);
@@ -26397,13 +26944,15 @@ module.exports = {
 
 const { renderVnShell } = require('./vnScreen.js');
 const { getBackgroundPath } = require('../utils/assetPaths.js');
+const { getTitleRenderModel } = require('../core/renderModel.cjs');
 
 function renderTitle(controller, view) {
   const debugButton = controller.isDebugMode()
     ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
     : '';
-  const canContinue = controller.hasSaveData ? controller.hasSaveData() : false;
-  const continueAttrs = canContinue
+  const saveSummary = controller.getSaveSummary ? controller.getSaveSummary() : null;
+  const titleModel = getTitleRenderModel({ saveSummary });
+  const continueAttrs = titleModel.canContinue
     ? 'data-action="title-continue"'
     : 'disabled aria-disabled="true"';
 
@@ -26422,9 +26971,9 @@ function renderTitle(controller, view) {
       <div class="title-clock-crop" aria-hidden="true">
         <img class="title-clock-image" src="images/ui/clock.png" alt="" />
       </div>
-      <h1 class="title-logo-anchor" aria-label="Made in Maghribal">
+      <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
         <span class="title-logo-water">
-          <img class="title-logo-image" src="images/ui/logo.png" alt="Made in Maghribal" />
+          <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
         </span>
       </h1>
       <div class="title-content-panel">
@@ -26489,6 +27038,7 @@ module.exports = {
 const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
 const { getResultComment, getResultExpression } = require('../data/resultComments.js');
+const { getTurnResultRenderModel } = require('../core/renderModel.cjs');
 
 const SCORE_MAX_PER_TURN = {
   revenue: 100,
@@ -26751,12 +27301,17 @@ function setupResultReveal(controller, view, speechText) {
 function renderTurnResult(controller, view) {
   const s = controller.session.scores;
   const start = controller.quizState.turnStartScore;
-  const dR = s.revenue - start.revenue;
-  const dS = s.satisfaction - start.satisfaction;
-  const dRep = s.reputation - start.reputation;
+  const resultModel = getTurnResultRenderModel({
+    turn: controller.session.turn,
+    scores: s,
+    startScores: start
+  });
+  const dR = resultModel.stats.delta.revenue;
+  const dS = resultModel.stats.delta.satisfaction;
+  const dRep = resultModel.stats.delta.reputation;
   const rank = controller.getTurnRank(dR, dS, dRep);
   const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
-  const currentTurn = controller.session.turn;
+  const currentTurn = resultModel.turn;
   const reportLabel = `第${currentTurn}期営業報告`;
   const rawTurnItems = flattenTurnItemLog(controller.quizState.turnItemLog);
   const turnItems = rawTurnItems.length ? rawTurnItems : buildDebugResultItems(controller);
@@ -29030,9 +29585,12 @@ const {
 } = require('./utils/rhythmNoteMaps.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
+const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary, clearPlayerProgress } = require('./utils/playerProgress.js');
+const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
+const { createTypewriterController } = require('./controllers/typewriterController.js');
+const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
+const { bindInputHandlers } = require('./controllers/inputController.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -29083,6 +29641,7 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
+    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -29090,30 +29649,16 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false,
-      loadingMessage: '共通データ読込中…'
+      turnTransitionActive: false
     };
 
-    Promise.resolve(this.assetPreloader.preloadOpeningAssets()).finally(() => {
-      this.uiState.loadingMessage = null;
-      this.renderLoadingOverlay();
+    this.totalTurns = TOTAL_TURNS;
+    this.turnTransition = createTurnTransitionController(this);
+
+    this.typewriter = createTypewriterController({
+      getDelayMs: () => TEXT_SPEED_MS[this.settings.textSpeed] || 32,
+      isInstant: () => this.settings.textSpeed === 'instant'
     });
-
-    this.turnTransition = {
-      timerId: null,
-      tickTimerIds: [],
-      callback: null,
-      finishing: false
-    };
-
-    this.typewriter = {
-      fullText: '',
-      visibleText: '',
-      index: 0,
-      timerId: null,
-      isTyping: false,
-      targetEl: null
-    };
 
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
@@ -29288,6 +29833,7 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
+        this.preloadHeroineSelectAssets('HAKIMA');
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
@@ -29300,7 +29846,6 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
-    this.renderLoadingOverlay();
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
@@ -29358,56 +29903,19 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   startTypewriter(text, el) {
-    this.clearTypewriter();
-    this.typewriter.fullText = text;
-    this.typewriter.targetEl = el;
-    this.typewriter.index = 0;
-    this.typewriter.isTyping = true;
-
-    if (this.settings.textSpeed === 'instant') {
-      this.finishTypewriter();
-      return;
-    }
-
-    this.tickTypewriter();
-  }
-
-  tickTypewriter() {
-    const delay = TEXT_SPEED_MS[this.settings.textSpeed] || 32;
-    this.typewriter.timerId = setTimeout(() => {
-      this.typewriter.index++;
-      this.typewriter.visibleText = this.typewriter.fullText.substring(0, this.typewriter.index);
-      if (this.typewriter.targetEl) {
-        this.typewriter.targetEl.textContent = this.typewriter.visibleText;
-      }
-
-      if (this.typewriter.index < this.typewriter.fullText.length) {
-        this.tickTypewriter();
-      } else {
-        this.typewriter.isTyping = false;
-      }
-    }, delay);
+    this.typewriter.start(text, el);
   }
 
   finishTypewriter() {
-    this.clearTypewriter();
-    this.typewriter.index = this.typewriter.fullText.length;
-    this.typewriter.isTyping = false;
-    if (this.typewriter.targetEl) {
-      this.typewriter.targetEl.textContent = this.typewriter.fullText;
-    }
+    this.typewriter.finish();
   }
 
   clearTypewriter() {
-    if (this.typewriter.timerId) {
-      clearTimeout(this.typewriter.timerId);
-      this.typewriter.timerId = null;
-    }
-    this.typewriter.isTyping = false;
+    this.typewriter.clear();
   }
 
   isTypewriterActive() {
-    return this.typewriter.isTyping;
+    return this.typewriter.isActive();
   }
 
   /**
@@ -29418,22 +29926,6 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
-  renderLoadingOverlay() {
-    const root = document.getElementById('game-viewport') || this.container;
-    if (!root) return;
-    let overlay = root.querySelector('.asset-loading-overlay');
-    const message = this.uiState.loadingMessage;
-    if (!message) {
-      if (overlay) overlay.remove();
-      return;
-    }
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'asset-loading-overlay';
-      root.appendChild(overlay);
-    }
-    overlay.innerHTML = `<div class="asset-loading-card"><div class="asset-loading-spinner"></div><p>${message}</p></div>`;
-  }
   updateVnContent(payload) { updateVnContent(this, payload); }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
@@ -29456,6 +29948,7 @@ class GameController {
   hasSaveData() { return hasRunSave(); }
   getSaveSummary() { return getRunSaveSummary(); }
   getPlayerProgressSummary() { return getPlayerProgressSummary(); }
+  clearRunSaveData() { clearRunSave(); }
   saveCurrentRunIfNeeded() { saveRun(this); }
   recordEndingProgressIfNeeded() {
     if (this.endingProgressRecorded || this.session.phase !== 'ENDING') return;
@@ -29483,114 +29976,13 @@ class GameController {
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
-  clearAllSaveData() {
-    clearRunSave();
-    clearItemCollection();
-    clearPlayerProgress();
-    this.session = new GameSession();
-    this.quizState = this.createInitialQuizState();
-    this.endingProgressRecorded = false;
-    this.uiState.itemDetailModal = null;
-    this.uiState.titlePanel = null;
-  }
 
   playTurnTransition(callback, mode = 'next') {
-    if (this.uiState.turnTransitionActive) return;
-
-    this.uiState.turnTransitionActive = true;
-    this.turnTransition.callback = callback;
-    this.turnTransition.tickTimerIds = [];
-    this.turnTransition.finishing = false;
-
-    const viewport = document.getElementById('game-viewport') || this.container;
-    const oldOverlay = viewport.querySelector('.turn-transition-overlay');
-    if (oldOverlay) oldOverlay.remove();
-
-    const nextTurn = Math.min(TOTAL_TURNS, this.session.turn + 1);
-    const isEnding = mode === 'ending';
-    const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
-    const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
-
-    const overlay = document.createElement('div');
-    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
-    overlay.setAttribute('data-action', 'skip-turn-transition');
-    overlay.innerHTML = `
-      <div class="turn-transition-darkness" aria-hidden="true"></div>
-      <div class="turn-transition-clock-wrap" aria-hidden="true">
-        <img class="turn-transition-clock" src="images/ui/turn_clock.png" alt="" draggable="false">
-        <div class="turn-transition-clock-glow"></div>
-        <div class="turn-transition-clock-shadow"></div>
-      </div>
-      <div class="turn-transition-copy">
-        <p class="turn-transition-label">${title}</p>
-        <p class="turn-transition-subtitle">${subtitle}</p>
-        <p class="turn-transition-skip">クリックでスキップ</p>
-      </div>
-    `;
-    viewport.appendChild(overlay);
-
-    const fadeInMs = 1000;
-    const introHoldMs = 500;
-    const stepMs = 1000;
-    const restMs = 200;
-    const stepCount = 5;
-    const postHoldMs = 500;
-    const fadeOutMs = 1000;
-    const rotateStartMs = fadeInMs + introHoldMs;
-    const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
-    const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
-
-    Array.from({ length: stepCount }, (_, index) => rotateStartMs + (index * (stepMs + restMs))).forEach((delay) => {
-      const timerId = window.setTimeout(() => {
-        if (this.uiState.turnTransitionActive && !this.turnTransition.finishing) this.playSfx('turnClockTick');
-      }, delay);
-      this.turnTransition.tickTimerIds.push(timerId);
-    });
-
-    this.turnTransition.timerId = window.setTimeout(() => {
-      this.finishTurnTransition(false);
-    }, exitStartMs);
-
-    this.turnTransition.fadeOutMs = fadeOutMs;
+    this.turnTransition.play(callback, mode);
   }
 
   finishTurnTransition(skip = false) {
-    if (!this.uiState.turnTransitionActive || this.turnTransition.finishing) return;
-    this.turnTransition.finishing = true;
-
-    if (this.turnTransition.timerId) {
-      window.clearTimeout(this.turnTransition.timerId);
-      this.turnTransition.timerId = null;
-    }
-
-    if (Array.isArray(this.turnTransition.tickTimerIds)) {
-      this.turnTransition.tickTimerIds.forEach((timerId) => window.clearTimeout(timerId));
-      this.turnTransition.tickTimerIds = [];
-    }
-
-    const overlay = document.querySelector('.turn-transition-overlay');
-    const fadeMs = skip ? 500 : (this.turnTransition.fadeOutMs || 1000);
-
-    const complete = () => {
-      const callback = this.turnTransition.callback;
-      this.turnTransition.callback = null;
-      this.turnTransition.finishing = false;
-      this.turnTransition.fadeOutMs = null;
-      this.uiState.turnTransitionActive = false;
-
-      if (overlay) overlay.remove();
-      if (typeof callback === 'function') callback();
-    };
-
-    if (!overlay) {
-      complete();
-      return;
-    }
-
-    overlay.classList.add('is-exiting');
-    if (skip) overlay.classList.add('is-skipping');
-
-    this.turnTransition.timerId = window.setTimeout(complete, fadeMs);
+    this.turnTransition.finish(skip);
   }
 
 
@@ -29616,274 +30008,28 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   init() {
-    this.updateViewportScale();
-    window.addEventListener('resize', () => this.updateViewportScale());
-    window.addEventListener('orientationchange', () => this.updateViewportScale());
+    this.scheduleViewportScaleUpdate();
+    window.addEventListener('resize', () => this.scheduleViewportScaleUpdate());
+    window.addEventListener('orientationchange', () => this.scheduleViewportScaleUpdate());
+    document.addEventListener('fullscreenchange', () => this.scheduleViewportScaleUpdate());
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => this.scheduleViewportScaleUpdate());
+      window.visualViewport.addEventListener('scroll', () => this.scheduleViewportScaleUpdate());
+    }
     console.log('Controller Initialized');
-    
-    document.addEventListener('selectstart', (e) => {
-      if (e.target.closest('#game-viewport')) e.preventDefault();
-    });
-
-    document.addEventListener('dragstart', (e) => {
-      if (e.target.closest('#game-viewport')) e.preventDefault();
-    });
-
-    document.addEventListener('click', (e) => {
-      if (this.sfx) this.sfx.unlock();
-      if (this.bgm) this.bgm.unlock();
-      const target = e.target;
-      if (this.uiState.turnTransitionActive) {
-        e.stopPropagation();
-        this.finishTurnTransition(true);
-        return;
-      }
-      if (this.quizState.inputLocked) return;
-
-      // Global UI Actions
-
-      if (target.closest('[data-action="title-start"]')) {
-        e.stopPropagation();
-        clearRunSave();
-        this.endingProgressRecorded = false;
-        this.playSfx('uiConfirmChime');
-        this.onGlobalAction();
-        return;
-      }
-      if (target.closest('[data-action="title-continue"]')) {
-        e.stopPropagation();
-        if (!this.continueFromSave()) {
-          this.playSfx('uiTapBottle');
-          const messageEl = this.container.querySelector('[data-title-stub-message]');
-          if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
-        }
-        return;
-      }
-      if (target.closest('[data-action="title-clear-save"]')) {
-        e.stopPropagation();
-        clearRunSave();
-        this.playSfx('uiTapBottle');
-        this.update();
-        return;
-      }
-      const titlePanelBtn = target.closest('[data-title-panel]');
-      if (titlePanelBtn) {
-        e.stopPropagation();
-        this.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
-        return;
-      }
-      if (target.closest('[data-action="title-panel-back"]')) {
-        e.stopPropagation();
-        this.closeTitlePanel();
-        return;
-      }
-      if (this.uiState.titlePanel && target.classList?.contains('title-panel-screen') && !target.closest('.title-panel-card')) {
-        e.stopPropagation();
-        this.closeTitlePanel();
-        return;
-      }
-
-      const itemDetailBtn = target.closest('[data-item-detail-index]');
-      if (itemDetailBtn) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        const index = Number(itemDetailBtn.getAttribute('data-item-detail-index')) || 0;
-        this.uiState.itemDetailModal = { index };
-        this.update();
-        return;
-      }
-      if (target.getAttribute && target.getAttribute('data-action') === 'item-detail-close') {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.uiState.itemDetailModal = null;
-        this.update();
-        return;
-      }
-      const soundBgmBtn = target.closest('[data-sound-bgm-path]');
-      if (soundBgmBtn) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        const path = soundBgmBtn.getAttribute('data-sound-bgm-path');
-        this.bgm?.play({
-          path,
-          id: soundBgmBtn.getAttribute('data-sound-id') || 'preview'
-        });
-        this.updateSoundTestStatus(path);
-        return;
-      }
-      const soundSfxBtn = target.closest('[data-sound-sfx-path], [data-sound-sfx-key]');
-      if (soundSfxBtn) {
-        e.stopPropagation();
-        const previewPath = soundSfxBtn.getAttribute('data-sound-sfx-path');
-        if (previewPath) {
-          try {
-            const audio = new Audio(previewPath);
-            audio.volume = Math.max(0, Math.min(1, this.sfx?.volume ?? 0.7));
-            const playPromise = audio.play();
-            if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
-          } catch (error) {
-            this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
-          }
-        } else {
-          this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
-        }
-        return;
-      }
-      if (target.closest('[data-action="sound-stop-bgm"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.bgm?.stop();
-        this.updateSoundTestStatus('');
-        return;
-      }
-      const titleStub = target.closest('[data-title-stub]');
-      if (titleStub) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        const messageEl = this.container.querySelector('[data-title-stub-message]');
-        if (messageEl) {
-          messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
-        }
-        return;
-      }
-      if (target.closest('[data-action="open-options"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.openModal('options');
-        return;
-      }
-      if (target.closest('[data-action="open-help"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.openModal('help');
-        return;
-      }
-      if (target.closest('[data-action="close-modal"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.closeModal();
-        return;
-      }
-      if (this.uiState.modal && target.classList?.contains('ui-modal-backdrop') && !target.closest('.ui-modal')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.closeModal();
-        return;
-      }
-      if (target.closest('[data-action="toggle-fullscreen"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.toggleFullscreen();
-        return;
-      }
-      const speedBtn = target.closest('[data-action="set-text-speed"]');
-      if (speedBtn) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.setTextSpeed(speedBtn.getAttribute('data-speed'));
-        return;
-      }
-      const audioToggleBtn = target.closest('[data-action="set-audio-enabled"]');
-      if (audioToggleBtn) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.setAudioEnabled(audioToggleBtn.getAttribute('data-audio-kind'), audioToggleBtn.getAttribute('data-enabled') === 'true');
-        return;
-      }
-      const audioVolumeBtn = target.closest('[data-action="adjust-audio-volume"]');
-      if (audioVolumeBtn) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
-        return;
-      }
-      if (target.closest('[data-action="clear-all-save-data"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        const ok = window.confirm('セーブデータ、イベント既読、アイテム収集、ヒロイン別記録を削除します。よろしいですか？');
-        if (ok) {
-          this.clearAllSaveData();
-          this.openModal('options');
-          this.update();
-        }
-        return;
-      }
-
-      // Skip Actions
-      if (target.closest('[data-action="skip-text"]')) {
-        e.stopPropagation();
-        this.playSfx('uiTapBottle');
-        this.skipCurrentScene();
-        return;
-      }
-
-      if (target.closest('.choice-card')) {
-        const choiceCard = target.closest('.choice-card');
-        const id = choiceCard.getAttribute('data-item-id');
-        const quality = choiceCard.getAttribute('data-item-quality') || 'normal';
-        e.stopPropagation();
-        this.answerQuiz(id, quality);
-        return;
-      }
-
-      if (target.classList.contains('heroine-card')) {
-        const id = target.getAttribute('data-id');
-        const routeMode = target.getAttribute('data-route-mode-selected') || 'normal';
-        e.stopPropagation();
-        this.selectHeroine(id, routeMode);
-        return;
-      }
-
-      if (target.tagName === 'BUTTON' || target.closest('button')) {
-        e.stopPropagation();
-        if (target.classList.contains('btn-next')) {
-          this.playSfx('uiTapBottle');
-          this.onGlobalAction();
-        }
-        return;
-      }
-
-      // Prevent modal backdrop from closing or interfering with text advancement
-      if (this.uiState.modal) {
-        if (!target.closest('.ui-modal')) {
-          this.playSfx('uiTapBottle');
-          this.closeModal();
-        }
-        return;
-      }
-
-      if (this.session.phase === 'TITLE') return;
-      if (this.session.phase === 'HEROINE_SELECT') return;
-      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ') return;
-      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'TURN_RESULT') return;
-      
-      this.playSfx('uiTapBottle');
-      this.onGlobalAction();
-    });
+    bindInputHandlers(this);
   }
 
-  async selectHeroine(id, routeMode = 'normal') {
-    if (this.quizState.inputLocked || this.uiState.loadingMessage) return;
+  selectHeroine(id, routeMode = 'normal') {
+    if (this.quizState.inputLocked) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
-    this.uiState.loadingMessage = 'ヒロインデータ読込中…';
-    this.renderLoadingOverlay();
-    try {
-      await Promise.resolve(this.preloadHeroineSelectAssets(id));
-    } finally {
-      this.uiState.loadingMessage = null;
-    }
     this.endingProgressRecorded = false;
+    this.preloadHeroineSelectAssets(id);
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
-  }
-
-  skipCurrentScene() {
-    const wasTyping = this.isTypewriterActive();
-    if (wasTyping) this.finishTypewriter();
-    this.onGlobalAction();
   }
 
   onGlobalAction() {
@@ -30122,15 +30268,48 @@ class GameController {
     }
   }
 
+  scheduleViewportScaleUpdate() {
+    if (this.viewportScaleFrame) window.cancelAnimationFrame(this.viewportScaleFrame);
+    this.viewportScaleFrame = window.requestAnimationFrame(() => {
+      this.viewportScaleFrame = null;
+      this.updateViewportScale();
+      window.setTimeout(() => this.updateViewportScale(), 80);
+      window.setTimeout(() => this.updateViewportScale(), 240);
+    });
+  }
+
+  getAvailableViewportRect() {
+    const visualViewport = window.visualViewport;
+    const width = Math.max(1, visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || 720);
+    const height = Math.max(1, visualViewport?.height || window.innerHeight || document.documentElement.clientHeight || 1280);
+    return {
+      width,
+      height,
+      offsetLeft: visualViewport?.offsetLeft || 0,
+      offsetTop: visualViewport?.offsetTop || 0
+    };
+  }
+
   updateViewportScale() {
     const baseWidth = 720;
     const baseHeight = 1280;
-    const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+    const { width, height, offsetLeft, offsetTop } = this.getAvailableViewportRect();
+    const scale = Math.min(width / baseWidth, height / baseHeight);
     const viewport = document.getElementById('game-viewport');
     if (viewport) {
+      const scaledWidth = baseWidth * scale;
+      const scaledHeight = baseHeight * scale;
+      const left = offsetLeft + Math.max(0, (width - scaledWidth) / 2);
+      const top = offsetTop + Math.max(0, (height - scaledHeight) / 2);
+      viewport.style.position = 'fixed';
+      viewport.style.left = `${left}px`;
+      viewport.style.top = `${top}px`;
+      viewport.style.transformOrigin = 'top left';
       viewport.style.transform = `scale(${scale})`;
     }
     document.documentElement.style.setProperty('--viewport-scale', String(scale));
+    document.documentElement.style.setProperty('--app-available-width', `${width}px`);
+    document.documentElement.style.setProperty('--app-available-height', `${height}px`);
   }
 }
 
