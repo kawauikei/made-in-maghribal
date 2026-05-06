@@ -4252,7 +4252,7 @@ module.exports = { TONE_GUIDES };
 /**
  * Heroine-specific result lines and expression stages.
  *
- * The result stage is intentionally 3-step only:
+ * Result stage is intentionally 3-step only:
  * - encourage: low result / gentle recovery line / sorrow expression
  * - evaluate: normal-good result / practical evaluation / fun expression
  * - surprise: excellent result / delighted or impressed line / joy expression
@@ -4271,19 +4271,37 @@ function getResultStage(rank) {
 
 const RESULT_COMMENTS = {
   HAKIMA: {
-    encourage: '焦らなくていいわ。次の手応えを、ここから整えましょう。',
-    evaluate: '悪くないわ。棚の流れも、だいぶ読めてきたみたいね。',
-    surprise: '完璧ね。ここまで綺麗に噛み合うなら、次も任せられるわ。'
+    encourage: '棚の流れはまだ揺れているわ。焦らず、注文の意味をひとつずつ掴み直しましょう。\n今回は守りを固める営業ね。次は品の理由まで見えてくるはずよ。',
+    evaluate: '悪くないわ。棚の流れも、だいぶ読めてきたみたいね。\nこの手応えを次の接客に繋げれば、もっと安定した営業になるわ。',
+    surprise: '完璧ね。ここまで綺麗に噛み合うなら、次も任せられるわ。\n品の選び方にも迷いがなかった。今の感覚、忘れないで。'
   },
   MIRA: {
-    encourage: '大丈夫。流れは悪くないよ、次でぱっと取り返そう。',
-    evaluate: 'いい感じ！店の空気も明るくなってきたね。',
-    surprise: 'すごいすごい！今の流れなら、次のお客さんも呼び込めるよ。'
+    encourage: '大丈夫、店の空気はまだ暗くなってないよ。次でぱっと取り返そう。\nお客さんの目線をもう少し追えば、きっと流れが見えてくるから。',
+    evaluate: 'いい感じ！店の空気も明るくなってきたね。\nこの調子で品物の並びを覚えていけば、次はもっと声をかけやすくなるよ。',
+    surprise: 'すごいすごい！今の流れなら、次のお客さんも呼び込めるよ。\n棚も接客もぴったり噛み合ってた。これは噂になるかもね！'
   },
   DARIYA: {
-    encourage: '少し星が曇ったみたい。次は品の声をよく聞きましょう。',
-    evaluate: '静かだけれど、良い手応え。次の品も見えてきたわ。',
-    surprise: '星の巡りも味方しているわ。この流れは逃さないで。'
+    encourage: '少し星が曇ったみたい。けれど、品の声はまだ消えていないわ。\n次は急がず、気配の強いものから順に見ていきましょう。',
+    evaluate: '静かだけれど、良い手応え。次の品も見えてきたわ。\nこの流れなら、星の巡りを読み違えることは少なくなるでしょう。',
+    surprise: '星の巡りも味方しているわ。この流れは逃さないで。\n品物の気配とお客の願いが重なっていた。とても美しい営業だったわ。'
+  }
+};
+
+const RESULT_GENRE_COMMENTS = {
+  HAKIMA: {
+    encourage: '{genre}が目立っていたわ。けれど、棚全体の意味はまだ少し散っている。\n焦らなくていい。次は注文の芯を見て、品を絞り込みましょう。',
+    evaluate: '{genre}の流れが見えてきたわ。次の棚にも繋げられそうね。\n評価としては十分。あとは迷いを減らせば、もっと綺麗にまとまるわ。',
+    surprise: '{genre}が綺麗に噛み合ったわ。この感覚、覚えておいて。\nここまで読めるなら、次の営業でも十分に勝負できるわね。'
+  },
+  MIRA: {
+    encourage: '{genre}が多かったね。まだ流れを掴みきれてないけど、大丈夫。\n次はお客さんの声と品物の雰囲気を、もう少し近づけてみよう。',
+    evaluate: '{genre}がよく動いたね！店の流れも掴めてきたよ。\nこの調子なら、次の接客ではもっと自然におすすめできそう。',
+    surprise: '{genre}がばっちり当たったね！この調子なら噂も広がるよ。\n品物もお客さんも明るく見えてた。今の営業、かなり良かった！'
+  },
+  DARIYA: {
+    encourage: '{genre}が多く巡ったわ。けれど、星はまだ揺れている。\n次は品の気配を急がず聞いて。そうすれば道は見えてくるわ。',
+    evaluate: '{genre}の気配が強かったわ。次の品選びにも響きそうね。\n悪くない流れよ。静かに積み重ねれば、もっと深く読めるはず。',
+    surprise: '{genre}が星の巡りに重なったわ。とても良い流れよ。\nここまで品物が応えてくれるなら、次の営業にも期待できるわ。'
   }
 };
 
@@ -4292,9 +4310,17 @@ function normalizeHeroineId(id) {
   return String(id).replace(/^CH_/i, '').toUpperCase();
 }
 
-function getResultComment(heroineId, rank) {
+function formatGenreComment(template, dominantGenre) {
+  if (!template || !dominantGenre?.label) return '';
+  return template.replace('{genre}', dominantGenre.label);
+}
+
+function getResultComment(heroineId, rank, dominantGenre = null) {
   const normalized = normalizeHeroineId(heroineId);
   const stage = getResultStage(rank);
+  const genreTemplate = RESULT_GENRE_COMMENTS[normalized]?.[stage] || RESULT_GENRE_COMMENTS.HAKIMA[stage];
+  const genreComment = dominantGenre ? formatGenreComment(genreTemplate, dominantGenre) : '';
+  if (genreComment) return genreComment;
   return (
     RESULT_COMMENTS[normalized]?.[stage] ||
     RESULT_COMMENTS.HAKIMA[stage] ||
@@ -4310,6 +4336,7 @@ function getResultExpression(rank) {
 module.exports = {
   RESULT_STAGES,
   RESULT_COMMENTS,
+  RESULT_GENRE_COMMENTS,
   getResultStage,
   getResultComment,
   getResultExpression
@@ -4334,13 +4361,109 @@ const SCORE_MAX_PER_TURN = {
   reputation: 20
 };
 
+const GENRE_LABELS = {
+  ARM: '守りの品',
+  FOD: '食べ物',
+  MED: '薬と癒しの品',
+  ADN: '装飾品',
+  CLT: '衣装',
+  DAY: '日用品',
+  WRK: '仕事道具',
+  TRV: '旅の品',
+  RIT: '儀礼品',
+  TRD: '交易品'
+};
+
+
+
+const DEBUG_RESULT_ITEM_IDS = [
+  'IT_ARM_AS_01', 'IT_FOD_SA_02', 'IT_MED_EL_03', 'IT_ADN_LI_04', 'IT_CLT_ME_05',
+  'IT_DAY_AS_06', 'IT_WRK_SA_07', 'IT_TRV_EL_08', 'IT_RIT_LI_09', 'IT_TRD_ME_10',
+  'IT_ARM_SA_11', 'IT_FOD_EL_12', 'IT_MED_LI_13', 'IT_ADN_ME_14', 'IT_CLT_AS_15',
+  'IT_DAY_SA_16', 'IT_WRK_EL_17', 'IT_TRV_LI_18', 'IT_RIT_ME_19', 'IT_TRD_AS_20'
+];
+
+function getNadirResultLine(rank) {
+  if (rank === '大成功') return 'よし！';
+  if (rank === '成功') return '手応えあり';
+  return '頑張ろう';
+}
+
+function buildDebugResultItems(controller) {
+  return DEBUG_RESULT_ITEM_IDS.map((itemId, index) => ({
+    itemId,
+    displayName: controller.getItemDisplayName ? controller.getItemDisplayName(itemId) : itemId,
+    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.png`,
+    selected: index % 2 === 0,
+    correct: index % 3 === 0,
+    isNew: index % 4 === 0,
+    questionIndex: Math.floor(index / 2)
+  }));
+}
+
 function getCumulativeMax(metric, turn) {
   const rawMax = SCORE_MAX_PER_TURN[metric] * Math.max(1, turn);
   if (metric === 'revenue') return Math.min(500, rawMax);
   return Math.min(100, rawMax);
 }
+
 function clampPct(value, maxValue) {
   return Math.max(0, Math.min(100, Math.round((value / Math.max(1, maxValue)) * 100)));
+}
+
+function getItemGenre(itemId = '') {
+  const match = String(itemId).match(/^IT_([A-Z]{3})_/);
+  return match ? match[1] : '';
+}
+
+function getDominantGenre(turnItems = []) {
+  const counts = {};
+  turnItems.forEach((item) => {
+    const genre = getItemGenre(item.itemId);
+    if (!genre) return;
+    counts[genre] = (counts[genre] || 0) + 1;
+  });
+
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  if (!top) return null;
+  return { code: top[0], label: GENRE_LABELS[top[0]] || top[0], count: top[1] };
+}
+
+function flattenTurnItemLog(turnItemLog = []) {
+  return turnItemLog.flatMap((entry) => (
+    (entry.choices || []).map((choice) => ({
+      ...choice,
+      questionIndex: entry.questionIndex
+    }))
+  ));
+}
+
+function renderResultItemList(items) {
+  const visibleItems = items.slice(0, 20);
+  if (!visibleItems.length) {
+    return `
+      <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
+        <div class="result-item-log-title">今回の品物</div>
+        <div class="result-item-log-empty">接客で登場した品物をここに記録します。</div>
+      </section>
+    `;
+  }
+
+  const rows = visibleItems.map((item) => `
+    <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
+      ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
+      <img class="result-item-icon" src="${item.iconPath}" alt="${item.displayName}" onerror="this.style.display='none'" />
+    </div>
+  `).join('');
+
+  return `
+    <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
+      <div class="result-item-log-title">今回の品物</div>
+      <div class="result-item-log-grid">
+        ${rows}
+      </div>
+    </section>
+  `;
 }
 
 function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) {
@@ -4368,6 +4491,92 @@ function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) 
   `;
 }
 
+function setupResultReveal(controller, view, speechText) {
+  const stage = view.querySelector('[data-result-reveal-root]');
+  if (!stage) return;
+
+  const speechTextEl = stage.querySelector('[data-result-speech-text]');
+  const heroineEl = stage.querySelector('[data-result-heroine]');
+  const nadirEl = stage.querySelector('[data-result-nadir-icon]');
+  const revealSteps = ['report', 'rank', 'graph', 'speech', 'items'];
+  const timers = [];
+  let typingTimer = null;
+  let done = false;
+
+  const playStepSfx = () => {
+    // Result reveal used to play workshopDayEnd on every step, but it was too busy.
+    // Keep the hook as a no-op so reveal timing remains unchanged.
+  };
+
+  const reveal = (step, play = true) => {
+    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
+      el.classList.add('is-visible');
+    });
+    if (step === 'rank') {
+      if (heroineEl?.dataset.resultExpressionSrc) {
+        heroineEl.src = heroineEl.dataset.resultExpressionSrc;
+        heroineEl.classList.add('is-expression-shifted');
+      }
+      if (nadirEl?.dataset.resultExpressionSrc) {
+        nadirEl.src = nadirEl.dataset.resultExpressionSrc;
+        nadirEl.classList.add('is-expression-shifted');
+      }
+    }
+    if (play) playStepSfx();
+  };
+
+  const finishSpeech = () => {
+    if (typingTimer) {
+      clearInterval(typingTimer);
+      typingTimer = null;
+    }
+    if (speechTextEl) speechTextEl.textContent = speechText;
+  };
+
+  const typeSpeech = () => {
+    reveal('speech');
+    if (!speechTextEl) return;
+    speechTextEl.textContent = '';
+    let index = 0;
+    typingTimer = setInterval(() => {
+      index += 1;
+      speechTextEl.textContent = speechText.slice(0, index);
+      if (index >= speechText.length) {
+        clearInterval(typingTimer);
+        typingTimer = null;
+      }
+    }, 28);
+  };
+
+  const finishAll = () => {
+    if (done) return;
+    done = true;
+    timers.forEach((timer) => clearTimeout(timer));
+    finishSpeech();
+    revealSteps.forEach((step) => reveal(step, false));
+  };
+
+  const schedule = (fn, delay) => {
+    const timer = setTimeout(() => {
+      if (!stage.isConnected || done) return;
+      fn();
+    }, delay);
+    timers.push(timer);
+  };
+
+  schedule(() => reveal('report'), 120);
+  schedule(() => reveal('rank'), 520);
+  schedule(() => reveal('graph'), 920);
+  schedule(typeSpeech, 1320);
+  schedule(() => reveal('items'), 2400);
+
+  stage.addEventListener('click', (event) => {
+    if (event.target.closest('.result-next-button')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    finishAll();
+  });
+}
 
 function renderTurnResult(controller, view) {
   const s = controller.session.scores;
@@ -4379,20 +4588,34 @@ function renderTurnResult(controller, view) {
   const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
   const currentTurn = controller.session.turn;
   const reportLabel = `第${currentTurn}期営業報告`;
+  const rawTurnItems = flattenTurnItemLog(controller.quizState.turnItemLog);
+  const turnItems = rawTurnItems.length ? rawTurnItems : buildDebugResultItems(controller);
+  const dominantGenre = getDominantGenre(turnItems);
+  const speechText = getResultComment(heroineId, rank, dominantGenre);
+  const resultExpression = getResultExpression(rank);
+  const normalStandingSrc = getCharacterVisualImagePath(heroineId, 'normal', 'standing');
+  const resultStandingSrc = getCharacterVisualImagePath(heroineId, resultExpression, 'standing');
+  const nadirNormalSrc = getCharacterVisualImagePath('NADIR', 'normal', 'face');
+  const nadirResultSrc = getCharacterVisualImagePath('NADIR', resultExpression, 'face');
+  const nadirLine = getNadirResultLine(rank);
   
   view.innerHTML = `
     <div class="result-screen" data-screen="turn-result">
-      <div class="result-stage" data-result-theme-root>
+      <div class="result-stage" data-result-theme-root data-result-reveal-root>
         <div class="result-heroine-wrap">
-          <img class="result-heroine-standing" data-result-heroine src="${getCharacterVisualImagePath(heroineId, getResultExpression(rank), 'standing')}" alt="" />
+          <img class="result-heroine-standing" data-result-heroine src="${normalStandingSrc}" data-result-expression-src="${resultStandingSrc}" alt="" />
         </div>
 
-        <div class="result-report-stamp" aria-label="${reportLabel}">${reportLabel}</div>
+        <div class="result-report-stamp" data-reveal-step="report" aria-label="${reportLabel}">${reportLabel}</div>
+        <div class="result-nadir-aside" data-reveal-step="rank" aria-label="ナーディルの一言">
+          <div class="result-nadir-face">
+            <img data-result-nadir-icon src="${nadirNormalSrc}" data-result-expression-src="${nadirResultSrc}" alt="" />
+          </div>
+          <div class="result-nadir-bubble">${nadirLine}</div>
+        </div>
+        <div class="result-rank-burst result-rank-${rank}" data-reveal-step="rank" aria-label="評価 ${rank}">評価：${rank}</div>
 
-        <section class="result-card result-rich-card">
-          <div class="result-kicker">第${currentTurn}ターン 営業結果</div>
-          <div class="result-rank result-rank-${rank}">評価: ${rank}</div>
-
+        <section class="result-card result-rich-card" data-reveal-step="graph" aria-label="営業成果グラフ">
           <div class="result-score-legend">
             <span class="legend-dot legend-total"></span>累計 / 満点
             <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
@@ -4405,7 +4628,11 @@ function renderTurnResult(controller, view) {
           </div>
         </section>
 
-        <div class="result-speech result-speech-lower">${getResultComment(heroineId, rank)}</div>
+        <div class="result-speech result-speech-lower" data-reveal-step="speech">
+          <span data-result-speech-text></span>
+        </div>
+
+        ${renderResultItemList(turnItems)}
 
         <button class="btn-primary btn-next result-next-button">次へ</button>
       </div>
@@ -4416,8 +4643,8 @@ function renderTurnResult(controller, view) {
   const heroineEl = view.querySelector('[data-result-heroine]');
   applyCharacterTheme(root, heroineId);
   applyCharacterVisualProfile(heroineEl, heroineId, 'result');
+  setupResultReveal(controller, view, speechText);
 }
-
 
 function formatAverage(value, count) {
   if (!count) return '0';
@@ -5095,7 +5322,8 @@ module.exports = {
 const DEFAULT_THEME = {
   primary: '#f6d36b',
   secondary: '#d68a35',
-  textStroke: 'rgba(74, 42, 12, 0.45)'
+  textStroke: 'rgba(74, 42, 12, 0.45)',
+  stampFont: '"Yu Mincho", "Hiragino Mincho ProN", serif'
 };
 
 const DEFAULT_VISUAL_MODE = {
@@ -5127,7 +5355,7 @@ const DEFAULT_PROFILE = {
 
 const CHARACTER_VISUAL_PROFILES = {
   MIRA: {
-    theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)' },
+    theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)', stampFont: '"Klee", "Hannotate SC", "Hiragino Maru Gothic ProN", "Yu Gothic", cursive' },
     standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: -86, height: 520 },
     bustup: { image: 'standing', scale: 1.42, x: 0, y: 0, bottom: -260, height: 660 },
@@ -5137,7 +5365,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.00, x: 50, y: 50 }
   },
   HAKIMA: {
-    theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)' },
+    theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)', stampFont: '"UD Digi Kyokasho N-R", "Yu Mincho", "Hiragino Mincho ProN", serif' },
     // Ear height makes her effective top taller; keep a small downward nudge.
     standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.14, x: 0, y: 10, bottom: -98, height: 520 },
@@ -5148,7 +5376,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
   },
   DARIYA: {
-    theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)' },
+    theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)', stampFont: '"Yu Mincho", "Hiragino Mincho ProN", "HGS明朝E", serif' },
     // Horn height needs a stronger downward nudge after face-size scaling.
     standing: { image: 'standing', scale: 1.22, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.28, x: 0, y: 20, bottom: -118, height: 520 },
@@ -5159,7 +5387,7 @@ const CHARACTER_VISUAL_PROFILES = {
     speakerIcon: { image: 'face', scale: 1.02, x: 50, y: 47 }
   },
   NADIR: {
-    theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)' },
+    theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)', stampFont: '"Yu Gothic", "Hiragino Sans", system-ui, sans-serif' },
     standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
     heroineSelect: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: -96, height: 520 },
     bustup: { image: 'standing', scale: 1.56, x: 0, y: 14, bottom: -278, height: 660 },
@@ -5218,6 +5446,7 @@ function applyCharacterTheme(el, id) {
   el.style.setProperty('--heroine-theme-primary', theme.primary);
   el.style.setProperty('--heroine-theme-secondary', theme.secondary);
   el.style.setProperty('--heroine-theme-stroke', theme.textStroke);
+  el.style.setProperty('--heroine-stamp-font', theme.stampFont || DEFAULT_THEME.stampFont);
 }
 
 module.exports = {
@@ -5402,6 +5631,79 @@ module.exports = {
 
     };
 
+    // --- ./utils/itemCollection.js ---
+    modules['./utils/itemCollection.js'] = function(module, exports, require) {
+/**
+ * Lightweight item collection state for the future item encyclopedia.
+ *
+ * Rule: an item is registered when it appears as a quiz candidate, even if the
+ * player does not select it.
+ */
+
+const ITEM_COLLECTION_KEY = 'madeinmaghribal.collection.items';
+
+function canUseStorage() {
+  try {
+    return typeof localStorage !== 'undefined';
+  } catch (e) {
+    return false;
+  }
+}
+
+function loadItemCollection() {
+  if (!canUseStorage()) return {};
+  try {
+    const raw = localStorage.getItem(ITEM_COLLECTION_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (e) {
+    console.warn('Failed to load item collection:', e);
+    return {};
+  }
+}
+
+function saveItemCollection(collection) {
+  if (!canUseStorage()) return;
+  try {
+    localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(collection));
+  } catch (e) {
+    console.warn('Failed to save item collection:', e);
+  }
+}
+
+function registerSeenItems(itemIds, context = {}) {
+  const collection = loadItemCollection();
+  const now = new Date().toISOString();
+  const results = [];
+
+  itemIds.forEach((itemId) => {
+    if (!itemId) return;
+    const exists = Boolean(collection[itemId]?.seen);
+    if (!exists) {
+      collection[itemId] = {
+        seen: true,
+        firstSeenAt: now,
+        firstSeenTurn: context.turn || null,
+        firstSeenQuestionIndex: Number.isInteger(context.questionIndex) ? context.questionIndex : null
+      };
+    }
+    results.push({ itemId, isNew: !exists });
+  });
+
+  saveItemCollection(collection);
+  return results;
+}
+
+module.exports = {
+  ITEM_COLLECTION_KEY,
+  loadItemCollection,
+  saveItemCollection,
+  registerSeenItems
+};
+
+    };
+
     // --- ./utils/sfxEngine.js ---
     modules['./utils/sfxEngine.js'] = function(module, exports, require) {
 /**
@@ -5560,6 +5862,7 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { registerSeenItems } = require('./utils/itemCollection.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -5612,6 +5915,7 @@ class GameController {
       totalQuestions: 10,
       currentQuestion: null,
       promptShownAt: 0,
+      turnItemLog: [],
       lastResult: null,
       turnStartScore: null,
       inputLocked: false,
@@ -5973,6 +6277,7 @@ class GameController {
       if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ') return;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'TURN_RESULT') return;
       
       this.playSfx('uiTapBottle');
       this.onGlobalAction();
@@ -6035,6 +6340,7 @@ class GameController {
     this.quizState.lastResult = null;
     this.quizState.inputLocked = false;
     this.quizState.turnStartScore = { ...this.session.scores };
+    this.quizState.turnItemLog = [];
     this.generateNextQuestion();
   }
 
@@ -6063,6 +6369,38 @@ class GameController {
     return [...choices].sort(() => Math.random() - 0.5);
   }
 
+
+  recordQuizItemLog(selectedItemId, result) {
+    const q = this.quizState.currentQuestion;
+    const questionIndex = this.quizState.questionIndex;
+    const choices = this.quizState.currentChoices.map((choice) => ({
+      itemId: choice.id,
+      displayName: choice.name || this.getItemDisplayName(choice.id),
+      iconPath: this.getItemIconPath(choice.id),
+      selected: choice.id === selectedItemId,
+      correct: q && choice.id === q.correctItemId
+    }));
+
+    const collectionUpdates = registerSeenItems(
+      choices.map((choice) => choice.itemId),
+      { turn: this.session.turn, questionIndex }
+    );
+    const newItemIds = new Set(collectionUpdates.filter((entry) => entry.isNew).map((entry) => entry.itemId));
+
+    this.quizState.turnItemLog.push({
+      turn: this.session.turn,
+      questionIndex,
+      promptText: q ? q.promptText : '',
+      selectedItemId,
+      correctItemId: q ? q.correctItemId : '',
+      result,
+      choices: choices.map((choice) => ({
+        ...choice,
+        isNew: newItemIds.has(choice.itemId)
+      }))
+    });
+  }
+
   answerQuiz(itemId) {
     if (this.quizState.inputLocked) return;
     this.quizState.inputLocked = true;
@@ -6076,6 +6414,8 @@ class GameController {
       correctItemId: this.quizState.currentQuestion.correctItemId,
       nearestBeatMs: Math.round(now / 600) * 600
     });
+
+    this.recordQuizItemLog(itemId, result);
 
     this.session.scores = updateGameScore(this.session.scores, result);
     this.quizState.lastResult = result;
