@@ -15,5 +15,5 @@
 
 ## Later work
 
-- Clarify the heroine-specific preload call path so selected heroine assets are requested with an explicit heroine id.
+- Keep monitoring perceived startup tempo after heroine-specific preload calls were connected to explicit heroine ids.
 - Continue using visual profiles for standing / face / result expression display.

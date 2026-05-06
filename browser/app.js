@@ -292,7 +292,7 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
-        this.preloadHeroineSelectAssets();
+        this.preloadHeroineSelectAssets('HAKIMA');
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
@@ -468,7 +468,7 @@ class GameController {
     }
     return applied;
   }
-  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
+  preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
@@ -829,6 +829,7 @@ class GameController {
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
     this.endingProgressRecorded = false;
+    this.preloadHeroineSelectAssets(id);
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();

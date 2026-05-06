@@ -78,9 +78,10 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
   }).join('');
 }
 
-function renderHeroineSelect(controller, view) {
+  function renderHeroineSelect(controller, view) {
   const initial = HEROINES[0];
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
+  if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(initial.id);
 
   view.innerHTML = `
     <div class="heroine-select title-screen heroine-select-rich">
@@ -156,6 +157,7 @@ function renderHeroineSelect(controller, view) {
       if (controller.playSfx) controller.playSfx('uiTapBottle');
 
       const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
+      if (controller.preloadHeroineSelectAssets) controller.preloadHeroineSelectAssets(heroine.id);
       iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));
 
       if (root) applyCharacterTheme(root, heroine.id);
