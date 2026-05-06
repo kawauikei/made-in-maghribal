@@ -4347,304 +4347,10 @@ module.exports = {
     // --- ./screens/endingScreen.js ---
     modules['./screens/endingScreen.js'] = function(module, exports, require) {
 /**
- * Result and Ending screens for MadeInMaghribal.
+ * Ending screen for MadeInMaghribal.
  */
 const { calculateAffection } = require('../core/affectionModel.cjs');
 const { evaluateEnding } = require('../core/endingBranch.cjs');
-const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
-const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
-const { getResultComment, getResultExpression } = require('../data/resultComments.js');
-
-const SCORE_MAX_PER_TURN = {
-  revenue: 100,
-  satisfaction: 20,
-  reputation: 20
-};
-
-const GENRE_LABELS = {
-  ARM: '守りの品',
-  FOD: '食べ物',
-  MED: '薬と癒しの品',
-  ADN: '装飾品',
-  CLT: '衣装',
-  DAY: '日用品',
-  WRK: '仕事道具',
-  TRV: '旅の品',
-  RIT: '儀礼品',
-  TRD: '交易品'
-};
-
-
-
-const DEBUG_RESULT_ITEM_IDS = [
-  'IT_ARM_AS_01', 'IT_FOD_SA_02', 'IT_MED_EL_03', 'IT_ADN_LI_04', 'IT_CLT_ME_05',
-  'IT_DAY_AS_06', 'IT_WRK_SA_07', 'IT_TRV_EL_08', 'IT_RIT_LI_09', 'IT_TRD_ME_10',
-  'IT_ARM_SA_11', 'IT_FOD_EL_12', 'IT_MED_LI_13', 'IT_ADN_ME_14', 'IT_CLT_AS_15',
-  'IT_DAY_SA_16', 'IT_WRK_EL_17', 'IT_TRV_LI_18', 'IT_RIT_ME_19', 'IT_TRD_AS_20'
-];
-
-function getNadirResultLine(rank) {
-  if (rank === '大成功') return 'よし！';
-  if (rank === '成功') return '手応えあり';
-  return '頑張ろう';
-}
-
-function buildDebugResultItems(controller) {
-  return DEBUG_RESULT_ITEM_IDS.map((itemId, index) => ({
-    itemId,
-    displayName: controller.getItemDisplayName ? controller.getItemDisplayName(itemId) : itemId,
-    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.png`,
-    selected: index % 2 === 0,
-    correct: index % 3 === 0,
-    isNew: index % 4 === 0,
-    questionIndex: Math.floor(index / 2)
-  }));
-}
-
-function getCumulativeMax(metric, turn) {
-  const rawMax = SCORE_MAX_PER_TURN[metric] * Math.max(1, turn);
-  if (metric === 'revenue') return Math.min(500, rawMax);
-  return Math.min(100, rawMax);
-}
-
-function clampPct(value, maxValue) {
-  return Math.max(0, Math.min(100, Math.round((value / Math.max(1, maxValue)) * 100)));
-}
-
-function getItemGenre(itemId = '') {
-  const match = String(itemId).match(/^IT_([A-Z]{3})_/);
-  return match ? match[1] : '';
-}
-
-function getDominantGenre(turnItems = []) {
-  const counts = {};
-  turnItems.forEach((item) => {
-    const genre = getItemGenre(item.itemId);
-    if (!genre) return;
-    counts[genre] = (counts[genre] || 0) + 1;
-  });
-
-  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  if (!top) return null;
-  return { code: top[0], label: GENRE_LABELS[top[0]] || top[0], count: top[1] };
-}
-
-function flattenTurnItemLog(turnItemLog = []) {
-  return turnItemLog.flatMap((entry) => (
-    (entry.choices || []).map((choice) => ({
-      ...choice,
-      questionIndex: entry.questionIndex
-    }))
-  ));
-}
-
-function renderResultItemList(items) {
-  const visibleItems = items.slice(0, 20);
-  if (!visibleItems.length) {
-    return `
-      <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
-        <div class="result-item-log-title">今回の品物</div>
-        <div class="result-item-log-empty">接客で登場した品物をここに記録します。</div>
-      </section>
-    `;
-  }
-
-  const rows = visibleItems.map((item) => `
-    <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
-      ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
-      <img class="result-item-icon" src="${item.iconPath}" alt="${item.displayName}" onerror="this.style.display='none'" />
-    </div>
-  `).join('');
-
-  return `
-    <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
-      <div class="result-item-log-title">今回の品物</div>
-      <div class="result-item-log-grid">
-        ${rows}
-      </div>
-    </section>
-  `;
-}
-
-function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) {
-  const turnMax = SCORE_MAX_PER_TURN[metric];
-  const cumulativeMax = getCumulativeMax(metric, currentTurn);
-  const turnPct = clampPct(turnValue, turnMax);
-  const cumulativePct = clampPct(cumulativeValue, cumulativeMax);
-
-  return `
-    <div class="result-score-bar-row">
-      <div class="result-score-bar-label">${label}</div>
-      <div class="result-score-bar-stack" aria-label="${label} score graph">
-        <div class="result-score-bar-track result-score-bar-track-total">
-          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
-        </div>
-        <div class="result-score-bar-track result-score-bar-track-turn">
-          <div class="result-score-bar-fill result-score-bar-fill-turn" style="width:${turnPct}%"></div>
-        </div>
-      </div>
-      <div class="result-score-bar-value">
-        <span class="result-score-now">今回 +${turnValue}</span>
-        <span class="result-score-total">累計 ${cumulativeValue}</span>
-      </div>
-    </div>
-  `;
-}
-
-function setupResultReveal(controller, view, speechText) {
-  const stage = view.querySelector('[data-result-reveal-root]');
-  if (!stage) return;
-
-  const speechTextEl = stage.querySelector('[data-result-speech-text]');
-  const heroineEl = stage.querySelector('[data-result-heroine]');
-  const nadirEl = stage.querySelector('[data-result-nadir-icon]');
-  const revealSteps = ['report', 'rank', 'graph', 'speech', 'items'];
-  const timers = [];
-  let typingTimer = null;
-  let done = false;
-
-  const playStepSfx = () => {
-    // Result reveal used to play workshopDayEnd on every step, but it was too busy.
-    // Keep the hook as a no-op so reveal timing remains unchanged.
-  };
-
-  const reveal = (step, play = true) => {
-    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
-      el.classList.add('is-visible');
-    });
-    if (step === 'rank') {
-      if (heroineEl?.dataset.resultExpressionSrc) {
-        heroineEl.src = heroineEl.dataset.resultExpressionSrc;
-        heroineEl.classList.add('is-expression-shifted');
-      }
-      if (nadirEl?.dataset.resultExpressionSrc) {
-        nadirEl.src = nadirEl.dataset.resultExpressionSrc;
-        nadirEl.classList.add('is-expression-shifted');
-      }
-    }
-    if (play) playStepSfx();
-  };
-
-  const finishSpeech = () => {
-    if (typingTimer) {
-      clearInterval(typingTimer);
-      typingTimer = null;
-    }
-    if (speechTextEl) speechTextEl.textContent = speechText;
-  };
-
-  const typeSpeech = () => {
-    reveal('speech');
-    if (!speechTextEl) return;
-    speechTextEl.textContent = '';
-    let index = 0;
-    typingTimer = setInterval(() => {
-      index += 1;
-      speechTextEl.textContent = speechText.slice(0, index);
-      if (index >= speechText.length) {
-        clearInterval(typingTimer);
-        typingTimer = null;
-      }
-    }, 28);
-  };
-
-  const finishAll = () => {
-    if (done) return;
-    done = true;
-    timers.forEach((timer) => clearTimeout(timer));
-    finishSpeech();
-    revealSteps.forEach((step) => reveal(step, false));
-  };
-
-  const schedule = (fn, delay) => {
-    const timer = setTimeout(() => {
-      if (!stage.isConnected || done) return;
-      fn();
-    }, delay);
-    timers.push(timer);
-  };
-
-  schedule(() => reveal('report'), 120);
-  schedule(() => reveal('rank'), 520);
-  schedule(() => reveal('graph'), 920);
-  schedule(typeSpeech, 1320);
-  schedule(() => reveal('items'), 2400);
-
-  stage.addEventListener('click', (event) => {
-    if (event.target.closest('.result-next-button')) return;
-    event.preventDefault();
-    event.stopPropagation();
-    finishAll();
-  });
-}
-
-function renderTurnResult(controller, view) {
-  const s = controller.session.scores;
-  const start = controller.quizState.turnStartScore;
-  const dR = s.revenue - start.revenue;
-  const dS = s.satisfaction - start.satisfaction;
-  const dRep = s.reputation - start.reputation;
-  const rank = controller.getTurnRank(dR, dS, dRep);
-  const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
-  const currentTurn = controller.session.turn;
-  const reportLabel = `第${currentTurn}期営業報告`;
-  const rawTurnItems = flattenTurnItemLog(controller.quizState.turnItemLog);
-  const turnItems = rawTurnItems.length ? rawTurnItems : buildDebugResultItems(controller);
-  const dominantGenre = getDominantGenre(turnItems);
-  const speechText = getResultComment(heroineId, rank, dominantGenre);
-  const resultExpression = getResultExpression(rank);
-  const normalStandingSrc = getCharacterVisualImagePath(heroineId, 'normal', 'standing');
-  const resultStandingSrc = getCharacterVisualImagePath(heroineId, resultExpression, 'standing');
-  const nadirNormalSrc = getCharacterVisualImagePath('NADIR', 'normal', 'face');
-  const nadirResultSrc = getCharacterVisualImagePath('NADIR', resultExpression, 'face');
-  const nadirLine = getNadirResultLine(rank);
-  
-  view.innerHTML = `
-    <div class="result-screen" data-screen="turn-result">
-      <div class="result-stage" data-result-theme-root data-result-reveal-root>
-        <div class="result-heroine-wrap">
-          <img class="result-heroine-standing" data-result-heroine src="${normalStandingSrc}" data-result-expression-src="${resultStandingSrc}" alt="" />
-        </div>
-
-        <div class="result-report-stamp" data-reveal-step="report" aria-label="${reportLabel}">${reportLabel}</div>
-        <div class="result-nadir-aside" data-reveal-step="rank" aria-label="ナーディルの一言">
-          <div class="result-nadir-face">
-            <img data-result-nadir-icon src="${nadirNormalSrc}" data-result-expression-src="${nadirResultSrc}" alt="" />
-          </div>
-          <div class="result-nadir-bubble">${nadirLine}</div>
-        </div>
-        <div class="result-rank-burst result-rank-${rank}" data-reveal-step="rank" aria-label="評価 ${rank}">評価：${rank}</div>
-
-        <section class="result-card result-rich-card" data-reveal-step="graph" aria-label="営業成果グラフ">
-          <div class="result-score-legend">
-            <span class="legend-dot legend-total"></span>累計 / 満点
-            <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
-          </div>
-
-          <div class="result-score-graph">
-            ${renderScoreBar('売上', 'revenue', dR, s.revenue, currentTurn)}
-            ${renderScoreBar('満足度', 'satisfaction', dS, s.satisfaction, currentTurn)}
-            ${renderScoreBar('評判', 'reputation', dRep, s.reputation, currentTurn)}
-          </div>
-        </section>
-
-        <div class="result-speech result-speech-lower" data-reveal-step="speech">
-          <span data-result-speech-text></span>
-        </div>
-
-        ${renderResultItemList(turnItems)}
-
-        <button class="btn-primary btn-next result-next-button">次へ</button>
-      </div>
-    </div>
-  `;
-
-  const root = view.querySelector('[data-result-theme-root]');
-  const heroineEl = view.querySelector('[data-result-heroine]');
-  applyCharacterTheme(root, heroineId);
-  applyCharacterVisualProfile(heroineEl, heroineId, 'result');
-  setupResultReveal(controller, view, speechText);
-}
 
 function formatAverage(value, count) {
   if (!count) return '0';
@@ -4684,7 +4390,6 @@ function renderEnding(controller, view) {
 }
 
 module.exports = {
-  renderTurnResult,
   renderEnding
 };
 
@@ -4975,6 +4680,342 @@ function renderOpening(controller, view) {
 module.exports = {
   renderTitle,
   renderOpening
+};
+
+    };
+
+    // --- ./screens/turnResultScreen.js ---
+    modules['./screens/turnResultScreen.js'] = function(module, exports, require) {
+/**
+ * Turn result screen for MadeInMaghribal.
+ */
+const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
+const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
+const { getResultComment, getResultExpression } = require('../data/resultComments.js');
+
+const SCORE_MAX_PER_TURN = {
+  revenue: 100,
+  satisfaction: 20,
+  reputation: 20
+};
+
+const GENRE_LABELS = {
+  ARM: '守りの品',
+  FOD: '食べ物',
+  MED: '薬と癒しの品',
+  ADN: '装飾品',
+  CLT: '衣装',
+  DAY: '日用品',
+  WRK: '仕事道具',
+  TRV: '旅の品',
+  RIT: '儀礼品',
+  TRD: '交易品'
+};
+
+
+
+const DEBUG_RESULT_ITEM_IDS = [
+  'IT_ARM_AS_01', 'IT_FOD_SA_02', 'IT_MED_EL_03', 'IT_ADN_LI_04', 'IT_CLT_ME_05',
+  'IT_DAY_AS_06', 'IT_WRK_SA_07', 'IT_TRV_EL_08', 'IT_RIT_LI_09', 'IT_TRD_ME_10',
+  'IT_ARM_SA_11', 'IT_FOD_EL_12', 'IT_MED_LI_13', 'IT_ADN_ME_14', 'IT_CLT_AS_15',
+  'IT_DAY_SA_16', 'IT_WRK_EL_17', 'IT_TRV_LI_18', 'IT_RIT_ME_19', 'IT_TRD_AS_20'
+];
+
+function getNadirResultLine(rank) {
+  if (rank === '大成功') return 'よし！';
+  if (rank === '成功') return '手応えあり';
+  return '頑張ろう';
+}
+
+function buildDebugResultItems(controller) {
+  return DEBUG_RESULT_ITEM_IDS.map((itemId, index) => ({
+    itemId,
+    displayName: controller.getItemDisplayName ? controller.getItemDisplayName(itemId) : itemId,
+    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.png`,
+    selected: index % 2 === 0,
+    correct: index % 3 === 0,
+    isNew: index % 4 === 0,
+    questionIndex: Math.floor(index / 2)
+  }));
+}
+
+function getCumulativeMax(metric, turn) {
+  const rawMax = SCORE_MAX_PER_TURN[metric] * Math.max(1, turn);
+  if (metric === 'revenue') return Math.min(500, rawMax);
+  return Math.min(100, rawMax);
+}
+
+function clampPct(value, maxValue) {
+  return Math.max(0, Math.min(100, Math.round((value / Math.max(1, maxValue)) * 100)));
+}
+
+function getItemGenre(itemId = '') {
+  const match = String(itemId).match(/^IT_([A-Z]{3})_/);
+  return match ? match[1] : '';
+}
+
+function getDominantGenre(turnItems = []) {
+  const counts = {};
+  turnItems.forEach((item) => {
+    const genre = getItemGenre(item.itemId);
+    if (!genre) return;
+    counts[genre] = (counts[genre] || 0) + 1;
+  });
+
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  if (!top) return null;
+  return { code: top[0], label: GENRE_LABELS[top[0]] || top[0], count: top[1] };
+}
+
+function flattenTurnItemLog(turnItemLog = []) {
+  return turnItemLog.flatMap((entry) => (
+    (entry.choices || []).map((choice) => ({
+      ...choice,
+      questionIndex: entry.questionIndex
+    }))
+  ));
+}
+
+function renderResultItemList(items) {
+  const visibleItems = items.slice(0, 20);
+  if (!visibleItems.length) {
+    return `
+      <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
+        <div class="result-item-log-title">今回の品物</div>
+        <div class="result-item-log-empty">接客で登場した品物をここに記録します。</div>
+      </section>
+    `;
+  }
+
+  const rows = visibleItems.map((item) => `
+    <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
+      ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
+      <img class="result-item-icon" src="${item.iconPath}" alt="${item.displayName}" onerror="this.style.display='none'" />
+    </div>
+  `).join('');
+
+  return `
+    <section class="result-item-log" data-reveal-step="items" aria-label="今回登場した品物">
+      <div class="result-item-log-title">今回の品物</div>
+      <div class="result-item-log-grid">
+        ${rows}
+      </div>
+    </section>
+  `;
+}
+
+function renderScoreBar(label, metric, turnValue, cumulativeValue, currentTurn) {
+  const turnMax = SCORE_MAX_PER_TURN[metric];
+  const cumulativeMax = getCumulativeMax(metric, currentTurn);
+  const turnPct = clampPct(turnValue, turnMax);
+  const cumulativePct = clampPct(cumulativeValue, cumulativeMax);
+
+  return `
+    <div class="result-score-bar-row">
+      <div class="result-score-bar-label">${label}</div>
+      <div class="result-score-bar-stack" aria-label="${label} score graph">
+        <div class="result-score-bar-track result-score-bar-track-total">
+          <div class="result-score-bar-fill result-score-bar-fill-total" style="width:${cumulativePct}%"></div>
+        </div>
+        <div class="result-score-bar-track result-score-bar-track-turn">
+          <div class="result-score-bar-fill result-score-bar-fill-turn" style="width:${turnPct}%"></div>
+        </div>
+      </div>
+      <div class="result-score-bar-value">
+        <span class="result-score-now">今回 +${turnValue}</span>
+        <span class="result-score-total">累計 ${cumulativeValue}</span>
+      </div>
+    </div>
+  `;
+}
+
+function setupResultReveal(controller, view, speechText) {
+  const stage = view.querySelector('[data-result-reveal-root]');
+  if (!stage) return;
+
+  const speechTextEl = stage.querySelector('[data-result-speech-text]');
+  const heroineEl = stage.querySelector('[data-result-heroine]');
+  const auraEl = stage.querySelector('[data-result-expression-aura]');
+  const nadirEl = stage.querySelector('[data-result-nadir-icon]');
+  const revealSteps = ['report', 'rank', 'graph', 'speech', 'items'];
+  const timers = [];
+  let typingTimer = null;
+  let expressionTimer = null;
+  let done = false;
+
+  const playStepSfx = () => {
+    // Result reveal used to play workshopDayEnd on every step, but it was too busy.
+    // Keep the hook as a no-op so reveal timing remains unchanged.
+  };
+
+  const reveal = (step, play = true) => {
+    stage.querySelectorAll(`[data-reveal-step="${step}"]`).forEach((el) => {
+      el.classList.add('is-visible');
+    });
+    if (step === 'rank') {
+      if (heroineEl?.dataset.resultExpressionSrc) {
+        auraEl?.classList.remove('is-active');
+        // Restart aura animation reliably even when reveal is skipped.
+        void auraEl?.offsetWidth;
+        auraEl?.classList.add('is-active');
+        heroineEl.classList.add('is-expression-changing');
+
+        if (expressionTimer) clearTimeout(expressionTimer);
+        expressionTimer = setTimeout(() => {
+          if (!heroineEl.isConnected) return;
+          heroineEl.src = heroineEl.dataset.resultExpressionSrc;
+          heroineEl.classList.remove('is-expression-changing');
+          heroineEl.classList.add('is-expression-shifted');
+        }, 90);
+      }
+      if (nadirEl?.dataset.resultExpressionSrc) {
+        nadirEl.src = nadirEl.dataset.resultExpressionSrc;
+        nadirEl.classList.add('is-expression-shifted');
+      }
+    }
+    if (play) playStepSfx();
+  };
+
+  const finishSpeech = () => {
+    if (typingTimer) {
+      clearInterval(typingTimer);
+      typingTimer = null;
+    }
+    if (speechTextEl) speechTextEl.textContent = speechText;
+  };
+
+  const typeSpeech = () => {
+    reveal('speech');
+    if (!speechTextEl) return;
+    speechTextEl.textContent = '';
+    let index = 0;
+    typingTimer = setInterval(() => {
+      index += 1;
+      speechTextEl.textContent = speechText.slice(0, index);
+      if (index >= speechText.length) {
+        clearInterval(typingTimer);
+        typingTimer = null;
+      }
+    }, 28);
+  };
+
+  const finishAll = () => {
+    if (done) return;
+    done = true;
+    timers.forEach((timer) => clearTimeout(timer));
+    if (expressionTimer) {
+      clearTimeout(expressionTimer);
+      expressionTimer = null;
+    }
+    if (heroineEl?.dataset.resultExpressionSrc) {
+      heroineEl.src = heroineEl.dataset.resultExpressionSrc;
+      heroineEl.classList.remove('is-expression-changing');
+      heroineEl.classList.add('is-expression-shifted');
+    }
+    if (nadirEl?.dataset.resultExpressionSrc) {
+      nadirEl.src = nadirEl.dataset.resultExpressionSrc;
+      nadirEl.classList.add('is-expression-shifted');
+    }
+    auraEl?.classList.add('is-active');
+    finishSpeech();
+    revealSteps.forEach((step) => reveal(step, false));
+  };
+
+  const schedule = (fn, delay) => {
+    const timer = setTimeout(() => {
+      if (!stage.isConnected || done) return;
+      fn();
+    }, delay);
+    timers.push(timer);
+  };
+
+  schedule(() => reveal('report'), 120);
+  schedule(() => reveal('rank'), 520);
+  schedule(() => reveal('graph'), 920);
+  schedule(typeSpeech, 1320);
+  schedule(() => reveal('items'), 2400);
+
+  stage.addEventListener('click', (event) => {
+    if (event.target.closest('.result-next-button')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    finishAll();
+  });
+}
+
+function renderTurnResult(controller, view) {
+  const s = controller.session.scores;
+  const start = controller.quizState.turnStartScore;
+  const dR = s.revenue - start.revenue;
+  const dS = s.satisfaction - start.satisfaction;
+  const dRep = s.reputation - start.reputation;
+  const rank = controller.getTurnRank(dR, dS, dRep);
+  const heroineId = controller.session.selectedHeroineId || 'HAKIMA';
+  const currentTurn = controller.session.turn;
+  const reportLabel = `第${currentTurn}期営業報告`;
+  const rawTurnItems = flattenTurnItemLog(controller.quizState.turnItemLog);
+  const turnItems = rawTurnItems.length ? rawTurnItems : buildDebugResultItems(controller);
+  const dominantGenre = getDominantGenre(turnItems);
+  const speechText = getResultComment(heroineId, rank, dominantGenre);
+  const resultExpression = getResultExpression(rank);
+  const normalStandingSrc = getCharacterVisualImagePath(heroineId, 'normal', 'standing');
+  const resultStandingSrc = getCharacterVisualImagePath(heroineId, resultExpression, 'standing');
+  const nadirNormalSrc = getCharacterVisualImagePath('NADIR', 'normal', 'face');
+  const nadirResultSrc = getCharacterVisualImagePath('NADIR', resultExpression, 'face');
+  const nadirLine = getNadirResultLine(rank);
+  controller.preloadResultExpressions?.(heroineId, resultExpression);
+  
+  view.innerHTML = `
+    <div class="result-screen" data-screen="turn-result">
+      <div class="result-stage" data-result-theme-root data-result-reveal-root>
+        <div class="result-heroine-wrap">
+          <img class="result-heroine-standing" data-result-heroine src="${normalStandingSrc}" data-result-expression-src="${resultStandingSrc}" alt="" />
+          <div class="result-heroine-expression-aura" data-result-expression-aura aria-hidden="true"></div>
+        </div>
+
+        <div class="result-report-stamp" data-reveal-step="report" aria-label="${reportLabel}">${reportLabel}</div>
+        <div class="result-nadir-aside" data-reveal-step="rank" aria-label="ナーディルの一言">
+          <div class="result-nadir-face">
+            <img data-result-nadir-icon src="${nadirNormalSrc}" data-result-expression-src="${nadirResultSrc}" alt="" />
+          </div>
+          <div class="result-nadir-bubble">${nadirLine}</div>
+        </div>
+        <div class="result-rank-burst result-rank-${rank}" data-reveal-step="rank" aria-label="評価 ${rank}">評価：${rank}</div>
+
+        <section class="result-card result-rich-card" data-reveal-step="graph" aria-label="営業成果グラフ">
+          <div class="result-score-legend">
+            <span class="legend-dot legend-total"></span>累計 / 満点
+            <span class="legend-dot legend-turn"></span>今回 / 1ターン満点
+          </div>
+
+          <div class="result-score-graph">
+            ${renderScoreBar('売上', 'revenue', dR, s.revenue, currentTurn)}
+            ${renderScoreBar('満足度', 'satisfaction', dS, s.satisfaction, currentTurn)}
+            ${renderScoreBar('評判', 'reputation', dRep, s.reputation, currentTurn)}
+          </div>
+        </section>
+
+        <div class="result-speech result-speech-lower" data-reveal-step="speech">
+          <span data-result-speech-text></span>
+        </div>
+
+        ${renderResultItemList(turnItems)}
+
+        <button class="btn-primary btn-next result-next-button">次へ</button>
+      </div>
+    </div>
+  `;
+
+  const root = view.querySelector('[data-result-theme-root]');
+  const heroineEl = view.querySelector('[data-result-heroine]');
+  applyCharacterTheme(root, heroineId);
+  applyCharacterVisualProfile(heroineEl, heroineId, 'result');
+  setupResultReveal(controller, view, speechText);
+}
+
+
+module.exports = {
+  renderTurnResult
 };
 
     };
@@ -5704,6 +5745,187 @@ module.exports = {
 
     };
 
+    // --- ./utils/preloadAssets.js ---
+    modules['./utils/preloadAssets.js'] = function(module, exports, require) {
+/**
+ * Lightweight asset preloader for MadeInMaghribal.
+ *
+ * This does not play audio. It only asks the browser to warm image/audio data.
+ * Policy:
+ * - Opening/title: preload only heroine normal images. No heroine-specific BGM.
+ * - Heroine select: preload heroine expression images and heroine BGM files.
+ * - Result: preload expression images before rank reveal to avoid visible flicker.
+ */
+
+const { getCharacterVisualImagePath } = require('./assetPaths.js');
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+
+const HEROINE_IDS = ['HAKIMA', 'MIRA', 'DARIYA'];
+const HEROINE_EXPRESSIONS = [
+  'normal',
+  'joy',
+  'fun',
+  'anger',
+  'cry',
+  'sorrow',
+  'surprise',
+  'maid',
+  'social',
+  'student'
+];
+const RESULT_EXPRESSIONS = ['normal', 'sorrow', 'fun', 'joy'];
+
+function compactUnique(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+function collectHeroineBgmPaths() {
+  const heroines = AUDIO_MANIFEST?.bgm?.heroines || {};
+  return Object.values(heroines).flatMap((entry) => {
+    const paths = [];
+    if (entry?.theme?.path) paths.push(entry.theme.path);
+    if (Array.isArray(entry?.game)) {
+      entry.game.forEach((track) => {
+        if (track?.path) paths.push(track.path);
+      });
+    }
+    if (entry?.ending?.normal?.path) paths.push(entry.ending.normal.path);
+    if (entry?.ending?.good?.path) paths.push(entry.ending.good.path);
+    return paths;
+  });
+}
+
+function createAssetPreloader() {
+  const imageCache = new Map();
+  const audioCache = new Map();
+  const linkCache = new Set();
+  let openingStarted = false;
+  let heroineSelectStarted = false;
+
+  function preloadImage(src) {
+    if (!src) return Promise.resolve(false);
+    if (imageCache.has(src)) return imageCache.get(src).promise;
+
+    const record = { src, status: 'loading', promise: null };
+    record.promise = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        record.status = 'loaded';
+        resolve(true);
+      };
+      img.onerror = () => {
+        record.status = 'error';
+        resolve(false);
+      };
+      img.src = src;
+    });
+
+    imageCache.set(src, record);
+    return record.promise;
+  }
+
+  function preloadImages(srcs) {
+    return Promise.all(compactUnique(srcs).map(preloadImage));
+  }
+
+  function appendAudioPreloadLink(path) {
+    if (!path || linkCache.has(path) || typeof document === 'undefined') return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'audio';
+    link.href = path;
+    document.head.appendChild(link);
+    linkCache.add(path);
+  }
+
+  function preloadAudio(path) {
+    if (!path) return;
+    if (audioCache.has(path)) return;
+
+    appendAudioPreloadLink(path);
+    try {
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = path;
+      audio.load();
+      audioCache.set(path, audio);
+    } catch (e) {
+      audioCache.set(path, null);
+    }
+  }
+
+  function preloadAudioPaths(paths) {
+    compactUnique(paths).forEach(preloadAudio);
+  }
+
+  function preloadOpeningAssets() {
+    if (openingStarted) return;
+    openingStarted = true;
+
+    // 開幕はヒロインnormal画像だけ。個別BGMはまだ読まない。
+    const normalImagePaths = HEROINE_IDS.flatMap((id) => [
+      getCharacterVisualImagePath(id, 'normal', 'standing'),
+      getCharacterVisualImagePath(id, 'normal', 'face')
+    ]);
+    preloadImages(normalImagePaths);
+  }
+
+  function preloadHeroineSelectAssets() {
+    if (heroineSelectStarted) return;
+    heroineSelectStarted = true;
+
+    const heroineImagePaths = HEROINE_IDS.flatMap((id) => (
+      HEROINE_EXPRESSIONS.flatMap((expression) => [
+        getCharacterVisualImagePath(id, expression, 'standing'),
+        getCharacterVisualImagePath(id, expression, 'face')
+      ])
+    ));
+    preloadImages(heroineImagePaths);
+    preloadAudioPaths(collectHeroineBgmPaths());
+  }
+
+  function preloadResultExpressions(heroineId, resultExpression) {
+    const heroineExpressions = compactUnique([...RESULT_EXPRESSIONS, resultExpression]);
+    const imagePaths = [
+      ...heroineExpressions.map((expression) => getCharacterVisualImagePath(heroineId, expression, 'standing')),
+      ...heroineExpressions.map((expression) => getCharacterVisualImagePath(heroineId, expression, 'face')),
+      ...heroineExpressions.map((expression) => getCharacterVisualImagePath('NADIR', expression, 'face'))
+    ];
+    return preloadImages(imagePaths);
+  }
+
+  function getStats() {
+    const imageStats = { loading: 0, loaded: 0, error: 0 };
+    imageCache.forEach((record) => {
+      imageStats[record.status] = (imageStats[record.status] || 0) + 1;
+    });
+    return {
+      images: imageStats,
+      audio: audioCache.size,
+      links: linkCache.size,
+      openingStarted,
+      heroineSelectStarted
+    };
+  }
+
+  return {
+    preloadImage,
+    preloadImages,
+    preloadAudio,
+    preloadAudioPaths,
+    preloadOpeningAssets,
+    preloadHeroineSelectAssets,
+    preloadResultExpressions,
+    getStats
+  };
+}
+
+module.exports = {
+  createAssetPreloader
+};
+
+    };
+
     // --- ./utils/sfxEngine.js ---
     modules['./utils/sfxEngine.js'] = function(module, exports, require) {
 /**
@@ -5851,7 +6073,8 @@ const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
 const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
 const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
 const { renderQuiz, updateQuizContent } = require('./screens/quizScreen.js');
-const { renderTurnResult, renderEnding } = require('./screens/endingScreen.js');
+const { renderTurnResult } = require('./screens/turnResultScreen.js');
+const { renderEnding } = require('./screens/endingScreen.js');
 
 // Modularized UI Components
 const { updateHud, renderGlobalUi, renderModal } = require('./ui/hud.js');
@@ -5862,6 +6085,7 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 
 /** Constants */
@@ -5886,6 +6110,8 @@ class GameController {
     this.session = new GameSession();
     this.container = document.getElementById('app');
     this.sfx = createSfxEngine();
+    this.assetPreloader = createAssetPreloader();
+    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.uiState = {
@@ -6020,6 +6246,7 @@ class GameController {
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
+        this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
         renderEnding(this, view);
@@ -6159,6 +6386,9 @@ class GameController {
   getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
+  preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
+  preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
+  getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
   /**
    * --------------------------------------------------------------------------
