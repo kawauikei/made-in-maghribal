@@ -4568,6 +4568,13 @@ function updateQuizContent(controller) {
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
   
+  if (!q) {
+    if (promptEl) promptEl.textContent = '接客の準備中です。';
+    if (progressEl) progressEl.textContent = `0 / ${controller.quizState.totalQuestions}`;
+    controller.updateHud();
+    return;
+  }
+
   if (promptEl) promptEl.textContent = q.promptText;
   if (progressEl) progressEl.textContent = `${controller.quizState.questionIndex + 1} / ${controller.quizState.totalQuestions}`;
 
@@ -4609,6 +4616,151 @@ module.exports = {
 
     };
 
+    // --- ./screens/titlePanelScreen.js ---
+    modules['./screens/titlePanelScreen.js'] = function(module, exports, require) {
+/**
+ * Title menu sub screens.
+ * These are intentionally lightweight: title menu entries can become real
+ * screens without changing GameSession phases.
+ */
+
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+const { ITEM_MASTER } = require('../data/itemMaster.cjs');
+const { loadItemCollection } = require('../utils/itemCollection.js');
+
+const PANEL_TITLES = {
+  load: 'ロード',
+  event: 'イベントギャラリー',
+  image: '画像ギャラリー',
+  sound: 'サウンドテスト',
+  item: 'アイテム図鑑'
+};
+
+function renderTitlePanel(controller, view) {
+  const panel = controller.uiState?.titlePanel || 'item';
+  const title = PANEL_TITLES[panel] || 'メニュー';
+
+  view.innerHTML = `
+    <div class="title-screen title-screen-with-art title-panel-screen">
+      <div class="title-panel-card">
+        <div class="title-panel-header">
+          <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
+          <h2>${title}</h2>
+        </div>
+        <div class="title-panel-body">
+          ${renderPanelBody(controller, panel)}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPanelBody(controller, panel) {
+  if (panel === 'item') return renderItemGallery(controller);
+  if (panel === 'sound') return renderSoundTest();
+  if (panel === 'load') return renderLoadPanel(controller);
+  return renderPlaceholder(panel);
+}
+
+function renderLoadPanel(controller) {
+  const canContinue = controller.hasSaveData ? controller.hasSaveData() : false;
+  return `
+    <div class="title-panel-empty">
+      <p>現在の簡易ロードはタイトルの「つづきから」を使用します。</p>
+      <button class="title-start-btn title-panel-continue" type="button" ${canContinue ? 'data-action="title-continue"' : 'disabled aria-disabled="true"'}>つづきから</button>
+      <p class="title-panel-note">後続で複数スロット/回想/図鑑状態を統合します。</p>
+    </div>
+  `;
+}
+
+function renderPlaceholder(panel) {
+  const notes = {
+    event: '閲覧済みイベントの回想をここに並べる予定です。',
+    image: '解放済みスチルや背景をここに並べる予定です。'
+  };
+  return `
+    <div class="title-panel-empty">
+      <p>${notes[panel] || '後続実装です。'}</p>
+      <p class="title-panel-note">この入口だけ先に固定しています。</p>
+    </div>
+  `;
+}
+
+function renderItemGallery(controller) {
+  const collection = loadItemCollection();
+  const seenIds = new Set(Object.keys(collection).filter((itemId) => collection[itemId]?.seen));
+  const total = ITEM_MASTER.length;
+  const seenCount = seenIds.size;
+  const items = ITEM_MASTER.map((item) => {
+    const seen = seenIds.has(item.itemId);
+    const name = controller.getItemDisplayName ? controller.getItemDisplayName(item.itemId) : item.name;
+    const icon = controller.getItemIconPath ? controller.getItemIconPath(item.itemId) : `images/items/${item.itemId}.png`;
+    return `
+      <div class="gallery-item-tile${seen ? ' is-seen' : ' is-locked'}" title="${seen ? name : '未登録'}">
+        ${seen ? `<img src="${icon}" alt="${name}" onerror="this.style.display='none'" />` : '<span>？</span>'}
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="item-gallery-panel">
+      <div class="title-panel-summary">登録済み ${seenCount} / ${total}</div>
+      <div class="item-gallery-grid">${items}</div>
+    </div>
+  `;
+}
+
+function flattenBgmTracks() {
+  const tracks = [];
+  (AUDIO_MANIFEST?.bgm?.system || []).forEach((track) => tracks.push({ ...track, label: track.title || track.id }));
+  for (const [heroineId, group] of Object.entries(AUDIO_MANIFEST?.bgm?.heroines || {})) {
+    if (group.theme) tracks.push({ ...group.theme, label: `${heroineId} theme` });
+    (group.game || []).forEach((track, index) => tracks.push({ ...track, label: `${heroineId} game ${index + 1}` }));
+    if (group.ending?.normal) tracks.push({ ...group.ending.normal, label: `${heroineId} ending normal` });
+    if (group.ending?.good) tracks.push({ ...group.ending.good, label: `${heroineId} ending good` });
+  }
+  (AUDIO_MANIFEST?.bgm?.extra || []).forEach((track) => tracks.push({ ...track, label: `extra ${track.mood || track.id}` }));
+  return tracks;
+}
+
+function flattenSfxTracks() {
+  const groups = AUDIO_MANIFEST?.se || {};
+  return Object.values(groups).flat().filter((track) => track.key);
+}
+
+function renderSoundTest() {
+  const bgmButtons = flattenBgmTracks().map((track) => `
+    <button class="sound-test-row" type="button" data-sound-bgm-path="${track.path}" data-sound-id="${track.id}">
+      <span>${track.label || track.id}</span>
+      <small>BGM</small>
+    </button>
+  `).join('');
+  const sfxButtons = flattenSfxTracks().map((track) => `
+    <button class="sound-test-row" type="button" data-sound-sfx-key="${track.key}">
+      <span>${track.key}</span>
+      <small>SE</small>
+    </button>
+  `).join('');
+
+  return `
+    <div class="sound-test-panel">
+      <div class="sound-test-actions">
+        <button class="title-menu-btn" type="button" data-action="sound-stop-bgm">BGM停止</button>
+      </div>
+      <h3>BGM</h3>
+      <div class="sound-test-list">${bgmButtons}</div>
+      <h3>SE</h3>
+      <div class="sound-test-list sound-test-list-sfx">${sfxButtons}</div>
+    </div>
+  `;
+}
+
+module.exports = {
+  renderTitlePanel
+};
+
+    };
+
     // --- ./screens/titleScreen.js ---
     modules['./screens/titleScreen.js'] = function(module, exports, require) {
 /**
@@ -4636,11 +4788,11 @@ function renderTitle(controller, view) {
           <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
         </div>
         <div class="title-menu-grid" aria-label="Title menu">
-          <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
-          <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
-          <button class="title-menu-btn" type="button" data-title-stub="画像ギャラリー">画像</button>
-          <button class="title-menu-btn" type="button" data-title-stub="サウンドテスト">音楽</button>
-          <button class="title-menu-btn" type="button" data-title-stub="アイテム図鑑">図鑑</button>
+          <button class="title-menu-btn" type="button" data-title-panel="load">ロード</button>
+          <button class="title-menu-btn" type="button" data-title-panel="event">イベント</button>
+          <button class="title-menu-btn" type="button" data-title-panel="image">画像</button>
+          <button class="title-menu-btn" type="button" data-title-panel="sound">音楽</button>
+          <button class="title-menu-btn" type="button" data-title-panel="item">図鑑</button>
           <button class="title-menu-btn" type="button" data-action="open-options">設定</button>
           ${debugButton}
         </div>
@@ -5347,6 +5499,283 @@ module.exports = {
 
     };
 
+    // --- ./utils/bgmEngine.js ---
+    modules['./utils/bgmEngine.js'] = function(module, exports, require) {
+/**
+ * Lightweight BGM engine for MadeInMaghribal.
+ *
+ * Browser policy:
+ * - BGM is selected before user input, but playback starts only after unlock().
+ * - If the requested track is already playing, it is kept running.
+ * - BGM is exclusive: rapid clicks/phase changes must never leave old tracks playing.
+ * - Volume is intentionally modest; tune here later if needed.
+ */
+
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+const { calculateAffection } = require('../core/affectionModel.cjs');
+const { evaluateEnding } = require('../core/endingBranch.cjs');
+
+const DEFAULT_BGM_VOLUME = 0.22;
+const BGM_FADE_OUT_MS = 260;
+const BGM_FADE_IN_MS = 420;
+const BGM_FADE_STEP_MS = 40;
+
+function findSystemTrack(id) {
+  return (AUDIO_MANIFEST?.bgm?.system || []).find((track) => track.id === id) || null;
+}
+
+function getHeroineBgm(heroineId) {
+  const id = heroineId || 'HAKIMA';
+  return AUDIO_MANIFEST?.bgm?.heroines?.[id] || AUDIO_MANIFEST?.bgm?.heroines?.HAKIMA || null;
+}
+
+function getGameTrack(heroineId, turn = 1) {
+  if (turn <= 1) return findSystemTrack('main03_puzzle');
+  const heroine = getHeroineBgm(heroineId);
+  const gameTracks = heroine?.game || [];
+  if (!gameTracks.length) return findSystemTrack('main03_puzzle');
+  const index = Math.max(0, (turn - 2) % gameTracks.length);
+  return gameTracks[index];
+}
+
+function getEndingTrack(session) {
+  const heroine = getHeroineBgm(session?.selectedHeroineId);
+  const affection = calculateAffection(session?.scores || {});
+  const endingType = evaluateEnding(affection, session?.routeMode === 'extra');
+  return endingType === 'GOOD' ? heroine?.ending?.good : heroine?.ending?.normal;
+}
+
+function getTrackForSession(session) {
+  if (!session) return findSystemTrack('main01_title');
+  const phase = session.phase;
+  const subPhase = session.subPhase;
+
+  if (phase === 'TITLE' || phase === 'OPENING' || phase === 'HEROINE_SELECT') {
+    return findSystemTrack('main01_title');
+  }
+
+  if (phase === 'ENDING') {
+    return getEndingTrack(session) || findSystemTrack('main02_shop');
+  }
+
+  if (phase === 'MAIN_GAME') {
+    if (subPhase === 'QUIZ') {
+      return getGameTrack(session.selectedHeroineId, session.turn);
+    }
+    return findSystemTrack('main02_shop');
+  }
+
+  return findSystemTrack('main01_title');
+}
+
+function createBgmEngine(options = {}) {
+  const baseVolume = options.volume ?? DEFAULT_BGM_VOLUME;
+  let unlocked = false;
+  let currentAudio = null;
+  let currentPath = '';
+  let pendingTrack = null;
+  let requestSerial = 0;
+  let pendingStartTimer = null;
+  const managedAudios = new Set();
+  const fadeTimers = new Map();
+
+  function clearFadeTimer(audio) {
+    const timerId = fadeTimers.get(audio);
+    if (timerId) window.clearInterval(timerId);
+    fadeTimers.delete(audio);
+  }
+
+  function clearPendingStart() {
+    if (pendingStartTimer) {
+      window.clearTimeout(pendingStartTimer);
+      pendingStartTimer = null;
+    }
+  }
+
+  function stopAudio(audio) {
+    if (!audio) return;
+    clearFadeTimer(audio);
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.removeAttribute('src');
+      audio.load();
+    } catch (error) {
+      console.warn('Failed to stop BGM audio:', error);
+    }
+    managedAudios.delete(audio);
+  }
+
+  function fadeOutAndStop(audio, durationMs = BGM_FADE_OUT_MS) {
+    if (!audio) return;
+    clearFadeTimer(audio);
+
+    if (audio.paused || durationMs <= 0) {
+      stopAudio(audio);
+      return;
+    }
+
+    const startVolume = Number.isFinite(audio.volume) ? audio.volume : baseVolume;
+    const startedAt = Date.now();
+    const timerId = window.setInterval(() => {
+      const progress = Math.min(1, (Date.now() - startedAt) / durationMs);
+      audio.volume = Math.max(0, startVolume * (1 - progress));
+      if (progress >= 1) stopAudio(audio);
+    }, BGM_FADE_STEP_MS);
+    fadeTimers.set(audio, timerId);
+  }
+
+  function fadeIn(audio, token, durationMs = BGM_FADE_IN_MS) {
+    if (!audio || durationMs <= 0) {
+      if (audio) audio.volume = baseVolume;
+      return;
+    }
+
+    clearFadeTimer(audio);
+    audio.volume = 0;
+    const startedAt = Date.now();
+    const timerId = window.setInterval(() => {
+      if (token !== requestSerial || currentAudio !== audio) {
+        stopAudio(audio);
+        return;
+      }
+      const progress = Math.min(1, (Date.now() - startedAt) / durationMs);
+      audio.volume = Math.min(baseVolume, baseVolume * progress);
+      if (progress >= 1) {
+        clearFadeTimer(audio);
+        audio.volume = baseVolume;
+      }
+    }, BGM_FADE_STEP_MS);
+    fadeTimers.set(audio, timerId);
+  }
+
+  function stopAllExcept(audioToKeep = null, fade = false) {
+    Array.from(managedAudios).forEach((audio) => {
+      if (audio === audioToKeep) return;
+      if (fade) fadeOutAndStop(audio);
+      else stopAudio(audio);
+    });
+  }
+
+  function createAndPlayAudio(track, token) {
+    if (token !== requestSerial || !track?.path) return;
+
+    const audio = new Audio(track.path);
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = 0;
+
+    currentAudio = audio;
+    currentPath = track.path;
+    managedAudios.add(audio);
+
+    const playPromise = audio.play();
+    if (playPromise && typeof playPromise.then === 'function') {
+      playPromise
+        .then(() => {
+          if (token !== requestSerial || currentAudio !== audio) {
+            stopAudio(audio);
+            return;
+          }
+          fadeIn(audio, token);
+        })
+        .catch((error) => {
+          console.warn('BGM playback deferred:', error);
+          if (token === requestSerial) {
+            pendingTrack = track;
+            if (currentAudio === audio) {
+              currentAudio = null;
+              currentPath = '';
+            }
+          }
+          stopAudio(audio);
+        });
+    } else {
+      fadeIn(audio, token);
+    }
+  }
+
+  function startTrack(track) {
+    if (!track?.path) return;
+
+    const nextPath = track.path;
+    pendingTrack = track;
+
+    if (currentPath === nextPath && currentAudio && !currentAudio.paused) return;
+
+    requestSerial += 1;
+    const token = requestSerial;
+    clearPendingStart();
+
+    const hadActiveAudio = Array.from(managedAudios).some((audio) => audio && !audio.paused);
+
+    // BGM remains exclusive. Old tracks fade out first, then the newest request
+    // starts. Rapid requests invalidate older timers via requestSerial.
+    stopAllExcept(null, true);
+    currentAudio = null;
+    currentPath = nextPath;
+
+    const delay = hadActiveAudio ? BGM_FADE_OUT_MS : 0;
+    pendingStartTimer = window.setTimeout(() => {
+      pendingStartTimer = null;
+      createAndPlayAudio(track, token);
+    }, delay);
+  }
+
+  function play(track) {
+    if (!track?.path) return;
+    pendingTrack = track;
+    if (!unlocked) return;
+    startTrack(track);
+  }
+
+  function playForSession(session) {
+    play(getTrackForSession(session));
+  }
+
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    if (pendingTrack) startTrack(pendingTrack);
+  }
+
+  function stop() {
+    requestSerial += 1;
+    clearPendingStart();
+    stopAllExcept(null);
+    currentAudio = null;
+    currentPath = '';
+    pendingTrack = null;
+  }
+
+  function getState() {
+    return {
+      unlocked,
+      currentPath,
+      pendingPath: pendingTrack?.path || '',
+      managedAudioCount: managedAudios.size,
+      volume: baseVolume,
+      fadeOutMs: BGM_FADE_OUT_MS,
+      fadeInMs: BGM_FADE_IN_MS
+    };
+  }
+
+  return {
+    unlock,
+    play,
+    playForSession,
+    stop,
+    getState
+  };
+}
+
+module.exports = {
+  createBgmEngine,
+  getTrackForSession
+};
+
+    };
+
     // --- ./utils/characterVisualProfiles.js ---
     modules['./utils/characterVisualProfiles.js'] = function(module, exports, require) {
 /**
@@ -5524,8 +5953,38 @@ function applyDebugJump(controller, jump) {
   const heroine = (params.get('heroine') || 'HAKIMA').toUpperCase();
   console.log('Applying debug jump:', jump);
 
+  if (jump === 'title') {
+    controller.session.phase = 'TITLE';
+    return;
+  }
+
+  if (jump === 'opening') {
+    controller.session.phase = 'OPENING';
+    return;
+  }
+
   if (jump === 'heroine_select') {
     controller.session.phase = 'HEROINE_SELECT';
+    return;
+  }
+
+  if (jump === 'before_open') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'BEFORE_OPEN';
+    controller.session.scores = { revenue: 0, satisfaction: 0, reputation: 0 };
+    return;
+  }
+
+  if (jump === 'after_close') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'AFTER_CLOSE';
+    controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
     return;
   }
 
@@ -5543,7 +6002,7 @@ function applyDebugJump(controller, jump) {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
     controller.session.routeMode = 'normal';
-    controller.session.turn = 1;
+    controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'TURN_RESULT';
     controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
     controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
@@ -5559,11 +6018,14 @@ function applyDebugJump(controller, jump) {
   }
 
 
-  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise') {
+  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise' || jump === 'result_low' || jump === 'result_mid' || jump === 'result_high') {
     const presets = {
       result_encourage: { revenue: 10, satisfaction: 4, reputation: 3 },
       result_evaluate: { revenue: 40, satisfaction: 14, reputation: 10 },
-      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 }
+      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 },
+      result_low: { revenue: 10, satisfaction: 4, reputation: 3 },
+      result_mid: { revenue: 40, satisfaction: 14, reputation: 10 },
+      result_high: { revenue: 80, satisfaction: 20, reputation: 16 }
     };
     const score = presets[jump];
     controller.session.phase = 'MAIN_GAME';
@@ -5575,7 +6037,7 @@ function applyDebugJump(controller, jump) {
     controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
     controller.quizState.lastResult = {
       isCorrect: jump !== 'result_encourage',
-      rating: jump === 'result_surprise' ? 'GREAT' : (jump === 'result_evaluate' ? 'GOOD' : 'MISS'),
+      rating: (jump === 'result_surprise' || jump === 'result_high') ? 'GREAT' : ((jump === 'result_evaluate' || jump === 'result_mid') ? 'GOOD' : 'MISS'),
       satisfactionBonus: score.satisfaction,
       reputationBonus: score.reputation,
       diffMs: 80,
@@ -5926,6 +6388,163 @@ module.exports = {
 
     };
 
+    // --- ./utils/saveData.js ---
+    modules['./utils/saveData.js'] = function(module, exports, require) {
+/**
+ * Autosave scaffold for MadeInMaghribal.
+ *
+ * Current scope:
+ * - Stores the current run so the title can enable 「つづきから」.
+ * - Does not clear long-term collection data.
+ * - Long-term save targets to formalize later:
+ *   heroine mode unlocks, heroine/mode score records, event replay state,
+ *   item collection state, and optional current run position.
+ */
+
+const { GameSession } = require('../core/gameSessionFlow.cjs');
+
+const RUN_SAVE_KEY = 'madeinmaghribal.autosave.run.v1';
+const SAVE_VERSION = 1;
+
+function safeLocalStorage() {
+  try {
+    if (typeof localStorage === 'undefined') return null;
+    return localStorage;
+  } catch (e) {
+    return null;
+  }
+}
+
+function cloneJson(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function hasRunSave() {
+  const storage = safeLocalStorage();
+  if (!storage) return false;
+  return Boolean(storage.getItem(RUN_SAVE_KEY));
+}
+
+function loadRunSave() {
+  const storage = safeLocalStorage();
+  if (!storage) return null;
+  try {
+    const raw = storage.getItem(RUN_SAVE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.version !== SAVE_VERSION || !parsed.session) return null;
+    return parsed;
+  } catch (e) {
+    console.warn('Failed to load run autosave:', e);
+    return null;
+  }
+}
+
+function clearRunSave() {
+  const storage = safeLocalStorage();
+  if (!storage) return;
+  try {
+    storage.removeItem(RUN_SAVE_KEY);
+  } catch (e) {
+    console.warn('Failed to clear run autosave:', e);
+  }
+}
+
+function shouldSaveCurrentRun(controller) {
+  const session = controller?.session;
+  if (!session?.selectedHeroineId) return false;
+  if (session.phase === 'TITLE' || session.phase === 'OPENING' || session.phase === 'HEROINE_SELECT') return false;
+  return true;
+}
+
+function buildRunSave(controller) {
+  const session = controller.session;
+  return {
+    version: SAVE_VERSION,
+    savedAt: new Date().toISOString(),
+    session: {
+      phase: session.phase,
+      turn: session.turn,
+      subPhase: session.subPhase,
+      selectedHeroineId: session.selectedHeroineId,
+      routeMode: session.routeMode,
+      scores: cloneJson(session.scores || {}),
+      affection: cloneJson(session.affection || {}),
+      unlockState: cloneJson(session.unlockState || {})
+    },
+    quizState: {
+      questionIndex: controller.quizState?.questionIndex || 0,
+      totalQuestions: controller.quizState?.totalQuestions || 10,
+      turnItemLog: cloneJson(controller.quizState?.turnItemLog || []),
+      currentQuestion: cloneJson(controller.quizState?.currentQuestion || null),
+      currentChoices: cloneJson(controller.quizState?.currentChoices || []),
+      lastResult: cloneJson(controller.quizState?.lastResult || null),
+      turnStartScore: cloneJson(controller.quizState?.turnStartScore || null)
+    },
+    longTermTargetsMemo: {
+      heroineModeUnlocks: 'future',
+      bestSatisfactionByHeroineMode: 'future',
+      bestReputationByHeroineMode: 'future',
+      eventReplayState: 'future',
+      itemCollectionState: 'already stored separately'
+    }
+  };
+}
+
+function saveRun(controller) {
+  const storage = safeLocalStorage();
+  if (!storage || !shouldSaveCurrentRun(controller)) return false;
+  try {
+    storage.setItem(RUN_SAVE_KEY, JSON.stringify(buildRunSave(controller)));
+    return true;
+  } catch (e) {
+    console.warn('Failed to save run autosave:', e);
+    return false;
+  }
+}
+
+function applyRunSave(controller, saveData) {
+  if (!controller || !saveData?.session) return false;
+  const session = new GameSession();
+  Object.assign(session, saveData.session);
+  session.scores = { revenue: 0, satisfaction: 0, reputation: 0, ...(saveData.session.scores || {}) };
+  session.affection = { HAKIMA: 0, MIRA: 0, DARIYA: 0, ...(saveData.session.affection || {}) };
+  controller.session = session;
+
+  const nextQuizState = controller.createInitialQuizState();
+  if (saveData.quizState) {
+    nextQuizState.questionIndex = saveData.quizState.questionIndex || 0;
+    nextQuizState.totalQuestions = saveData.quizState.totalQuestions || nextQuizState.totalQuestions;
+    nextQuizState.turnItemLog = cloneJson(saveData.quizState.turnItemLog || []);
+    nextQuizState.currentQuestion = cloneJson(saveData.quizState.currentQuestion || null);
+    nextQuizState.currentChoices = cloneJson(saveData.quizState.currentChoices || []);
+    nextQuizState.lastResult = cloneJson(saveData.quizState.lastResult || null);
+    nextQuizState.turnStartScore = cloneJson(saveData.quizState.turnStartScore || null);
+    nextQuizState.inputLocked = false;
+
+    // If an older save has QUIZ phase without a restorable question, fall back
+    // to BEFORE_OPEN instead of rendering an empty/broken quiz screen.
+    if (session.phase === 'MAIN_GAME' && session.subPhase === 'QUIZ' && !nextQuizState.currentQuestion) {
+      session.subPhase = 'BEFORE_OPEN';
+      nextQuizState.questionIndex = 0;
+      nextQuizState.currentChoices = [];
+    }
+  }
+  controller.quizState = nextQuizState;
+  return true;
+}
+
+module.exports = {
+  RUN_SAVE_KEY,
+  hasRunSave,
+  loadRunSave,
+  clearRunSave,
+  saveRun,
+  applyRunSave
+};
+
+    };
+
     // --- ./utils/sfxEngine.js ---
     modules['./utils/sfxEngine.js'] = function(module, exports, require) {
 /**
@@ -6070,6 +6689,7 @@ const { updateGameScore } = require('./core/scoreModel.cjs');
 
 // Modularized Screen Renderers
 const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
+const { renderTitlePanel } = require('./screens/titlePanelScreen.js');
 const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
 const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
 const { renderQuiz, updateQuizContent } = require('./screens/quizScreen.js');
@@ -6085,8 +6705,10 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { createBgmEngine } = require('./utils/bgmEngine.js');
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
+const { hasRunSave, loadRunSave, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -6110,12 +6732,20 @@ class GameController {
     this.session = new GameSession();
     this.container = document.getElementById('app');
     this.sfx = createSfxEngine();
+    this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
     this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.uiState = {
-      modal: null // 'options' | 'help' | null
+      modal: null, // 'options' | 'help' | null
+      titlePanel: null, // title menu sub screen key
+      turnTransitionActive: false
+    };
+
+    this.turnTransition = {
+      timerId: null,
+      callback: null
     };
 
     this.typewriter = {
@@ -6209,6 +6839,19 @@ class GameController {
     this.renderModal(); // Refresh modal state
   }
 
+
+  openTitlePanel(panelName) {
+    this.uiState.titlePanel = panelName;
+    this.playSfx('uiTapBottle');
+    this.update();
+  }
+
+  closeTitlePanel() {
+    this.uiState.titlePanel = null;
+    this.playSfx('uiTapBottle');
+    this.update();
+  }
+
   toggleFullscreen() {
     const root = document.getElementById('game-viewport');
     if (!document.fullscreenElement) {
@@ -6242,7 +6885,8 @@ class GameController {
       view.className = 'view-container';
 
       if (phase === 'TITLE') {
-        renderTitle(this, view);
+        if (this.uiState.titlePanel) renderTitlePanel(this, view);
+        else renderTitle(this, view);
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
@@ -6258,6 +6902,8 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.syncBgm();
+    this.saveCurrentRunIfNeeded();
   }
 
   renderMainGame(container) {
@@ -6386,9 +7032,83 @@ class GameController {
   getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
+  syncBgm() { if (this.bgm) this.bgm.playForSession(this.session); }
+  hasSaveData() { return hasRunSave(); }
+  saveCurrentRunIfNeeded() { saveRun(this); }
+  continueFromSave() {
+    const saveData = loadRunSave();
+    if (!saveData) return false;
+    this.clearTypewriter();
+    const applied = applyRunSave(this, saveData);
+    if (applied) {
+      this.uiState.titlePanel = null;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ' && this.quizState.currentQuestion) {
+        this.quizState.promptShownAt = performance.now();
+      }
+      this.playSfx('uiConfirmChime');
+      this.update();
+    }
+    return applied;
+  }
   preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
+
+  playTurnTransition(callback, mode = 'next') {
+    if (this.uiState.turnTransitionActive) return;
+
+    this.uiState.turnTransitionActive = true;
+    this.turnTransition.callback = callback;
+
+    const viewport = document.getElementById('game-viewport') || this.container;
+    const oldOverlay = viewport.querySelector('.turn-transition-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    const nextTurn = Math.min(5, this.session.turn + 1);
+    const isEnding = mode === 'ending';
+    const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
+    const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
+
+    const overlay = document.createElement('div');
+    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
+    overlay.setAttribute('data-action', 'skip-turn-transition');
+    overlay.innerHTML = `
+      <div class="turn-transition-sky" aria-hidden="true">
+        <div class="turn-transition-orbit">
+          <div class="turn-transition-sun"></div>
+          <div class="turn-transition-moon"></div>
+        </div>
+        <div class="turn-transition-horizon"></div>
+      </div>
+      <div class="turn-transition-copy">
+        <p class="turn-transition-label">${title}</p>
+        <p class="turn-transition-subtitle">${subtitle}</p>
+      </div>
+    `;
+    viewport.appendChild(overlay);
+
+    this.turnTransition.timerId = window.setTimeout(() => {
+      this.finishTurnTransition();
+    }, 1850);
+  }
+
+  finishTurnTransition() {
+    if (!this.uiState.turnTransitionActive) return;
+
+    if (this.turnTransition.timerId) {
+      window.clearTimeout(this.turnTransition.timerId);
+      this.turnTransition.timerId = null;
+    }
+
+    const callback = this.turnTransition.callback;
+    this.turnTransition.callback = null;
+    this.uiState.turnTransitionActive = false;
+
+    const overlay = document.querySelector('.turn-transition-overlay');
+    if (overlay) overlay.remove();
+
+    if (typeof callback === 'function') callback();
+  }
 
   /**
    * --------------------------------------------------------------------------
@@ -6411,15 +7131,64 @@ class GameController {
 
     document.addEventListener('click', (e) => {
       if (this.sfx) this.sfx.unlock();
+      if (this.bgm) this.bgm.unlock();
       const target = e.target;
+      if (this.uiState.turnTransitionActive) {
+        e.stopPropagation();
+        this.finishTurnTransition();
+        return;
+      }
       if (this.quizState.inputLocked) return;
 
       // Global UI Actions
 
       if (target.closest('[data-action="title-start"]')) {
         e.stopPropagation();
+        clearRunSave();
         this.playSfx('uiConfirmChime');
         this.onGlobalAction();
+        return;
+      }
+      if (target.closest('[data-action="title-continue"]')) {
+        e.stopPropagation();
+        if (!this.continueFromSave()) {
+          this.playSfx('uiTapBottle');
+          const messageEl = this.container.querySelector('[data-title-stub-message]');
+          if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
+        }
+        return;
+      }
+      const titlePanelBtn = target.closest('[data-title-panel]');
+      if (titlePanelBtn) {
+        e.stopPropagation();
+        this.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
+        return;
+      }
+      if (target.closest('[data-action="title-panel-back"]')) {
+        e.stopPropagation();
+        this.closeTitlePanel();
+        return;
+      }
+      const soundBgmBtn = target.closest('[data-sound-bgm-path]');
+      if (soundBgmBtn) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.bgm?.play({
+          path: soundBgmBtn.getAttribute('data-sound-bgm-path'),
+          id: soundBgmBtn.getAttribute('data-sound-id') || 'preview'
+        });
+        return;
+      }
+      const soundSfxBtn = target.closest('[data-sound-sfx-key]');
+      if (soundSfxBtn) {
+        e.stopPropagation();
+        this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+        return;
+      }
+      if (target.closest('[data-action="sound-stop-bgm"]')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.bgm?.stop();
         return;
       }
       const titleStub = target.closest('[data-title-stub]');
@@ -6543,9 +7312,16 @@ class GameController {
     } else if (phase === 'MAIN_GAME') {
       if (subPhase === 'QUIZ') return;
 
-      if (this.session.turn === 5 && subPhase === 'AFTER_CLOSE') {
-        this.session.nextPhase();
-        this.update();
+      if (subPhase === 'AFTER_CLOSE') {
+        const isFinalTurn = this.session.turn === 5;
+        this.playTurnTransition(() => {
+          if (isFinalTurn) {
+            this.session.nextPhase();
+          } else {
+            this.session.nextSubPhase();
+          }
+          this.update();
+        }, isFinalTurn ? 'ending' : 'next');
         return;
       }
 
@@ -6554,6 +7330,7 @@ class GameController {
         this.startQuiz();
       }
     } else if (phase === 'ENDING') {
+      clearRunSave();
       this.session = new GameSession();
       this.quizState = this.createInitialQuizState();
       this.update();
