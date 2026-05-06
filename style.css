@@ -1325,10 +1325,9 @@ img {
 /* --- START: 50_result_ending.css --- */
 /* 
  * ============================================================================
- * RESULT & ENDING SCREENS
+ * ENDING SCREEN
  * ============================================================================
  */
-.result-screen,
 .ending-screen {
   flex: 1;
   display: flex;
@@ -1338,7 +1337,6 @@ img {
   padding: 42px;
 }
 
-.result-card,
 .ending-card {
   padding: 42px;
   width: 100%;
@@ -1346,7 +1344,6 @@ img {
   text-align: center;
 }
 
-.result-card h2,
 .ending-card h2 {
   margin-bottom: 26px;
   color: var(--sand-2);
@@ -1354,7 +1351,6 @@ img {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 
 .ending-kicker {
   color: var(--sand-2);
@@ -1388,6 +1384,37 @@ img {
   opacity: 0.86;
 }
 
+/* --- END: 50_result_ending.css --- */
+
+/* --- START: 51_turn_result.css --- */
+/* 
+ * ============================================================================
+ * TURN RESULT SCREEN
+ * ============================================================================
+ */
+.result-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 42px;
+}
+
+.result-card {
+  padding: 42px;
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.result-card h2 {
+  margin-bottom: 26px;
+  color: var(--sand-2);
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
 .result-stage {
   width: 100%;
@@ -2500,7 +2527,7 @@ img {
   transform: translateY(0) rotate(-4deg) scale(1);
 }
 
-/* --- END: 50_result_ending.css --- */
+/* --- END: 51_turn_result.css --- */
 
 /* --- START: 90_debug.css --- */
 /* 
