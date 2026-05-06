@@ -26,18 +26,65 @@ const HEROINES = [
   }
 ];
 
+const ROUTE_LABELS = {
+  normal: '通常モード',
+  long_history: '幼馴染モード'
+};
+
+
+const ROUTE_ICON_EXPRESSIONS = {
+  normal: 'joy',
+  long_history: 'maid'
+};
 
 function getVisualImagePath(id, mode, expression = 'normal') {
   const profile = getCharacterVisualProfile(id, mode);
   return getCharacterVisualImagePath(id, expression, profile.image);
 }
 
+function isRouteUnlocked(progress, heroineId, routeMode) {
+  if (routeMode === 'normal') return true;
+  return Boolean(progress?.heroineModeUnlocks?.[heroineId]?.[routeMode]);
+}
+
+function getRouteStatusText(progress, heroineId, routeMode) {
+  if (routeMode === 'normal') return '最初から選択可能';
+  const unlocked = isRouteUnlocked(progress, heroineId, routeMode);
+  const ending = progress?.endings?.[heroineId]?.normal || {};
+  if (unlocked) return 'GOOD到達で解放済み';
+  if (ending.normalCleared) return '通常GOODで解放';
+  return '通常ルートクリア後に解放';
+}
+
+function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
+  return ['normal', 'long_history'].map((routeMode) => {
+    const unlocked = isRouteUnlocked(progress, heroineId, routeMode);
+    const isSelected = selectedRoute === routeMode && unlocked;
+    const iconExpression = ROUTE_ICON_EXPRESSIONS[routeMode] || 'normal';
+    return `
+      <button
+        class="route-mode-btn${isSelected ? ' is-selected' : ''}${unlocked ? '' : ' is-locked'}"
+        type="button"
+        data-route-mode="${routeMode}"
+        ${unlocked ? '' : 'disabled'}
+      >
+        ${unlocked ? `<img class="route-mode-icon" src="${getCharacterIconPath(heroineId, iconExpression)}" alt="" onerror="this.style.display='none'" />` : ''}
+        <span class="route-mode-copy">
+          <strong>${ROUTE_LABELS[routeMode]}</strong>
+          <span>${getRouteStatusText(progress, heroineId, routeMode)}</span>
+        </span>
+      </button>
+    `;
+  }).join('');
+}
+
 function renderHeroineSelect(controller, view) {
   const initial = HEROINES[0];
+  const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
 
   view.innerHTML = `
     <div class="heroine-select title-screen heroine-select-rich">
-      <h2 class="glow heroine-select-title">営業パートナーを選択</h2>
+      <h2 class="glow heroine-select-title">運命の相手は？</h2>
 
       <div class="heroine-preview-card" aria-live="polite">
         <div class="heroine-preview-standing">
@@ -59,7 +106,11 @@ function renderHeroineSelect(controller, view) {
         `).join('')}
       </div>
 
-      <button class="heroine-card heroine-confirm-btn" data-id="${initial.id}" type="button">このパートナーで始める</button>
+      <div class="route-mode-row" data-route-mode-row aria-label="ルート選択">
+        ${renderRouteButtons(progress, initial.id)}
+      </div>
+
+      <button class="heroine-card heroine-confirm-btn" data-id="${initial.id}" data-route-mode-selected="normal" type="button">このヒロインで始める</button>
     </div>
   `;
 
@@ -79,7 +130,24 @@ function renderHeroineSelect(controller, view) {
   const previewTitle = view.querySelector('[data-heroine-preview-title]');
   const previewDesc = view.querySelector('[data-heroine-preview-desc]');
   const confirmBtn = view.querySelector('.heroine-confirm-btn');
+  const routeModeRow = view.querySelector('[data-route-mode-row]');
   const iconButtons = Array.from(view.querySelectorAll('[data-preview-heroine]'));
+
+  function bindRouteButtons(heroineId) {
+    if (!routeModeRow || !confirmBtn) return;
+    routeModeRow.innerHTML = renderRouteButtons(progress, heroineId, 'normal');
+    confirmBtn.setAttribute('data-route-mode-selected', 'normal');
+    Array.from(routeModeRow.querySelectorAll('[data-route-mode]')).forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (button.disabled) return;
+        if (controller.playSfx) controller.playSfx('uiTapBottle');
+        routeModeRow.querySelectorAll('[data-route-mode]').forEach((b) => b.classList.toggle('is-selected', b === button));
+        confirmBtn.setAttribute('data-route-mode-selected', button.getAttribute('data-route-mode') || 'normal');
+      });
+    });
+  }
 
   iconButtons.forEach((button) => {
     button.addEventListener('click', (event) => {
@@ -101,8 +169,11 @@ function renderHeroineSelect(controller, view) {
       if (previewTitle) previewTitle.textContent = heroine.title;
       if (previewDesc) previewDesc.textContent = heroine.desc;
       if (confirmBtn) confirmBtn.setAttribute('data-id', heroine.id);
+      bindRouteButtons(heroine.id);
     });
   });
+
+  bindRouteButtons(initial.id);
 }
 
 module.exports = {

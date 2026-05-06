@@ -10,7 +10,7 @@ const SCENARIO_SAMPLES = {
     {
       speakerId: "CH_NADIR",
       speakerExpression: "normal",
-      text: "今日も一日が始まる。どんな客が来るだろうか。"
+      text: "新しいターンが始まる。どんな客が来るだろうか。"
     },
     {
       speakerId: "CH_HAKIMA",

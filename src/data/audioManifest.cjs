@@ -51,11 +51,16 @@ const AUDIO_MANIFEST = {
       }
     },
     extra: [
-      { id: 'BGM_EXTRA_JOY', mood: 'joy', path: 'audio/bgm/extra/joy1.mp3' },
-      { id: 'BGM_EXTRA_FUN', mood: 'fun', path: 'audio/bgm/extra/fun1.mp3' },
-      { id: 'BGM_EXTRA_SORROW', mood: 'sorrow', path: 'audio/bgm/extra/sorrow1.mp3' },
-      { id: 'BGM_EXTRA_ANGER', mood: 'anger', path: 'audio/bgm/extra/anger1.mp3' },
-      { id: 'BGM_EXTRA_SURPRISE', mood: 'surprise', path: 'audio/bgm/extra/surprise1.mp3' }
+      { id: 'BGM_EXTRA_JOY_1', mood: 'joy', variant: 1, title: 'joy 1', path: 'audio/bgm/extra/joy1.mp3' },
+      { id: 'BGM_EXTRA_JOY_2', mood: 'joy', variant: 2, title: 'joy 2', path: 'audio/bgm/extra/joy2.mp3' },
+      { id: 'BGM_EXTRA_FUN_1', mood: 'fun', variant: 1, title: 'fun 1', path: 'audio/bgm/extra/fun1.mp3' },
+      { id: 'BGM_EXTRA_FUN_2', mood: 'fun', variant: 2, title: 'fun 2', path: 'audio/bgm/extra/fun2.mp3' },
+      { id: 'BGM_EXTRA_SORROW_1', mood: 'sorrow', variant: 1, title: 'sorrow 1', path: 'audio/bgm/extra/sorrow1.mp3' },
+      { id: 'BGM_EXTRA_SORROW_2', mood: 'sorrow', variant: 2, title: 'sorrow 2', path: 'audio/bgm/extra/sorrow2.mp3' },
+      { id: 'BGM_EXTRA_ANGER_1', mood: 'anger', variant: 1, title: 'anger 1', path: 'audio/bgm/extra/anger1.mp3' },
+      { id: 'BGM_EXTRA_ANGER_2', mood: 'anger', variant: 2, title: 'anger 2', path: 'audio/bgm/extra/anger2.mp3' },
+      { id: 'BGM_EXTRA_SURPRISE_1', mood: 'surprise', variant: 1, title: 'surprise 1', path: 'audio/bgm/extra/surprise1.mp3' },
+      { id: 'BGM_EXTRA_SURPRISE_2', mood: 'surprise', variant: 2, title: 'surprise 2', path: 'audio/bgm/extra/surprise2.mp3' }
     ]
   },
   se: {

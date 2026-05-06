@@ -25,6 +25,7 @@ const HEROINE_EXPRESSIONS = [
   'student'
 ];
 const RESULT_EXPRESSIONS = ['normal', 'sorrow', 'fun', 'joy'];
+const GAME_START_EXPRESSIONS = ['normal', 'maid', 'social', 'student'];
 
 function compactUnique(values) {
   return [...new Set(values.filter(Boolean))];
@@ -113,12 +114,14 @@ function createAssetPreloader() {
     if (openingStarted) return;
     openingStarted = true;
 
-    // 開幕はヒロインnormal画像だけ。個別BGMはまだ読まない。
-    const normalImagePaths = HEROINE_IDS.flatMap((id) => [
-      getCharacterVisualImagePath(id, 'normal', 'standing'),
-      getCharacterVisualImagePath(id, 'normal', 'face')
-    ]);
-    preloadImages(normalImagePaths);
+    // ゲーム開始時点で使う基本衣装/表情を先に温める。個別BGMはまだ読まない。
+    const startImagePaths = HEROINE_IDS.flatMap((id) => (
+      GAME_START_EXPRESSIONS.flatMap((expression) => [
+        getCharacterVisualImagePath(id, expression, 'standing'),
+        getCharacterVisualImagePath(id, expression, 'face')
+      ])
+    ));
+    preloadImages(startImagePaths);
   }
 
   function preloadHeroineSelectAssets() {

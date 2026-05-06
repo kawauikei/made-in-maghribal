@@ -4,6 +4,8 @@
 const { getInitialUnlockState } = require('./unlockState.cjs');
 const { getSongForTurn } = require('./stageSchedule.cjs');
 
+const TOTAL_TURNS = 5;
+
 /**
  * Manages the top-level game state and transitions.
  */
@@ -29,7 +31,7 @@ class GameSession {
       this.phase = 'HEROINE_SELECT';
     } else if (this.phase === 'HEROINE_SELECT') {
       this.phase = 'MAIN_GAME';
-    } else if (this.phase === 'MAIN_GAME' && this.turn === 5 && this.subPhase === 'AFTER_CLOSE') {
+    } else if (this.phase === 'MAIN_GAME' && this.turn >= TOTAL_TURNS && this.subPhase === 'AFTER_CLOSE') {
       this.phase = 'ENDING';
     }
   }
@@ -45,7 +47,7 @@ class GameSession {
     } else if (this.subPhase === 'TURN_RESULT') {
       this.subPhase = 'AFTER_CLOSE';
     } else if (this.subPhase === 'AFTER_CLOSE') {
-      if (this.turn < 5) {
+      if (this.turn < TOTAL_TURNS) {
         this.turn++;
         this.subPhase = 'BEFORE_OPEN';
       }
@@ -68,4 +70,4 @@ class GameSession {
   }
 }
 
-module.exports = { GameSession };
+module.exports = { GameSession, TOTAL_TURNS };

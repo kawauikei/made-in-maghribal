@@ -231,3 +231,17 @@
 .standing-char {
   animation: none;
 }
+
+/* ARABIAN-BUTTON-SHARED-1: VN skip button matches title luxury controls. */
+.message-skip-btn {
+  border: 1px solid rgba(218,178,92,0.82);
+  background:
+    linear-gradient(180deg, rgba(52,40,28,0.94), rgba(18,20,27,0.94)),
+    radial-gradient(circle at 50% 0%, rgba(255,224,140,0.26), transparent 64%);
+  color: rgba(255,236,178,0.98);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.72);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,241,179,0.30),
+    inset 0 -1px 0 rgba(0,0,0,0.42);
+}

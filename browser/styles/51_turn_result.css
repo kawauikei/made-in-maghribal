@@ -1184,3 +1184,28 @@
     transform: translateX(-50%) scale(1.24);
   }
 }
+
+/* ARABIAN-BUTTON-SHARED-1: result advance button matches title luxury controls. */
+.result-next-button {
+  position: absolute;
+  border: 1px solid rgba(218,178,92,0.88);
+  background:
+    linear-gradient(180deg, rgba(52,40,28,0.96), rgba(18,20,27,0.96)),
+    radial-gradient(circle at 50% 0%, rgba(255,224,140,0.30), transparent 64%);
+  color: rgba(255,236,178,0.98);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.72);
+  box-shadow:
+    0 12px 26px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,241,179,0.32),
+    inset 0 -1px 0 rgba(0,0,0,0.42),
+    0 0 0 1px rgba(255,225,145,0.08);
+}
+
+.result-next-button::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255,222,139,0.24);
+  border-radius: inherit;
+  pointer-events: none;
+}

@@ -38,7 +38,7 @@ function getGameTrack(heroineId, turn = 1) {
 function getEndingTrack(session) {
   const heroine = getHeroineBgm(session?.selectedHeroineId);
   const affection = calculateAffection(session?.scores || {});
-  const endingType = evaluateEnding(affection, session?.routeMode === 'extra');
+  const endingType = evaluateEnding(affection, session?.routeMode === 'long_history');
   return endingType === 'GOOD' ? heroine?.ending?.good : heroine?.ending?.normal;
 }
 
@@ -65,8 +65,14 @@ function getTrackForSession(session) {
   return findSystemTrack('main01_title');
 }
 
+function clampVolume(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return DEFAULT_BGM_VOLUME;
+  return Math.max(0, Math.min(1, value));
+}
+
 function createBgmEngine(options = {}) {
-  const baseVolume = options.volume ?? DEFAULT_BGM_VOLUME;
+  let baseVolume = clampVolume(options.volume ?? DEFAULT_BGM_VOLUME);
+  let enabled = true;
   let unlocked = false;
   let currentAudio = null;
   let currentPath = '';
@@ -222,7 +228,7 @@ function createBgmEngine(options = {}) {
   function play(track) {
     if (!track?.path) return;
     pendingTrack = track;
-    if (!unlocked) return;
+    if (!enabled || !unlocked) return;
     startTrack(track);
   }
 
@@ -233,7 +239,7 @@ function createBgmEngine(options = {}) {
   function unlock() {
     if (unlocked) return;
     unlocked = true;
-    if (pendingTrack) startTrack(pendingTrack);
+    if (enabled && pendingTrack) startTrack(pendingTrack);
   }
 
   function stop() {
@@ -245,8 +251,20 @@ function createBgmEngine(options = {}) {
     pendingTrack = null;
   }
 
+  function setEnabled(nextEnabled) {
+    enabled = Boolean(nextEnabled);
+    if (!enabled) stop();
+    else if (unlocked && pendingTrack) startTrack(pendingTrack);
+  }
+
+  function setVolume(value) {
+    baseVolume = clampVolume(value);
+    if (currentAudio) currentAudio.volume = baseVolume;
+  }
+
   function getState() {
     return {
+      enabled,
       unlocked,
       currentPath,
       pendingPath: pendingTrack?.path || '',
@@ -262,6 +280,8 @@ function createBgmEngine(options = {}) {
     play,
     playForSession,
     stop,
+    setEnabled,
+    setVolume,
     getState
   };
 }

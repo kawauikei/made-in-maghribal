@@ -70,9 +70,28 @@ function renderOptionsModal(controller, container) {
     { id: 'fast', label: '速い' },
     { id: 'instant', label: '瞬時' }
   ];
+  const bgmOn = controller.settings.bgmEnabled !== false;
+  const sfxOn = controller.settings.sfxEnabled !== false;
+  const bgmVol = Math.round(Number(controller.settings.bgmVolume ?? 0.22) * 100);
+  const sfxVol = Math.round(Number(controller.settings.sfxVolume ?? 1) * 100);
+
+  const renderAudioRow = (kind, label, enabled, volume) => `
+    <div class="audio-option-row">
+      <div>
+        <strong>${label}</strong>
+        <span>${enabled ? 'ON' : 'OFF'} / ${volume}%</span>
+      </div>
+      <div class="audio-option-controls">
+        <button class="option-button ${enabled ? 'is-active' : ''}" data-action="set-audio-enabled" data-audio-kind="${kind}" data-enabled="true">ON</button>
+        <button class="option-button ${!enabled ? 'is-active' : ''}" data-action="set-audio-enabled" data-audio-kind="${kind}" data-enabled="false">OFF</button>
+        <button class="option-button" data-action="adjust-audio-volume" data-audio-kind="${kind}" data-delta="-0.1">−</button>
+        <button class="option-button" data-action="adjust-audio-volume" data-audio-kind="${kind}" data-delta="0.1">＋</button>
+      </div>
+    </div>
+  `;
 
   container.innerHTML = `
-    <div class="ui-modal">
+    <div class="ui-modal options-modal">
       <h2>設定</h2>
       <div class="option-row">
         <p style="margin-bottom: 10px; font-weight: 800;">テキスト速度</p>
@@ -82,6 +101,11 @@ function renderOptionsModal(controller, container) {
                     data-action="set-text-speed" data-speed="${s.id}">${s.label}</button>
           `).join('')}
         </div>
+      </div>
+      <div class="option-row">
+        <p style="margin-bottom: 10px; font-weight: 800;">音量</p>
+        ${renderAudioRow('bgm', 'BGM', bgmOn, bgmVol)}
+        ${renderAudioRow('sfx', 'SE', sfxOn, sfxVol)}
       </div>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>

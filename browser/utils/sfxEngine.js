@@ -51,6 +51,7 @@ class SfxEngine {
   constructor(config = SELECTED_SFX) {
     this.config = config;
     this.enabled = true;
+    this.volume = 1;
     this.unlocked = false;
     this.active = new Set();
   }
@@ -63,6 +64,10 @@ class SfxEngine {
     this.enabled = Boolean(enabled);
   }
 
+  setVolume(value) {
+    this.volume = clampVolume(value, 1);
+  }
+
   play(id) {
     if (!this.enabled || !this.unlocked) return;
     const spec = this.config[id];
@@ -70,7 +75,7 @@ class SfxEngine {
 
     try {
       const audio = new Audio(spec.path);
-      audio.volume = clampVolume(spec.volume);
+      audio.volume = clampVolume(spec.volume, 0.4) * this.volume;
       audio.preload = 'auto';
 
       const cleanup = () => {
@@ -106,8 +111,8 @@ class SfxEngine {
   }
 }
 
-function clampVolume(value) {
-  if (typeof value !== 'number' || Number.isNaN(value)) return 0.4;
+function clampVolume(value, fallback = 0.4) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return fallback;
   return Math.max(0, Math.min(1, value));
 }
 

@@ -18,9 +18,9 @@ test('C001_DATA_ID_SCHEMA: HeroineId validation', () => {
 
 test('C001_DATA_ID_SCHEMA: RouteMode validation', () => {
   assert.strictEqual(validateId('routeMode', 'normal').ok, true);
-  assert.strictEqual(validateId('routeMode', 'extra').ok, true);
+  assert.strictEqual(validateId('routeMode', 'long_history').ok, true);
   
-  const invalid1 = validateId('routeMode', 'norml');
+  const invalid1 = validateId('routeMode', 'extra');
   assert.strictEqual(invalid1.ok, false);
   assert.strictEqual(invalid1.reason, "Unknown Route Mode");
 

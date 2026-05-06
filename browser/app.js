@@ -4,11 +4,13 @@
  * ============================================================================
  */
 
-const { GameSession } = require('./core/gameSessionFlow.cjs');
+const { GameSession, TOTAL_TURNS } = require('./core/gameSessionFlow.cjs');
 const { QUIZ_REQUEST_TEMPLATES } = require('./data/quizRequestTemplates.cjs');
 const { generateQuestion } = require('./core/quizRequestModel.cjs');
 const { processQuestionResult } = require('./core/rhythmQuizCore.cjs');
 const { updateGameScore } = require('./core/scoreModel.cjs');
+const { calculateAffection } = require('./core/affectionModel.cjs');
+const { evaluateEnding } = require('./core/endingBranch.cjs');
 
 // Modularized Screen Renderers
 const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
@@ -31,7 +33,8 @@ const { createSfxEngine } = require('./utils/sfxEngine.js');
 const { createBgmEngine } = require('./utils/bgmEngine.js');
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
-const { hasRunSave, loadRunSave, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
+const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
+const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -60,9 +63,11 @@ class GameController {
     this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
+    this.applyAudioSettings();
     this.uiState = {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
+      itemDetailModal: null,
       turnTransitionActive: false
     };
 
@@ -81,6 +86,7 @@ class GameController {
     };
 
     this.quizState = this.createInitialQuizState();
+    this.endingProgressRecorded = false;
 
     this.init();
     applyDebugJumpFromUrl(this);
@@ -103,7 +109,13 @@ class GameController {
   }
 
   loadSettings() {
-    const defaults = { textSpeed: 'normal' };
+    const defaults = {
+      textSpeed: 'normal',
+      bgmEnabled: true,
+      bgmVolume: 0.22,
+      sfxEnabled: true,
+      sfxVolume: 1
+    };
     try {
       const raw = localStorage.getItem(SETTINGS_KEY);
       if (!raw) return defaults;
@@ -119,6 +131,18 @@ class GameController {
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settings));
     } catch (e) {
       console.warn('Failed to save settings:', e);
+    }
+    this.applyAudioSettings();
+  }
+
+  applyAudioSettings() {
+    if (this.bgm) {
+      this.bgm.setEnabled?.(this.settings.bgmEnabled !== false);
+      this.bgm.setVolume?.(this.settings.bgmVolume);
+    }
+    if (this.sfx) {
+      this.sfx.setEnabled?.(this.settings.sfxEnabled !== false);
+      this.sfx.setVolume?.(this.settings.sfxVolume);
     }
   }
 
@@ -162,15 +186,36 @@ class GameController {
     this.renderModal(); // Refresh modal state
   }
 
+  setAudioEnabled(kind, enabled) {
+    if (kind !== 'bgm' && kind !== 'sfx') return;
+    this.settings[`${kind}Enabled`] = Boolean(enabled);
+    this.saveSettings();
+    this.renderModal();
+    if (kind === 'bgm' && this.settings.bgmEnabled) this.syncBgm();
+  }
+
+  adjustAudioVolume(kind, delta) {
+    if (kind !== 'bgm' && kind !== 'sfx') return;
+    const key = `${kind}Volume`;
+    const current = Number(this.settings[key]);
+    const next = Math.max(0, Math.min(1, (Number.isFinite(current) ? current : 0.5) + delta));
+    this.settings[key] = Math.round(next * 100) / 100;
+    if (next > 0) this.settings[`${kind}Enabled`] = true;
+    this.saveSettings();
+    this.renderModal();
+  }
+
 
   openTitlePanel(panelName) {
     this.uiState.titlePanel = panelName;
+    this.uiState.itemDetailModal = null;
     this.playSfx('uiTapBottle');
     this.update();
   }
 
   closeTitlePanel() {
     this.uiState.titlePanel = null;
+    this.uiState.itemDetailModal = null;
     this.playSfx('uiTapBottle');
     this.update();
   }
@@ -216,6 +261,7 @@ class GameController {
         this.preloadHeroineSelectAssets();
         renderHeroineSelect(this, view);
       } else if (phase === 'ENDING') {
+        this.recordEndingProgressIfNeeded();
         renderEnding(this, view);
       }
 
@@ -265,7 +311,7 @@ class GameController {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
-        text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`,
+        text: `ふぅ、第${this.session.turn}ターンの営業もお疲れ様！ 良い営業ができたわね。次のターンに備えてゆっくり休みましょう。`,
         charId: this.session.selectedHeroineId,
         speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
@@ -355,9 +401,23 @@ class GameController {
   getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
-  syncBgm() { if (this.bgm) this.bgm.playForSession(this.session); }
+  syncBgm() {
+    if (!this.bgm) return;
+    if (this.session.phase === 'TITLE') return;
+    this.bgm.playForSession(this.session);
+  }
+  getBgmState() { return this.bgm?.getState ? this.bgm.getState() : null; }
   hasSaveData() { return hasRunSave(); }
+  getSaveSummary() { return getRunSaveSummary(); }
+  getPlayerProgressSummary() { return getPlayerProgressSummary(); }
   saveCurrentRunIfNeeded() { saveRun(this); }
+  recordEndingProgressIfNeeded() {
+    if (this.endingProgressRecorded || this.session.phase !== 'ENDING') return;
+    const affection = calculateAffection(this.session.scores || {});
+    const endingType = evaluateEnding(affection, this.session.routeMode === 'long_history');
+    recordEndingProgress(this.session, endingType, affection);
+    this.endingProgressRecorded = true;
+  }
   continueFromSave() {
     const saveData = loadRunSave();
     if (!saveData) return false;
@@ -365,6 +425,7 @@ class GameController {
     const applied = applyRunSave(this, saveData);
     if (applied) {
       this.uiState.titlePanel = null;
+      this.endingProgressRecorded = false;
       if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ' && this.quizState.currentQuestion) {
         this.quizState.promptShownAt = performance.now();
       }
@@ -387,7 +448,7 @@ class GameController {
     const oldOverlay = viewport.querySelector('.turn-transition-overlay');
     if (oldOverlay) oldOverlay.remove();
 
-    const nextTurn = Math.min(5, this.session.turn + 1);
+    const nextTurn = Math.min(TOTAL_TURNS, this.session.turn + 1);
     const isEnding = mode === 'ending';
     const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
     const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
@@ -433,6 +494,20 @@ class GameController {
     if (typeof callback === 'function') callback();
   }
 
+
+  updateSoundTestStatus(path) {
+    const messageEl = this.container.querySelector('[data-sound-test-message]');
+    if (messageEl) {
+      messageEl.textContent = path ? `BGM: ${path}` : 'BGMを停止しました。';
+    }
+    this.container.querySelectorAll('[data-sound-bgm-path]').forEach((button) => {
+      const active = Boolean(path) && button.getAttribute('data-sound-bgm-path') === path;
+      button.classList.toggle('is-active', active);
+      const badge = button.querySelector('small');
+      if (badge) badge.textContent = active ? '再生中' : 'BGM';
+    });
+  }
+
   /**
    * --------------------------------------------------------------------------
    * 6. Event Handlers & User Actions
@@ -468,6 +543,7 @@ class GameController {
       if (target.closest('[data-action="title-start"]')) {
         e.stopPropagation();
         clearRunSave();
+        this.endingProgressRecorded = false;
         this.playSfx('uiConfirmChime');
         this.onGlobalAction();
         return;
@@ -481,6 +557,13 @@ class GameController {
         }
         return;
       }
+      if (target.closest('[data-action="title-clear-save"]')) {
+        e.stopPropagation();
+        clearRunSave();
+        this.playSfx('uiTapBottle');
+        this.update();
+        return;
+      }
       const titlePanelBtn = target.closest('[data-title-panel]');
       if (titlePanelBtn) {
         e.stopPropagation();
@@ -492,14 +575,33 @@ class GameController {
         this.closeTitlePanel();
         return;
       }
+
+      const itemDetailBtn = target.closest('[data-item-detail-index]');
+      if (itemDetailBtn) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        const index = Number(itemDetailBtn.getAttribute('data-item-detail-index')) || 0;
+        this.uiState.itemDetailModal = { index };
+        this.update();
+        return;
+      }
+      if (target.getAttribute && target.getAttribute('data-action') === 'item-detail-close') {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.uiState.itemDetailModal = null;
+        this.update();
+        return;
+      }
       const soundBgmBtn = target.closest('[data-sound-bgm-path]');
       if (soundBgmBtn) {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
+        const path = soundBgmBtn.getAttribute('data-sound-bgm-path');
         this.bgm?.play({
-          path: soundBgmBtn.getAttribute('data-sound-bgm-path'),
+          path,
           id: soundBgmBtn.getAttribute('data-sound-id') || 'preview'
         });
+        this.updateSoundTestStatus(path);
         return;
       }
       const soundSfxBtn = target.closest('[data-sound-sfx-key]');
@@ -512,6 +614,7 @@ class GameController {
         e.stopPropagation();
         this.playSfx('uiTapBottle');
         this.bgm?.stop();
+        this.updateSoundTestStatus('');
         return;
       }
       const titleStub = target.closest('[data-title-stub]');
@@ -555,6 +658,20 @@ class GameController {
         this.setTextSpeed(speedBtn.getAttribute('data-speed'));
         return;
       }
+      const audioToggleBtn = target.closest('[data-action="set-audio-enabled"]');
+      if (audioToggleBtn) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.setAudioEnabled(audioToggleBtn.getAttribute('data-audio-kind'), audioToggleBtn.getAttribute('data-enabled') === 'true');
+        return;
+      }
+      const audioVolumeBtn = target.closest('[data-action="adjust-audio-volume"]');
+      if (audioVolumeBtn) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
+        return;
+      }
 
       // Skip Actions
       if (target.closest('[data-action="skip-text"]')) {
@@ -573,8 +690,9 @@ class GameController {
 
       if (target.classList.contains('heroine-card')) {
         const id = target.getAttribute('data-id');
+        const routeMode = target.getAttribute('data-route-mode-selected') || 'normal';
         e.stopPropagation();
-        this.selectHeroine(id);
+        this.selectHeroine(id, routeMode);
         return;
       }
 
@@ -606,12 +724,13 @@ class GameController {
     });
   }
 
-  selectHeroine(id) {
+  selectHeroine(id, routeMode = 'normal') {
     if (this.quizState.inputLocked) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
-    this.session.selectHeroine(id, 'normal');
+    this.endingProgressRecorded = false;
+    this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
   }
@@ -636,7 +755,7 @@ class GameController {
       if (subPhase === 'QUIZ') return;
 
       if (subPhase === 'AFTER_CLOSE') {
-        const isFinalTurn = this.session.turn === 5;
+        const isFinalTurn = this.session.turn >= TOTAL_TURNS;
         this.playTurnTransition(() => {
           if (isFinalTurn) {
             this.session.nextPhase();
@@ -656,6 +775,7 @@ class GameController {
       clearRunSave();
       this.session = new GameSession();
       this.quizState = this.createInitialQuizState();
+      this.endingProgressRecorded = false;
       this.update();
       return;
     }

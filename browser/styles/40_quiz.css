@@ -255,3 +255,33 @@
 .rhythm-guide-note {
   left: 22%;
 }
+
+/* ARABIAN-BUTTON-SHARED-1: quiz choice cards keep layout but gain richer gold framing. */
+.choice-card {
+  border-color: rgba(218, 178, 92, 0.86);
+  background:
+    linear-gradient(180deg, rgba(255,250,238,0.92), rgba(232,213,172,0.86)),
+    radial-gradient(circle at 50% 0%, rgba(255,238,172,0.36), transparent 64%);
+  box-shadow:
+    0 12px 26px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.58),
+    inset 0 -1px 0 rgba(115,78,28,0.18),
+    0 0 0 1px rgba(255,225,145,0.12);
+}
+
+.choice-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(183,131,53,0.26);
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+.choice-card:active {
+  border-color: rgba(74, 169, 176, 0.92);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    0 0 18px rgba(74,169,176,0.20);
+}

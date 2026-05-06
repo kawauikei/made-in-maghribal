@@ -10,7 +10,7 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
 
   test('1. Title screen and navigation to main game', async ({ page }) => {
     // 1. Title Screen
-    await expect(page.locator('h1')).toContainText('Made in Maghribal');
+    await expect(page.locator('.title-logo-image')).toHaveAttribute('alt', 'Made in Maghribal');
     
     // 2. To Opening
     await page.click('#game-viewport');
@@ -92,8 +92,32 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
 
     // Result screen should appear
     await expect(page.locator('.result-screen')).toBeVisible({ timeout: 5000 });
-    await expect(page.locator('.result-card h2')).toContainText('1日目の営業結果');
+    await expect(page.locator('.result-card h2')).toContainText('第1期営業報告');
     await expect(page.locator('.result-card')).toContainText('評価:');
     await expect(page.locator('.btn-next')).toBeVisible();
+  });
+
+  test('4. Session persistence and resume after reload', async ({ page }) => {
+    // 1. Navigate to Quiz
+    await page.click('#game-viewport'); // Title
+    await page.click('#game-viewport'); // Opening
+    await page.locator('.heroine-card[data-id="HAKIMA"]').click(); // Select
+    await page.click('#game-viewport'); // Before Open -> Quiz
+    
+    // 2. Answer 3 questions
+    for (let i = 0; i < 3; i++) {
+      await page.locator('.choice-card').first().click();
+      await page.waitForTimeout(200);
+    }
+    await expect(page.locator('.quiz-counter')).toContainText('3/10');
+
+    // 3. Reload page
+    await page.reload();
+    
+    // 4. Should resume in Quiz at question 3 (or turn start depending on logic)
+    // Note: If implementation resets to turn start, adjust expectation.
+    await expect(page.locator('.quiz-screen')).toBeVisible({ timeout: 5000 });
+    // Verify progress is maintained
+    await expect(page.locator('.quiz-counter')).toContainText('3/10');
   });
 });

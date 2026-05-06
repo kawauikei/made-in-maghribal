@@ -3,7 +3,7 @@
  */
 
 const HEROINE_IDS = ['hakima', 'mira', 'dariya'];
-const ROUTE_MODES = ['normal', 'extra'];
+const ROUTE_MODES = ['normal', 'long_history'];
 const EXPRESSION_IDS = ['normal', 'joy', 'fun', 'surprise', 'sorrow', 'cry', 'anger', 'maid', 'social', 'student'];
 const GENRE_IDS = ['ARM', 'FOD', 'MED', 'ADN', 'CLT', 'DAY', 'WRK', 'TRV', 'RIT', 'TRD'];
 const PRINCIPLE_IDS = ['AS', 'EL', 'LI', 'ME', 'SA'];

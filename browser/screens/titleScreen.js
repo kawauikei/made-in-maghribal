@@ -16,8 +16,25 @@ function renderTitle(controller, view) {
 
   view.innerHTML = `
     <div class="title-screen title-screen-with-art">
+      <svg class="title-water-filter-defs" aria-hidden="true" focusable="false">
+        <filter id="titleWaterRippleFilter" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.052" numOctaves="2" seed="7" result="waveNoise">
+            <animate attributeName="baseFrequency" dur="14s" calcMode="spline" keyTimes="0;0.33;0.66;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="0.012 0.052;0.016 0.047;0.010 0.058;0.012 0.052" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="waveNoise" scale="8" xChannelSelector="R" yChannelSelector="G">
+            <animate attributeName="scale" dur="10s" calcMode="spline" keyTimes="0;0.35;0.70;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="8;12;6;8" repeatCount="indefinite" />
+          </feDisplacementMap>
+        </filter>
+      </svg>
+      <div class="title-clock-crop" aria-hidden="true">
+        <img class="title-clock-image" src="images/ui/clock.png" alt="" />
+      </div>
+      <h1 class="title-logo-anchor" aria-label="Made in Maghribal">
+        <span class="title-logo-water">
+          <img class="title-logo-image" src="images/ui/logo.png" alt="Made in Maghribal" />
+        </span>
+      </h1>
       <div class="title-content-panel">
-        <h1 class="glow">Made in Maghribal</h1>
         <div class="title-primary-actions">
           <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
           <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>

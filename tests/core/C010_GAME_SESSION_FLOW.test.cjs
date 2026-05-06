@@ -42,6 +42,6 @@ test('C010_GAME_SESSION_FLOW: Song scheduling', () => {
   session.turn = 2;
   assert.strictEqual(session.currentSong, 'BGM_GAME_HAKIMA_1', "Turn 2 normal song mismatch");
   
-  session.routeMode = 'extra';
-  assert.strictEqual(session.currentSong, 'BGM_GAME_HAKIMA_EXTRA', "Turn 2 extra song mismatch");
+  session.routeMode = 'long_history';
+  assert.strictEqual(session.currentSong, 'BGM_GAME_HAKIMA_1', "Turn 2 long_history shares current heroine game track");
 });
