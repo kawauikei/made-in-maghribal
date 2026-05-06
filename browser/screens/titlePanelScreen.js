@@ -11,12 +11,15 @@ const { ITEM_TEXTS } = require('../data/itemTexts.cjs');
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
+const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
+const { EVENT_MASTER } = require('../data/eventMaster.cjs');
 
 const PANEL_TITLES = {
   event: 'イベント集',
   image: '画像集',
   sound: '音楽集',
-  item: 'アイテム図鑑'
+  item: 'アイテム図鑑',
+  freeplay: 'フリープレイ'
 };
 
 const GENRE_LABELS = {
@@ -109,6 +112,7 @@ function renderPanelBody(controller, panel) {
   if (panel === 'sound') return renderSoundTest(controller);
   if (panel === 'event') return renderEventGallery(controller);
   if (panel === 'image') return renderImageGallery(controller);
+  if (panel === 'freeplay') return renderFreePlay(controller);
   return renderPlaceholder(panel);
 }
 
@@ -308,52 +312,91 @@ function renderItemGallery(controller) {
 
 function renderEventGallery(controller) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const cards = Object.entries(HEROINE_LABELS).map(([heroineId, name]) => {
-    const normal = progress?.endings?.[heroineId]?.normal || {};
-    const longHistory = progress?.endings?.[heroineId]?.long_history || {};
-    const unlocked = progress?.heroineModeUnlocks?.[heroineId]?.long_history;
-    const best = progress?.bestRecords?.[heroineId]?.normal || {};
+  const cards = EVENT_MASTER.map((ev) => {
+    const isCommon = ev.heroineId === 'COMMON';
+    // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
+    const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+    
     return `
-      <div class="locked-gallery-card${normal.normalCleared || longHistory.normalCleared ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">✦</div>
-        <h3>${name}</h3>
-        <p>通常: ${normal.goodCleared ? 'GOOD済み' : (normal.normalCleared ? 'CLEAR済み' : '未クリア')}</p>
-        <p>IF: ${unlocked ? '解放済み' : '未解放'} / ${longHistory.goodCleared ? 'GOOD済み' : (longHistory.normalCleared ? 'CLEAR済み' : '未クリア')}</p>
-        <small>最高 満足度${best.satisfaction || 0} / 評判${best.reputation || 0}</small>
+      <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
+        <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
+        <div class="locked-gallery-content">
+          <h3>${isCleared ? escapeHtml(ev.title) : '？？？？'}</h3>
+          <p>${isCleared ? escapeHtml(ev.summary) : '営業をクリアして解放'}</p>
+          <small>${isCleared ? escapeHtml(HEROINE_LABELS[ev.heroineId] || '共通') : ev.condition}</small>
+        </div>
       </div>
     `;
   }).join('');
 
   return `
     <div class="locked-gallery-panel">
-      <div class="title-panel-summary">エンディング記録とモード解放状態を保存中</div>
+      <div class="title-panel-summary">物語の記録</div>
       <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">イベント単位の閲覧フラグは後続接続です。現在はヒロイン別のクリア記録を先に表示します。</p>
+      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます（現在リスト表示のみ）。</p>
     </div>
   `;
 }
 
 function renderImageGallery(controller) {
-  const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const imageSeenCount = progress?.imageSeenCount || 0;
-  const cards = [
-    ['背景', 'タイトル・店内・オアシスなどの解放済み背景'],
-    ['スチル', 'エンディングやイベント用の一枚絵'],
-    ['キャラ', 'standing/face_proc 参照の確認用一覧']
-  ].map(([title, note]) => `
-    <div class="locked-gallery-card">
-      <div class="locked-gallery-mark">◇</div>
-      <h3>${title}</h3>
-      <p>${note}</p>
-      <small>Coming Later</small>
-    </div>
-  `).join('');
+  const items = GALLERY_MANIFEST.map((img) => {
+    // For now, background images are mostly unlocked, stills are locked if not cleared
+    const isStill = img.category === 'スチル';
+    const isUnlocked = !isStill; // Simplified for now
+    
+    return `
+      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}">
+        <div class="locked-gallery-mark">${isStill ? '🖼️' : '🏞️'}</div>
+        <div class="locked-gallery-content">
+          <h3>${isUnlocked ? escapeHtml(img.title) : '？？？？'}</h3>
+          <p>${escapeHtml(img.category)}</p>
+          ${isUnlocked ? `<img src="${img.path}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-top: 8px;" />` : '<small>Locked</small>'}
+        </div>
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="locked-gallery-panel">
-      <div class="title-panel-summary">画像ギャラリーの入口を固定済み / 解放 ${imageSeenCount}件</div>
-      <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">bustup_proc は使わず、既存の standing_proc / face_proc 方針に合わせて後続接続します。</p>
+      <div class="title-panel-summary">視覚の記録</div>
+      <div class="locked-gallery-grid">${items}</div>
+      <p class="title-panel-note">解放済みの背景やスチルを閲覧できます。</p>
+    </div>
+  `;
+}
+
+function renderFreePlay(controller) {
+  const bgmGroups = buildBgmGroups();
+  const options = bgmGroups.flatMap(g => g.tracks).map(track => {
+    const label = formatTrackButtonLabel(track.kind, track.title || track.label || track.id);
+    return `<option value="${track.path}">${escapeHtml(label)}</option>`;
+  }).join('');
+
+  return `
+    <div class="title-panel-empty">
+      <div class="load-save-card">
+        <h3>フリー接客設定</h3>
+        <div class="load-save-meta">
+          <div class="load-save-row">
+            <span>BGM</span>
+            <select id="freeplay-bgm" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+              ${options}
+            </select>
+          </div>
+          <div class="load-save-row">
+            <span>問題数</span>
+            <select id="freeplay-count" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+              <option value="5">5問</option>
+              <option value="10" selected>10問</option>
+              <option value="20">20問</option>
+            </select>
+          </div>
+        </div>
+        <div class="load-save-actions">
+          <button class="title-start-btn" type="button" data-action="start-freeplay">接客開始</button>
+        </div>
+        <p class="title-panel-note">好きなBGMで接客の練習ができます。</p>
+      </div>
     </div>
   `;
 }

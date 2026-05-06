@@ -250,7 +250,7 @@ class GameController {
   }
 
   toggleFullscreen() {
-    const root = document.getElementById('game-viewport');
+    const root = document.documentElement;
     if (!document.fullscreenElement) {
       if (root?.requestFullscreen) root.requestFullscreen();
       else if (root?.webkitRequestFullscreen) root.webkitRequestFullscreen();
@@ -428,6 +428,30 @@ class GameController {
     return applied;
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
+  
+  startFreePlay({ bgmPath, questionCount }) {
+    this.clearTypewriter();
+    this.playSfx('uiConfirmChime');
+    
+    // Setup free play session
+    this.session.phase = 'MAIN_GAME';
+    this.session.subPhase = 'QUIZ';
+    this.session.selectedHeroineId = 'HAKIMA'; // Default
+    this.session.turn = 1; 
+    
+    this.quizState = this.createInitialQuizState();
+    this.quizState.totalQuestions = questionCount || 10;
+    
+    // Force specific BGM if provided
+    if (bgmPath && this.bgm) {
+        this.bgm.play({ path: bgmPath, id: 'freeplay' });
+    }
+    
+    this.uiState.titlePanel = null;
+    this.startQuiz();
+    this.update();
+  }
+
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 

@@ -47,8 +47,7 @@ function renderTitle(controller, view) {
           <button class="title-menu-btn" type="button" data-title-panel="sound">音楽集</button>
           <button class="title-menu-btn" type="button" data-title-panel="item">アイテム図鑑</button>
           <button class="title-menu-btn" type="button" data-action="open-options">設定画面</button>
-          <button class="title-menu-btn" type="button" data-title-stub="フリープレイ">フリープレイ</button>
-          ${debugButton}
+          <button class="title-menu-btn" type="button" data-title-panel="freeplay">フリープレイ</button>
         </div>
         <p class="title-stub-message" data-title-stub-message></p>
       </div>

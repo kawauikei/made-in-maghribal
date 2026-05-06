@@ -57,6 +57,16 @@ function bindInputHandlers(controller) {
       controller.closeTitlePanel();
       return;
     }
+    if (target.closest('[data-action="start-freeplay"]')) {
+      event.stopPropagation();
+      const bgmEl = document.getElementById('freeplay-bgm');
+      const countEl = document.getElementById('freeplay-count');
+      controller.startFreePlay({
+        bgmPath: bgmEl ? bgmEl.value : null,
+        questionCount: countEl ? Number(countEl.value) : 10
+      });
+      return;
+    }
 
     const itemDetailBtn = target.closest('[data-item-detail-index]');
     if (itemDetailBtn) {

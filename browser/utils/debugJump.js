@@ -58,7 +58,7 @@ function applyDebugJump(controller, jump) {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
     controller.session.routeMode = 'normal';
-    controller.session.turn = 1;
+    controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'QUIZ';
     controller.startQuiz();
     return;
