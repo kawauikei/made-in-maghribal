@@ -4316,17 +4316,106 @@ module.exports = {
  * Heroine Selection screen for MadeInMaghribal.
  */
 
+const { getCharacterIconPath, getCharacterVisualImagePath } = require('../utils/assetPaths.js');
+const { applyCharacterVisualProfile, applyCharacterTheme, getCharacterVisualProfile } = require('../utils/characterVisualProfiles.js');
+
+const HEROINES = [
+  {
+    id: 'HAKIMA',
+    name: 'ハキマ',
+    title: '香りと術理に明るい錬金術師',
+    desc: '厳しそうに見えて、毎朝店先に顔を出してくれる相談相手。'
+  },
+  {
+    id: 'MIRA',
+    name: 'ミラ',
+    title: '街の流れに明るい案内役',
+    desc: '人の流れと噂に強く、店の空気を明るくしてくれる協力者。'
+  },
+  {
+    id: 'DARIYA',
+    name: 'ダリヤ',
+    title: '星と品物の物語を読む女性',
+    desc: '静かな眼差しで、品物に宿る気配や物語を見抜いてくれる。'
+  }
+];
+
+
+function getVisualImagePath(id, mode, expression = 'normal') {
+  const profile = getCharacterVisualProfile(id, mode);
+  return getCharacterVisualImagePath(id, expression, profile.image);
+}
+
 function renderHeroineSelect(controller, view) {
+  const initial = HEROINES[0];
+
   view.innerHTML = `
-    <div class="heroine-select title-screen">
-      <h2 class="glow" style="margin-bottom: 30px; color: var(--star-1);">営業パートナーを選択</h2>
-      <div class="heroine-list">
-        <div class="heroine-card" data-id="HAKIMA">ハキマ（優雅な賢者）</div>
-        <div class="heroine-card" data-id="MIRA">ミラ（元気な看板娘）</div>
-        <div class="heroine-card" data-id="DARIYA">ダリヤ（神秘的な踊り子）</div>
+    <div class="heroine-select title-screen heroine-select-rich">
+      <h2 class="glow heroine-select-title">営業パートナーを選択</h2>
+
+      <div class="heroine-preview-card" aria-live="polite">
+        <div class="heroine-preview-standing">
+          <img data-heroine-preview-img src="${getVisualImagePath(initial.id, 'heroineSelect')}" alt="${initial.name}" onerror="this.style.display='none'" />
+        </div>
+        <div class="heroine-preview-copy">
+          <h3 data-heroine-preview-name>${initial.name}</h3>
+          <p class="heroine-preview-title" data-heroine-preview-title>${initial.title}</p>
+          <p data-heroine-preview-desc>${initial.desc}</p>
+        </div>
       </div>
+
+      <div class="heroine-icon-row" aria-label="営業パートナー候補">
+        ${HEROINES.map((h) => `
+          <button class="heroine-icon-btn${h.id === initial.id ? ' is-selected' : ''}" data-preview-heroine="${h.id}" type="button" aria-label="${h.name}を表示">
+            <img src="${getCharacterIconPath(h.id, 'normal')}" alt="" onerror="this.style.display='none'" />
+            <span>${h.name}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <button class="heroine-card heroine-confirm-btn" data-id="${initial.id}" type="button">このパートナーで始める</button>
     </div>
   `;
+
+  const root = view.querySelector('.heroine-select-rich');
+  if (root) applyCharacterTheme(root, initial.id);
+
+  const previewImg = view.querySelector('[data-heroine-preview-img]');
+  if (previewImg) applyCharacterVisualProfile(previewImg, initial.id, 'heroineSelect');
+  view.querySelectorAll('.heroine-icon-btn').forEach((button) => {
+    const id = button.getAttribute('data-preview-heroine');
+    applyCharacterTheme(button, id);
+    const img = button.querySelector('img');
+    if (img) applyCharacterVisualProfile(img, id, 'selectIcon');
+  });
+
+  const previewName = view.querySelector('[data-heroine-preview-name]');
+  const previewTitle = view.querySelector('[data-heroine-preview-title]');
+  const previewDesc = view.querySelector('[data-heroine-preview-desc]');
+  const confirmBtn = view.querySelector('.heroine-confirm-btn');
+  const iconButtons = Array.from(view.querySelectorAll('[data-preview-heroine]'));
+
+  iconButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const heroine = HEROINES.find((h) => h.id === button.getAttribute('data-preview-heroine')) || initial;
+      iconButtons.forEach((b) => b.classList.toggle('is-selected', b === button));
+
+      if (root) applyCharacterTheme(root, heroine.id);
+      if (previewImg) {
+        previewImg.style.display = '';
+        previewImg.src = getVisualImagePath(heroine.id, 'heroineSelect');
+        previewImg.alt = heroine.name;
+        applyCharacterVisualProfile(previewImg, heroine.id, 'heroineSelect');
+      }
+      if (previewName) previewName.textContent = heroine.name;
+      if (previewTitle) previewTitle.textContent = heroine.title;
+      if (previewDesc) previewDesc.textContent = heroine.desc;
+      if (confirmBtn) confirmBtn.setAttribute('data-id', heroine.id);
+    });
+  });
 }
 
 module.exports = {
@@ -4427,38 +4516,56 @@ module.exports = {
  * Title and Opening screens for MadeInMaghribal.
  */
 
+const { renderVnShell } = require('./vnScreen.js');
 const { getBackgroundPath } = require('../utils/assetPaths.js');
 
 function renderTitle(controller, view) {
+  const debugButton = controller.isDebugMode()
+    ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
+    : '';
+
   view.innerHTML = `
-    <div class="title-screen">
-      <h1 class="glow">Made in Maghribal</h1>
-      <p class="blink">クリックして開始</p>
+    <div class="title-screen title-screen-with-art">
+      <div class="title-content-panel">
+        <h1 class="glow">Made in Maghribal</h1>
+        <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+        <div class="title-menu-grid" aria-label="Title menu">
+          <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
+          <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
+          <button class="title-menu-btn" type="button" data-title-stub="画像ギャラリー">画像</button>
+          <button class="title-menu-btn" type="button" data-title-stub="サウンドテスト">音楽</button>
+          <button class="title-menu-btn" type="button" data-title-stub="アイテム図鑑">図鑑</button>
+          <button class="title-menu-btn" type="button" data-action="open-options">設定</button>
+          ${debugButton}
+        </div>
+        <p class="title-stub-message" data-title-stub-message></p>
+      </div>
     </div>
   `;
 }
 
 function renderOpening(controller, view) {
-  const text = `マグリバル砂漠の黄金の砂は、多くの物語を秘めています。\n\nあなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？`;
-  const bgPath = getBackgroundPath('OASIS');
+  const text = `マグリバル砂漠の黄金の砂は、多くの物語を秘めています。
 
-  view.innerHTML = `
-    <div class="opening-screen title-screen" style="background-image: url(${bgPath}); background-size: cover; background-position: center;">
-      <div class="text-controls">
-        <button class="text-control-btn" data-action="skip-text">スキップ</button>
-        <button class="text-control-btn" data-action="cycle-text-speed">速度: <span data-text-speed-label>${controller.getTextSpeedLabel()}</span></button>
-      </div>
+あなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？`;
 
-      <div class="result-card" style="padding: 40px; max-width: 85%; position: relative;">
-        <h2 class="glow" style="color: var(--sand-2); margin-bottom: 20px;">プロローグ</h2>
-        <button class="message-skip-btn" data-action="skip-text">スキップ</button>
-        <div style="text-align: left; line-height: 1.8; min-height: 120px; white-space: pre-wrap;" data-vn-text></div>
-        <p class="blink" style="margin-top: 30px; color: var(--sand-2);">クリックして進む</p>
-      </div>
-    </div>
-  `;
+  renderVnShell(controller, view);
+  const screen = view.querySelector('.vn-screen');
+  if (screen) {
+    screen.classList.add('opening-screen');
+    screen.insertAdjacentHTML('afterbegin', '<h2 class="vn-scene-title">プロローグ</h2>');
+  }
 
+  const bgEl = view.querySelector('[data-vn-bg]');
+  const speakerWrapEl = view.querySelector('[data-vn-speaker-wrap]');
   const textEl = view.querySelector('[data-vn-text]');
+
+  if (bgEl) {
+    bgEl.style.backgroundImage = `url(${getBackgroundPath('OASIS')})`;
+  }
+  if (speakerWrapEl) {
+    speakerWrapEl.style.display = 'none';
+  }
   if (textEl) {
     controller.startTypewriter(text, textEl);
   }
@@ -4477,21 +4584,31 @@ module.exports = {
  * VN / ADV Screen for MadeInMaghribal.
  */
 
-const { getCharacterStandingPath, getBackgroundPath } = require('../utils/assetPaths.js');
+const { getCharacterVisualImagePath, getBackgroundPath } = require('../utils/assetPaths.js');
+const { applyCharacterVisualProfile, getCharacterVisualProfile } = require('../utils/characterVisualProfiles.js');
+
+
+function getVisualImagePath(id, mode, expression = 'normal') {
+  const profile = getCharacterVisualProfile(id, mode);
+  return getCharacterVisualImagePath(id, expression, profile.image);
+}
 
 function renderVnShell(controller, view) {
   view.innerHTML = `
     <div class="vn-screen" data-screen="vn">
       <div class="vn-bg" data-vn-bg></div>
       <div class="vn-character-layer" data-vn-char-layer>
-        <img class="standing-char" data-vn-char src="" style="display: none;" />
+        <img class="standing-char" data-vn-char src="" style="display: none;" alt="" />
       </div>
       
       <div class="stats" data-hud></div>
       <div class="score-strip" data-score-strip></div>
       
       <div class="message-box">
-        <div class="speaker-name" data-vn-speaker></div>
+        <div class="speaker-name" data-vn-speaker-wrap>
+          <img class="speaker-icon" data-vn-speaker-icon src="" style="display: none;" alt="" />
+          <span data-vn-speaker></span>
+        </div>
         <button class="message-skip-btn" data-action="skip-text">スキップ</button>
         <div class="message-text-wrap">
           <div class="message-text" data-vn-text></div>
@@ -4501,33 +4618,52 @@ function renderVnShell(controller, view) {
   `;
 }
 
-function updateVnContent(controller, { speakerName, text, charId, bgId, expression }) {
+function updateVnContent(controller, { speakerName, text, charId, speakerId, bgId, expression, speakerExpression }) {
   const bgEl = controller.container.querySelector('[data-vn-bg]');
   const charEl = controller.container.querySelector('[data-vn-char]');
+  const speakerWrapEl = controller.container.querySelector('[data-vn-speaker-wrap]');
   const speakerEl = controller.container.querySelector('[data-vn-speaker]');
+  const speakerIconEl = controller.container.querySelector('[data-vn-speaker-icon]');
   const textEl = controller.container.querySelector('[data-vn-text]');
 
-  // Update Background
   if (bgEl && bgId) {
     const bgPath = getBackgroundPath(bgId);
     bgEl.style.backgroundImage = `url(${bgPath})`;
   }
 
-  // Update Character Standing
   if (charEl) {
     if (charId) {
-      charEl.src = getCharacterStandingPath(charId, expression || 'normal');
+      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
       charEl.style.display = 'block';
+      applyCharacterVisualProfile(charEl, charId, 'standing');
       charEl.onerror = () => { charEl.style.display = 'none'; };
     } else {
+      charEl.removeAttribute('src');
       charEl.style.display = 'none';
     }
   }
 
-  // Update Speaker
+  const iconId = speakerId || charId;
+  const hasSpeaker = Boolean(speakerName || iconId);
+
+  if (speakerWrapEl) {
+    speakerWrapEl.style.display = hasSpeaker ? 'inline-flex' : 'none';
+  }
+
+  if (speakerIconEl) {
+    if (iconId) {
+      speakerIconEl.src = getVisualImagePath(iconId, 'speakerIcon', speakerExpression || expression || 'normal');
+      speakerIconEl.style.display = 'block';
+      applyCharacterVisualProfile(speakerIconEl, iconId, 'speakerIcon');
+      speakerIconEl.onerror = () => { speakerIconEl.style.display = 'none'; };
+    } else {
+      speakerIconEl.removeAttribute('src');
+      speakerIconEl.style.display = 'none';
+    }
+  }
+
   if (speakerEl) speakerEl.textContent = speakerName || '';
   
-  // Update Typewriter Text
   if (textEl && text) {
     if (controller.typewriter.fullText !== text) {
       controller.startTypewriter(text, textEl);
@@ -4706,18 +4842,29 @@ module.exports = {
  * Verified against actual filesystem structure.
  */
 
+function normalizeCharacterDir(id) {
+  return String(id).replace(/^CH_/i, '').toLowerCase();
+}
+
 function getCharacterStandingPath(id, expression = 'normal') {
   if (!id) return '';
-  const charDir = id.toLowerCase();
+  const charDir = normalizeCharacterDir(id);
   // Valid expressions from filesystem: normal, joy, fun, anger, cry, sorrow, surprise, etc.
   const expFile = expression.toLowerCase();
   return `characters/${charDir}/standing_proc/${expFile}.png`;
 }
 
-function getCharacterIconPath(id) {
+function getCharacterIconPath(id, expression = 'normal') {
   if (!id) return '';
-  const charDir = id.toLowerCase();
-  return `characters/${charDir}/standing_proc/normal.png`;
+  const charDir = normalizeCharacterDir(id);
+  const expFile = expression.toLowerCase();
+  return `characters/${charDir}/face_proc/${expFile}.png`;
+}
+
+
+function getCharacterVisualImagePath(id, expression = 'normal', imageKind = 'standing') {
+  if (imageKind === 'face') return getCharacterIconPath(id, expression);
+  return getCharacterStandingPath(id, expression);
 }
 
 function getBackgroundPath(sceneId) {
@@ -4730,9 +4877,158 @@ function getBackgroundPath(sceneId) {
 }
 
 module.exports = {
+  normalizeCharacterDir,
   getCharacterStandingPath,
   getCharacterIconPath,
+  getCharacterVisualImagePath,
   getBackgroundPath
+};
+
+    };
+
+    // --- ./utils/characterVisualProfiles.js ---
+    modules['./utils/characterVisualProfiles.js'] = function(module, exports, require) {
+/**
+ * Per-character visual profiles for MadeInMaghribal.
+ *
+ * The source image folders stay small:
+ * - standing_proc: full character artwork
+ * - face_proc: small UI / speaker icons
+ *
+ * Bust-up and close-up displays are not separate image assets. They are visual
+ * modes that crop/scale the standing artwork through this profile.
+ */
+
+const DEFAULT_THEME = {
+  primary: '#f6d36b',
+  secondary: '#d68a35',
+  textStroke: 'rgba(74, 42, 12, 0.45)'
+};
+
+const DEFAULT_VISUAL_MODE = {
+  image: 'standing',
+  scale: 1,
+  x: 0,
+  y: 0,
+  bottom: 0,
+  height: 520
+};
+
+const DEFAULT_ICON_MODE = {
+  image: 'face',
+  scale: 1,
+  x: 50,
+  y: 50
+};
+
+const DEFAULT_PROFILE = {
+  theme: DEFAULT_THEME,
+  standing: { ...DEFAULT_VISUAL_MODE, height: 560, bottom: 128 },
+  heroineSelect: { ...DEFAULT_VISUAL_MODE, height: 520, bottom: -86 },
+  bustup: { ...DEFAULT_VISUAL_MODE, height: 660, bottom: -260, scale: 1.45 },
+  eventClose: { ...DEFAULT_VISUAL_MODE, height: 700, bottom: -300, scale: 1.62 },
+  selectIcon: DEFAULT_ICON_MODE,
+  speakerIcon: DEFAULT_ICON_MODE
+};
+
+const CHARACTER_VISUAL_PROFILES = {
+  MIRA: {
+    theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)' },
+    standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 128, height: 560 },
+    heroineSelect: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: -86, height: 520 },
+    bustup: { image: 'standing', scale: 1.42, x: 0, y: 0, bottom: -260, height: 660 },
+    eventClose: { image: 'standing', scale: 1.58, x: 0, y: 0, bottom: -300, height: 700 },
+    selectIcon: { image: 'face', scale: 1.00, x: 50, y: 50 },
+    speakerIcon: { image: 'face', scale: 1.00, x: 50, y: 50 }
+  },
+  HAKIMA: {
+    theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)' },
+    // Ear height makes her effective top taller; keep a small downward nudge.
+    standing: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: 124, height: 560 },
+    heroineSelect: { image: 'standing', scale: 1.14, x: 0, y: 10, bottom: -98, height: 520 },
+    bustup: { image: 'standing', scale: 1.56, x: 0, y: 16, bottom: -278, height: 660 },
+    eventClose: { image: 'standing', scale: 1.74, x: 0, y: 18, bottom: -318, height: 700 },
+    selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
+    speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
+  },
+  DARIYA: {
+    theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)' },
+    // Horn height needs a stronger downward nudge after face-size scaling.
+    standing: { image: 'standing', scale: 1.24, x: 0, y: 14, bottom: 118, height: 560 },
+    heroineSelect: { image: 'standing', scale: 1.28, x: 0, y: 20, bottom: -118, height: 520 },
+    bustup: { image: 'standing', scale: 1.72, x: 0, y: 28, bottom: -300, height: 660 },
+    eventClose: { image: 'standing', scale: 1.90, x: 0, y: 32, bottom: -342, height: 700 },
+    selectIcon: { image: 'face', scale: 1.02, x: 50, y: 47 },
+    speakerIcon: { image: 'face', scale: 1.02, x: 50, y: 47 }
+  },
+  NADIR: {
+    theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)' },
+    standing: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: 124, height: 560 },
+    heroineSelect: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: -96, height: 520 },
+    bustup: { image: 'standing', scale: 1.56, x: 0, y: 14, bottom: -278, height: 660 },
+    eventClose: { image: 'standing', scale: 1.72, x: 0, y: 18, bottom: -318, height: 700 },
+    selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
+    speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
+  }
+};
+
+function normalizeCharacterId(id) {
+  if (!id) return '';
+  return String(id).replace(/^CH_/i, '').toUpperCase();
+}
+
+function mergeMode(base, override) {
+  return { ...(base || {}), ...(override || {}) };
+}
+
+function getCharacterTheme(id) {
+  const normalized = normalizeCharacterId(id);
+  const profile = CHARACTER_VISUAL_PROFILES[normalized] || {};
+  return { ...DEFAULT_THEME, ...(profile.theme || {}) };
+}
+
+function getCharacterVisualProfile(id, mode = 'standing') {
+  const normalized = normalizeCharacterId(id);
+  const profile = CHARACTER_VISUAL_PROFILES[normalized] || {};
+  const defaultMode = DEFAULT_PROFILE[mode] || DEFAULT_PROFILE.standing;
+  const characterMode = profile[mode] || profile.standing;
+  return mergeMode(defaultMode, characterMode);
+}
+
+function applyCharacterVisualProfile(el, id, mode = 'standing') {
+  if (!el) return;
+  const profile = getCharacterVisualProfile(id, mode);
+
+  el.dataset.visualMode = mode;
+  el.dataset.visualImage = profile.image || 'standing';
+
+  el.style.setProperty('--char-scale', String(profile.scale ?? 1));
+  el.style.setProperty('--char-x', `${profile.x ?? 0}px`);
+  el.style.setProperty('--char-y', `${profile.y ?? 0}px`);
+  el.style.setProperty('--char-bottom', `${profile.bottom ?? 0}px`);
+  el.style.setProperty('--char-height', `${profile.height ?? 520}px`);
+
+  // Backward-compatible aliases for existing icon rules.
+  el.style.setProperty('--char-face-scale', String(profile.scale ?? 1));
+  el.style.setProperty('--icon-x', `${profile.x ?? 50}%`);
+  el.style.setProperty('--icon-y', `${profile.y ?? 50}%`);
+}
+
+function applyCharacterTheme(el, id) {
+  if (!el) return;
+  const theme = getCharacterTheme(id);
+  el.style.setProperty('--heroine-theme-primary', theme.primary);
+  el.style.setProperty('--heroine-theme-secondary', theme.secondary);
+  el.style.setProperty('--heroine-theme-stroke', theme.textStroke);
+}
+
+module.exports = {
+  CHARACTER_VISUAL_PROFILES,
+  getCharacterVisualProfile,
+  getCharacterTheme,
+  applyCharacterVisualProfile,
+  applyCharacterTheme,
+  normalizeCharacterId
 };
 
     };
@@ -4913,7 +5209,7 @@ const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank 
 const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
 
 /** Constants */
-const RESULT_TRANSITION_DELAY_MS = 2500;
+const RESULT_TRANSITION_DELAY_MS = 700;
 
 const TEXT_SPEED_MS = {
   slow: 55,
@@ -5108,6 +5404,7 @@ class GameController {
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
         text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`,
         charId: this.session.selectedHeroineId,
+        speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'AFTER_CLOSE') {
@@ -5116,6 +5413,7 @@ class GameController {
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
         text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`,
         charId: this.session.selectedHeroineId,
+        speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'QUIZ') {
@@ -5223,6 +5521,21 @@ class GameController {
       if (this.quizState.inputLocked) return;
 
       // Global UI Actions
+
+      if (target.closest('[data-action="title-start"]')) {
+        e.stopPropagation();
+        this.onGlobalAction();
+        return;
+      }
+      const titleStub = target.closest('[data-title-stub]');
+      if (titleStub) {
+        e.stopPropagation();
+        const messageEl = this.container.querySelector('[data-title-stub-message]');
+        if (messageEl) {
+          messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
+        }
+        return;
+      }
       if (target.closest('[data-action="open-options"]')) {
         e.stopPropagation();
         this.openModal('options');
@@ -5287,6 +5600,7 @@ class GameController {
         return;
       }
 
+      if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       
       this.onGlobalAction();
