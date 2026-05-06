@@ -14,15 +14,16 @@
 
 .title-screen h1 {
   font-family: 'Outfit', sans-serif;
-  font-size: 3.2rem;
+  font-size: 4.9rem;
   font-weight: 900;
   background: linear-gradient(to bottom, var(--star-1), var(--sand-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.6rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  filter: drop-shadow(0 0 15px rgba(246,211,107,0.4));
+  filter: drop-shadow(0 0 22px rgba(246,211,107,0.55));
+  line-height: 1.03;
 }
 
 .blink {
@@ -48,7 +49,7 @@
   background-size: cover;
   background-position: center;
   justify-content: flex-end;
-  padding: 72px 24px 28px;
+  padding: 88px 48px 62px;
 }
 
 .title-screen-with-art::before,
@@ -59,27 +60,28 @@
 .title-content-panel {
   position: relative;
   z-index: 1;
-  width: min(100%, 350px);
+  width: min(100%, 560px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
 .title-start-btn,
 .title-menu-btn {
-  min-height: 40px;
-  border-radius: 14px;
+  min-height: 68px;
+  border-radius: 20px;
   border: 1px solid rgba(220, 185, 104, 0.8);
   background: rgba(244, 230, 200, 0.9);
   color: var(--ink);
   font-weight: 900;
+  font-size: 1.18rem;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(0,0,0,0.22);
 }
 
 .title-start-btn {
-  width: min(100%, 260px);
+  width: min(100%, 380px);
   background: linear-gradient(180deg, #fff1b8, #d8a94e);
 }
 
@@ -92,19 +94,19 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 14px;
 }
 
 .title-menu-btn {
-  min-height: 36px;
-  font-size: 0.78rem;
-  padding: 4px 6px;
+  min-height: 58px;
+  font-size: 1.08rem;
+  padding: 10px 12px;
 }
 
 .title-stub-message {
-  min-height: 1.1em;
+  min-height: 1.25em;
   color: var(--sand-2);
   font-weight: 900;
-  font-size: 0.78rem;
+  font-size: 1.0rem;
   text-shadow: 0 1px 4px rgba(0,0,0,0.55);
 }

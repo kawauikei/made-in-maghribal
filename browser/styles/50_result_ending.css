@@ -10,22 +10,55 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 42px;
 }
 
 .result-card,
 .ending-card {
-  padding: 30px;
+  padding: 42px;
   width: 100%;
-  max-width: 420px;
+  max-width: 560px;
   text-align: center;
 }
 
 .result-card h2,
 .ending-card h2 {
-  margin-bottom: 20px;
+  margin-bottom: 26px;
   color: var(--sand-2);
   font-family: 'Outfit', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+
+.ending-kicker {
+  color: var(--sand-2);
+  margin-bottom: 12px;
+  font-size: 1.35rem;
+}
+
+.ending-title {
+  font-size: 2.6rem;
+  color: var(--star-1);
+  margin-bottom: 24px;
+}
+
+.ending-summary {
+  margin: 28px 0;
+  font-size: 1.25rem;
+  line-height: 1.65;
+}
+
+.ending-score-heading {
+  margin: 22px 0 12px;
+  color: var(--sand-2);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+.ending-score-heading-sub {
+  margin-top: 18px;
+  opacity: 0.86;
 }

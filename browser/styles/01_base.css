@@ -21,13 +21,15 @@ body {
 }
 
 #game-viewport {
-  width: 100vw;
-  height: 100vh;
-  max-width: 56.25vh; /* 9:16 aspect ratio */
+  width: 720px;
+  height: 1280px;
+  flex: 0 0 auto;
   background: var(--night-0);
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  transform-origin: center center;
+  will-change: transform;
   
   user-select: none;
   -webkit-user-select: none;

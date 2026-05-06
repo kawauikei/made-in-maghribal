@@ -324,6 +324,9 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   init() {
+    this.updateViewportScale();
+    window.addEventListener('resize', () => this.updateViewportScale());
+    window.addEventListener('orientationchange', () => this.updateViewportScale());
     console.log('Controller Initialized');
     
     document.addEventListener('selectstart', (e) => {
@@ -539,6 +542,17 @@ class GameController {
         this.update();
       }, RESULT_TRANSITION_DELAY_MS);
     }
+  }
+
+  updateViewportScale() {
+    const baseWidth = 720;
+    const baseHeight = 1280;
+    const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+    const viewport = document.getElementById('game-viewport');
+    if (viewport) {
+      viewport.style.transform = `scale(${scale})`;
+    }
+    document.documentElement.style.setProperty('--viewport-scale', String(scale));
   }
 }
 

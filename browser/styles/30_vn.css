@@ -19,7 +19,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 133.33vw;
+  height: 75%;
   max-height: 75%;
   background-size: cover;
   background-position: center top;
@@ -45,7 +45,7 @@
 .standing-char {
   position: absolute;
   left: 50%;
-  bottom: var(--char-bottom, 128px);
+  bottom: var(--char-bottom, 188px);
   height: var(--char-height, 560px);
   width: auto;
   max-height: none;
@@ -65,10 +65,10 @@
 }
 
 .vn-screen .message-box {
-  padding: 28px 20px 20px;
-  height: 150px;
-  min-height: 150px;
-  max-height: 150px;
+  padding: 42px 32px 28px;
+  height: 210px;
+  min-height: 210px;
+  max-height: 210px;
   overflow: visible;
   position: relative;
   z-index: 20;
@@ -87,10 +87,10 @@
 
 .speaker-name {
   position: absolute;
-  top: -12px;
-  left: 24px;
-  min-width: 96px;
-  min-height: 32px;
+  top: -18px;
+  left: 32px;
+  min-width: 142px;
+  min-height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -98,16 +98,16 @@
   text-align: center;
   background: var(--sand-1);
   color: var(--ink);
-  padding: 4px 16px;
+  padding: 6px 20px;
   border-radius: 6px;
   font-weight: 900;
-  font-size: 0.9rem;
+  font-size: 1.12rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .speaker-icon {
-  width: 30px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
   border-radius: 999px;
   object-fit: cover;
   background: rgba(255,255,255,0.5);
@@ -121,23 +121,23 @@
 }
 
 .message-text {
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: 1.28rem;
+  line-height: 1.55;
   text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 .message-skip-btn {
   position: absolute;
-  top: -12px;
-  right: 14px;
-  min-height: 32px;
+  top: -18px;
+  right: 24px;
+  min-height: 46px;
   z-index: 22;
   border: 1px solid rgba(183,131,53,0.5);
   background: rgba(244,230,200,0.85);
   color: var(--ink);
   border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 0.7rem;
+  padding: 6px 18px;
+  font-size: 1rem;
   font-weight: 900;
   cursor: pointer;
 }
@@ -155,7 +155,7 @@
   z-index: 18;
   margin: 0;
   color: var(--sand-2);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   letter-spacing: 0.08em;
   text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
