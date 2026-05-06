@@ -13,6 +13,7 @@ const FILES_ORDER = [
   '00_theme.css',
   '01_base.css',
   '02_shared.css',
+  '03_turn_transition.css',
   '10_title.css',
   '20_heroine.css',
   '30_vn.css',

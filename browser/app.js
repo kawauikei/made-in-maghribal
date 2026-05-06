@@ -12,6 +12,7 @@ const { updateGameScore } = require('./core/scoreModel.cjs');
 
 // Modularized Screen Renderers
 const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
+const { renderTitlePanel } = require('./screens/titlePanelScreen.js');
 const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
 const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
 const { renderQuiz, updateQuizContent } = require('./screens/quizScreen.js');
@@ -27,8 +28,10 @@ const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
 const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
+const { createBgmEngine } = require('./utils/bgmEngine.js');
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
+const { hasRunSave, loadRunSave, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -52,12 +55,20 @@ class GameController {
     this.session = new GameSession();
     this.container = document.getElementById('app');
     this.sfx = createSfxEngine();
+    this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
     this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.uiState = {
-      modal: null // 'options' | 'help' | null
+      modal: null, // 'options' | 'help' | null
+      titlePanel: null, // title menu sub screen key
+      turnTransitionActive: false
+    };
+
+    this.turnTransition = {
+      timerId: null,
+      callback: null
     };
 
     this.typewriter = {
@@ -151,6 +162,19 @@ class GameController {
     this.renderModal(); // Refresh modal state
   }
 
+
+  openTitlePanel(panelName) {
+    this.uiState.titlePanel = panelName;
+    this.playSfx('uiTapBottle');
+    this.update();
+  }
+
+  closeTitlePanel() {
+    this.uiState.titlePanel = null;
+    this.playSfx('uiTapBottle');
+    this.update();
+  }
+
   toggleFullscreen() {
     const root = document.getElementById('game-viewport');
     if (!document.fullscreenElement) {
@@ -184,7 +208,8 @@ class GameController {
       view.className = 'view-container';
 
       if (phase === 'TITLE') {
-        renderTitle(this, view);
+        if (this.uiState.titlePanel) renderTitlePanel(this, view);
+        else renderTitle(this, view);
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
       } else if (phase === 'HEROINE_SELECT') {
@@ -200,6 +225,8 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.syncBgm();
+    this.saveCurrentRunIfNeeded();
   }
 
   renderMainGame(container) {
@@ -328,9 +355,83 @@ class GameController {
   getCharacterIconPath(id, expression) { return getCharacterIconPath(id, expression); }
   getBackgroundPath(sceneId) { return getBackgroundPath(sceneId); }
   playSfx(id) { if (this.sfx) this.sfx.play(id); }
+  syncBgm() { if (this.bgm) this.bgm.playForSession(this.session); }
+  hasSaveData() { return hasRunSave(); }
+  saveCurrentRunIfNeeded() { saveRun(this); }
+  continueFromSave() {
+    const saveData = loadRunSave();
+    if (!saveData) return false;
+    this.clearTypewriter();
+    const applied = applyRunSave(this, saveData);
+    if (applied) {
+      this.uiState.titlePanel = null;
+      if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ' && this.quizState.currentQuestion) {
+        this.quizState.promptShownAt = performance.now();
+      }
+      this.playSfx('uiConfirmChime');
+      this.update();
+    }
+    return applied;
+  }
   preloadHeroineSelectAssets() { this.assetPreloader?.preloadHeroineSelectAssets(); }
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
+
+  playTurnTransition(callback, mode = 'next') {
+    if (this.uiState.turnTransitionActive) return;
+
+    this.uiState.turnTransitionActive = true;
+    this.turnTransition.callback = callback;
+
+    const viewport = document.getElementById('game-viewport') || this.container;
+    const oldOverlay = viewport.querySelector('.turn-transition-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    const nextTurn = Math.min(5, this.session.turn + 1);
+    const isEnding = mode === 'ending';
+    const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
+    const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
+
+    const overlay = document.createElement('div');
+    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
+    overlay.setAttribute('data-action', 'skip-turn-transition');
+    overlay.innerHTML = `
+      <div class="turn-transition-sky" aria-hidden="true">
+        <div class="turn-transition-orbit">
+          <div class="turn-transition-sun"></div>
+          <div class="turn-transition-moon"></div>
+        </div>
+        <div class="turn-transition-horizon"></div>
+      </div>
+      <div class="turn-transition-copy">
+        <p class="turn-transition-label">${title}</p>
+        <p class="turn-transition-subtitle">${subtitle}</p>
+      </div>
+    `;
+    viewport.appendChild(overlay);
+
+    this.turnTransition.timerId = window.setTimeout(() => {
+      this.finishTurnTransition();
+    }, 1850);
+  }
+
+  finishTurnTransition() {
+    if (!this.uiState.turnTransitionActive) return;
+
+    if (this.turnTransition.timerId) {
+      window.clearTimeout(this.turnTransition.timerId);
+      this.turnTransition.timerId = null;
+    }
+
+    const callback = this.turnTransition.callback;
+    this.turnTransition.callback = null;
+    this.uiState.turnTransitionActive = false;
+
+    const overlay = document.querySelector('.turn-transition-overlay');
+    if (overlay) overlay.remove();
+
+    if (typeof callback === 'function') callback();
+  }
 
   /**
    * --------------------------------------------------------------------------
@@ -353,15 +454,64 @@ class GameController {
 
     document.addEventListener('click', (e) => {
       if (this.sfx) this.sfx.unlock();
+      if (this.bgm) this.bgm.unlock();
       const target = e.target;
+      if (this.uiState.turnTransitionActive) {
+        e.stopPropagation();
+        this.finishTurnTransition();
+        return;
+      }
       if (this.quizState.inputLocked) return;
 
       // Global UI Actions
 
       if (target.closest('[data-action="title-start"]')) {
         e.stopPropagation();
+        clearRunSave();
         this.playSfx('uiConfirmChime');
         this.onGlobalAction();
+        return;
+      }
+      if (target.closest('[data-action="title-continue"]')) {
+        e.stopPropagation();
+        if (!this.continueFromSave()) {
+          this.playSfx('uiTapBottle');
+          const messageEl = this.container.querySelector('[data-title-stub-message]');
+          if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
+        }
+        return;
+      }
+      const titlePanelBtn = target.closest('[data-title-panel]');
+      if (titlePanelBtn) {
+        e.stopPropagation();
+        this.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
+        return;
+      }
+      if (target.closest('[data-action="title-panel-back"]')) {
+        e.stopPropagation();
+        this.closeTitlePanel();
+        return;
+      }
+      const soundBgmBtn = target.closest('[data-sound-bgm-path]');
+      if (soundBgmBtn) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.bgm?.play({
+          path: soundBgmBtn.getAttribute('data-sound-bgm-path'),
+          id: soundBgmBtn.getAttribute('data-sound-id') || 'preview'
+        });
+        return;
+      }
+      const soundSfxBtn = target.closest('[data-sound-sfx-key]');
+      if (soundSfxBtn) {
+        e.stopPropagation();
+        this.playSfx(soundSfxBtn.getAttribute('data-sound-sfx-key'));
+        return;
+      }
+      if (target.closest('[data-action="sound-stop-bgm"]')) {
+        e.stopPropagation();
+        this.playSfx('uiTapBottle');
+        this.bgm?.stop();
         return;
       }
       const titleStub = target.closest('[data-title-stub]');
@@ -485,9 +635,16 @@ class GameController {
     } else if (phase === 'MAIN_GAME') {
       if (subPhase === 'QUIZ') return;
 
-      if (this.session.turn === 5 && subPhase === 'AFTER_CLOSE') {
-        this.session.nextPhase();
-        this.update();
+      if (subPhase === 'AFTER_CLOSE') {
+        const isFinalTurn = this.session.turn === 5;
+        this.playTurnTransition(() => {
+          if (isFinalTurn) {
+            this.session.nextPhase();
+          } else {
+            this.session.nextSubPhase();
+          }
+          this.update();
+        }, isFinalTurn ? 'ending' : 'next');
         return;
       }
 
@@ -496,6 +653,7 @@ class GameController {
         this.startQuiz();
       }
     } else if (phase === 'ENDING') {
+      clearRunSave();
       this.session = new GameSession();
       this.quizState = this.createInitialQuizState();
       this.update();

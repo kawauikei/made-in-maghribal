@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MadeInMaghribal Debug Links</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111827;
+      --panel: #1f2937;
+      --ink: #f9fafb;
+      --muted: #cbd5e1;
+      --accent: #f6d36b;
+      --line: rgba(255,255,255,.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 0%, rgba(246,211,107,.18), transparent 28%), var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    main { width: min(1120px, calc(100% - 32px)); margin: 32px auto 64px; }
+    h1 { margin: 0 0 8px; font-size: 2rem; color: var(--accent); }
+    .note { color: var(--muted); margin: 0 0 24px; }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 24px;
+    }
+    button, a.link {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      padding: 10px 14px;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button:active, a.link:active { transform: translateY(1px); }
+    section {
+      background: rgba(31,41,55,.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      margin: 18px 0;
+      box-shadow: 0 18px 40px rgba(0,0,0,.24);
+    }
+    h2 { margin: 0 0 12px; font-size: 1.25rem; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
+    th { color: var(--accent); font-size: .92rem; }
+    tr:last-child td { border-bottom: 0; }
+    code { color: #bae6fd; word-break: break-all; }
+    .small { color: var(--muted); font-size: .9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>MadeInMaghribal Debug Links</h1>
+  <p class="note">基準URL: <code id="baseText">http://localhost:8000/</code> / textSpeed=instant 付き。必要に応じて <code>heroine=HAKIMA|MIRA|DARIYA</code> や <code>turn=1..5</code> を変更。</p>
+  <div class="toolbar">
+    <button type="button" onclick="setBase('http://localhost:8000/')">localhost:8000</button>
+    <button type="button" onclick="setBase(prompt('Base URL', baseUrl) || baseUrl)">Base URL変更</button>
+    <button type="button" onclick="copyAll()">全URLコピー</button>
+  </div>
+
+  <section>
+    <h2>基本</h2>
+    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="basic"></tbody></table>
+  </section>
+  <section>
+    <h2>画面ジャンプ</h2>
+    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="screens"></tbody></table>
+  </section>
+  <section>
+    <h2>営業結果 3段階</h2>
+    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="results"></tbody></table>
+  </section>
+  <section>
+    <h2>エンディング</h2>
+    <table><thead><tr><th>用途</th><th>リンク</th></tr></thead><tbody id="endings"></tbody></table>
+  </section>
+</main>
+<script>
+let baseUrl = 'http://localhost:8000/';
+const rows = {
+  basic: [
+    ['通常起動', ''],
+    ['通常起動 instant', '?textSpeed=instant'],
+  ],
+  screens: [
+    ['タイトル', '?debug=1&jump=title&textSpeed=instant'],
+    ['プロローグ', '?debug=1&jump=opening&textSpeed=instant'],
+    ['ヒロイン選択', '?debug=1&jump=heroine_select&textSpeed=instant'],
+    ['開店前 ハキマ', '?debug=1&jump=before_open&heroine=HAKIMA&turn=1&textSpeed=instant'],
+    ['開店前 ミラ', '?debug=1&jump=before_open&heroine=MIRA&turn=1&textSpeed=instant'],
+    ['開店前 ダリヤ', '?debug=1&jump=before_open&heroine=DARIYA&turn=1&textSpeed=instant'],
+    ['クイズ ハキマ', '?debug=1&jump=quiz&heroine=HAKIMA&turn=1&textSpeed=instant'],
+    ['クイズ ミラ', '?debug=1&jump=quiz&heroine=MIRA&turn=2&textSpeed=instant'],
+    ['クイズ ダリヤ', '?debug=1&jump=quiz&heroine=DARIYA&turn=3&textSpeed=instant'],
+    ['閉店後 5ターン目', '?debug=1&jump=turn5_after_close&heroine=HAKIMA&textSpeed=instant'],
+    ['閉店後', '?debug=1&jump=after_close&heroine=HAKIMA&turn=1&textSpeed=instant'],
+  ],
+  results: [
+    ['結果: 励まし / ハキマ', '?debug=1&jump=result_low&heroine=HAKIMA&textSpeed=instant'],
+    ['結果: 評価 / ハキマ', '?debug=1&jump=result_mid&heroine=HAKIMA&textSpeed=instant'],
+    ['結果: 驚き / ハキマ', '?debug=1&jump=result_high&heroine=HAKIMA&textSpeed=instant'],
+    ['結果: 励まし / ミラ', '?debug=1&jump=result_low&heroine=MIRA&textSpeed=instant'],
+    ['結果: 評価 / ミラ', '?debug=1&jump=result_mid&heroine=MIRA&textSpeed=instant'],
+    ['結果: 驚き / ミラ', '?debug=1&jump=result_high&heroine=MIRA&textSpeed=instant'],
+    ['結果: 励まし / ダリヤ', '?debug=1&jump=result_low&heroine=DARIYA&textSpeed=instant'],
+    ['結果: 評価 / ダリヤ', '?debug=1&jump=result_mid&heroine=DARIYA&textSpeed=instant'],
+    ['結果: 驚き / ダリヤ', '?debug=1&jump=result_high&heroine=DARIYA&textSpeed=instant'],
+    ['旧別名: result_encourage', '?debug=1&jump=result_encourage&heroine=HAKIMA&textSpeed=instant'],
+    ['旧別名: result_evaluate', '?debug=1&jump=result_evaluate&heroine=MIRA&textSpeed=instant'],
+    ['旧別名: result_surprise', '?debug=1&jump=result_surprise&heroine=DARIYA&textSpeed=instant'],
+    ['旧: turn_result', '?debug=1&jump=turn_result&heroine=HAKIMA&textSpeed=instant'],
+  ],
+  endings: [
+    ['Good Ending ハキマ', '?debug=1&jump=ending_good&heroine=HAKIMA&textSpeed=instant'],
+    ['Normal Ending ハキマ', '?debug=1&jump=ending_normal&heroine=HAKIMA&textSpeed=instant'],
+    ['Good Ending ミラ', '?debug=1&jump=ending_good&heroine=MIRA&textSpeed=instant'],
+    ['Normal Ending ミラ', '?debug=1&jump=ending_normal&heroine=MIRA&textSpeed=instant'],
+    ['Good Ending ダリヤ', '?debug=1&jump=ending_good&heroine=DARIYA&textSpeed=instant'],
+    ['Normal Ending ダリヤ', '?debug=1&jump=ending_normal&heroine=DARIYA&textSpeed=instant'],
+  ]
+};
+function full(path) { return new URL(path || '.', baseUrl).href; }
+function render() {
+  document.getElementById('baseText').textContent = baseUrl;
+  for (const [id, list] of Object.entries(rows)) {
+    document.getElementById(id).innerHTML = list.map(([label, path]) => {
+      const url = full(path);
+      return `<tr><td>${label}</td><td><a class="link" href="${url}" target="_blank" rel="noopener">開く</a> <code>${url}</code></td></tr>`;
+    }).join('');
+  }
+}
+function setBase(url) {
+  if (!url.endsWith('/')) url += '/';
+  baseUrl = url;
+  render();
+}
+async function copyAll() {
+  const all = Object.values(rows).flat().map(([label, path]) => `${label}: ${full(path)}`).join('\n');
+  await navigator.clipboard.writeText(all);
+}
+render();
+</script>
+</body>
+</html>

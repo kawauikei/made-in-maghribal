@@ -54,6 +54,13 @@ function updateQuizContent(controller) {
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
   
+  if (!q) {
+    if (promptEl) promptEl.textContent = '接客の準備中です。';
+    if (progressEl) progressEl.textContent = `0 / ${controller.quizState.totalQuestions}`;
+    controller.updateHud();
+    return;
+  }
+
   if (promptEl) promptEl.textContent = q.promptText;
   if (progressEl) progressEl.textContent = `${controller.quizState.questionIndex + 1} / ${controller.quizState.totalQuestions}`;
 

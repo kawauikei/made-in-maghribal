@@ -1,0 +1,130 @@
+/*
+ * ============================================================================
+ * TURN TRANSITION OVERLAY
+ * ============================================================================
+ */
+.turn-transition-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255, 244, 188, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(9, 18, 42, 0.96) 0%, rgba(31, 38, 80, 0.93) 46%, rgba(188, 118, 64, 0.88) 100%);
+  color: var(--sand-2);
+  cursor: pointer;
+  animation: turnTransitionFadeIn 180ms ease-out both;
+}
+
+.turn-transition-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.turn-transition-orbit {
+  position: absolute;
+  left: 50%;
+  bottom: 22%;
+  width: 620px;
+  height: 620px;
+  margin-left: -310px;
+  border-radius: 999px;
+  animation: turnTransitionOrbit 1650ms cubic-bezier(0.33, 0, 0.2, 1) both;
+  opacity: 0.96;
+}
+
+.turn-transition-sun,
+.turn-transition-moon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.turn-transition-sun {
+  width: 118px;
+  height: 118px;
+  margin-left: -250px;
+  background: radial-gradient(circle at 35% 30%, #fff7b8 0%, #ffd266 44%, #f59b3c 78%);
+  box-shadow: 0 0 44px rgba(255, 204, 96, 0.75), 0 0 96px rgba(245, 155, 60, 0.32);
+}
+
+.turn-transition-moon {
+  width: 98px;
+  height: 98px;
+  margin-left: 250px;
+  background: radial-gradient(circle at 35% 30%, #f8f6d4 0%, #d8d6c8 64%, #a9b3c7 100%);
+  box-shadow: 0 0 34px rgba(225, 239, 255, 0.62), 0 0 90px rgba(138, 179, 228, 0.22);
+}
+
+.turn-transition-horizon {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 32%;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 218, 124, 0.36), transparent 48%),
+    linear-gradient(180deg, rgba(216, 153, 82, 0.0), rgba(67, 45, 54, 0.58));
+}
+
+.turn-transition-copy {
+  position: relative;
+  z-index: 2;
+  width: min(78%, 520px);
+  padding: 34px 42px;
+  border: 2px solid rgba(246, 211, 107, 0.74);
+  border-radius: 28px;
+  background: rgba(16, 24, 52, 0.62);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.46), inset 0 0 28px rgba(255, 233, 160, 0.10);
+  text-align: center;
+  animation: turnTransitionCopy 1250ms ease-out both;
+}
+
+.turn-transition-label {
+  margin: 0;
+  font-size: 3.1rem;
+  font-weight: 1000;
+  letter-spacing: 0.16em;
+  text-shadow: 0 0 16px rgba(255, 230, 150, 0.55), 0 4px 18px rgba(0, 0, 0, 0.55);
+}
+
+.turn-transition-subtitle {
+  margin: 16px 0 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: rgba(255, 244, 210, 0.88);
+  letter-spacing: 0.06em;
+}
+
+.turn-transition-overlay.is-ending {
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 244, 188, 0.16), transparent 36%),
+    linear-gradient(180deg, rgba(6, 12, 34, 0.97) 0%, rgba(26, 20, 55, 0.95) 56%, rgba(82, 49, 76, 0.90) 100%);
+}
+
+.turn-transition-overlay.is-ending .turn-transition-orbit {
+  animation-duration: 1900ms;
+}
+
+@keyframes turnTransitionFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes turnTransitionOrbit {
+  0% { transform: rotate(-18deg) scale(0.96); filter: brightness(0.92); }
+  45% { filter: brightness(1.18); }
+  100% { transform: rotate(198deg) scale(1.02); filter: brightness(0.98); }
+}
+
+@keyframes turnTransitionCopy {
+  0% { opacity: 0; transform: translateY(18px) scale(0.97); }
+  22% { opacity: 1; }
+  80% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-8px) scale(1.01); }
+}

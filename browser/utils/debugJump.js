@@ -19,8 +19,38 @@ function applyDebugJump(controller, jump) {
   const heroine = (params.get('heroine') || 'HAKIMA').toUpperCase();
   console.log('Applying debug jump:', jump);
 
+  if (jump === 'title') {
+    controller.session.phase = 'TITLE';
+    return;
+  }
+
+  if (jump === 'opening') {
+    controller.session.phase = 'OPENING';
+    return;
+  }
+
   if (jump === 'heroine_select') {
     controller.session.phase = 'HEROINE_SELECT';
+    return;
+  }
+
+  if (jump === 'before_open') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'BEFORE_OPEN';
+    controller.session.scores = { revenue: 0, satisfaction: 0, reputation: 0 };
+    return;
+  }
+
+  if (jump === 'after_close') {
+    controller.session.phase = 'MAIN_GAME';
+    controller.session.selectedHeroineId = heroine;
+    controller.session.routeMode = 'normal';
+    controller.session.turn = Number(params.get('turn') || 1);
+    controller.session.subPhase = 'AFTER_CLOSE';
+    controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
     return;
   }
 
@@ -38,7 +68,7 @@ function applyDebugJump(controller, jump) {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
     controller.session.routeMode = 'normal';
-    controller.session.turn = 1;
+    controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'TURN_RESULT';
     controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
     controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
@@ -54,11 +84,14 @@ function applyDebugJump(controller, jump) {
   }
 
 
-  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise') {
+  if (jump === 'result_encourage' || jump === 'result_evaluate' || jump === 'result_surprise' || jump === 'result_low' || jump === 'result_mid' || jump === 'result_high') {
     const presets = {
       result_encourage: { revenue: 10, satisfaction: 4, reputation: 3 },
       result_evaluate: { revenue: 40, satisfaction: 14, reputation: 10 },
-      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 }
+      result_surprise: { revenue: 80, satisfaction: 20, reputation: 16 },
+      result_low: { revenue: 10, satisfaction: 4, reputation: 3 },
+      result_mid: { revenue: 40, satisfaction: 14, reputation: 10 },
+      result_high: { revenue: 80, satisfaction: 20, reputation: 16 }
     };
     const score = presets[jump];
     controller.session.phase = 'MAIN_GAME';
@@ -70,7 +103,7 @@ function applyDebugJump(controller, jump) {
     controller.quizState.turnStartScore = { revenue: 0, satisfaction: 0, reputation: 0 };
     controller.quizState.lastResult = {
       isCorrect: jump !== 'result_encourage',
-      rating: jump === 'result_surprise' ? 'GREAT' : (jump === 'result_evaluate' ? 'GOOD' : 'MISS'),
+      rating: (jump === 'result_surprise' || jump === 'result_high') ? 'GREAT' : ((jump === 'result_evaluate' || jump === 'result_mid') ? 'GOOD' : 'MISS'),
       satisfactionBonus: score.satisfaction,
       reputationBonus: score.reputation,
       diffMs: 80,

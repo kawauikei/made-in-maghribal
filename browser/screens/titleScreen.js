@@ -23,11 +23,11 @@ function renderTitle(controller, view) {
           <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
         </div>
         <div class="title-menu-grid" aria-label="Title menu">
-          <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
-          <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
-          <button class="title-menu-btn" type="button" data-title-stub="画像ギャラリー">画像</button>
-          <button class="title-menu-btn" type="button" data-title-stub="サウンドテスト">音楽</button>
-          <button class="title-menu-btn" type="button" data-title-stub="アイテム図鑑">図鑑</button>
+          <button class="title-menu-btn" type="button" data-title-panel="load">ロード</button>
+          <button class="title-menu-btn" type="button" data-title-panel="event">イベント</button>
+          <button class="title-menu-btn" type="button" data-title-panel="image">画像</button>
+          <button class="title-menu-btn" type="button" data-title-panel="sound">音楽</button>
+          <button class="title-menu-btn" type="button" data-title-panel="item">図鑑</button>
           <button class="title-menu-btn" type="button" data-action="open-options">設定</button>
           ${debugButton}
         </div>
