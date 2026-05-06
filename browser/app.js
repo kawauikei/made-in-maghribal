@@ -42,6 +42,7 @@ const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
+const { createTypewriterController } = require('./controllers/typewriterController.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -110,14 +111,10 @@ class GameController {
       finishing: false
     };
 
-    this.typewriter = {
-      fullText: '',
-      visibleText: '',
-      index: 0,
-      timerId: null,
-      isTyping: false,
-      targetEl: null
-    };
+    this.typewriter = createTypewriterController({
+      getDelayMs: () => TEXT_SPEED_MS[this.settings.textSpeed] || 32,
+      isInstant: () => this.settings.textSpeed === 'instant'
+    });
 
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
@@ -362,56 +359,19 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   startTypewriter(text, el) {
-    this.clearTypewriter();
-    this.typewriter.fullText = text;
-    this.typewriter.targetEl = el;
-    this.typewriter.index = 0;
-    this.typewriter.isTyping = true;
-
-    if (this.settings.textSpeed === 'instant') {
-      this.finishTypewriter();
-      return;
-    }
-
-    this.tickTypewriter();
-  }
-
-  tickTypewriter() {
-    const delay = TEXT_SPEED_MS[this.settings.textSpeed] || 32;
-    this.typewriter.timerId = setTimeout(() => {
-      this.typewriter.index++;
-      this.typewriter.visibleText = this.typewriter.fullText.substring(0, this.typewriter.index);
-      if (this.typewriter.targetEl) {
-        this.typewriter.targetEl.textContent = this.typewriter.visibleText;
-      }
-
-      if (this.typewriter.index < this.typewriter.fullText.length) {
-        this.tickTypewriter();
-      } else {
-        this.typewriter.isTyping = false;
-      }
-    }, delay);
+    this.typewriter.start(text, el);
   }
 
   finishTypewriter() {
-    this.clearTypewriter();
-    this.typewriter.index = this.typewriter.fullText.length;
-    this.typewriter.isTyping = false;
-    if (this.typewriter.targetEl) {
-      this.typewriter.targetEl.textContent = this.typewriter.fullText;
-    }
+    this.typewriter.finish();
   }
 
   clearTypewriter() {
-    if (this.typewriter.timerId) {
-      clearTimeout(this.typewriter.timerId);
-      this.typewriter.timerId = null;
-    }
-    this.typewriter.isTyping = false;
+    this.typewriter.clear();
   }
 
   isTypewriterActive() {
-    return this.typewriter.isTyping;
+    return this.typewriter.isActive();
   }
 
   /**
