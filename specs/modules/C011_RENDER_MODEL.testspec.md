@@ -2,9 +2,9 @@
 
 ## Overview
 
-`src/core/renderModel.cjs` が、現行実装範囲である TITLE 表示モデル、VN 表示モデル、RHYTHM QUIZ 表示モデルを、ブラウザ環境に依存しない純粋なJSONとして返すことを検証する。
+`src/core/renderModel.cjs` が、TITLE 表示モデル、HEROINE_SELECT 表示モデル、VN 表示モデル、RHYTHM QUIZ 表示モデル、TURN_RESULT 表示モデルを、ブラウザ環境に依存しない純粋なJSONとして返すことを検証する。
 
-HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装のため、本テスト仕様の対象外とする。
+ブラウザ具体層からの全面利用は本テスト仕様の対象外とする。
 
 ## Test Environment
 
@@ -36,7 +36,18 @@ HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装の
   - `lastHeroineId` は `saveSummary.selectedHeroineId`。
   - `saveSummary` は入力オブジェクトと一致する。
 
-### T3: VN model with speaker and standing
+### T3: Heroine select model with route unlocks
+
+- 入力:
+  - ヒロイン候補配列。
+  - `progressSummary.heroineModeUnlocks`。
+- 期待結果:
+  - `heroines` に入力候補が保持される。
+  - `normal` ルートは常に選択可能。
+  - `long_history` は進捗に応じた可否になる。
+  - いずれかの `long_history` が解放済みなら `canSelectExtra` は `true`。
+
+### T4: VN model with speaker and standing
 
 - 入力:
   - `speakerId`: `CH_HAKIMA`
@@ -51,7 +62,7 @@ HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装の
   - `standing.characterId` と `standing.expressionId` が入力どおりになる。
   - `text` が入力どおりになる。
 
-### T4: VN model without speaker or standing
+### T5: VN model without speaker or standing
 
 - 入力:
   - `speakerId` なし。
@@ -62,7 +73,7 @@ HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装の
   - `standing` は `null`。
   - `choices` は入力された配列。
 
-### T5: Rhythm quiz model
+### T6: Rhythm quiz model
 
 - 入力:
   - `session.currentSong`
@@ -79,11 +90,25 @@ HEROINE_SELECT、TURN_RESULT の表示モデルは現ソースでは未実装の
   - `progress.total` は現行実装どおり `10`。
   - `stats` が `session.scores` と一致する。
 
+### T7: Turn result model
+
+- 入力:
+  - `turn`
+  - `scores`
+  - `startScores`
+  - `rank`
+  - `heroineComment`
+  - `unlocks`
+- 期待結果:
+  - `turn` が入力どおり。
+  - `stats.totalScore` が revenue + satisfaction + reputation。
+  - `stats.delta` が `scores - startScores`。
+  - `rank`、`heroineComment`、`unlocks` が入力どおり。
+
 ## Out of Scope
 
-- HEROINE_SELECT表示モデル。
-- TURN_RESULT表示モデル。
 - セーブデータ有無に基づくTITLEの `canContinue` モデル。
+- ブラウザ具体層からのRender Model全面利用。
 - DOM、CSS、Canvas、Audio API、ブラウザイベントの検証。
 
 ## Success Criteria

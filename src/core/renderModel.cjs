@@ -16,6 +16,57 @@ function getTitleRenderModel(state = {}) {
   };
 }
 
+function getHeroineSelectRenderModel(state = {}) {
+  const heroines = Array.isArray(state.heroines) ? state.heroines : [];
+  const progressSummary = state.progressSummary || {};
+  return {
+    heroines: heroines.map((heroine) => {
+      const heroineId = heroine.heroineId || heroine.id;
+      const routeUnlocks = progressSummary.heroineModeUnlocks?.[heroineId] || {};
+      return {
+        heroineId,
+        name: heroine.name || '',
+        title: heroine.title || '',
+        description: heroine.description || heroine.desc || '',
+        iconAssetId: heroine.iconAssetId || null,
+        routeModes: {
+          normal: true,
+          long_history: Boolean(routeUnlocks.long_history)
+        },
+        carryover: heroine.carryover || null
+      };
+    }),
+    canSelectExtra: heroines.some((heroine) => {
+      const heroineId = heroine.heroineId || heroine.id;
+      return Boolean(progressSummary.heroineModeUnlocks?.[heroineId]?.long_history);
+    })
+  };
+}
+
+function getTurnResultRenderModel(state = {}) {
+  const scores = state.scores || {};
+  const startScores = state.startScores || {};
+  const delta = {
+    revenue: (scores.revenue || 0) - (startScores.revenue || 0),
+    satisfaction: (scores.satisfaction || 0) - (startScores.satisfaction || 0),
+    reputation: (scores.reputation || 0) - (startScores.reputation || 0)
+  };
+  const totalScore = (scores.revenue || 0) + (scores.satisfaction || 0) + (scores.reputation || 0);
+  return {
+    turn: state.turn || 1,
+    stats: {
+      revenue: scores.revenue || 0,
+      satisfaction: scores.satisfaction || 0,
+      reputation: scores.reputation || 0,
+      delta,
+      totalScore,
+      rank: state.rank || null
+    },
+    heroineComment: state.heroineComment || '',
+    unlocks: Array.isArray(state.unlocks) ? state.unlocks : []
+  };
+}
+
 function findCharacter(characterId) {
   return CHARACTERS.find((character) => character.characterId === characterId) || null;
 }
@@ -79,4 +130,10 @@ function getRhythmRenderModel(session, question) {
   };
 }
 
-module.exports = { getTitleRenderModel, getVnRenderModel, getRhythmRenderModel };
+module.exports = {
+  getTitleRenderModel,
+  getHeroineSelectRenderModel,
+  getVnRenderModel,
+  getRhythmRenderModel,
+  getTurnResultRenderModel
+};

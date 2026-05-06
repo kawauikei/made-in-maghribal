@@ -1,6 +1,12 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { getTitleRenderModel, getVnRenderModel, getRhythmRenderModel } = require('../../src/core/renderModel.cjs');
+const {
+  getTitleRenderModel,
+  getHeroineSelectRenderModel,
+  getVnRenderModel,
+  getRhythmRenderModel,
+  getTurnResultRenderModel
+} = require('../../src/core/renderModel.cjs');
 
 test('C011_RENDER_MODEL: Title model without save data', () => {
   const model = getTitleRenderModel();
@@ -16,6 +22,26 @@ test('C011_RENDER_MODEL: Title model with save summary', () => {
   assert.strictEqual(model.canContinue, true, "canContinue should be true with save data");
   assert.strictEqual(model.lastHeroineId, 'HAKIMA', "lastHeroineId mismatch");
   assert.deepStrictEqual(model.saveSummary, saveSummary, "saveSummary mismatch");
+});
+
+test('C011_RENDER_MODEL: Heroine select model with route unlocks', () => {
+  const model = getHeroineSelectRenderModel({
+    heroines: [
+      { id: 'HAKIMA', name: 'ハキマ', title: '錬金術師', desc: '相談相手' },
+      { id: 'MIRA', name: 'ミラ', title: '案内役', desc: '協力者' }
+    ],
+    progressSummary: {
+      heroineModeUnlocks: {
+        HAKIMA: { long_history: true },
+        MIRA: { long_history: false }
+      }
+    }
+  });
+  assert.strictEqual(model.canSelectExtra, true, "canSelectExtra mismatch");
+  assert.deepStrictEqual(model.heroines.map((heroine) => heroine.heroineId), ['HAKIMA', 'MIRA'], "Heroine IDs mismatch");
+  assert.strictEqual(model.heroines[0].routeModes.normal, true, "Normal route should always be selectable");
+  assert.strictEqual(model.heroines[0].routeModes.long_history, true, "Hakima long history unlock mismatch");
+  assert.strictEqual(model.heroines[1].routeModes.long_history, false, "Mira long history unlock mismatch");
 });
 
 test('C011_RENDER_MODEL: VN model with speaker and standing', () => {
@@ -61,4 +87,21 @@ test('C011_RENDER_MODEL: Rhythm model', () => {
     { itemId: 'IT_FOD_AS_01', name: 'Wrong Option' }
   ], "Rhythm choices mismatch");
   assert.deepStrictEqual(model.stats, { revenue: 100 }, "Stats mismatch");
+});
+
+test('C011_RENDER_MODEL: Turn result model includes totals and deltas', () => {
+  const model = getTurnResultRenderModel({
+    turn: 2,
+    scores: { revenue: 150, satisfaction: 20, reputation: 9 },
+    startScores: { revenue: 100, satisfaction: 5, reputation: 4 },
+    rank: 'GOOD',
+    heroineComment: 'いい営業だったわ。',
+    unlocks: [{ type: 'route', id: 'long_history' }]
+  });
+  assert.strictEqual(model.turn, 2, "Turn mismatch");
+  assert.strictEqual(model.stats.totalScore, 179, "Total score mismatch");
+  assert.deepStrictEqual(model.stats.delta, { revenue: 50, satisfaction: 15, reputation: 5 }, "Delta mismatch");
+  assert.strictEqual(model.stats.rank, 'GOOD', "Rank mismatch");
+  assert.strictEqual(model.heroineComment, 'いい営業だったわ。', "Heroine comment mismatch");
+  assert.deepStrictEqual(model.unlocks, [{ type: 'route', id: 'long_history' }], "Unlocks mismatch");
 });
