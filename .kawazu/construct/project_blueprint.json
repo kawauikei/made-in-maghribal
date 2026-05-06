@@ -594,62 +594,28 @@
         "Turn Result表示モデルで売上、満足度、評判、正解数、早押し評価、リズム評価、総合評価、ヒロイン一言を返せる",
         "Render ModelはDOM、CSS、Audio API、public path書き込みに依存しない"
       ]
-    },
-    {
-      "contract_id": "C012_BROWSER_SYSTEM_IMPLEMENTATION",
-      "title": "Browser System Implementation",
-      "status": "active",
-      "summary": "ブラウザ側での画面制御、演出エンジン、セッション永続化、アセット管理の統合実装を定義する。",
-      "dependencies": [
-        "C011_RENDER_MODEL",
-        "C005_AUDIO_MANIFEST",
-        "C003_ASSET_MANIFEST"
-      ],
-      "spec": "specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.spec.md",
-      "testspec": "specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.testspec.md",
-      "sources": [
-        "browser/app.js",
-        "browser/screens/titleScreen.js",
-        "browser/screens/titlePanelScreen.js",
-        "browser/screens/heroineSelectScreen.js",
-        "browser/screens/quizScreen.js",
-        "browser/screens/turnResultScreen.js",
-        "browser/screens/vnScreen.js",
-        "browser/screens/endingScreen.js",
-        "browser/ui/hud.js",
-        "browser/ui/resultStamp.js",
-        "browser/utils/bgmEngine.js",
-        "browser/utils/sfxEngine.js",
-        "browser/utils/saveData.js",
-        "browser/utils/playerProgress.js",
-        "browser/utils/characterVisualProfiles.js",
-        "browser/utils/itemCollection.js",
-        "browser/utils/preloadAssets.js"
-      ],
-      "tests": [
-        "tests/browser/C012_BROWSER_SYSTEM.test.js"
-      ],
-      "allowed_to_create": {
-        "specs": ["specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.spec.md"],
-        "testspecs": ["specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.testspec.md"],
-        "sources": [
-          "browser/app.js",
-          "browser/screens/*.js",
-          "browser/ui/*.js",
-          "browser/utils/*.js"
-        ],
-        "tests": ["tests/browser/C012_BROWSER_SYSTEM.test.js"]
-      },
-      "acceptance": [
-        "TITLEからENDINGまでの画面遷移が定義通り動作する",
-        "bgmEngineによるクロスフェード再生が機能する",
-        "saveDataによるlocalStorageへの永続化とリロード時の復元が機能する",
-        "characterVisualProfilesによる動的なクロップ表示が正しく適用される",
-        "preloadAssetsにより必要な画像/音声が事前に読み込まれる"
-      ]
     }
   ],
   "non_contract_files": [
+    "specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.spec.md",
+    "specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.testspec.md",
+    "browser/app.js",
+    "browser/screens/titleScreen.js",
+    "browser/screens/titlePanelScreen.js",
+    "browser/screens/heroineSelectScreen.js",
+    "browser/screens/quizScreen.js",
+    "browser/screens/turnResultScreen.js",
+    "browser/screens/vnScreen.js",
+    "browser/screens/endingScreen.js",
+    "browser/ui/hud.js",
+    "browser/ui/resultStamp.js",
+    "browser/utils/bgmEngine.js",
+    "browser/utils/sfxEngine.js",
+    "browser/utils/saveData.js",
+    "browser/utils/playerProgress.js",
+    "browser/utils/characterVisualProfiles.js",
+    "browser/utils/itemCollection.js",
+    "browser/utils/preloadAssets.js",
     "public/style.css",
     "public/bundle.js",
     "public/index.html",
@@ -670,12 +636,18 @@
     "C008_RHYTHM_QUIZ_CORE",
     "C009_SCORE_AFFECTION_ENDING",
     "C010_GAME_SESSION_FLOW",
-    "C011_RENDER_MODEL",
-    "C012_BROWSER_SYSTEM_IMPLEMENTATION"
+    "C011_RENDER_MODEL"
   ],
   "assumptions": [],
   "future_options": [],
   "unresolved_questions": [],
-  "notes": [],
-  "registry_policy": {}
+  "notes": [
+    "C012_BROWSER_SYSTEM_IMPLEMENTATION is treated as a non-contract integration note. Browser behavior is verified by smoke/manual checks outside the Kawazu contract registry.",
+    ".kawazu/construct/spec_index.md is generated from the contract registry and intentionally lists C001-C011 only."
+  ],
+  "registry_policy": {
+    "non_contract_integration": [
+      "C012_BROWSER_SYSTEM_IMPLEMENTATION"
+    ]
+  }
 }
