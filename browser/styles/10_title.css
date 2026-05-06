@@ -19,7 +19,7 @@
   background: linear-gradient(to bottom, var(--star-1), var(--sand-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   filter: drop-shadow(0 0 15px rgba(246,211,107,0.4));
@@ -38,19 +38,73 @@
 }
 
 .opening-screen {
-  /* Inherits title-screen layout */
+  /* Opening now reuses VN shell. */
 }
 
 .title-screen-with-art {
   background-image:
-    linear-gradient(180deg, rgba(8,19,42,0.28) 0%, rgba(8,19,42,0.44) 42%, rgba(8,19,42,0.78) 100%),
+    linear-gradient(180deg, rgba(8,19,42,0.24) 0%, rgba(8,19,42,0.46) 48%, rgba(8,19,42,0.82) 100%),
     url("images/ui/title.png");
   background-size: cover;
   background-position: center;
+  justify-content: flex-end;
+  padding: 72px 24px 28px;
 }
 
-.title-screen > h1,
-.title-screen > p {
+.title-screen-with-art::before,
+.title-screen-with-art::after {
+  display: none;
+}
+
+.title-content-panel {
   position: relative;
   z-index: 1;
+  width: min(100%, 350px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-start-btn,
+.title-menu-btn {
+  min-height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(220, 185, 104, 0.8);
+  background: rgba(244, 230, 200, 0.9);
+  color: var(--ink);
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+
+.title-start-btn {
+  width: min(100%, 260px);
+  background: linear-gradient(180deg, #fff1b8, #d8a94e);
+}
+
+.title-start-btn:active,
+.title-menu-btn:active {
+  transform: translateY(1px);
+}
+
+.title-menu-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.title-menu-btn {
+  min-height: 36px;
+  font-size: 0.78rem;
+  padding: 4px 6px;
+}
+
+.title-stub-message {
+  min-height: 1.1em;
+  color: var(--sand-2);
+  font-weight: 900;
+  font-size: 0.78rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55);
 }

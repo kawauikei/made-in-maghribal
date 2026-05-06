@@ -27,7 +27,7 @@ const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank 
 const { getCharacterStandingPath, getBackgroundPath } = require('./utils/assetPaths.js');
 
 /** Constants */
-const RESULT_TRANSITION_DELAY_MS = 2500;
+const RESULT_TRANSITION_DELAY_MS = 700;
 
 const TEXT_SPEED_MS = {
   slow: 55,
@@ -222,6 +222,7 @@ class GameController {
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
         text: `おはよう！ ${this.session.turn}日目の営業がもうすぐ始まるわ。準備はいいかしら？`,
         charId: this.session.selectedHeroineId,
+        speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'AFTER_CLOSE') {
@@ -230,6 +231,7 @@ class GameController {
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
         text: `ふぅ、今日もお疲れ様！ 良い営業ができたわね。明日に備えてゆっくり休みましょう。`,
         charId: this.session.selectedHeroineId,
+        speakerId: this.session.selectedHeroineId,
         bgId: 'TEA_ROOM'
       });
     } else if (subPhase === 'QUIZ') {
@@ -337,6 +339,21 @@ class GameController {
       if (this.quizState.inputLocked) return;
 
       // Global UI Actions
+
+      if (target.closest('[data-action="title-start"]')) {
+        e.stopPropagation();
+        this.onGlobalAction();
+        return;
+      }
+      const titleStub = target.closest('[data-title-stub]');
+      if (titleStub) {
+        e.stopPropagation();
+        const messageEl = this.container.querySelector('[data-title-stub-message]');
+        if (messageEl) {
+          messageEl.textContent = `${titleStub.getAttribute('data-title-stub')}は後続実装です`;
+        }
+        return;
+      }
       if (target.closest('[data-action="open-options"]')) {
         e.stopPropagation();
         this.openModal('options');
@@ -401,6 +418,7 @@ class GameController {
         return;
       }
 
+      if (this.session.phase === 'TITLE') return;
       if (this.session.phase === 'HEROINE_SELECT') return;
       
       this.onGlobalAction();

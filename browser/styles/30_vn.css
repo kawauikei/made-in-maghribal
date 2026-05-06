@@ -14,20 +14,16 @@
   overflow: hidden;
 }
 
-/* 
- * Layer 0: Background (3:4 Aspect Ratio, Top Aligned)
- */
 .vn-bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 133.33vw; /* 3:4 aspect ratio (4/3 = 1.333) */
+  height: 133.33vw;
   max-height: 75%;
   background-size: cover;
   background-position: center top;
   z-index: 1;
-  transition: background-image 0.4s ease-in-out;
 }
 
 .vn-bg::after {
@@ -38,26 +34,29 @@
   pointer-events: none;
 }
 
-/* 
- * Layer 1: Character Standing
- */
 .vn-character-layer {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
   z-index: 5;
   pointer-events: none;
-  padding-bottom: 120px; /* Offset to sit above message box */
+  overflow: hidden;
 }
 
 .standing-char {
-  height: clamp(300px, 60vh, 550px);
+  position: absolute;
+  left: 50%;
+  bottom: var(--char-bottom, 128px);
+  height: var(--char-height, 560px);
   width: auto;
+  max-height: none;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
   animation: charFadeIn 0.3s ease-out;
+  transform:
+    translateX(-50%)
+    translate(var(--char-x, 0px), var(--char-y, 0px))
+    scale(var(--char-scale, 1));
+  transform-origin: bottom center;
 }
 
 @keyframes charFadeIn {
@@ -65,9 +64,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 
- * Layer 2: Message Box & HUD
- */
 .vn-screen .message-box {
   padding: 28px 20px 20px;
   height: 150px;
@@ -94,6 +90,11 @@
   top: -12px;
   left: 24px;
   min-width: 96px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-align: center;
   background: var(--sand-1);
   color: var(--ink);
@@ -102,6 +103,16 @@
   font-weight: 900;
   font-size: 0.9rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.speaker-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(183,131,53,0.45);
+  flex: 0 0 auto;
 }
 
 .message-text-wrap {
@@ -115,13 +126,11 @@
   text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
-/* 
- * Skip Button (Inside Message Box)
- */
 .message-skip-btn {
   position: absolute;
-  top: 10px;
+  top: -12px;
   right: 14px;
+  min-height: 32px;
   z-index: 22;
   border: 1px solid rgba(183,131,53,0.5);
   background: rgba(244,230,200,0.85);
@@ -131,7 +140,6 @@
   font-size: 0.7rem;
   font-weight: 900;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
 .message-skip-btn:active {
@@ -139,7 +147,22 @@
   background: var(--sand-1);
 }
 
-.message-skip-btn:hover {
-  background: rgba(244,230,200,1);
-  border-color: var(--sand-1);
+.vn-scene-title {
+  position: absolute;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 18;
+  margin: 0;
+  color: var(--sand-2);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+}
+
+/* Character visual correction: visual-mode based, MIRA = face-size baseline. */
+.speaker-icon {
+  object-position: var(--icon-x, 50%) var(--icon-y, 50%);
+  transform: scale(var(--char-face-scale, 1));
+  transform-origin: center center;
 }

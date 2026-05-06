@@ -2,38 +2,56 @@
  * Title and Opening screens for MadeInMaghribal.
  */
 
+const { renderVnShell } = require('./vnScreen.js');
 const { getBackgroundPath } = require('../utils/assetPaths.js');
 
 function renderTitle(controller, view) {
+  const debugButton = controller.isDebugMode()
+    ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
+    : '';
+
   view.innerHTML = `
     <div class="title-screen title-screen-with-art">
-      <h1 class="glow">Made in Maghribal</h1>
-      <p class="blink">クリックして開始</p>
+      <div class="title-content-panel">
+        <h1 class="glow">Made in Maghribal</h1>
+        <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+        <div class="title-menu-grid" aria-label="Title menu">
+          <button class="title-menu-btn" type="button" data-title-stub="ロード">ロード</button>
+          <button class="title-menu-btn" type="button" data-title-stub="イベントギャラリー">イベント</button>
+          <button class="title-menu-btn" type="button" data-title-stub="画像ギャラリー">画像</button>
+          <button class="title-menu-btn" type="button" data-title-stub="サウンドテスト">音楽</button>
+          <button class="title-menu-btn" type="button" data-title-stub="アイテム図鑑">図鑑</button>
+          <button class="title-menu-btn" type="button" data-action="open-options">設定</button>
+          ${debugButton}
+        </div>
+        <p class="title-stub-message" data-title-stub-message></p>
+      </div>
     </div>
   `;
 }
 
 function renderOpening(controller, view) {
-  const text = `マグリバル砂漠の黄金の砂は、多くの物語を秘めています。\n\nあなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？`;
-  const bgPath = getBackgroundPath('OASIS');
+  const text = `マグリバル砂漠の黄金の砂は、多くの物語を秘めています。
 
-  view.innerHTML = `
-    <div class="opening-screen title-screen" style="background-image: url(${bgPath}); background-size: cover; background-position: center;">
-      <div class="text-controls">
-        <button class="text-control-btn" data-action="skip-text">スキップ</button>
-        <button class="text-control-btn" data-action="cycle-text-speed">速度: <span data-text-speed-label>${controller.getTextSpeedLabel()}</span></button>
-      </div>
+あなたはこのオアシスの街に到着しました。地域で最も有名な茶屋を営む準備はできていますか？`;
 
-      <div class="result-card" style="padding: 40px; max-width: 85%; position: relative;">
-        <h2 class="glow" style="color: var(--sand-2); margin-bottom: 20px;">プロローグ</h2>
-        <button class="message-skip-btn" data-action="skip-text">スキップ</button>
-        <div style="text-align: left; line-height: 1.8; min-height: 120px; white-space: pre-wrap;" data-vn-text></div>
-        <p class="blink" style="margin-top: 30px; color: var(--sand-2);">クリックして進む</p>
-      </div>
-    </div>
-  `;
+  renderVnShell(controller, view);
+  const screen = view.querySelector('.vn-screen');
+  if (screen) {
+    screen.classList.add('opening-screen');
+    screen.insertAdjacentHTML('afterbegin', '<h2 class="vn-scene-title">プロローグ</h2>');
+  }
 
+  const bgEl = view.querySelector('[data-vn-bg]');
+  const speakerWrapEl = view.querySelector('[data-vn-speaker-wrap]');
   const textEl = view.querySelector('[data-vn-text]');
+
+  if (bgEl) {
+    bgEl.style.backgroundImage = `url(${getBackgroundPath('OASIS')})`;
+  }
+  if (speakerWrapEl) {
+    speakerWrapEl.style.display = 'none';
+  }
   if (textEl) {
     controller.startTypewriter(text, textEl);
   }

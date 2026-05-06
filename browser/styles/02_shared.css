@@ -166,7 +166,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease-out;
 }
 
 .global-ui-btn:active {
@@ -174,10 +173,6 @@
   background: rgba(183,131,53,0.4);
 }
 
-.global-ui-btn:hover {
-  background: rgba(183,131,53,0.25);
-  border-color: var(--star-1);
-}
 
 /* 
  * UI Modal System
@@ -236,13 +231,8 @@
   font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
-.option-button:hover {
-  background: rgba(244,230,200,1);
-  border-color: var(--sand-1);
-}
 
 .option-button.is-active {
   background: var(--sand-1);
