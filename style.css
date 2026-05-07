@@ -3334,6 +3334,52 @@ button.gallery-item-tile.is-seen:active {
   filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px);
 }
 
+/* Event Player Choices */
+.choice-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.choice-btn {
+  background:
+    linear-gradient(180deg, #4b3a2a, #1a1510),
+    radial-gradient(circle at 50% 0%, rgba(255, 224, 140, 0.2), transparent 70%);
+  border: 1px solid #c9a063;
+  color: #f7e6c8;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 0.1s, filter 0.1s;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.choice-btn:hover {
+  filter: brightness(1.1);
+}
+
+.choice-btn:active {
+  transform: scale(0.97);
+  background: #c9a063;
+  color: #1a1510;
+  text-shadow: none;
+}
+
 /* --- END: 30_vn.css --- */
 
 /* --- START: 40_quiz.css --- */

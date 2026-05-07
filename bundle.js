@@ -1571,7 +1571,7 @@ if (typeof module !== 'undefined') {
  * Generated Event Manifest
  * Do not edit manually. Use tools/sync-events.cjs
  */
-module.exports = [
+const EVENT_MANIFEST = [
   {
     "id": "EV_DARIYA_01",
     "title": "夜の帳と計算",
@@ -1602,7 +1602,7 @@ module.exports = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "ハキマと仲良くなると解放"
     },
-    "scriptStepCount": 7
+    "scriptStepCount": 14
   },
   {
     "id": "EV_MIRA_01",
@@ -1638,6 +1638,10 @@ module.exports = [
   }
 ];
 
+if (typeof module !== 'undefined') {
+  module.exports = { EVENT_MANIFEST };
+}
+
     };
 
     // --- ./data/generated/eventScripts.cjs ---
@@ -1646,7 +1650,7 @@ module.exports = [
  * Generated Event Scripts
  * Do not edit manually. Use tools/sync-events.cjs
  */
-module.exports = {
+const EVENT_SCRIPTS = {
   "EV_DARIYA_01": [
     {
       "type": "bg",
@@ -1706,6 +1710,46 @@ module.exports = {
       "speakerId": "CH_HAKIMA",
       "expression": "joy",
       "text": "おはよう。今日もぼんやりしてないでしょうね。"
+    },
+    {
+      "type": "choice",
+      "choices": [
+        {
+          "label": "しっかりしてるさ",
+          "jump": "L_REPLY_A"
+        },
+        {
+          "label": "少し眠いかもな",
+          "jump": "L_REPLY_B"
+        }
+      ]
+    },
+    {
+      "type": "label",
+      "id": "L_REPLY_A"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_HAKIMA",
+      "text": "ならいいけど。さっさと準備しなさい。"
+    },
+    {
+      "type": "jump",
+      "id": "L_STILL"
+    },
+    {
+      "type": "label",
+      "id": "L_REPLY_B"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_HAKIMA",
+      "expression": "anger",
+      "text": "呆れた。顔を洗ってきなさい！"
+    },
+    {
+      "type": "label",
+      "id": "L_STILL"
     },
     {
       "type": "still",
@@ -1783,6 +1827,10 @@ module.exports = {
     }
   ]
 };
+
+if (typeof module !== 'undefined') {
+  module.exports = { EVENT_SCRIPTS };
+}
 
     };
 
@@ -25680,6 +25728,28 @@ function bindInputHandlers(controller) {
       controller.closeTitlePanel();
       return;
     }
+
+    const startEventBtn = target.closest('[data-action="start-event"]');
+    if (startEventBtn) {
+      event.stopPropagation();
+      const eventId = startEventBtn.getAttribute('data-event-id');
+      controller.playSfx('uiConfirmChime');
+      controller.startEvent(eventId);
+      return;
+    }
+
+    const eventChoiceBtn = target.closest('[data-action="event-choice"]');
+    if (eventChoiceBtn) {
+      event.stopPropagation();
+      controller.handleEventChoice(parseInt(eventChoiceBtn.getAttribute('data-index'), 10));
+      return;
+    }
+
+    if (target.closest('[data-action="event-click"]')) {
+      event.stopPropagation();
+      controller.handleEventClick();
+      return;
+    }
     const titleStub = target.closest('[data-title-stub]');
     if (titleStub) {
       event.stopPropagation();
@@ -28254,19 +28324,21 @@ function renderItemGallery(controller) {
 
 function renderEventGallery(controller) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const cards = EVENT_MASTER.map((ev) => {
-    const isCommon = ev.heroineId === 'COMMON';
-    // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
-    const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+  
+  const events = Array.isArray(EVENT_MASTER) ? EVENT_MASTER : [];
+  const cards = events.map((ev) => {
+    // 解放条件: always または ヒロインの通常ルートクリア
+    const isUnlocked = ev.unlock?.type === 'always' || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+    const isSeen = progress?.eventSeen?.[ev.id];
     
-    // Use gallery info from generated manifest if available
-    const displayTitle = isCleared ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
-    const displaySummary = isCleared ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '営業をクリアして解放');
-    const conditionText = isCleared ? (HEROINE_LABELS[ev.heroineId] || '共通') : (ev.condition || '未解放');
+    const displayTitle = isUnlocked ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
+    const displaySummary = isUnlocked ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '物語を読み進めると解放');
+    const conditionText = isUnlocked ? (HEROINE_LABELS[ev.heroineId] || '共通') : '未解放';
 
     return `
-      <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
+      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}${isSeen ? ' is-seen' : ''}"
+           ${isUnlocked ? `data-action="start-event" data-event-id="${ev.id}"` : ''}>
+        <div class="locked-gallery-mark">${ev.heroineId === 'COMMON' ? '✦' : '✧'}</div>
         <div class="locked-gallery-content">
           <h3>${escapeHtml(displayTitle)}</h3>
           <p>${escapeHtml(displaySummary)}</p>
@@ -28280,7 +28352,7 @@ function renderEventGallery(controller) {
     <div class="locked-gallery-panel">
       <div class="title-panel-summary">物語の記録</div>
       <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます（現在リスト表示のみ）。</p>
+      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます。</p>
     </div>
   `;
 }
@@ -30454,6 +30526,7 @@ function getDefaultPlayerProgress() {
       lastClearedAt: null
     })),
     eventSeen: {},
+    eventFlags: {},
     imageSeen: {},
     quizHistory: []
   };
@@ -30470,6 +30543,7 @@ function normalizeProgress(progress) {
     bestRecords: { ...base.bestRecords },
     endings: { ...base.endings },
     eventSeen: src.eventSeen && typeof src.eventSeen === 'object' ? src.eventSeen : {},
+    eventFlags: src.eventFlags && typeof src.eventFlags === 'object' ? src.eventFlags : {},
     imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {},
     quizHistory: Array.isArray(src.quizHistory) ? src.quizHistory : []
   };
@@ -30616,6 +30690,33 @@ function recordQuizHistory(entry) {
   return progress.quizHistory;
 }
 
+function markEventSeen(eventId) {
+  if (!eventId) return;
+  const progress = loadPlayerProgress();
+  if (progress.eventSeen[eventId]) return;
+  progress.eventSeen[eventId] = true;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+}
+
+function isEventSeen(eventId) {
+  const progress = loadPlayerProgress();
+  return !!progress.eventSeen[eventId];
+}
+
+function setEventFlag(flagId, value) {
+  if (!flagId) return;
+  const progress = loadPlayerProgress();
+  progress.eventFlags[flagId] = value;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+}
+
+function hasEventFlag(flagId) {
+  const progress = loadPlayerProgress();
+  return !!progress.eventFlags[flagId];
+}
+
 module.exports = {
   PLAYER_PROGRESS_KEY,
   HEROINE_IDS,
@@ -30627,7 +30728,12 @@ module.exports = {
   recordEndingProgress,
   getPlayerProgressSummary,
   markImageSeen,
-  recordQuizHistory
+  markEventSeen,
+  isEventSeen,
+  setEventFlag,
+  hasEventFlag,
+  recordQuizHistory,
+  normalizeProgress
 };
 
     };
@@ -31622,6 +31728,24 @@ const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
+
+let EVENT_SCRIPTS;
+try {
+  ({ EVENT_SCRIPTS } = require('./data/generated/eventScripts.cjs'));
+} catch (e) {
+  EVENT_SCRIPTS = {};
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[m]));
+}
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { createScreenTransitionController } = require('./controllers/screenTransitionController.js');
@@ -31677,6 +31801,20 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
+    
+    this.eventState = {
+      active: false,
+      eventId: null,
+      script: null,
+      stepIndex: 0,
+      labels: {},
+      background: null,
+      still: null,
+      characters: {}, // charId -> { expression, position }
+      activeChoice: null,
+      waitTimer: null,
+      returnScreen: 'title'
+    };
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -31977,7 +32115,9 @@ class GameController {
       }
     }
 
-    if (subPhase === 'BEFORE_OPEN') {
+    if (this.eventState.active) {
+      this.renderEventPlayer(view);
+    } else if (subPhase === 'BEFORE_OPEN') {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
@@ -32028,6 +32168,206 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   updateHud() { updateHud(this); }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 6. Event Player Logic
+   * --------------------------------------------------------------------------
+   */
+  startEvent(eventId, returnScreen = 'title') {
+    if (!EVENT_SCRIPTS || !EVENT_SCRIPTS[eventId]) {
+      console.warn(`Event ${eventId} not found`);
+      return;
+    }
+
+    const script = EVENT_SCRIPTS[eventId];
+    const labels = {};
+    script.forEach((step, index) => {
+      if (step.type === 'label') labels[step.id] = index;
+    });
+
+    this.eventState = {
+      active: true,
+      eventId,
+      script,
+      stepIndex: 0,
+      labels,
+      background: null,
+      still: null,
+      characters: {},
+      activeChoice: null,
+      waitTimer: null,
+      returnScreen
+    };
+
+    this.update();
+    this.nextEventStep();
+  }
+
+  stopEvent() {
+    this.eventState.active = false;
+    if (this.eventState.waitTimer) {
+      clearTimeout(this.eventState.waitTimer);
+      this.eventState.waitTimer = null;
+    }
+    this.update();
+  }
+
+  nextEventStep() {
+    if (!this.eventState.active || this.eventState.activeChoice) return;
+
+    if (this.eventState.stepIndex >= this.eventState.script.length) {
+      this.stopEvent();
+      return;
+    }
+
+    const step = this.eventState.script[this.eventState.stepIndex];
+    this.eventState.stepIndex++;
+    this.processEventStep(step);
+  }
+
+  processEventStep(step) {
+    if (!step) return;
+
+    switch (step.type) {
+      case 'bg':
+        this.eventState.background = step.id;
+        this.nextEventStep();
+        break;
+      case 'still':
+        this.eventState.still = step.id;
+        this.nextEventStep();
+        break;
+      case 'bgm':
+        this.bgm.play(step.id);
+        this.nextEventStep();
+        break;
+      case 'sfx':
+        this.sfx.play(step.id);
+        this.nextEventStep();
+        break;
+      case 'enter':
+        this.eventState.characters[step.characterId] = {
+          expression: step.expression || 'normal',
+          position: step.position || 'center'
+        };
+        this.nextEventStep();
+        break;
+      case 'exit':
+        delete this.eventState.characters[step.characterId];
+        this.nextEventStep();
+        break;
+      case 'line':
+      case 'narration':
+        this.update(); // Trigger re-render to show text
+        break;
+      case 'wait':
+        this.eventState.waitTimer = setTimeout(() => {
+          this.eventState.waitTimer = null;
+          this.nextEventStep();
+        }, step.ms || 1000);
+        break;
+      case 'choice':
+        this.eventState.activeChoice = step.choices;
+        this.update();
+        break;
+      case 'label':
+        this.nextEventStep();
+        break;
+      case 'jump':
+        const targetIndex = this.eventState.labels[step.id];
+        if (targetIndex !== undefined) {
+          this.eventState.stepIndex = targetIndex;
+        }
+        this.nextEventStep();
+        break;
+      case 'flag':
+        const { setEventFlag } = require('./utils/playerProgress.js');
+        setEventFlag(step.id, step.value);
+        this.nextEventStep();
+        break;
+      case 'end':
+        if (step.markSeen) {
+          const { markEventSeen } = require('./utils/playerProgress.js');
+          markEventSeen(this.eventState.eventId);
+        }
+        this.stopEvent();
+        break;
+      default:
+        console.warn(`Unknown event command: ${step.type}`);
+        this.nextEventStep();
+        break;
+    }
+  }
+
+  handleEventClick() {
+    if (this.eventState.activeChoice) return;
+    if (this.isTypewriterActive()) {
+      this.finishTypewriter();
+      return;
+    }
+    if (this.eventState.waitTimer) return;
+    
+    this.nextEventStep();
+  }
+
+  handleEventChoice(choiceIndex) {
+    if (!this.eventState.activeChoice) return;
+    const choice = this.eventState.activeChoice[choiceIndex];
+    if (choice) {
+      if (choice.jump) {
+        const targetIndex = this.eventState.labels[choice.jump];
+        if (targetIndex !== undefined) {
+          this.eventState.stepIndex = targetIndex;
+        }
+      }
+      this.eventState.activeChoice = null;
+      this.nextEventStep();
+    }
+  }
+
+  renderEventPlayer(view) {
+    const step = this.eventState.script[this.eventState.stepIndex - 1];
+    if (!step) return;
+
+    renderVnShell(this, view);
+    
+    // Add choice layer if active
+    if (this.eventState.activeChoice) {
+      const choiceOverlay = document.createElement('div');
+      choiceOverlay.className = 'choice-overlay';
+      const choiceList = this.eventState.activeChoice.map((c, i) => `
+        <button class="choice-btn" data-action="event-choice" data-index="${i}">${escapeHtml(c.label)}</button>
+      `).join('');
+      choiceOverlay.innerHTML = `<div class="choice-container">${choiceList}</div>`;
+      view.querySelector('.vn-screen').appendChild(choiceOverlay);
+    }
+
+    const speakerId = step.type === 'line' ? step.speakerId : null;
+    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : (step.type === 'line' ? step.speakerId : '');
+    
+    // Determine which character to show
+    // Simple logic for now: show the first character in state
+    const charIds = Object.keys(this.eventState.characters);
+    const charId = charIds[0];
+    const charData = charId ? this.eventState.characters[charId] : null;
+
+    updateVnContent(this, {
+      speakerName: speakerName,
+      text: step.text || '',
+      charId: charId,
+      speakerId: speakerId,
+      bgId: this.eventState.still || this.eventState.background,
+      expression: charData ? charData.expression : (step.type === 'line' ? step.expression : 'normal'),
+      speakerExpression: step.expression || 'normal'
+    });
+    
+    // Override click behavior for event player
+    const vnScreen = view.querySelector('.vn-screen');
+    if (vnScreen) {
+      vnScreen.setAttribute('data-action', 'event-click');
+    }
+  }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
   updateVnContent(payload) {
@@ -32203,6 +32543,12 @@ class GameController {
 
   async onGlobalAction() {
     if (this.quizState.inputLocked || this.uiState.modal) return;
+
+    if (this.eventState.active) {
+      this.handleEventClick();
+      return;
+    }
+
     const { phase, subPhase } = this.session;
 
     // Handle Typewriter "Finish on Click"
