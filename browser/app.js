@@ -801,7 +801,9 @@ class GameController {
       heroineId: this.session.selectedHeroineId,
       prompt: q.promptText || '',
       correctItemId: q.correctItemId || '',
+      correctQuality: q.correctQuality || 'normal',
       selectedItemId: itemId,
+      selectedQuality: quality || 'normal',
       result: finalScore.isPerfect ? 'perfect' : (finalScore.isSuccess ? 'good' : 'miss')
     });
 

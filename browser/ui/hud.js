@@ -55,7 +55,7 @@ function renderGlobalUi(controller) {
   }
 
   globalUi.innerHTML = `
-    <button class="global-ui-btn" data-action="open-log" title="ログ">記録</button>
+    <button class="global-ui-btn" data-action="open-log" title="ログ">📜</button>
     <button class="global-ui-btn" data-action="open-options" title="設定">⚙</button>
     <button class="global-ui-btn" data-action="open-help" title="ヘルプ">？</button>
     <button class="global-ui-btn" data-action="toggle-fullscreen" title="全画面">⛶</button>
@@ -80,16 +80,61 @@ function renderLogModal(controller, container) {
 
   const renderQuizTab = () => {
     if (quizHistory.length === 0) return '<p class="log-empty">過去問の記録はありません</p>';
-    return quizHistory.map(q => {
+    
+    const page = controller.uiState.logQuizPage || 0;
+    const pageSize = 100;
+    const start = page * pageSize;
+    const paged = quizHistory.slice(start, start + pageSize);
+    const hasNext = quizHistory.length > start + pageSize;
+    const hasPrev = start > 0;
+
+    const pager = `
+      <div class="log-pager">
+        <button class="log-pager-btn" ${hasPrev ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page - 1}">前</button>
+        <span class="log-pager-info">${start + 1} - ${Math.min(start + pageSize, quizHistory.length)} / ${quizHistory.length}</span>
+        <button class="log-pager-btn" ${hasNext ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page + 1}">次</button>
+      </div>
+    `;
+
+    const items = paged.map(q => {
       const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
+      const correctName = controller.getItemDisplayName(q.correctItemId);
+      const correctIcon = controller.getItemIconPath(q.correctItemId);
+      const selectedName = controller.getItemDisplayName(q.selectedItemId);
+      const selectedIcon = controller.getItemIconPath(q.selectedItemId);
+
       return `
         <div class="log-quiz-item result-${q.result}">
           <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
           <div class="log-quiz-prompt">${q.prompt}</div>
-          <div class="log-quiz-answer">正解: ${q.correctItemId} <span class="log-quiz-divider">/</span> 回答: ${q.selectedItemId} [${resultLabel}]</div>
+          <div class="log-quiz-comparison">
+            <div class="log-quiz-col">
+              <span class="log-quiz-col-label">正解</span>
+              <div class="log-quiz-item-box">
+                <div class="log-quiz-icon-frame"><img src="${correctIcon}" alt="" /></div>
+                <div class="log-quiz-item-info">
+                  <span class="log-quiz-item-name">${correctName}</span>
+                  <small class="log-quiz-quality">${q.correctQuality || 'normal'}</small>
+                </div>
+              </div>
+            </div>
+            <div class="log-quiz-col">
+              <span class="log-quiz-col-label">回答</span>
+              <div class="log-quiz-item-box">
+                <div class="log-quiz-icon-frame"><img src="${selectedIcon}" alt="" /></div>
+                <div class="log-quiz-item-info">
+                  <span class="log-quiz-item-name">${selectedName}</span>
+                  <small class="log-quiz-quality">${q.selectedQuality || 'normal'}</small>
+                </div>
+              </div>
+            </div>
+            <div class="log-quiz-result-badge">${resultLabel}</div>
+          </div>
         </div>
       `;
     }).join('');
+
+    return items + (quizHistory.length > pageSize ? pager : '');
   };
 
   container.innerHTML = `
