@@ -16,14 +16,11 @@ CHAR_MAP = {
     'DARIYA': 'dariya'
 }
 
-# Target frame size
-FRAME_W = 1195
-FRAME_H = 1600
-# Final output size (High Quality: 1195x1600)
-OUT_W = 1195
-OUT_H = 1600
+# Canvas size defined in HTML tool
+CANVAS_W = 1195
+CANVAS_H = 1600
 
-def process_standing_images():
+def process_standing_images_final_sync():
     if not os.path.exists(JSON_PATH):
         print(f"Error: JSON not found at {JSON_PATH}")
         return
@@ -38,42 +35,45 @@ def process_standing_images():
         target_dir = os.path.join(TARGET_BASE_DIR, char_dir, 'standing_proc')
         os.makedirs(target_dir, exist_ok=True)
         
-        print(f"Processing Standing {char_id} -> {target_dir}")
+        print(f"Processing Standing (Final Tool Sync) {char_id}")
 
         for exp_id, exp_data in char_data['standing']['expressions'].items():
             src_path = os.path.join(SOURCE_DIR, char_dir, f"{exp_id}.webp")
             if not os.path.exists(src_path):
                 continue
 
-            # Calculate actual transform values
-            total_x = standing_master['x'] + exp_data['x']
-            total_y = standing_master['y'] + exp_data['y']
-            total_scale = standing_master['scale'] * exp_data['scale']
-
-            # Open source
+            # Exact math as in tool
+            x = standing_master['x'] + exp_data['x']
+            y = standing_master['y'] + exp_data['y']
+            scale = standing_master['scale'] * exp_data['scale']
+            
             with Image.open(src_path) as img:
-                # Create a transparent frame
-                frame = Image.new('RGBA', (FRAME_W, FRAME_H), (0, 0, 0, 0))
+                # Create a blank transparent canvas
+                canvas = Image.new('RGBA', (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
                 
-                # Resize source image according to scale
-                scaled_w = int(img.width * total_scale)
-                scaled_h = int(img.height * total_scale)
-                scaled_img = img.resize((scaled_w, scaled_h), resample=Image.LANCZOS)
+                # Rescale source image
+                sw = int(img.width * scale)
+                sh = int(img.height * scale)
+                scaled_img = img.resize((sw, sh), resample=Image.LANCZOS)
                 
-                # Calculate paste position (horizontal center + x, top + y)
-                # Note: In the tool, drawImage(img, -img.width/2, 0) was used after translate(IMG_W/2 + x, y)
-                paste_x = int(FRAME_W / 2 + total_x - scaled_w / 2)
-                paste_y = int(total_y)
+                # HTML tool math:
+                # ctx.translate(canvas.width / 2 + x, y);
+                # ctx.scale(scale, scale);
+                # ctx.drawImage(img, -img.width / 2, 0);
                 
-                frame.paste(scaled_img, (paste_x, paste_y), scaled_img if scaled_img.mode == 'RGBA' else None)
+                # This results in:
+                # Top edge of drawing is at Y
+                # Center of drawing is at (CANVAS_W / 2 + x)
                 
-                # Resize frame to target proc size
-                proc_img = frame.resize((OUT_W, OUT_H), resample=Image.LANCZOS)
+                px = int(CANVAS_W / 2 + x - sw / 2)
+                py = int(y)
                 
-                # Save as WebP with high quality
+                # Paste onto canvas
+                canvas.paste(scaled_img, (px, py), scaled_img if scaled_img.mode == 'RGBA' else None)
+                
+                # Save as 1195x1600
                 out_path = os.path.join(target_dir, f"{exp_id}.webp")
-                proc_img.save(out_path, 'WEBP', quality=95, lossless=False)
-                print(f"  Generated: {exp_id}.webp (Pos: {paste_x},{paste_y} Scale: {total_scale:.2f})")
+                canvas.save(out_path, 'WEBP', quality=95, lossless=False)
 
 if __name__ == "__main__":
-    process_standing_images()
+    process_standing_images_final_sync()

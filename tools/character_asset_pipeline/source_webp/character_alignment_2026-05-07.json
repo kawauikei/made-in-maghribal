@@ -146,8 +146,8 @@
     "HAKIMA": {
       "standing": {
         "master": {
-          "x": -10,
-          "y": 114,
+          "x": -20,
+          "y": 162,
           "scale": 0.95
         },
         "expressions": {
