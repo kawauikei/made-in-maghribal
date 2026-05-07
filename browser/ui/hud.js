@@ -161,6 +161,12 @@ function renderLogModal(controller, container) {
         const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId))
           .map(([k, v]) => `${k}:${v}`).join(';');
 
+        const getQualityLabel = (q) => {
+          if (q === 'great_success') return '傑作';
+          if (q === 'success') return '高品質';
+          return '普通';
+        };
+
         return `
           <div class="log-quiz-col">
             <span class="log-quiz-col-label">${sideLabel}</span>
@@ -170,7 +176,7 @@ function renderLogModal(controller, container) {
               </div>
               <div class="log-quiz-item-info">
                 <span class="log-quiz-item-name">${escapeHtml(name)}</span>
-                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(quality)}</small>
+                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(getQualityLabel(quality))}</small>
                 <div class="log-quiz-indicators">${indicators.join('')}</div>
               </div>
             </div>
