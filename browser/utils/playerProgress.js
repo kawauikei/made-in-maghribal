@@ -189,10 +189,21 @@ function getPlayerProgressSummary() {
     heroineModeUnlocks: cloneJson(progress.heroineModeUnlocks),
     bestRecords: cloneJson(progress.bestRecords),
     endings: cloneJson(progress.endings),
+    imageSeen: cloneJson(progress.imageSeen),
     clearedEndingCount: clearedEndings.length,
     eventSeenCount: Object.keys(progress.eventSeen || {}).length,
     imageSeenCount: Object.keys(progress.imageSeen || {}).length
   };
+}
+
+function markImageSeen(imageId) {
+  if (!imageId) return;
+  const progress = loadPlayerProgress();
+  if (progress.imageSeen[imageId]) return;
+  
+  progress.imageSeen[imageId] = true;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
 }
 
 module.exports = {
@@ -204,5 +215,6 @@ module.exports = {
   savePlayerProgress,
   clearPlayerProgress,
   recordEndingProgress,
-  getPlayerProgressSummary
+  getPlayerProgressSummary,
+  markImageSeen
 };

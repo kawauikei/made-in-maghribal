@@ -146,6 +146,228 @@ const GALLERY_MANIFEST = [
     "path": "images/still/still_mira_visit_sick_01.jpeg",
     "title": "still mira visit sick 01",
     "category": "スチル"
+  },
+  {
+    "id": "dariya_anger",
+    "path": "characters/dariya/standing_proc/anger.png",
+    "title": "dariya (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_cry",
+    "path": "characters/dariya/standing_proc/cry.png",
+    "title": "dariya (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_fun",
+    "path": "characters/dariya/standing_proc/fun.png",
+    "title": "dariya (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_joy",
+    "path": "characters/dariya/standing_proc/joy.png",
+    "title": "dariya (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_maid",
+    "path": "characters/dariya/standing_proc/maid.png",
+    "title": "dariya (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_normal",
+    "path": "characters/dariya/standing_proc/normal.png",
+    "title": "dariya (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_social",
+    "path": "characters/dariya/standing_proc/social.png",
+    "title": "dariya (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_sorrow",
+    "path": "characters/dariya/standing_proc/sorrow.png",
+    "title": "dariya (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_student",
+    "path": "characters/dariya/standing_proc/student.png",
+    "title": "dariya (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_surprise",
+    "path": "characters/dariya/standing_proc/surprise.png",
+    "title": "dariya (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_anger",
+    "path": "characters/hakima/standing_proc/anger.png",
+    "title": "hakima (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_cry",
+    "path": "characters/hakima/standing_proc/cry.png",
+    "title": "hakima (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_fun",
+    "path": "characters/hakima/standing_proc/fun.png",
+    "title": "hakima (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_joy",
+    "path": "characters/hakima/standing_proc/joy.png",
+    "title": "hakima (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_maid",
+    "path": "characters/hakima/standing_proc/maid.png",
+    "title": "hakima (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_normal",
+    "path": "characters/hakima/standing_proc/normal.png",
+    "title": "hakima (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_social",
+    "path": "characters/hakima/standing_proc/social.png",
+    "title": "hakima (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_sorrow",
+    "path": "characters/hakima/standing_proc/sorrow.png",
+    "title": "hakima (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_student",
+    "path": "characters/hakima/standing_proc/student.png",
+    "title": "hakima (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_surprise",
+    "path": "characters/hakima/standing_proc/surprise.png",
+    "title": "hakima (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_anger",
+    "path": "characters/mira/standing_proc/anger.png",
+    "title": "mira (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_cry",
+    "path": "characters/mira/standing_proc/cry.png",
+    "title": "mira (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_fun",
+    "path": "characters/mira/standing_proc/fun.png",
+    "title": "mira (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_joy",
+    "path": "characters/mira/standing_proc/joy.png",
+    "title": "mira (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_maid",
+    "path": "characters/mira/standing_proc/maid.png",
+    "title": "mira (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_normal",
+    "path": "characters/mira/standing_proc/normal.png",
+    "title": "mira (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_social",
+    "path": "characters/mira/standing_proc/social.png",
+    "title": "mira (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_sorrow",
+    "path": "characters/mira/standing_proc/sorrow.png",
+    "title": "mira (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_student",
+    "path": "characters/mira/standing_proc/student.png",
+    "title": "mira (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_surprise",
+    "path": "characters/mira/standing_proc/surprise.png",
+    "title": "mira (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_anger",
+    "path": "characters/nader/standing_proc/anger.png",
+    "title": "nader (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_cry",
+    "path": "characters/nader/standing_proc/cry.png",
+    "title": "nader (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_fun",
+    "path": "characters/nader/standing_proc/fun.png",
+    "title": "nader (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_joy",
+    "path": "characters/nader/standing_proc/joy.png",
+    "title": "nader (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_normal",
+    "path": "characters/nader/standing_proc/normal.png",
+    "title": "nader (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_sorrow",
+    "path": "characters/nader/standing_proc/sorrow.png",
+    "title": "nader (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_surprise",
+    "path": "characters/nader/standing_proc/surprise.png",
+    "title": "nader (surprise)",
+    "category": "ヒロイン立ち絵"
   }
 ];
 

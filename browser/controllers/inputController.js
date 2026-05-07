@@ -122,6 +122,28 @@ function bindInputHandlers(controller) {
       controller.updateSoundTestStatus('');
       return;
     }
+
+    // Gallery & Modal Backdrops
+    const galleryTabBtn = target.closest('[data-action="gallery-tab"]');
+    if (galleryTabBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateGalleryCategory(galleryTabBtn.getAttribute('data-gallery-category'));
+      return;
+    }
+    const gallerySelectBtn = target.closest('[data-action="gallery-select"]');
+    if (gallerySelectBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateGalleryIndex(Number(gallerySelectBtn.getAttribute('data-gallery-index')));
+      return;
+    }
+
+    if (target.closest('.title-panel-screen') && !target.closest('.title-panel-card')) {
+      event.stopPropagation();
+      controller.closeTitlePanel();
+      return;
+    }
     const titleStub = target.closest('[data-title-stub]');
     if (titleStub) {
       event.stopPropagation();

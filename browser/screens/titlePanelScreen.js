@@ -13,6 +13,7 @@ const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
 const { EVENT_MASTER } = require('../data/eventMaster.cjs');
+const { loadPlayerProgress } = require('../utils/playerProgress.js');
 
 const PANEL_TITLES = {
   event: 'イベント集',
@@ -339,28 +340,63 @@ function renderEventGallery(controller) {
 }
 
 function renderImageGallery(controller) {
-  const items = GALLERY_MANIFEST.map((img) => {
-    // For now, background images are mostly unlocked, stills are locked if not cleared
-    const isStill = img.category === 'スチル';
-    const isUnlocked = !isStill; // Simplified for now
+  const { imageSeen } = loadPlayerProgress();
+  const categories = ['背景', 'スチル', 'ヒロイン立ち絵'];
+  const activeCategory = controller.uiState.galleryCategory || '背景';
+  const activeIndex = controller.uiState.galleryIndex || 0;
+
+  const categoryItems = GALLERY_MANIFEST.filter((item) => item.category === activeCategory);
+  const activeItem = categoryItems[activeIndex];
+
+  const tabs = categories.map((cat) => `
+    <button class="image-gallery-tab-btn${activeCategory === cat ? ' is-active' : ''}" 
+            type="button" data-action="gallery-tab" data-gallery-category="${cat}">
+      ${cat}
+    </button>
+  `).join('');
+
+  const thumbnails = categoryItems.map((item, index) => {
+    // Backgrounds are always unlocked for now, others need to be seen
+    const isUnlocked = item.category === '背景' || !!imageSeen[item.id];
+    const isActive = index === activeIndex;
     
     return `
-      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">${isStill ? '🖼️' : '🏞️'}</div>
-        <div class="locked-gallery-content">
-          <h3>${isUnlocked ? escapeHtml(img.title) : '？？？？'}</h3>
-          <p>${escapeHtml(img.category)}</p>
-          ${isUnlocked ? `<img src="${img.path}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-top: 8px;" />` : '<small>Locked</small>'}
-        </div>
+      <div class="image-gallery-thumb${isActive ? ' is-active' : ''}${!isUnlocked ? ' is-locked' : ''}" 
+           ${isUnlocked ? `data-action="gallery-select" data-gallery-index="${index}"` : ''}>
+        ${isUnlocked ? `<img src="${item.path}" alt="${escapeHtml(item.title)}" />` : '<span>？</span>'}
       </div>
     `;
-  }).join('');
+  }).join('') || '<div class="image-gallery-thumb-empty">登録されている画像がありません</div>';
+
+  const viewerContent = activeItem && (activeItem.category === '背景' || !!imageSeen[activeItem.id])
+    ? `
+      <img src="${activeItem.path}" class="image-gallery-viewer-main" alt="${escapeHtml(activeItem.title)}" />
+      <div class="image-gallery-info">
+        <h3>${escapeHtml(activeItem.title)}</h3>
+      </div>
+    `
+    : `
+      <div class="image-gallery-viewer-placeholder">
+        <span>🖼️</span>
+        <p>未解放の画像です</p>
+      </div>
+    `;
 
   return `
-    <div class="locked-gallery-panel">
-      <div class="title-panel-summary">視覚の記録</div>
-      <div class="locked-gallery-grid">${items}</div>
-      <p class="title-panel-note">解放済みの背景やスチルを閲覧できます。</p>
+    <div class="image-gallery-container">
+      <nav class="image-gallery-tabs">
+        ${tabs}
+      </nav>
+      
+      <div class="image-gallery-viewer">
+        ${viewerContent}
+      </div>
+      
+      <div class="image-gallery-thumbnails-wrapper">
+        <div class="image-gallery-thumbnails">
+          ${thumbnails}
+        </div>
+      </div>
     </div>
   `;
 }

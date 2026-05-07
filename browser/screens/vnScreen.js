@@ -47,6 +47,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   if (bgEl && bgId) {
     const bgPath = getBackgroundPath(bgId);
     bgEl.style.backgroundImage = `url(${bgPath})`;
+    if (controller.markImageSeen) controller.markImageSeen(bgId);
   }
 
   if (charEl) {
@@ -54,7 +55,11 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
       charEl.classList.remove('is-visible');
       charEl.style.display = 'block';
       applyCharacterVisualProfile(charEl, charId, 'standing');
-      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
+      const expr = expression || 'normal';
+      charEl.src = getVisualImagePath(charId, 'standing', expr);
+      if (controller.markImageSeen) {
+        controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
+      }
       charEl.onerror = () => { charEl.style.display = 'none'; };
       requestAnimationFrame(() => {
         charEl.classList.add('is-visible');

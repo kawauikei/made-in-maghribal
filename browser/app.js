@@ -37,6 +37,7 @@ const {
   getRhythmSilenceGraceMs,
   getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
+const { markImageSeen } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
@@ -258,6 +259,21 @@ class GameController {
     this.uiState.titlePanel = null;
     this.uiState.itemDetailModal = null;
     this.playSfx('uiTapBottle');
+    this.update();
+  }
+
+  markImageSeen(imageId) {
+    markImageSeen(imageId);
+  }
+
+  updateGalleryCategory(category) {
+    this.uiState.galleryCategory = category;
+    this.uiState.galleryIndex = 0;
+    this.update();
+  }
+
+  updateGalleryIndex(index) {
+    this.uiState.galleryIndex = index;
     this.update();
   }
 

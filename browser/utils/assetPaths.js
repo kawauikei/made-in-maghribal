@@ -45,10 +45,21 @@ function getBackgroundPath(sceneId) {
   return backgrounds[sceneId] || backgrounds.TEA_ROOM;
 }
 
+function getStillPath(stillId) {
+  return `images/still/${stillId}.jpeg`;
+}
+
+function getGalleryImagePath(item) {
+  if (!item) return '';
+  return item.path;
+}
+
 module.exports = {
   normalizeCharacterDir,
   getCharacterStandingPath,
   getCharacterIconPath,
   getCharacterVisualImagePath,
-  getBackgroundPath
+  getBackgroundPath,
+  getStillPath,
+  getGalleryImagePath
 };

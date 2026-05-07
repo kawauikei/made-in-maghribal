@@ -8,6 +8,7 @@ const path = require('path');
 const projectRoot = path.join(__dirname, '..');
 const bgDir = path.join(projectRoot, 'public/images/background');
 const stillDir = path.join(projectRoot, 'public/images/still');
+const charsDir = path.join(projectRoot, 'public/characters');
 const outputFile = path.join(projectRoot, 'browser/data/galleryManifest.js');
 
 function scan(dir, category, relativeBase) {
@@ -31,7 +32,29 @@ function generate() {
     const bgItems = scan(bgDir, '背景', 'background');
     const stillItems = scan(stillDir, 'スチル', 'still');
     
-    const galleryItems = [...bgItems, ...stillItems];
+    const charItems = [];
+    if (fs.existsSync(charsDir)) {
+        const heroines = fs.readdirSync(charsDir);
+        for (const heroineId of heroines) {
+            const standingDir = path.join(charsDir, heroineId, 'standing_proc');
+            if (fs.existsSync(standingDir)) {
+                const expressions = fs.readdirSync(standingDir)
+                    .filter(file => /\.(png|jpg|jpeg|webp)$/i.test(file));
+                
+                for (const file of expressions) {
+                    const expressionName = path.parse(file).name;
+                    charItems.push({
+                        id: `${heroineId.toLowerCase()}_${expressionName.toLowerCase()}`,
+                        path: `characters/${heroineId}/standing_proc/${file}`,
+                        title: `${heroineId} (${expressionName})`,
+                        category: 'ヒロイン立ち絵'
+                    });
+                }
+            }
+        }
+    }
+    
+    const galleryItems = [...bgItems, ...stillItems, ...charItems];
 
     const content = `/**
  * Generated Gallery Manifest
