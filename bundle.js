@@ -1032,10 +1032,9 @@ function processQuestionResult(state) {
   const { promptShownAt, answeredAt, selectedItemId, correctItemId, selectedChoiceKey, correctChoiceKey, nearestBeatMs } = state;
   const speedGraceMs = normalizeSpeedGraceMs(state.speedGraceMs);
   
-  // Acceptance: リズムが悪くても正解なら売上は入る（isCorrectを返す）
-  const isCorrect = (selectedChoiceKey && correctChoiceKey)
-    ? selectedChoiceKey === correctChoiceKey
-    : selectedItemId === correctItemId;
+  // Acceptance: 品目さえ合っていれば基本は正解とする（品質はボーナスに影響させる設計）
+  const hasChoiceKeys = selectedChoiceKey != null && correctChoiceKey != null;
+  const isCorrect = (selectedItemId === correctItemId) || (hasChoiceKeys && selectedChoiceKey === correctChoiceKey);
   
   // Acceptance: 判定は PERFECT, GOOD, MISS, NONE を返せる
   const timing = calculateJudgement(answeredAt, nearestBeatMs);
@@ -1563,6 +1562,227 @@ const EVENT_MASTER = [
 if (typeof module !== 'undefined') {
   module.exports = { EVENT_MASTER };
 }
+
+    };
+
+    // --- ./data/generated/eventManifest.cjs ---
+    modules['./data/generated/eventManifest.cjs'] = function(module, exports, require) {
+/**
+ * Generated Event Manifest
+ * Do not edit manually. Use tools/sync-events.cjs
+ */
+module.exports = [
+  {
+    "id": "EV_DARIYA_01",
+    "title": "夜の帳と計算",
+    "heroineId": "DARIYA",
+    "summary": "ダリヤが夜遅くまで帳簿をつけている。",
+    "unlock": {
+      "type": "always"
+    },
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_dariya_after_hours_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ダリヤと仲良くなると解放"
+    },
+    "scriptStepCount": 7
+  },
+  {
+    "id": "EV_HAKIMA_01",
+    "title": "朝の訪問者",
+    "heroineId": "HAKIMA",
+    "summary": "開店前、ハキマが店に顔を出す。",
+    "unlock": {
+      "type": "always"
+    },
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマと仲良くなると解放"
+    },
+    "scriptStepCount": 7
+  },
+  {
+    "id": "EV_MIRA_01",
+    "title": "放課後の研究",
+    "heroineId": "MIRA",
+    "summary": "ミラが熱心に古文書を読み耽っている。",
+    "unlock": {
+      "type": "always"
+    },
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_mira_after_school_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ミラと仲良くなると解放"
+    },
+    "scriptStepCount": 7
+  },
+  {
+    "id": "EV_OP_01",
+    "title": "砂丘の向こう側",
+    "heroineId": "COMMON",
+    "summary": "物語の始まり。マグレブの空は今日も青い。",
+    "unlock": {
+      "type": "always"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を開始すると解放"
+    },
+    "scriptStepCount": 5
+  }
+];
+
+    };
+
+    // --- ./data/generated/eventScripts.cjs ---
+    modules['./data/generated/eventScripts.cjs'] = function(module, exports, require) {
+/**
+ * Generated Event Scripts
+ * Do not edit manually. Use tools/sync-events.cjs
+ */
+module.exports = {
+  "EV_DARIYA_01": [
+    {
+      "type": "bg",
+      "id": "bg_shop_exterior_night",
+      "transition": "fade"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_DARIYA",
+      "fadeMs": 800
+    },
+    {
+      "type": "enter",
+      "characterId": "CH_DARIYA",
+      "expression": "normal",
+      "position": "left"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_DARIYA",
+      "expression": "social",
+      "text": "あら、まだ起きていたの？仕事の邪魔はしないで頂戴。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_after_hours_01"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_NADIR",
+      "text": "無理は禁物だぞ、お嬢様。"
+    },
+    {
+      "type": "end",
+      "markSeen": true
+    }
+  ],
+  "EV_HAKIMA_01": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service",
+      "transition": "fade"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA",
+      "fadeMs": 800
+    },
+    {
+      "type": "enter",
+      "characterId": "CH_HAKIMA",
+      "expression": "normal",
+      "position": "right"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_HAKIMA",
+      "expression": "joy",
+      "text": "おはよう。今日もぼんやりしてないでしょうね。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_morning_visit_01"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_NADIR",
+      "text": "朝から手厳しいな。助かるけど。"
+    },
+    {
+      "type": "end",
+      "markSeen": true
+    }
+  ],
+  "EV_MIRA_01": [
+    {
+      "type": "bg",
+      "id": "bg_palace_lab",
+      "transition": "fade"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_MIRA",
+      "fadeMs": 800
+    },
+    {
+      "type": "enter",
+      "characterId": "CH_MIRA",
+      "expression": "normal",
+      "position": "center"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_MIRA",
+      "expression": "fun",
+      "text": "見てください！この記述、新発見かもしれません！"
+    },
+    {
+      "type": "still",
+      "id": "still_mira_after_school_01"
+    },
+    {
+      "type": "line",
+      "speakerId": "CH_NADIR",
+      "text": "根を詰めすぎるなよ、ミラ。"
+    },
+    {
+      "type": "end",
+      "markSeen": true
+    }
+  ],
+  "EV_OP_01": [
+    {
+      "type": "bg",
+      "id": "bg_market_central",
+      "transition": "fade"
+    },
+    {
+      "type": "bgm",
+      "id": "main01_title",
+      "fadeMs": 1000
+    },
+    {
+      "type": "narration",
+      "text": "かつて、この砂丘の向こうには無限の緑があったという。"
+    },
+    {
+      "type": "narration",
+      "text": "今では語り草に過ぎないが、それでも人々は空を見上げる。"
+    },
+    {
+      "type": "end",
+      "markSeen": true
+    }
+  ]
+};
 
     };
 
@@ -25366,7 +25586,7 @@ function bindInputHandlers(controller) {
     const titlePanelBtn = target.closest('[data-title-panel]');
     if (titlePanelBtn) {
       event.stopPropagation();
-      controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
+      await controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
       return;
     }
     if (target.closest('[data-action="title-panel-back"]')) {
@@ -25470,6 +25690,29 @@ function bindInputHandlers(controller) {
       }
       return;
     }
+    if (target.closest('[data-action="open-log"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.openModal('log');
+      return;
+    }
+    const logTabBtn = target.closest('[data-action="set-log-tab"]');
+    if (logTabBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.logTab = logTabBtn.getAttribute('data-tab');
+      controller.uiState.logQuizPage = 0; // Reset page
+      controller.renderModal();
+      return;
+    }
+    const logPagerBtn = target.closest('[data-action="set-log-quiz-page"]');
+    if (logPagerBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.logQuizPage = parseInt(logPagerBtn.getAttribute('data-page'), 10);
+      controller.renderModal();
+      return;
+    }
     if (target.closest('[data-action="open-options"]')) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
@@ -25513,6 +25756,13 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
       controller.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
+      return;
+    }
+
+    if (target.closest('[data-action="clear-all-save-data"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.resetAllGameProgress();
       return;
     }
 
@@ -25569,6 +25819,74 @@ function bindInputHandlers(controller) {
 
 module.exports = {
   bindInputHandlers
+};
+
+    };
+
+    // --- ./controllers/screenTransitionController.js ---
+    modules['./controllers/screenTransitionController.js'] = function(module, exports, require) {
+/**
+ * Lightweight screen transition state.
+ *
+ * Rendering is still synchronous; this controller only annotates the freshly
+ * rendered screen so CSS can provide a consistent entrance feel.
+ */
+
+function createScreenTransitionController() {
+  let lastKey = '';
+
+  function getScreenKey(session) {
+    if (!session) return 'unknown';
+    if (session.phase === 'MAIN_GAME') return `${session.phase}:${session.subPhase || ''}`;
+    return session.phase || 'unknown';
+  }
+
+  function getTransitionKind(previousKey, nextKey) {
+    if (!previousKey) return 'boot';
+    if (previousKey === nextKey) return '';
+    if (previousKey === 'MAIN_GAME:AFTER_CLOSE' && nextKey === 'MAIN_GAME:BEFORE_OPEN') return '';
+    if (nextKey === 'OPENING') return 'lantern';
+    if (nextKey === 'HEROINE_SELECT') return 'sand';
+    if (nextKey === 'MAIN_GAME:BEFORE_OPEN') return 'curtain';
+    if (nextKey === 'MAIN_GAME:QUIZ') return 'counter';
+    if (nextKey === 'MAIN_GAME:TURN_RESULT') return 'ledger';
+    if (nextKey === 'ENDING') return 'lantern';
+    return 'soft';
+  }
+
+  function beforeRender(session) {
+    const nextKey = getScreenKey(session);
+    const previousKey = lastKey;
+    const changed = previousKey !== nextKey;
+    if (changed) lastKey = nextKey;
+    return {
+      changed,
+      from: previousKey,
+      key: nextKey,
+      kind: getTransitionKind(previousKey, nextKey)
+    };
+  }
+
+  function apply(container, transition) {
+    if (!container || !transition?.changed || !transition.kind) return;
+    const screen = container.querySelector('[data-screen]');
+    if (!screen) return;
+
+    screen.setAttribute('data-transition-kind', transition.kind);
+    screen.setAttribute('data-transition-from', transition.from || 'none');
+    screen.classList.remove('screen-enter');
+    void screen.offsetWidth;
+    screen.classList.add('screen-enter');
+  }
+
+  return {
+    beforeRender,
+    apply
+  };
+}
+
+module.exports = {
+  createScreenTransitionController
 };
 
     };
@@ -25802,367 +26120,1011 @@ const GALLERY_MANIFEST = [
     "id": "bg_market_central",
     "path": "images/background/bg_market_central.jpeg",
     "title": "bg market central",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_palace_corridor",
     "path": "images/background/bg_palace_corridor.jpeg",
     "title": "bg palace corridor",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_palace_lab",
     "path": "images/background/bg_palace_lab.jpeg",
     "title": "bg palace lab",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_shop_exterior_day",
     "path": "images/background/bg_shop_exterior_day.jpeg",
     "title": "bg shop exterior day",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_shop_exterior_night",
     "path": "images/background/bg_shop_exterior_night.jpeg",
     "title": "bg shop exterior night",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_shop_interior_service",
     "path": "images/background/bg_shop_interior_service.jpeg",
     "title": "bg shop interior service",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_festival_street",
     "path": "images/background/bg_spot_festival_street.jpeg",
     "title": "bg spot festival street",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_fountain",
     "path": "images/background/bg_spot_fountain.jpeg",
     "title": "bg spot fountain",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_oasis_view",
     "path": "images/background/bg_spot_oasis_view.jpeg",
     "title": "bg spot oasis view",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_port_view",
     "path": "images/background/bg_spot_port_view.jpeg",
     "title": "bg spot port view",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_ruins",
     "path": "images/background/bg_spot_ruins.jpeg",
     "title": "bg spot ruins",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "bg_spot_star_view",
     "path": "images/background/bg_spot_star_view.jpeg",
     "title": "bg spot star view",
-    "category": "背景"
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
   },
   {
     "id": "still_dariya_after_hours_01",
     "path": "images/still/still_dariya_after_hours_01.jpeg",
     "title": "still dariya after hours 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "DARIYA",
+    "expression": null
   },
   {
     "id": "still_dariya_limit_night_01",
     "path": "images/still/still_dariya_limit_night_01.jpeg",
     "title": "still dariya limit night 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "DARIYA",
+    "expression": null
   },
   {
     "id": "still_dariya_palace_collaboration_01",
     "path": "images/still/still_dariya_palace_collaboration_01.jpeg",
     "title": "still dariya palace collaboration 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "DARIYA",
+    "expression": null
   },
   {
     "id": "still_dariya_rain_corridor_01",
     "path": "images/still/still_dariya_rain_corridor_01.jpeg",
     "title": "still dariya rain corridor 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "DARIYA",
+    "expression": null
   },
   {
     "id": "still_hakima_festival_night_01",
     "path": "images/still/still_hakima_festival_night_01.jpeg",
     "title": "still hakima festival night 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "HAKIMA",
+    "expression": null
   },
   {
     "id": "still_hakima_market_argument_01",
     "path": "images/still/still_hakima_market_argument_01.jpeg",
     "title": "still hakima market argument 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "HAKIMA",
+    "expression": null
   },
   {
     "id": "still_hakima_morning_visit_01",
     "path": "images/still/still_hakima_morning_visit_01.jpeg",
     "title": "still hakima morning visit 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "HAKIMA",
+    "expression": null
   },
   {
     "id": "still_hakima_rain_shelter_01",
     "path": "images/still/still_hakima_rain_shelter_01.jpeg",
     "title": "still hakima rain shelter 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "HAKIMA",
+    "expression": null
   },
   {
     "id": "still_mira_after_school_01",
     "path": "images/still/still_mira_after_school_01.jpeg",
     "title": "still mira after school 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "MIRA",
+    "expression": null
   },
   {
     "id": "still_mira_assignment_consult_01",
     "path": "images/still/still_mira_assignment_consult_01.jpeg",
     "title": "still mira assignment consult 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "MIRA",
+    "expression": null
   },
   {
     "id": "still_mira_starry_rooftop_01",
     "path": "images/still/still_mira_starry_rooftop_01.jpeg",
     "title": "still mira starry rooftop 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "MIRA",
+    "expression": null
   },
   {
     "id": "still_mira_visit_sick_01",
     "path": "images/still/still_mira_visit_sick_01.jpeg",
     "title": "still mira visit sick 01",
-    "category": "スチル"
+    "category": "スチル",
+    "sourceType": "still",
+    "imageKind": "still",
+    "heroineId": "MIRA",
+    "expression": null
   },
   {
-    "id": "dariya_anger",
+    "id": "dariya_anger_standing",
     "path": "characters/dariya/standing_proc/anger.png",
-    "title": "dariya (anger)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (anger)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "anger"
   },
   {
-    "id": "dariya_cry",
+    "id": "dariya_cry_standing",
     "path": "characters/dariya/standing_proc/cry.png",
-    "title": "dariya (cry)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (cry)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "cry"
   },
   {
-    "id": "dariya_fun",
+    "id": "dariya_fun_standing",
     "path": "characters/dariya/standing_proc/fun.png",
-    "title": "dariya (fun)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (fun)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "fun"
   },
   {
-    "id": "dariya_joy",
+    "id": "dariya_joy_standing",
     "path": "characters/dariya/standing_proc/joy.png",
-    "title": "dariya (joy)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (joy)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "joy"
   },
   {
-    "id": "dariya_maid",
+    "id": "dariya_maid_standing",
     "path": "characters/dariya/standing_proc/maid.png",
-    "title": "dariya (maid)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (maid)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "maid"
   },
   {
-    "id": "dariya_normal",
+    "id": "dariya_normal_standing",
     "path": "characters/dariya/standing_proc/normal.png",
-    "title": "dariya (normal)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (normal)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "normal"
   },
   {
-    "id": "dariya_social",
+    "id": "dariya_social_standing",
     "path": "characters/dariya/standing_proc/social.png",
-    "title": "dariya (social)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (social)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "social"
   },
   {
-    "id": "dariya_sorrow",
+    "id": "dariya_sorrow_standing",
     "path": "characters/dariya/standing_proc/sorrow.png",
-    "title": "dariya (sorrow)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (sorrow)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "sorrow"
   },
   {
-    "id": "dariya_student",
+    "id": "dariya_student_standing",
     "path": "characters/dariya/standing_proc/student.png",
-    "title": "dariya (student)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (student)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "student"
   },
   {
-    "id": "dariya_surprise",
+    "id": "dariya_surprise_standing",
     "path": "characters/dariya/standing_proc/surprise.png",
-    "title": "dariya (surprise)",
-    "category": "ヒロイン立ち絵"
+    "title": "DARIYA (surprise)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "DARIYA",
+    "expression": "surprise"
   },
   {
-    "id": "hakima_anger",
+    "id": "dariya_anger_face",
+    "path": "characters/dariya/face_proc/anger.png",
+    "title": "DARIYA (anger face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "anger"
+  },
+  {
+    "id": "dariya_cry_face",
+    "path": "characters/dariya/face_proc/cry.png",
+    "title": "DARIYA (cry face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "cry"
+  },
+  {
+    "id": "dariya_fun_face",
+    "path": "characters/dariya/face_proc/fun.png",
+    "title": "DARIYA (fun face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "fun"
+  },
+  {
+    "id": "dariya_joy_face",
+    "path": "characters/dariya/face_proc/joy.png",
+    "title": "DARIYA (joy face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "joy"
+  },
+  {
+    "id": "dariya_maid_face",
+    "path": "characters/dariya/face_proc/maid.png",
+    "title": "DARIYA (maid face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "maid"
+  },
+  {
+    "id": "dariya_normal_face",
+    "path": "characters/dariya/face_proc/normal.png",
+    "title": "DARIYA (normal face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "normal"
+  },
+  {
+    "id": "dariya_social_face",
+    "path": "characters/dariya/face_proc/social.png",
+    "title": "DARIYA (social face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "social"
+  },
+  {
+    "id": "dariya_sorrow_face",
+    "path": "characters/dariya/face_proc/sorrow.png",
+    "title": "DARIYA (sorrow face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "sorrow"
+  },
+  {
+    "id": "dariya_student_face",
+    "path": "characters/dariya/face_proc/student.png",
+    "title": "DARIYA (student face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "student"
+  },
+  {
+    "id": "dariya_surprise_face",
+    "path": "characters/dariya/face_proc/surprise.png",
+    "title": "DARIYA (surprise face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "DARIYA",
+    "expression": "surprise"
+  },
+  {
+    "id": "hakima_anger_standing",
     "path": "characters/hakima/standing_proc/anger.png",
-    "title": "hakima (anger)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (anger)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "anger"
   },
   {
-    "id": "hakima_cry",
+    "id": "hakima_cry_standing",
     "path": "characters/hakima/standing_proc/cry.png",
-    "title": "hakima (cry)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (cry)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "cry"
   },
   {
-    "id": "hakima_fun",
+    "id": "hakima_fun_standing",
     "path": "characters/hakima/standing_proc/fun.png",
-    "title": "hakima (fun)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (fun)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "fun"
   },
   {
-    "id": "hakima_joy",
+    "id": "hakima_joy_standing",
     "path": "characters/hakima/standing_proc/joy.png",
-    "title": "hakima (joy)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (joy)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "joy"
   },
   {
-    "id": "hakima_maid",
+    "id": "hakima_maid_standing",
     "path": "characters/hakima/standing_proc/maid.png",
-    "title": "hakima (maid)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (maid)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "maid"
   },
   {
-    "id": "hakima_normal",
+    "id": "hakima_normal_standing",
     "path": "characters/hakima/standing_proc/normal.png",
-    "title": "hakima (normal)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (normal)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "normal"
   },
   {
-    "id": "hakima_social",
+    "id": "hakima_social_standing",
     "path": "characters/hakima/standing_proc/social.png",
-    "title": "hakima (social)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (social)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "social"
   },
   {
-    "id": "hakima_sorrow",
+    "id": "hakima_sorrow_standing",
     "path": "characters/hakima/standing_proc/sorrow.png",
-    "title": "hakima (sorrow)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (sorrow)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "sorrow"
   },
   {
-    "id": "hakima_student",
+    "id": "hakima_student_standing",
     "path": "characters/hakima/standing_proc/student.png",
-    "title": "hakima (student)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (student)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "student"
   },
   {
-    "id": "hakima_surprise",
+    "id": "hakima_surprise_standing",
     "path": "characters/hakima/standing_proc/surprise.png",
-    "title": "hakima (surprise)",
-    "category": "ヒロイン立ち絵"
+    "title": "HAKIMA (surprise)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "HAKIMA",
+    "expression": "surprise"
   },
   {
-    "id": "mira_anger",
+    "id": "hakima_anger_face",
+    "path": "characters/hakima/face_proc/anger.png",
+    "title": "HAKIMA (anger face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "anger"
+  },
+  {
+    "id": "hakima_cry_face",
+    "path": "characters/hakima/face_proc/cry.png",
+    "title": "HAKIMA (cry face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "cry"
+  },
+  {
+    "id": "hakima_fun_face",
+    "path": "characters/hakima/face_proc/fun.png",
+    "title": "HAKIMA (fun face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "fun"
+  },
+  {
+    "id": "hakima_joy_face",
+    "path": "characters/hakima/face_proc/joy.png",
+    "title": "HAKIMA (joy face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "joy"
+  },
+  {
+    "id": "hakima_maid_face",
+    "path": "characters/hakima/face_proc/maid.png",
+    "title": "HAKIMA (maid face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "maid"
+  },
+  {
+    "id": "hakima_normal_face",
+    "path": "characters/hakima/face_proc/normal.png",
+    "title": "HAKIMA (normal face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "normal"
+  },
+  {
+    "id": "hakima_social_face",
+    "path": "characters/hakima/face_proc/social.png",
+    "title": "HAKIMA (social face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "social"
+  },
+  {
+    "id": "hakima_sorrow_face",
+    "path": "characters/hakima/face_proc/sorrow.png",
+    "title": "HAKIMA (sorrow face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "sorrow"
+  },
+  {
+    "id": "hakima_student_face",
+    "path": "characters/hakima/face_proc/student.png",
+    "title": "HAKIMA (student face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "student"
+  },
+  {
+    "id": "hakima_surprise_face",
+    "path": "characters/hakima/face_proc/surprise.png",
+    "title": "HAKIMA (surprise face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "HAKIMA",
+    "expression": "surprise"
+  },
+  {
+    "id": "mira_anger_standing",
     "path": "characters/mira/standing_proc/anger.png",
-    "title": "mira (anger)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (anger)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "anger"
   },
   {
-    "id": "mira_cry",
+    "id": "mira_cry_standing",
     "path": "characters/mira/standing_proc/cry.png",
-    "title": "mira (cry)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (cry)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "cry"
   },
   {
-    "id": "mira_fun",
+    "id": "mira_fun_standing",
     "path": "characters/mira/standing_proc/fun.png",
-    "title": "mira (fun)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (fun)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "fun"
   },
   {
-    "id": "mira_joy",
+    "id": "mira_joy_standing",
     "path": "characters/mira/standing_proc/joy.png",
-    "title": "mira (joy)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (joy)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "joy"
   },
   {
-    "id": "mira_maid",
+    "id": "mira_maid_standing",
     "path": "characters/mira/standing_proc/maid.png",
-    "title": "mira (maid)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (maid)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "maid"
   },
   {
-    "id": "mira_normal",
+    "id": "mira_normal_standing",
     "path": "characters/mira/standing_proc/normal.png",
-    "title": "mira (normal)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (normal)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "normal"
   },
   {
-    "id": "mira_social",
+    "id": "mira_social_standing",
     "path": "characters/mira/standing_proc/social.png",
-    "title": "mira (social)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (social)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "social"
   },
   {
-    "id": "mira_sorrow",
+    "id": "mira_sorrow_standing",
     "path": "characters/mira/standing_proc/sorrow.png",
-    "title": "mira (sorrow)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (sorrow)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "sorrow"
   },
   {
-    "id": "mira_student",
+    "id": "mira_student_standing",
     "path": "characters/mira/standing_proc/student.png",
-    "title": "mira (student)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (student)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "student"
   },
   {
-    "id": "mira_surprise",
+    "id": "mira_surprise_standing",
     "path": "characters/mira/standing_proc/surprise.png",
-    "title": "mira (surprise)",
-    "category": "ヒロイン立ち絵"
+    "title": "MIRA (surprise)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "MIRA",
+    "expression": "surprise"
   },
   {
-    "id": "nader_anger",
+    "id": "mira_anger_face",
+    "path": "characters/mira/face_proc/anger.png",
+    "title": "MIRA (anger face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "anger"
+  },
+  {
+    "id": "mira_cry_face",
+    "path": "characters/mira/face_proc/cry.png",
+    "title": "MIRA (cry face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "cry"
+  },
+  {
+    "id": "mira_fun_face",
+    "path": "characters/mira/face_proc/fun.png",
+    "title": "MIRA (fun face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "fun"
+  },
+  {
+    "id": "mira_joy_face",
+    "path": "characters/mira/face_proc/joy.png",
+    "title": "MIRA (joy face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "joy"
+  },
+  {
+    "id": "mira_maid_face",
+    "path": "characters/mira/face_proc/maid.png",
+    "title": "MIRA (maid face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "maid"
+  },
+  {
+    "id": "mira_normal_face",
+    "path": "characters/mira/face_proc/normal.png",
+    "title": "MIRA (normal face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "normal"
+  },
+  {
+    "id": "mira_social_face",
+    "path": "characters/mira/face_proc/social.png",
+    "title": "MIRA (social face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "social"
+  },
+  {
+    "id": "mira_sorrow_face",
+    "path": "characters/mira/face_proc/sorrow.png",
+    "title": "MIRA (sorrow face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "sorrow"
+  },
+  {
+    "id": "mira_student_face",
+    "path": "characters/mira/face_proc/student.png",
+    "title": "MIRA (student face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "student"
+  },
+  {
+    "id": "mira_surprise_face",
+    "path": "characters/mira/face_proc/surprise.png",
+    "title": "MIRA (surprise face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "MIRA",
+    "expression": "surprise"
+  },
+  {
+    "id": "nader_anger_standing",
     "path": "characters/nader/standing_proc/anger.png",
-    "title": "nader (anger)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (anger)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "anger"
   },
   {
-    "id": "nader_cry",
+    "id": "nader_cry_standing",
     "path": "characters/nader/standing_proc/cry.png",
-    "title": "nader (cry)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (cry)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "cry"
   },
   {
-    "id": "nader_fun",
+    "id": "nader_fun_standing",
     "path": "characters/nader/standing_proc/fun.png",
-    "title": "nader (fun)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (fun)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "fun"
   },
   {
-    "id": "nader_joy",
+    "id": "nader_joy_standing",
     "path": "characters/nader/standing_proc/joy.png",
-    "title": "nader (joy)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (joy)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "joy"
   },
   {
-    "id": "nader_normal",
+    "id": "nader_normal_standing",
     "path": "characters/nader/standing_proc/normal.png",
-    "title": "nader (normal)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (normal)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "normal"
   },
   {
-    "id": "nader_sorrow",
+    "id": "nader_sorrow_standing",
     "path": "characters/nader/standing_proc/sorrow.png",
-    "title": "nader (sorrow)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (sorrow)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "sorrow"
   },
   {
-    "id": "nader_surprise",
+    "id": "nader_surprise_standing",
     "path": "characters/nader/standing_proc/surprise.png",
-    "title": "nader (surprise)",
-    "category": "ヒロイン立ち絵"
+    "title": "NADER (surprise)",
+    "category": "ヒロイン立ち絵",
+    "sourceType": "character",
+    "imageKind": "standing",
+    "heroineId": "NADER",
+    "expression": "surprise"
+  },
+  {
+    "id": "nader_anger_face",
+    "path": "characters/nader/face_proc/anger.png",
+    "title": "NADER (anger face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "anger"
+  },
+  {
+    "id": "nader_cry_face",
+    "path": "characters/nader/face_proc/cry.png",
+    "title": "NADER (cry face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "cry"
+  },
+  {
+    "id": "nader_fun_face",
+    "path": "characters/nader/face_proc/fun.png",
+    "title": "NADER (fun face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "fun"
+  },
+  {
+    "id": "nader_joy_face",
+    "path": "characters/nader/face_proc/joy.png",
+    "title": "NADER (joy face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "joy"
+  },
+  {
+    "id": "nader_maid_face",
+    "path": "characters/nader/face_proc/maid.png",
+    "title": "NADER (maid face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "maid"
+  },
+  {
+    "id": "nader_normal_face",
+    "path": "characters/nader/face_proc/normal.png",
+    "title": "NADER (normal face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "normal"
+  },
+  {
+    "id": "nader_social_face",
+    "path": "characters/nader/face_proc/social.png",
+    "title": "NADER (social face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "social"
+  },
+  {
+    "id": "nader_sorrow_face",
+    "path": "characters/nader/face_proc/sorrow.png",
+    "title": "NADER (sorrow face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "sorrow"
+  },
+  {
+    "id": "nader_student_face",
+    "path": "characters/nader/face_proc/student.png",
+    "title": "NADER (student face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "student"
+  },
+  {
+    "id": "nader_surprise_face",
+    "path": "characters/nader/face_proc/surprise.png",
+    "title": "NADER (surprise face)",
+    "category": "顔アイコン",
+    "sourceType": "character",
+    "imageKind": "face",
+    "heroineId": "NADER",
+    "expression": "surprise"
   }
 ];
 
@@ -26821,10 +27783,16 @@ function updateFaceExpressions(controller) {
 
 function updateQuizContent(controller) {
   const q = controller.quizState.currentQuestion;
+  const screenEl = controller.container.querySelector('.quiz-screen');
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const qualityRequestEl = controller.container.querySelector('[data-quiz-quality-request]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
   const customerLabelEl = controller.container.querySelector('[data-quiz-customer-label]');
+  if (screenEl) {
+    screenEl.setAttribute('data-input-locked', controller.quizState.inputLocked ? 'true' : 'false');
+    screenEl.setAttribute('data-question-index', String(controller.quizState.questionIndex || 0));
+    screenEl.setAttribute('data-total-questions', String(controller.quizState.totalQuestions || 0));
+  }
   
   if (!q) {
     if (promptEl) promptEl.textContent = '接客の準備中です。';
@@ -26852,14 +27820,21 @@ function updateQuizContent(controller) {
   updateFaceExpressions(controller);
 
   const choices = controller.quizState.currentChoices;
+  const feedback = controller.quizState.answerFeedback || null;
   choices.forEach((c, idx) => {
     const card = controller.container.querySelector(`[data-choice-slot="${idx}"]`);
     if (card) {
       const quality = normalizeQuality(c.quality);
       const meta = getChoiceMeta(c);
+      const choiceKey = `${c.id}::${quality}`;
+      const isCorrectChoice = feedback && choiceKey === feedback.correctChoiceKey;
+      const isSelectedChoice = feedback && c.id === feedback.selectedItemId && quality === feedback.selectedQuality;
       card.setAttribute('data-item-id', c.id);
       card.setAttribute('data-item-quality', quality);
       card.setAttribute('data-quality', quality);
+      card.classList.toggle('is-answer-selected', Boolean(isSelectedChoice));
+      card.classList.toggle('is-answer-correct', Boolean(isCorrectChoice));
+      card.classList.toggle('is-answer-wrong', Boolean(isSelectedChoice && !isCorrectChoice));
       const nameEl = card.querySelector('.choice-name');
       const iconEl = card.querySelector('.item-icon');
       const wrapEl = card.querySelector('.item-icon-wrap');
@@ -26887,6 +27862,11 @@ function updateQuizContent(controller) {
       }
     }
   });
+
+  if (screenEl) {
+    const answerResult = feedback?.result?.isCorrect ? 'correct' : (feedback ? 'wrong' : 'none');
+    screenEl.setAttribute('data-answer-result', answerResult);
+  }
 
   // Ensure HUD (and thus the detached score strip) is updated with current session scores.
   controller.updateHud();
@@ -26917,7 +27897,17 @@ const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
-const { EVENT_MASTER } = require('../data/eventMaster.cjs');
+let EVENT_MASTER;
+try {
+  EVENT_MASTER = require('../data/generated/eventManifest.cjs').EVENT_MANIFEST;
+} catch (e) {
+  // Fallback to legacy master if generated manifest is not available
+  try {
+    EVENT_MASTER = require('../data/eventMaster.cjs').EVENT_MASTER;
+  } catch (e2) {
+    EVENT_MASTER = [];
+  }
+}
 const { loadPlayerProgress } = require('../utils/playerProgress.js');
 
 const PANEL_TITLES = {
@@ -26953,6 +27943,11 @@ const HEROINE_LABELS = {
   HAKIMA: 'ハキマ',
   MIRA: 'ミラ',
   DARIYA: 'ダリヤ'
+};
+
+// Global scroll state for title panels
+const panelState = {
+  lastImageCategory: null
 };
 
 
@@ -27004,6 +27999,32 @@ function renderTitlePanel(controller, view) {
   const shell = view.querySelector('.title-screen-with-art');
   if (shell) shell.classList.add('title-panel-screen');
 
+  // 1. Capture current scroll position before re-rendering
+  let savedScroll = 0;
+  let isHorizontal = false;
+  let targetSelector = '';
+
+  if (panel === 'item') {
+    targetSelector = '.item-gallery-grid';
+  } else if (panel === 'image') {
+    targetSelector = '.image-gallery-thumbnails-wrapper';
+    isHorizontal = true;
+  }
+
+  if (targetSelector) {
+    const el = view.querySelector(targetSelector);
+    if (el) {
+      savedScroll = isHorizontal ? el.scrollLeft : el.scrollTop;
+    }
+  }
+
+  // If the category changed in the image gallery, we should reset the scroll
+  const currentImageCategory = controller.uiState?.galleryCategory || '背景';
+  if (panel === 'image' && panelState.lastImageCategory !== currentImageCategory) {
+    savedScroll = 0;
+    panelState.lastImageCategory = currentImageCategory;
+  }
+
   contentEl.innerHTML = `
     <div class="title-panel-card">
       <div class="title-panel-header">
@@ -27015,6 +28036,17 @@ function renderTitlePanel(controller, view) {
       </div>
     </div>
   `;
+
+  // 2. Restore scroll position after DOM update
+  if (targetSelector && savedScroll > 0) {
+    requestAnimationFrame(() => {
+      const el = view.querySelector(targetSelector);
+      if (el) {
+        if (isHorizontal) el.scrollLeft = savedScroll;
+        else el.scrollTop = savedScroll;
+      }
+    });
+  }
 }
 
 function renderPanelBody(controller, panel) {
@@ -27227,13 +28259,18 @@ function renderEventGallery(controller) {
     // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
     const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
     
+    // Use gallery info from generated manifest if available
+    const displayTitle = isCleared ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
+    const displaySummary = isCleared ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '営業をクリアして解放');
+    const conditionText = isCleared ? (HEROINE_LABELS[ev.heroineId] || '共通') : (ev.condition || '未解放');
+
     return `
       <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
         <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
         <div class="locked-gallery-content">
-          <h3>${isCleared ? escapeHtml(ev.title) : '？？？？'}</h3>
-          <p>${isCleared ? escapeHtml(ev.summary) : '営業をクリアして解放'}</p>
-          <small>${isCleared ? escapeHtml(HEROINE_LABELS[ev.heroineId] || '共通') : ev.condition}</small>
+          <h3>${escapeHtml(displayTitle)}</h3>
+          <p>${escapeHtml(displaySummary)}</p>
+          <small>${escapeHtml(conditionText)}</small>
         </div>
       </div>
     `;
@@ -28056,6 +29093,32 @@ function formatScoreMetric(label, value, key, previousScores) {
   return `<span class="score-metric" data-score-key="${key}"><span class="score-label">${label}</span><strong>${current}</strong>${badge}</span>`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function safeToken(value, fallback = 'unknown') {
+  const token = String(value ?? '').replace(/[^a-zA-Z0-9_-]/g, '');
+  return token || fallback;
+}
+
+function formatLogDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  return `${month}/${day} ${hour}:${minute}`;
+}
+
 function updateHud(controller) {
   const hud = controller.container.querySelector('[data-hud]');
   if (!hud) return;
@@ -28101,9 +29164,135 @@ function renderGlobalUi(controller) {
   }
 
   globalUi.innerHTML = `
+    <button class="global-ui-btn" data-action="open-log" title="ログ">📜</button>
     <button class="global-ui-btn" data-action="open-options" title="設定">⚙</button>
     <button class="global-ui-btn" data-action="open-help" title="ヘルプ">？</button>
     <button class="global-ui-btn" data-action="toggle-fullscreen" title="全画面">⛶</button>
+  `;
+}
+
+function renderLogModal(controller, container) {
+  const tab = controller.uiState.logTab || 'convo';
+  const convoLog = controller.uiState.convoLog || [];
+  const progress = controller.getPlayerProgressSummary();
+  const quizHistory = progress.quizHistory || [];
+
+  const renderConvoTab = () => {
+    if (convoLog.length === 0) return '<p class="log-empty">記録はありません</p>';
+    return convoLog.slice().reverse().map(log => `
+      <div class="log-item">
+        <span class="log-speaker">${escapeHtml(log.speaker)}</span>
+        <span class="log-text">${escapeHtml(log.text)}</span>
+      </div>
+    `).join('');
+  };
+
+  const renderQuizTab = () => {
+    if (quizHistory.length === 0) return '<p class="log-empty">過去問の記録はありません</p>';
+    
+    const page = controller.uiState.logQuizPage || 0;
+    const pageSize = 100;
+    const start = page * pageSize;
+    const paged = quizHistory.slice(start, start + pageSize);
+    const hasNext = quizHistory.length > start + pageSize;
+    const hasPrev = start > 0;
+    const resultCounts = quizHistory.reduce((acc, item) => {
+      const key = item?.result === 'perfect' || item?.result === 'good' ? item.result : 'miss';
+      acc[key] += 1;
+      return acc;
+    }, { perfect: 0, good: 0, miss: 0 });
+    const summary = `
+      <div class="log-quiz-summary">
+        <div>
+          <strong>${quizHistory.length}</strong>
+          <span>問の履歴</span>
+        </div>
+        <div class="log-quiz-summary-counts">
+          <span class="result-perfect">秀 ${resultCounts.perfect}</span>
+          <span class="result-good">良 ${resultCounts.good}</span>
+          <span class="result-miss">不可 ${resultCounts.miss}</span>
+        </div>
+      </div>
+    `;
+
+    const pager = `
+      <div class="log-pager">
+        <button class="log-pager-btn" ${hasPrev ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page - 1}">前</button>
+        <span class="log-pager-info">${start + 1} - ${Math.min(start + pageSize, quizHistory.length)} / ${quizHistory.length}</span>
+        <button class="log-pager-btn" ${hasNext ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page + 1}">次</button>
+      </div>
+    `;
+
+    const items = paged.map(q => {
+      const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
+      const resultText = q.result === 'perfect' ? '完全成功' : (q.result === 'good' ? '成功' : '失敗');
+      const recordedAt = formatLogDate(q.recordedAt);
+      const questionLabel = Number.isInteger(q.questionIndex) ? `Q${q.questionIndex + 1}` : '';
+      
+      const renderChoice = (choice, sideLabel) => {
+        if (!choice) return '';
+        const name = controller.getItemDisplayName(choice.itemId);
+        const icon = controller.getItemIconPath(choice.itemId);
+        const quality = choice.quality || 'normal';
+        const qualityToken = safeToken(quality, 'normal');
+        const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
+        
+        const indicators = [];
+        if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
+        if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
+
+        return `
+          <div class="log-quiz-col">
+            <span class="log-quiz-col-label">${sideLabel}</span>
+            <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
+              <div class="log-quiz-icon-frame">
+                <img src="${escapeHtml(icon)}" alt="" />
+              </div>
+              <div class="log-quiz-item-info">
+                <span class="log-quiz-item-name">${escapeHtml(name)}</span>
+                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(quality)}</small>
+                <div class="log-quiz-indicators">${indicators.join('')}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      return `
+        <div class="log-quiz-item result-${safeToken(q.result, 'miss')}">
+          <div class="log-quiz-head">
+            <div class="log-quiz-meta">
+              <span>第${escapeHtml(q.turn)}ターン</span>
+              ${questionLabel ? `<span>${escapeHtml(questionLabel)}</span>` : ''}
+              <span>${escapeHtml(q.heroineId)}</span>
+              ${recordedAt ? `<time>${escapeHtml(recordedAt)}</time>` : ''}
+            </div>
+            <div class="log-quiz-result-text">${resultText}</div>
+          </div>
+          <div class="log-quiz-prompt">${escapeHtml(q.prompt)}</div>
+          <div class="log-quiz-comparison">
+            ${renderChoice(q.leftChoice, '左の選択肢')}
+            ${renderChoice(q.rightChoice, '右の選択肢')}
+            <div class="log-quiz-result-badge">${resultLabel}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return summary + items + (quizHistory.length > pageSize ? pager : '');
+  };
+
+  container.innerHTML = `
+    <div class="ui-modal log-modal">
+      <div class="log-tabs">
+        <button class="log-tab-btn ${tab === 'convo' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="convo">会話ログ</button>
+        <button class="log-tab-btn ${tab === 'quiz' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="quiz">過去問履歴</button>
+      </div>
+      <div class="log-body scrollable">
+        ${tab === 'convo' ? renderConvoTab() : renderQuizTab()}
+      </div>
+      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    </div>
   `;
 }
 
@@ -28126,6 +29315,8 @@ function renderModal(controller) {
     renderOptionsModal(controller, backdrop);
   } else if (modalName === 'help') {
     renderHelpModal(controller, backdrop);
+  } else if (modalName === 'log') {
+    renderLogModal(controller, backdrop);
   }
 }
 
@@ -28216,7 +29407,9 @@ function renderLoadingOverlay(message = 'データを読み込んでいます...
   return `
     <div class="asset-loading-overlay" id="loading-overlay" style="opacity: 0; transition: opacity 0.15s ease-out;">
       <div class="asset-loading-card">
-        <div class="asset-loading-spinner"></div>
+        <div class="asset-loading-lantern" aria-hidden="true">
+          <span></span>
+        </div>
         <p>${message}</p>
       </div>
     </div>
@@ -29261,7 +30454,8 @@ function getDefaultPlayerProgress() {
       lastClearedAt: null
     })),
     eventSeen: {},
-    imageSeen: {}
+    imageSeen: {},
+    quizHistory: []
   };
 }
 
@@ -29276,7 +30470,8 @@ function normalizeProgress(progress) {
     bestRecords: { ...base.bestRecords },
     endings: { ...base.endings },
     eventSeen: src.eventSeen && typeof src.eventSeen === 'object' ? src.eventSeen : {},
-    imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {}
+    imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {},
+    quizHistory: Array.isArray(src.quizHistory) ? src.quizHistory : []
   };
 
   HEROINE_IDS.forEach((heroineId) => {
@@ -29385,6 +30580,7 @@ function getPlayerProgressSummary() {
     bestRecords: cloneJson(progress.bestRecords),
     endings: cloneJson(progress.endings),
     imageSeen: cloneJson(progress.imageSeen),
+    quizHistory: cloneJson(progress.quizHistory || []),
     clearedEndingCount: clearedEndings.length,
     eventSeenCount: Object.keys(progress.eventSeen || {}).length,
     imageSeenCount: Object.keys(progress.imageSeen || {}).length
@@ -29401,6 +30597,25 @@ function markImageSeen(imageId) {
   savePlayerProgress(progress);
 }
 
+function recordQuizHistory(entry) {
+  if (!entry) return;
+  const progress = loadPlayerProgress();
+  if (!progress.quizHistory) progress.quizHistory = [];
+  
+  progress.quizHistory.unshift({
+    ...entry,
+    recordedAt: new Date().toISOString()
+  });
+  
+  if (progress.quizHistory.length > 200) {
+    progress.quizHistory = progress.quizHistory.slice(0, 200);
+  }
+  
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+  return progress.quizHistory;
+}
+
 module.exports = {
   PLAYER_PROGRESS_KEY,
   HEROINE_IDS,
@@ -29411,7 +30626,8 @@ module.exports = {
   clearPlayerProgress,
   recordEndingProgress,
   getPlayerProgressSummary,
-  markImageSeen
+  markImageSeen,
+  recordQuizHistory
 };
 
     };
@@ -29429,7 +30645,28 @@ module.exports = {
  */
 
 const { getCharacterVisualImagePath } = require('./assetPaths.js');
-const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+let AUDIO_MANIFEST;
+try {
+  ({ AUDIO_MANIFEST } = require('../data/audioManifest.cjs'));
+} catch (error) {
+  // Node tests load this browser module directly, while the browser bundler
+  // aliases src/data as ./data. Keep both paths valid.
+  ({ AUDIO_MANIFEST } = require('../../src/data/audioManifest.cjs'));
+}
+const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
+let EVENT_MANIFEST, EVENT_SCRIPTS;
+try {
+  ({ EVENT_MANIFEST } = require('../data/generated/eventManifest.cjs'));
+  ({ EVENT_SCRIPTS } = require('../data/generated/eventScripts.cjs'));
+} catch (error) {
+  try {
+    ({ EVENT_MANIFEST } = require('../../src/data/generated/eventManifest.cjs'));
+    ({ EVENT_SCRIPTS } = require('../../src/data/generated/eventScripts.cjs'));
+  } catch (e) {
+    EVENT_MANIFEST = [];
+    EVENT_SCRIPTS = {};
+  }
+}
 
 const HEROINE_IDS = ['HAKIMA', 'MIRA', 'DARIYA'];
 const HEROINE_EXPRESSIONS = [
@@ -29452,6 +30689,112 @@ function compactUnique(values) {
 }
 
 
+function getGalleryItems() {
+  return Array.isArray(GALLERY_MANIFEST) ? GALLERY_MANIFEST : [];
+}
+
+function collectGalleryImagePaths(predicate) {
+  return getGalleryItems()
+    .filter((item) => item && item.path && (!predicate || predicate(item)))
+    .map((item) => item.path);
+}
+
+function collectOpeningGalleryImagePaths() {
+  // Common backgrounds are safe opening assets. Heroine-specific stills remain in Stage B.
+  return collectGalleryImagePaths((item) => item.sourceType === 'background' || item.category === '背景');
+}
+
+function collectHeroineEventGalleryPaths(heroineId) {
+  const id = String(heroineId || '').toUpperCase();
+  const lower = id.toLowerCase();
+  // We keep the old manual logic as a baseline, but the new collectHeroineEventAssetPaths
+  // handles the DSL-driven collection.
+  return collectGalleryImagePaths((item) => {
+    return item.imageKind === 'still' && (item.heroineId === id || (item.id || '').includes(lower));
+  });
+}
+
+/**
+ * Finds audio path by ID in the multi-layered AUDIO_MANIFEST.
+ */
+function findAudioPathById(id, type) {
+  if (!AUDIO_MANIFEST) return null;
+  
+  if (type === 'bgm') {
+    // System
+    if (AUDIO_MANIFEST.bgm.system) {
+      const found = AUDIO_MANIFEST.bgm.system.find(b => b.id === id);
+      if (found) return found.path;
+    }
+    // Heroines
+    if (AUDIO_MANIFEST.bgm.heroines) {
+      for (const heroine of Object.values(AUDIO_MANIFEST.bgm.heroines)) {
+        if (heroine.theme && heroine.theme.id === id) return heroine.theme.path;
+        if (heroine.game) {
+          const found = heroine.game.find(b => b.id === id);
+          if (found) return found.path;
+        }
+        if (heroine.ending) {
+          for (const b of Object.values(heroine.ending)) {
+            if (b.id === id) return b.path;
+          }
+        }
+      }
+    }
+    // Extra
+    if (AUDIO_MANIFEST.bgm.extra) {
+      const found = AUDIO_MANIFEST.bgm.extra.find(b => b.id === id);
+      if (found) return found.path;
+    }
+  } else if (type === 'se') {
+    if (AUDIO_MANIFEST.se) {
+      for (const category of Object.values(AUDIO_MANIFEST.se)) {
+        const found = category.find(s => s.id === id);
+        if (found) return found.path;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Traverses event scripts for a specific heroine to find all required assets.
+ */
+function collectHeroineEventAssetPaths(heroineId) {
+  const images = [];
+  const audio = [];
+  
+  if (!EVENT_MANIFEST || !EVENT_SCRIPTS) return { images, audio };
+
+  // Find events for this heroine
+  const heroineEvents = EVENT_MANIFEST.filter(ev => ev.heroineId === heroineId);
+  
+  heroineEvents.forEach(ev => {
+    const script = EVENT_SCRIPTS[ev.id];
+    if (!script) return;
+    
+    script.forEach(step => {
+      if (step.type === 'bg' || step.type === 'still') {
+        const item = GALLERY_MANIFEST.find(i => i.id === step.id);
+        if (item && item.path) images.push(item.path);
+      } else if (step.type === 'bgm') {
+        const path = findAudioPathById(step.id, 'bgm');
+        if (path) audio.push(path);
+      } else if (step.type === 'sfx') {
+        const path = findAudioPathById(step.id, 'se');
+        if (path) audio.push(path);
+      }
+    });
+  });
+  
+  return { images: compactUnique(images), audio: compactUnique(audio) };
+}
+
+function collectGalleryViewerImagePaths() {
+  return collectGalleryImagePaths();
+}
+
+
 function collectCommonBgmPaths() {
   const bgm = AUDIO_MANIFEST?.bgm || {};
   const paths = [];
@@ -29467,6 +30810,22 @@ function collectSePaths() {
     if (Array.isArray(group)) group.forEach((track) => { if (track?.path) paths.push(track.path); });
   });
   return paths;
+}
+
+
+function collectAllBgmPaths() {
+  const bgm = AUDIO_MANIFEST?.bgm || {};
+  const paths = [...collectCommonBgmPaths()];
+  Object.values(bgm.heroines || {}).forEach((entry) => {
+    if (entry?.theme?.path) paths.push(entry.theme.path);
+    if (Array.isArray(entry?.game)) entry.game.forEach((track) => { if (track?.path) paths.push(track.path); });
+    Object.values(entry?.ending || {}).forEach((track) => { if (track?.path) paths.push(track.path); });
+  });
+  return compactUnique(paths);
+}
+
+function collectSoundTestAudioPaths() {
+  return compactUnique([...collectAllBgmPaths(), ...collectSePaths()]);
 }
 
 function collectHeroineBgmPaths(heroineId) {
@@ -29486,8 +30845,7 @@ function collectHeroineBgmPaths(heroineId) {
 function createAssetPreloader() {
   const imageCache = new Map();
   const audioCache = new Map();
-  const linkCache = new Set();
-  let openingStarted = false;
+  let openingPromise = null;
   let heroineSelectStarted = false;
 
   function preloadImage(src) {
@@ -29516,15 +30874,6 @@ function createAssetPreloader() {
     return Promise.all(compactUnique(srcs).map(preloadImage));
   }
 
-  function appendAudioPreloadLink(path) {
-    if (!path || linkCache.has(path) || typeof document === 'undefined') return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'audio';
-    link.href = path;
-    document.head.appendChild(link);
-    linkCache.add(path);
-  }
 
   function preloadAudio(path) {
     if (!path) return Promise.resolve(false);
@@ -29533,7 +30882,6 @@ function createAssetPreloader() {
       return entry instanceof Promise ? entry : Promise.resolve(true);
     }
 
-    appendAudioPreloadLink(path);
     const promise = new Promise((resolve) => {
       try {
         const audio = new Audio();
@@ -29570,21 +30918,24 @@ function createAssetPreloader() {
   }
 
   function preloadOpeningAssets() {
-    if (openingStarted) return;
-    openingStarted = true;
+    if (openingPromise) return openingPromise;
 
     // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
     // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
-    const startImagePaths = HEROINE_IDS.flatMap((id) => ([
-      ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
-      ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
-    ]));
+    const startImagePaths = [
+      ...collectOpeningGalleryImagePaths(),
+      ...HEROINE_IDS.flatMap((id) => ([
+        ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
+        ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
+      ]))
+    ];
     
     // 開幕に必要なシステムBGMと全SEを確実に待つ
-    return Promise.all([
+    openingPromise = Promise.all([
       preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]),
       preloadImages(startImagePaths)
     ]);
+    return openingPromise;
   }
 
   function preloadHeroineSelectAssets(heroineId) {
@@ -29592,13 +30943,19 @@ function createAssetPreloader() {
     if (!id) return Promise.resolve([]);
     heroineSelectStarted = true;
 
-    const heroineImagePaths = HEROINE_EXPRESSIONS.flatMap((expression) => [
-      getCharacterVisualImagePath(id, expression, 'standing'),
-      getCharacterVisualImagePath(id, expression, 'face')
-    ]);
+    const eventAssets = collectHeroineEventAssetPaths(id);
+
+    const heroineImagePaths = [
+      ...collectHeroineEventGalleryPaths(id),
+      ...eventAssets.images,
+      ...HEROINE_EXPRESSIONS.flatMap((expression) => [
+        getCharacterVisualImagePath(id, expression, 'standing'),
+        getCharacterVisualImagePath(id, expression, 'face')
+      ])
+    ];
     
     return Promise.all([
-      preloadAudioPaths(collectHeroineBgmPaths(id)),
+      preloadAudioPaths([...collectHeroineBgmPaths(id), ...eventAssets.audio]),
       preloadImages(heroineImagePaths)
     ]);
   }
@@ -29613,6 +30970,15 @@ function createAssetPreloader() {
     return preloadImages(imagePaths);
   }
 
+
+  function preloadGalleryViewerAssets() {
+    return preloadImages(collectGalleryViewerImagePaths());
+  }
+
+  function preloadSoundTestAssets() {
+    return preloadAudioPaths(collectSoundTestAudioPaths());
+  }
+
   function getStats() {
     const imageStats = { loading: 0, loaded: 0, error: 0 };
     imageCache.forEach((record) => {
@@ -29621,9 +30987,10 @@ function createAssetPreloader() {
     return {
       images: imageStats,
       audio: audioCache.size,
-      links: linkCache.size,
-      openingStarted,
-      heroineSelectStarted
+      links: 0,
+      openingStarted: Boolean(openingPromise),
+      heroineSelectStarted,
+      galleryItems: getGalleryItems().length
     };
   }
 
@@ -29634,13 +31001,20 @@ function createAssetPreloader() {
     preloadAudioPaths,
     preloadOpeningAssets,
     preloadHeroineSelectAssets,
+    preloadGalleryViewerAssets,
+    preloadSoundTestAssets,
     preloadResultExpressions,
     getStats
   };
 }
 
 module.exports = {
-  createAssetPreloader
+  createAssetPreloader,
+  collectOpeningGalleryImagePaths,
+  collectHeroineEventGalleryPaths,
+  collectGalleryViewerImagePaths,
+  collectSoundTestAudioPaths,
+  collectAllBgmPaths
 };
 
     };
@@ -30243,14 +31617,14 @@ const {
   getRhythmSilenceGraceMs,
   getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
-const { markImageSeen } = require('./utils/playerProgress.js');
+const { markImageSeen, recordEndingProgress, getPlayerProgressSummary, recordQuizHistory, clearPlayerProgress } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems } = require('./utils/itemCollection.js');
+const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
+const { createScreenTransitionController } = require('./controllers/screenTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
 const { showLoading, hideLoading } = require('./ui/loadingOverlay.js');
 
@@ -30303,7 +31677,6 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
-    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -30311,11 +31684,13 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false
+      turnTransitionActive: false,
+      convoLog: []
     };
 
     this.totalTurns = TOTAL_TURNS;
     this.turnTransition = createTurnTransitionController(this);
+    this.screenTransition = createScreenTransitionController();
 
     this.typewriter = createTypewriterController({
       getDelayMs: () => TEXT_SPEED_MS[this.settings.textSpeed] || 32,
@@ -30332,11 +31707,22 @@ class GameController {
     this.applySettingsFromUrl();
 
     // Initial boot loading
+    // 修正: 起動時ロードは必ず showLoading -> 描画確定 -> preload 開始 の順にする
     await showLoading(this.container, '起動しています...');
-    await Promise.all([
-      this.assetPreloader.preloadOpeningAssets(),
-      new Promise(r => setTimeout(r, 1000)) // Initial weight
-    ]);
+
+    // 1フレーム待って描画を確定させる
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const startTime = performance.now();
+    await this.assetPreloader.preloadOpeningAssets();
+
+    // 最低表示時間 (600-800ms) を満たすように調整
+    const MIN_LOAD_TIME = 800;
+    const elapsed = performance.now() - startTime;
+    if (elapsed < MIN_LOAD_TIME) {
+      await new Promise(r => setTimeout(r, MIN_LOAD_TIME - elapsed));
+    }
+
     await hideLoading(this.container);
 
     this.update();
@@ -30352,7 +31738,8 @@ class GameController {
       lastResult: null,
       turnStartScore: null,
       inputLocked: false,
-      currentChoices: []
+      currentChoices: [],
+      answerFeedback: null
     };
   }
 
@@ -30427,6 +31814,14 @@ class GameController {
     this.renderModal();
   }
 
+  resetAllGameProgress() {
+    if (!confirm('全てのセーブデータを消去してタイトルに戻りますか？\n（この操作は取り消せません）')) return;
+    clearRunSave();
+    clearPlayerProgress();
+    clearItemCollection();
+    location.reload();
+  }
+
   setTextSpeed(speed) {
     if (TEXT_SPEED_MS[speed] === undefined) return;
     this.settings.textSpeed = speed;
@@ -30454,10 +31849,27 @@ class GameController {
   }
 
 
-  openTitlePanel(panelName) {
+  async openTitlePanel(panelName) {
+    this.playSfx('uiTapBottle');
+
+    if (panelName === 'image') {
+      await showLoading(this.container, '画像集を準備しています...');
+      await Promise.all([
+        this.preloadGalleryViewerAssets(),
+        new Promise((resolve) => setTimeout(resolve, 250))
+      ]);
+      await hideLoading(this.container);
+    } else if (panelName === 'sound') {
+      await showLoading(this.container, '音楽集を準備しています...');
+      await Promise.all([
+        this.preloadSoundTestAssets(),
+        new Promise((resolve) => setTimeout(resolve, 250))
+      ]);
+      await hideLoading(this.container);
+    }
+
     this.uiState.titlePanel = panelName;
     this.uiState.itemDetailModal = null;
-    this.playSfx('uiTapBottle');
     this.update();
   }
 
@@ -30503,6 +31915,7 @@ class GameController {
    */
   update() {
     const phase = this.session.phase;
+    const transition = this.screenTransition.beforeRender(this.session);
     const newClassName = `phase-${phase.toLowerCase()}`;
     if (this.container.className !== newClassName) {
       this.container.className = newClassName;
@@ -30536,6 +31949,7 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.screenTransition.apply(this.container, transition);
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
@@ -30616,7 +32030,19 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
-  updateVnContent(payload) { updateVnContent(this, payload); }
+  updateVnContent(payload) {
+    if (payload && payload.text && payload.speakerName) {
+      this.uiState.convoLog.push({
+        speaker: payload.speakerName,
+        text: payload.text,
+        charId: payload.charId || payload.speakerId
+      });
+      if (this.uiState.convoLog.length > 50) {
+        this.uiState.convoLog.shift();
+      }
+    }
+    updateVnContent(this, payload);
+  }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
 
@@ -30657,7 +32083,7 @@ class GameController {
       await showLoading(this.container, '以前の記録を読み込んでいます...');
       await Promise.all([
         this.preloadHeroineSelectAssets(saveData.session.selectedHeroineId),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
       ]);
       await hideLoading(this.container);
     }
@@ -30675,6 +32101,8 @@ class GameController {
     return applied;
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
+  preloadGalleryViewerAssets() { return this.assetPreloader?.preloadGalleryViewerAssets ? this.assetPreloader.preloadGalleryViewerAssets() : Promise.resolve([]); }
+  preloadSoundTestAssets() { return this.assetPreloader?.preloadSoundTestAssets ? this.assetPreloader.preloadSoundTestAssets() : Promise.resolve([]); }
   
   async startFreePlay({ bgmPath, questionCount }) {
     this.clearTypewriter();
@@ -30684,7 +32112,7 @@ class GameController {
     await showLoading(this.container, '接客の準備をしています...');
     await Promise.all([
         this.preloadHeroineSelectAssets('HAKIMA'),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
     ]);
     await hideLoading(this.container);
     
@@ -30764,7 +32192,7 @@ class GameController {
     await showLoading(this.container, '旅の準備をしています...');
     await Promise.all([
         this.preloadHeroineSelectAssets(id),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
     ]);
     await hideLoading(this.container);
 
@@ -30872,6 +32300,7 @@ class GameController {
       }
     ];
     this.quizState.currentChoices = this.shuffleChoices(choices);
+    this.quizState.answerFeedback = null;
     
     this.quizState.promptShownAt = performance.now();
     this.quizState.inputLocked = false;
@@ -30986,9 +32415,50 @@ class GameController {
 
     this.recordQuizItemLog(itemId, result);
 
+    // Update session scores
     this.session.scores = updateGameScore(this.session.scores, result);
+
+    const leftChoice = this.quizState.currentChoices[0];
+    const rightChoice = this.quizState.currentChoices[1];
+
+    // Determine result rating for history
+    let historyResult = 'miss';
+    if (result.isCorrect) {
+      if (result.rating === 'PERFECT') historyResult = 'perfect';
+      else historyResult = 'good';
+    }
+
+    // Record quiz history with layout info
+    recordQuizHistory({
+      turn: this.session.turn,
+      questionIndex: this.quizState.questionIndex,
+      heroineId: this.session.selectedHeroineId,
+      prompt: q.promptText || '',
+      leftChoice: {
+        itemId: leftChoice.id,
+        quality: leftChoice.quality,
+        isCorrect: leftChoice.id === q.correctItemId && leftChoice.quality === q.correctQuality
+      },
+      rightChoice: {
+        itemId: rightChoice.id,
+        quality: rightChoice.quality,
+        isCorrect: rightChoice.id === q.correctItemId && rightChoice.quality === q.correctQuality
+      },
+      selectedItemId: itemId,
+      selectedQuality: quality || 'normal',
+      result: historyResult
+    });
+
     this.quizState.lastResult = result;
+    this.quizState.answerFeedback = {
+      selectedItemId: itemId,
+      selectedQuality,
+      correctChoiceKey,
+      result
+    };
+    this.updateQuizContent();
     this.quizState.questionIndex++;
+    this.saveCurrentRunIfNeeded();
 
     this.showResultStamp(result);
     this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
@@ -30996,8 +32466,9 @@ class GameController {
     if (this.quizState.questionIndex < this.quizState.totalQuestions) {
       setTimeout(() => {
         this.generateNextQuestion();
-        this.updateQuizContent();
         this.quizState.inputLocked = false;
+        this.updateQuizContent();
+        this.saveCurrentRunIfNeeded();
       }, RESULT_TRANSITION_DELAY_MS);
     } else {
       setTimeout(() => {
