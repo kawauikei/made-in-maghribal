@@ -5,6 +5,7 @@ const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
 const { getResultComment, getResultExpression } = require('../data/resultComments.js');
 const { getTurnResultRenderModel } = require('../core/renderModel.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 
 const SCORE_MAX_PER_TURN = {
   revenue: 100,
@@ -104,7 +105,7 @@ function renderResultItemList(items) {
   const rows = visibleItems.map((item) => `
     <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
       ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
-      <img class="result-item-icon" src="${item.iconPath}" alt="${item.displayName}" onerror="this.style.display='none'" />
+      <div class="item-sprite result-item-icon" style="${Object.entries(getItemSpriteStyle(item.itemId, 64)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
     </div>
   `).join('');
 

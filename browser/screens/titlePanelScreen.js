@@ -8,6 +8,7 @@ const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 const { ITEM_MASTER } = require('../data/itemMaster.cjs');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
 const { ITEM_TEXTS } = require('../data/itemTexts.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
@@ -292,7 +293,9 @@ function renderItemDetailModal(controller, seenItems) {
       <article class="item-detail-modal" role="dialog" aria-modal="true" aria-label="${escapeHtml(model.name)} 詳細">
         <button class="item-detail-close" type="button" data-action="item-detail-close">×</button>
         <div class="item-detail-head">
-          <div class="item-detail-icon-frame"><img src="${model.icon}" alt="${escapeHtml(model.name)}" onerror="this.style.display='none'" /></div>
+          <div class="item-detail-icon-frame">
+            <div class="item-sprite" style="${Object.entries(getItemSpriteStyle(model.item.itemId, 160)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
+          </div>
           <div>
             <p class="item-detail-kicker">${index + 1} / ${seenItems.length}</p>
             <h3>${escapeHtml(model.name)}</h3>
@@ -331,7 +334,7 @@ function renderItemGallery(controller) {
       <${tag} class="gallery-item-tile${seen ? ' is-seen' : ' is-locked'}" title="${escapeHtml(title)}"${detailAttr}>
         <div class="gallery-item-icon-frame">
           <div class="gallery-item-icon">
-            ${seen ? `<img src="${model.icon}" alt="${escapeHtml(model.name)}" onerror="this.style.display='none'" />` : '<span>？</span>'}
+            ${seen ? `<div class="item-sprite" style="${Object.entries(getItemSpriteStyle(item.itemId, 80)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>` : '<span>？</span>'}
           </div>
         </div>
         <div class="gallery-item-info">

@@ -3,6 +3,18 @@
  * SHARED UI COMPONENTS (HUD, Message Box, Buttons, Common Panels)
  * ============================================================================
  */
+ 
+ .item-sprite {
+   width: var(--item-size, 96px);
+   height: var(--item-size, 96px);
+   background-image: url("images/ui/item.webp");
+   background-repeat: no-repeat;
+   background-size: var(--item-scale-w) var(--item-scale-h);
+   background-position: var(--item-x) var(--item-y);
+   flex-shrink: 0;
+   display: inline-block;
+   image-rendering: -webkit-optimize-contrast; /* Keep icons crisp */
+ }
 
 /* HUD / Stats Bar (Default Absolute) */
 .stats {

@@ -4,6 +4,7 @@
 
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
 
@@ -250,7 +251,7 @@ function renderQuiz(controller, view) {
       <section class="choice-list">
         <div class="choice-card" data-choice-slot="0">
           <div class="item-icon-wrap">
-            <img class="item-icon" alt="" loading="eager" />
+            <div class="item-sprite item-icon" aria-hidden="true"></div>
           </div>
           <div class="choice-name"></div>
           <div class="choice-meta" aria-label="品物情報">
@@ -262,7 +263,7 @@ function renderQuiz(controller, view) {
         </div>
         <div class="choice-card" data-choice-slot="1">
           <div class="item-icon-wrap">
-            <img class="item-icon" alt="" loading="eager" />
+            <div class="item-sprite item-icon" aria-hidden="true"></div>
           </div>
           <div class="choice-name"></div>
           <div class="choice-meta" aria-label="品物情報">
@@ -363,12 +364,12 @@ function updateQuizContent(controller) {
       if (genreEl) genreEl.textContent = `分類：${meta.genreName || meta.genre || '不明'}`;
       if (qualityEl) qualityEl.textContent = `品質：${getQualityLabel(quality)}`;
       if (iconEl) {
-        iconEl.style.display = '';
-        iconEl.src = controller.getItemIconPath(c.id);
-        iconEl.onerror = () => {
-          iconEl.style.display = 'none';
-          if (wrapEl) wrapEl.classList.add('missing-icon');
-        };
+        const spriteStyles = getItemSpriteStyle(c.id, 96);
+        Object.entries(spriteStyles).forEach(([key, val]) => {
+          iconEl.style.setProperty(key, val);
+        });
+        iconEl.style.display = Object.keys(spriteStyles).length ? '' : 'none';
+        if (!Object.keys(spriteStyles).length && wrapEl) wrapEl.classList.add('missing-icon');
       }
       if (wrapEl) {
         wrapEl.classList.remove('missing-icon');

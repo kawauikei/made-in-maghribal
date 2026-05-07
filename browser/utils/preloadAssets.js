@@ -287,6 +287,7 @@ function createAssetPreloader() {
     // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
     // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
     const startImagePaths = [
+      'images/ui/item.webp',
       ...collectOpeningGalleryImagePaths(),
       ...HEROINE_IDS.flatMap((id) => ([
         ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
