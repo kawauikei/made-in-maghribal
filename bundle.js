@@ -25438,6 +25438,28 @@ function bindInputHandlers(controller) {
       controller.updateSoundTestStatus('');
       return;
     }
+
+    // Gallery & Modal Backdrops
+    const galleryTabBtn = target.closest('[data-action="gallery-tab"]');
+    if (galleryTabBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateGalleryCategory(galleryTabBtn.getAttribute('data-gallery-category'));
+      return;
+    }
+    const gallerySelectBtn = target.closest('[data-action="gallery-select"]');
+    if (gallerySelectBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateGalleryIndex(Number(gallerySelectBtn.getAttribute('data-gallery-index')));
+      return;
+    }
+
+    if (target.closest('.title-panel-screen') && !target.closest('.title-panel-card')) {
+      event.stopPropagation();
+      controller.closeTitlePanel();
+      return;
+    }
     const titleStub = target.closest('[data-title-stub]');
     if (titleStub) {
       event.stopPropagation();
@@ -25919,6 +25941,228 @@ const GALLERY_MANIFEST = [
     "path": "images/still/still_mira_visit_sick_01.jpeg",
     "title": "still mira visit sick 01",
     "category": "スチル"
+  },
+  {
+    "id": "dariya_anger",
+    "path": "characters/dariya/standing_proc/anger.png",
+    "title": "dariya (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_cry",
+    "path": "characters/dariya/standing_proc/cry.png",
+    "title": "dariya (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_fun",
+    "path": "characters/dariya/standing_proc/fun.png",
+    "title": "dariya (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_joy",
+    "path": "characters/dariya/standing_proc/joy.png",
+    "title": "dariya (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_maid",
+    "path": "characters/dariya/standing_proc/maid.png",
+    "title": "dariya (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_normal",
+    "path": "characters/dariya/standing_proc/normal.png",
+    "title": "dariya (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_social",
+    "path": "characters/dariya/standing_proc/social.png",
+    "title": "dariya (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_sorrow",
+    "path": "characters/dariya/standing_proc/sorrow.png",
+    "title": "dariya (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_student",
+    "path": "characters/dariya/standing_proc/student.png",
+    "title": "dariya (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "dariya_surprise",
+    "path": "characters/dariya/standing_proc/surprise.png",
+    "title": "dariya (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_anger",
+    "path": "characters/hakima/standing_proc/anger.png",
+    "title": "hakima (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_cry",
+    "path": "characters/hakima/standing_proc/cry.png",
+    "title": "hakima (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_fun",
+    "path": "characters/hakima/standing_proc/fun.png",
+    "title": "hakima (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_joy",
+    "path": "characters/hakima/standing_proc/joy.png",
+    "title": "hakima (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_maid",
+    "path": "characters/hakima/standing_proc/maid.png",
+    "title": "hakima (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_normal",
+    "path": "characters/hakima/standing_proc/normal.png",
+    "title": "hakima (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_social",
+    "path": "characters/hakima/standing_proc/social.png",
+    "title": "hakima (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_sorrow",
+    "path": "characters/hakima/standing_proc/sorrow.png",
+    "title": "hakima (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_student",
+    "path": "characters/hakima/standing_proc/student.png",
+    "title": "hakima (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "hakima_surprise",
+    "path": "characters/hakima/standing_proc/surprise.png",
+    "title": "hakima (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_anger",
+    "path": "characters/mira/standing_proc/anger.png",
+    "title": "mira (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_cry",
+    "path": "characters/mira/standing_proc/cry.png",
+    "title": "mira (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_fun",
+    "path": "characters/mira/standing_proc/fun.png",
+    "title": "mira (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_joy",
+    "path": "characters/mira/standing_proc/joy.png",
+    "title": "mira (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_maid",
+    "path": "characters/mira/standing_proc/maid.png",
+    "title": "mira (maid)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_normal",
+    "path": "characters/mira/standing_proc/normal.png",
+    "title": "mira (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_social",
+    "path": "characters/mira/standing_proc/social.png",
+    "title": "mira (social)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_sorrow",
+    "path": "characters/mira/standing_proc/sorrow.png",
+    "title": "mira (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_student",
+    "path": "characters/mira/standing_proc/student.png",
+    "title": "mira (student)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "mira_surprise",
+    "path": "characters/mira/standing_proc/surprise.png",
+    "title": "mira (surprise)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_anger",
+    "path": "characters/nader/standing_proc/anger.png",
+    "title": "nader (anger)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_cry",
+    "path": "characters/nader/standing_proc/cry.png",
+    "title": "nader (cry)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_fun",
+    "path": "characters/nader/standing_proc/fun.png",
+    "title": "nader (fun)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_joy",
+    "path": "characters/nader/standing_proc/joy.png",
+    "title": "nader (joy)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_normal",
+    "path": "characters/nader/standing_proc/normal.png",
+    "title": "nader (normal)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_sorrow",
+    "path": "characters/nader/standing_proc/sorrow.png",
+    "title": "nader (sorrow)",
+    "category": "ヒロイン立ち絵"
+  },
+  {
+    "id": "nader_surprise",
+    "path": "characters/nader/standing_proc/surprise.png",
+    "title": "nader (surprise)",
+    "category": "ヒロイン立ち絵"
   }
 ];
 
@@ -26674,6 +26918,7 @@ const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
 const { EVENT_MASTER } = require('../data/eventMaster.cjs');
+const { loadPlayerProgress } = require('../utils/playerProgress.js');
 
 const PANEL_TITLES = {
   event: 'イベント集',
@@ -26749,20 +26994,24 @@ function formatItemQualityText(value) {
   return text.replace(/（効果/g, '<br>（効果');
 }
 
+const { renderTitleShell } = require('./titleScreen.js');
+
 function renderTitlePanel(controller, view) {
   const panel = controller.uiState?.titlePanel || 'item';
   const title = PANEL_TITLES[panel] || 'メニュー';
 
-  view.innerHTML = `
-    <div class="title-screen title-screen-with-art title-panel-screen">
-      <div class="title-panel-card">
-        <div class="title-panel-header">
-          <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
-          <h2>${title}</h2>
-        </div>
-        <div class="title-panel-body">
-          ${renderPanelBody(controller, panel)}
-        </div>
+  const contentEl = renderTitleShell(controller, view);
+  const shell = view.querySelector('.title-screen-with-art');
+  if (shell) shell.classList.add('title-panel-screen');
+
+  contentEl.innerHTML = `
+    <div class="title-panel-card">
+      <div class="title-panel-header">
+        <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
+        <h2>${title}</h2>
+      </div>
+      <div class="title-panel-body">
+        ${renderPanelBody(controller, panel)}
       </div>
     </div>
   `;
@@ -27000,28 +27249,63 @@ function renderEventGallery(controller) {
 }
 
 function renderImageGallery(controller) {
-  const items = GALLERY_MANIFEST.map((img) => {
-    // For now, background images are mostly unlocked, stills are locked if not cleared
-    const isStill = img.category === 'スチル';
-    const isUnlocked = !isStill; // Simplified for now
+  const { imageSeen } = loadPlayerProgress();
+  const categories = ['背景', 'スチル', 'ヒロイン立ち絵'];
+  const activeCategory = controller.uiState.galleryCategory || '背景';
+  const activeIndex = controller.uiState.galleryIndex || 0;
+
+  const categoryItems = GALLERY_MANIFEST.filter((item) => item.category === activeCategory);
+  const activeItem = categoryItems[activeIndex];
+
+  const tabs = categories.map((cat) => `
+    <button class="image-gallery-tab-btn${activeCategory === cat ? ' is-active' : ''}" 
+            type="button" data-action="gallery-tab" data-gallery-category="${cat}">
+      ${cat}
+    </button>
+  `).join('');
+
+  const thumbnails = categoryItems.map((item, index) => {
+    // Backgrounds are always unlocked for now, others need to be seen
+    const isUnlocked = item.category === '背景' || !!imageSeen[item.id];
+    const isActive = index === activeIndex;
     
     return `
-      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">${isStill ? '🖼️' : '🏞️'}</div>
-        <div class="locked-gallery-content">
-          <h3>${isUnlocked ? escapeHtml(img.title) : '？？？？'}</h3>
-          <p>${escapeHtml(img.category)}</p>
-          ${isUnlocked ? `<img src="${img.path}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-top: 8px;" />` : '<small>Locked</small>'}
-        </div>
+      <div class="image-gallery-thumb${isActive ? ' is-active' : ''}${!isUnlocked ? ' is-locked' : ''}" 
+           ${isUnlocked ? `data-action="gallery-select" data-gallery-index="${index}"` : ''}>
+        ${isUnlocked ? `<img src="${item.path}" alt="${escapeHtml(item.title)}" />` : '<span>？</span>'}
       </div>
     `;
-  }).join('');
+  }).join('') || '<div class="image-gallery-thumb-empty">登録されている画像がありません</div>';
+
+  const viewerContent = activeItem && (activeItem.category === '背景' || !!imageSeen[activeItem.id])
+    ? `
+      <img src="${activeItem.path}" class="image-gallery-viewer-main" alt="${escapeHtml(activeItem.title)}" />
+      <div class="image-gallery-info">
+        <h3>${escapeHtml(activeItem.title)}</h3>
+      </div>
+    `
+    : `
+      <div class="image-gallery-viewer-placeholder">
+        <span>🖼️</span>
+        <p>未解放の画像です</p>
+      </div>
+    `;
 
   return `
-    <div class="locked-gallery-panel">
-      <div class="title-panel-summary">視覚の記録</div>
-      <div class="locked-gallery-grid">${items}</div>
-      <p class="title-panel-note">解放済みの背景やスチルを閲覧できます。</p>
+    <div class="image-gallery-container">
+      <nav class="image-gallery-tabs">
+        ${tabs}
+      </nav>
+      
+      <div class="image-gallery-viewer">
+        ${viewerContent}
+      </div>
+      
+      <div class="image-gallery-thumbnails-wrapper">
+        <div class="image-gallery-thumbnails">
+          ${thumbnails}
+        </div>
+      </div>
     </div>
   `;
 }
@@ -27202,51 +27486,63 @@ const { renderVnShell } = require('./vnScreen.js');
 const { getBackgroundPath } = require('../utils/assetPaths.js');
 const { getTitleRenderModel } = require('../core/renderModel.cjs');
 
+function renderTitleShell(controller, view) {
+  let shell = view.querySelector('.title-screen-with-art');
+  if (!shell) {
+    view.innerHTML = `
+      <div class="title-screen title-screen-with-art">
+        <svg class="title-water-filter-defs" aria-hidden="true" focusable="false">
+          <filter id="titleWaterRippleFilter" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.052" numOctaves="2" seed="7" result="waveNoise">
+              <animate attributeName="baseFrequency" dur="14s" calcMode="spline" keyTimes="0;0.33;0.66;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="0.012 0.052;0.016 0.047;0.010 0.058;0.012 0.052" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="waveNoise" scale="8" xChannelSelector="R" yChannelSelector="G">
+              <animate attributeName="scale" dur="10s" calcMode="spline" keyTimes="0;0.35;0.70;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="8;12;6;8" repeatCount="indefinite" />
+            </feDisplacementMap>
+          </filter>
+        </svg>
+        <div class="title-clock-crop" aria-hidden="true">
+          <img class="title-clock-image" src="images/ui/clock.png" alt="" />
+        </div>
+        <div class="title-shell-content" style="display: contents;"></div>
+      </div>
+    `;
+    shell = view.querySelector('.title-screen-with-art');
+  }
+  return shell.querySelector('.title-shell-content');
+}
+
 function renderTitle(controller, view) {
-  const debugButton = controller.isDebugMode()
-    ? '<button class="title-menu-btn" type="button" data-title-stub="デバッグ">デバッグ</button>'
-    : '';
+  const contentEl = renderTitleShell(controller, view);
+  const shell = view.querySelector('.title-screen-with-art');
+  if (shell) shell.classList.remove('title-panel-screen');
+
   const saveSummary = controller.getSaveSummary ? controller.getSaveSummary() : null;
   const titleModel = getTitleRenderModel({ saveSummary });
   const continueAttrs = titleModel.canContinue
     ? 'data-action="title-continue"'
     : 'disabled aria-disabled="true"';
 
-  view.innerHTML = `
-    <div class="title-screen title-screen-with-art">
-      <svg class="title-water-filter-defs" aria-hidden="true" focusable="false">
-        <filter id="titleWaterRippleFilter" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.052" numOctaves="2" seed="7" result="waveNoise">
-            <animate attributeName="baseFrequency" dur="14s" calcMode="spline" keyTimes="0;0.33;0.66;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="0.012 0.052;0.016 0.047;0.010 0.058;0.012 0.052" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="waveNoise" scale="8" xChannelSelector="R" yChannelSelector="G">
-            <animate attributeName="scale" dur="10s" calcMode="spline" keyTimes="0;0.35;0.70;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" values="8;12;6;8" repeatCount="indefinite" />
-          </feDisplacementMap>
-        </filter>
-      </svg>
-      <div class="title-clock-crop" aria-hidden="true">
-        <img class="title-clock-image" src="images/ui/clock.png" alt="" />
+  contentEl.innerHTML = `
+    <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
+      <span class="title-logo-water">
+        <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
+      </span>
+    </h1>
+    <div class="title-content-panel">
+      <div class="title-primary-actions">
+        <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
+        <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
       </div>
-      <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
-        <span class="title-logo-water">
-          <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
-        </span>
-      </h1>
-      <div class="title-content-panel">
-        <div class="title-primary-actions">
-          <button class="title-start-btn" type="button" data-action="title-start">はじめから</button>
-          <button class="title-start-btn title-continue-btn" type="button" ${continueAttrs}>つづきから</button>
-        </div>
-        <div class="title-menu-grid" aria-label="Title menu">
-          <button class="title-menu-btn" type="button" data-title-panel="event">イベント集</button>
-          <button class="title-menu-btn" type="button" data-title-panel="image">画像集</button>
-          <button class="title-menu-btn" type="button" data-title-panel="sound">音楽集</button>
-          <button class="title-menu-btn" type="button" data-title-panel="item">アイテム図鑑</button>
-          <button class="title-menu-btn" type="button" data-action="open-options">設定画面</button>
-          <button class="title-menu-btn" type="button" data-title-panel="freeplay">フリープレイ</button>
-        </div>
-        <p class="title-stub-message" data-title-stub-message></p>
+      <div class="title-menu-grid" aria-label="Title menu">
+        <button class="title-menu-btn" type="button" data-title-panel="event">イベント集</button>
+        <button class="title-menu-btn" type="button" data-title-panel="image">画像集</button>
+        <button class="title-menu-btn" type="button" data-title-panel="sound">音楽集</button>
+        <button class="title-menu-btn" type="button" data-title-panel="item">アイテム図鑑</button>
+        <button class="title-menu-btn" type="button" data-action="open-options">設定画面</button>
+        <button class="title-menu-btn" type="button" data-title-panel="freeplay">フリープレイ</button>
       </div>
+      <p class="title-stub-message" data-title-stub-message></p>
     </div>
   `;
 }
@@ -27279,6 +27575,7 @@ function renderOpening(controller, view) {
 }
 
 module.exports = {
+  renderTitleShell,
   renderTitle,
   renderOpening
 };
@@ -27686,6 +27983,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   if (bgEl && bgId) {
     const bgPath = getBackgroundPath(bgId);
     bgEl.style.backgroundImage = `url(${bgPath})`;
+    if (controller.markImageSeen) controller.markImageSeen(bgId);
   }
 
   if (charEl) {
@@ -27693,7 +27991,11 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
       charEl.classList.remove('is-visible');
       charEl.style.display = 'block';
       applyCharacterVisualProfile(charEl, charId, 'standing');
-      charEl.src = getVisualImagePath(charId, 'standing', expression || 'normal');
+      const expr = expression || 'normal';
+      charEl.src = getVisualImagePath(charId, 'standing', expr);
+      if (controller.markImageSeen) {
+        controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
+      }
       charEl.onerror = () => { charEl.style.display = 'none'; };
       requestAnimationFrame(() => {
         charEl.classList.add('is-visible');
@@ -28052,12 +28354,23 @@ function getBackgroundPath(sceneId) {
   return backgrounds[sceneId] || backgrounds.TEA_ROOM;
 }
 
+function getStillPath(stillId) {
+  return `images/still/${stillId}.jpeg`;
+}
+
+function getGalleryImagePath(item) {
+  if (!item) return '';
+  return item.path;
+}
+
 module.exports = {
   normalizeCharacterDir,
   getCharacterStandingPath,
   getCharacterIconPath,
   getCharacterVisualImagePath,
-  getBackgroundPath
+  getBackgroundPath,
+  getStillPath,
+  getGalleryImagePath
 };
 
     };
@@ -29071,10 +29384,21 @@ function getPlayerProgressSummary() {
     heroineModeUnlocks: cloneJson(progress.heroineModeUnlocks),
     bestRecords: cloneJson(progress.bestRecords),
     endings: cloneJson(progress.endings),
+    imageSeen: cloneJson(progress.imageSeen),
     clearedEndingCount: clearedEndings.length,
     eventSeenCount: Object.keys(progress.eventSeen || {}).length,
     imageSeenCount: Object.keys(progress.imageSeen || {}).length
   };
+}
+
+function markImageSeen(imageId) {
+  if (!imageId) return;
+  const progress = loadPlayerProgress();
+  if (progress.imageSeen[imageId]) return;
+  
+  progress.imageSeen[imageId] = true;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
 }
 
 module.exports = {
@@ -29086,7 +29410,8 @@ module.exports = {
   savePlayerProgress,
   clearPlayerProgress,
   recordEndingProgress,
-  getPlayerProgressSummary
+  getPlayerProgressSummary,
+  markImageSeen
 };
 
     };
@@ -29918,6 +30243,7 @@ const {
   getRhythmSilenceGraceMs,
   getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
+const { markImageSeen } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
@@ -30142,6 +30468,21 @@ class GameController {
     this.update();
   }
 
+  markImageSeen(imageId) {
+    markImageSeen(imageId);
+  }
+
+  updateGalleryCategory(category) {
+    this.uiState.galleryCategory = category;
+    this.uiState.galleryIndex = 0;
+    this.update();
+  }
+
+  updateGalleryIndex(index) {
+    this.uiState.galleryIndex = index;
+    this.update();
+  }
+
   toggleFullscreen() {
     const root = document.documentElement;
     if (!document.fullscreenElement) {
@@ -30170,9 +30511,13 @@ class GameController {
     if (phase === 'MAIN_GAME') {
       this.renderMainGame(this.container);
     } else {
-      this.container.innerHTML = '';
-      const view = document.createElement('div');
-      view.className = 'view-container';
+      let view = this.container.querySelector('.view-container');
+      if (!view) {
+        this.container.innerHTML = '';
+        view = document.createElement('div');
+        view.className = 'view-container';
+        this.container.appendChild(view);
+      }
 
       if (phase === 'TITLE') {
         if (this.uiState.titlePanel) renderTitlePanel(this, view);
@@ -30186,8 +30531,6 @@ class GameController {
         this.recordEndingProgressIfNeeded();
         renderEnding(this, view);
       }
-
-      this.container.appendChild(view);
     }
 
     // Always ensure global UI and Modals are layered on top
