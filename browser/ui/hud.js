@@ -55,9 +55,54 @@ function renderGlobalUi(controller) {
   }
 
   globalUi.innerHTML = `
+    <button class="global-ui-btn" data-action="open-log" title="ログ">記録</button>
     <button class="global-ui-btn" data-action="open-options" title="設定">⚙</button>
     <button class="global-ui-btn" data-action="open-help" title="ヘルプ">？</button>
     <button class="global-ui-btn" data-action="toggle-fullscreen" title="全画面">⛶</button>
+  `;
+}
+
+function renderLogModal(controller, container) {
+  const tab = controller.uiState.logTab || 'convo';
+  const convoLog = controller.uiState.convoLog || [];
+  const progress = controller.getPlayerProgressSummary();
+  const quizHistory = progress.quizHistory || [];
+
+  const renderConvoTab = () => {
+    if (convoLog.length === 0) return '<p class="log-empty">記録はありません</p>';
+    return convoLog.slice().reverse().map(log => `
+      <div class="log-item">
+        <span class="log-speaker">${log.speaker}</span>
+        <span class="log-text">${log.text}</span>
+      </div>
+    `).join('');
+  };
+
+  const renderQuizTab = () => {
+    if (quizHistory.length === 0) return '<p class="log-empty">過去問の記録はありません</p>';
+    return quizHistory.map(q => {
+      const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
+      return `
+        <div class="log-quiz-item result-${q.result}">
+          <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
+          <div class="log-quiz-prompt">${q.prompt}</div>
+          <div class="log-quiz-answer">正解: ${q.correctItemId} <span class="log-quiz-divider">/</span> 回答: ${q.selectedItemId} [${resultLabel}]</div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  container.innerHTML = `
+    <div class="ui-modal log-modal">
+      <div class="log-tabs">
+        <button class="log-tab-btn ${tab === 'convo' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="convo">会話ログ</button>
+        <button class="log-tab-btn ${tab === 'quiz' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="quiz">過去問履歴</button>
+      </div>
+      <div class="log-body scrollable">
+        ${tab === 'convo' ? renderConvoTab() : renderQuizTab()}
+      </div>
+      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    </div>
   `;
 }
 
@@ -80,6 +125,8 @@ function renderModal(controller) {
     renderOptionsModal(controller, backdrop);
   } else if (modalName === 'help') {
     renderHelpModal(controller, backdrop);
+  } else if (modalName === 'log') {
+    renderLogModal(controller, backdrop);
   }
 }
 
