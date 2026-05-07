@@ -12,7 +12,7 @@
   position: relative;
   min-height: 100%;
   align-items: stretch;
-  background-image: linear-gradient(to bottom, rgba(8,19,42,0.20), rgba(8,19,42,0.76)), url("images/background/bg_shop_interior_service.jpeg");
+  background-image: linear-gradient(to bottom, rgba(8,19,42,0.20), rgba(8,19,42,0.76)), url("images/background/bg_shop_interior_service.webp");
   background-size: cover;
   background-position: center;
 }

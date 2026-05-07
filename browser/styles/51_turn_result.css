@@ -173,7 +173,7 @@
   padding: 0;
   background:
     linear-gradient(180deg, rgba(10, 20, 40, 0.20), rgba(8, 16, 34, 0.82)),
-    url("images/background/bg_shop_interior_service.jpeg");
+    url("images/background/bg_shop_interior_service.webp");
   background-size: cover;
   background-position: center;
 }
