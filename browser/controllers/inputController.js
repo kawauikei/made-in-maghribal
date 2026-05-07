@@ -165,6 +165,15 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
       controller.uiState.logTab = logTabBtn.getAttribute('data-tab');
+      controller.uiState.logQuizPage = 0; // Reset page
+      controller.renderModal();
+      return;
+    }
+    const logPagerBtn = target.closest('[data-action="set-log-quiz-page"]');
+    if (logPagerBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.logQuizPage = parseInt(logPagerBtn.getAttribute('data-page'), 10);
       controller.renderModal();
       return;
     }

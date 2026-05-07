@@ -581,3 +581,134 @@
   border-radius: 0 0 20px 20px;
   height: 64px;
 }
+
+/* 
+ * Log Quiz Enhanced Styles
+ */
+.log-quiz-comparison {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  position: relative;
+  margin-top: 12px;
+}
+
+.log-quiz-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-quiz-col-label {
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.1em;
+}
+
+.log-quiz-item-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255,255,255,0.6);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.log-quiz-icon-frame {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.log-quiz-icon-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.log-quiz-item-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.log-quiz-item-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #2d2112;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-quiz-quality {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  font-weight: 700;
+  color: #666;
+}
+
+.log-quiz-result-badge {
+  position: absolute;
+  top: -28px;
+  right: -10px;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  border: 2px solid currentColor;
+  z-index: 5;
+  transform: rotate(8deg);
+}
+
+.result-perfect .log-quiz-result-badge { color: #d4af37; border-color: #d4af37; }
+.result-good .log-quiz-result-badge { color: #5e8a4d; border-color: #5e8a4d; }
+.result-miss .log-quiz-result-badge { color: #a83e2a; border-color: #a83e2a; }
+
+/* Pager */
+.log-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0 10px;
+  border-top: 1px solid rgba(183,131,53,0.18);
+  margin-top: 12px;
+}
+
+.log-pager-btn {
+  padding: 10px 28px;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.log-pager-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.log-pager-info {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #777;
+  letter-spacing: 0.05em;
+}
