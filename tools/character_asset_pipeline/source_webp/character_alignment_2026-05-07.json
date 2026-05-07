@@ -206,7 +206,7 @@
       "face": {
         "master": {
           "cropX": 486,
-          "cropY": 256,
+          "cropY": 280,
           "cropW": 256,
           "cropH": 256,
           "cropScale": 0.5499999999999996
@@ -288,8 +288,8 @@
     "MIRA": {
       "standing": {
         "master": {
-          "x": -18,
-          "y": 246,
+          "x": 50,
+          "y": 228,
           "scale": 0.8499999999999999
         },
         "expressions": {
@@ -347,11 +347,11 @@
       },
       "face": {
         "master": {
-          "cropX": 448,
-          "cropY": 240,
+          "cropX": 440,
+          "cropY": 226,
           "cropW": 256,
           "cropH": 256,
-          "cropScale": 0.4999999999999996
+          "cropScale": 0.4499999999999996
         },
         "expressions": {
           "normal": {
@@ -489,8 +489,8 @@
       },
       "face": {
         "master": {
-          "cropX": 470,
-          "cropY": 162,
+          "cropX": 476,
+          "cropY": 182,
           "cropW": 256,
           "cropH": 256,
           "cropScale": 0.6499999999999997
