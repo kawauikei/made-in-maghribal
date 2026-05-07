@@ -369,19 +369,21 @@ function renderItemGallery(controller) {
 
 function renderEventGallery(controller) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  const cards = EVENT_MASTER.map((ev) => {
-    const isCommon = ev.heroineId === 'COMMON';
-    // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
-    const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+  
+  const events = Array.isArray(EVENT_MASTER) ? EVENT_MASTER : [];
+  const cards = events.map((ev) => {
+    // 解放条件: always または ヒロインの通常ルートクリア
+    const isUnlocked = ev.unlock?.type === 'always' || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
+    const isSeen = progress?.eventSeen?.[ev.id];
     
-    // Use gallery info from generated manifest if available
-    const displayTitle = isCleared ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
-    const displaySummary = isCleared ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '営業をクリアして解放');
-    const conditionText = isCleared ? (HEROINE_LABELS[ev.heroineId] || '共通') : (ev.condition || '未解放');
+    const displayTitle = isUnlocked ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
+    const displaySummary = isUnlocked ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '物語を読み進めると解放');
+    const conditionText = isUnlocked ? (HEROINE_LABELS[ev.heroineId] || '共通') : '未解放';
 
     return `
-      <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
-        <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
+      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}${isSeen ? ' is-seen' : ''}"
+           ${isUnlocked ? `data-action="start-event" data-event-id="${ev.id}"` : ''}>
+        <div class="locked-gallery-mark">${ev.heroineId === 'COMMON' ? '✦' : '✧'}</div>
         <div class="locked-gallery-content">
           <h3>${escapeHtml(displayTitle)}</h3>
           <p>${escapeHtml(displaySummary)}</p>
@@ -395,7 +397,7 @@ function renderEventGallery(controller) {
     <div class="locked-gallery-panel">
       <div class="title-panel-summary">物語の記録</div>
       <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます（現在リスト表示のみ）。</p>
+      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます。</p>
     </div>
   `;
 }

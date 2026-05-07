@@ -144,6 +144,28 @@ function bindInputHandlers(controller) {
       controller.closeTitlePanel();
       return;
     }
+
+    const startEventBtn = target.closest('[data-action="start-event"]');
+    if (startEventBtn) {
+      event.stopPropagation();
+      const eventId = startEventBtn.getAttribute('data-event-id');
+      controller.playSfx('uiConfirmChime');
+      controller.startEvent(eventId);
+      return;
+    }
+
+    const eventChoiceBtn = target.closest('[data-action="event-choice"]');
+    if (eventChoiceBtn) {
+      event.stopPropagation();
+      controller.handleEventChoice(parseInt(eventChoiceBtn.getAttribute('data-index'), 10));
+      return;
+    }
+
+    if (target.closest('[data-action="event-click"]')) {
+      event.stopPropagation();
+      controller.handleEventClick();
+      return;
+    }
     const titleStub = target.closest('[data-title-stub]');
     if (titleStub) {
       event.stopPropagation();

@@ -66,6 +66,7 @@ function getDefaultPlayerProgress() {
       lastClearedAt: null
     })),
     eventSeen: {},
+    eventFlags: {},
     imageSeen: {},
     quizHistory: []
   };
@@ -82,6 +83,7 @@ function normalizeProgress(progress) {
     bestRecords: { ...base.bestRecords },
     endings: { ...base.endings },
     eventSeen: src.eventSeen && typeof src.eventSeen === 'object' ? src.eventSeen : {},
+    eventFlags: src.eventFlags && typeof src.eventFlags === 'object' ? src.eventFlags : {},
     imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {},
     quizHistory: Array.isArray(src.quizHistory) ? src.quizHistory : []
   };
@@ -228,6 +230,33 @@ function recordQuizHistory(entry) {
   return progress.quizHistory;
 }
 
+function markEventSeen(eventId) {
+  if (!eventId) return;
+  const progress = loadPlayerProgress();
+  if (progress.eventSeen[eventId]) return;
+  progress.eventSeen[eventId] = true;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+}
+
+function isEventSeen(eventId) {
+  const progress = loadPlayerProgress();
+  return !!progress.eventSeen[eventId];
+}
+
+function setEventFlag(flagId, value) {
+  if (!flagId) return;
+  const progress = loadPlayerProgress();
+  progress.eventFlags[flagId] = value;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+}
+
+function hasEventFlag(flagId) {
+  const progress = loadPlayerProgress();
+  return !!progress.eventFlags[flagId];
+}
+
 module.exports = {
   PLAYER_PROGRESS_KEY,
   HEROINE_IDS,
@@ -239,5 +268,10 @@ module.exports = {
   recordEndingProgress,
   getPlayerProgressSummary,
   markImageSeen,
-  recordQuizHistory
+  markEventSeen,
+  isEventSeen,
+  setEventFlag,
+  hasEventFlag,
+  recordQuizHistory,
+  normalizeProgress
 };

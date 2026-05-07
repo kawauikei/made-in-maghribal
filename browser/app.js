@@ -42,6 +42,24 @@ const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
+
+let EVENT_SCRIPTS;
+try {
+  ({ EVENT_SCRIPTS } = require('./data/generated/eventScripts.cjs'));
+} catch (e) {
+  EVENT_SCRIPTS = {};
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[m]));
+}
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { createScreenTransitionController } = require('./controllers/screenTransitionController.js');
@@ -97,6 +115,20 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
+    
+    this.eventState = {
+      active: false,
+      eventId: null,
+      script: null,
+      stepIndex: 0,
+      labels: {},
+      background: null,
+      still: null,
+      characters: {}, // charId -> { expression, position }
+      activeChoice: null,
+      waitTimer: null,
+      returnScreen: 'title'
+    };
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -397,7 +429,9 @@ class GameController {
       }
     }
 
-    if (subPhase === 'BEFORE_OPEN') {
+    if (this.eventState.active) {
+      this.renderEventPlayer(view);
+    } else if (subPhase === 'BEFORE_OPEN') {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
@@ -448,6 +482,206 @@ class GameController {
    * --------------------------------------------------------------------------
    */
   updateHud() { updateHud(this); }
+
+  /**
+   * --------------------------------------------------------------------------
+   * 6. Event Player Logic
+   * --------------------------------------------------------------------------
+   */
+  startEvent(eventId, returnScreen = 'title') {
+    if (!EVENT_SCRIPTS || !EVENT_SCRIPTS[eventId]) {
+      console.warn(`Event ${eventId} not found`);
+      return;
+    }
+
+    const script = EVENT_SCRIPTS[eventId];
+    const labels = {};
+    script.forEach((step, index) => {
+      if (step.type === 'label') labels[step.id] = index;
+    });
+
+    this.eventState = {
+      active: true,
+      eventId,
+      script,
+      stepIndex: 0,
+      labels,
+      background: null,
+      still: null,
+      characters: {},
+      activeChoice: null,
+      waitTimer: null,
+      returnScreen
+    };
+
+    this.update();
+    this.nextEventStep();
+  }
+
+  stopEvent() {
+    this.eventState.active = false;
+    if (this.eventState.waitTimer) {
+      clearTimeout(this.eventState.waitTimer);
+      this.eventState.waitTimer = null;
+    }
+    this.update();
+  }
+
+  nextEventStep() {
+    if (!this.eventState.active || this.eventState.activeChoice) return;
+
+    if (this.eventState.stepIndex >= this.eventState.script.length) {
+      this.stopEvent();
+      return;
+    }
+
+    const step = this.eventState.script[this.eventState.stepIndex];
+    this.eventState.stepIndex++;
+    this.processEventStep(step);
+  }
+
+  processEventStep(step) {
+    if (!step) return;
+
+    switch (step.type) {
+      case 'bg':
+        this.eventState.background = step.id;
+        this.nextEventStep();
+        break;
+      case 'still':
+        this.eventState.still = step.id;
+        this.nextEventStep();
+        break;
+      case 'bgm':
+        this.bgm.play(step.id);
+        this.nextEventStep();
+        break;
+      case 'sfx':
+        this.sfx.play(step.id);
+        this.nextEventStep();
+        break;
+      case 'enter':
+        this.eventState.characters[step.characterId] = {
+          expression: step.expression || 'normal',
+          position: step.position || 'center'
+        };
+        this.nextEventStep();
+        break;
+      case 'exit':
+        delete this.eventState.characters[step.characterId];
+        this.nextEventStep();
+        break;
+      case 'line':
+      case 'narration':
+        this.update(); // Trigger re-render to show text
+        break;
+      case 'wait':
+        this.eventState.waitTimer = setTimeout(() => {
+          this.eventState.waitTimer = null;
+          this.nextEventStep();
+        }, step.ms || 1000);
+        break;
+      case 'choice':
+        this.eventState.activeChoice = step.choices;
+        this.update();
+        break;
+      case 'label':
+        this.nextEventStep();
+        break;
+      case 'jump':
+        const targetIndex = this.eventState.labels[step.id];
+        if (targetIndex !== undefined) {
+          this.eventState.stepIndex = targetIndex;
+        }
+        this.nextEventStep();
+        break;
+      case 'flag':
+        const { setEventFlag } = require('./utils/playerProgress.js');
+        setEventFlag(step.id, step.value);
+        this.nextEventStep();
+        break;
+      case 'end':
+        if (step.markSeen) {
+          const { markEventSeen } = require('./utils/playerProgress.js');
+          markEventSeen(this.eventState.eventId);
+        }
+        this.stopEvent();
+        break;
+      default:
+        console.warn(`Unknown event command: ${step.type}`);
+        this.nextEventStep();
+        break;
+    }
+  }
+
+  handleEventClick() {
+    if (this.eventState.activeChoice) return;
+    if (this.isTypewriterActive()) {
+      this.finishTypewriter();
+      return;
+    }
+    if (this.eventState.waitTimer) return;
+    
+    this.nextEventStep();
+  }
+
+  handleEventChoice(choiceIndex) {
+    if (!this.eventState.activeChoice) return;
+    const choice = this.eventState.activeChoice[choiceIndex];
+    if (choice) {
+      if (choice.jump) {
+        const targetIndex = this.eventState.labels[choice.jump];
+        if (targetIndex !== undefined) {
+          this.eventState.stepIndex = targetIndex;
+        }
+      }
+      this.eventState.activeChoice = null;
+      this.nextEventStep();
+    }
+  }
+
+  renderEventPlayer(view) {
+    const step = this.eventState.script[this.eventState.stepIndex - 1];
+    if (!step) return;
+
+    renderVnShell(this, view);
+    
+    // Add choice layer if active
+    if (this.eventState.activeChoice) {
+      const choiceOverlay = document.createElement('div');
+      choiceOverlay.className = 'choice-overlay';
+      const choiceList = this.eventState.activeChoice.map((c, i) => `
+        <button class="choice-btn" data-action="event-choice" data-index="${i}">${escapeHtml(c.label)}</button>
+      `).join('');
+      choiceOverlay.innerHTML = `<div class="choice-container">${choiceList}</div>`;
+      view.querySelector('.vn-screen').appendChild(choiceOverlay);
+    }
+
+    const speakerId = step.type === 'line' ? step.speakerId : null;
+    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : (step.type === 'line' ? step.speakerId : '');
+    
+    // Determine which character to show
+    // Simple logic for now: show the first character in state
+    const charIds = Object.keys(this.eventState.characters);
+    const charId = charIds[0];
+    const charData = charId ? this.eventState.characters[charId] : null;
+
+    updateVnContent(this, {
+      speakerName: speakerName,
+      text: step.text || '',
+      charId: charId,
+      speakerId: speakerId,
+      bgId: this.eventState.still || this.eventState.background,
+      expression: charData ? charData.expression : (step.type === 'line' ? step.expression : 'normal'),
+      speakerExpression: step.expression || 'normal'
+    });
+    
+    // Override click behavior for event player
+    const vnScreen = view.querySelector('.vn-screen');
+    if (vnScreen) {
+      vnScreen.setAttribute('data-action', 'event-click');
+    }
+  }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
   updateVnContent(payload) {
@@ -623,6 +857,12 @@ class GameController {
 
   async onGlobalAction() {
     if (this.quizState.inputLocked || this.uiState.modal) return;
+
+    if (this.eventState.active) {
+      this.handleEventClick();
+      return;
+    }
+
     const { phase, subPhase } = this.session;
 
     // Handle Typewriter "Finish on Click"
