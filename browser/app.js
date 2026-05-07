@@ -799,10 +799,18 @@ class GameController {
 
     this.recordQuizItemLog(itemId, result);
 
-    const finalScore = updateGameScore(this.session, result);
+    // Update session scores
+    this.session.scores = updateGameScore(this.session.scores, result);
 
     const leftChoice = this.quizState.currentChoices[0];
     const rightChoice = this.quizState.currentChoices[1];
+
+    // Determine result rating for history
+    let historyResult = 'miss';
+    if (result.isCorrect) {
+      if (result.rating === 'PERFECT') historyResult = 'perfect';
+      else historyResult = 'good';
+    }
 
     // Record quiz history with layout info
     recordQuizHistory({
@@ -821,7 +829,7 @@ class GameController {
       },
       selectedItemId: itemId,
       selectedQuality: quality || 'normal',
-      result: finalScore.isPerfect ? 'perfect' : (finalScore.isSuccess ? 'good' : 'miss')
+      result: historyResult
     });
 
     this.updateQuizContent();

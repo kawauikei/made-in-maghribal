@@ -20,10 +20,8 @@ function processQuestionResult(state) {
   const { promptShownAt, answeredAt, selectedItemId, correctItemId, selectedChoiceKey, correctChoiceKey, nearestBeatMs } = state;
   const speedGraceMs = normalizeSpeedGraceMs(state.speedGraceMs);
   
-  // Acceptance: リズムが悪くても正解なら売上は入る（isCorrectを返す）
-  const isCorrect = (selectedChoiceKey && correctChoiceKey)
-    ? selectedChoiceKey === correctChoiceKey
-    : selectedItemId === correctItemId;
+  // Acceptance: 品目さえ合っていれば基本は正解とする（品質はボーナスに影響させる設計）
+  const isCorrect = (selectedItemId === correctItemId) || (selectedChoiceKey === correctChoiceKey);
   
   // Acceptance: 判定は PERFECT, GOOD, MISS, NONE を返せる
   const timing = calculateJudgement(answeredAt, nearestBeatMs);
