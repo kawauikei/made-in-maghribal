@@ -44,6 +44,7 @@ const { registerSeenItems, clearItemCollection } = require('./utils/itemCollecti
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
+const { createScreenTransitionController } = require('./controllers/screenTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
 const { showLoading, hideLoading } = require('./ui/loadingOverlay.js');
 
@@ -110,6 +111,7 @@ class GameController {
 
     this.totalTurns = TOTAL_TURNS;
     this.turnTransition = createTurnTransitionController(this);
+    this.screenTransition = createScreenTransitionController();
 
     this.typewriter = createTypewriterController({
       getDelayMs: () => TEXT_SPEED_MS[this.settings.textSpeed] || 32,
@@ -305,6 +307,7 @@ class GameController {
    */
   update() {
     const phase = this.session.phase;
+    const transition = this.screenTransition.beforeRender(this.session);
     const newClassName = `phase-${phase.toLowerCase()}`;
     if (this.container.className !== newClassName) {
       this.container.className = newClassName;
@@ -338,6 +341,7 @@ class GameController {
     // Always ensure global UI and Modals are layered on top
     this.renderGlobalUi();
     this.renderModal();
+    this.screenTransition.apply(this.container, transition);
     this.syncBgm();
     this.saveCurrentRunIfNeeded();
   }
