@@ -17,6 +17,7 @@ function createScreenTransitionController() {
   function getTransitionKind(previousKey, nextKey) {
     if (!previousKey) return 'boot';
     if (previousKey === nextKey) return '';
+    if (previousKey === 'MAIN_GAME:AFTER_CLOSE' && nextKey === 'MAIN_GAME:BEFORE_OPEN') return '';
     if (nextKey === 'OPENING') return 'lantern';
     if (nextKey === 'HEROINE_SELECT') return 'sand';
     if (nextKey === 'MAIN_GAME:BEFORE_OPEN') return 'curtain';
