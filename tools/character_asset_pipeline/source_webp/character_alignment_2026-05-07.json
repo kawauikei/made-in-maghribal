@@ -288,9 +288,9 @@
     "MIRA": {
       "standing": {
         "master": {
-          "x": 50,
-          "y": 228,
-          "scale": 0.8499999999999999
+          "x": 30,
+          "y": 298,
+          "scale": 0.8199999999999998
         },
         "expressions": {
           "normal": {
