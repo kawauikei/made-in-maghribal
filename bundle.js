@@ -27560,6 +27560,7 @@ module.exports = {
 
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
 
@@ -27806,7 +27807,7 @@ function renderQuiz(controller, view) {
       <section class="choice-list">
         <div class="choice-card" data-choice-slot="0">
           <div class="item-icon-wrap">
-            <img class="item-icon" alt="" loading="eager" />
+            <div class="item-sprite item-icon" aria-hidden="true"></div>
           </div>
           <div class="choice-name"></div>
           <div class="choice-meta" aria-label="品物情報">
@@ -27818,7 +27819,7 @@ function renderQuiz(controller, view) {
         </div>
         <div class="choice-card" data-choice-slot="1">
           <div class="item-icon-wrap">
-            <img class="item-icon" alt="" loading="eager" />
+            <div class="item-sprite item-icon" aria-hidden="true"></div>
           </div>
           <div class="choice-name"></div>
           <div class="choice-meta" aria-label="品物情報">
@@ -27919,12 +27920,12 @@ function updateQuizContent(controller) {
       if (genreEl) genreEl.textContent = `分類：${meta.genreName || meta.genre || '不明'}`;
       if (qualityEl) qualityEl.textContent = `品質：${getQualityLabel(quality)}`;
       if (iconEl) {
-        iconEl.style.display = '';
-        iconEl.src = controller.getItemIconPath(c.id);
-        iconEl.onerror = () => {
-          iconEl.style.display = 'none';
-          if (wrapEl) wrapEl.classList.add('missing-icon');
-        };
+        const spriteStyles = getItemSpriteStyle(c.id);
+        Object.entries(spriteStyles).forEach(([key, val]) => {
+          iconEl.style.setProperty(key, val);
+        });
+        iconEl.style.display = Object.keys(spriteStyles).length ? '' : 'none';
+        if (!Object.keys(spriteStyles).length && wrapEl) wrapEl.classList.add('missing-icon');
       }
       if (wrapEl) {
         wrapEl.classList.remove('missing-icon');
@@ -27963,6 +27964,7 @@ const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 const { ITEM_MASTER } = require('../data/itemMaster.cjs');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
 const { ITEM_TEXTS } = require('../data/itemTexts.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
@@ -28247,7 +28249,9 @@ function renderItemDetailModal(controller, seenItems) {
       <article class="item-detail-modal" role="dialog" aria-modal="true" aria-label="${escapeHtml(model.name)} 詳細">
         <button class="item-detail-close" type="button" data-action="item-detail-close">×</button>
         <div class="item-detail-head">
-          <div class="item-detail-icon-frame"><img src="${model.icon}" alt="${escapeHtml(model.name)}" onerror="this.style.display='none'" /></div>
+          <div class="item-detail-icon-frame">
+            <div class="item-sprite" style="${Object.entries(getItemSpriteStyle(model.item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
+          </div>
           <div>
             <p class="item-detail-kicker">${index + 1} / ${seenItems.length}</p>
             <h3>${escapeHtml(model.name)}</h3>
@@ -28286,7 +28290,7 @@ function renderItemGallery(controller) {
       <${tag} class="gallery-item-tile${seen ? ' is-seen' : ' is-locked'}" title="${escapeHtml(title)}"${detailAttr}>
         <div class="gallery-item-icon-frame">
           <div class="gallery-item-icon">
-            ${seen ? `<img src="${model.icon}" alt="${escapeHtml(model.name)}" onerror="this.style.display='none'" />` : '<span>？</span>'}
+            ${seen ? `<div class="item-sprite" style="${Object.entries(getItemSpriteStyle(item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>` : '<span>？</span>'}
           </div>
         </div>
         <div class="gallery-item-info">
@@ -28700,6 +28704,7 @@ const { getCharacterVisualImagePath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, applyCharacterTheme } = require('../utils/characterVisualProfiles.js');
 const { getResultComment, getResultExpression } = require('../data/resultComments.js');
 const { getTurnResultRenderModel } = require('../core/renderModel.cjs');
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 
 const SCORE_MAX_PER_TURN = {
   revenue: 100,
@@ -28799,7 +28804,7 @@ function renderResultItemList(items) {
   const rows = visibleItems.map((item) => `
     <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
       ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
-      <img class="result-item-icon" src="${item.iconPath}" alt="${item.displayName}" onerror="this.style.display='none'" />
+      <div class="item-sprite result-item-icon" style="${Object.entries(getItemSpriteStyle(item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
     </div>
   `).join('');
 
@@ -29156,6 +29161,7 @@ module.exports = {
 /**
  * HUD / Stats display component for MadeInMaghribal.
  */
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 
 function formatScoreMetric(label, value, key, previousScores) {
   const prev = previousScores ? Number(previousScores[key]) : Number(value);
@@ -29304,7 +29310,6 @@ function renderLogModal(controller, container) {
       const renderChoice = (choice, sideLabel) => {
         if (!choice) return '';
         const name = controller.getItemDisplayName(choice.itemId);
-        const icon = controller.getItemIconPath(choice.itemId);
         const quality = choice.quality || 'normal';
         const qualityToken = safeToken(quality, 'normal');
         const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
@@ -29313,16 +29318,25 @@ function renderLogModal(controller, container) {
         if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
         if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
 
+        const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId))
+          .map(([k, v]) => `${k}:${v}`).join(';');
+
+        const getQualityLabel = (q) => {
+          if (q === 'great_success') return '傑作';
+          if (q === 'success') return '高品質';
+          return '普通';
+        };
+
         return `
           <div class="log-quiz-col">
             <span class="log-quiz-col-label">${sideLabel}</span>
             <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
               <div class="log-quiz-icon-frame">
-                <img src="${escapeHtml(icon)}" alt="" />
+                <div class="item-sprite" style="${spriteStyle}"></div>
               </div>
               <div class="log-quiz-item-info">
                 <span class="log-quiz-item-name">${escapeHtml(name)}</span>
-                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(quality)}</small>
+                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(getQualityLabel(quality))}</small>
                 <div class="log-quiz-indicators">${indicators.join('')}</div>
               </div>
             </div>
@@ -30461,6 +30475,50 @@ module.exports = {
 
     };
 
+    // --- ./utils/itemSprite.js ---
+    modules['./utils/itemSprite.js'] = function(module, exports, require) {
+/**
+ * Utility for mapping itemId to sprite sheet coordinates.
+ * Using percentage-based positioning for flexible scaling.
+ */
+const { ITEM_MASTER } = require('../data/itemMaster.cjs');
+
+const COLUMNS = 5;
+const ROWS = 50;
+
+// Create a stable mapping of itemId to index.
+const sortedItems = [...ITEM_MASTER].sort((a, b) => a.itemId.localeCompare(b.itemId));
+const itemToIndexMap = new Map(sortedItems.map((item, index) => [item.itemId, index]));
+
+/**
+ * Returns the CSS variables for displaying an item from the sprite sheet.
+ * @param {string} itemId 
+ * @returns {Object}
+ */
+function getItemSpriteStyle(itemId) {
+  const index = itemToIndexMap.get(itemId);
+  if (index === undefined) return {};
+
+  const col = index % COLUMNS;
+  const row = Math.floor(index / COLUMNS);
+
+  // Percentage based background-position for 5x50 grid
+  const xPercent = (col / (COLUMNS - 1)) * 100;
+  const yPercent = (row / (ROWS - 1)) * 100;
+
+  return {
+    '--item-x': `${xPercent}%`,
+    '--item-y': `${yPercent}%`
+  };
+}
+
+module.exports = {
+  getItemSpriteStyle,
+  itemToIndexMap
+};
+
+    };
+
     // --- ./utils/playerProgress.js ---
     modules['./utils/playerProgress.js'] = function(module, exports, require) {
 /**
@@ -31034,6 +31092,7 @@ function createAssetPreloader() {
     // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
     // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
     const startImagePaths = [
+      'images/ui/item.webp',
       ...collectOpeningGalleryImagePaths(),
       ...HEROINE_IDS.flatMap((id) => ([
         ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),

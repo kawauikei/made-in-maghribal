@@ -169,6 +169,18 @@ img {
  * SHARED UI COMPONENTS (HUD, Message Box, Buttons, Common Panels)
  * ============================================================================
  */
+ 
+ .item-sprite {
+ width: 100%;
+ height: 100%;
+ background-image: url("images/ui/item.webp");
+ background-repeat: no-repeat;
+ background-size: 500% 5000%;
+ background-position: var(--item-x, 0%) var(--item-y, 0%);
+ flex-shrink: 0;
+ display: block;
+ image-rendering: -webkit-optimize-contrast;
+ }
 
 /* HUD / Stats Bar (Default Absolute) */
 .stats {
@@ -2217,7 +2229,8 @@ button.gallery-item-tile.is-seen:active {
   width: 100%;
   height: 100%;
   border-radius: 14px;
-  background: rgba(255,255,255,0.78);
+  background-color: rgba(255,255,255,0.78); /* background-color instead of background to preserve sprite image */
+  padding: 5px;
 }
 
 .item-detail-backdrop {
@@ -2286,12 +2299,13 @@ button.gallery-item-tile.is-seen:active {
   box-shadow: 0 5px 14px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.72);
 }
 
-.item-detail-icon-frame img {
+.item-detail-icon-frame .item-sprite {
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  object-fit: contain;
-  background: rgba(255,255,255,0.78);
+  background-color: rgba(255,255,255,0.78); /* background-color instead of background to preserve sprite image */
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .item-detail-kicker,
@@ -3896,6 +3910,10 @@ button.gallery-item-tile.is-seen:active {
     inset 0 1px 0 rgba(255,255,255,0.92),
     inset 0 -8px 18px rgba(58, 121, 52, 0.15);
   overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }
 
 .item-icon-wrap::before,
