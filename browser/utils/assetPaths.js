@@ -18,7 +18,6 @@ function normalizeCharacterDir(id) {
 function getCharacterStandingPath(id, expression = 'normal') {
   if (!id) return '';
   const charDir = normalizeCharacterDir(id);
-  // Valid expressions from filesystem: normal, joy, fun, anger, cry, sorrow, surprise, etc.
   const expFile = expression.toLowerCase();
   return `characters/${charDir}/standing_proc/${expFile}.webp`;
 }

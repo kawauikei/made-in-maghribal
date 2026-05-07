@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Character Face Align Tool (Phase 1+ Pro)</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --panel-bg: #2d2d2d;
+            --text-color: #eee;
+            --accent-color: #0078d4;
+            --border-color: #444;
+            --grid-width: 598px; /* 1195 * 0.5 */
+            --cell-height: 800px; /* 1600 * 0.5 */
+            --sidebar-width: 340px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Sidebar / Edit Panel */
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--panel-bg);
+            border-left: 1px solid var(--border-color);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            order: 2;
+            user-select: text;
+        }
+
+        #main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            order: 1;
+        }
+
+        #toolbar {
+            padding: 10px;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            z-index: 100;
+        }
+
+        #grid-container {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, var(--grid-width));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .char-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .column-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(0,0,0,0.9);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .cell {
+            width: var(--grid-width);
+            height: var(--cell-height);
+            background: #050505;
+            border: 2px solid #333;
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.true-size {
+            --grid-width: 1195px;
+            --cell-height: 1600px;
+        }
+
+        .cell.selected {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            background: #0a0a0a;
+        }
+
+        .cell.empty {
+            background: #111;
+            color: #444;
+            border: 1px dashed #333;
+        }
+
+        .cell.unused {
+            background: #000;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .cell canvas {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .guide-h {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(0, 255, 255, 0.4);
+            z-index: 5;
+            width: 100%; height: 1px; left: 0;
+        }
+        
+        .guide-center-v { background: rgba(255, 0, 255, 0.6); width: 1px; height: 100%; left: 50%; top: 0; position: absolute; pointer-events: none; z-index: 5;}
+        .guide-baseline { background: rgba(255, 255, 0, 0.6); width: 100%; height: 2px; bottom: 50px; left: 0; position: absolute; pointer-events: none; z-index: 5;}
+
+        .crop-rect {
+            position: absolute;
+            border: 2px solid yellow;
+            pointer-events: none;
+            z-index: 6;
+            box-sizing: border-box;
+            background: rgba(255, 255, 0, 0.1);
+        }
+
+        .preview-box {
+            position: absolute;
+            bottom: 60px;
+            right: 10px;
+            width: 128px;
+            height: 128px;
+            background: #000;
+            border: 2px solid #fff;
+            z-index: 7;
+            overflow: hidden;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .preview-box canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cell-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 8px;
+            font-size: 12px;
+            z-index: 8;
+            pointer-events: none;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .control-group {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        .control-group h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .control-row label {
+            width: 80px;
+            font-size: 12px;
+        }
+        .control-row input[type="range"] {
+            flex: 1;
+        }
+        .control-row input[type="text"] {
+            width: 80px;
+            background: #111;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 2px;
+            font-size: 12px;
+        }
+
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background: #444;
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+        button:hover { background: #555; }
+        button.active { background: var(--accent-color); border-color: transparent; }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #111;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 11px;
+            border: 1px solid var(--border-color);
+        }
+
+        .help-text {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .target-toggle {
+            display: flex;
+            border: 1px solid #666;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .target-toggle button {
+            border: none;
+            border-radius: 0;
+            background: #333;
+            padding: 5px 15px;
+        }
+        .target-toggle button.active {
+            background: var(--accent-color);
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="main">
+    <div id="toolbar">
+        <input type="file" id="dir-input" webkitdirectory directory multiple style="display:none">
+        <button onclick="document.getElementById('dir-input').click()">📁 画像フォルダ読込</button>
+        |
+        <div class="target-toggle">
+            <button id="target-master" onclick="setTarget('master')">Master操作</button>
+            <button id="target-expression" class="active" onclick="setTarget('expression')">個別(Exp)操作</button>
+        </div>
+        |
+        <button id="btn-mode-standing" class="active" onclick="setMode('standing')">立ち絵</button>
+        <button id="btn-mode-face" onclick="setMode('face')">顔切り出し</button>
+        |
+        <button id="btn-zoom-toggle" onclick="toggleZoom()">表示サイズ: 50%</button>
+        |
+        <button onclick="exportJson()">💾 JSON保存</button>
+        <button onclick="importJson()">📂 JSON読み込み</button>
+        |
+        <div class="help-text">Alt+Scroll: 拡大縮小 | Drag: 移動 | Shift: 10x | 1195x1600</div>
+    </div>
+    <div id="grid-container">
+        <!-- Columns injected here -->
+    </div>
+</div>
+
+<div id="sidebar">
+    <div id="selection-info">
+        <h2 id="current-id">No Selection</h2>
+    </div>
+
+    <div class="control-group">
+        <h3> Standing (立ち絵) </h3>
+        <div id="standing-controls">
+            <div class="control-row"><strong>Master</strong></div>
+            <div class="control-row"><label>Scale</label> <input type="range" id="m-s-s" min="0.1" max="4" step="0.001"> <input type="text" id="m-s-s-n"></div>
+            <div class="control-row"><label>X</label> <input type="range" id="m-s-x" min="-2000" max="2000" step="0.5"> <input type="text" id="m-s-x-n"></div>
+            <div class="control-row"><label>Y</label> <input type="range" id="m-s-y" min="-2000" max="2000" step="0.5"> <input type="text" id="m-s-y-n"></div>
+            
+            <div class="control-row"><strong>Expression (個別)</strong></div>
+            <div class="control-row"><label>Scale</label> <input type="range" id="e-s-s" min="0.1" max="4" step="0.001"> <input type="text" id="e-s-s-n"></div>
+            <div class="control-row"><label>X</label> <input type="range" id="e-s-x" min="-1000" max="1000" step="0.5"> <input type="text" id="e-s-x-n"></div>
+            <div class="control-row"><label>Y</label> <input type="range" id="e-s-y" min="-1000" max="1000" step="0.5"> <input type="text" id="e-s-y-n"></div>
+            <button onclick="resetExpression('standing')">表情リセット</button>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h3> Face Crop (顔トリミング) </h3>
+        <div id="face-controls">
+             <div class="control-row"><strong>Master</strong></div>
+             <div class="control-row"><label>Crop X</label> <input type="range" id="m-f-x" min="-1000" max="3000" step="0.5"> <input type="text" id="m-f-x-n"></div>
+             <div class="control-row"><label>Crop Y</label> <input type="range" id="m-f-y" min="-1000" max="3000" step="0.5"> <input type="text" id="m-f-y-n"></div>
+             <div class="control-row"><label>Crop W</label> <input type="range" id="m-f-w" min="50" max="2000" step="0.5"> <input type="text" id="m-f-w-n"></div>
+             <div class="control-row"><label>Crop H</label> <input type="range" id="m-f-h" min="50" max="2000" step="0.5"> <input type="text" id="m-f-h-n"></div>
+             <div class="control-row"><label>PrevScale</label> <input type="range" id="m-f-s" min="0.1" max="10" step="0.01"> <input type="text" id="m-f-s-n"></div>
+
+             <div class="control-row"><strong>Expression (個別)</strong></div>
+             <div class="control-row"><label>Off X</label> <input type="range" id="e-f-x" min="-1000" max="1000" step="0.5"> <input type="text" id="e-f-x-n"></div>
+             <div class="control-row"><label>Off Y</label> <input type="range" id="e-f-y" min="-1000" max="1000" step="0.5"> <input type="text" id="e-f-y-n"></div>
+             <div class="control-row"><label>Scale Multi</label> <input type="range" id="e-f-s" min="0.1" max="5" step="0.01"> <input type="text" id="e-f-s-n"></div>
+             <button onclick="resetExpression('face')">表情リセット</button>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <h3> JSON Output </h3>
+        <textarea id="json-preview" readonly></textarea>
+        <button onclick="applyFromTextarea()">貼り付けJSON反映</button>
+        <button onclick="resetAllExpressions()">全表情リセット</button>
+    </div>
+</div>
+
+<script>
+    const CHARACTERS = ['NADIR', 'HAKIMA', 'MIRA', 'DARIYA'];
+    const EXPRESSIONS = ['normal', 'joy', 'fun', 'surprise', 'sorrow', 'anger', 'cry', 'maid', 'social', 'student'];
+    const NADIR_EXPRESSIONS = ['normal', 'joy', 'fun', 'surprise', 'sorrow', 'anger', 'cry'];
+
+    const IMG_W = 1195;
+    const IMG_H = 1600;
+
+    let state = {
+        version: 1,
+        characters: {}
+    };
+
+    let images = {}; 
+    let currentMode = 'standing';
+    let adjustTarget = 'expression'; 
+    let selectedChar = null;
+    let selectedExp = null;
+
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragInitialValX = 0;
+    let dragInitialValY = 0;
+
+    // Initialize state
+    CHARACTERS.forEach(char => {
+        state.characters[char] = {
+            standing: {
+                master: { x: 0, y: 0, scale: 1.0 },
+                expressions: {}
+            },
+            face: {
+                master: { cropX: 470, cropY: 150, cropW: 256, cropH: 256, cropScale: 1 },
+                expressions: {}
+            }
+        };
+        EXPRESSIONS.forEach(exp => {
+            state.characters[char].standing.expressions[exp] = { x: 0, y: 0, scale: 1 };
+            state.characters[char].face.expressions[exp] = { cropX: 0, cropY: 0, cropW: 0, cropH: 0, cropScale: 1 };
+        });
+    });
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById('btn-mode-standing').classList.toggle('active', mode === 'standing');
+        document.getElementById('btn-mode-face').classList.toggle('active', mode === 'face');
+        renderAll();
+    }
+
+    function setTarget(target) {
+        adjustTarget = target;
+        document.getElementById('target-master').classList.toggle('active', target === 'master');
+        document.getElementById('target-expression').classList.toggle('active', target === 'expression');
+    }
+
+    function toggleZoom() {
+        document.body.classList.toggle('true-size');
+        const isTrue = document.body.classList.contains('true-size');
+        document.getElementById('btn-zoom-toggle').textContent = isTrue ? '表示サイズ: 100%' : '表示サイズ: 50%';
+        renderAll();
+    }
+
+    document.getElementById('dir-input').addEventListener('change', async (e) => {
+        const files = Array.from(e.target.files);
+        for (const file of files) {
+            if (!file.name.match(/\.(webp|png|jpe?g)$/i)) continue;
+            const path = (file.webkitRelativePath || file.name).toLowerCase();
+            let foundChar = CHARACTERS.find(c => path.includes(c.toLowerCase()) || (c === 'NADIR' && path.includes('nader')));
+            let foundExp = EXPRESSIONS.find(e => path.includes(e));
+            if (foundChar && foundExp) {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                await new Promise(r => img.onload = r);
+                if (!images[foundChar]) images[foundChar] = {};
+                images[foundChar][foundExp] = img;
+            }
+        }
+        renderAll();
+    });
+
+    function renderAll() {
+        const container = document.getElementById('grid-container');
+        container.innerHTML = '';
+        CHARACTERS.forEach(char => {
+            const col = document.createElement('div');
+            col.className = 'char-column';
+            const head = document.createElement('div');
+            head.className = 'column-header';
+            head.textContent = char;
+            col.appendChild(head);
+            EXPRESSIONS.forEach(exp => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.char = char;
+                cell.dataset.exp = exp;
+                if (char === 'NADIR' && !NADIR_EXPRESSIONS.includes(exp)) {
+                    cell.classList.add('unused');
+                    cell.innerHTML = '<span style="color:#333">未使用</span>';
+                } else {
+                    const img = images[char] ? images[char][exp] : null;
+                    if (!img) {
+                        cell.classList.add('empty');
+                        cell.innerHTML = `<span class="cell-label">${exp}</span><span>NO IMG</span>`;
+                    } else {
+                        cell.innerHTML = `<span class="cell-label">${exp}</span>`;
+                        const canvas = document.createElement('canvas');
+                        cell.appendChild(canvas);
+                        drawCell(canvas, char, exp);
+                        if (currentMode === 'face') {
+                            const cropOverlay = document.createElement('div');
+                            cropOverlay.className = 'crop-rect';
+                            updateCropOverlay(cropOverlay, char, exp);
+                            cell.appendChild(cropOverlay);
+                            const preview = document.createElement('div');
+                            preview.className = 'preview-box';
+                            const pCanvas = document.createElement('canvas');
+                            pCanvas.width = 128; pCanvas.height = 128;
+                            preview.appendChild(pCanvas);
+                            drawFacePreview(pCanvas, char, exp);
+                            cell.appendChild(preview);
+                        } else {
+                            const hLineTop = document.createElement('div'); hLineTop.className = 'guide-h'; hLineTop.style.top = '10%'; cell.appendChild(hLineTop);
+                            const hLineEye = document.createElement('div'); hLineEye.className = 'guide-h'; hLineEye.style.top = '25%'; hLineEye.style.borderColor = 'rgba(255,100,100,0.5)'; cell.appendChild(hLineEye);
+                            const vLine = document.createElement('div'); vLine.className = 'guide-center-v'; cell.appendChild(vLine);
+                            const baseline = document.createElement('div'); baseline.className = 'guide-baseline'; cell.appendChild(baseline);
+                        }
+                    }
+                }
+                if (selectedChar === char && selectedExp === exp) cell.classList.add('selected');
+                cell.addEventListener('mousedown', onMouseDown);
+                cell.addEventListener('wheel', onWheel, { passive: false });
+                col.appendChild(cell);
+            });
+            container.appendChild(col);
+        });
+        updateJsonPreview();
+    }
+
+    function drawCell(canvas, char, exp) {
+        const img = images[char][exp];
+        const ctx = canvas.getContext('2d');
+        const cStanding = state.characters[char].standing;
+        const scale = cStanding.master.scale * cStanding.expressions[exp].scale;
+        const x = cStanding.master.x + cStanding.expressions[exp].x;
+        const y = cStanding.master.y + cStanding.expressions[exp].y;
+        canvas.width = IMG_W; canvas.height = IMG_H;
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width / 2 + x, y);
+        ctx.scale(scale, scale);
+        ctx.drawImage(img, -img.width / 2, 0);
+        ctx.restore();
+    }
+
+    function updateCropOverlay(el, char, exp) {
+        const cFace = state.characters[char].face;
+        const cStanding = state.characters[char].standing;
+        const sScale = cStanding.master.scale * cStanding.expressions[exp].scale;
+        const sX = cStanding.master.x + cStanding.expressions[exp].x;
+        const sY = cStanding.master.y + cStanding.expressions[exp].y;
+        const cropX = cFace.master.cropX + cFace.expressions[exp].cropX;
+        const cropY = cFace.master.cropY + cFace.expressions[exp].cropY;
+        const cropW = cFace.master.cropW + (cFace.expressions[exp].cropW || 0);
+        const cropH = cFace.master.cropH + (cFace.expressions[exp].cropH || 0);
+        const img = images[char][exp];
+        
+        // Use CSS variables for calculation to avoid getBoundingClientRect delay
+        const isTrue = document.body.classList.contains('true-size');
+        const displayWidth = isTrue ? 1195 : 598;
+        const displayScale = displayWidth / IMG_W;
+
+        const imgLeft = (displayWidth / 2) + sX * displayScale - (img.width / 2) * sScale * displayScale;
+        const imgTop = sY * displayScale;
+
+        el.style.left = (imgLeft + cropX * sScale * displayScale) + 'px';
+        el.style.top = (imgTop + cropY * sScale * displayScale) + 'px';
+        el.style.width = (cropW * sScale * displayScale) + 'px';
+        el.style.height = (cropH * sScale * displayScale) + 'px';
+    }
+
+    function drawFacePreview(canvas, char, exp) {
+        const img = images[char][exp]; if (!img) return;
+        const ctx = canvas.getContext('2d');
+        const cFace = state.characters[char].face;
+        const cropX = cFace.master.cropX + cFace.expressions[exp].cropX;
+        const cropY = cFace.master.cropY + cFace.expressions[exp].cropY;
+        const cropW = cFace.master.cropW + (cFace.expressions[exp].cropW || 0);
+        const cropH = cFace.master.cropH + (cFace.expressions[exp].cropH || 0);
+        const scale = cFace.master.cropScale * cFace.expressions[exp].cropScale;
+        ctx.clearRect(0,0, 128, 128);
+        ctx.save();
+        const drawScale = (128 / Math.max(1, cropW)) * scale;
+        ctx.translate(64, 64); ctx.scale(drawScale, drawScale);
+        ctx.translate(-cropX - cropW/2, -cropY - cropH/2);
+        ctx.drawImage(img, 0, 0);
+        ctx.restore();
+    }
+
+    function selectCell(char, exp) {
+        if (char === 'NADIR' && !NADIR_EXPRESSIONS.includes(exp)) return;
+        selectedChar = char; selectedExp = exp;
+        document.getElementById('current-id').textContent = `${char} : ${exp}`;
+        syncInputs(); renderAll();
+    }
+
+    function syncInputs() {
+        if (!selectedChar || !selectedExp) return;
+        const cData = state.characters[selectedChar];
+        const set = (id, val) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = val; };
+        set('m-s-s', cData.standing.master.scale); set('m-s-s-n', cData.standing.master.scale);
+        set('m-s-x', cData.standing.master.x); set('m-s-x-n', cData.standing.master.x);
+        set('m-s-y', cData.standing.master.y); set('m-s-y-n', cData.standing.master.y);
+        const eS = cData.standing.expressions[selectedExp];
+        set('e-s-s', eS.scale); set('e-s-s-n', eS.scale);
+        set('e-s-x', eS.x); set('e-s-x-n', eS.x);
+        set('e-s-y', eS.y); set('e-s-y-n', eS.y);
+        const fM = cData.face.master;
+        set('m-f-x', fM.cropX); set('m-f-x-n', fM.cropX);
+        set('m-f-y', fM.cropY); set('m-f-y-n', fM.cropY);
+        set('m-f-w', fM.cropW); set('m-f-w-n', fM.cropW);
+        set('m-f-h', fM.cropH); set('m-f-h-n', fM.cropH);
+        set('m-f-s', fM.cropScale); set('m-f-s-n', fM.cropScale);
+        const fE = cFace = cData.face.expressions[selectedExp];
+        set('e-f-x', cFace.cropX); set('e-f-x-n', cFace.cropX);
+        set('e-f-y', cFace.cropY); set('e-f-y-n', cFace.cropY);
+        set('e-f-s', cFace.cropScale); set('e-f-s-n', cFace.cropScale);
+    }
+
+    function updateVal(area, scope, key, val, fromInput = null) {
+        if (!selectedChar || !selectedExp) return;
+        let value = parseFloat(val); if (isNaN(value)) return;
+        state.characters[selectedChar][area][scope][key] = value;
+        const idBase = (scope === 'master' ? 'm-' : 'e-') + (area === 'standing' ? 's-' : 'f-') + (key.toLowerCase().includes('scale') ? 's' : (key.slice(-1).toLowerCase() === 'x' ? 'x' : (key.slice(-1).toLowerCase() === 'y' ? 'y' : (key.slice(-1).toLowerCase() === 'w' ? 'w' : 'h'))));
+        const targetId = (fromInput && fromInput.id.endsWith('-n')) ? idBase : idBase + '-n';
+        const targetEl = document.getElementById(targetId); if (targetEl) targetEl.value = value;
+        renderAll();
+    }
+
+    function bindInputs() {
+        const inputs = document.querySelectorAll('#sidebar input');
+        inputs.forEach(input => {
+            const parts = input.id.split('-'); if (parts.length < 3) return;
+            const area = parts[1] === 's' ? 'standing' : 'face';
+            const scope = parts[0] === 'm' ? 'master' : 'expression';
+            let key = parts[2] === 's' ? 'scale' : (parts[2] === 'x' ? 'x' : (parts[2] === 'y' ? 'y' : (parts[2] === 'w' ? 'w' : 'h')));
+            if (area === 'face') { if (key === 'scale') key = 'cropScale'; else key = 'crop' + key.toUpperCase(); }
+            input.oninput = (e) => { const val = e.target.value; if (val === '-' || val === '.' || val === '-.') return; updateVal(area, scope, key, val, input); };
+        });
+    }
+
+    function onMouseDown(e) {
+        const cell = e.currentTarget; const char = cell.dataset.char; const exp = cell.dataset.exp; if (!char || !exp) return;
+        selectCell(char, exp); isDragging = true; dragStartX = e.clientX; dragStartY = e.clientY;
+        const area = currentMode; const scope = adjustTarget;
+        if (area === 'standing') { dragInitialValX = state.characters[char].standing[scope].x; dragInitialValY = state.characters[char].standing[scope].y; }
+        else { dragInitialValX = state.characters[char].face[scope].cropX; dragInitialValY = state.characters[char].face[scope].cropY; }
+        window.addEventListener('mousemove', onMouseMove); window.addEventListener('mouseup', onMouseUp);
+    }
+
+    function onMouseMove(e) {
+        if (!isDragging) return;
+        const deltaX = e.clientX - dragStartX; const deltaY = e.clientY - dragStartY;
+        const multiplier = (e.shiftKey ? 10 : 1) / (document.body.classList.contains('true-size') ? 1 : 0.5);
+        const area = currentMode; const scope = adjustTarget;
+        const keyX = area === 'standing' ? 'x' : 'cropX'; const keyY = area === 'standing' ? 'y' : 'cropY';
+        state.characters[selectedChar][area][scope][keyX] = dragInitialValX + deltaX * multiplier;
+        state.characters[selectedChar][area][scope][keyY] = dragInitialValY + deltaY * multiplier;
+        syncInputs(); renderAll();
+    }
+
+    function onMouseUp() { isDragging = false; window.removeEventListener('mousemove', onMouseMove); window.removeEventListener('mouseup', onMouseUp); }
+
+    function onWheel(e) {
+        if (!e.altKey) return; e.preventDefault();
+        const cell = e.currentTarget; const char = cell.dataset.char; const exp = cell.dataset.exp; if (!char || !exp) return;
+        selectCell(char, exp);
+        const baseSpeed = e.shiftKey ? 0.2 : 0.05;
+        const delta = -Math.sign(e.deltaY) * baseSpeed;
+        const area = currentMode; const scope = adjustTarget;
+        const key = area === 'standing' ? 'scale' : 'cropScale';
+        state.characters[char][area][scope][key] = Math.max(0.01, state.characters[char][area][scope][key] + delta);
+        syncInputs(); renderAll();
+    }
+
+    function resetExpression(area) {
+        if (!selectedChar || !selectedExp) return;
+        const def = (area === 'standing') ? { x: 0, y: 0, scale: 1 } : { cropX: 0, cropY: 0, cropW: 0, cropH: 0, cropScale: 1 };
+        state.characters[selectedChar][area].expressions[selectedExp] = JSON.parse(JSON.stringify(def));
+        syncInputs(); renderAll();
+    }
+
+    function resetAllExpressions() {
+        if (!selectedChar) return; if (!confirm(`${selectedChar} の全表情の個別補正をリセットしますか？`)) return;
+        EXPRESSIONS.forEach(exp => { state.characters[selectedChar].standing.expressions[exp] = { x: 0, y: 0, scale: 1 }; state.characters[selectedChar].face.expressions[exp] = { cropX: 0, cropY: 0, cropW: 0, cropH: 0, cropScale: 1 }; });
+        syncInputs(); renderAll();
+    }
+
+    function updateJsonPreview() { document.getElementById('json-preview').value = JSON.stringify(state, null, 2); }
+    function exportJson() { const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `character_alignment_${new Date().toISOString().slice(0,10)}.json`; a.click(); }
+    function importJson() { const input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = e => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = () => { state = JSON.parse(reader.result); renderAll(); }; reader.readAsText(file); }; input.click(); }
+    function applyFromTextarea() { try { state = JSON.parse(document.getElementById('json-preview').value); renderAll(); alert('JSONを反映しました'); } catch(e) { alert('JSONの形式が正しくありません'); } }
+    function copyToClipboard() { const tx = document.getElementById('json-preview'); tx.select(); document.execCommand('copy'); }
+
+    window.addEventListener('keydown', e => {
+        if (!selectedChar || !selectedExp) return;
+        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+        const step = (e.shiftKey ? 10 : 1); const area = currentMode; const scope = adjustTarget;
+        if (area === 'standing') {
+            if (e.key === 'ArrowLeft') state.characters[selectedChar].standing[scope].x -= step;
+            if (e.key === 'ArrowRight') state.characters[selectedChar].standing[scope].x += step;
+            if (e.key === 'ArrowUp') state.characters[selectedChar].standing[scope].y -= step;
+            if (e.key === 'ArrowDown') state.characters[selectedChar].standing[scope].y += step;
+            if (e.key === '+' || e.key === ';') state.characters[selectedChar].standing[scope].scale += 0.05;
+            if (e.key === '-' || e.key === '=') state.characters[selectedChar].standing[scope].scale -= 0.05;
+        } else {
+            if (e.key === 'ArrowLeft') state.characters[selectedChar].face[scope].cropX -= step;
+            if (e.key === 'ArrowRight') state.characters[selectedChar].face[scope].cropX += step;
+            if (e.key === 'ArrowUp') state.characters[selectedChar].face[scope].cropY -= step;
+            if (e.key === 'ArrowDown') state.characters[selectedChar].face[scope].cropY += step;
+            if (e.key === '+' || e.key === ';') state.characters[selectedChar].face[scope].cropScale += 0.05;
+            if (e.key === '-' || e.key === '=') state.characters[selectedChar].face[scope].cropScale -= 0.05;
+        }
+        syncInputs(); renderAll();
+    });
+
+    bindInputs(); renderAll();
+</script>
+</body>
+</html>

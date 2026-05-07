@@ -1,0 +1,573 @@
+{
+  "version": 1,
+  "characters": {
+    "NADIR": {
+      "standing": {
+        "master": {
+          "x": 0,
+          "y": 0,
+          "scale": 1
+        },
+        "expressions": {
+          "normal": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "joy": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "fun": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "surprise": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "sorrow": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "anger": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "cry": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "maid": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "social": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "student": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        }
+      },
+      "face": {
+        "master": {
+          "cropX": 466,
+          "cropY": 180,
+          "cropW": 256,
+          "cropH": 256,
+          "cropScale": 0.5999999999999996
+        },
+        "expressions": {
+          "normal": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "joy": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "fun": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "surprise": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "sorrow": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "anger": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "cry": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "maid": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "social": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "student": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          }
+        }
+      }
+    },
+    "HAKIMA": {
+      "standing": {
+        "master": {
+          "x": -10,
+          "y": 114,
+          "scale": 0.95
+        },
+        "expressions": {
+          "normal": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "joy": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "fun": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "surprise": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "sorrow": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "anger": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "cry": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "maid": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "social": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "student": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        }
+      },
+      "face": {
+        "master": {
+          "cropX": 486,
+          "cropY": 256,
+          "cropW": 256,
+          "cropH": 256,
+          "cropScale": 0.5499999999999996
+        },
+        "expressions": {
+          "normal": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "joy": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "fun": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "surprise": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "sorrow": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "anger": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "cry": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "maid": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "social": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "student": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          }
+        }
+      }
+    },
+    "MIRA": {
+      "standing": {
+        "master": {
+          "x": -18,
+          "y": 246,
+          "scale": 0.8499999999999999
+        },
+        "expressions": {
+          "normal": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "joy": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "fun": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "surprise": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "sorrow": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "anger": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "cry": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "maid": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "social": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "student": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        }
+      },
+      "face": {
+        "master": {
+          "cropX": 448,
+          "cropY": 240,
+          "cropW": 256,
+          "cropH": 256,
+          "cropScale": 0.4999999999999996
+        },
+        "expressions": {
+          "normal": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "joy": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "fun": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "surprise": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "sorrow": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "anger": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "cry": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "maid": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "social": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "student": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          }
+        }
+      }
+    },
+    "DARIYA": {
+      "standing": {
+        "master": {
+          "x": -24,
+          "y": 88,
+          "scale": 1
+        },
+        "expressions": {
+          "normal": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "joy": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "fun": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "surprise": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "sorrow": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "anger": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "cry": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "maid": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "social": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          },
+          "student": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+          }
+        }
+      },
+      "face": {
+        "master": {
+          "cropX": 470,
+          "cropY": 162,
+          "cropW": 256,
+          "cropH": 256,
+          "cropScale": 0.6499999999999997
+        },
+        "expressions": {
+          "normal": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "joy": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "fun": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "surprise": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "sorrow": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "anger": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "cry": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "maid": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "social": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          },
+          "student": {
+            "cropX": 0,
+            "cropY": 0,
+            "cropW": 0,
+            "cropH": 0,
+            "cropScale": 1
+          }
+        }
+      }
+    }
+  }
+}
