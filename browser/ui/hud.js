@@ -158,7 +158,7 @@ function renderLogModal(controller, container) {
         if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
         if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
 
-        const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId, 64))
+        const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId))
           .map(([k, v]) => `${k}:${v}`).join(';');
 
         return `

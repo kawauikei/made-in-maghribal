@@ -5,15 +5,15 @@
  */
  
  .item-sprite {
-   width: var(--item-size, 96px);
-   height: var(--item-size, 96px);
-   background-image: url("images/ui/item.webp");
-   background-repeat: no-repeat;
-   background-size: var(--item-scale-w) var(--item-scale-h);
-   background-position: var(--item-x) var(--item-y);
-   flex-shrink: 0;
-   display: inline-block;
-   image-rendering: -webkit-optimize-contrast; /* Keep icons crisp */
+ width: 100%;
+ height: 100%;
+ background-image: url("images/ui/item.webp");
+ background-repeat: no-repeat;
+ background-size: 500% 5000%;
+ background-position: var(--item-x, 0%) var(--item-y, 0%);
+ flex-shrink: 0;
+ display: block;
+ image-rendering: -webkit-optimize-contrast;
  }
 
 /* HUD / Stats Bar (Default Absolute) */

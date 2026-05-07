@@ -105,7 +105,7 @@ function renderResultItemList(items) {
   const rows = visibleItems.map((item) => `
     <div class="result-item-chip${item.selected ? ' is-selected' : ' is-unselected'}${item.isNew ? ' is-new' : ''}" title="${item.displayName}${item.selected ? ' / 選択' : ' / 候補'}">
       ${item.isNew ? '<span class="result-item-new">NEW</span>' : ''}
-      <div class="item-sprite result-item-icon" style="${Object.entries(getItemSpriteStyle(item.itemId, 64)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
+      <div class="item-sprite result-item-icon" style="${Object.entries(getItemSpriteStyle(item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
     </div>
   `).join('');
 

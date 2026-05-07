@@ -364,7 +364,7 @@ function updateQuizContent(controller) {
       if (genreEl) genreEl.textContent = `分類：${meta.genreName || meta.genre || '不明'}`;
       if (qualityEl) qualityEl.textContent = `品質：${getQualityLabel(quality)}`;
       if (iconEl) {
-        const spriteStyles = getItemSpriteStyle(c.id, 96);
+        const spriteStyles = getItemSpriteStyle(c.id);
         Object.entries(spriteStyles).forEach(([key, val]) => {
           iconEl.style.setProperty(key, val);
         });

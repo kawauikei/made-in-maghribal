@@ -294,7 +294,7 @@ function renderItemDetailModal(controller, seenItems) {
         <button class="item-detail-close" type="button" data-action="item-detail-close">×</button>
         <div class="item-detail-head">
           <div class="item-detail-icon-frame">
-            <div class="item-sprite" style="${Object.entries(getItemSpriteStyle(model.item.itemId, 160)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
+            <div class="item-sprite" style="${Object.entries(getItemSpriteStyle(model.item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>
           </div>
           <div>
             <p class="item-detail-kicker">${index + 1} / ${seenItems.length}</p>
@@ -334,7 +334,7 @@ function renderItemGallery(controller) {
       <${tag} class="gallery-item-tile${seen ? ' is-seen' : ' is-locked'}" title="${escapeHtml(title)}"${detailAttr}>
         <div class="gallery-item-icon-frame">
           <div class="gallery-item-icon">
-            ${seen ? `<div class="item-sprite" style="${Object.entries(getItemSpriteStyle(item.itemId, 80)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>` : '<span>？</span>'}
+            ${seen ? `<div class="item-sprite" style="${Object.entries(getItemSpriteStyle(item.itemId)).map(([k, v]) => `${k}:${v}`).join(';')}"></div>` : '<span>？</span>'}
           </div>
         </div>
         <div class="gallery-item-info">
