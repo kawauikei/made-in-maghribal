@@ -305,9 +305,13 @@ class GameController {
     if (phase === 'MAIN_GAME') {
       this.renderMainGame(this.container);
     } else {
-      this.container.innerHTML = '';
-      const view = document.createElement('div');
-      view.className = 'view-container';
+      let view = this.container.querySelector('.view-container');
+      if (!view) {
+        this.container.innerHTML = '';
+        view = document.createElement('div');
+        view.className = 'view-container';
+        this.container.appendChild(view);
+      }
 
       if (phase === 'TITLE') {
         if (this.uiState.titlePanel) renderTitlePanel(this, view);
@@ -321,8 +325,6 @@ class GameController {
         this.recordEndingProgressIfNeeded();
         renderEnding(this, view);
       }
-
-      this.container.appendChild(view);
     }
 
     // Always ensure global UI and Modals are layered on top

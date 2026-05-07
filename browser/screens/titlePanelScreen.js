@@ -89,20 +89,24 @@ function formatItemQualityText(value) {
   return text.replace(/（効果/g, '<br>（効果');
 }
 
+const { renderTitleShell } = require('./titleScreen.js');
+
 function renderTitlePanel(controller, view) {
   const panel = controller.uiState?.titlePanel || 'item';
   const title = PANEL_TITLES[panel] || 'メニュー';
 
-  view.innerHTML = `
-    <div class="title-screen title-screen-with-art title-panel-screen">
-      <div class="title-panel-card">
-        <div class="title-panel-header">
-          <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
-          <h2>${title}</h2>
-        </div>
-        <div class="title-panel-body">
-          ${renderPanelBody(controller, panel)}
-        </div>
+  const contentEl = renderTitleShell(controller, view);
+  const shell = view.querySelector('.title-screen-with-art');
+  if (shell) shell.classList.add('title-panel-screen');
+
+  contentEl.innerHTML = `
+    <div class="title-panel-card">
+      <div class="title-panel-header">
+        <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
+        <h2>${title}</h2>
+      </div>
+      <div class="title-panel-body">
+        ${renderPanelBody(controller, panel)}
       </div>
     </div>
   `;
