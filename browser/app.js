@@ -97,7 +97,6 @@ class GameController {
     this.sfx = createSfxEngine();
     this.bgm = createBgmEngine();
     this.assetPreloader = createAssetPreloader();
-    this.assetPreloader.preloadOpeningAssets();
     
     this.settings = this.loadSettings();
     this.applyAudioSettings();
@@ -128,11 +127,22 @@ class GameController {
     this.applySettingsFromUrl();
 
     // Initial boot loading
+    // 修正: 起動時ロードは必ず showLoading -> 描画確定 -> preload 開始 の順にする
     await showLoading(this.container, '起動しています...');
-    await Promise.all([
-      this.assetPreloader.preloadOpeningAssets(),
-      new Promise(r => setTimeout(r, 350)) // Keep the intro responsive.
-    ]);
+
+    // 1フレーム待って描画を確定させる
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const startTime = performance.now();
+    await this.assetPreloader.preloadOpeningAssets();
+
+    // 最低表示時間 (600-800ms) を満たすように調整
+    const MIN_LOAD_TIME = 800;
+    const elapsed = performance.now() - startTime;
+    if (elapsed < MIN_LOAD_TIME) {
+      await new Promise(r => setTimeout(r, MIN_LOAD_TIME - elapsed));
+    }
+
     await hideLoading(this.container);
 
     this.update();
@@ -259,10 +269,27 @@ class GameController {
   }
 
 
-  openTitlePanel(panelName) {
+  async openTitlePanel(panelName) {
+    this.playSfx('uiTapBottle');
+
+    if (panelName === 'image') {
+      await showLoading(this.container, '画像集を準備しています...');
+      await Promise.all([
+        this.preloadGalleryViewerAssets(),
+        new Promise((resolve) => setTimeout(resolve, 250))
+      ]);
+      await hideLoading(this.container);
+    } else if (panelName === 'sound') {
+      await showLoading(this.container, '音楽集を準備しています...');
+      await Promise.all([
+        this.preloadSoundTestAssets(),
+        new Promise((resolve) => setTimeout(resolve, 250))
+      ]);
+      await hideLoading(this.container);
+    }
+
     this.uiState.titlePanel = panelName;
     this.uiState.itemDetailModal = null;
-    this.playSfx('uiTapBottle');
     this.update();
   }
 
@@ -494,6 +521,8 @@ class GameController {
     return applied;
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
+  preloadGalleryViewerAssets() { return this.assetPreloader?.preloadGalleryViewerAssets ? this.assetPreloader.preloadGalleryViewerAssets() : Promise.resolve([]); }
+  preloadSoundTestAssets() { return this.assetPreloader?.preloadSoundTestAssets ? this.assetPreloader.preloadSoundTestAssets() : Promise.resolve([]); }
   
   async startFreePlay({ bgmPath, questionCount }) {
     this.clearTypewriter();

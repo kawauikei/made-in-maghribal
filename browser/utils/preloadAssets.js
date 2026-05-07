@@ -9,7 +9,15 @@
  */
 
 const { getCharacterVisualImagePath } = require('./assetPaths.js');
-const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+let AUDIO_MANIFEST;
+try {
+  ({ AUDIO_MANIFEST } = require('../data/audioManifest.cjs'));
+} catch (error) {
+  // Node tests load this browser module directly, while the browser bundler
+  // aliases src/data as ./data. Keep both paths valid.
+  ({ AUDIO_MANIFEST } = require('../../src/data/audioManifest.cjs'));
+}
+const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
 
 const HEROINE_IDS = ['HAKIMA', 'MIRA', 'DARIYA'];
 const HEROINE_EXPRESSIONS = [
@@ -32,6 +40,37 @@ function compactUnique(values) {
 }
 
 
+function getGalleryItems() {
+  return Array.isArray(GALLERY_MANIFEST) ? GALLERY_MANIFEST : [];
+}
+
+function collectGalleryImagePaths(predicate) {
+  return getGalleryItems()
+    .filter((item) => item && item.path && (!predicate || predicate(item)))
+    .map((item) => item.path);
+}
+
+function collectOpeningGalleryImagePaths() {
+  // Common backgrounds are safe opening assets. Heroine-specific stills remain in Stage B.
+  return collectGalleryImagePaths((item) => item.sourceType === 'background' || item.category === '背景');
+}
+
+function collectHeroineEventGalleryPaths(heroineId) {
+  const id = String(heroineId || '').toUpperCase();
+  const lower = id.toLowerCase();
+  return collectGalleryImagePaths((item) => {
+    if (item.sourceType === 'background' || item.category === '背景') return true;
+    if (item.heroineId && String(item.heroineId).toUpperCase() === id) return true;
+    const key = `${item.id || ''} ${item.path || ''} ${item.title || ''}`.toLowerCase();
+    return Boolean(lower && key.includes(lower));
+  });
+}
+
+function collectGalleryViewerImagePaths() {
+  return collectGalleryImagePaths();
+}
+
+
 function collectCommonBgmPaths() {
   const bgm = AUDIO_MANIFEST?.bgm || {};
   const paths = [];
@@ -47,6 +86,22 @@ function collectSePaths() {
     if (Array.isArray(group)) group.forEach((track) => { if (track?.path) paths.push(track.path); });
   });
   return paths;
+}
+
+
+function collectAllBgmPaths() {
+  const bgm = AUDIO_MANIFEST?.bgm || {};
+  const paths = [...collectCommonBgmPaths()];
+  Object.values(bgm.heroines || {}).forEach((entry) => {
+    if (entry?.theme?.path) paths.push(entry.theme.path);
+    if (Array.isArray(entry?.game)) entry.game.forEach((track) => { if (track?.path) paths.push(track.path); });
+    Object.values(entry?.ending || {}).forEach((track) => { if (track?.path) paths.push(track.path); });
+  });
+  return compactUnique(paths);
+}
+
+function collectSoundTestAudioPaths() {
+  return compactUnique([...collectAllBgmPaths(), ...collectSePaths()]);
 }
 
 function collectHeroineBgmPaths(heroineId) {
@@ -67,7 +122,7 @@ function createAssetPreloader() {
   const imageCache = new Map();
   const audioCache = new Map();
   const linkCache = new Set();
-  let openingStarted = false;
+  let openingPromise = null;
   let heroineSelectStarted = false;
 
   function preloadImage(src) {
@@ -150,21 +205,24 @@ function createAssetPreloader() {
   }
 
   function preloadOpeningAssets() {
-    if (openingStarted) return;
-    openingStarted = true;
+    if (openingPromise) return openingPromise;
 
     // 初期ロードは全ヒロインの顔アイコン全量とnormal立ち絵だけに限定する。
     // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
-    const startImagePaths = HEROINE_IDS.flatMap((id) => ([
-      ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
-      ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
-    ]));
+    const startImagePaths = [
+      ...collectOpeningGalleryImagePaths(),
+      ...HEROINE_IDS.flatMap((id) => ([
+        ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
+        ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
+      ]))
+    ];
     
     // 開幕に必要なシステムBGMと全SEを確実に待つ
-    return Promise.all([
+    openingPromise = Promise.all([
       preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]),
       preloadImages(startImagePaths)
     ]);
+    return openingPromise;
   }
 
   function preloadHeroineSelectAssets(heroineId) {
@@ -172,10 +230,13 @@ function createAssetPreloader() {
     if (!id) return Promise.resolve([]);
     heroineSelectStarted = true;
 
-    const heroineImagePaths = HEROINE_EXPRESSIONS.flatMap((expression) => [
-      getCharacterVisualImagePath(id, expression, 'standing'),
-      getCharacterVisualImagePath(id, expression, 'face')
-    ]);
+    const heroineImagePaths = [
+      ...collectHeroineEventGalleryPaths(id),
+      ...HEROINE_EXPRESSIONS.flatMap((expression) => [
+        getCharacterVisualImagePath(id, expression, 'standing'),
+        getCharacterVisualImagePath(id, expression, 'face')
+      ])
+    ];
     
     return Promise.all([
       preloadAudioPaths(collectHeroineBgmPaths(id)),
@@ -193,6 +254,15 @@ function createAssetPreloader() {
     return preloadImages(imagePaths);
   }
 
+
+  function preloadGalleryViewerAssets() {
+    return preloadImages(collectGalleryViewerImagePaths());
+  }
+
+  function preloadSoundTestAssets() {
+    return preloadAudioPaths(collectSoundTestAudioPaths());
+  }
+
   function getStats() {
     const imageStats = { loading: 0, loaded: 0, error: 0 };
     imageCache.forEach((record) => {
@@ -203,7 +273,8 @@ function createAssetPreloader() {
       audio: audioCache.size,
       links: linkCache.size,
       openingStarted,
-      heroineSelectStarted
+      heroineSelectStarted,
+      galleryItems: getGalleryItems().length
     };
   }
 
@@ -214,11 +285,18 @@ function createAssetPreloader() {
     preloadAudioPaths,
     preloadOpeningAssets,
     preloadHeroineSelectAssets,
+    preloadGalleryViewerAssets,
+    preloadSoundTestAssets,
     preloadResultExpressions,
     getStats
   };
 }
 
 module.exports = {
-  createAssetPreloader
+  createAssetPreloader,
+  collectOpeningGalleryImagePaths,
+  collectHeroineEventGalleryPaths,
+  collectGalleryViewerImagePaths,
+  collectSoundTestAudioPaths,
+  collectAllBgmPaths
 };

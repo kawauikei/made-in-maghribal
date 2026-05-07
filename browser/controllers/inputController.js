@@ -50,7 +50,7 @@ function bindInputHandlers(controller) {
     const titlePanelBtn = target.closest('[data-title-panel]');
     if (titlePanelBtn) {
       event.stopPropagation();
-      controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
+      await controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
       return;
     }
     if (target.closest('[data-action="title-panel-back"]')) {
