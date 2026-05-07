@@ -334,14 +334,21 @@ function updateQuizContent(controller) {
   updateFaceExpressions(controller);
 
   const choices = controller.quizState.currentChoices;
+  const feedback = controller.quizState.answerFeedback || null;
   choices.forEach((c, idx) => {
     const card = controller.container.querySelector(`[data-choice-slot="${idx}"]`);
     if (card) {
       const quality = normalizeQuality(c.quality);
       const meta = getChoiceMeta(c);
+      const choiceKey = `${c.id}::${quality}`;
+      const isCorrectChoice = feedback && choiceKey === feedback.correctChoiceKey;
+      const isSelectedChoice = feedback && c.id === feedback.selectedItemId && quality === feedback.selectedQuality;
       card.setAttribute('data-item-id', c.id);
       card.setAttribute('data-item-quality', quality);
       card.setAttribute('data-quality', quality);
+      card.classList.toggle('is-answer-selected', Boolean(isSelectedChoice));
+      card.classList.toggle('is-answer-correct', Boolean(isCorrectChoice));
+      card.classList.toggle('is-answer-wrong', Boolean(isSelectedChoice && !isCorrectChoice));
       const nameEl = card.querySelector('.choice-name');
       const iconEl = card.querySelector('.item-icon');
       const wrapEl = card.querySelector('.item-icon-wrap');
@@ -369,6 +376,11 @@ function updateQuizContent(controller) {
       }
     }
   });
+
+  if (screenEl) {
+    const answerResult = feedback?.result?.isCorrect ? 'correct' : (feedback ? 'wrong' : 'none');
+    screenEl.setAttribute('data-answer-result', answerResult);
+  }
 
   // Ensure HUD (and thus the detached score strip) is updated with current session scores.
   controller.updateHud();

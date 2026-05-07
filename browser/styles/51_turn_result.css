@@ -63,6 +63,22 @@
   position: relative;
   padding: 34px 38px 38px;
   border-color: var(--heroine-theme-secondary, var(--sand-1));
+  overflow: hidden;
+}
+
+.result-rich-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(105deg, transparent 0 34%, rgba(255,236,166,0.24) 46%, transparent 58% 100%);
+  opacity: 0;
+  transform: translateX(-44%);
+}
+
+.result-screen.screen-enter .result-rich-card::before {
+  animation: ledgerPageGlint 980ms 180ms cubic-bezier(.22,.8,.22,1) both;
 }
 
 .result-kicker {
@@ -800,6 +816,22 @@
 .result-stage [data-reveal-step].is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+.result-screen.screen-enter .result-stage {
+  animation: resultStageSettle 720ms cubic-bezier(.19,1,.22,1) both;
+}
+
+@keyframes resultStageSettle {
+  0% { filter: saturate(0.82) brightness(0.88); }
+  60% { filter: saturate(1.08) brightness(1.05); }
+  100% { filter: saturate(1) brightness(1); }
+}
+
+@keyframes ledgerPageGlint {
+  0% { opacity: 0; transform: translateX(-44%); }
+  26% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(44%); }
 }
 
 .result-report-stamp[data-reveal-step] {

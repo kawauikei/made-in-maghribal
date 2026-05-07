@@ -148,7 +148,8 @@ class GameController {
       lastResult: null,
       turnStartScore: null,
       inputLocked: false,
-      currentChoices: []
+      currentChoices: [],
+      answerFeedback: null
     };
   }
 
@@ -690,6 +691,7 @@ class GameController {
       }
     ];
     this.quizState.currentChoices = this.shuffleChoices(choices);
+    this.quizState.answerFeedback = null;
     
     this.quizState.promptShownAt = performance.now();
     this.quizState.inputLocked = false;
@@ -838,8 +840,14 @@ class GameController {
       result: historyResult
     });
 
-    this.updateQuizContent();
     this.quizState.lastResult = result;
+    this.quizState.answerFeedback = {
+      selectedItemId: itemId,
+      selectedQuality,
+      correctChoiceKey,
+      result
+    };
+    this.updateQuizContent();
     this.quizState.questionIndex++;
     this.saveCurrentRunIfNeeded();
 
