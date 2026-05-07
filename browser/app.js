@@ -844,9 +844,9 @@ class GameController {
     if (this.quizState.questionIndex < this.quizState.totalQuestions) {
       setTimeout(() => {
         this.generateNextQuestion();
+        this.quizState.inputLocked = false;
         this.updateQuizContent();
         this.saveCurrentRunIfNeeded();
-        this.quizState.inputLocked = false;
       }, RESULT_TRANSITION_DELAY_MS);
     } else {
       setTimeout(() => {

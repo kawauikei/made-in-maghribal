@@ -297,10 +297,16 @@ function updateFaceExpressions(controller) {
 
 function updateQuizContent(controller) {
   const q = controller.quizState.currentQuestion;
+  const screenEl = controller.container.querySelector('.quiz-screen');
   const promptEl = controller.container.querySelector('[data-quiz-prompt]');
   const qualityRequestEl = controller.container.querySelector('[data-quiz-quality-request]');
   const progressEl = controller.container.querySelector('[data-quiz-progress]');
   const customerLabelEl = controller.container.querySelector('[data-quiz-customer-label]');
+  if (screenEl) {
+    screenEl.setAttribute('data-input-locked', controller.quizState.inputLocked ? 'true' : 'false');
+    screenEl.setAttribute('data-question-index', String(controller.quizState.questionIndex || 0));
+    screenEl.setAttribute('data-total-questions', String(controller.quizState.totalQuestions || 0));
+  }
   
   if (!q) {
     if (promptEl) promptEl.textContent = '接客の準備中です。';

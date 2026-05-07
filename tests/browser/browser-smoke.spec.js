@@ -33,6 +33,13 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
     await expect(page.locator('.quiz-screen')).toBeVisible({ timeout: 5000 });
   }
 
+  async function answerQuestionAndWait(page, expectedProgressText) {
+    await page.locator('.choice-card').first().click();
+    await expect(page.locator('.quiz-screen')).toHaveAttribute('data-input-locked', 'true');
+    await expect(page.locator('[data-quiz-progress]')).toContainText(expectedProgressText);
+    await expect(page.locator('.quiz-screen')).toHaveAttribute('data-input-locked', 'false');
+  }
+
   test('1. Title screen and navigation to main game', async ({ page }) => {
     // 1. Title Screen
     await expect(page.locator('.title-logo-image')).toHaveAttribute('alt', 'Made in Maghribal');
@@ -102,11 +109,10 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
     
     // Play 10 questions
     for (let i = 0; i < 10; i++) {
-      await page.locator('.choice-card').first().click();
-      // Wait for next question or transition
       if (i < 9) {
-        // Wait for stamp to fade or next prompt
-        await page.waitForTimeout(800); 
+        await answerQuestionAndWait(page, `${i + 2} / 10`);
+      } else {
+        await page.locator('.choice-card').first().click();
       }
     }
 
@@ -123,8 +129,7 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
     
     // 2. Answer 3 questions
     for (let i = 0; i < 3; i++) {
-      await page.locator('.choice-card').first().click();
-      await page.waitForTimeout(800);
+      await answerQuestionAndWait(page, `${i + 2} / 10`);
     }
     await expect(page.locator('[data-quiz-progress]')).toContainText('4 / 10');
 
