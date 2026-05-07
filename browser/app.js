@@ -131,7 +131,7 @@ class GameController {
     await showLoading(this.container, '起動しています...');
     await Promise.all([
       this.assetPreloader.preloadOpeningAssets(),
-      new Promise(r => setTimeout(r, 1000)) // Initial weight
+      new Promise(r => setTimeout(r, 350)) // Keep the intro responsive.
     ]);
     await hideLoading(this.container);
 
@@ -476,7 +476,7 @@ class GameController {
       await showLoading(this.container, '以前の記録を読み込んでいます...');
       await Promise.all([
         this.preloadHeroineSelectAssets(saveData.session.selectedHeroineId),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
       ]);
       await hideLoading(this.container);
     }
@@ -503,7 +503,7 @@ class GameController {
     await showLoading(this.container, '接客の準備をしています...');
     await Promise.all([
         this.preloadHeroineSelectAssets('HAKIMA'),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
     ]);
     await hideLoading(this.container);
     
@@ -583,7 +583,7 @@ class GameController {
     await showLoading(this.container, '旅の準備をしています...');
     await Promise.all([
         this.preloadHeroineSelectAssets(id),
-        new Promise(r => setTimeout(r, 800)) // Minimum weight
+        new Promise(r => setTimeout(r, 300))
     ]);
     await hideLoading(this.container);
 

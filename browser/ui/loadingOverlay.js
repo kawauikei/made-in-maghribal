@@ -6,7 +6,9 @@ function renderLoadingOverlay(message = 'データを読み込んでいます...
   return `
     <div class="asset-loading-overlay" id="loading-overlay" style="opacity: 0; transition: opacity 0.15s ease-out;">
       <div class="asset-loading-card">
-        <div class="asset-loading-spinner"></div>
+        <div class="asset-loading-lantern" aria-hidden="true">
+          <span></span>
+        </div>
         <p>${message}</p>
       </div>
     </div>
