@@ -29606,7 +29606,6 @@ function normalizeCharacterDir(id) {
 function getCharacterStandingPath(id, expression = 'normal') {
   if (!id) return '';
   const charDir = normalizeCharacterDir(id);
-  // Valid expressions from filesystem: normal, joy, fun, anger, cry, sorrow, surprise, etc.
   const expFile = expression.toLowerCase();
   return `characters/${charDir}/standing_proc/${expFile}.webp`;
 }
@@ -30069,7 +30068,7 @@ const DEFAULT_PROFILE = {
   heroineSelect: { ...DEFAULT_VISUAL_MODE, height: 520, bottom: -86 },
   bustup: { ...DEFAULT_VISUAL_MODE, height: 660, bottom: -260, scale: 1.45 },
   eventClose: { ...DEFAULT_VISUAL_MODE, height: 700, bottom: -300, scale: 1.62 },
-  result: { ...DEFAULT_VISUAL_MODE, height: 900, bottom: -20, scale: 0.92 },
+  result: { ...DEFAULT_VISUAL_MODE, height: 900, bottom: -20, scale: 1.3, x: -80 },
   selectIcon: DEFAULT_ICON_MODE,
   speakerIcon: DEFAULT_ICON_MODE
 };
@@ -30077,45 +30076,19 @@ const DEFAULT_PROFILE = {
 const CHARACTER_VISUAL_PROFILES = {
   MIRA: {
     theme: { primary: '#6fd7ff', secondary: '#2d91d0', textStroke: 'rgba(16, 67, 105, 0.50)', stampFont: '"Klee", "Hannotate SC", "Hiragino Maru Gothic ProN", "Yu Gothic", cursive' },
-    standing: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: 0, height: 980 },
-    heroineSelect: { image: 'standing', scale: 1.00, x: 0, y: 0, bottom: -86, height: 520 },
-    bustup: { image: 'standing', scale: 1.42, x: 0, y: 0, bottom: -260, height: 660 },
-    eventClose: { image: 'standing', scale: 1.58, x: 0, y: 0, bottom: -300, height: 700 },
-    result: { image: 'standing', scale: 0.94, x: -12, y: 0, bottom: -28, height: 900 },
-    selectIcon: { image: 'face', scale: 1.00, x: 50, y: 50 },
-    speakerIcon: { image: 'face', scale: 1.00, x: 50, y: 50 }
+    // All modes use default standardized values
   },
   HAKIMA: {
     theme: { primary: '#ffd86c', secondary: '#e58a2f', textStroke: 'rgba(98, 55, 12, 0.52)', stampFont: '"UD Digi Kyokasho N-R", "Yu Mincho", "Hiragino Mincho ProN", serif' },
-    // Ear height makes her effective top taller; keep a small downward nudge.
-    standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
-    heroineSelect: { image: 'standing', scale: 1.14, x: 0, y: 10, bottom: -98, height: 520 },
-    bustup: { image: 'standing', scale: 1.56, x: 0, y: 16, bottom: -278, height: 660 },
-    eventClose: { image: 'standing', scale: 1.74, x: 0, y: 18, bottom: -318, height: 700 },
-    result: { image: 'standing', scale: 0.98, x: -10, y: 0, bottom: -34, height: 900 },
-    selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
-    speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
+    // All modes use default standardized values
   },
   DARIYA: {
     theme: { primary: '#ff6d9b', secondary: '#b83363', textStroke: 'rgba(85, 13, 45, 0.55)', stampFont: '"Yu Mincho", "Hiragino Mincho ProN", "HGS明朝E", serif' },
-    // Horn height needs a stronger downward nudge after face-size scaling.
-    standing: { image: 'standing', scale: 1.22, x: 0, y: 0, bottom: 0, height: 980 },
-    heroineSelect: { image: 'standing', scale: 1.28, x: 0, y: 20, bottom: -118, height: 520 },
-    bustup: { image: 'standing', scale: 1.72, x: 0, y: 28, bottom: -300, height: 660 },
-    eventClose: { image: 'standing', scale: 1.90, x: 0, y: 32, bottom: -342, height: 700 },
-    result: { image: 'standing', scale: 1.04, x: -18, y: 0, bottom: -44, height: 900 },
-    selectIcon: { image: 'face', scale: 1.02, x: 50, y: 47 },
-    speakerIcon: { image: 'face', scale: 1.02, x: 50, y: 47 }
+    // All modes use default standardized values
   },
   NADIR: {
     theme: { primary: '#f4c267', secondary: '#3d83c9', textStroke: 'rgba(35, 49, 84, 0.50)', stampFont: '"Yu Gothic", "Hiragino Sans", system-ui, sans-serif' },
-    standing: { image: 'standing', scale: 1.10, x: 0, y: 0, bottom: 0, height: 980 },
-    heroineSelect: { image: 'standing', scale: 1.12, x: 0, y: 8, bottom: -96, height: 520 },
-    bustup: { image: 'standing', scale: 1.56, x: 0, y: 14, bottom: -278, height: 660 },
-    eventClose: { image: 'standing', scale: 1.72, x: 0, y: 18, bottom: -318, height: 700 },
-    result: { image: 'standing', scale: 0.96, x: -10, y: 0, bottom: -34, height: 900 },
-    selectIcon: { image: 'face', scale: 1.04, x: 50, y: 48 },
-    speakerIcon: { image: 'face', scale: 1.04, x: 50, y: 48 }
+    // All modes use default standardized values
   }
 };
 
@@ -30139,7 +30112,13 @@ function getCharacterVisualProfile(id, mode = 'standing') {
   const profile = CHARACTER_VISUAL_PROFILES[normalized] || {};
   const defaultMode = DEFAULT_PROFILE[mode] || DEFAULT_PROFILE.standing;
   const characterMode = profile[mode] || profile.standing;
-  return mergeMode(defaultMode, characterMode);
+  
+  // If the character object doesn't define the mode, it will naturally use fallback.
+  // We check if the profile has the mode explicitly.
+  if (profile[mode]) {
+    return mergeMode(defaultMode, profile[mode]);
+  }
+  return defaultMode;
 }
 
 function applyCharacterVisualProfile(el, id, mode = 'standing') {
