@@ -25327,7 +25327,7 @@ function bindInputHandlers(controller) {
     if (event.target.closest('#game-viewport')) event.preventDefault();
   });
 
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (controller.sfx) controller.sfx.unlock();
     if (controller.bgm) controller.bgm.unlock();
     const target = event.target;
@@ -25343,12 +25343,13 @@ function bindInputHandlers(controller) {
       controller.clearRunSaveData();
       controller.endingProgressRecorded = false;
       controller.playSfx('uiConfirmChime');
-      controller.onGlobalAction();
+      await controller.onGlobalAction();
       return;
     }
     if (target.closest('[data-action="title-continue"]')) {
       event.stopPropagation();
-      if (!controller.continueFromSave()) {
+      const success = await controller.continueFromSave();
+      if (!success) {
         controller.playSfx('uiTapBottle');
         const messageEl = controller.container.querySelector('[data-title-stub-message]');
         if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
@@ -25377,7 +25378,7 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       const bgmEl = document.getElementById('freeplay-bgm');
       const countEl = document.getElementById('freeplay-count');
-      controller.startFreePlay({
+      await controller.startFreePlay({
         bgmPath: bgmEl ? bgmEl.value : null,
         questionCount: countEl ? Number(countEl.value) : 10
       });
@@ -25513,7 +25514,7 @@ function bindInputHandlers(controller) {
       const id = target.getAttribute('data-id');
       const routeMode = target.getAttribute('data-route-mode-selected') || 'normal';
       event.stopPropagation();
-      controller.selectHeroine(id, routeMode);
+      await controller.selectHeroine(id, routeMode);
       return;
     }
 
@@ -25521,7 +25522,7 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       if (target.classList.contains('btn-next')) {
         controller.playSfx('uiTapBottle');
-        controller.onGlobalAction();
+        await controller.onGlobalAction();
       }
       return;
     }
@@ -25540,7 +25541,7 @@ function bindInputHandlers(controller) {
     if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'TURN_RESULT') return;
 
     controller.playSfx('uiTapBottle');
-    controller.onGlobalAction();
+    await controller.onGlobalAction();
   });
 }
 
@@ -27903,6 +27904,56 @@ module.exports = {
 
     };
 
+    // --- ./ui/loadingOverlay.js ---
+    modules['./ui/loadingOverlay.js'] = function(module, exports, require) {
+/**
+ * Loading Overlay UI Component
+ */
+
+function renderLoadingOverlay(message = 'データを読み込んでいます...') {
+  return `
+    <div class="asset-loading-overlay" id="loading-overlay" style="opacity: 0; transition: opacity 0.15s ease-out;">
+      <div class="asset-loading-card">
+        <div class="asset-loading-spinner"></div>
+        <p>${message}</p>
+      </div>
+    </div>
+  `;
+}
+
+async function showLoading(container, message) {
+  const existing = container.querySelector('#loading-overlay');
+  if (existing) return;
+
+  const html = renderLoadingOverlay(message);
+  container.insertAdjacentHTML('beforeend', html);
+  
+  const el = container.querySelector('#loading-overlay');
+  // Force a reflow and then fade in
+  void el.offsetWidth;
+  el.style.opacity = '1';
+
+  // Return a promise that resolves after at least one frame to ensure paint
+  return new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 50)));
+}
+
+async function hideLoading(container) {
+  const el = container.querySelector('#loading-overlay');
+  if (el) {
+    el.style.opacity = '0';
+    // Wait for fade out animation before removing
+    await new Promise(resolve => setTimeout(resolve, 160));
+    el.remove();
+  }
+}
+
+module.exports = {
+  showLoading,
+  hideLoading
+};
+
+    };
+
     // --- ./ui/resultStamp.js ---
     modules['./ui/resultStamp.js'] = function(module, exports, require) {
 /**
@@ -29151,23 +29202,46 @@ function createAssetPreloader() {
   }
 
   function preloadAudio(path) {
-    if (!path) return;
-    if (audioCache.has(path)) return;
+    if (!path) return Promise.resolve(false);
+    if (audioCache.has(path)) {
+      const entry = audioCache.get(path);
+      return entry instanceof Promise ? entry : Promise.resolve(true);
+    }
 
     appendAudioPreloadLink(path);
-    try {
-      const audio = new Audio();
-      audio.preload = 'auto';
-      audio.src = path;
-      audio.load();
-      audioCache.set(path, audio);
-    } catch (e) {
-      audioCache.set(path, null);
-    }
+    const promise = new Promise((resolve) => {
+      try {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        // Resolve on canplaythrough or error to avoid blocking forever on network issues
+        const onReady = () => {
+          audio.removeEventListener('canplaythrough', onReady);
+          audio.removeEventListener('error', onError);
+          resolve(true);
+        };
+        const onError = () => {
+          audio.removeEventListener('canplaythrough', onReady);
+          audio.removeEventListener('error', onError);
+          resolve(false);
+        };
+        audio.addEventListener('canplaythrough', onReady);
+        audio.addEventListener('error', onError);
+        audio.src = path;
+        audio.load();
+        // We store the audio object to keep it warmed, but return the promise for the caller
+        audioCache.set(path, audio);
+      } catch (e) {
+        resolve(false);
+      }
+    });
+
+    // We can also store the promise to avoid duplicate loads
+    // For simplicity in this implementation, we'll just return it.
+    return promise;
   }
 
   function preloadAudioPaths(paths) {
-    compactUnique(paths).forEach(preloadAudio);
+    return Promise.all(compactUnique(paths).map(preloadAudio));
   }
 
   function preloadOpeningAssets() {
@@ -29180,8 +29254,12 @@ function createAssetPreloader() {
       ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
       ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
     ]));
-    preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]);
-    return preloadImages(startImagePaths);
+    
+    // 開幕に必要なシステムBGMと全SEを確実に待つ
+    return Promise.all([
+      preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]),
+      preloadImages(startImagePaths)
+    ]);
   }
 
   function preloadHeroineSelectAssets(heroineId) {
@@ -29193,8 +29271,11 @@ function createAssetPreloader() {
       getCharacterVisualImagePath(id, expression, 'standing'),
       getCharacterVisualImagePath(id, expression, 'face')
     ]);
-    preloadAudioPaths(collectHeroineBgmPaths(id));
-    return preloadImages(heroineImagePaths);
+    
+    return Promise.all([
+      preloadAudioPaths(collectHeroineBgmPaths(id)),
+      preloadImages(heroineImagePaths)
+    ]);
   }
 
   function preloadResultExpressions(heroineId, resultExpression) {
@@ -29845,6 +29926,7 @@ const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/play
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
+const { showLoading, hideLoading } = require('./ui/loadingOverlay.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -29916,10 +29998,21 @@ class GameController {
 
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
+  }
 
+  async boot() {
     this.init();
     applyDebugJumpFromUrl(this);
     this.applySettingsFromUrl();
+
+    // Initial boot loading
+    await showLoading(this.container, '起動しています...');
+    await Promise.all([
+      this.assetPreloader.preloadOpeningAssets(),
+      new Promise(r => setTimeout(r, 1000)) // Initial weight
+    ]);
+    await hideLoading(this.container);
+
     this.update();
   }
 
@@ -30211,10 +30304,21 @@ class GameController {
     recordEndingProgress(this.session, endingType, affection);
     this.endingProgressRecorded = true;
   }
-  continueFromSave() {
+  async continueFromSave() {
     const saveData = loadRunSave();
     if (!saveData) return false;
     this.clearTypewriter();
+
+    // Heavy preload for the saved heroine
+    if (saveData.session?.selectedHeroineId) {
+      await showLoading(this.container, '以前の記録を読み込んでいます...');
+      await Promise.all([
+        this.preloadHeroineSelectAssets(saveData.session.selectedHeroineId),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+      ]);
+      await hideLoading(this.container);
+    }
+
     const applied = applyRunSave(this, saveData);
     if (applied) {
       this.uiState.titlePanel = null;
@@ -30229,14 +30333,22 @@ class GameController {
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   
-  startFreePlay({ bgmPath, questionCount }) {
+  async startFreePlay({ bgmPath, questionCount }) {
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
+
+    // Preload HAKIMA (Default for free play) assets if needed
+    await showLoading(this.container, '接客の準備をしています...');
+    await Promise.all([
+        this.preloadHeroineSelectAssets('HAKIMA'),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+    ]);
+    await hideLoading(this.container);
     
     // Setup free play session
     this.session.phase = 'MAIN_GAME';
     this.session.subPhase = 'QUIZ';
-    this.session.selectedHeroineId = 'HAKIMA'; // Default
+    this.session.selectedHeroineId = 'HAKIMA'; 
     this.session.turn = 1; 
     
     this.quizState = this.createInitialQuizState();
@@ -30298,19 +30410,27 @@ class GameController {
     bindInputHandlers(this);
   }
 
-  selectHeroine(id, routeMode = 'normal') {
+  async selectHeroine(id, routeMode = 'normal') {
     if (this.quizState.inputLocked) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
     this.endingProgressRecorded = false;
-    this.preloadHeroineSelectAssets(id);
+
+    // Heavy preload
+    await showLoading(this.container, '旅の準備をしています...');
+    await Promise.all([
+        this.preloadHeroineSelectAssets(id),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+    ]);
+    await hideLoading(this.container);
+
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
   }
 
-  onGlobalAction() {
+  async onGlobalAction() {
     if (this.quizState.inputLocked || this.uiState.modal) return;
     const { phase, subPhase } = this.session;
 
@@ -30593,6 +30713,7 @@ class GameController {
 
 // Start the game
 window.game = new GameController();
+window.game.boot();
 
         };
         // Entry point base path is '.'
