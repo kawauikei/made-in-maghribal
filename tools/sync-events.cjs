@@ -130,7 +130,7 @@ eventFiles.forEach(file => {
         if (!Array.isArray(step.choices)) logError(event.id, `Step ${index}: choices must be an array`);
         else {
           step.choices.forEach((c, i) => {
-            if (!c.text) logError(event.id, `Step ${index} choice ${i}: missing text`);
+            if (!c.label) logError(event.id, `Step ${index} choice ${i}: missing label`);
           });
         }
       }

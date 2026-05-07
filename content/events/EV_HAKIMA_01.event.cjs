@@ -15,6 +15,16 @@ module.exports = {
     { type: "bgm", id: "BGM_THEME_HAKIMA", fadeMs: 800 },
     { type: "enter", characterId: "CH_HAKIMA", expression: "normal", position: "right" },
     { type: "line", speakerId: "CH_HAKIMA", expression: "joy", text: "おはよう。今日もぼんやりしてないでしょうね。" },
+    { type: "choice", choices: [
+      { label: "しっかりしてるさ", jump: "L_REPLY_A" },
+      { label: "少し眠いかもな", jump: "L_REPLY_B" }
+    ]},
+    { type: "label", id: "L_REPLY_A" },
+    { type: "line", speakerId: "CH_HAKIMA", text: "ならいいけど。さっさと準備しなさい。" },
+    { type: "jump", id: "L_STILL" },
+    { type: "label", id: "L_REPLY_B" },
+    { type: "line", speakerId: "CH_HAKIMA", expression: "anger", text: "呆れた。顔を洗ってきなさい！" },
+    { type: "label", id: "L_STILL" },
     { type: "still", id: "still_hakima_morning_visit_01" },
     { type: "line", speakerId: "CH_NADIR", text: "朝から手厳しいな。助かるけど。" },
     { type: "end", markSeen: true }

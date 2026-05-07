@@ -1,7 +1,7 @@
 # MadeInMaghribal Event DSL Specification
 
 ## 概要
-イベントファイルは `content/events/*.event.cjs` に配置し、`tools/sync-events.cjs` を通じてゲームデータに変換されます。
+イベントファイルは `content/events/*.event.cjs` に配置し、`tools/sync-events.cjs` を通じてゲームデータ（`src/data/generated/`）に変換されます。
 
 ## 基本構造
 ```javascript
@@ -57,7 +57,7 @@ module.exports = {
 - **wait**: 待機
   - `ms`: 時間 (ms)
 - **choice**: 選択肢
-  - `choices`: `{ text, jump }` の配列
+  - `choices`: `{ label, jump }` の配列
 - **label**: ジャンプ先ラベル
   - `id`: ラベルID
 - **jump**: 指定ラベルへ移動
@@ -68,10 +68,15 @@ module.exports = {
 - **end**: イベント終了 (必須)
   - `markSeen`: true の場合既読にする
 
-## 禁止事項
-- 画像IDは `galleryManifest.js` に存在するものから選ぶこと
-- BGM/SE IDは `audioManifest.cjs` に存在するものから選ぶこと
-- 未知の `type` を使用しないこと
-- 1つのイベント内でラベルIDを重複させないこと
-- ジャンプ先が存在しないラベルを指定しないこと
-- `end` 命令を必ず含めること
+## 開発フロー
+1. `content/events/` 配下に `*.event.cjs` を作成/編集する。
+2. `node tools/sync-events.cjs` を実行してデータを再生成する。
+3. `public/bundle.js` をビルドして反映を確認する。
+
+## 注意事項
+- 画像IDは `galleryManifest.js` に存在するものから選ぶ。
+- BGM/SE IDは `audioManifest.cjs` に存在するものから選ぶ。
+- 1つのイベント内でラベルIDを重複させない。
+- ジャンプ先が存在しないラベルを指定しない。
+- `end` 命令を必ず含める。
+- イベントプレイヤーは Phase 1 では実装対象外（データ構造のみ定義）。

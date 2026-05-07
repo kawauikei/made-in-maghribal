@@ -33,7 +33,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "ハキマと仲良くなると解放"
     },
-    "scriptStepCount": 7
+    "scriptStepCount": 14
   },
   {
     "id": "EV_MIRA_01",
