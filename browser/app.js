@@ -42,7 +42,7 @@ const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/playerProgress.js');
+const { recordEndingProgress, getPlayerProgressSummary, recordQuizHistory } = require('./utils/playerProgress.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
@@ -105,7 +105,8 @@ class GameController {
       modal: null, // 'options' | 'help' | null
       titlePanel: null, // title menu sub screen key
       itemDetailModal: null,
-      turnTransitionActive: false
+      turnTransitionActive: false,
+      convoLog: []
     };
 
     this.totalTurns = TOTAL_TURNS;
@@ -410,7 +411,19 @@ class GameController {
   updateHud() { updateHud(this); }
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
-  updateVnContent(payload) { updateVnContent(this, payload); }
+  updateVnContent(payload) {
+    if (payload && payload.text && payload.speakerName) {
+      this.uiState.convoLog.push({
+        speaker: payload.speakerName,
+        text: payload.text,
+        charId: payload.charId || payload.speakerId
+      });
+      if (this.uiState.convoLog.length > 50) {
+        this.uiState.convoLog.shift();
+      }
+    }
+    updateVnContent(this, payload);
+  }
   updateQuizContent() { updateQuizContent(this); }
   showResultStamp(result) { showResultStamp(this, result); }
 
@@ -780,7 +793,19 @@ class GameController {
 
     this.recordQuizItemLog(itemId, result);
 
-    this.session.scores = updateGameScore(this.session.scores, result);
+    const finalScore = updateGameScore(this.session, result);
+
+    // Record quiz history
+    recordQuizHistory({
+      turn: this.session.turn,
+      heroineId: this.session.selectedHeroineId,
+      prompt: q.promptText || '',
+      correctItemId: q.correctItemId || '',
+      selectedItemId: itemId,
+      result: finalScore.isPerfect ? 'perfect' : (finalScore.isSuccess ? 'good' : 'miss')
+    });
+
+    this.updateQuizContent();
     this.quizState.lastResult = result;
     this.quizState.questionIndex++;
 

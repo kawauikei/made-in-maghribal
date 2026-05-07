@@ -192,6 +192,7 @@ function getPlayerProgressSummary() {
     bestRecords: cloneJson(progress.bestRecords),
     endings: cloneJson(progress.endings),
     imageSeen: cloneJson(progress.imageSeen),
+    quizHistory: cloneJson(progress.quizHistory || []),
     clearedEndingCount: clearedEndings.length,
     eventSeenCount: Object.keys(progress.eventSeen || {}).length,
     imageSeenCount: Object.keys(progress.imageSeen || {}).length
