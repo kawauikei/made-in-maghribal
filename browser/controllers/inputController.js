@@ -154,6 +154,20 @@ function bindInputHandlers(controller) {
       }
       return;
     }
+    if (target.closest('[data-action="open-log"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.openModal('log');
+      return;
+    }
+    const logTabBtn = target.closest('[data-action="set-log-tab"]');
+    if (logTabBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.logTab = logTabBtn.getAttribute('data-tab');
+      controller.renderModal();
+      return;
+    }
     if (target.closest('[data-action="open-options"]')) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
