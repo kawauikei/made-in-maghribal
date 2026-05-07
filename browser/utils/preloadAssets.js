@@ -18,6 +18,19 @@ try {
   ({ AUDIO_MANIFEST } = require('../../src/data/audioManifest.cjs'));
 }
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
+let EVENT_MANIFEST, EVENT_SCRIPTS;
+try {
+  ({ EVENT_MANIFEST } = require('../data/generated/eventManifest.cjs'));
+  ({ EVENT_SCRIPTS } = require('../data/generated/eventScripts.cjs'));
+} catch (error) {
+  try {
+    ({ EVENT_MANIFEST } = require('../../src/data/generated/eventManifest.cjs'));
+    ({ EVENT_SCRIPTS } = require('../../src/data/generated/eventScripts.cjs'));
+  } catch (e) {
+    EVENT_MANIFEST = [];
+    EVENT_SCRIPTS = {};
+  }
+}
 
 const HEROINE_IDS = ['HAKIMA', 'MIRA', 'DARIYA'];
 const HEROINE_EXPRESSIONS = [
@@ -58,12 +71,87 @@ function collectOpeningGalleryImagePaths() {
 function collectHeroineEventGalleryPaths(heroineId) {
   const id = String(heroineId || '').toUpperCase();
   const lower = id.toLowerCase();
+  // We keep the old manual logic as a baseline, but the new collectHeroineEventAssetPaths
+  // handles the DSL-driven collection.
   return collectGalleryImagePaths((item) => {
-    if (item.sourceType === 'background' || item.category === '背景') return true;
-    if (item.heroineId && String(item.heroineId).toUpperCase() === id) return true;
-    const key = `${item.id || ''} ${item.path || ''} ${item.title || ''}`.toLowerCase();
-    return Boolean(lower && key.includes(lower));
+    return item.imageKind === 'still' && (item.heroineId === id || (item.id || '').includes(lower));
   });
+}
+
+/**
+ * Finds audio path by ID in the multi-layered AUDIO_MANIFEST.
+ */
+function findAudioPathById(id, type) {
+  if (!AUDIO_MANIFEST) return null;
+  
+  if (type === 'bgm') {
+    // System
+    if (AUDIO_MANIFEST.bgm.system) {
+      const found = AUDIO_MANIFEST.bgm.system.find(b => b.id === id);
+      if (found) return found.path;
+    }
+    // Heroines
+    if (AUDIO_MANIFEST.bgm.heroines) {
+      for (const heroine of Object.values(AUDIO_MANIFEST.bgm.heroines)) {
+        if (heroine.theme && heroine.theme.id === id) return heroine.theme.path;
+        if (heroine.game) {
+          const found = heroine.game.find(b => b.id === id);
+          if (found) return found.path;
+        }
+        if (heroine.ending) {
+          for (const b of Object.values(heroine.ending)) {
+            if (b.id === id) return b.path;
+          }
+        }
+      }
+    }
+    // Extra
+    if (AUDIO_MANIFEST.bgm.extra) {
+      const found = AUDIO_MANIFEST.bgm.extra.find(b => b.id === id);
+      if (found) return found.path;
+    }
+  } else if (type === 'se') {
+    if (AUDIO_MANIFEST.se) {
+      for (const category of Object.values(AUDIO_MANIFEST.se)) {
+        const found = category.find(s => s.id === id);
+        if (found) return found.path;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Traverses event scripts for a specific heroine to find all required assets.
+ */
+function collectHeroineEventAssetPaths(heroineId) {
+  const images = [];
+  const audio = [];
+  
+  if (!EVENT_MANIFEST || !EVENT_SCRIPTS) return { images, audio };
+
+  // Find events for this heroine
+  const heroineEvents = EVENT_MANIFEST.filter(ev => ev.heroineId === heroineId);
+  
+  heroineEvents.forEach(ev => {
+    const script = EVENT_SCRIPTS[ev.id];
+    if (!script) return;
+    
+    script.forEach(step => {
+      if (step.type === 'bg' || step.type === 'still') {
+        const item = GALLERY_MANIFEST.find(i => i.id === step.id);
+        if (item && item.path) images.push(item.path);
+      } else if (step.type === 'bgm') {
+        const path = findAudioPathById(step.id, 'bgm');
+        if (path) audio.push(path);
+      } else if (step.type === 'sfx') {
+        const path = findAudioPathById(step.id, 'se');
+        if (path) audio.push(path);
+      }
+    });
+  });
+  
+  return { images: compactUnique(images), audio: compactUnique(audio) };
 }
 
 function collectGalleryViewerImagePaths() {
@@ -219,8 +307,11 @@ function createAssetPreloader() {
     if (!id) return Promise.resolve([]);
     heroineSelectStarted = true;
 
+    const eventAssets = collectHeroineEventAssetPaths(id);
+
     const heroineImagePaths = [
       ...collectHeroineEventGalleryPaths(id),
+      ...eventAssets.images,
       ...HEROINE_EXPRESSIONS.flatMap((expression) => [
         getCharacterVisualImagePath(id, expression, 'standing'),
         getCharacterVisualImagePath(id, expression, 'face')
@@ -228,7 +319,7 @@ function createAssetPreloader() {
     ];
     
     return Promise.all([
-      preloadAudioPaths(collectHeroineBgmPaths(id)),
+      preloadAudioPaths([...collectHeroineBgmPaths(id), ...eventAssets.audio]),
       preloadImages(heroineImagePaths)
     ]);
   }

@@ -12,7 +12,17 @@ const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
-const { EVENT_MASTER } = require('../data/eventMaster.cjs');
+let EVENT_MASTER;
+try {
+  EVENT_MASTER = require('../data/generated/eventManifest.cjs').EVENT_MANIFEST;
+} catch (e) {
+  // Fallback to legacy master if generated manifest is not available
+  try {
+    EVENT_MASTER = require('../data/eventMaster.cjs').EVENT_MASTER;
+  } catch (e2) {
+    EVENT_MASTER = [];
+  }
+}
 const { loadPlayerProgress } = require('../utils/playerProgress.js');
 
 const PANEL_TITLES = {
@@ -364,13 +374,18 @@ function renderEventGallery(controller) {
     // For now, simple unlock logic: Common is always unlocked, others if heroine is cleared
     const isCleared = isCommon || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
     
+    // Use gallery info from generated manifest if available
+    const displayTitle = isCleared ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
+    const displaySummary = isCleared ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '営業をクリアして解放');
+    const conditionText = isCleared ? (HEROINE_LABELS[ev.heroineId] || '共通') : (ev.condition || '未解放');
+
     return `
       <div class="locked-gallery-card${isCleared ? ' is-unlocked' : ''}">
         <div class="locked-gallery-mark">${isCommon ? '✦' : '✧'}</div>
         <div class="locked-gallery-content">
-          <h3>${isCleared ? escapeHtml(ev.title) : '？？？？'}</h3>
-          <p>${isCleared ? escapeHtml(ev.summary) : '営業をクリアして解放'}</p>
-          <small>${isCleared ? escapeHtml(HEROINE_LABELS[ev.heroineId] || '共通') : ev.condition}</small>
+          <h3>${escapeHtml(displayTitle)}</h3>
+          <p>${escapeHtml(displaySummary)}</p>
+          <small>${escapeHtml(conditionText)}</small>
         </div>
       </div>
     `;
