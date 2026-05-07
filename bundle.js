@@ -30068,7 +30068,7 @@ const DEFAULT_PROFILE = {
   heroineSelect: { ...DEFAULT_VISUAL_MODE, height: 520, bottom: -86 },
   bustup: { ...DEFAULT_VISUAL_MODE, height: 660, bottom: -260, scale: 1.45 },
   eventClose: { ...DEFAULT_VISUAL_MODE, height: 700, bottom: -300, scale: 1.62 },
-  result: { ...DEFAULT_VISUAL_MODE, height: 900, bottom: -20, scale: 1.3, x: -80 },
+  result: { ...DEFAULT_VISUAL_MODE, height: 900, bottom: -20, scale: 0.92 },
   selectIcon: DEFAULT_ICON_MODE,
   speakerIcon: DEFAULT_ICON_MODE
 };
