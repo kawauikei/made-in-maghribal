@@ -795,13 +795,24 @@ class GameController {
 
     const finalScore = updateGameScore(this.session, result);
 
-    // Record quiz history
+    const leftChoice = this.quizState.currentChoices[0];
+    const rightChoice = this.quizState.currentChoices[1];
+
+    // Record quiz history with layout info
     recordQuizHistory({
       turn: this.session.turn,
       heroineId: this.session.selectedHeroineId,
       prompt: q.promptText || '',
-      correctItemId: q.correctItemId || '',
-      correctQuality: q.correctQuality || 'normal',
+      leftChoice: {
+        itemId: leftChoice.id,
+        quality: leftChoice.quality,
+        isCorrect: leftChoice.id === q.correctItemId && leftChoice.quality === q.correctQuality
+      },
+      rightChoice: {
+        itemId: rightChoice.id,
+        quality: rightChoice.quality,
+        isCorrect: rightChoice.id === q.correctItemId && rightChoice.quality === q.correctQuality
+      },
       selectedItemId: itemId,
       selectedQuality: quality || 'normal',
       result: finalScore.isPerfect ? 'perfect' : (finalScore.isSuccess ? 'good' : 'miss')

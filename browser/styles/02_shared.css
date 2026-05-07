@@ -712,3 +712,46 @@
   color: #777;
   letter-spacing: 0.05em;
 }
+.log-quiz-quality.quality-normal { color: #666; }
+.log-quiz-quality.quality-success { color: #2e7d32; }
+.log-quiz-quality.quality-great_success { color: #bf9000; }
+
+.log-quiz-indicators {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.log-indicator-correct {
+  background: #d4af37;
+  color: white;
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 900;
+}
+
+.log-indicator-selected {
+  background: #3d465b;
+  color: white;
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 900;
+}
+
+.is-correct-choice {
+  border-color: rgba(212, 175, 55, 0.5) !important;
+  background: rgba(255, 252, 240, 0.8) !important;
+}
+
+.is-selected-choice {
+  box-shadow: 0 0 0 2px rgba(61, 70, 91, 0.3);
+}
+
+.log-quiz-legacy-warning {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-style: italic;
+  margin-top: 8px;
+}

@@ -98,36 +98,53 @@ function renderLogModal(controller, container) {
 
     const items = paged.map(q => {
       const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
-      const correctName = controller.getItemDisplayName(q.correctItemId);
-      const correctIcon = controller.getItemIconPath(q.correctItemId);
-      const selectedName = controller.getItemDisplayName(q.selectedItemId);
-      const selectedIcon = controller.getItemIconPath(q.selectedItemId);
+      
+      const renderChoice = (choice, sideLabel) => {
+        if (!choice) return '';
+        const name = controller.getItemDisplayName(choice.itemId);
+        const icon = controller.getItemIconPath(choice.itemId);
+        const quality = choice.quality || 'normal';
+        const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
+        
+        const indicators = [];
+        if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
+        if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
+
+        return `
+          <div class="log-quiz-col">
+            <span class="log-quiz-col-label">${sideLabel}</span>
+            <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
+              <div class="log-quiz-icon-frame">
+                <img src="${icon}" alt="" />
+              </div>
+              <div class="log-quiz-item-info">
+                <span class="log-quiz-item-name">${name}</span>
+                <small class="log-quiz-quality quality-${quality}">${quality}</small>
+                <div class="log-quiz-indicators">${indicators.join('')}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      // Compatibility for old records without leftChoice/rightChoice
+      if (!q.leftChoice) {
+        return `
+          <div class="log-quiz-item result-${q.result}">
+            <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
+            <div class="log-quiz-prompt">${q.prompt}</div>
+            <p class="log-quiz-legacy-warning">旧形式の記録です</p>
+          </div>
+        `;
+      }
 
       return `
         <div class="log-quiz-item result-${q.result}">
           <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
           <div class="log-quiz-prompt">${q.prompt}</div>
           <div class="log-quiz-comparison">
-            <div class="log-quiz-col">
-              <span class="log-quiz-col-label">正解</span>
-              <div class="log-quiz-item-box">
-                <div class="log-quiz-icon-frame"><img src="${correctIcon}" alt="" /></div>
-                <div class="log-quiz-item-info">
-                  <span class="log-quiz-item-name">${correctName}</span>
-                  <small class="log-quiz-quality">${q.correctQuality || 'normal'}</small>
-                </div>
-              </div>
-            </div>
-            <div class="log-quiz-col">
-              <span class="log-quiz-col-label">回答</span>
-              <div class="log-quiz-item-box">
-                <div class="log-quiz-icon-frame"><img src="${selectedIcon}" alt="" /></div>
-                <div class="log-quiz-item-info">
-                  <span class="log-quiz-item-name">${selectedName}</span>
-                  <small class="log-quiz-quality">${q.selectedQuality || 'normal'}</small>
-                </div>
-              </div>
-            </div>
+            ${renderChoice(q.leftChoice, '左の選択肢')}
+            ${renderChoice(q.rightChoice, '右の選択肢')}
             <div class="log-quiz-result-badge">${resultLabel}</div>
           </div>
         </div>
