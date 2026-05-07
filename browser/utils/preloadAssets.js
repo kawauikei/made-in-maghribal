@@ -151,15 +151,6 @@ function createAssetPreloader() {
     return Promise.all(compactUnique(srcs).map(preloadImage));
   }
 
-  function appendAudioPreloadLink(path) {
-    if (!path || linkCache.has(path) || typeof document === 'undefined') return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'audio';
-    link.href = path;
-    document.head.appendChild(link);
-    linkCache.add(path);
-  }
 
   function preloadAudio(path) {
     if (!path) return Promise.resolve(false);
@@ -168,7 +159,6 @@ function createAssetPreloader() {
       return entry instanceof Promise ? entry : Promise.resolve(true);
     }
 
-    appendAudioPreloadLink(path);
     const promise = new Promise((resolve) => {
       try {
         const audio = new Audio();

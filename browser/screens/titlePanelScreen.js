@@ -50,6 +50,11 @@ const HEROINE_LABELS = {
   DARIYA: 'ダリヤ'
 };
 
+// Global scroll state for title panels
+const panelState = {
+  lastImageCategory: null
+};
+
 
 const QUALITY_LABELS = {
   normal: 'NORMAL',
@@ -99,6 +104,32 @@ function renderTitlePanel(controller, view) {
   const shell = view.querySelector('.title-screen-with-art');
   if (shell) shell.classList.add('title-panel-screen');
 
+  // 1. Capture current scroll position before re-rendering
+  let savedScroll = 0;
+  let isHorizontal = false;
+  let targetSelector = '';
+
+  if (panel === 'item') {
+    targetSelector = '.item-gallery-grid';
+  } else if (panel === 'image') {
+    targetSelector = '.image-gallery-thumbnails-wrapper';
+    isHorizontal = true;
+  }
+
+  if (targetSelector) {
+    const el = view.querySelector(targetSelector);
+    if (el) {
+      savedScroll = isHorizontal ? el.scrollLeft : el.scrollTop;
+    }
+  }
+
+  // If the category changed in the image gallery, we should reset the scroll
+  const currentImageCategory = controller.uiState?.galleryCategory || '背景';
+  if (panel === 'image' && panelState.lastImageCategory !== currentImageCategory) {
+    savedScroll = 0;
+    panelState.lastImageCategory = currentImageCategory;
+  }
+
   contentEl.innerHTML = `
     <div class="title-panel-card">
       <div class="title-panel-header">
@@ -110,6 +141,17 @@ function renderTitlePanel(controller, view) {
       </div>
     </div>
   `;
+
+  // 2. Restore scroll position after DOM update
+  if (targetSelector && savedScroll > 0) {
+    requestAnimationFrame(() => {
+      const el = view.querySelector(targetSelector);
+      if (el) {
+        if (isHorizontal) el.scrollLeft = savedScroll;
+        else el.scrollTop = savedScroll;
+      }
+    });
+  }
 }
 
 function renderPanelBody(controller, panel) {

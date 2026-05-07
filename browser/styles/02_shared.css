@@ -247,15 +247,12 @@
   z-index: 80;
   pointer-events: auto;
   opacity: 0.58;
-  transform: scale(0.86);
-  transform-origin: top right;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .global-ui:hover,
 .global-ui:focus-within {
   opacity: 1;
-  transform: scale(1);
 }
 
 .global-ui-btn {
@@ -274,7 +271,6 @@
 }
 
 .global-ui-btn:active {
-  transform: scale(0.9);
   background: rgba(183,131,53,0.4);
 }
 
@@ -641,9 +637,7 @@
   flex: 1;
   padding: 24px;
   text-align: left;
-  background: 
-    linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(244, 230, 200, 0.96)),
-    url("images/ui/paper_texture.png"); /* Optional texture if available */
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(244, 230, 200, 0.96));
   color: var(--ink);
 }
 
