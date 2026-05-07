@@ -453,7 +453,7 @@
  * Log Modal Styles
  */
 .log-modal {
-  max-width: 540px;
+  max-width: 660px;
   height: 80vh;
   display: flex !important;
   flex-direction: column;
