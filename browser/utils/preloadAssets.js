@@ -121,7 +121,6 @@ function collectHeroineBgmPaths(heroineId) {
 function createAssetPreloader() {
   const imageCache = new Map();
   const audioCache = new Map();
-  const linkCache = new Set();
   let openingPromise = null;
   let heroineSelectStarted = false;
 
@@ -261,8 +260,8 @@ function createAssetPreloader() {
     return {
       images: imageStats,
       audio: audioCache.size,
-      links: linkCache.size,
-      openingStarted,
+      links: 0,
+      openingStarted: Boolean(openingPromise),
       heroineSelectStarted,
       galleryItems: getGalleryItems().length
     };
