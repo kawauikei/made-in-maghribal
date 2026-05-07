@@ -45,6 +45,7 @@ const { recordEndingProgress, getPlayerProgressSummary } = require('./utils/play
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
+const { showLoading, hideLoading } = require('./ui/loadingOverlay.js');
 
 /** Constants */
 const RESULT_TRANSITION_DELAY_MS = 700;
@@ -116,10 +117,21 @@ class GameController {
 
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
+  }
 
+  async boot() {
     this.init();
     applyDebugJumpFromUrl(this);
     this.applySettingsFromUrl();
+
+    // Initial boot loading
+    await showLoading(this.container, '起動しています...');
+    await Promise.all([
+      this.assetPreloader.preloadOpeningAssets(),
+      new Promise(r => setTimeout(r, 1000)) // Initial weight
+    ]);
+    await hideLoading(this.container);
+
     this.update();
   }
 
@@ -411,10 +423,21 @@ class GameController {
     recordEndingProgress(this.session, endingType, affection);
     this.endingProgressRecorded = true;
   }
-  continueFromSave() {
+  async continueFromSave() {
     const saveData = loadRunSave();
     if (!saveData) return false;
     this.clearTypewriter();
+
+    // Heavy preload for the saved heroine
+    if (saveData.session?.selectedHeroineId) {
+      await showLoading(this.container, '以前の記録を読み込んでいます...');
+      await Promise.all([
+        this.preloadHeroineSelectAssets(saveData.session.selectedHeroineId),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+      ]);
+      await hideLoading(this.container);
+    }
+
     const applied = applyRunSave(this, saveData);
     if (applied) {
       this.uiState.titlePanel = null;
@@ -429,14 +452,22 @@ class GameController {
   }
   preloadHeroineSelectAssets(heroineId) { return this.assetPreloader?.preloadHeroineSelectAssets(heroineId); }
   
-  startFreePlay({ bgmPath, questionCount }) {
+  async startFreePlay({ bgmPath, questionCount }) {
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
+
+    // Preload HAKIMA (Default for free play) assets if needed
+    await showLoading(this.container, '接客の準備をしています...');
+    await Promise.all([
+        this.preloadHeroineSelectAssets('HAKIMA'),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+    ]);
+    await hideLoading(this.container);
     
     // Setup free play session
     this.session.phase = 'MAIN_GAME';
     this.session.subPhase = 'QUIZ';
-    this.session.selectedHeroineId = 'HAKIMA'; // Default
+    this.session.selectedHeroineId = 'HAKIMA'; 
     this.session.turn = 1; 
     
     this.quizState = this.createInitialQuizState();
@@ -498,19 +529,27 @@ class GameController {
     bindInputHandlers(this);
   }
 
-  selectHeroine(id, routeMode = 'normal') {
+  async selectHeroine(id, routeMode = 'normal') {
     if (this.quizState.inputLocked) return;
     this.clearTypewriter();
     this.playSfx('uiConfirmChime');
     console.log('Selecting Heroine:', id);
     this.endingProgressRecorded = false;
-    this.preloadHeroineSelectAssets(id);
+
+    // Heavy preload
+    await showLoading(this.container, '旅の準備をしています...');
+    await Promise.all([
+        this.preloadHeroineSelectAssets(id),
+        new Promise(r => setTimeout(r, 800)) // Minimum weight
+    ]);
+    await hideLoading(this.container);
+
     this.session.selectHeroine(id, routeMode);
     this.session.nextPhase();
     this.update();
   }
 
-  onGlobalAction() {
+  async onGlobalAction() {
     if (this.quizState.inputLocked || this.uiState.modal) return;
     const { phase, subPhase } = this.session;
 
@@ -793,3 +832,4 @@ class GameController {
 
 // Start the game
 window.game = new GameController();
+window.game.boot();

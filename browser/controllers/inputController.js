@@ -11,7 +11,7 @@ function bindInputHandlers(controller) {
     if (event.target.closest('#game-viewport')) event.preventDefault();
   });
 
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (controller.sfx) controller.sfx.unlock();
     if (controller.bgm) controller.bgm.unlock();
     const target = event.target;
@@ -27,12 +27,13 @@ function bindInputHandlers(controller) {
       controller.clearRunSaveData();
       controller.endingProgressRecorded = false;
       controller.playSfx('uiConfirmChime');
-      controller.onGlobalAction();
+      await controller.onGlobalAction();
       return;
     }
     if (target.closest('[data-action="title-continue"]')) {
       event.stopPropagation();
-      if (!controller.continueFromSave()) {
+      const success = await controller.continueFromSave();
+      if (!success) {
         controller.playSfx('uiTapBottle');
         const messageEl = controller.container.querySelector('[data-title-stub-message]');
         if (messageEl) messageEl.textContent = 'つづきから再開できるセーブがありません';
@@ -61,7 +62,7 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       const bgmEl = document.getElementById('freeplay-bgm');
       const countEl = document.getElementById('freeplay-count');
-      controller.startFreePlay({
+      await controller.startFreePlay({
         bgmPath: bgmEl ? bgmEl.value : null,
         questionCount: countEl ? Number(countEl.value) : 10
       });
@@ -197,7 +198,7 @@ function bindInputHandlers(controller) {
       const id = target.getAttribute('data-id');
       const routeMode = target.getAttribute('data-route-mode-selected') || 'normal';
       event.stopPropagation();
-      controller.selectHeroine(id, routeMode);
+      await controller.selectHeroine(id, routeMode);
       return;
     }
 
@@ -205,7 +206,7 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       if (target.classList.contains('btn-next')) {
         controller.playSfx('uiTapBottle');
-        controller.onGlobalAction();
+        await controller.onGlobalAction();
       }
       return;
     }
@@ -224,7 +225,7 @@ function bindInputHandlers(controller) {
     if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'TURN_RESULT') return;
 
     controller.playSfx('uiTapBottle');
-    controller.onGlobalAction();
+    await controller.onGlobalAction();
   });
 }
 

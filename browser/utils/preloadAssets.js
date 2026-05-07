@@ -107,23 +107,46 @@ function createAssetPreloader() {
   }
 
   function preloadAudio(path) {
-    if (!path) return;
-    if (audioCache.has(path)) return;
+    if (!path) return Promise.resolve(false);
+    if (audioCache.has(path)) {
+      const entry = audioCache.get(path);
+      return entry instanceof Promise ? entry : Promise.resolve(true);
+    }
 
     appendAudioPreloadLink(path);
-    try {
-      const audio = new Audio();
-      audio.preload = 'auto';
-      audio.src = path;
-      audio.load();
-      audioCache.set(path, audio);
-    } catch (e) {
-      audioCache.set(path, null);
-    }
+    const promise = new Promise((resolve) => {
+      try {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        // Resolve on canplaythrough or error to avoid blocking forever on network issues
+        const onReady = () => {
+          audio.removeEventListener('canplaythrough', onReady);
+          audio.removeEventListener('error', onError);
+          resolve(true);
+        };
+        const onError = () => {
+          audio.removeEventListener('canplaythrough', onReady);
+          audio.removeEventListener('error', onError);
+          resolve(false);
+        };
+        audio.addEventListener('canplaythrough', onReady);
+        audio.addEventListener('error', onError);
+        audio.src = path;
+        audio.load();
+        // We store the audio object to keep it warmed, but return the promise for the caller
+        audioCache.set(path, audio);
+      } catch (e) {
+        resolve(false);
+      }
+    });
+
+    // We can also store the promise to avoid duplicate loads
+    // For simplicity in this implementation, we'll just return it.
+    return promise;
   }
 
   function preloadAudioPaths(paths) {
-    compactUnique(paths).forEach(preloadAudio);
+    return Promise.all(compactUnique(paths).map(preloadAudio));
   }
 
   function preloadOpeningAssets() {
@@ -136,8 +159,12 @@ function createAssetPreloader() {
       ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),
       ...GAME_START_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'standing'))
     ]));
-    preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]);
-    return preloadImages(startImagePaths);
+    
+    // 開幕に必要なシステムBGMと全SEを確実に待つ
+    return Promise.all([
+      preloadAudioPaths([...collectCommonBgmPaths(), ...collectSePaths()]),
+      preloadImages(startImagePaths)
+    ]);
   }
 
   function preloadHeroineSelectAssets(heroineId) {
@@ -149,8 +176,11 @@ function createAssetPreloader() {
       getCharacterVisualImagePath(id, expression, 'standing'),
       getCharacterVisualImagePath(id, expression, 'face')
     ]);
-    preloadAudioPaths(collectHeroineBgmPaths(id));
-    return preloadImages(heroineImagePaths);
+    
+    return Promise.all([
+      preloadAudioPaths(collectHeroineBgmPaths(id)),
+      preloadImages(heroineImagePaths)
+    ]);
   }
 
   function preloadResultExpressions(heroineId, resultExpression) {
