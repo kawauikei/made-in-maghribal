@@ -25,6 +25,17 @@ function safeToken(value, fallback = 'unknown') {
   return token || fallback;
 }
 
+function formatLogDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  return `${month}/${day} ${hour}:${minute}`;
+}
+
 function updateHud(controller) {
   const hud = controller.container.querySelector('[data-hud]');
   if (!hud) return;
@@ -102,6 +113,24 @@ function renderLogModal(controller, container) {
     const paged = quizHistory.slice(start, start + pageSize);
     const hasNext = quizHistory.length > start + pageSize;
     const hasPrev = start > 0;
+    const resultCounts = quizHistory.reduce((acc, item) => {
+      const key = item?.result === 'perfect' || item?.result === 'good' ? item.result : 'miss';
+      acc[key] += 1;
+      return acc;
+    }, { perfect: 0, good: 0, miss: 0 });
+    const summary = `
+      <div class="log-quiz-summary">
+        <div>
+          <strong>${quizHistory.length}</strong>
+          <span>問の履歴</span>
+        </div>
+        <div class="log-quiz-summary-counts">
+          <span class="result-perfect">秀 ${resultCounts.perfect}</span>
+          <span class="result-good">良 ${resultCounts.good}</span>
+          <span class="result-miss">不可 ${resultCounts.miss}</span>
+        </div>
+      </div>
+    `;
 
     const pager = `
       <div class="log-pager">
@@ -113,6 +142,9 @@ function renderLogModal(controller, container) {
 
     const items = paged.map(q => {
       const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
+      const resultText = q.result === 'perfect' ? '完全成功' : (q.result === 'good' ? '成功' : '失敗');
+      const recordedAt = formatLogDate(q.recordedAt);
+      const questionLabel = Number.isInteger(q.questionIndex) ? `Q${q.questionIndex + 1}` : '';
       
       const renderChoice = (choice, sideLabel) => {
         if (!choice) return '';
@@ -145,7 +177,15 @@ function renderLogModal(controller, container) {
 
       return `
         <div class="log-quiz-item result-${safeToken(q.result, 'miss')}">
-          <div class="log-quiz-meta">第${escapeHtml(q.turn)}ターン | ${escapeHtml(q.heroineId)}</div>
+          <div class="log-quiz-head">
+            <div class="log-quiz-meta">
+              <span>第${escapeHtml(q.turn)}ターン</span>
+              ${questionLabel ? `<span>${escapeHtml(questionLabel)}</span>` : ''}
+              <span>${escapeHtml(q.heroineId)}</span>
+              ${recordedAt ? `<time>${escapeHtml(recordedAt)}</time>` : ''}
+            </div>
+            <div class="log-quiz-result-text">${resultText}</div>
+          </div>
           <div class="log-quiz-prompt">${escapeHtml(q.prompt)}</div>
           <div class="log-quiz-comparison">
             ${renderChoice(q.leftChoice, '左の選択肢')}
@@ -156,7 +196,7 @@ function renderLogModal(controller, container) {
       `;
     }).join('');
 
-    return items + (quizHistory.length > pageSize ? pager : '');
+    return summary + items + (quizHistory.length > pageSize ? pager : '');
   };
 
   container.innerHTML = `

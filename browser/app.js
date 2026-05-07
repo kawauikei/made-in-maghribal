@@ -816,6 +816,7 @@ class GameController {
     // Record quiz history with layout info
     recordQuizHistory({
       turn: this.session.turn,
+      questionIndex: this.quizState.questionIndex,
       heroineId: this.session.selectedHeroineId,
       prompt: q.promptText || '',
       leftChoice: {

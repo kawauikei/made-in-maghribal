@@ -101,6 +101,13 @@ test.describe('MadeInMaghribal Browser Smoke Test', () => {
     expect(['正解', '不正解']).toContain(stampText);
     await expect(stamp).toContainText('スピード');
     await expect(stamp).toContainText('テンポ');
+    await expect(page.locator('.quiz-screen')).toHaveAttribute('data-input-locked', 'false');
+
+    await page.locator('[data-action="open-log"]').click();
+    await page.locator('[data-action="set-log-tab"][data-tab="quiz"]').click();
+    await expect(page.locator('.log-quiz-summary')).toContainText('問の履歴');
+    await expect(page.locator('.log-quiz-item')).toHaveCount(1);
+    await expect(page.locator('.log-quiz-prompt')).not.toBeEmpty();
   });
 
   test('3. Full turn advancement to Result', async ({ page }) => {
