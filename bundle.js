@@ -30064,7 +30064,7 @@ const DEFAULT_ICON_MODE = {
 
 const DEFAULT_PROFILE = {
   theme: DEFAULT_THEME,
-  standing: { ...DEFAULT_VISUAL_MODE, height: 980, bottom: 0 },
+  standing: { ...DEFAULT_VISUAL_MODE, height: 980, bottom: 0, scale: 1.2 },
   heroineSelect: { ...DEFAULT_VISUAL_MODE, height: 520, bottom: -86, scale: 1.3 },
   bustup: { ...DEFAULT_VISUAL_MODE, height: 660, bottom: -260, scale: 1.45 },
   eventClose: { ...DEFAULT_VISUAL_MODE, height: 700, bottom: -300, scale: 1.62 },
