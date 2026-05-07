@@ -66,7 +66,8 @@ function getDefaultPlayerProgress() {
       lastClearedAt: null
     })),
     eventSeen: {},
-    imageSeen: {}
+    imageSeen: {},
+    quizHistory: []
   };
 }
 
@@ -81,7 +82,8 @@ function normalizeProgress(progress) {
     bestRecords: { ...base.bestRecords },
     endings: { ...base.endings },
     eventSeen: src.eventSeen && typeof src.eventSeen === 'object' ? src.eventSeen : {},
-    imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {}
+    imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {},
+    quizHistory: Array.isArray(src.quizHistory) ? src.quizHistory : []
   };
 
   HEROINE_IDS.forEach((heroineId) => {
@@ -206,6 +208,25 @@ function markImageSeen(imageId) {
   savePlayerProgress(progress);
 }
 
+function recordQuizHistory(entry) {
+  if (!entry) return;
+  const progress = loadPlayerProgress();
+  if (!progress.quizHistory) progress.quizHistory = [];
+  
+  progress.quizHistory.unshift({
+    ...entry,
+    recordedAt: new Date().toISOString()
+  });
+  
+  if (progress.quizHistory.length > 200) {
+    progress.quizHistory = progress.quizHistory.slice(0, 200);
+  }
+  
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+  return progress.quizHistory;
+}
+
 module.exports = {
   PLAYER_PROGRESS_KEY,
   HEROINE_IDS,
@@ -216,5 +237,6 @@ module.exports = {
   clearPlayerProgress,
   recordEndingProgress,
   getPlayerProgressSummary,
-  markImageSeen
+  markImageSeen,
+  recordQuizHistory
 };
