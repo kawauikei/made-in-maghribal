@@ -1,6 +1,7 @@
 /**
  * HUD / Stats display component for MadeInMaghribal.
  */
+const { getItemSpriteStyle } = require('../utils/itemSprite.js');
 
 function formatScoreMetric(label, value, key, previousScores) {
   const prev = previousScores ? Number(previousScores[key]) : Number(value);
@@ -149,7 +150,6 @@ function renderLogModal(controller, container) {
       const renderChoice = (choice, sideLabel) => {
         if (!choice) return '';
         const name = controller.getItemDisplayName(choice.itemId);
-        const icon = controller.getItemIconPath(choice.itemId);
         const quality = choice.quality || 'normal';
         const qualityToken = safeToken(quality, 'normal');
         const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
@@ -158,12 +158,15 @@ function renderLogModal(controller, container) {
         if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
         if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
 
+        const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId, 64))
+          .map(([k, v]) => `${k}:${v}`).join(';');
+
         return `
           <div class="log-quiz-col">
             <span class="log-quiz-col-label">${sideLabel}</span>
             <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
               <div class="log-quiz-icon-frame">
-                <img src="${escapeHtml(icon)}" alt="" />
+                <div class="item-sprite" style="${spriteStyle}"></div>
               </div>
               <div class="log-quiz-item-info">
                 <span class="log-quiz-item-name">${escapeHtml(name)}</span>
