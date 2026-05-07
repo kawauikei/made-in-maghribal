@@ -48,7 +48,9 @@ test('C014_EVENT_PLAYER: persist across loads', () => {
 test('C014_EVENT_PLAYER: reset on clear', () => {
   Object.keys(mockStorage).forEach(k => delete mockStorage[k]);
   markEventSeen('EV_BEFORE_CLEAR');
+  setEventFlag('FLG_BEFORE_CLEAR', true);
   clearPlayerProgress();
   
   assert.strictEqual(isEventSeen('EV_BEFORE_CLEAR'), false);
+  assert.strictEqual(hasEventFlag('FLG_BEFORE_CLEAR'), false);
 });

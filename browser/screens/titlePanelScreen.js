@@ -265,7 +265,7 @@ function getItemGalleryModel(controller, item) {
     item,
     meta,
     name,
-    icon: controller.getItemIconPath ? controller.getItemIconPath(item.itemId) : `images/items/${item.itemId}.png`,
+    icon: controller.getItemIconPath ? controller.getItemIconPath(item.itemId) : `images/items/${item.itemId}.webp`,
     genreName: meta.genreName || GENRE_LABELS[item.genre] || item.genre,
     principleName: meta.principleName || PRINCIPLE_LABELS[item.principle] || item.principle,
     typeName: meta.itemTypeName || `${item.genre}-${item.rank}`

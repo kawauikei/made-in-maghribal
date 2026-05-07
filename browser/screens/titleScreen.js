@@ -22,7 +22,7 @@ function renderTitleShell(controller, view) {
           </filter>
         </svg>
         <div class="title-clock-crop" aria-hidden="true">
-          <img class="title-clock-image" src="images/ui/clock.png" alt="" />
+          <img class="title-clock-image" src="images/ui/clock.webp" alt="" />
         </div>
         <div class="title-shell-content" style="display: contents;"></div>
       </div>
@@ -46,7 +46,7 @@ function renderTitle(controller, view) {
   contentEl.innerHTML = `
     <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
       <span class="title-logo-water">
-        <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
+        <img class="title-logo-image" src="images/ui/logo.webp" alt="${titleModel.title}" />
       </span>
     </h1>
     <div class="title-content-panel">

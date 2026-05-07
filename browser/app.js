@@ -373,7 +373,16 @@ class GameController {
       this.container.className = newClassName;
     }
 
-    if (phase === 'MAIN_GAME') {
+    if (this.eventState.active) {
+      let view = this.container.querySelector('.view-container');
+      if (!view) {
+        this.container.innerHTML = '';
+        view = document.createElement('div');
+        view.className = 'view-container';
+        this.container.appendChild(view);
+      }
+      this.renderEventPlayer(view);
+    } else if (phase === 'MAIN_GAME') {
       this.renderMainGame(this.container);
     } else {
       let view = this.container.querySelector('.view-container');
@@ -429,9 +438,7 @@ class GameController {
       }
     }
 
-    if (this.eventState.active) {
-      this.renderEventPlayer(view);
-    } else if (subPhase === 'BEFORE_OPEN') {
+    if (subPhase === 'BEFORE_OPEN') {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
@@ -658,7 +665,7 @@ class GameController {
     }
 
     const speakerId = step.type === 'line' ? step.speakerId : null;
-    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : (step.type === 'line' ? step.speakerId : '');
+    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : '';
     
     // Determine which character to show
     // Simple logic for now: show the first character in state
@@ -1183,6 +1190,21 @@ class GameController {
     document.documentElement.style.setProperty('--app-available-width', `${width}px`);
     document.documentElement.style.setProperty('--app-available-height', `${height}px`);
   }
+  
+  getPlayerProgressSummary() {
+    const { getPlayerProgressSummary } = require('./utils/playerProgress.js');
+    return getPlayerProgressSummary();
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
 }
 
 // Start the game

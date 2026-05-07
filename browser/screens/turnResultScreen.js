@@ -44,7 +44,7 @@ function buildDebugResultItems(controller) {
   return DEBUG_RESULT_ITEM_IDS.map((itemId, index) => ({
     itemId,
     displayName: controller.getItemDisplayName ? controller.getItemDisplayName(itemId) : itemId,
-    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.png`,
+    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.webp`,
     selected: index % 2 === 0,
     correct: index % 3 === 0,
     isNew: index % 4 === 0,

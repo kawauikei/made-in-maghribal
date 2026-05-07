@@ -6,7 +6,12 @@ function getHeroineDisplayName(id) {
   const names = {
     HAKIMA: 'ハキマ',
     MIRA: 'ミラ',
-    DARIYA: 'ダリヤ'
+    DARIYA: 'ダリヤ',
+    CH_HAKIMA: 'ハキマ',
+    CH_MIRA: 'ミラ',
+    CH_DARIYA: 'ダリヤ',
+    CH_NADIR: 'ナディール',
+    NADER: 'ナディール'
   };
   return names[id] || id;
 }
@@ -23,7 +28,7 @@ function getItemDisplayName(controller, itemId, quality = 'base') {
 }
 
 function getItemIconPath(itemId) {
-  return `images/items/${itemId}.png`;
+  return `images/items/${itemId}.webp`;
 }
 
 function getTurnRank(dR, dS, dRep) {
