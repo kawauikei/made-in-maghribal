@@ -1438,7 +1438,7 @@ img {
   pointer-events: none;
   background-image:
     linear-gradient(180deg, rgba(8,19,42,0.18) 0%, rgba(8,19,42,0.34) 48%, rgba(8,19,42,0.62) 100%),
-    url("images/ui/title.png");
+    url("images/ui/title.webp");
   background-size: cover;
   background-position: center;
   filter: url(#titleWaterRippleFilter) saturate(1.08) contrast(1.03);

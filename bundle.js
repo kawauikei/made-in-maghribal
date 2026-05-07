@@ -26188,7 +26188,7 @@ module.exports = {
 const GALLERY_MANIFEST = [
   {
     "id": "bg_market_central",
-    "path": "images/background/bg_market_central.jpeg",
+    "path": "images/background/bg_market_central.webp",
     "title": "bg market central",
     "category": "背景",
     "sourceType": "background",
@@ -26198,7 +26198,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_palace_corridor",
-    "path": "images/background/bg_palace_corridor.jpeg",
+    "path": "images/background/bg_palace_corridor.webp",
     "title": "bg palace corridor",
     "category": "背景",
     "sourceType": "background",
@@ -26208,7 +26208,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_palace_lab",
-    "path": "images/background/bg_palace_lab.jpeg",
+    "path": "images/background/bg_palace_lab.webp",
     "title": "bg palace lab",
     "category": "背景",
     "sourceType": "background",
@@ -26218,7 +26218,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_shop_exterior_day",
-    "path": "images/background/bg_shop_exterior_day.jpeg",
+    "path": "images/background/bg_shop_exterior_day.webp",
     "title": "bg shop exterior day",
     "category": "背景",
     "sourceType": "background",
@@ -26228,7 +26228,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_shop_exterior_night",
-    "path": "images/background/bg_shop_exterior_night.jpeg",
+    "path": "images/background/bg_shop_exterior_night.webp",
     "title": "bg shop exterior night",
     "category": "背景",
     "sourceType": "background",
@@ -26238,7 +26238,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_shop_interior_service",
-    "path": "images/background/bg_shop_interior_service.jpeg",
+    "path": "images/background/bg_shop_interior_service.webp",
     "title": "bg shop interior service",
     "category": "背景",
     "sourceType": "background",
@@ -26248,7 +26248,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_festival_street",
-    "path": "images/background/bg_spot_festival_street.jpeg",
+    "path": "images/background/bg_spot_festival_street.webp",
     "title": "bg spot festival street",
     "category": "背景",
     "sourceType": "background",
@@ -26258,7 +26258,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_fountain",
-    "path": "images/background/bg_spot_fountain.jpeg",
+    "path": "images/background/bg_spot_fountain.webp",
     "title": "bg spot fountain",
     "category": "背景",
     "sourceType": "background",
@@ -26268,7 +26268,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_oasis_view",
-    "path": "images/background/bg_spot_oasis_view.jpeg",
+    "path": "images/background/bg_spot_oasis_view.webp",
     "title": "bg spot oasis view",
     "category": "背景",
     "sourceType": "background",
@@ -26278,7 +26278,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_port_view",
-    "path": "images/background/bg_spot_port_view.jpeg",
+    "path": "images/background/bg_spot_port_view.webp",
     "title": "bg spot port view",
     "category": "背景",
     "sourceType": "background",
@@ -26288,7 +26288,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_ruins",
-    "path": "images/background/bg_spot_ruins.jpeg",
+    "path": "images/background/bg_spot_ruins.webp",
     "title": "bg spot ruins",
     "category": "背景",
     "sourceType": "background",
@@ -26298,7 +26298,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "bg_spot_star_view",
-    "path": "images/background/bg_spot_star_view.jpeg",
+    "path": "images/background/bg_spot_star_view.webp",
     "title": "bg spot star view",
     "category": "背景",
     "sourceType": "background",
@@ -26308,7 +26308,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_dariya_after_hours_01",
-    "path": "images/still/still_dariya_after_hours_01.jpeg",
+    "path": "images/still/still_dariya_after_hours_01.webp",
     "title": "still dariya after hours 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26318,7 +26318,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_dariya_limit_night_01",
-    "path": "images/still/still_dariya_limit_night_01.jpeg",
+    "path": "images/still/still_dariya_limit_night_01.webp",
     "title": "still dariya limit night 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26328,7 +26328,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_dariya_palace_collaboration_01",
-    "path": "images/still/still_dariya_palace_collaboration_01.jpeg",
+    "path": "images/still/still_dariya_palace_collaboration_01.webp",
     "title": "still dariya palace collaboration 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26338,7 +26338,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_dariya_rain_corridor_01",
-    "path": "images/still/still_dariya_rain_corridor_01.jpeg",
+    "path": "images/still/still_dariya_rain_corridor_01.webp",
     "title": "still dariya rain corridor 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26348,7 +26348,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_hakima_festival_night_01",
-    "path": "images/still/still_hakima_festival_night_01.jpeg",
+    "path": "images/still/still_hakima_festival_night_01.webp",
     "title": "still hakima festival night 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26358,7 +26358,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_hakima_market_argument_01",
-    "path": "images/still/still_hakima_market_argument_01.jpeg",
+    "path": "images/still/still_hakima_market_argument_01.webp",
     "title": "still hakima market argument 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26368,7 +26368,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_hakima_morning_visit_01",
-    "path": "images/still/still_hakima_morning_visit_01.jpeg",
+    "path": "images/still/still_hakima_morning_visit_01.webp",
     "title": "still hakima morning visit 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26378,7 +26378,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_hakima_rain_shelter_01",
-    "path": "images/still/still_hakima_rain_shelter_01.jpeg",
+    "path": "images/still/still_hakima_rain_shelter_01.webp",
     "title": "still hakima rain shelter 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26388,7 +26388,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_mira_after_school_01",
-    "path": "images/still/still_mira_after_school_01.jpeg",
+    "path": "images/still/still_mira_after_school_01.webp",
     "title": "still mira after school 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26398,7 +26398,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_mira_assignment_consult_01",
-    "path": "images/still/still_mira_assignment_consult_01.jpeg",
+    "path": "images/still/still_mira_assignment_consult_01.webp",
     "title": "still mira assignment consult 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26408,7 +26408,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_mira_starry_rooftop_01",
-    "path": "images/still/still_mira_starry_rooftop_01.jpeg",
+    "path": "images/still/still_mira_starry_rooftop_01.webp",
     "title": "still mira starry rooftop 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26418,7 +26418,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "still_mira_visit_sick_01",
-    "path": "images/still/still_mira_visit_sick_01.jpeg",
+    "path": "images/still/still_mira_visit_sick_01.webp",
     "title": "still mira visit sick 01",
     "category": "スチル",
     "sourceType": "still",
@@ -26428,7 +26428,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_anger_standing",
-    "path": "characters/dariya/standing_proc/anger.png",
+    "path": "characters/dariya/standing_proc/anger.webp",
     "title": "DARIYA (anger)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26438,7 +26438,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_cry_standing",
-    "path": "characters/dariya/standing_proc/cry.png",
+    "path": "characters/dariya/standing_proc/cry.webp",
     "title": "DARIYA (cry)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26448,7 +26448,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_fun_standing",
-    "path": "characters/dariya/standing_proc/fun.png",
+    "path": "characters/dariya/standing_proc/fun.webp",
     "title": "DARIYA (fun)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26458,7 +26458,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_joy_standing",
-    "path": "characters/dariya/standing_proc/joy.png",
+    "path": "characters/dariya/standing_proc/joy.webp",
     "title": "DARIYA (joy)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26468,7 +26468,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_maid_standing",
-    "path": "characters/dariya/standing_proc/maid.png",
+    "path": "characters/dariya/standing_proc/maid.webp",
     "title": "DARIYA (maid)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26478,7 +26478,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_normal_standing",
-    "path": "characters/dariya/standing_proc/normal.png",
+    "path": "characters/dariya/standing_proc/normal.webp",
     "title": "DARIYA (normal)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26488,7 +26488,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_social_standing",
-    "path": "characters/dariya/standing_proc/social.png",
+    "path": "characters/dariya/standing_proc/social.webp",
     "title": "DARIYA (social)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26498,7 +26498,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_sorrow_standing",
-    "path": "characters/dariya/standing_proc/sorrow.png",
+    "path": "characters/dariya/standing_proc/sorrow.webp",
     "title": "DARIYA (sorrow)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26508,7 +26508,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_student_standing",
-    "path": "characters/dariya/standing_proc/student.png",
+    "path": "characters/dariya/standing_proc/student.webp",
     "title": "DARIYA (student)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26518,7 +26518,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_surprise_standing",
-    "path": "characters/dariya/standing_proc/surprise.png",
+    "path": "characters/dariya/standing_proc/surprise.webp",
     "title": "DARIYA (surprise)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26528,7 +26528,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_anger_face",
-    "path": "characters/dariya/face_proc/anger.png",
+    "path": "characters/dariya/face_proc/anger.webp",
     "title": "DARIYA (anger face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26538,7 +26538,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_cry_face",
-    "path": "characters/dariya/face_proc/cry.png",
+    "path": "characters/dariya/face_proc/cry.webp",
     "title": "DARIYA (cry face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26548,7 +26548,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_fun_face",
-    "path": "characters/dariya/face_proc/fun.png",
+    "path": "characters/dariya/face_proc/fun.webp",
     "title": "DARIYA (fun face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26558,7 +26558,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_joy_face",
-    "path": "characters/dariya/face_proc/joy.png",
+    "path": "characters/dariya/face_proc/joy.webp",
     "title": "DARIYA (joy face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26568,7 +26568,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_maid_face",
-    "path": "characters/dariya/face_proc/maid.png",
+    "path": "characters/dariya/face_proc/maid.webp",
     "title": "DARIYA (maid face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26578,7 +26578,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_normal_face",
-    "path": "characters/dariya/face_proc/normal.png",
+    "path": "characters/dariya/face_proc/normal.webp",
     "title": "DARIYA (normal face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26588,7 +26588,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_social_face",
-    "path": "characters/dariya/face_proc/social.png",
+    "path": "characters/dariya/face_proc/social.webp",
     "title": "DARIYA (social face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26598,7 +26598,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_sorrow_face",
-    "path": "characters/dariya/face_proc/sorrow.png",
+    "path": "characters/dariya/face_proc/sorrow.webp",
     "title": "DARIYA (sorrow face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26608,7 +26608,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_student_face",
-    "path": "characters/dariya/face_proc/student.png",
+    "path": "characters/dariya/face_proc/student.webp",
     "title": "DARIYA (student face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26618,7 +26618,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "dariya_surprise_face",
-    "path": "characters/dariya/face_proc/surprise.png",
+    "path": "characters/dariya/face_proc/surprise.webp",
     "title": "DARIYA (surprise face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26628,7 +26628,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_anger_standing",
-    "path": "characters/hakima/standing_proc/anger.png",
+    "path": "characters/hakima/standing_proc/anger.webp",
     "title": "HAKIMA (anger)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26638,7 +26638,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_cry_standing",
-    "path": "characters/hakima/standing_proc/cry.png",
+    "path": "characters/hakima/standing_proc/cry.webp",
     "title": "HAKIMA (cry)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26648,7 +26648,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_fun_standing",
-    "path": "characters/hakima/standing_proc/fun.png",
+    "path": "characters/hakima/standing_proc/fun.webp",
     "title": "HAKIMA (fun)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26658,7 +26658,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_joy_standing",
-    "path": "characters/hakima/standing_proc/joy.png",
+    "path": "characters/hakima/standing_proc/joy.webp",
     "title": "HAKIMA (joy)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26668,7 +26668,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_maid_standing",
-    "path": "characters/hakima/standing_proc/maid.png",
+    "path": "characters/hakima/standing_proc/maid.webp",
     "title": "HAKIMA (maid)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26678,7 +26678,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_normal_standing",
-    "path": "characters/hakima/standing_proc/normal.png",
+    "path": "characters/hakima/standing_proc/normal.webp",
     "title": "HAKIMA (normal)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26688,7 +26688,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_social_standing",
-    "path": "characters/hakima/standing_proc/social.png",
+    "path": "characters/hakima/standing_proc/social.webp",
     "title": "HAKIMA (social)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26698,7 +26698,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_sorrow_standing",
-    "path": "characters/hakima/standing_proc/sorrow.png",
+    "path": "characters/hakima/standing_proc/sorrow.webp",
     "title": "HAKIMA (sorrow)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26708,7 +26708,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_student_standing",
-    "path": "characters/hakima/standing_proc/student.png",
+    "path": "characters/hakima/standing_proc/student.webp",
     "title": "HAKIMA (student)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26718,7 +26718,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_surprise_standing",
-    "path": "characters/hakima/standing_proc/surprise.png",
+    "path": "characters/hakima/standing_proc/surprise.webp",
     "title": "HAKIMA (surprise)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26728,7 +26728,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_anger_face",
-    "path": "characters/hakima/face_proc/anger.png",
+    "path": "characters/hakima/face_proc/anger.webp",
     "title": "HAKIMA (anger face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26738,7 +26738,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_cry_face",
-    "path": "characters/hakima/face_proc/cry.png",
+    "path": "characters/hakima/face_proc/cry.webp",
     "title": "HAKIMA (cry face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26748,7 +26748,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_fun_face",
-    "path": "characters/hakima/face_proc/fun.png",
+    "path": "characters/hakima/face_proc/fun.webp",
     "title": "HAKIMA (fun face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26758,7 +26758,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_joy_face",
-    "path": "characters/hakima/face_proc/joy.png",
+    "path": "characters/hakima/face_proc/joy.webp",
     "title": "HAKIMA (joy face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26768,7 +26768,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_maid_face",
-    "path": "characters/hakima/face_proc/maid.png",
+    "path": "characters/hakima/face_proc/maid.webp",
     "title": "HAKIMA (maid face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26778,7 +26778,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_normal_face",
-    "path": "characters/hakima/face_proc/normal.png",
+    "path": "characters/hakima/face_proc/normal.webp",
     "title": "HAKIMA (normal face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26788,7 +26788,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_social_face",
-    "path": "characters/hakima/face_proc/social.png",
+    "path": "characters/hakima/face_proc/social.webp",
     "title": "HAKIMA (social face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26798,7 +26798,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_sorrow_face",
-    "path": "characters/hakima/face_proc/sorrow.png",
+    "path": "characters/hakima/face_proc/sorrow.webp",
     "title": "HAKIMA (sorrow face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26808,7 +26808,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_student_face",
-    "path": "characters/hakima/face_proc/student.png",
+    "path": "characters/hakima/face_proc/student.webp",
     "title": "HAKIMA (student face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26818,7 +26818,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "hakima_surprise_face",
-    "path": "characters/hakima/face_proc/surprise.png",
+    "path": "characters/hakima/face_proc/surprise.webp",
     "title": "HAKIMA (surprise face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26828,7 +26828,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_anger_standing",
-    "path": "characters/mira/standing_proc/anger.png",
+    "path": "characters/mira/standing_proc/anger.webp",
     "title": "MIRA (anger)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26838,7 +26838,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_cry_standing",
-    "path": "characters/mira/standing_proc/cry.png",
+    "path": "characters/mira/standing_proc/cry.webp",
     "title": "MIRA (cry)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26848,7 +26848,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_fun_standing",
-    "path": "characters/mira/standing_proc/fun.png",
+    "path": "characters/mira/standing_proc/fun.webp",
     "title": "MIRA (fun)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26858,7 +26858,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_joy_standing",
-    "path": "characters/mira/standing_proc/joy.png",
+    "path": "characters/mira/standing_proc/joy.webp",
     "title": "MIRA (joy)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26868,7 +26868,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_maid_standing",
-    "path": "characters/mira/standing_proc/maid.png",
+    "path": "characters/mira/standing_proc/maid.webp",
     "title": "MIRA (maid)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26878,7 +26878,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_normal_standing",
-    "path": "characters/mira/standing_proc/normal.png",
+    "path": "characters/mira/standing_proc/normal.webp",
     "title": "MIRA (normal)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26888,7 +26888,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_social_standing",
-    "path": "characters/mira/standing_proc/social.png",
+    "path": "characters/mira/standing_proc/social.webp",
     "title": "MIRA (social)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26898,7 +26898,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_sorrow_standing",
-    "path": "characters/mira/standing_proc/sorrow.png",
+    "path": "characters/mira/standing_proc/sorrow.webp",
     "title": "MIRA (sorrow)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26908,7 +26908,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_student_standing",
-    "path": "characters/mira/standing_proc/student.png",
+    "path": "characters/mira/standing_proc/student.webp",
     "title": "MIRA (student)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26918,7 +26918,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_surprise_standing",
-    "path": "characters/mira/standing_proc/surprise.png",
+    "path": "characters/mira/standing_proc/surprise.webp",
     "title": "MIRA (surprise)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -26928,7 +26928,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_anger_face",
-    "path": "characters/mira/face_proc/anger.png",
+    "path": "characters/mira/face_proc/anger.webp",
     "title": "MIRA (anger face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26938,7 +26938,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_cry_face",
-    "path": "characters/mira/face_proc/cry.png",
+    "path": "characters/mira/face_proc/cry.webp",
     "title": "MIRA (cry face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26948,7 +26948,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_fun_face",
-    "path": "characters/mira/face_proc/fun.png",
+    "path": "characters/mira/face_proc/fun.webp",
     "title": "MIRA (fun face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26958,7 +26958,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_joy_face",
-    "path": "characters/mira/face_proc/joy.png",
+    "path": "characters/mira/face_proc/joy.webp",
     "title": "MIRA (joy face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26968,7 +26968,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_maid_face",
-    "path": "characters/mira/face_proc/maid.png",
+    "path": "characters/mira/face_proc/maid.webp",
     "title": "MIRA (maid face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26978,7 +26978,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_normal_face",
-    "path": "characters/mira/face_proc/normal.png",
+    "path": "characters/mira/face_proc/normal.webp",
     "title": "MIRA (normal face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26988,7 +26988,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_social_face",
-    "path": "characters/mira/face_proc/social.png",
+    "path": "characters/mira/face_proc/social.webp",
     "title": "MIRA (social face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -26998,7 +26998,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_sorrow_face",
-    "path": "characters/mira/face_proc/sorrow.png",
+    "path": "characters/mira/face_proc/sorrow.webp",
     "title": "MIRA (sorrow face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27008,7 +27008,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_student_face",
-    "path": "characters/mira/face_proc/student.png",
+    "path": "characters/mira/face_proc/student.webp",
     "title": "MIRA (student face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27018,7 +27018,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "mira_surprise_face",
-    "path": "characters/mira/face_proc/surprise.png",
+    "path": "characters/mira/face_proc/surprise.webp",
     "title": "MIRA (surprise face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27028,7 +27028,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_anger_standing",
-    "path": "characters/nader/standing_proc/anger.png",
+    "path": "characters/nader/standing_proc/anger.webp",
     "title": "NADER (anger)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27038,7 +27038,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_cry_standing",
-    "path": "characters/nader/standing_proc/cry.png",
+    "path": "characters/nader/standing_proc/cry.webp",
     "title": "NADER (cry)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27048,7 +27048,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_fun_standing",
-    "path": "characters/nader/standing_proc/fun.png",
+    "path": "characters/nader/standing_proc/fun.webp",
     "title": "NADER (fun)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27058,7 +27058,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_joy_standing",
-    "path": "characters/nader/standing_proc/joy.png",
+    "path": "characters/nader/standing_proc/joy.webp",
     "title": "NADER (joy)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27068,7 +27068,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_normal_standing",
-    "path": "characters/nader/standing_proc/normal.png",
+    "path": "characters/nader/standing_proc/normal.webp",
     "title": "NADER (normal)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27078,7 +27078,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_sorrow_standing",
-    "path": "characters/nader/standing_proc/sorrow.png",
+    "path": "characters/nader/standing_proc/sorrow.webp",
     "title": "NADER (sorrow)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27088,7 +27088,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_surprise_standing",
-    "path": "characters/nader/standing_proc/surprise.png",
+    "path": "characters/nader/standing_proc/surprise.webp",
     "title": "NADER (surprise)",
     "category": "ヒロイン立ち絵",
     "sourceType": "character",
@@ -27098,7 +27098,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_anger_face",
-    "path": "characters/nader/face_proc/anger.png",
+    "path": "characters/nader/face_proc/anger.webp",
     "title": "NADER (anger face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27108,7 +27108,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_cry_face",
-    "path": "characters/nader/face_proc/cry.png",
+    "path": "characters/nader/face_proc/cry.webp",
     "title": "NADER (cry face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27118,7 +27118,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_fun_face",
-    "path": "characters/nader/face_proc/fun.png",
+    "path": "characters/nader/face_proc/fun.webp",
     "title": "NADER (fun face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27128,7 +27128,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_joy_face",
-    "path": "characters/nader/face_proc/joy.png",
+    "path": "characters/nader/face_proc/joy.webp",
     "title": "NADER (joy face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27138,7 +27138,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_maid_face",
-    "path": "characters/nader/face_proc/maid.png",
+    "path": "characters/nader/face_proc/maid.webp",
     "title": "NADER (maid face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27148,7 +27148,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_normal_face",
-    "path": "characters/nader/face_proc/normal.png",
+    "path": "characters/nader/face_proc/normal.webp",
     "title": "NADER (normal face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27158,7 +27158,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_social_face",
-    "path": "characters/nader/face_proc/social.png",
+    "path": "characters/nader/face_proc/social.webp",
     "title": "NADER (social face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27168,7 +27168,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_sorrow_face",
-    "path": "characters/nader/face_proc/sorrow.png",
+    "path": "characters/nader/face_proc/sorrow.webp",
     "title": "NADER (sorrow face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27178,7 +27178,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_student_face",
-    "path": "characters/nader/face_proc/student.png",
+    "path": "characters/nader/face_proc/student.webp",
     "title": "NADER (student face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -27188,7 +27188,7 @@ const GALLERY_MANIFEST = [
   },
   {
     "id": "nader_surprise_face",
-    "path": "characters/nader/face_proc/surprise.png",
+    "path": "characters/nader/face_proc/surprise.webp",
     "title": "NADER (surprise face)",
     "category": "顔アイコン",
     "sourceType": "character",
@@ -28220,7 +28220,7 @@ function getItemGalleryModel(controller, item) {
     item,
     meta,
     name,
-    icon: controller.getItemIconPath ? controller.getItemIconPath(item.itemId) : `images/items/${item.itemId}.png`,
+    icon: controller.getItemIconPath ? controller.getItemIconPath(item.itemId) : `images/items/${item.itemId}.webp`,
     genreName: meta.genreName || GENRE_LABELS[item.genre] || item.genre,
     principleName: meta.principleName || PRINCIPLE_LABELS[item.principle] || item.principle,
     typeName: meta.itemTypeName || `${item.genre}-${item.rank}`
@@ -28611,7 +28611,7 @@ function renderTitleShell(controller, view) {
           </filter>
         </svg>
         <div class="title-clock-crop" aria-hidden="true">
-          <img class="title-clock-image" src="images/ui/clock.png" alt="" />
+          <img class="title-clock-image" src="images/ui/clock.webp" alt="" />
         </div>
         <div class="title-shell-content" style="display: contents;"></div>
       </div>
@@ -28635,7 +28635,7 @@ function renderTitle(controller, view) {
   contentEl.innerHTML = `
     <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
       <span class="title-logo-water">
-        <img class="title-logo-image" src="images/ui/logo.png" alt="${titleModel.title}" />
+        <img class="title-logo-image" src="images/ui/logo.webp" alt="${titleModel.title}" />
       </span>
     </h1>
     <div class="title-content-panel">
@@ -28739,7 +28739,7 @@ function buildDebugResultItems(controller) {
   return DEBUG_RESULT_ITEM_IDS.map((itemId, index) => ({
     itemId,
     displayName: controller.getItemDisplayName ? controller.getItemDisplayName(itemId) : itemId,
-    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.png`,
+    iconPath: controller.getItemIconPath ? controller.getItemIconPath(itemId) : `images/items/${itemId}.webp`,
     selected: index % 2 === 0,
     correct: index % 3 === 0,
     isNew: index % 4 === 0,
@@ -29594,14 +29594,14 @@ function getCharacterStandingPath(id, expression = 'normal') {
   const charDir = normalizeCharacterDir(id);
   // Valid expressions from filesystem: normal, joy, fun, anger, cry, sorrow, surprise, etc.
   const expFile = expression.toLowerCase();
-  return `characters/${charDir}/standing_proc/${expFile}.png`;
+  return `characters/${charDir}/standing_proc/${expFile}.webp`;
 }
 
 function getCharacterIconPath(id, expression = 'normal') {
   if (!id) return '';
   const charDir = normalizeCharacterDir(id);
   const expFile = expression.toLowerCase();
-  return `characters/${charDir}/face_proc/${expFile}.png`;
+  return `characters/${charDir}/face_proc/${expFile}.webp`;
 }
 
 
@@ -29612,15 +29612,15 @@ function getCharacterVisualImagePath(id, expression = 'normal', imageKind = 'sta
 
 function getBackgroundPath(sceneId) {
   const backgrounds = {
-    MARKET: 'images/background/bg_market_central.jpeg',
-    TEA_ROOM: 'images/background/bg_shop_interior_service.jpeg',
-    OASIS: 'images/background/bg_spot_oasis_view.jpeg'
+    MARKET: 'images/background/bg_market_central.webp',
+    TEA_ROOM: 'images/background/bg_shop_interior_service.webp',
+    OASIS: 'images/background/bg_spot_oasis_view.webp'
   };
   return backgrounds[sceneId] || backgrounds.TEA_ROOM;
 }
 
 function getStillPath(stillId) {
-  return `images/still/${stillId}.jpeg`;
+  return `images/still/${stillId}.webp`;
 }
 
 function getGalleryImagePath(item) {
@@ -30334,7 +30334,12 @@ function getHeroineDisplayName(id) {
   const names = {
     HAKIMA: 'ハキマ',
     MIRA: 'ミラ',
-    DARIYA: 'ダリヤ'
+    DARIYA: 'ダリヤ',
+    CH_HAKIMA: 'ハキマ',
+    CH_MIRA: 'ミラ',
+    CH_DARIYA: 'ダリヤ',
+    CH_NADIR: 'ナディール',
+    NADER: 'ナディール'
   };
   return names[id] || id;
 }
@@ -30351,7 +30356,7 @@ function getItemDisplayName(controller, itemId, quality = 'base') {
 }
 
 function getItemIconPath(itemId) {
-  return `images/items/${itemId}.png`;
+  return `images/items/${itemId}.webp`;
 }
 
 function getTurnRank(dR, dS, dRep) {
@@ -32059,7 +32064,16 @@ class GameController {
       this.container.className = newClassName;
     }
 
-    if (phase === 'MAIN_GAME') {
+    if (this.eventState.active) {
+      let view = this.container.querySelector('.view-container');
+      if (!view) {
+        this.container.innerHTML = '';
+        view = document.createElement('div');
+        view.className = 'view-container';
+        this.container.appendChild(view);
+      }
+      this.renderEventPlayer(view);
+    } else if (phase === 'MAIN_GAME') {
       this.renderMainGame(this.container);
     } else {
       let view = this.container.querySelector('.view-container');
@@ -32115,9 +32129,7 @@ class GameController {
       }
     }
 
-    if (this.eventState.active) {
-      this.renderEventPlayer(view);
-    } else if (subPhase === 'BEFORE_OPEN') {
+    if (subPhase === 'BEFORE_OPEN') {
       this.updateHud();
       this.updateVnContent({
         speakerName: this.getHeroineDisplayName(this.session.selectedHeroineId),
@@ -32344,7 +32356,7 @@ class GameController {
     }
 
     const speakerId = step.type === 'line' ? step.speakerId : null;
-    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : (step.type === 'line' ? step.speakerId : '');
+    const speakerName = speakerId ? getHeroineDisplayName(speakerId) : '';
     
     // Determine which character to show
     // Simple logic for now: show the first character in state
@@ -32869,6 +32881,21 @@ class GameController {
     document.documentElement.style.setProperty('--app-available-width', `${width}px`);
     document.documentElement.style.setProperty('--app-available-height', `${height}px`);
   }
+  
+  getPlayerProgressSummary() {
+    const { getPlayerProgressSummary } = require('./utils/playerProgress.js');
+    return getPlayerProgressSummary();
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
 }
 
 // Start the game
