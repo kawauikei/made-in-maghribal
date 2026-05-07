@@ -40,7 +40,7 @@ const {
 const { markImageSeen, recordEndingProgress, getPlayerProgressSummary, recordQuizHistory, clearPlayerProgress } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
-const { registerSeenItems } = require('./utils/itemCollection.js');
+const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
@@ -225,6 +225,7 @@ class GameController {
     if (!confirm('全てのセーブデータを消去してタイトルに戻りますか？\n（この操作は取り消せません）')) return;
     clearRunSave();
     clearPlayerProgress();
+    clearItemCollection();
     location.reload();
   }
 
@@ -835,6 +836,7 @@ class GameController {
     this.updateQuizContent();
     this.quizState.lastResult = result;
     this.quizState.questionIndex++;
+    this.saveCurrentRunIfNeeded();
 
     this.showResultStamp(result);
     this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
@@ -843,6 +845,7 @@ class GameController {
       setTimeout(() => {
         this.generateNextQuestion();
         this.updateQuizContent();
+        this.saveCurrentRunIfNeeded();
         this.quizState.inputLocked = false;
       }, RESULT_TRANSITION_DELAY_MS);
     } else {

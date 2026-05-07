@@ -21,7 +21,8 @@ function processQuestionResult(state) {
   const speedGraceMs = normalizeSpeedGraceMs(state.speedGraceMs);
   
   // Acceptance: 品目さえ合っていれば基本は正解とする（品質はボーナスに影響させる設計）
-  const isCorrect = (selectedItemId === correctItemId) || (selectedChoiceKey === correctChoiceKey);
+  const hasChoiceKeys = selectedChoiceKey != null && correctChoiceKey != null;
+  const isCorrect = (selectedItemId === correctItemId) || (hasChoiceKeys && selectedChoiceKey === correctChoiceKey);
   
   // Acceptance: 判定は PERFECT, GOOD, MISS, NONE を返せる
   const timing = calculateJudgement(answeredAt, nearestBeatMs);

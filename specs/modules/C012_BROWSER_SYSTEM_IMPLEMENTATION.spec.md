@@ -23,13 +23,13 @@
   - CSSアニメーションによるターン切り替え演出。
 - **セッション永続化:**
   - `browser/utils/saveData.js`: 現在ランの保存/復元。
-  - `browser/utils/playerProgress.js`: 長期進捗、ルート解放、エンディング履歴。
+  - `browser/utils/playerProgress.js`: 長期進捗、ルート解放、エンディング履歴、過去問履歴。
   - `browser/utils/itemCollection.js`: アイテム図鑑状態。
 - **描画支援:**
   - `browser/utils/characterVisualProfiles.js`: 立ち絵/顔アイコンの表示プロファイル適用。
   - `browser/utils/preloadAssets.js`: 画像/音声リソースの事前読み込み。
 - **UIコンポーネント:**
-  - `browser/ui/hud.js`: 共通ステータス表示。
+  - `browser/ui/hud.js`: 共通ステータス表示、グローバルUI、会話ログ/過去問履歴モーダル。
   - `browser/ui/resultStamp.js`: クイズ判定スタンプ。
 
 ## Current Save Data
@@ -52,6 +52,27 @@
 
 長期進捗は `madeinmaghribal.playerProgress.v1`、アイテム図鑑は `madeinmaghribal.collection.items` に保存する。
 
+長期進捗の主な保存対象:
+
+- `heroineModeUnlocks`
+- `bestRecords`
+- `endings`
+- `eventSeen`
+- `imageSeen`
+- `quizHistory`
+
+`quizHistory` は最新順に保持し、1件ごとに以下を保存する。
+
+- `turn`
+- `heroineId`
+- `prompt`
+- `leftChoice`
+- `rightChoice`
+- `selectedItemId`
+- `selectedQuality`
+- `result`
+- `recordedAt`
+
 ## Logic Rules
 
 - 画面ロジックとCSSは分離する。
@@ -60,6 +81,9 @@
 - アセット読み込み失敗はゲーム進行を止めない。
 - ブラウザの戻るボタン制御は必須要件にしない。予期せぬ離脱やリロードにはオートセーブで予防的に対応する。
 - ヒロイン別リソースのプリロードは、対象ヒロインIDを明示して要求する。
+- 過去問履歴は選択肢の左右配置、正解、プレイヤー選択、結果が後から参照できる形で記録する。
+- 過去問履歴表示時は保存データ由来の文字列をHTMLとして解釈しない。
+- セーブデータ削除は現在ラン、長期進捗、アイテム図鑑状態をまとめて削除する。
 
 ## Verification Scope
 
@@ -84,3 +108,6 @@
 - キャラクター表情切り替え時にプロファイルが再適用されること。
 - `tools/build-browser-bundle.cjs` により `public/bundle.js` が生成できること。
 - ヒロイン選択/プレビュー時に、対象ヒロインの画像/BGMプリロードが開始されること。
+- グローバルUIから会話ログと過去問履歴を参照できること。
+- 過去問履歴で左右選択肢、正解表示、選択表示、結果表示が破綻しないこと。
+- セーブデータ削除後に過去問履歴とアイテム図鑑状態が残らないこと。

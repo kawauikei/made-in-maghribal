@@ -622,7 +622,8 @@
     "tools/build-browser-bundle.cjs",
     "package.json",
     "playwright.config.js",
-    "tests/browser/browser-smoke.spec.js"
+    "tests/browser/browser-smoke.spec.js",
+    "tests/core/C012_BROWSER_SYSTEM_IMPLEMENTATION.test.cjs"
   ],
   "deferred": [],
   "implementation_order": [
@@ -643,7 +644,8 @@
   "unresolved_questions": [],
   "notes": [
     "C012_BROWSER_SYSTEM_IMPLEMENTATION is treated as a non-contract integration note. Browser behavior is verified by smoke/manual checks outside the Kawazu contract registry.",
-    ".kawazu/construct/spec_index.md is generated from the contract registry and intentionally lists C001-C011 only."
+    ".kawazu/construct/spec_index.md is generated from the contract registry and intentionally lists C001-C011 only.",
+    "Browser log and quiz history behavior belongs to the C012 non-contract integration layer and is covered by specs/modules/C012_BROWSER_SYSTEM_IMPLEMENTATION.* plus tests/core/C012_BROWSER_SYSTEM_IMPLEMENTATION.test.cjs."
   ],
   "registry_policy": {
     "non_contract_integration": [

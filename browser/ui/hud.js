@@ -10,6 +10,21 @@ function formatScoreMetric(label, value, key, previousScores) {
   return `<span class="score-metric" data-score-key="${key}"><span class="score-label">${label}</span><strong>${current}</strong>${badge}</span>`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function safeToken(value, fallback = 'unknown') {
+  const token = String(value ?? '').replace(/[^a-zA-Z0-9_-]/g, '');
+  return token || fallback;
+}
+
 function updateHud(controller) {
   const hud = controller.container.querySelector('[data-hud]');
   if (!hud) return;
@@ -72,8 +87,8 @@ function renderLogModal(controller, container) {
     if (convoLog.length === 0) return '<p class="log-empty">記録はありません</p>';
     return convoLog.slice().reverse().map(log => `
       <div class="log-item">
-        <span class="log-speaker">${log.speaker}</span>
-        <span class="log-text">${log.text}</span>
+        <span class="log-speaker">${escapeHtml(log.speaker)}</span>
+        <span class="log-text">${escapeHtml(log.text)}</span>
       </div>
     `).join('');
   };
@@ -104,6 +119,7 @@ function renderLogModal(controller, container) {
         const name = controller.getItemDisplayName(choice.itemId);
         const icon = controller.getItemIconPath(choice.itemId);
         const quality = choice.quality || 'normal';
+        const qualityToken = safeToken(quality, 'normal');
         const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
         
         const indicators = [];
@@ -115,11 +131,11 @@ function renderLogModal(controller, container) {
             <span class="log-quiz-col-label">${sideLabel}</span>
             <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
               <div class="log-quiz-icon-frame">
-                <img src="${icon}" alt="" />
+                <img src="${escapeHtml(icon)}" alt="" />
               </div>
               <div class="log-quiz-item-info">
-                <span class="log-quiz-item-name">${name}</span>
-                <small class="log-quiz-quality quality-${quality}">${quality}</small>
+                <span class="log-quiz-item-name">${escapeHtml(name)}</span>
+                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(quality)}</small>
                 <div class="log-quiz-indicators">${indicators.join('')}</div>
               </div>
             </div>
@@ -128,9 +144,9 @@ function renderLogModal(controller, container) {
       };
 
       return `
-        <div class="log-quiz-item result-${q.result}">
-          <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
-          <div class="log-quiz-prompt">${q.prompt}</div>
+        <div class="log-quiz-item result-${safeToken(q.result, 'miss')}">
+          <div class="log-quiz-meta">第${escapeHtml(q.turn)}ターン | ${escapeHtml(q.heroineId)}</div>
+          <div class="log-quiz-prompt">${escapeHtml(q.prompt)}</div>
           <div class="log-quiz-comparison">
             ${renderChoice(q.leftChoice, '左の選択肢')}
             ${renderChoice(q.rightChoice, '右の選択肢')}
