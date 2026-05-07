@@ -37,12 +37,11 @@ const {
   getRhythmSilenceGraceMs,
   getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
-const { markImageSeen } = require('./utils/playerProgress.js');
+const { markImageSeen, recordEndingProgress, getPlayerProgressSummary, recordQuizHistory, clearPlayerProgress } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems } = require('./utils/itemCollection.js');
 const { hasRunSave, loadRunSave, getRunSaveSummary, clearRunSave, saveRun, applyRunSave } = require('./utils/saveData.js');
-const { recordEndingProgress, getPlayerProgressSummary, recordQuizHistory } = require('./utils/playerProgress.js');
 const { createTypewriterController } = require('./controllers/typewriterController.js');
 const { createTurnTransitionController } = require('./controllers/turnTransitionController.js');
 const { bindInputHandlers } = require('./controllers/inputController.js');
@@ -220,6 +219,13 @@ class GameController {
   closeModal() {
     this.uiState.modal = null;
     this.renderModal();
+  }
+
+  resetAllGameProgress() {
+    if (!confirm('全てのセーブデータを消去してタイトルに戻りますか？\n（この操作は取り消せません）')) return;
+    clearRunSave();
+    clearPlayerProgress();
+    location.reload();
   }
 
   setTextSpeed(speed) {

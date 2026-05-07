@@ -223,6 +223,13 @@ function bindInputHandlers(controller) {
       return;
     }
 
+    if (target.closest('[data-action="clear-all-save-data"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.resetAllGameProgress();
+      return;
+    }
+
     if (target.closest('[data-action="skip-text"]')) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');

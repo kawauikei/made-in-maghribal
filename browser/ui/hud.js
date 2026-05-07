@@ -127,17 +127,6 @@ function renderLogModal(controller, container) {
         `;
       };
 
-      // Compatibility for old records without leftChoice/rightChoice
-      if (!q.leftChoice) {
-        return `
-          <div class="log-quiz-item result-${q.result}">
-            <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
-            <div class="log-quiz-prompt">${q.prompt}</div>
-            <p class="log-quiz-legacy-warning">旧形式の記録です</p>
-          </div>
-        `;
-      }
-
       return `
         <div class="log-quiz-item result-${q.result}">
           <div class="log-quiz-meta">第${q.turn}ターン | ${q.heroineId}</div>
