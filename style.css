@@ -1558,18 +1558,20 @@ html[data-motion-quality="light"] .rhythm-water-shine {
 }
 
 .title-clock-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.38;
-  transform: scale(1.1);
-  will-change: transform;
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  left: -100%;
+  top: -100%;
+  max-width: none;
+  transform-origin: 50% 50%;
   animation: titleClockSlowRotate 92s linear infinite;
+  will-change: transform;
 }
 
 @keyframes titleClockSlowRotate {
-  from { transform: scale(1.1) rotate(0deg); }
-  to { transform: scale(1.1) rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .opening-screen {
