@@ -28157,15 +28157,21 @@ function renderOptionsModal(controller, container) {
 }
 
 function renderHelpModal(controller, container) {
+  // 画面全体を覆うオーバーレイ設定
+  container.style.padding = '0';
+  container.style.background = 'rgba(0,0,0,0.85)';
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
+  container.style.cursor = 'pointer';
+  
+  // 背景クリックで閉じるためのアクション
+  container.setAttribute('data-action', 'close-modal');
+
   container.innerHTML = `
-    <div class="ui-modal">
-      <h2>ヘルプ</h2>
-      <div style="line-height: 1.8; font-size: 0.95rem;">
-        <p>・クイズではお客さんの要望に合う品を選びます。</p>
-        <p>・リズムよく答えると評判が上がります。</p>
-        <p>・早く答えると満足度が上がります。</p>
-      </div>
-      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    <div style="width: 80%; height: 80%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+      <img src="images/ui/help.webp" alt="ヘルプ" 
+           style="max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 0 40px rgba(0,0,0,0.6);" />
     </div>
   `;
 }
