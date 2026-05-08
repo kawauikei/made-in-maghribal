@@ -28091,6 +28091,7 @@ function renderModal(controller) {
     backdrop.className = 'ui-modal-backdrop';
     controller.container.appendChild(backdrop);
   }
+  backdrop.classList.toggle('is-help-mode', modalName === 'help');
 
   if (modalName === 'options') {
     renderOptionsModal(controller, backdrop);
