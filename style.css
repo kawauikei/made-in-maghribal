@@ -828,7 +828,7 @@ img {
  */
 .log-modal {
   max-width: 660px;
-  height: 80vh;
+  height: 80%;
   display: flex !important;
   flex-direction: column;
   padding: 0 !important;
