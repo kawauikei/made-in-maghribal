@@ -27872,6 +27872,31 @@ const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { getCharacterIconPath } = require('../utils/assetPaths.js');
 const { escapeHtml } = require('../utils/html.js');
 
+function getItemSpriteStyle(itemId) {
+  const ICON_SIZE = 64;
+  const SHEET_COLS = 10;
+  const index = parseInt(itemId) || 0;
+  const col = index % SHEET_COLS;
+  const row = Math.floor(index / SHEET_COLS);
+  return {
+    'background-image': 'url("images/items/items_sheet.webp")',
+    'background-size': `${SHEET_COLS * 100}% auto`,
+    'background-position': `-${col * 100}% -${row * 100}%`,
+    'width': `${ICON_SIZE}px`,
+    'height': `${ICON_SIZE}px`
+  };
+}
+
+function formatLogDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+function safeToken(str, fallback = '') {
+  return (str || fallback).toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+
 function updateHud(controller) {
   const hud = document.getElementById('hud-container');
   if (!hud) return;
@@ -27889,6 +27914,9 @@ function updateHud(controller) {
       </div>
       <div class="hud-bottom">
         <div class="hud-controls">
+          <button class="hud-btn" data-action="open-modal" data-modal="log">
+            <img src="images/ui/icon_log.webp" alt="履歴" />
+          </button>
           <button class="hud-btn" data-action="open-modal" data-modal="options">
             <img src="images/ui/icon_settings.webp" alt="設定" />
           </button>
@@ -27921,6 +27949,135 @@ function renderGlobalUi(controller) {
 
   // Ensure HUD (buttons) are rendered in all phases (Title, Main Game, etc.)
   updateHud(controller);
+}
+
+function renderLogModal(controller, container) {
+  const tab = controller.uiState.logTab || 'convo';
+  const convoLog = controller.uiState.convoLog || [];
+  const quizHistory = (require('../utils/playerProgress.js').getPlayerProgress() || {}).quizHistory || [];
+  
+  const renderConvoTab = () => {
+    if (convoLog.length === 0) return '<p class="log-empty">会話履歴はありません。</p>';
+    return convoLog.map(line => `
+      <div class="log-convo-line">
+        <span class="log-convo-speaker">${escapeHtml(line.speaker)}</span>
+        <p class="log-convo-text">${escapeHtml(line.text)}</p>
+      </div>
+    `).join('');
+  };
+
+  const renderQuizTab = () => {
+    if (quizHistory.length === 0) return '<p class="log-empty">接客履歴はありません。</p>';
+    
+    const page = controller.uiState.logQuizPage || 0;
+    const pageSize = 5;
+    const start = page * pageSize;
+    const paged = quizHistory.slice().reverse().slice(start, start + pageSize);
+    const hasNext = (page + 1) * pageSize < quizHistory.length;
+    const hasPrev = page > 0;
+
+    const resultSummary = quizHistory.reduce((acc, q) => {
+      acc[q.result] = (acc[q.result] || 0) + 1;
+      return acc;
+    }, {});
+
+    const summary = `
+      <div class="log-quiz-summary">
+        <div class="log-quiz-stats">
+          <span class="result-perfect">秀 ${resultSummary.perfect || 0}</span>
+          <span class="result-good">良 ${resultSummary.good || 0}</span>
+          <span class="result-miss">不可 ${resultSummary.miss || 0}</span>
+        </div>
+      </div>
+    `;
+
+    const pager = `
+      <div class="log-pager">
+        <button class="log-pager-btn" ${hasPrev ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page - 1}">前</button>
+        <span class="log-pager-info">${start + 1} - ${Math.min(start + pageSize, quizHistory.length)} / ${quizHistory.length}</span>
+        <button class="log-pager-btn" ${hasNext ? '' : 'disabled'} data-action="set-log-quiz-page" data-page="${page + 1}">次</button>
+      </div>
+    `;
+
+    const items = paged.map(q => {
+      const resultLabel = q.result === 'perfect' ? '秀' : (q.result === 'good' ? '良' : '不可');
+      const resultText = q.result === 'perfect' ? '完全成功' : (q.result === 'good' ? '成功' : '失敗');
+      const recordedAt = formatLogDate(q.recordedAt);
+      const questionLabel = Number.isInteger(q.questionIndex) ? `Q${q.questionIndex + 1}` : '';
+      
+      const renderChoice = (choice, sideLabel) => {
+        if (!choice) return '';
+        const name = controller.getItemDisplayName(choice.itemId);
+        const quality = choice.quality || 'normal';
+        const qualityToken = safeToken(quality, 'normal');
+        const isSelected = choice.itemId === q.selectedItemId && quality === q.selectedQuality;
+        
+        const indicators = [];
+        if (choice.isCorrect) indicators.push('<span class="log-indicator-correct" title="正解">正解</span>');
+        if (isSelected) indicators.push('<span class="log-indicator-selected" title="あなたの回答">回答</span>');
+
+        const spriteStyle = Object.entries(getItemSpriteStyle(choice.itemId))
+          .map(([k, v]) => `${k}:${v}`).join(';');
+
+        const getQualityLabel = (q) => {
+          if (q === 'great_success') return '傑作';
+          if (q === 'success') return '高品質';
+          return '普通';
+        };
+
+        return `
+          <div class="log-quiz-col">
+            <span class="log-quiz-col-label">${sideLabel}</span>
+            <div class="log-quiz-item-box ${choice.isCorrect ? 'is-correct-choice' : ''} ${isSelected ? 'is-selected-choice' : ''}">
+              <div class="log-quiz-icon-frame">
+                <div class="item-sprite" style="${spriteStyle}"></div>
+              </div>
+              <div class="log-quiz-item-info">
+                <span class="log-quiz-item-name">${escapeHtml(name)}</span>
+                <small class="log-quiz-quality quality-${qualityToken}">${escapeHtml(getQualityLabel(quality))}</small>
+                <div class="log-quiz-indicators">${indicators.join('')}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      return `
+        <div class="log-quiz-item result-${safeToken(q.result, 'miss')}">
+          <div class="log-quiz-head">
+            <div class="log-quiz-meta">
+              <span>第${escapeHtml(q.turn)}ターン</span>
+              ${questionLabel ? `<span>${escapeHtml(questionLabel)}</span>` : ''}
+              <span>${escapeHtml(q.heroineId)}</span>
+              ${recordedAt ? `<time>${escapeHtml(recordedAt)}</time>` : ''}
+            </div>
+            <div class="log-quiz-result-text">${resultText}</div>
+          </div>
+          <div class="log-quiz-prompt">${escapeHtml(q.prompt)}</div>
+          <div class="log-quiz-comparison">
+            ${renderChoice(q.leftChoice, '左の選択肢')}
+            ${renderChoice(q.rightChoice, '右の選択肢')}
+            <div class="log-quiz-result-badge">${resultLabel}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return summary + items + (quizHistory.length > pageSize ? pager : '');
+  };
+
+  container.innerHTML = `
+    <div class="ui-modal log-modal">
+      <div class="log-tabs">
+        <button class="log-tab-btn ${tab === 'convo' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="convo">会話ログ</button>
+        <button class="log-tab-btn ${tab === 'quiz' ? 'is-active' : ''}" data-action="set-log-tab" data-tab="quiz">過去問履歴</button>
+      </div>
+      <div class="log-body scrollable">
+        ${tab === 'convo' ? renderConvoTab() : renderQuizTab()}
+      </div>
+      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+    </div>
+  `;
 }
 
 function renderModal(controller) {
@@ -27971,21 +28128,44 @@ function renderOptionsModal(controller, container) {
     { id: 'standard', label: 'STANDARD' },
     { id: 'full', label: 'FULL' }
   ];
+  const bgmOn = controller.settings.bgmEnabled !== false;
+  const sfxOn = controller.settings.sfxEnabled !== false;
+  const bgmVol = Math.round(Number(controller.settings.bgmVolume ?? 0.22) * 100);
+  const sfxVol = Math.round(Number(controller.settings.sfxVolume ?? 1) * 100);
+
+  const renderAudioRow = (kind, label, enabled, volume) => `
+    <div class="audio-option-row">
+      <div class="audio-option-info">
+        <strong>${label}</strong>
+        <span>${enabled ? 'ON' : 'OFF'} / ${volume}%</span>
+      </div>
+      <div class="audio-option-controls">
+        <button class="option-button ${enabled ? 'is-active' : ''}" data-action="set-audio-enabled" data-audio-kind="${kind}" data-enabled="true">ON</button>
+        <button class="option-button ${!enabled ? 'is-active' : ''}" data-action="set-audio-enabled" data-audio-kind="${kind}" data-enabled="false">OFF</button>
+        <button class="option-button" data-action="adjust-audio-volume" data-audio-kind="${kind}" data-delta="-0.1">−</button>
+        <button class="option-button" data-action="adjust-audio-volume" data-audio-kind="${kind}" data-delta="0.1">＋</button>
+      </div>
+    </div>
+  `;
 
   container.innerHTML = `
-    <div class="ui-modal">
-      <h2 class="modal-title">設定</h2>
+    <div class="ui-modal options-modal">
+      <h2 class="modal-title">設定画面</h2>
       <div class="modal-content">
         <div class="option-row">
-          <p class="option-label">テキスト表示速度</p>
+          <p class="option-label">テキスト速度</p>
           <div class="option-group">
-            ${speeds.map(item => `
-              <button class="option-button ${speed === item.id ? 'is-active' : ''}" 
-                      data-action="set-text-speed" data-speed="${item.id}">${item.label}</button>
+            ${speeds.map(s => `
+              <button class="option-button ${speed === s.id ? 'is-active' : ''}" 
+                      data-action="set-text-speed" data-speed="${s.id}">${s.label}</button>
             `).join('')}
           </div>
         </div>
-        
+        <div class="option-row">
+          <p class="option-label">音量設定</p>
+          ${renderAudioRow('bgm', 'BGM', bgmOn, bgmVol)}
+          ${renderAudioRow('sfx', 'SFX', sfxOn, sfxVol)}
+        </div>
         <div class="option-row">
           <p class="option-label">演出・描写</p>
           <div class="option-group">
@@ -28000,30 +28180,9 @@ function renderOptionsModal(controller, container) {
             FULL: すべての演出を表示します。
           </p>
         </div>
-
-        <div class="option-row">
-          <p class="option-label">サウンド設定</p>
-          <div class="option-item">
-            <span>BGM</span>
-            <div class="volume-control">
-              <button class="volume-btn" data-action="adjust-volume" data-kind="bgm" data-delta="-0.1">-</button>
-              <span class="volume-value">${Math.round(controller.settings.bgmVolume * 100)}%</span>
-              <button class="volume-btn" data-action="adjust-volume" data-kind="bgm" data-delta="0.1">+</button>
-            </div>
-          </div>
-          <div class="option-item">
-            <span>SFX</span>
-            <div class="volume-control">
-              <button class="volume-btn" data-action="adjust-volume" data-kind="sfx" data-delta="-0.1">-</button>
-              <span class="volume-value">${Math.round(controller.settings.sfxVolume * 100)}%</span>
-              <button class="volume-btn" data-action="adjust-volume" data-kind="sfx" data-delta="0.1">+</button>
-            </div>
-          </div>
-        </div>
-
         <div class="option-row option-danger-row">
-          <p style="margin-bottom: 8px; font-weight: 900;">セーブデータ</p>
-          <p class="option-help-text">全ての進行状況を削除して初期状態に戻ります。</p>
+          <p class="option-label" style="color:#ff4444;">セーブデータ</p>
+          <p class="option-help-text">全進行状況（既読・収集等）を完全に削除します。</p>
           <button class="option-button option-danger-button" data-action="reset-all-game-progress">全データリセット</button>
         </div>
       </div>
@@ -28046,19 +28205,6 @@ function renderHelpModal(controller, container) {
         <img src="images/ui/help.webp" alt="操作説明" class="help-infographic" style="max-width:100% !important; max-height:100% !important; width:auto !important; height:auto !important; object-fit:contain !important; display:block !important; box-shadow:0 0 40px rgba(0,0,0,0.8) !important;" />
       </div>
       <button class="modal-close-btn" data-action="close-modal" style="margin:15px 0 25px !important; width:280px !important; flex-shrink:0 !important;">閉じてゲームに戻る</button>
-    </div>
-  `;
-}
-
-function renderLogModal(controller, container) {
-  // Placeholder for log modal if needed
-  container.innerHTML = `
-    <div class="ui-modal">
-      <h2 class="modal-title">履歴</h2>
-      <div class="modal-content">
-        <p>履歴機能は現在準備中です。</p>
-      </div>
-      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>
   `;
 }
