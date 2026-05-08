@@ -28153,7 +28153,7 @@ function renderOptionsModal(controller, container) {
         ${renderAudioRow('sfx', 'SE', sfxOn, sfxVol)}
       </div>
       <div class="option-row">
-        <p style="margin-bottom: 10px; font-weight: 800;">貍泌・蜩∬ｳｪ</p>
+        <p style="margin-bottom: 10px; font-weight: 800;">演出・描写</p>
         <div class="option-buttons">
           ${motionQualities.map(item => `
             <button class="option-button ${motionQuality === item.id ? 'is-active' : ''}"
