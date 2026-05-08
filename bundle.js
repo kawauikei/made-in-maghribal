@@ -24271,9 +24271,11 @@ function bindInputHandlers(controller) {
       await controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
       return;
     }
-    if (target.closest('[data-action="back-to-title"]') || target.closest('[data-action="title-panel-back"]')) {
+    const backToTitleBtn = target.closest('[data-action="back-to-title"]');
+    if (backToTitleBtn || target.closest('[data-action="title-panel-back"]')) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
+      if (backToTitleBtn) controller.uiState.modal = null;
       controller.closeTitlePanel();
       controller.session.backToTitle();
       controller.update();
@@ -27296,9 +27298,43 @@ function updateQuizContent(controller) {
   startRhythmVisual(controller);
 }
 
+function applyAnswerFeedbackOnly(controller) {
+  const refs = getQuizRefs(controller);
+  const feedback = controller.quizState.answerFeedback || null;
+  const screenEl = refs.root;
+
+  if (screenEl) {
+    screenEl.setAttribute('data-input-locked', controller.quizState.inputLocked ? 'true' : 'false');
+    screenEl.setAttribute('data-answer-result', feedback?.result?.isCorrect ? 'correct' : (feedback ? 'wrong' : 'none'));
+  }
+
+  if (!feedback) return;
+
+  if (controller.quizState.lastRhythmBloomFeedback !== feedback) {
+    controller.quizState.lastRhythmBloomFeedback = feedback;
+    controller.quizState.rhythmHitBloomUntil = performance.now() + RHYTHM_VISUAL.hitBloomMs;
+  }
+
+  const choices = controller.quizState.currentChoices || [];
+  choices.forEach((choice, idx) => {
+    const card = refs.choices[idx]?.card;
+    if (!card) return;
+    const quality = normalizeQuality(choice.quality);
+    const choiceKey = `${choice.id}::${quality}`;
+    const isCorrectChoice = choiceKey === feedback.correctChoiceKey;
+    const isSelectedChoice = choice.id === feedback.selectedItemId && quality === feedback.selectedQuality;
+    card.classList.toggle('is-answer-selected', Boolean(isSelectedChoice));
+    card.classList.toggle('is-answer-correct', Boolean(isCorrectChoice));
+    card.classList.toggle('is-answer-wrong', Boolean(isSelectedChoice && !isCorrectChoice));
+  });
+
+  controller.updateHud();
+}
+
 module.exports = {
   renderQuiz,
   updateQuizContent,
+  applyAnswerFeedbackOnly,
   clearRhythmVisual
 };
 
@@ -28747,6 +28783,7 @@ function renderOptionsModal(controller, container) {
         <p class="option-help-text">現在の自動保存・イベント既読・アイテム収集・過去問履歴・フリープレイ記録を削除します。</p>
         <button class="option-button option-danger-button" data-action="clear-all-save-data">セーブデータ削除</button>
       </div>
+      <button class="option-button" data-action="back-to-title">タイトルに戻る</button>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>
   `;
@@ -28859,6 +28896,11 @@ function showResultStamp(controller, result) {
   if (!cache || !cache.root) return;
 
   const { root, main, speed, tempo } = cache;
+  const previousFrameId = controller.quizState?.stampAnimationFrameId;
+  if (previousFrameId) {
+    cancelAnimationFrame(previousFrameId);
+    controller.quizState.stampAnimationFrameId = null;
+  }
 
   // Reset animation state
   root.classList.remove('is-active');
@@ -28873,9 +28915,10 @@ function showResultStamp(controller, result) {
   // Apply result type
   root.classList.add(result.isCorrect ? 'is-correct' : 'is-wrong');
 
-  // Force reflow to restart CSS animation
-  void root.offsetWidth;
-  root.classList.add('is-active');
+  controller.quizState.stampAnimationFrameId = requestAnimationFrame(() => {
+    controller.quizState.stampAnimationFrameId = null;
+    root.classList.add('is-active');
+  });
 }
 
 module.exports = {
@@ -29762,6 +29805,9 @@ module.exports = {
  */
 
 const ITEM_COLLECTION_KEY = 'madeinmaghribal.collection.items';
+const ITEM_COLLECTION_SAVE_DELAY_MS = 250;
+let cachedItemCollection = null;
+let itemCollectionSaveTimer = null;
 
 function canUseStorage() {
   try {
@@ -29772,12 +29818,17 @@ function canUseStorage() {
 }
 
 function loadItemCollection() {
+  if (cachedItemCollection) return JSON.parse(JSON.stringify(cachedItemCollection));
   if (!canUseStorage()) return {};
   try {
     const raw = localStorage.getItem(ITEM_COLLECTION_KEY);
-    if (!raw) return {};
+    if (!raw) {
+      cachedItemCollection = {};
+      return {};
+    }
     const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    cachedItemCollection = parsed && typeof parsed === 'object' ? parsed : {};
+    return JSON.parse(JSON.stringify(cachedItemCollection));
   } catch (e) {
     console.warn('Failed to load item collection:', e);
     return {};
@@ -29787,15 +29838,43 @@ function loadItemCollection() {
 function saveItemCollection(collection) {
   if (!canUseStorage()) return;
   try {
-    localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(collection));
+    cachedItemCollection = collection && typeof collection === 'object' ? collection : {};
+    localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
   } catch (e) {
     console.warn('Failed to save item collection:', e);
   }
 }
 
+function scheduleItemCollectionSave(collection) {
+  cachedItemCollection = collection && typeof collection === 'object' ? collection : {};
+  if (!canUseStorage()) return;
+  if (typeof window === 'undefined') {
+    try {
+      localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
+    } catch (e) {
+      console.warn('Failed to save item collection:', e);
+    }
+    return;
+  }
+  if (itemCollectionSaveTimer) clearTimeout(itemCollectionSaveTimer);
+  itemCollectionSaveTimer = setTimeout(() => {
+    itemCollectionSaveTimer = null;
+    try {
+      localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
+    } catch (e) {
+      console.warn('Failed to save item collection:', e);
+    }
+  }, ITEM_COLLECTION_SAVE_DELAY_MS);
+}
+
 function clearItemCollection() {
   if (!canUseStorage()) return false;
   try {
+    if (itemCollectionSaveTimer) {
+      clearTimeout(itemCollectionSaveTimer);
+      itemCollectionSaveTimer = null;
+    }
+    cachedItemCollection = null;
     localStorage.removeItem(ITEM_COLLECTION_KEY);
     return true;
   } catch (e) {
@@ -29823,7 +29902,7 @@ function registerSeenItems(itemIds, context = {}) {
     results.push({ itemId, isNew: !exists });
   });
 
-  saveItemCollection(collection);
+  scheduleItemCollectionSave(collection);
   return results;
 }
 
@@ -29898,9 +29977,12 @@ module.exports = {
 
 const PLAYER_PROGRESS_KEY = 'madeinmaghribal.playerProgress.v1';
 const PLAYER_PROGRESS_VERSION = 1;
+const PLAYER_PROGRESS_SAVE_DELAY_MS = 250;
 
 const HEROINE_IDS = ['HAKIMA', 'MIRA', 'DARIYA'];
 const ROUTE_MODES = ['normal', 'long_history'];
+let cachedPlayerProgress = null;
+let playerProgressSaveTimer = null;
 
 function canUseStorage() {
   try {
@@ -29993,12 +30075,17 @@ function normalizeProgress(progress) {
 }
 
 function loadPlayerProgress() {
+  if (cachedPlayerProgress) return cloneJson(cachedPlayerProgress);
   if (!canUseStorage()) return getDefaultPlayerProgress();
   try {
     const raw = localStorage.getItem(PLAYER_PROGRESS_KEY);
-    if (!raw) return getDefaultPlayerProgress();
+    if (!raw) {
+      cachedPlayerProgress = getDefaultPlayerProgress();
+      return cloneJson(cachedPlayerProgress);
+    }
     const parsed = JSON.parse(raw);
-    return normalizeProgress(parsed);
+    cachedPlayerProgress = normalizeProgress(parsed);
+    return cloneJson(cachedPlayerProgress);
   } catch (e) {
     console.warn('Failed to load player progress:', e);
     return getDefaultPlayerProgress();
@@ -30008,6 +30095,11 @@ function loadPlayerProgress() {
 function clearPlayerProgress() {
   if (!canUseStorage()) return false;
   try {
+    if (playerProgressSaveTimer) {
+      clearTimeout(playerProgressSaveTimer);
+      playerProgressSaveTimer = null;
+    }
+    cachedPlayerProgress = null;
     localStorage.removeItem(PLAYER_PROGRESS_KEY);
     return true;
   } catch (e) {
@@ -30019,12 +30111,37 @@ function clearPlayerProgress() {
 function savePlayerProgress(progress) {
   if (!canUseStorage()) return false;
   try {
-    localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(normalizeProgress(progress)));
+    cachedPlayerProgress = normalizeProgress(progress);
+    localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
     return true;
   } catch (e) {
     console.warn('Failed to save player progress:', e);
     return false;
   }
+}
+
+function schedulePlayerProgressSave(progress) {
+  cachedPlayerProgress = normalizeProgress(progress);
+  if (!canUseStorage()) return false;
+  if (typeof window === 'undefined') {
+    try {
+      localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
+      return true;
+    } catch (e) {
+      console.warn('Failed to save player progress:', e);
+      return false;
+    }
+  }
+  if (playerProgressSaveTimer) clearTimeout(playerProgressSaveTimer);
+  playerProgressSaveTimer = setTimeout(() => {
+    playerProgressSaveTimer = null;
+    try {
+      localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
+    } catch (e) {
+      console.warn('Failed to save player progress:', e);
+    }
+  }, PLAYER_PROGRESS_SAVE_DELAY_MS);
+  return true;
 }
 
 function recordEndingProgress(session, endingType, affection) {
@@ -30111,7 +30228,7 @@ function recordQuizHistory(entry) {
   }
   
   progress.updatedAt = new Date().toISOString();
-  savePlayerProgress(progress);
+  schedulePlayerProgressSave(progress);
   return progress.quizHistory;
 }
 
@@ -31217,7 +31334,7 @@ const { renderTitle, renderOpening } = require('./screens/titleScreen.js');
 const { renderTitlePanel } = require('./screens/titlePanelScreen.js');
 const { renderHeroineSelect } = require('./screens/heroineSelectScreen.js');
 const { renderVnShell, updateVnContent } = require('./screens/vnScreen.js');
-const { renderQuiz, updateQuizContent, clearRhythmVisual } = require('./screens/quizScreen.js');
+const { renderQuiz, updateQuizContent, applyAnswerFeedbackOnly, clearRhythmVisual } = require('./screens/quizScreen.js');
 
 const { renderTurnResult } = require('./screens/turnResultScreen.js');
 const { renderEnding } = require('./screens/endingScreen.js');
@@ -31352,6 +31469,7 @@ class GameController {
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
     this.viewportScaleTimers = [];
+    this._saveTimer = null;
     this.freePlayRecords = new FreePlayRecords();
     this.freePlaySession = null;
   }
@@ -32082,6 +32200,7 @@ class GameController {
     updateVnContent(this, payload);
   }
   updateQuizContent() { updateQuizContent(this); }
+  applyAnswerFeedbackOnly() { applyAnswerFeedbackOnly(this); }
   showResultStamp(result) { showResultStamp(this, result); }
 
   isDebugMode() { return isDebugMode(); }
@@ -32107,6 +32226,14 @@ class GameController {
     // FREE_PLAYはストーリーセーブを汚染しないようスキップ
     if (this.session.phase === 'FREE_PLAY') return;
     saveRun(this);
+  }
+  scheduleSaveSoon(delayMs = 250) {
+    if (this.session.phase === 'FREE_PLAY') return;
+    if (this._saveTimer) clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => {
+      this._saveTimer = null;
+      this.saveCurrentRunIfNeeded();
+    }, delayMs);
   }
   recordEndingProgressIfNeeded() {
     if (this.endingProgressRecorded || this.session.phase !== 'ENDING') return;
@@ -32570,9 +32697,9 @@ class GameController {
       this.freePlaySession.processResult(result);
     }
 
-    this.updateQuizContent();
+    this.applyAnswerFeedbackOnly();
     this.quizState.questionIndex++;
-    this.saveCurrentRunIfNeeded();
+    this.scheduleSaveSoon();
 
     this.showResultStamp(result);
     this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
@@ -32592,7 +32719,7 @@ class GameController {
         this.quizState.inputLocked = false;
         this.quizState.promptShownAt = performance.now();
         this.updateQuizContent();
-        this.saveCurrentRunIfNeeded();
+        this.scheduleSaveSoon();
       }, RESULT_TRANSITION_DELAY_MS);
     } else {
       setTimeout(() => {
