@@ -3469,6 +3469,7 @@ button.gallery-item-tile.is-seen:active {
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  pointer-events: auto; /* .stats のデフォルト none を上書き */
 }
 
 .quiz-order-card {
@@ -5928,6 +5929,306 @@ button.gallery-item-tile.is-seen:active {
 .result-item-mark.is-wrong { background: #f44336; color: white; }
 
 /* --- END: 51_turn_result.css --- */
+
+/* --- START: 60_freeplay.css --- */
+/**
+ * Free Play Selection Screen (Final Fix: Visibility & Asset Path)
+ */
+
+.freeplay-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--sand-0);
+    color: var(--ink); /* Use --ink for reliable dark text */
+    font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    overflow: hidden;
+}
+
+.freeplay-header {
+    flex: 0 0 auto;
+    padding: 10px;
+    background: rgba(0,0,0,0.5); /* Header stays dark for contrast */
+    border-bottom: 2px solid var(--sand-2);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.freeplay-header h1 {
+    font-size: 1.6rem;
+    margin: 0;
+    color: var(--star-1);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    letter-spacing: 2px;
+}
+
+/* Main List Area */
+.freeplay-main-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 15px;
+    background: var(--sand-0); /* Use solid theme color instead of missing texture */
+}
+
+.song-categories-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Group Heading */
+.song-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 25px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--sand-1);
+    color: var(--ink); /* Dark ink text */
+}
+
+.song-group-heading img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--sand-2);
+    background: #fff;
+    object-fit: cover;
+}
+
+.song-group-heading span {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+/* 2-Column Grid */
+.song-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.song-item-row {
+    background: rgba(0, 0, 0, 0.04); /* Light transparent overlay */
+    border: 1px solid var(--sand-1);
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--ink) !important; /* Force ink color */
+    text-align: left;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+    font-weight: 500;
+}
+
+.song-item-row:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.song-item-row.selected {
+    background: var(--sand-2);
+    border-color: var(--sand-3);
+    color: #fff !important; /* Only white text when selected */
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Bottom Panel Controls */
+.freeplay-bottom-panel {
+    flex: 0 0 auto;
+    padding: 20px;
+    background: var(--night-1); /* Use night theme for footer */
+    border-top: 3px solid var(--sand-2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.mode-btn {
+    flex: 1;
+    max-width: 160px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.mode-btn.selected {
+    background: var(--sand-2);
+    border-color: var(--sand-3);
+}
+
+/* Records Area */
+.records-area {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-size: 0.85rem;
+}
+
+.records-compact-table {
+    width: 100%;
+}
+
+/* Footer Actions */
+.freeplay-footer {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-fp-back, .btn-fp-start {
+    padding: 14px 40px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.btn-fp-back {
+    background: var(--sand-0);
+    border: 2px solid var(--sand-1);
+    color: var(--ink);
+}
+
+.btn-fp-start {
+    background: var(--sand-2);
+    border: 2px solid var(--sand-3);
+    color: #fff;
+    flex: 1;
+    max-width: 350px;
+}
+
+/* Free Play Result Overlay */
+.freeplay-result-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: rgba(0,0,0,0.85); /* Dark overlay */
+    color: #fff;
+    font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    padding: 20px;
+    text-align: center;
+}
+
+.freeplay-result-overlay .result-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(255,215,0,0.5);
+}
+
+.freeplay-result-overlay .result-stats {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid var(--sand-2);
+    border-radius: 12px;
+    padding: 20px 40px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 300px;
+}
+
+.freeplay-result-overlay .stat-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+}
+
+.freeplay-result-overlay .stat-label {
+    color: #aaa;
+}
+
+.freeplay-result-overlay .stat-value {
+    font-weight: bold;
+    color: #fff;
+}
+
+.freeplay-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-back-title, .btn-start-play {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-back-title {
+    background: var(--sand-0);
+    color: var(--ink);
+    border: 2px solid var(--sand-1);
+}
+
+.btn-start-play {
+    background: var(--star-1);
+    color: #000;
+}
+
+/* ---- HUD 中断ボタン ---- */
+.hud-main--freeplay {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-fp-abort {
+    margin-left: auto;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255, 100, 100, 0.6);
+    background: rgba(200, 40, 40, 0.18);
+    color: #ff9a9a;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.btn-fp-abort:hover {
+    background: rgba(200, 40, 40, 0.45);
+    border-color: rgba(255, 100, 100, 0.9);
+    color: #fff;
+}
+
+.btn-fp-abort:active {
+    transform: scale(0.95);
+}
+
+
+/* --- END: 60_freeplay.css --- */
 
 /* --- START: 90_debug.css --- */
 /* 

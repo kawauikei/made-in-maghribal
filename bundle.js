@@ -219,6 +219,261 @@ module.exports = { evaluateEnding };
 
     };
 
+    // --- ./core/freePlayRecords.cjs ---
+    modules['./core/freePlayRecords.cjs'] = function(module, exports, require) {
+/**
+ * Free Play Records logic for MadeInMaghribal project.
+ */
+
+const DIVISIONS = ['perfect', 'elite', 'veteran', 'open'];
+
+/**
+ * Memory storage for testing environments.
+ */
+let _memoryStorage = {};
+const memoryStorageInterface = {
+  getItem: (key) => _memoryStorage[key] || null,
+  setItem: (key, val) => { _memoryStorage[key] = val; },
+  removeItem: (key) => { delete _memoryStorage[key]; }
+};
+
+/**
+ * Gets the achieved divisions for a session.
+ * @param {object} session 
+ * @returns {string[]}
+ */
+function getAchievedDivisions(session) {
+  if (session.status !== 'finished') return [];
+  
+  const divisions = [];
+  const bonusCount = session.bonusCount;
+  const correctCount = session.correctCount;
+  const bonusRate = correctCount > 0 ? bonusCount / correctCount : 0;
+
+  if (session.mode === 'timeAttack10') {
+    if (bonusCount >= 10) divisions.push('perfect');
+    if (bonusCount >= 9) divisions.push('elite');
+    if (bonusCount >= 8) divisions.push('veteran');
+    divisions.push('open');
+  } else if (session.mode === 'scoreAttack60') {
+    if (bonusRate >= 1.0) divisions.push('perfect');
+    if (bonusRate >= 0.9) divisions.push('elite');
+    if (bonusRate >= 0.8) divisions.push('veteran');
+    divisions.push('open');
+  }
+
+  return divisions;
+}
+
+/**
+ * Manages Free Play records persistence.
+ */
+class FreePlayRecords {
+  constructor(storage = (typeof localStorage !== 'undefined' ? localStorage : memoryStorageInterface)) {
+    this.storage = storage;
+  }
+
+  _getKey(mode, songId, division) {
+    return `freeplay:${mode}:${songId}:${division}`;
+  }
+
+  getRecord(mode, songId, division) {
+    const key = this._getKey(mode, songId, division);
+    const raw = this.storage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  }
+
+  /**
+   * Updates records based on session results.
+   * @param {object} session 
+   * @returns {string[]} - List of divisions that updated their best record
+   */
+  updateRecords(session) {
+    const achieved = getAchievedDivisions(session);
+    const updated = [];
+
+    achieved.forEach(division => {
+      const existing = this.getRecord(session.mode, session.songId, division);
+      let isNewBest = false;
+
+      if (!existing) {
+        isNewBest = true;
+      } else {
+        if (session.mode === 'timeAttack10') {
+          if (session.elapsedMs < existing.bestTimeMs) isNewBest = true;
+        } else if (session.mode === 'scoreAttack60') {
+          if (session.score > existing.bestScore) isNewBest = true;
+        }
+      }
+
+      if (isNewBest) {
+        const record = {
+          mode: session.mode,
+          songId: session.songId,
+          division: division,
+          bestTimeMs: session.mode === 'timeAttack10' ? session.elapsedMs : null,
+          bestScore: session.mode === 'scoreAttack60' ? session.score : null,
+          clearDate: new Date().toISOString(),
+          totalQuestions: session.totalQuestions === Infinity ? session.questionIndex : session.totalQuestions,
+          correctCount: session.correctCount,
+          bonusCount: session.bonusCount,
+          bonusRate: session.correctCount > 0 ? session.bonusCount / session.correctCount : 0
+        };
+        this.storage.setItem(this._getKey(session.mode, session.songId, division), JSON.stringify(record));
+        updated.push(division);
+      }
+    });
+
+    return updated;
+  }
+
+  getAllRecordsForSong(songId) {
+    const result = {
+      timeAttack10: {},
+      scoreAttack60: {}
+    };
+
+    ['timeAttack10', 'scoreAttack60'].forEach(mode => {
+      DIVISIONS.forEach(div => {
+        result[mode][div] = this.getRecord(mode, songId, div);
+      });
+    });
+
+    return result;
+  }
+
+  /**
+   * Clears all freeplay records from storage
+   */
+  clearAllRecords() {
+    if (this.storage === _memoryStorage) {
+      Object.keys(_memoryStorage).forEach(k => {
+        if (k.startsWith('freeplay:')) delete _memoryStorage[k];
+      });
+      return;
+    }
+    const keysToRemove = [];
+    for (let i = 0; i < this.storage.length; i++) {
+      const key = this.storage.key(i);
+      if (key && key.startsWith('freeplay:')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(k => this.storage.removeItem(k));
+  }
+}
+
+module.exports = { FreePlayRecords, getAchievedDivisions, DIVISIONS };
+
+    };
+
+    // --- ./core/freePlaySession.cjs ---
+    modules['./core/freePlaySession.cjs'] = function(module, exports, require) {
+/**
+ * Free Play Session logic for MadeInMaghribal project.
+ */
+
+class FreePlaySession {
+  /**
+   * @param {string} songId 
+   * @param {string} mode - timeAttack10 | scoreAttack60 | freePractice
+   */
+  constructor(songId, mode) {
+    this.songId = songId;
+    this.mode = mode;
+    this.status = 'active'; // active | finished | failed
+    this.startTime = Date.now();
+    this.endTime = null;
+    this.correctCount = 0;
+    this.bonusCount = 0;
+    this.score = 0;
+    this.questionIndex = 0;
+    this.elapsedMs = 0;
+    
+    this.totalQuestions = (mode === 'timeAttack10') ? 10 : Infinity;
+    this.timeLimitMs = (mode === 'scoreAttack60') ? 60000 : Infinity;
+  }
+
+  /**
+   * Processes the result of a single question.
+   * @param {object} result - result from rhythmQuizCore.processQuestionResult
+   */
+  processResult(result) {
+    if (this.status !== 'active') return;
+
+    if (result.isCorrect) {
+      this.correctCount++;
+      this.score += 10; // Basic score flow from scoreModel
+      this.score += (result.satisfactionBonus || 0);
+      this.score += (result.reputationBonus || 0);
+      
+      // Bonus judgment for division
+      if (result.rating === 'PERFECT') {
+        this.bonusCount++;
+      }
+    } else {
+      if (this.mode !== 'freePractice') {
+        this.status = 'failed';
+        this.endTime = Date.now();
+        this.elapsedMs = this.endTime - this.startTime;
+        return;
+      }
+    }
+
+    this.questionIndex++;
+
+    if (this.mode === 'timeAttack10' && this.correctCount >= 10) {
+      this.status = 'finished';
+      this.endTime = Date.now();
+      this.elapsedMs = this.endTime - this.startTime;
+    }
+  }
+
+  /**
+   * Updates the elapsed time and checks for time limits.
+   * @param {number} [now] - Current timestamp (for testing)
+   */
+  updateTime(now = Date.now()) {
+    if (this.status !== 'active') return;
+    
+    this.elapsedMs = now - this.startTime;
+    
+    if (this.mode === 'scoreAttack60' && this.elapsedMs >= this.timeLimitMs) {
+      this.status = 'finished';
+      this.endTime = this.startTime + this.timeLimitMs;
+      this.elapsedMs = this.timeLimitMs;
+    }
+  }
+
+  /**
+   * Manually finishes the session (for freePractice).
+   */
+  finish() {
+    if (this.status !== 'active') return;
+    this.status = 'finished';
+    this.endTime = Date.now();
+    this.elapsedMs = this.endTime - this.startTime;
+  }
+
+  /**
+   * Restarts the session with the same song and mode.
+   */
+  retry() {
+    this.status = 'active';
+    this.startTime = Date.now();
+    this.endTime = null;
+    this.correctCount = 0;
+    this.bonusCount = 0;
+    this.score = 0;
+    this.questionIndex = 0;
+    this.elapsedMs = 0;
+  }
+}
+
+module.exports = { FreePlaySession };
+
+    };
+
     // --- ./core/gameSessionFlow.cjs ---
     modules['./core/gameSessionFlow.cjs'] = function(module, exports, require) {
 /**
@@ -242,6 +497,7 @@ class GameSession {
     this.scores = { revenue: 0, satisfaction: 0, reputation: 0 };
     this.affection = { HAKIMA: 0, MIRA: 0, DARIYA: 0 };
     this.unlockState = getInitialUnlockState();
+    this.currentSongId = null;
   }
 
   /**
@@ -256,7 +512,17 @@ class GameSession {
       this.phase = 'MAIN_GAME';
     } else if (this.phase === 'MAIN_GAME' && this.turn >= TOTAL_TURNS && this.subPhase === 'AFTER_CLOSE') {
       this.phase = 'ENDING';
+    } else if (this.phase === 'FREE_PLAY') {
+      this.phase = 'TITLE';
     }
+  }
+
+  goToFreePlay() {
+    this.phase = 'FREE_PLAY';
+  }
+
+  backToTitle() {
+    this.phase = 'TITLE';
   }
 
   /**
@@ -265,6 +531,8 @@ class GameSession {
   nextSubPhase() {
     if (this.subPhase === 'BEFORE_OPEN') {
       this.subPhase = 'QUIZ';
+      // Pick song when entering quiz
+      this.currentSongId = getSongForTurn(this.turn, this.selectedHeroineId, this.routeMode);
     } else if (this.subPhase === 'QUIZ') {
       this.subPhase = 'TURN_RESULT';
     } else if (this.subPhase === 'TURN_RESULT') {
@@ -289,6 +557,7 @@ class GameSession {
    * Returns the current song ID for the current state.
    */
   get currentSong() {
+    if (this.subPhase === 'QUIZ' && this.currentSongId) return this.currentSongId;
     return getSongForTurn(this.turn, this.selectedHeroineId, this.routeMode);
   }
 }
@@ -665,13 +934,35 @@ function renderPrompt(customerProfile, requestPhrase) {
 
 function selectDifficulty(context = {}) {
   const route = normalizeRouteMode(context.routeMode);
-  const bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+  const turn = Number(context.turn || 1);
+  let bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+  
+  // Shift difficulty bucket based on turn
+  // Turn 1-2: Normal
+  // Turn 3-4: Shift one bucket later (min middle)
+  // Turn 5: Shift two buckets later (late)
+  if (turn >= 5) {
+    bucket = 'late';
+  } else if (turn >= 3) {
+    if (bucket === 'early') bucket = 'middle';
+    else if (bucket === 'middle') bucket = 'late';
+  }
+
   return pickWeighted(DIFFICULTY_WEIGHTS[route]?.[bucket] || DIFFICULTY_WEIGHTS.normal.early) || 'easy';
 }
 
 function selectDecoyDifficulty(context = {}) {
   const route = normalizeRouteMode(context.routeMode);
-  const bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+  const turn = Number(context.turn || 1);
+  let bucket = getStageBucket(context.questionIndex || 0, context.totalQuestions || 10);
+
+  if (turn >= 5) {
+    bucket = 'late';
+  } else if (turn >= 3) {
+    if (bucket === 'early') bucket = 'middle';
+    else if (bucket === 'middle') bucket = 'late';
+  }
+
   return pickWeighted(DECOY_DIFFICULTY_WEIGHTS[route]?.[bucket] || DECOY_DIFFICULTY_WEIGHTS.normal.early) || 'loose';
 }
 
@@ -1210,6 +1501,15 @@ module.exports = { updateGameScore };
  * Stage Schedule logic for MadeInMaghribal project.
  */
 
+const EXTRA_BGM_POOL = [
+  'BGM_EXTRA_ANGER_1', 'BGM_EXTRA_ANGER_2',
+  'BGM_EXTRA_FUN_1', 'BGM_EXTRA_FUN_2',
+  'BGM_EXTRA_JOY_1', 'BGM_EXTRA_JOY_2',
+  'BGM_EXTRA_SORROW_1', 'BGM_EXTRA_SORROW_2',
+  'BGM_EXTRA_SURPRISE_1', 'BGM_EXTRA_SURPRISE_2',
+  'BGM_EXTRA_CRY_1', 'BGM_EXTRA_CRY_2'
+];
+
 /**
  * Determines the song to be played based on the current turn and selected route.
  * @param {number} turn 
@@ -1218,17 +1518,23 @@ module.exports = { updateGameScore };
  * @returns {string} songId
  */
 function getSongForTurn(turn, heroineId, routeMode) {
-  // Acceptance: Turn 1 は全員 main03_puzzle 固定
+  // Turn 1: All fixed to main03_puzzle
   if (turn === 1) return 'main03_puzzle';
 
-  // Long-history routes currently share the heroine game track set.
-  // Route-specific song ids can be introduced when dedicated IF tracks exist.
-  if (turn === 2 || turn === 5) {
-    return `BGM_GAME_${heroineId}_1`;
+  const isLongHistory = routeMode === 'long_history';
+
+  // Turn 2: Game A (normal) or C (long_history)
+  if (turn === 2) {
+    return isLongHistory ? `BGM_GAME_${heroineId}_3` : `BGM_GAME_${heroineId}_1`;
   }
 
-  // Turn 3, 4 placeholders
-  return 'BGM_EXTRA_ROMANCE';
+  // Turn 5: Game B (normal) or D (long_history)
+  if (turn === 5) {
+    return isLongHistory ? `BGM_GAME_${heroineId}_4` : `BGM_GAME_${heroineId}_2`;
+  }
+
+  // Turn 3, 4: Pick randomly from Extra pool
+  return EXTRA_BGM_POOL[Math.floor(Math.random() * EXTRA_BGM_POOL.length)];
 }
 
 module.exports = { getSongForTurn };
@@ -1333,16 +1639,16 @@ const AUDIO_MANIFEST = {
     system: [
       { id: 'main01_title', title: 'Beneath the Indigo Dunes', path: 'audio/bgm/main/main01_title.mp3' },
       { id: 'main02_shop', title: 'Bottled Starlight', path: 'audio/bgm/main/main02_shop.mp3' },
-      { id: 'main03_puzzle', title: 'Saffron and Copper Kettle', path: 'audio/bgm/main/main03_puzzle.mp3' }
+      { id: 'main03_puzzle', title: 'Saffron and Copper Kettle', path: 'audio/bgm/main/main03_puzzle.mp3', freePlay: true }
     ],
     heroines: {
       HAKIMA: {
         theme: { id: 'BGM_THEME_HAKIMA', title: 'Two Cups of Cardamom', path: 'audio/bgm/hakima/hakima01_theme.mp3' },
         game: [
-          { id: 'BGM_GAME_HAKIMA_1', title: 'Copper and Cumin', path: 'audio/bgm/hakima/hakima02_game_a.mp3' },
-          { id: 'BGM_GAME_HAKIMA_2', title: 'Sunlight in the Alchemy Shop', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
-          { id: 'BGM_GAME_HAKIMA_3', title: 'The Copper Still', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
-          { id: 'BGM_GAME_HAKIMA_4', title: "The Alchemist's Pace", path: 'audio/bgm/hakima/hakima05_game_d.mp3' }
+          { id: 'BGM_GAME_HAKIMA_1', title: 'Copper and Cumin', path: 'audio/bgm/hakima/hakima02_game_a.mp3', freePlay: true },
+          { id: 'BGM_GAME_HAKIMA_2', title: 'Sunlight in the Alchemy Shop', path: 'audio/bgm/hakima/hakima03_game_b.mp3', freePlay: true },
+          { id: 'BGM_GAME_HAKIMA_3', title: 'The Copper Still', path: 'audio/bgm/hakima/hakima04_game_c.mp3', freePlay: true },
+          { id: 'BGM_GAME_HAKIMA_4', title: "The Alchemist's Pace", path: 'audio/bgm/hakima/hakima05_game_d.mp3', freePlay: true }
         ],
         ending: {
           normal: { id: 'BGM_ED_HAKIMA_NORMAL', title: '傾いたその耳は', path: 'audio/bgm/hakima/hakima06_ending.mp3' },
@@ -1353,10 +1659,10 @@ const AUDIO_MANIFEST = {
       MIRA: {
         theme: { id: 'BGM_THEME_MIRA', title: 'Morning Coffee by the Wall', path: 'audio/bgm/mira/mira01_theme.mp3' },
         game: [
-          { id: 'BGM_GAME_MIRA_1', title: 'The Alchemist’s Arithmetic', path: 'audio/bgm/mira/mira02_game_a.mp3' },
-          { id: 'BGM_GAME_MIRA_2', title: 'Three Years of Amber', path: 'audio/bgm/mira/mira03_game_b.mp3' },
-          { id: 'BGM_GAME_MIRA_3', title: "The Alchemist's Clockwork", path: 'audio/bgm/mira/mira04_game_c.mp3' },
-          { id: 'BGM_GAME_MIRA_4', title: 'A Formula for Gilded Halls', path: 'audio/bgm/mira/mira05_game_d.mp3' }
+          { id: 'BGM_GAME_MIRA_1', title: 'The Alchemist’s Arithmetic', path: 'audio/bgm/mira/mira02_game_a.mp3', freePlay: true },
+          { id: 'BGM_GAME_MIRA_2', title: 'Three Years of Amber', path: 'audio/bgm/mira/mira03_game_b.mp3', freePlay: true },
+          { id: 'BGM_GAME_MIRA_3', title: "The Alchemist's Clockwork", path: 'audio/bgm/mira/mira04_game_c.mp3', freePlay: true },
+          { id: 'BGM_GAME_MIRA_4', title: 'A Formula for Gilded Halls', path: 'audio/bgm/mira/mira05_game_d.mp3', freePlay: true }
         ],
         ending: {
           normal: { id: 'BGM_ED_MIRA_NORMAL', title: 'Finally Just Me', path: 'audio/bgm/mira/mira06_ending.mp3' },
@@ -1367,10 +1673,10 @@ const AUDIO_MANIFEST = {
       DARIYA: {
         theme: { id: 'BGM_THEME_DARIYA', title: 'Midnight at the Stone Window', path: 'audio/bgm/dariya/dariya01_theme.mp3' },
         game: [
-          { id: 'BGM_GAME_DARIYA_1', title: "The Alchemist's Ledger", path: 'audio/bgm/dariya/dariya02_game_a.mp3' },
-          { id: 'BGM_GAME_DARIYA_2', title: 'Clockwork Gambit', path: 'audio/bgm/dariya/dariya03_game_b.mp3' },
-          { id: 'BGM_GAME_DARIYA_3', title: 'Copper and Glass Noon', path: 'audio/bgm/dariya/dariya04_game_c.mp3' },
-          { id: 'BGM_GAME_DARIYA_4', title: "The Crown's Calculation", path: 'audio/bgm/dariya/dariya05_game_d.mp3' }
+          { id: 'BGM_GAME_DARIYA_1', title: "The Alchemist's Ledger", path: 'audio/bgm/dariya/dariya02_game_a.mp3', freePlay: true },
+          { id: 'BGM_GAME_DARIYA_2', title: 'Clockwork Gambit', path: 'audio/bgm/dariya/dariya03_game_b.mp3', freePlay: true },
+          { id: 'BGM_GAME_DARIYA_3', title: 'Copper and Glass Noon', path: 'audio/bgm/dariya/dariya04_game_c.mp3', freePlay: true },
+          { id: 'BGM_GAME_DARIYA_4', title: "The Crown's Calculation", path: 'audio/bgm/dariya/dariya05_game_d.mp3', freePlay: true }
         ],
         ending: {
           normal: { id: 'BGM_ED_DARIYA_NORMAL', title: 'Tea Under the Rising Sun', path: 'audio/bgm/dariya/dariya06_ending.mp3' },
@@ -23921,6 +24227,14 @@ function bindInputHandlers(controller) {
       controller.finishTurnTransition(true);
       return;
     }
+    // 中断ボタンはinputLocked中でも動作させる
+    if (target.closest('[data-action="fp-abort"]')) {
+      event.stopPropagation();
+      console.log('[fp-abort] caught, calling abortFreePlay');
+      controller.playSfx?.('uiTapBottle');
+      controller.abortFreePlay();
+      return;
+    }
     if (controller.quizState.inputLocked) return;
 
     if (target.closest('[data-action="title-start"]')) {
@@ -23954,9 +24268,84 @@ function bindInputHandlers(controller) {
       await controller.openTitlePanel(titlePanelBtn.getAttribute('data-title-panel'));
       return;
     }
-    if (target.closest('[data-action="title-panel-back"]')) {
+    if (target.closest('[data-action="back-to-title"]') || target.closest('[data-action="title-panel-back"]')) {
       event.stopPropagation();
+      controller.playSfx('uiTapBottle');
       controller.closeTitlePanel();
+      controller.session.backToTitle();
+      controller.update();
+      return;
+    }
+
+    // Free Play Handlers
+    const fpPreviewBtn = target.closest('[data-action="fp-preview"]');
+    if (fpPreviewBtn) {
+      event.stopPropagation();
+      const id = fpPreviewBtn.getAttribute('data-id');
+      const path = fpPreviewBtn.getAttribute('data-path');
+      controller.playSfx('uiTapBottle');
+      // BGM engine needs an object with path and id
+      controller.bgm?.play({ id, path });
+      return;
+    }
+
+    const fpSongBtn = target.closest('[data-action="fp-select-song"]');
+    if (fpSongBtn) {
+      event.stopPropagation();
+      const id = fpSongBtn.getAttribute('data-id');
+      const path = fpSongBtn.getAttribute('data-path');
+      controller.playSfx('uiTapBottle');
+      controller.uiState.freePlaySongId = id;
+      // Play for preview
+      if (path) controller.bgm?.play({ id, path });
+      controller.update();
+      return;
+    }
+    const fpModeBtn = target.closest('[data-action="fp-select-mode"]');
+    if (fpModeBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.freePlayMode = fpModeBtn.getAttribute('data-mode');
+      controller.update();
+      return;
+    }
+
+    // Global Settings from Free Play
+    if (target.closest('[data-action="open-settings"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.uiState.modal = 'options';
+      controller.update();
+      return;
+    }
+
+    if (target.closest('[data-action="fp-start"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiConfirmChime');
+      const songId = controller.uiState.freePlaySongId || 'main03_puzzle';
+      const mode = controller.uiState.freePlayMode || 'timeAttack10';
+      controller.startFreePlay(songId, mode);
+      return;
+    }
+    if (target.closest('[data-action="fp-abort"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.abortFreePlay();
+      return;
+    }
+    if (target.closest('[data-action="fp-retry"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiConfirmChime');
+      controller.retryFreePlay();
+      return;
+    }
+    if (target.closest('[data-action="back-to-freeplay"]')) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.session.subPhase = 'BEFORE_OPEN';
+      controller.uiState.titlePanel = 'freeplay';
+      controller.session.backToTitle();
+      controller.update();
       return;
     }
     if (target.closest('[data-action="start-freeplay"]')) {
@@ -24186,6 +24575,7 @@ function bindInputHandlers(controller) {
 
     if (target.tagName === 'BUTTON' || target.closest('button')) {
       event.stopPropagation();
+      // fp-abort は上部の早期チェックで処理済み。それ以外の既知ボタン以外は何もしない
       if (target.classList.contains('btn-next')) {
         controller.playSfx('uiTapBottle');
         await controller.onGlobalAction();
@@ -24203,6 +24593,7 @@ function bindInputHandlers(controller) {
 
     if (controller.session.phase === 'TITLE') return;
     if (controller.session.phase === 'HEROINE_SELECT') return;
+    if (controller.session.phase === 'FREE_PLAY') return;  // フリープレイ中は全体クリックを無視
     if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'QUIZ') return;
     if (controller.session.phase === 'MAIN_GAME' && controller.session.subPhase === 'TURN_RESULT') return;
 
@@ -25911,6 +26302,261 @@ function renderEnding(controller, view) {
 module.exports = {
   renderEnding
 };
+
+    };
+
+    // --- ./screens/freePlayResultScreen.js ---
+    modules['./screens/freePlayResultScreen.js'] = function(module, exports, require) {
+/**
+ * Free Play Result Screen
+ */
+
+const { getAchievedDivisions } = require('../core/freePlayRecords.cjs');
+const { formatTime } = require('./freePlayScreen.js');
+
+function renderFreePlayResult(controller, container) {
+  const session = controller.freePlaySession;
+  if (!session) return;
+
+  const isSuccess = session.status === 'finished';
+  const achieved = getAchievedDivisions(session);
+  const bestDivision = achieved[0] || 'NONE';
+  const isNewRecord = controller.uiState.fpNewRecords && controller.uiState.fpNewRecords.length > 0;
+
+  let title = 'クリア！';
+  if (session.mode === 'scoreAttack60') title = '完走！';
+  if (!isSuccess) title = 'チャレンジ失敗';
+
+  const html = `
+    <div class="freeplay-result-overlay" data-screen="fp-result">
+      <div class="result-title" style="color: ${isSuccess ? '#ffd700' : '#e94560'}">${title}</div>
+
+      
+      ${!isSuccess ? '<div style="color: #ccc; margin-bottom: 30px;">まちがえたため記録対象外です。</div>' : ''}
+
+      <div class="result-stats">
+        ${session.mode === 'timeAttack10' ? `
+          <div class="stat-item">
+            <span class="stat-label">タイム</span>
+            <span class="stat-value">${formatTime(session.elapsedMs)}</span>
+          </div>
+        ` : ''}
+        ${session.mode === 'scoreAttack60' ? `
+          <div class="stat-item">
+            <span class="stat-label">スコア</span>
+            <span class="stat-value">${session.score}</span>
+          </div>
+        ` : ''}
+        <div class="stat-item">
+          <span class="stat-label">正解数</span>
+          <span class="stat-value">${session.correctCount} / ${session.questionIndex}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">ボーナス</span>
+          <span class="stat-value">${session.bonusCount}</span>
+        </div>
+        ${isSuccess ? `
+          <div class="stat-item">
+            <span class="stat-label">部門</span>
+            <span class="stat-value division-${bestDivision}">${bestDivision.toUpperCase()}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">記録更新</span>
+            <span class="stat-value" style="color: ${isNewRecord ? '#00ff00' : '#888'}">${isNewRecord ? 'あり！' : 'なし'}</span>
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="freeplay-actions">
+        <button class="btn-back-title" data-action="back-to-freeplay">曲を選ぶ</button>
+        <button class="btn-start-play" data-action="fp-retry">もう一度</button>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+module.exports = { renderFreePlayResult };
+
+    };
+
+    // --- ./screens/freePlayScreen.js ---
+    modules['./screens/freePlayScreen.js'] = function(module, exports, require) {
+/**
+ * Free Play Selection Screen (Sound Test Aesthetic & 2-Column Grid)
+ */
+
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+const { DIVISIONS } = require('../core/freePlayRecords.cjs');
+const { escapeHtml } = require('../utils/html.js');
+const { getCharacterIconPath } = require('../utils/assetPaths.js');
+
+const HEROINE_LABELS = {
+  HAKIMA: 'ハキマ',
+  MIRA: 'ミラ',
+  DARIYA: 'ダリヤ'
+};
+
+const GROUP_ICONS = {
+  system: { id: 'NADER', expression: 'normal', label: '共通' },
+  extra: { id: 'NADER', expression: 'joy', label: '汎用' },
+  HAKIMA: { id: 'HAKIMA', expression: 'social', label: 'ハキマ' },
+  MIRA: { id: 'MIRA', expression: 'social', label: 'ミラ' },
+  DARIYA: { id: 'DARIYA', expression: 'social', label: 'ダリヤ' }
+};
+
+function renderFreePlay(controller, container) {
+  const songId = controller.uiState.freePlaySongId || 'main03_puzzle';
+  const mode = controller.uiState.freePlayMode || 'timeAttack10';
+  
+  let screenEl = container.querySelector('.freeplay-screen');
+  const isFirstRender = !screenEl;
+
+  if (isFirstRender) {
+    container.innerHTML = `
+      <div class="freeplay-screen" data-screen="free-play">
+        <div class="freeplay-header">
+          <div class="header-top">
+            <div style="width:60px;"></div>
+            <h1>FREE PLAY</h1>
+            <div style="width:60px;"></div>
+          </div>
+        </div>
+        <div class="freeplay-main-scroll">
+          <div class="song-categories-container"></div>
+        </div>
+        <div class="freeplay-bottom-panel">
+          <div class="mode-selector"></div>
+          <div class="records-area">
+            <div class="records-table-container"></div>
+          </div>
+          <div class="freeplay-footer">
+            <button class="btn-fp-back" data-action="title-panel-back">戻る</button>
+            <button class="btn-fp-start" data-action="fp-start">接客開始</button>
+          </div>
+        </div>
+      </div>
+    `;
+    screenEl = container.querySelector('.freeplay-screen');
+  }
+
+  updateSongCategories(controller, screenEl, songId);
+  updateModeSelector(controller, screenEl, mode);
+  updateRecordsTable(controller, screenEl, songId, mode);
+}
+
+function updateSongCategories(controller, screenEl, selectedId) {
+  const container = screenEl.querySelector('.song-categories-container');
+  
+  const categories = [
+    { 
+      id: 'system',
+      songs: AUDIO_MANIFEST.bgm.system 
+    },
+    ...Object.entries(AUDIO_MANIFEST.bgm.heroines).map(([key, h]) => ({
+      id: key,
+      songs: [
+        h.theme ? { ...h.theme, title: `【Theme】${h.theme.title}` } : null,
+        ...h.game,
+        h.ending?.normal ? { ...h.ending.normal, title: `【Normal ED】${h.ending.normal.title}` } : null,
+        h.ending?.good ? { ...h.ending.good, title: `【Good ED】${h.ending.good.title}` } : null,
+        h.ending?.secret ? { ...h.ending.secret, title: `【Secret ED】${h.ending.secret.title}` } : null
+      ].filter(Boolean)
+    })),
+    { 
+      id: 'extra',
+      songs: AUDIO_MANIFEST.bgm.extra || [] 
+    }
+  ];
+
+  if (container.children.length === 0) {
+    container.innerHTML = categories.map(cat => {
+      const info = GROUP_ICONS[cat.id] || GROUP_ICONS.extra;
+      const iconPath = getCharacterIconPath(info.id, info.expression);
+      
+      return `
+        <div class="song-category-group">
+          <div class="song-group-heading">
+            <img src="${iconPath}" alt="" onerror="this.style.display='none'" />
+            <span>${escapeHtml(info.label)}</span>
+          </div>
+          <div class="song-grid-2col">
+            ${cat.songs.map(s => `
+              <button class="song-item-row" data-action="fp-select-song" 
+                      data-id="${s.id}" data-path="${s.path}" title="${escapeHtml(s.title || s.id)}">
+                ${escapeHtml(s.title || s.id)}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  container.querySelectorAll('.song-item-row').forEach(row => {
+    const id = row.getAttribute('data-id');
+    row.classList.toggle('selected', id === selectedId);
+  });
+}
+
+function updateModeSelector(controller, screenEl, selectedMode) {
+  const container = screenEl.querySelector('.mode-selector');
+  const modes = [
+    { id: 'timeAttack10', title: '10問TA' },
+    { id: 'scoreAttack60', title: '1分SCORE' },
+    { id: 'freePractice', title: '練習' }
+  ];
+
+  if (container.children.length === 0) {
+    container.innerHTML = modes.map(m => `
+      <button class="mode-btn" data-action="fp-select-mode" data-mode="${m.id}">${m.title}</button>
+    `).join('');
+  }
+
+  container.querySelectorAll('.mode-btn').forEach(btn => {
+    const id = btn.getAttribute('data-mode');
+    btn.classList.toggle('selected', id === selectedMode);
+  });
+}
+
+function updateRecordsTable(controller, screenEl, songId, mode) {
+  const container = screenEl.querySelector('.records-table-container');
+  const records = controller.freePlayRecords.getAllRecordsForSong(songId);
+  
+  if (mode === 'freePractice') {
+    container.innerHTML = '<div style="color:#888; font-size:0.7rem; text-align:center;">（このモードは記録されません）</div>';
+    return;
+  }
+
+  const currentRecords = records[mode] || {};
+  const html = `
+    <table class="records-compact-table">
+      <tr>
+        ${DIVISIONS.map(div => {
+          const rec = currentRecords[div];
+          const value = rec ? (mode === 'timeAttack10' ? formatTime(rec.bestTimeMs) : rec.bestScore) : '-';
+          return `<td style="text-align:center;">${div.toUpperCase()}<br><strong style="font-size:0.9rem; color:var(--sand-2);">${value}</strong></td>`;
+        }).join('')}
+      </tr>
+    </table>
+  `;
+  
+  if (container.innerHTML !== html) {
+    container.innerHTML = html;
+  }
+}
+
+function formatTime(ms) {
+  if (ms == null) return '-';
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const millis = Math.floor((ms % 1000) / 10);
+  return `${minutes}:${seconds.toString().padStart(2, '0')}.${millis}`;
+}
+
+module.exports = { renderFreePlay, formatTime };
 
     };
 
@@ -27907,7 +28553,11 @@ function updateHud(controller) {
   const label = labels[sub] || sub || '';
   const debug = controller.isDebugMode() ? ' <span class="debug-badge">DEBUG</span>' : '';
 
-  hud.innerHTML = `<div class="hud-main">第${controller.session.turn}ターン | ${label}${debug}</div>`;
+  if (controller.session.phase === 'FREE_PLAY') {
+    hud.innerHTML = `<div class="hud-main hud-main--freeplay">FREE PLAY | ${label}${debug}<button class="btn-fp-abort" data-action="fp-abort" aria-label="中断して曲選択に戻る">中断</button></div>`;
+  } else {
+    hud.innerHTML = `<div class="hud-main">第${controller.session.turn}ターン | ${label}${debug}</div>`;
+  }
 
   const scoreStrip = controller.container.querySelector('[data-score-strip]');
   if (scoreStrip) {
@@ -28169,7 +28819,7 @@ function renderHelpModal(controller, container) {
   container.setAttribute('data-action', 'close-modal');
 
   container.innerHTML = `
-    <div style="width: 80%; height: 80%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+    <div style="width: 94%; height: 94%; display: flex; align-items: center; justify-content: center; pointer-events: none;">
       <img src="images/ui/help.webp" alt="ヘルプ" 
            style="max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 0 40px rgba(0,0,0,0.6);" />
     </div>
@@ -28387,6 +29037,26 @@ function findSystemTrack(id) {
   return (AUDIO_MANIFEST?.bgm?.system || []).find((track) => track.id === id) || null;
 }
 
+function findTrackById(id) {
+  if (!id) return null;
+  // Check system
+  const system = (AUDIO_MANIFEST?.bgm?.system || []).find(t => t.id === id);
+  if (system) return system;
+  // Check extra
+  const extra = (AUDIO_MANIFEST?.bgm?.extra || []).find(t => t.id === id);
+  if (extra) return extra;
+  // Check heroines
+  for (const heroine of Object.values(AUDIO_MANIFEST?.bgm?.heroines || {})) {
+    const game = (heroine.game || []).find(t => t.id === id);
+    if (game) return game;
+    if (heroine.theme?.id === id) return heroine.theme;
+    if (heroine.ending?.normal?.id === id) return heroine.ending.normal;
+    if (heroine.ending?.good?.id === id) return heroine.ending.good;
+    if (heroine.ending?.secret?.id === id) return heroine.ending.secret;
+  }
+  return null;
+}
+
 function getHeroineBgm(heroineId) {
   const id = heroineId || 'HAKIMA';
   return AUDIO_MANIFEST?.bgm?.heroines?.[id] || AUDIO_MANIFEST?.bgm?.heroines?.HAKIMA || null;
@@ -28450,8 +29120,16 @@ function getTrackForSession(session) {
     return getEndingTrack(session) || findSystemTrack('main02_shop');
   }
 
+  if (phase === 'FREE_PLAY') {
+    return findTrackById(session.currentSongId) || findSystemTrack('main03_puzzle');
+  }
+
   if (phase === 'MAIN_GAME') {
     if (subPhase === 'QUIZ') {
+      const songId = session.currentSong;
+      const track = findTrackById(songId);
+      if (track) return track;
+      // Fallback to old logic if ID resolution fails
       return getGameTrack(session.selectedHeroineId, session.turn, session.routeMode);
     }
     return findSystemTrack('main02_shop');
@@ -28684,7 +29362,11 @@ function createBgmEngine(options = {}) {
     }, delay);
   }
 
-  function play(track) {
+  function play(trackOrId) {
+    let track = trackOrId;
+    if (typeof trackOrId === 'string') {
+      track = findTrackById(trackOrId);
+    }
     if (!track?.path) return;
     pendingTrack = track;
     if (!enabled || !unlocked) return;
@@ -30579,6 +31261,8 @@ const { GameSession, TOTAL_TURNS } = require('./core/gameSessionFlow.cjs');
 const { generateQuestion } = require('./core/quizRequestModel.cjs');
 const { processQuestionResult } = require('./core/rhythmQuizCore.cjs');
 const { updateGameScore } = require('./core/scoreModel.cjs');
+const { FreePlaySession } = require('./core/freePlaySession.cjs');
+const { FreePlayRecords } = require('./core/freePlayRecords.cjs');
 const { calculateAffection } = require('./core/affectionModel.cjs');
 const { evaluateEnding } = require('./core/endingBranch.cjs');
 
@@ -30591,6 +31275,8 @@ const { renderQuiz, updateQuizContent, clearRhythmVisual } = require('./screens/
 
 const { renderTurnResult } = require('./screens/turnResultScreen.js');
 const { renderEnding } = require('./screens/endingScreen.js');
+const { renderFreePlay } = require('./screens/freePlayScreen.js');
+const { renderFreePlayResult } = require('./screens/freePlayResultScreen.js');
 
 // Modularized UI Components
 const { updateHud, renderGlobalUi, renderModal } = require('./ui/hud.js');
@@ -30720,6 +31406,8 @@ class GameController {
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
     this.viewportScaleTimers = [];
+    this.freePlayRecords = new FreePlayRecords();
+    this.freePlaySession = null;
   }
 
   async boot() {
@@ -30746,6 +31434,27 @@ class GameController {
 
     await hideLoading(this.container);
 
+    this.update();
+  }
+
+  async openTitlePanel(panelKey) {
+    this.playSfx('uiTapBottle');
+    // Heavy preload if needed
+    if (panelKey === 'gallery') {
+      await showLoading(this.container, 'ギャラリーを準備中...');
+      await this.preloadGalleryViewerAssets();
+      await hideLoading(this.container);
+    } else if (panelKey === 'sound') {
+      await showLoading(this.container, 'ミュージックを準備中...');
+      await this.preloadSoundTestAssets();
+      await hideLoading(this.container);
+    }
+    this.uiState.titlePanel = panelKey;
+    this.update();
+  }
+
+  closeTitlePanel() {
+    this.uiState.titlePanel = null;
     this.update();
   }
 
@@ -30868,6 +31577,7 @@ class GameController {
     clearRunSave();
     clearPlayerProgress();
     clearItemCollection();
+    this.freePlayRecords.clearAllRecords();
     location.reload();
   }
 
@@ -30998,7 +31708,8 @@ class GameController {
       }
 
       if (phase === 'TITLE') {
-        if (this.uiState.titlePanel) renderTitlePanel(this, view);
+        if (this.uiState.titlePanel === 'freeplay') renderFreePlay(this, view);
+        else if (this.uiState.titlePanel) renderTitlePanel(this, view);
         else renderTitle(this, view);
       } else if (phase === 'OPENING') {
         renderOpening(this, view);
@@ -31008,6 +31719,8 @@ class GameController {
       } else if (phase === 'ENDING') {
         this.recordEndingProgressIfNeeded();
         renderEnding(this, view);
+      } else if (phase === 'FREE_PLAY') {
+        this.renderFreePlay(view);
       }
     }
 
@@ -31069,6 +31782,89 @@ class GameController {
       this.updateQuizContent();
     }
   }
+
+  renderFreePlay(view) {
+    const subPhase = this.session.subPhase;
+    const currentScreen = view.querySelector('[data-screen]');
+
+    if (subPhase === 'QUIZ') {
+      if (!currentScreen || currentScreen.getAttribute('data-screen') !== 'quiz') {
+        renderQuiz(this, view);
+      }
+      this.updateHud();
+      this.updateQuizContent();
+      
+      // Update timer for score attack
+      if (this.freePlaySession && this.freePlaySession.mode === 'scoreAttack60') {
+        this.freePlaySession.updateTime();
+        if (this.freePlaySession.status === 'finished') {
+          this.finishFreePlay();
+        }
+      }
+    } else if (subPhase === 'TURN_RESULT') {
+      renderFreePlayResult(this, view);
+    }
+  }
+
+  startFreePlay(songId, mode) {
+    this.freePlaySession = new FreePlaySession(songId, mode);
+    this.session.goToFreePlay();
+    this.session.subPhase = 'QUIZ';
+    this.session.selectedHeroineId = 'HAKIMA';
+    this.session.routeMode = 'long_history';
+    this.session.turn = 10;
+    this.session.currentSongId = songId;
+    this.quizState = this.createInitialQuizState();
+    
+    this.bgm.stop(); // プレビュー再生を確実に停止してリセット
+    this.bgm.playForSession(this.session); 
+    this.startQuiz(); 
+    this.update();
+  }
+
+  finishFreePlay() {
+    if (!this.freePlaySession) return;
+    if (this.freePlaySession.status === 'active') {
+      this.freePlaySession.finish();
+    }
+    
+    // Save record
+    if (this.freePlaySession.status === 'finished') {
+      this.uiState.fpNewRecords = this.freePlayRecords.updateRecords(this.freePlaySession);
+    } else {
+      this.uiState.fpNewRecords = [];
+    }
+
+    this.quizState.inputLocked = false;
+    this.session.subPhase = 'TURN_RESULT';
+    this.update();
+  }
+
+  retryFreePlay() {
+    if (!this.freePlaySession) return;
+    const songId = this.freePlaySession.songId;
+    const mode = this.freePlaySession.mode;
+    this.startFreePlay(songId, mode);
+  }
+
+  abortFreePlay() {
+    // カウントダウン・リズムビジュアルを即時停止
+    this.clearQuizCountdown();
+    // セッションを中断状態にマーク
+    if (this.freePlaySession && this.freePlaySession.status === 'active') {
+      this.freePlaySession.status = 'aborted';
+    }
+    // 入力ロック解除
+    this.quizState.inputLocked = false;
+    // BGMを停止
+    this.bgm.stop();
+    // タイトル（曲選択パネル）に戻る
+    this.session.subPhase = 'BEFORE_OPEN';
+    this.uiState.titlePanel = 'freeplay';
+    this.session.backToTitle();
+    this.update();
+  }
+
 
   /**
    * --------------------------------------------------------------------------
@@ -31361,7 +32157,11 @@ class GameController {
   getSaveSummary() { return getRunSaveSummary(); }
   getPlayerProgressSummary() { return getPlayerProgressSummary(); }
   clearRunSaveData() { clearRunSave(); }
-  saveCurrentRunIfNeeded() { saveRun(this); }
+  saveCurrentRunIfNeeded() {
+    // FREE_PLAYはストーリーセーブを汚染しないようスキップ
+    if (this.session.phase === 'FREE_PLAY') return;
+    saveRun(this);
+  }
   recordEndingProgressIfNeeded() {
     if (this.endingProgressRecorded || this.session.phase !== 'ENDING') return;
     const affection = calculateAffection(this.session.scores || {});
@@ -31400,37 +32200,6 @@ class GameController {
   preloadGalleryViewerAssets() { return this.assetPreloader?.preloadGalleryViewerAssets ? this.assetPreloader.preloadGalleryViewerAssets() : Promise.resolve([]); }
   preloadSoundTestAssets() { return this.assetPreloader?.preloadSoundTestAssets ? this.assetPreloader.preloadSoundTestAssets() : Promise.resolve([]); }
   
-  async startFreePlay({ bgmPath, questionCount }) {
-    this.clearTypewriter();
-    this.playSfx('uiConfirmChime');
-
-    // Preload HAKIMA (Default for free play) assets if needed
-    await showLoading(this.container, '接客の準備をしています...');
-    await Promise.all([
-        this.preloadHeroineSelectAssets('HAKIMA'),
-        new Promise(r => setTimeout(r, 300))
-    ]);
-    await hideLoading(this.container);
-    
-    // Setup free play session
-    this.session.phase = 'MAIN_GAME';
-    this.session.subPhase = 'QUIZ';
-    this.session.selectedHeroineId = 'HAKIMA'; 
-    this.session.turn = 1; 
-    
-    this.quizState = this.createInitialQuizState();
-    this.quizState.totalQuestions = questionCount || 10;
-    
-    // Force specific BGM if provided
-    if (bgmPath && this.bgm) {
-        this.bgm.play({ path: bgmPath, id: 'freeplay' });
-    }
-    
-    this.uiState.titlePanel = null;
-    this.startQuiz();
-    this.update();
-  }
-
   preloadResultExpressions(heroineId, expression) { return this.assetPreloader?.preloadResultExpressions(heroineId, expression); }
   getPreloadStats() { return this.assetPreloader?.getStats ? this.assetPreloader.getStats() : null; }
 
@@ -31515,7 +32284,9 @@ class GameController {
 
     console.log('Global Action on Phase:', phase, 'SubPhase:', subPhase);
     
-    if (phase === 'TITLE') {
+    if (phase === 'FREE_PLAY') {
+      return; // フリープレイ中は中断ボタン以外の全体クリックを無視
+    } else if (phase === 'TITLE') {
       this.session.nextPhase();
     } else if (phase === 'OPENING') {
       this.session.nextPhase();
@@ -31615,12 +32386,6 @@ class GameController {
   startQuizCountdown() {
     this.clearQuizCountdown();
 
-    if (this.settings.textSpeed === 'instant') {
-      this.quizState.inputLocked = false;
-      this.quizState.promptShownAt = performance.now();
-      return;
-    }
-
     const labels = ['3', '2', '1'];
     const stepMs = 1000;
     const initialDelayMs = 500;
@@ -31628,13 +32393,13 @@ class GameController {
     this.quizState.countdownActive = true;
     this.quizState.countdownLabel = ''; // Start empty during initial delay
     this.quizState.inputLocked = true;
-    this.updateQuizContent();
+    this.update(); // 画面を更新してカウントダウン表示を有効にする
 
     // First tick after initial delay
     const firstTickTimerId = setTimeout(() => {
       this.quizState.countdownLabel = labels[0];
       this.playSfx('quizCountdownTick');
-      this.updateQuizContent();
+      this.update(); // 数字を表示するために全体を更新
     }, initialDelayMs);
     this.quizState.countdownTimers.push(firstTickTimerId);
 
@@ -31643,7 +32408,7 @@ class GameController {
       const timerId = setTimeout(() => {
         this.quizState.countdownLabel = label;
         this.playSfx('quizCountdownTick');
-        this.updateQuizContent();
+        this.update(); // 数字を表示するために全体を更新
       }, initialDelayMs + stepMs * (index + 1));
       this.quizState.countdownTimers.push(timerId);
     });
@@ -31854,6 +32619,11 @@ class GameController {
       correctChoiceKey,
       result
     };
+
+    if (this.session.phase === 'FREE_PLAY' && this.freePlaySession) {
+      this.freePlaySession.processResult(result);
+    }
+
     this.updateQuizContent();
     this.quizState.questionIndex++;
     this.saveCurrentRunIfNeeded();
@@ -31861,8 +32631,17 @@ class GameController {
     this.showResultStamp(result);
     this.playSfx(result.isCorrect ? 'quizCorrectStarChime' : 'quizWrongSandTap');
 
-    if (this.quizState.questionIndex < this.quizState.totalQuestions) {
+    const isFreePlay = this.session.phase === 'FREE_PLAY';
+    const hasNextQuestion = isFreePlay 
+      ? (this.freePlaySession?.status === 'active')
+      : (this.quizState.questionIndex < this.quizState.totalQuestions);
+
+    if (hasNextQuestion) {
       setTimeout(() => {
+        if (isFreePlay && this.freePlaySession?.status !== 'active') {
+          this.finishFreePlay();
+          return;
+        }
         this.generateNextQuestion();
         this.quizState.inputLocked = false;
         this.quizState.promptShownAt = performance.now();
@@ -31871,10 +32650,14 @@ class GameController {
       }, RESULT_TRANSITION_DELAY_MS);
     } else {
       setTimeout(() => {
-        this.session.nextSubPhase();
-        this.playSfx('workshopDayEnd');
-        this.quizState.inputLocked = false;
-        this.update();
+        if (isFreePlay) {
+          this.finishFreePlay();
+        } else {
+          this.session.nextSubPhase();
+          this.playSfx('workshopDayEnd');
+          this.quizState.inputLocked = false;
+          this.update();
+        }
       }, RESULT_TRANSITION_DELAY_MS);
     }
   }
