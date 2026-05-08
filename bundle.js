@@ -24677,8 +24677,7 @@ function createTurnTransitionController(controller) {
     tickTimerIds: [],
     callback: null,
     finishing: false,
-    fadeOutMs: null,
-    playCount: 0
+    fadeOutMs: null
   };
 
   function play(callback, mode = 'next') {
@@ -24695,12 +24694,11 @@ function createTurnTransitionController(controller) {
 
     const nextTurn = Math.min(controller.totalTurns, controller.session.turn + 1);
     const isEnding = mode === 'ending';
-    const isQuick = !isEnding && state.playCount > 0;
     const title = isEnding ? '終幕へ' : `第${nextTurn}ターンへ`;
     const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
 
     const overlay = document.createElement('div');
-    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'} ${isQuick ? 'is-quick-transition' : ''}`;
+    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
     overlay.setAttribute('data-action', 'skip-turn-transition');
     overlay.setAttribute('tabindex', '-1');
     overlay.setAttribute('role', 'presentation');
@@ -24719,13 +24717,13 @@ function createTurnTransitionController(controller) {
     `;
     viewport.appendChild(overlay);
 
-    const fadeInMs = isQuick ? 360 : 1000;
-    const introHoldMs = isQuick ? 180 : 500;
-    const stepMs = isQuick ? 420 : 1000;
-    const restMs = isQuick ? 70 : 200;
-    const stepCount = isQuick ? 2 : 5;
-    const postHoldMs = isQuick ? 220 : 500;
-    const fadeOutMs = isQuick ? 420 : 1000;
+    const fadeInMs = 1000;
+    const introHoldMs = 500;
+    const stepMs = 1000;
+    const restMs = 200;
+    const stepCount = 5;
+    const postHoldMs = 500;
+    const fadeOutMs = 1000;
     const rotateStartMs = fadeInMs + introHoldMs;
     const rotationRunMs = (stepMs * stepCount) + (restMs * (stepCount - 1));
     const exitStartMs = rotateStartMs + rotationRunMs + postHoldMs;
@@ -24747,7 +24745,6 @@ function createTurnTransitionController(controller) {
     }, exitStartMs);
 
     state.fadeOutMs = fadeOutMs;
-    state.playCount += 1;
   }
 
   function finish(skip = false) {

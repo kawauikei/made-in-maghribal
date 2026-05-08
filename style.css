@@ -1313,14 +1313,6 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   animation-duration: 500ms;
 }
 
-.turn-transition-overlay.is-quick-transition {
-  animation-duration: 360ms;
-}
-
-.turn-transition-overlay.is-quick-transition.is-exiting {
-  animation-duration: 420ms;
-}
-
 .turn-transition-darkness {
   position: absolute;
   inset: 0;
@@ -1427,24 +1419,6 @@ html[data-motion-quality="light"] .rhythm-water-shine {
     radial-gradient(circle at 50% 42%, rgba(141, 116, 218, 0.13), transparent 34%),
     radial-gradient(circle at 50% 52%, rgba(42, 50, 116, 0.18), transparent 48%),
     #000;
-}
-
-.turn-transition-overlay.is-quick-transition .turn-transition-clock-wrap {
-  animation-duration: 360ms;
-}
-
-.turn-transition-overlay.is-quick-transition .turn-transition-clock {
-  animation-duration: 980ms;
-  animation-delay: 540ms;
-}
-
-.turn-transition-overlay.is-quick-transition .turn-transition-clock-glow {
-  animation-duration: 980ms;
-  animation-delay: 540ms;
-}
-
-.turn-transition-overlay.is-quick-transition .turn-transition-copy {
-  animation-duration: 2200ms;
 }
 
 @keyframes turnTransitionFadeIn {
