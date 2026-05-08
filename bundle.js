@@ -28181,7 +28181,7 @@ function renderHelpModal(controller, container) {
 
 
       </div>
-      <button class="modal-close-btn" data-action="close-modal">閉じる</button>
+      <button class="modal-close-btn" data-action="close-modal">閉じてゲームに戻る</button>
     </div>
   `;
 }
