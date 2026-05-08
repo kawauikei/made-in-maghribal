@@ -24330,7 +24330,7 @@ function createTurnTransitionController(controller) {
     overlay.innerHTML = `
       <div class="turn-transition-darkness" aria-hidden="true"></div>
       <div class="turn-transition-clock-wrap" aria-hidden="true">
-        <img class="turn-transition-clock" src="images/ui/turn_clock.webp" alt="" draggable="false">
+        <img class="turn-transition-clock" src="images/ui/clock.webp" alt="" draggable="false">
         <div class="turn-transition-clock-glow"></div>
         <div class="turn-transition-clock-shadow"></div>
       </div>
