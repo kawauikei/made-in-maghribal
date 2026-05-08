@@ -1300,12 +1300,12 @@ html[data-motion-quality="light"] .rhythm-water-shine {
 /* 
  * Help Infographic - Optimized for mobile (no :has support)
  */
-.ui-modal-backdrop.is-help-mode {
+html body .ui-modal-backdrop.is-help-mode {
   padding: 0 !important;
   background: rgba(0,0,0,0.85) !important;
 }
 
-.ui-modal.help-modal {
+html body .ui-modal.help-modal {
   width: 100% !important;
   height: 100% !important;
   max-width: none !important;
@@ -1323,7 +1323,7 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   box-shadow: none !important;
 }
 
-.ui-modal.help-modal .help-content {
+html body .ui-modal.help-modal .help-content {
   flex: 0 1 auto !important;
   width: 100% !important;
   max-height: 85vh !important;
@@ -1333,7 +1333,7 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   overflow: hidden !important;
 }
 
-.ui-modal.help-modal .help-infographic {
+html body .ui-modal.help-modal .help-infographic {
   max-width: 100% !important;
   max-height: 100% !important;
   width: auto !important;
@@ -1343,7 +1343,7 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   box-shadow: 0 0 40px rgba(0,0,0,0.8) !important;
 }
 
-.ui-modal.help-modal .modal-close-btn {
+html body .ui-modal.help-modal .modal-close-btn {
   margin: 15px 0 25px !important;
   width: 280px !important;
   flex-shrink: 0 !important;
