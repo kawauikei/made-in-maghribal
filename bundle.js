@@ -27918,6 +27918,9 @@ function renderGlobalUi(controller) {
     hudContainer.id = 'hud-container';
     globalUi.appendChild(hudContainer);
   }
+
+  // Ensure HUD (buttons) are rendered in all phases (Title, Main Game, etc.)
+  updateHud(controller);
 }
 
 function renderModal(controller) {
