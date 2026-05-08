@@ -139,7 +139,6 @@ img {
     radial-gradient(circle at 40% 60%, rgba(255,255,255,0.4) 0 0.5px, transparent 1px),
     radial-gradient(circle at 28% 78%, rgba(246,211,107,0.48) 0 1px, transparent 2px),
     radial-gradient(circle at 58% 46%, rgba(255,255,255,0.32) 0 0.5px, transparent 1px);
-  animation: starDrift 48s linear infinite;
   opacity: 0.85;
 }
 
@@ -156,10 +155,6 @@ img {
     radial-gradient(ellipse at 12% 88%, rgba(54,183,170,0.12), transparent 42%);
 }
 
-@keyframes starDrift {
-  from { transform: translate3d(0, 0, 0) rotate(0deg); }
-  to { transform: translate3d(-2%, 2%, 0) rotate(1deg); }
-}
 
 /* Android Chrome tap highlight/focus flash suppression for in-game controls only. */
 #game-viewport button,
@@ -1536,11 +1531,10 @@ html[data-motion-quality="light"] .rhythm-water-shine {
     drop-shadow(0 8px 18px rgba(0, 0, 0, 0.22));
 }
 
-.title-logo-water {
+.title-logo-frame {
   position: relative;
   display: block;
   width: 100%;
-  /* filter: url(#titleWaterRippleFilter) removed for stability */
 }
 
 .title-logo-image {
@@ -1571,26 +1565,7 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   top: -100%;
   max-width: none;
   transform-origin: 50% 50%;
-  /* filter: url(#titleWaterRippleFilter) removed */
-  animation: titleClockSlowRotate 92s linear infinite;
   will-change: transform;
-}
-
-@keyframes titleClockSlowRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.blink {
-  animation: blink 2s infinite;
-  color: var(--star-0);
-  opacity: 0.8;
-  letter-spacing: 1px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 0.2; }
 }
 
 .opening-screen {
@@ -1611,7 +1586,7 @@ html[data-motion-quality="light"] .rhythm-water-shine {
 .title-screen-with-art::before {
   content: "";
   position: absolute;
-  inset: -4% -5%;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
   background-image:
@@ -1619,12 +1594,11 @@ html[data-motion-quality="light"] .rhythm-water-shine {
     url("images/ui/title.webp");
   background-size: cover;
   background-position: center;
-  /* filter: url(#titleWaterRippleFilter) removed */
   transform-origin: center;
 }
 
 .title-screen-with-art::after {
-  display: none; /* Caustics disabled for stability */
+  display: none;
 }
 
 
