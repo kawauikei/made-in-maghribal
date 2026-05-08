@@ -1340,7 +1340,7 @@ const AUDIO_MANIFEST = {
         theme: { id: 'BGM_THEME_HAKIMA', title: 'Two Cups of Cardamom', path: 'audio/bgm/hakima/hakima01_theme.mp3' },
         game: [
           { id: 'BGM_GAME_HAKIMA_1', title: 'Copper and Cumin', path: 'audio/bgm/hakima/hakima02_game_a.mp3' },
-          { id: 'BGM_GAME_HAKIMA_2', title: 'Copper and Sand', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
+          { id: 'BGM_GAME_HAKIMA_2', title: 'Sunlight in the Alchemy Shop', path: 'audio/bgm/hakima/hakima03_game_b.mp3' },
           { id: 'BGM_GAME_HAKIMA_3', title: 'The Copper Still', path: 'audio/bgm/hakima/hakima04_game_c.mp3' },
           { id: 'BGM_GAME_HAKIMA_4', title: "The Alchemist's Pace", path: 'audio/bgm/hakima/hakima05_game_d.mp3' }
         ],
@@ -1351,12 +1351,12 @@ const AUDIO_MANIFEST = {
         }
       },
       MIRA: {
-        theme: { id: 'BGM_THEME_MIRA', title: "The Alchemist's Table", path: 'audio/bgm/mira/mira01_theme.mp3' },
+        theme: { id: 'BGM_THEME_MIRA', title: 'Morning Coffee by the Wall', path: 'audio/bgm/mira/mira01_theme.mp3' },
         game: [
           { id: 'BGM_GAME_MIRA_1', title: 'The Alchemist’s Arithmetic', path: 'audio/bgm/mira/mira02_game_a.mp3' },
           { id: 'BGM_GAME_MIRA_2', title: 'Three Years of Amber', path: 'audio/bgm/mira/mira03_game_b.mp3' },
           { id: 'BGM_GAME_MIRA_3', title: "The Alchemist's Clockwork", path: 'audio/bgm/mira/mira04_game_c.mp3' },
-          { id: 'BGM_GAME_MIRA_4', title: 'The Glass Bazaar', path: 'audio/bgm/mira/mira05_game_d.mp3' }
+          { id: 'BGM_GAME_MIRA_4', title: 'A Formula for Gilded Halls', path: 'audio/bgm/mira/mira05_game_d.mp3' }
         ],
         ending: {
           normal: { id: 'BGM_ED_MIRA_NORMAL', title: 'Finally Just Me', path: 'audio/bgm/mira/mira06_ending.mp3' },
@@ -1856,9 +1856,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 53076,
       "leadingMs": 0,
       "trailingMs": 971,
-      "threshold": 0.104357
+      "threshold": 0.098522
     },
-    "noteCount": 91,
+    "noteCount": 95,
     "notes": [
       {
         "timeMs": 100,
@@ -1878,22 +1878,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2299,
         "lane": "center",
-        "strength": 0.189
+        "strength": 0.187
       },
       {
         "timeMs": 3074,
         "lane": "center",
-        "strength": 0.125
+        "strength": 0.12
       },
       {
         "timeMs": 3448,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.127
       },
       {
         "timeMs": 3773,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.157
       },
       {
         "timeMs": 5423,
@@ -1908,7 +1908,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6122,
         "lane": "center",
-        "strength": 0.215
+        "strength": 0.21
       },
       {
         "timeMs": 6497,
@@ -1918,7 +1918,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7172,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.166
       },
       {
         "timeMs": 7996,
@@ -1933,7 +1933,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9471,
         "lane": "center",
-        "strength": 0.128
+        "strength": 0.124
       },
       {
         "timeMs": 10770,
@@ -1948,12 +1948,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11420,
         "lane": "center",
-        "strength": 0.327
+        "strength": 0.324
       },
       {
         "timeMs": 11745,
         "lane": "center",
-        "strength": 0.192
+        "strength": 0.194
       },
       {
         "timeMs": 12469,
@@ -1968,12 +1968,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13144,
         "lane": "center",
-        "strength": 0.44
+        "strength": 0.429
       },
       {
         "timeMs": 13444,
         "lane": "center",
-        "strength": 0.147
+        "strength": 0.12
       },
       {
         "timeMs": 13894,
@@ -1983,12 +1983,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14343,
         "lane": "center",
-        "strength": 0.179
+        "strength": 0.18
+      },
+      {
+        "timeMs": 15343,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 16692,
         "lane": "center",
-        "strength": 0.127
+        "strength": 0.128
       },
       {
         "timeMs": 17067,
@@ -1998,7 +2003,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17442,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.245
       },
       {
         "timeMs": 17792,
@@ -2008,7 +2013,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18442,
         "lane": "center",
-        "strength": 0.306
+        "strength": 0.29
+      },
+      {
+        "timeMs": 18791,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 19291,
@@ -2028,12 +2038,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22440,
         "lane": "center",
-        "strength": 0.929
+        "strength": 0.943
       },
       {
         "timeMs": 22790,
         "lane": "center",
-        "strength": 0.296
+        "strength": 0.285
       },
       {
         "timeMs": 23489,
@@ -2053,27 +2063,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24464,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.129
       },
       {
         "timeMs": 25089,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.124
       },
       {
         "timeMs": 25438,
         "lane": "center",
-        "strength": 0.634
+        "strength": 0.646
       },
       {
         "timeMs": 27113,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.137
+      },
+      {
+        "timeMs": 27762,
+        "lane": "center",
+        "strength": 0.93
       },
       {
         "timeMs": 28087,
         "lane": "center",
-        "strength": 0.748
+        "strength": 0.758
       },
       {
         "timeMs": 28637,
@@ -2088,7 +2103,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29437,
         "lane": "center",
-        "strength": 0.792
+        "strength": 0.796
       },
       {
         "timeMs": 31436,
@@ -2098,12 +2113,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32110,
         "lane": "center",
-        "strength": 0.414
+        "strength": 0.449
       },
       {
         "timeMs": 32760,
         "lane": "center",
-        "strength": 0.312
+        "strength": 0.319
       },
       {
         "timeMs": 33110,
@@ -2123,22 +2138,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34409,
         "lane": "center",
-        "strength": 0.835
+        "strength": 0.83
       },
       {
-        "timeMs": 34934,
+        "timeMs": 35109,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.192
       },
       {
         "timeMs": 35859,
         "lane": "center",
-        "strength": 0.142
+        "strength": 0.141
       },
       {
         "timeMs": 36758,
         "lane": "center",
-        "strength": 0.896
+        "strength": 0.898
       },
       {
         "timeMs": 37133,
@@ -2153,12 +2168,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38133,
         "lane": "center",
-        "strength": 0.154
+        "strength": 0.163
       },
       {
         "timeMs": 38433,
         "lane": "center",
-        "strength": 0.361
+        "strength": 0.369
       },
       {
         "timeMs": 38782,
@@ -2193,37 +2208,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41431,
         "lane": "center",
-        "strength": 0.376
+        "strength": 0.364
       },
       {
         "timeMs": 41756,
         "lane": "center",
-        "strength": 0.426
+        "strength": 0.432
       },
       {
         "timeMs": 42331,
         "lane": "center",
-        "strength": 0.562
+        "strength": 0.588
       },
       {
         "timeMs": 42956,
         "lane": "center",
-        "strength": 0.729
+        "strength": 0.695
       },
       {
         "timeMs": 43555,
         "lane": "center",
-        "strength": 0.343
+        "strength": 0.339
       },
       {
         "timeMs": 43855,
         "lane": "center",
-        "strength": 0.221
+        "strength": 0.145
       },
       {
         "timeMs": 44130,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.128
       },
       {
         "timeMs": 44530,
@@ -2233,7 +2248,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44880,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.129
       },
       {
         "timeMs": 45329,
@@ -2248,7 +2263,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46179,
         "lane": "center",
-        "strength": 0.52
+        "strength": 0.538
       },
       {
         "timeMs": 46554,
@@ -2256,29 +2271,34 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
+        "timeMs": 47154,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
         "timeMs": 47503,
         "lane": "center",
-        "strength": 0.99
+        "strength": 1
       },
       {
         "timeMs": 48103,
         "lane": "center",
-        "strength": 0.663
+        "strength": 0.612
       },
       {
         "timeMs": 48503,
         "lane": "center",
-        "strength": 0.357
+        "strength": 0.361
       },
       {
         "timeMs": 48878,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.124
       },
       {
         "timeMs": 49353,
         "lane": "center",
-        "strength": 0.191
+        "strength": 0.203
       },
       {
         "timeMs": 49677,
@@ -2303,20 +2323,20 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51227,
         "lane": "center",
-        "strength": 0.213
+        "strength": 0.218
       },
       {
         "timeMs": 51777,
         "lane": "center",
-        "strength": 0.79
+        "strength": 0.895
       },
       {
         "timeMs": 52076,
         "lane": "center",
-        "strength": 1
+        "strength": 0.965
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya02_game_a.mp3": {
     "id": "dariya02_game_a",
@@ -2331,7 +2351,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 57974,
       "leadingMs": 0,
       "trailingMs": 984,
-      "threshold": 0.076808
+      "threshold": 0.072836
     },
     "noteCount": 124,
     "notes": [
@@ -2343,7 +2363,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 500,
         "lane": "center",
-        "strength": 0.886
+        "strength": 0.86
       },
       {
         "timeMs": 1149,
@@ -2358,7 +2378,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2474,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.406
       },
       {
         "timeMs": 2774,
@@ -2368,7 +2388,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3348,
         "lane": "center",
-        "strength": 0.278
+        "strength": 0.276
       },
       {
         "timeMs": 3673,
@@ -2378,12 +2398,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4098,
         "lane": "center",
-        "strength": 0.711
+        "strength": 0.688
       },
       {
         "timeMs": 4548,
         "lane": "center",
-        "strength": 0.619
+        "strength": 0.6
       },
       {
         "timeMs": 4848,
@@ -2393,12 +2413,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5298,
         "lane": "center",
-        "strength": 0.573
+        "strength": 0.553
       },
       {
         "timeMs": 5772,
         "lane": "center",
-        "strength": 0.191
+        "strength": 0.179
       },
       {
         "timeMs": 6072,
@@ -2413,7 +2433,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7297,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.138
       },
       {
         "timeMs": 7697,
@@ -2443,17 +2463,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10870,
         "lane": "center",
-        "strength": 0.736
+        "strength": 0.726
       },
       {
         "timeMs": 11770,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.152
       },
       {
         "timeMs": 12070,
         "lane": "center",
-        "strength": 0.51
+        "strength": 0.504
       },
       {
         "timeMs": 12369,
@@ -2463,17 +2483,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12969,
         "lane": "center",
-        "strength": 0.504
+        "strength": 0.492
       },
       {
         "timeMs": 14144,
         "lane": "center",
-        "strength": 0.29
+        "strength": 0.282
       },
       {
         "timeMs": 14468,
         "lane": "center",
-        "strength": 0.674
+        "strength": 0.675
       },
       {
         "timeMs": 14768,
@@ -2483,17 +2503,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15368,
         "lane": "center",
-        "strength": 0.128
+        "strength": 0.129
       },
       {
         "timeMs": 15668,
         "lane": "center",
-        "strength": 0.326
+        "strength": 0.313
       },
       {
         "timeMs": 16118,
         "lane": "center",
-        "strength": 0.513
+        "strength": 0.505
       },
       {
         "timeMs": 16867,
@@ -2503,7 +2523,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17167,
         "lane": "center",
-        "strength": 0.551
+        "strength": 0.54
       },
       {
         "timeMs": 17767,
@@ -2518,57 +2538,57 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18517,
         "lane": "center",
-        "strength": 0.52
+        "strength": 0.504
       },
       {
         "timeMs": 18941,
         "lane": "center",
-        "strength": 0.155
+        "strength": 0.16
       },
       {
         "timeMs": 19266,
         "lane": "center",
-        "strength": 0.266
+        "strength": 0.258
       },
       {
         "timeMs": 19716,
         "lane": "center",
-        "strength": 0.241
+        "strength": 0.227
       },
       {
         "timeMs": 20466,
         "lane": "center",
-        "strength": 0.489
+        "strength": 0.484
       },
       {
         "timeMs": 20916,
         "lane": "center",
-        "strength": 0.428
+        "strength": 0.418
       },
       {
         "timeMs": 21665,
         "lane": "center",
-        "strength": 0.506
+        "strength": 0.496
       },
       {
         "timeMs": 22115,
         "lane": "center",
-        "strength": 0.13
+        "strength": 0.127
       },
       {
         "timeMs": 22865,
         "lane": "center",
-        "strength": 0.46
+        "strength": 0.441
       },
       {
         "timeMs": 23314,
         "lane": "center",
-        "strength": 0.855
+        "strength": 0.836
       },
       {
         "timeMs": 23764,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.124
       },
       {
         "timeMs": 24064,
@@ -2583,17 +2603,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24964,
         "lane": "center",
-        "strength": 0.288
+        "strength": 0.277
       },
       {
         "timeMs": 25264,
         "lane": "center",
-        "strength": 0.812
+        "strength": 0.799
       },
       {
         "timeMs": 25713,
         "lane": "center",
-        "strength": 0.793
+        "strength": 0.773
       },
       {
         "timeMs": 26463,
@@ -2603,12 +2623,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26913,
         "lane": "center",
-        "strength": 0.849
+        "strength": 0.822
       },
       {
         "timeMs": 27363,
         "lane": "center",
-        "strength": 0.192
+        "strength": 0.191
       },
       {
         "timeMs": 27662,
@@ -2618,12 +2638,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28112,
         "lane": "center",
-        "strength": 0.957
+        "strength": 0.93
       },
       {
         "timeMs": 28562,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.139
       },
       {
         "timeMs": 28862,
@@ -2638,7 +2658,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29986,
         "lane": "center",
-        "strength": 0.268
+        "strength": 0.258
       },
       {
         "timeMs": 30261,
@@ -2648,17 +2668,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30761,
         "lane": "center",
-        "strength": 0.26
+        "strength": 0.252
       },
       {
         "timeMs": 31136,
         "lane": "center",
-        "strength": 0.322
+        "strength": 0.312
       },
       {
         "timeMs": 31461,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.388
       },
       {
         "timeMs": 32010,
@@ -2678,7 +2698,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33360,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.14
       },
       {
         "timeMs": 33660,
@@ -2688,22 +2708,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34110,
         "lane": "center",
-        "strength": 1
+        "strength": 0.983
       },
       {
         "timeMs": 34709,
         "lane": "center",
-        "strength": 0.361
+        "strength": 0.333
       },
       {
         "timeMs": 35259,
         "lane": "center",
-        "strength": 0.321
+        "strength": 0.306
       },
       {
         "timeMs": 35709,
         "lane": "center",
-        "strength": 0.158
+        "strength": 0.156
       },
       {
         "timeMs": 36059,
@@ -2713,7 +2733,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36508,
         "lane": "center",
-        "strength": 0.282
+        "strength": 0.264
       },
       {
         "timeMs": 37258,
@@ -2728,7 +2748,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38158,
         "lane": "center",
-        "strength": 0.331
+        "strength": 0.324
       },
       {
         "timeMs": 38458,
@@ -2743,7 +2763,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39357,
         "lane": "center",
-        "strength": 0.273
+        "strength": 0.27
       },
       {
         "timeMs": 39782,
@@ -2753,17 +2773,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40107,
         "lane": "center",
-        "strength": 0.712
+        "strength": 0.694
       },
       {
         "timeMs": 40557,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.231
       },
       {
         "timeMs": 40856,
         "lane": "center",
-        "strength": 0.296
+        "strength": 0.273
       },
       {
         "timeMs": 41306,
@@ -2778,12 +2798,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42506,
         "lane": "center",
-        "strength": 0.583
+        "strength": 0.571
       },
       {
         "timeMs": 42956,
         "lane": "center",
-        "strength": 0.353
+        "strength": 0.339
       },
       {
         "timeMs": 43255,
@@ -2808,17 +2828,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45679,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.273
       },
       {
         "timeMs": 46104,
         "lane": "center",
-        "strength": 0.553
+        "strength": 0.539
       },
       {
-        "timeMs": 46879,
+        "timeMs": 46554,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.403
       },
       {
         "timeMs": 47204,
@@ -2828,7 +2848,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47478,
         "lane": "center",
-        "strength": 0.237
+        "strength": 0.22
       },
       {
         "timeMs": 47753,
@@ -2843,7 +2863,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48503,
         "lane": "center",
-        "strength": 0.896
+        "strength": 0.869
       },
       {
         "timeMs": 48803,
@@ -2853,7 +2873,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49078,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.38
       },
       {
         "timeMs": 49503,
@@ -2868,7 +2888,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50077,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.12
       },
       {
         "timeMs": 50377,
@@ -2878,7 +2898,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50677,
         "lane": "center",
-        "strength": 0.482
+        "strength": 0.464
       },
       {
         "timeMs": 51102,
@@ -2913,22 +2933,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 53601,
         "lane": "center",
-        "strength": 0.193
+        "strength": 0.154
       },
       {
         "timeMs": 53901,
         "lane": "center",
-        "strength": 0.527
+        "strength": 0.517
       },
       {
         "timeMs": 54275,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.206
       },
       {
         "timeMs": 54625,
         "lane": "center",
-        "strength": 0.145
+        "strength": 0.135
       },
       {
         "timeMs": 54900,
@@ -2943,7 +2963,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 55700,
         "lane": "center",
-        "strength": 0.5
+        "strength": 0.492
       },
       {
         "timeMs": 56449,
@@ -2956,7 +2976,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya03_game_b.mp3": {
     "id": "dariya03_game_b",
@@ -2971,14 +2991,14 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 40932,
       "leadingMs": 0,
       "trailingMs": 1204,
-      "threshold": 0.07742
+      "threshold": 0.073535
     },
-    "noteCount": 69,
+    "noteCount": 68,
     "notes": [
       {
         "timeMs": 100,
         "lane": "center",
-        "strength": 0.192
+        "strength": 0.184
       },
       {
         "timeMs": 725,
@@ -2998,7 +3018,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6072,
         "lane": "center",
-        "strength": 0.792
+        "strength": 0.798
       },
       {
         "timeMs": 7097,
@@ -3008,12 +3028,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8096,
         "lane": "center",
-        "strength": 0.311
+        "strength": 0.296
       },
       {
         "timeMs": 8721,
         "lane": "center",
-        "strength": 0.266
+        "strength": 0.263
       },
       {
         "timeMs": 9096,
@@ -3023,62 +3043,57 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9571,
         "lane": "center",
-        "strength": 0.765
+        "strength": 0.753
       },
       {
         "timeMs": 9846,
         "lane": "center",
-        "strength": 0.657
+        "strength": 0.669
       },
       {
         "timeMs": 10320,
         "lane": "center",
-        "strength": 0.752
+        "strength": 0.759
       },
       {
         "timeMs": 10595,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.187
       },
       {
         "timeMs": 11070,
         "lane": "center",
-        "strength": 0.796
+        "strength": 0.786
       },
       {
         "timeMs": 11570,
         "lane": "center",
-        "strength": 0.816
+        "strength": 0.802
       },
       {
         "timeMs": 12095,
         "lane": "center",
-        "strength": 0.823
-      },
-      {
-        "timeMs": 12844,
-        "lane": "center",
-        "strength": 0.653
+        "strength": 0.807
       },
       {
         "timeMs": 13569,
         "lane": "center",
-        "strength": 0.72
+        "strength": 0.716
       },
       {
         "timeMs": 13844,
         "lane": "center",
-        "strength": 0.703
+        "strength": 0.696
       },
       {
         "timeMs": 14269,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.265
       },
       {
         "timeMs": 14868,
         "lane": "center",
-        "strength": 0.123
+        "strength": 0.12
       },
       {
         "timeMs": 15268,
@@ -3088,12 +3103,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15593,
         "lane": "center",
-        "strength": 0.165
+        "strength": 0.152
       },
       {
         "timeMs": 16093,
         "lane": "center",
-        "strength": 0.989
+        "strength": 0.96
       },
       {
         "timeMs": 16842,
@@ -3103,7 +3118,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17342,
         "lane": "center",
-        "strength": 0.237
+        "strength": 0.238
       },
       {
         "timeMs": 18092,
@@ -3123,12 +3138,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19591,
         "lane": "center",
-        "strength": 0.193
+        "strength": 0.172
       },
       {
         "timeMs": 19866,
         "lane": "center",
-        "strength": 0.473
+        "strength": 0.445
       },
       {
         "timeMs": 21090,
@@ -3143,7 +3158,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21815,
         "lane": "center",
-        "strength": 0.339
+        "strength": 0.329
       },
       {
         "timeMs": 22340,
@@ -3158,32 +3173,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23589,
         "lane": "center",
-        "strength": 0.123
+        "strength": 0.136
       },
       {
-        "timeMs": 24089,
+        "timeMs": 24139,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.238
       },
       {
         "timeMs": 24839,
         "lane": "center",
-        "strength": 0.521
+        "strength": 0.557
       },
       {
         "timeMs": 25763,
         "lane": "center",
-        "strength": 0.415
+        "strength": 0.412
       },
       {
         "timeMs": 26088,
         "lane": "center",
-        "strength": 0.59
+        "strength": 0.535
       },
       {
         "timeMs": 26488,
         "lane": "center",
-        "strength": 0.18
+        "strength": 0.186
       },
       {
         "timeMs": 26863,
@@ -3198,12 +3213,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27837,
         "lane": "center",
-        "strength": 0.724
+        "strength": 0.717
       },
       {
         "timeMs": 28112,
         "lane": "center",
-        "strength": 0.225
+        "strength": 0.301
       },
       {
         "timeMs": 28587,
@@ -3223,32 +3238,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30836,
         "lane": "center",
-        "strength": 0.827
+        "strength": 0.836
       },
       {
         "timeMs": 31361,
         "lane": "center",
-        "strength": 0.461
+        "strength": 0.494
       },
       {
         "timeMs": 32110,
         "lane": "center",
-        "strength": 0.645
+        "strength": 0.623
       },
       {
         "timeMs": 32835,
         "lane": "center",
-        "strength": 0.703
+        "strength": 0.685
       },
       {
         "timeMs": 33110,
         "lane": "center",
-        "strength": 0.164
+        "strength": 0.133
       },
       {
         "timeMs": 33460,
         "lane": "center",
-        "strength": 0.435
+        "strength": 0.393
       },
       {
         "timeMs": 33835,
@@ -3258,7 +3273,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34334,
         "lane": "center",
-        "strength": 0.551
+        "strength": 0.543
       },
       {
         "timeMs": 34859,
@@ -3268,7 +3283,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35459,
         "lane": "center",
-        "strength": 0.419
+        "strength": 0.429
       },
       {
         "timeMs": 35834,
@@ -3278,17 +3293,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36334,
         "lane": "center",
-        "strength": 0.418
+        "strength": 0.424
       },
       {
         "timeMs": 36708,
         "lane": "center",
-        "strength": 0.258
+        "strength": 0.28
       },
       {
         "timeMs": 37108,
         "lane": "center",
-        "strength": 0.358
+        "strength": 0.354
       },
       {
         "timeMs": 37833,
@@ -3298,12 +3313,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38108,
         "lane": "center",
-        "strength": 0.587
+        "strength": 0.593
       },
       {
         "timeMs": 38707,
         "lane": "center",
-        "strength": 0.182
+        "strength": 0.178
       },
       {
         "timeMs": 39082,
@@ -3321,7 +3336,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya04_game_c.mp3": {
     "id": "dariya04_game_c",
@@ -3329,21 +3344,21 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/dariya/dariya04_game_c.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 46002,
-    "beatIntervalMs": 424,
+    "beatIntervalMs": 425,
     "playbackTrim": {
       "enabled": true,
       "startMs": 300,
       "endMs": 44380,
       "leadingMs": 300,
       "trailingMs": 1622,
-      "threshold": 0.069884
+      "threshold": 0.066519
     },
-    "noteCount": 79,
+    "noteCount": 77,
     "notes": [
       {
         "timeMs": 1199,
         "lane": "center",
-        "strength": 0.359
+        "strength": 0.385
       },
       {
         "timeMs": 1474,
@@ -3363,7 +3378,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3473,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.121
       },
       {
         "timeMs": 4448,
@@ -3378,17 +3393,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5498,
         "lane": "center",
-        "strength": 0.138
+        "strength": 0.155
       },
       {
         "timeMs": 5947,
         "lane": "center",
-        "strength": 0.538
+        "strength": 0.533
       },
       {
         "timeMs": 7197,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.226
       },
       {
         "timeMs": 7672,
@@ -3398,27 +3413,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8496,
         "lane": "center",
-        "strength": 0.47
-      },
-      {
-        "timeMs": 8821,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.449
       },
       {
         "timeMs": 9196,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.163
       },
       {
         "timeMs": 9471,
         "lane": "center",
-        "strength": 0.237
+        "strength": 0.213
       },
       {
         "timeMs": 10720,
         "lane": "center",
-        "strength": 0.777
+        "strength": 0.747
       },
       {
         "timeMs": 11145,
@@ -3428,7 +3438,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11470,
         "lane": "center",
-        "strength": 0.547
+        "strength": 0.546
       },
       {
         "timeMs": 12694,
@@ -3438,32 +3448,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13494,
         "lane": "center",
-        "strength": 0.134
+        "strength": 0.12
       },
       {
         "timeMs": 13944,
         "lane": "center",
-        "strength": 0.276
+        "strength": 0.289
       },
       {
         "timeMs": 14493,
         "lane": "center",
-        "strength": 0.512
+        "strength": 0.511
       },
       {
         "timeMs": 14768,
         "lane": "center",
-        "strength": 0.295
+        "strength": 0.208
       },
       {
         "timeMs": 15693,
         "lane": "center",
-        "strength": 0.416
+        "strength": 0.438
       },
       {
         "timeMs": 16218,
         "lane": "center",
-        "strength": 0.752
+        "strength": 0.742
       },
       {
         "timeMs": 16692,
@@ -3478,7 +3488,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18791,
         "lane": "center",
-        "strength": 0.308
+        "strength": 0.304
       },
       {
         "timeMs": 19091,
@@ -3487,11 +3497,6 @@ const RHYTHM_NOTE_MAPS = {
       },
       {
         "timeMs": 19466,
-        "lane": "center",
-        "strength": 0.133
-      },
-      {
-        "timeMs": 19891,
         "lane": "center",
         "strength": 0.12
       },
@@ -3518,7 +3523,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22090,
         "lane": "center",
-        "strength": 0.219
+        "strength": 0.213
       },
       {
         "timeMs": 22365,
@@ -3528,17 +3533,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22690,
         "lane": "center",
-        "strength": 0.78
+        "strength": 0.746
       },
       {
         "timeMs": 23189,
         "lane": "center",
-        "strength": 0.128
+        "strength": 0.12
       },
       {
         "timeMs": 23464,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.216
       },
       {
         "timeMs": 23814,
@@ -3548,7 +3553,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24489,
         "lane": "center",
-        "strength": 0.516
+        "strength": 0.513
       },
       {
         "timeMs": 24814,
@@ -3563,12 +3568,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25463,
         "lane": "center",
-        "strength": 0.598
+        "strength": 0.6
       },
       {
         "timeMs": 27463,
         "lane": "center",
-        "strength": 0.51
+        "strength": 0.536
       },
       {
         "timeMs": 27812,
@@ -3578,17 +3583,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28137,
         "lane": "center",
-        "strength": 0.268
+        "strength": 0.263
       },
       {
         "timeMs": 28462,
         "lane": "center",
-        "strength": 0.381
+        "strength": 0.392
       },
       {
         "timeMs": 28787,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.124
       },
       {
         "timeMs": 29212,
@@ -3598,42 +3603,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29587,
         "lane": "center",
-        "strength": 0.124
+        "strength": 0.122
       },
       {
         "timeMs": 30086,
         "lane": "center",
-        "strength": 0.164
+        "strength": 0.154
       },
       {
         "timeMs": 30461,
         "lane": "center",
-        "strength": 0.626
+        "strength": 0.632
       },
       {
         "timeMs": 30736,
         "lane": "center",
-        "strength": 0.741
+        "strength": 0.729
       },
       {
         "timeMs": 31386,
         "lane": "center",
-        "strength": 0.187
+        "strength": 0.188
       },
       {
         "timeMs": 31811,
         "lane": "center",
-        "strength": 0.164
+        "strength": 0.16
       },
       {
         "timeMs": 32235,
         "lane": "center",
-        "strength": 0.536
+        "strength": 0.576
       },
       {
         "timeMs": 32735,
         "lane": "center",
-        "strength": 0.678
+        "strength": 0.746
       },
       {
         "timeMs": 33060,
@@ -3643,17 +3648,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33410,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.139
       },
       {
         "timeMs": 33685,
         "lane": "center",
-        "strength": 0.278
+        "strength": 0.35
       },
       {
         "timeMs": 33985,
         "lane": "center",
-        "strength": 0.816
+        "strength": 0.843
       },
       {
         "timeMs": 34359,
@@ -3663,7 +3668,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34634,
         "lane": "center",
-        "strength": 0.594
+        "strength": 0.603
       },
       {
         "timeMs": 34984,
@@ -3673,7 +3678,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35509,
         "lane": "center",
-        "strength": 0.13
+        "strength": 0.125
       },
       {
         "timeMs": 35809,
@@ -3683,27 +3688,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36234,
         "lane": "center",
-        "strength": 0.176
+        "strength": 0.187
       },
       {
-        "timeMs": 36708,
+        "timeMs": 36758,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.546
       },
       {
         "timeMs": 37358,
         "lane": "center",
-        "strength": 0.305
+        "strength": 0.298
       },
       {
         "timeMs": 37958,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.13
       },
       {
-        "timeMs": 38607,
+        "timeMs": 38732,
         "lane": "center",
-        "strength": 0.12
+        "strength": 1
       },
       {
         "timeMs": 39182,
@@ -3718,7 +3723,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40732,
         "lane": "center",
-        "strength": 0.259
+        "strength": 0.247
       },
       {
         "timeMs": 42606,
@@ -3736,7 +3741,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya05_game_d.mp3": {
     "id": "dariya05_game_d",
@@ -3751,7 +3756,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 53051,
       "leadingMs": 0,
       "trailingMs": 3556,
-      "threshold": 0.045701
+      "threshold": 0.04366
     },
     "noteCount": 90,
     "notes": [
@@ -3773,7 +3778,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 1599,
         "lane": "center",
-        "strength": 0.814
+        "strength": 0.824
       },
       {
         "timeMs": 2099,
@@ -3783,7 +3788,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2499,
         "lane": "center",
-        "strength": 0.185
+        "strength": 0.17
       },
       {
         "timeMs": 2774,
@@ -3798,12 +3803,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3498,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.19
       },
       {
         "timeMs": 3848,
         "lane": "center",
-        "strength": 0.206
+        "strength": 0.222
       },
       {
         "timeMs": 4523,
@@ -3816,14 +3821,19 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 5498,
+        "timeMs": 5597,
         "lane": "center",
-        "strength": 0.12
+        "strength": 1
       },
       {
         "timeMs": 5922,
         "lane": "center",
         "strength": 0.12
+      },
+      {
+        "timeMs": 6597,
+        "lane": "center",
+        "strength": 1
       },
       {
         "timeMs": 6947,
@@ -3858,7 +3868,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9596,
         "lane": "center",
-        "strength": 0.852
+        "strength": 0.79
       },
       {
         "timeMs": 10045,
@@ -3866,24 +3876,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 10520,
+        "timeMs": 10320,
         "lane": "center",
-        "strength": 0.233
+        "strength": 0.199
       },
       {
         "timeMs": 10845,
         "lane": "center",
-        "strength": 0.208
+        "strength": 0.195
       },
       {
         "timeMs": 11495,
         "lane": "center",
-        "strength": 0.564
+        "strength": 0.566
       },
       {
         "timeMs": 11870,
         "lane": "center",
-        "strength": 0.264
+        "strength": 0.235
       },
       {
         "timeMs": 12519,
@@ -3898,17 +3908,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13594,
         "lane": "center",
-        "strength": 0.877
+        "strength": 0.886
       },
       {
         "timeMs": 14094,
         "lane": "center",
         "strength": 1
-      },
-      {
-        "timeMs": 14818,
-        "lane": "center",
-        "strength": 0.12
       },
       {
         "timeMs": 15868,
@@ -3928,37 +3933,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17567,
         "lane": "center",
-        "strength": 0.491
+        "strength": 0.505
       },
       {
         "timeMs": 18092,
         "lane": "center",
-        "strength": 0.429
+        "strength": 0.436
       },
       {
         "timeMs": 18841,
         "lane": "center",
-        "strength": 0.348
+        "strength": 0.349
       },
       {
         "timeMs": 19566,
         "lane": "center",
-        "strength": 0.573
+        "strength": 0.578
       },
       {
         "timeMs": 20316,
         "lane": "center",
-        "strength": 0.474
+        "strength": 0.466
       },
       {
         "timeMs": 21090,
         "lane": "center",
-        "strength": 0.561
+        "strength": 0.55
       },
       {
         "timeMs": 21590,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.218
       },
       {
         "timeMs": 22090,
@@ -3968,27 +3973,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23090,
         "lane": "center",
-        "strength": 0.673
+        "strength": 0.649
       },
       {
         "timeMs": 23589,
         "lane": "center",
-        "strength": 0.708
+        "strength": 0.713
       },
       {
         "timeMs": 24114,
         "lane": "center",
-        "strength": 0.246
+        "strength": 0.242
       },
       {
         "timeMs": 24414,
         "lane": "center",
-        "strength": 0.682
+        "strength": 0.679
       },
       {
         "timeMs": 24714,
         "lane": "center",
-        "strength": 0.127
+        "strength": 0.122
       },
       {
         "timeMs": 25114,
@@ -4003,7 +4008,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26088,
         "lane": "center",
-        "strength": 0.872
+        "strength": 0.873
       },
       {
         "timeMs": 26838,
@@ -4013,52 +4018,52 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27587,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.404
       },
       {
         "timeMs": 28337,
         "lane": "center",
-        "strength": 0.58
+        "strength": 0.56
       },
       {
         "timeMs": 28837,
         "lane": "center",
-        "strength": 0.608
+        "strength": 0.603
       },
       {
         "timeMs": 29587,
         "lane": "center",
-        "strength": 0.79
+        "strength": 0.78
       },
       {
         "timeMs": 30086,
         "lane": "center",
-        "strength": 0.698
+        "strength": 0.689
       },
       {
         "timeMs": 30836,
         "lane": "center",
-        "strength": 0.481
+        "strength": 0.476
       },
       {
         "timeMs": 31586,
         "lane": "center",
-        "strength": 0.675
+        "strength": 0.658
       },
       {
         "timeMs": 32110,
         "lane": "center",
-        "strength": 0.728
+        "strength": 0.724
       },
       {
         "timeMs": 32610,
         "lane": "center",
-        "strength": 0.467
+        "strength": 0.483
       },
       {
         "timeMs": 33110,
         "lane": "center",
-        "strength": 0.533
+        "strength": 0.547
       },
       {
         "timeMs": 33510,
@@ -4068,7 +4073,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34110,
         "lane": "center",
-        "strength": 0.382
+        "strength": 0.388
       },
       {
         "timeMs": 34609,
@@ -4078,12 +4083,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35109,
         "lane": "center",
-        "strength": 0.296
+        "strength": 0.278
       },
       {
         "timeMs": 35609,
         "lane": "center",
-        "strength": 0.413
+        "strength": 0.405
       },
       {
         "timeMs": 36034,
@@ -4093,55 +4098,55 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36608,
         "lane": "center",
-        "strength": 0.488
+        "strength": 0.485
       },
       {
         "timeMs": 37108,
         "lane": "center",
-        "strength": 0.646
+        "strength": 0.658
       },
       {
         "timeMs": 37608,
         "lane": "center",
-        "strength": 0.439
+        "strength": 0.416
       },
       {
-        "timeMs": 38033,
+        "timeMs": 38108,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.587
       },
       {
         "timeMs": 38607,
         "lane": "center",
-        "strength": 0.499
+        "strength": 0.508
       },
       {
         "timeMs": 39107,
         "lane": "center",
-        "strength": 0.544
+        "strength": 0.545
       },
       {
         "timeMs": 39607,
         "lane": "center",
-        "strength": 0.429
+        "strength": 0.454
       },
       {
         "timeMs": 40107,
         "lane": "center",
-        "strength": 0.385
+        "strength": 0.393
       },
       {
         "timeMs": 40607,
         "lane": "center",
-        "strength": 0.333
+        "strength": 0.328
       },
       {
         "timeMs": 42606,
         "lane": "center",
-        "strength": 0.216
+        "strength": 0.232
       },
       {
-        "timeMs": 44180,
+        "timeMs": 43130,
         "lane": "center",
         "strength": 0.12
       },
@@ -4153,17 +4158,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46104,
         "lane": "center",
-        "strength": 0.681
+        "strength": 0.673
       },
       {
         "timeMs": 46754,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.125
       },
       {
         "timeMs": 48103,
         "lane": "center",
-        "strength": 0.821
+        "strength": 0.805
       },
       {
         "timeMs": 48603,
@@ -4193,7 +4198,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51102,
         "lane": "center",
-        "strength": 0.976
+        "strength": 1
       },
       {
         "timeMs": 51602,
@@ -4206,7 +4211,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya06_ending.mp3": {
     "id": "dariya06_ending",
@@ -4214,56 +4219,56 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/dariya/dariya06_ending.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 57835,
-    "beatIntervalMs": 425,
+    "beatIntervalMs": 475,
     "playbackTrim": {
       "enabled": true,
       "startMs": 0,
       "endMs": 54226,
       "leadingMs": 0,
       "trailingMs": 3609,
-      "threshold": 0.064902
+      "threshold": 0.061658
     },
     "noteCount": 82,
     "notes": [
       {
         "timeMs": 100,
         "lane": "center",
-        "strength": 0.78
+        "strength": 0.812
       },
       {
         "timeMs": 800,
         "lane": "center",
-        "strength": 0.204
+        "strength": 0.264
       },
       {
         "timeMs": 1449,
         "lane": "center",
-        "strength": 0.534
+        "strength": 0.493
       },
       {
         "timeMs": 2099,
         "lane": "center",
-        "strength": 0.204
+        "strength": 0.178
       },
       {
         "timeMs": 2774,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.725
       },
       {
         "timeMs": 5448,
         "lane": "center",
-        "strength": 0.54
+        "strength": 0.496
       },
       {
         "timeMs": 6147,
         "lane": "center",
-        "strength": 0.201
+        "strength": 0.204
       },
       {
         "timeMs": 6797,
         "lane": "center",
-        "strength": 0.69
+        "strength": 0.663
       },
       {
         "timeMs": 7796,
@@ -4273,7 +4278,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8721,
         "lane": "center",
-        "strength": 0.434
+        "strength": 0.412
       },
       {
         "timeMs": 9121,
@@ -4283,12 +4288,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9471,
         "lane": "center",
-        "strength": 0.468
+        "strength": 0.441
       },
       {
         "timeMs": 9796,
         "lane": "center",
-        "strength": 0.489
+        "strength": 0.471
       },
       {
         "timeMs": 10620,
@@ -4303,12 +4308,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11770,
         "lane": "center",
-        "strength": 0.445
+        "strength": 0.427
       },
       {
         "timeMs": 12619,
         "lane": "center",
-        "strength": 0.301
+        "strength": 0.284
       },
       {
         "timeMs": 13019,
@@ -4323,7 +4328,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16792,
         "lane": "center",
-        "strength": 0.677
+        "strength": 0.652
       },
       {
         "timeMs": 17142,
@@ -4333,7 +4338,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17467,
         "lane": "center",
-        "strength": 0.835
+        "strength": 0.797
       },
       {
         "timeMs": 17792,
@@ -4343,7 +4348,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18442,
         "lane": "center",
-        "strength": 0.679
+        "strength": 0.636
       },
       {
         "timeMs": 18791,
@@ -4358,12 +4363,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19566,
         "lane": "center",
-        "strength": 0.955
+        "strength": 0.914
       },
       {
         "timeMs": 20416,
         "lane": "center",
-        "strength": 0.258
+        "strength": 0.25
       },
       {
         "timeMs": 20841,
@@ -4388,27 +4393,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22465,
         "lane": "center",
-        "strength": 0.377
+        "strength": 0.364
       },
       {
-        "timeMs": 22840,
+        "timeMs": 22990,
+        "lane": "center",
+        "strength": 0.209
+      },
+      {
+        "timeMs": 23314,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 23140,
-        "lane": "center",
-        "strength": 0.269
-      },
-      {
         "timeMs": 23864,
         "lane": "center",
-        "strength": 0.353
+        "strength": 0.343
       },
       {
         "timeMs": 24464,
         "lane": "center",
-        "strength": 0.611
+        "strength": 0.57
       },
       {
         "timeMs": 24914,
@@ -4418,12 +4423,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25314,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.158
       },
       {
         "timeMs": 26088,
         "lane": "center",
-        "strength": 0.775
+        "strength": 0.73
       },
       {
         "timeMs": 26363,
@@ -4433,17 +4438,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26788,
         "lane": "center",
-        "strength": 0.67
+        "strength": 0.686
       },
       {
         "timeMs": 27288,
         "lane": "center",
-        "strength": 0.342
+        "strength": 0.324
       },
       {
         "timeMs": 27587,
         "lane": "center",
-        "strength": 0.176
+        "strength": 0.157
       },
       {
         "timeMs": 28362,
@@ -4453,7 +4458,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28787,
         "lane": "center",
-        "strength": 0.316
+        "strength": 0.311
       },
       {
         "timeMs": 29362,
@@ -4466,14 +4471,19 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
+        "timeMs": 30786,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
         "timeMs": 31261,
         "lane": "center",
-        "strength": 0.547
+        "strength": 0.521
       },
       {
         "timeMs": 32135,
         "lane": "center",
-        "strength": 0.442
+        "strength": 0.365
       },
       {
         "timeMs": 32435,
@@ -4483,7 +4493,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33285,
         "lane": "center",
-        "strength": 0.803
+        "strength": 0.779
       },
       {
         "timeMs": 33660,
@@ -4493,42 +4503,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33960,
         "lane": "center",
-        "strength": 0.683
+        "strength": 0.662
       },
       {
         "timeMs": 34809,
         "lane": "center",
-        "strength": 0.443
+        "strength": 0.425
       },
       {
         "timeMs": 35234,
         "lane": "center",
-        "strength": 0.795
+        "strength": 0.757
       },
       {
         "timeMs": 35509,
         "lane": "center",
-        "strength": 0.637
+        "strength": 0.628
       },
       {
         "timeMs": 36334,
         "lane": "center",
-        "strength": 0.3
-      },
-      {
-        "timeMs": 36683,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.326
       },
       {
         "timeMs": 37433,
         "lane": "center",
-        "strength": 0.675
+        "strength": 0.664
       },
       {
         "timeMs": 37833,
         "lane": "center",
-        "strength": 0.401
+        "strength": 0.365
       },
       {
         "timeMs": 38682,
@@ -4543,7 +4548,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39432,
         "lane": "center",
-        "strength": 0.719
+        "strength": 0.67
       },
       {
         "timeMs": 39982,
@@ -4553,7 +4558,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40781,
         "lane": "center",
-        "strength": 0.469
+        "strength": 0.483
       },
       {
         "timeMs": 41306,
@@ -4568,7 +4573,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44155,
         "lane": "center",
-        "strength": 0.619
+        "strength": 0.605
       },
       {
         "timeMs": 44455,
@@ -4578,12 +4583,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44805,
         "lane": "center",
-        "strength": 0.784
+        "strength": 0.727
       },
       {
         "timeMs": 45204,
         "lane": "center",
-        "strength": 0.372
+        "strength": 0.37
       },
       {
         "timeMs": 45479,
@@ -4598,7 +4603,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46204,
         "lane": "center",
-        "strength": 0.904
+        "strength": 1
       },
       {
         "timeMs": 46504,
@@ -4608,7 +4613,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46829,
         "lane": "center",
-        "strength": 0.13
+        "strength": 0.243
       },
       {
         "timeMs": 47129,
@@ -4618,7 +4623,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48228,
         "lane": "center",
-        "strength": 0.525
+        "strength": 0.501
       },
       {
         "timeMs": 48553,
@@ -4628,7 +4633,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49253,
         "lane": "center",
-        "strength": 0.241
+        "strength": 0.216
       },
       {
         "timeMs": 50227,
@@ -4636,7 +4641,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya07_ending2.mp3": {
     "id": "dariya07_ending2",
@@ -4644,21 +4649,21 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/dariya/dariya07_ending2.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 87876,
-    "beatIntervalMs": 450,
+    "beatIntervalMs": 425,
     "playbackTrim": {
       "enabled": true,
       "startMs": 100,
       "endMs": 85162,
       "leadingMs": 100,
       "trailingMs": 2714,
-      "threshold": 0.08915
+      "threshold": 0.084395
     },
-    "noteCount": 130,
+    "noteCount": 133,
     "notes": [
       {
         "timeMs": 450,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.127
       },
       {
         "timeMs": 750,
@@ -4678,7 +4683,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4998,
         "lane": "center",
-        "strength": 0.317
+        "strength": 0.28
+      },
+      {
+        "timeMs": 5273,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 5972,
@@ -4693,7 +4703,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6972,
         "lane": "center",
-        "strength": 0.565
+        "strength": 0.573
       },
       {
         "timeMs": 7247,
@@ -4708,7 +4718,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8821,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.154
       },
       {
         "timeMs": 9146,
@@ -4718,7 +4728,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9446,
         "lane": "center",
-        "strength": 0.326
+        "strength": 0.309
       },
       {
         "timeMs": 11270,
@@ -4728,17 +4738,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11820,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.279
       },
       {
         "timeMs": 12219,
         "lane": "center",
-        "strength": 0.139
+        "strength": 0.136
       },
       {
         "timeMs": 12769,
         "lane": "center",
-        "strength": 0.175
+        "strength": 0.155
       },
       {
         "timeMs": 13144,
@@ -4748,12 +4758,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13944,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.128
       },
       {
         "timeMs": 14269,
         "lane": "center",
-        "strength": 0.134
+        "strength": 0.128
       },
       {
         "timeMs": 16418,
@@ -4778,17 +4788,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19241,
         "lane": "center",
-        "strength": 0.55
+        "strength": 0.542
       },
       {
         "timeMs": 21565,
         "lane": "center",
-        "strength": 0.713
+        "strength": 0.707
       },
       {
         "timeMs": 21865,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.165
       },
       {
         "timeMs": 22515,
@@ -4798,7 +4808,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23189,
         "lane": "center",
-        "strength": 0.41
+        "strength": 0.408
       },
       {
         "timeMs": 24214,
@@ -4808,27 +4818,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24539,
         "lane": "center",
-        "strength": 0.167
+        "strength": 0.165
       },
       {
         "timeMs": 24864,
         "lane": "center",
-        "strength": 0.383
+        "strength": 0.377
       },
       {
         "timeMs": 25339,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.148
       },
       {
         "timeMs": 25688,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.241
       },
       {
         "timeMs": 26638,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.125
       },
       {
         "timeMs": 27488,
@@ -4843,7 +4853,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30186,
         "lane": "center",
-        "strength": 0.491
+        "strength": 0.496
       },
       {
         "timeMs": 31111,
@@ -4853,7 +4863,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31511,
         "lane": "center",
-        "strength": 0.488
+        "strength": 0.509
       },
       {
         "timeMs": 31985,
@@ -4863,22 +4873,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32485,
         "lane": "center",
-        "strength": 0.907
+        "strength": 0.994
       },
       {
         "timeMs": 33160,
         "lane": "center",
-        "strength": 0.296
+        "strength": 0.269
       },
       {
         "timeMs": 33435,
         "lane": "center",
-        "strength": 0.624
+        "strength": 0.586
       },
       {
         "timeMs": 33810,
         "lane": "center",
-        "strength": 0.975
+        "strength": 0.995
       },
       {
         "timeMs": 34135,
@@ -4888,7 +4898,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34634,
         "lane": "center",
-        "strength": 0.711
+        "strength": 0.727
       },
       {
         "timeMs": 34959,
@@ -4898,7 +4908,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35809,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.219
       },
       {
         "timeMs": 36134,
@@ -4908,37 +4918,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36633,
         "lane": "center",
-        "strength": 0.486
+        "strength": 0.525
       },
       {
         "timeMs": 37133,
         "lane": "center",
-        "strength": 0.839
+        "strength": 0.851
       },
       {
         "timeMs": 37508,
         "lane": "center",
-        "strength": 0.249
+        "strength": 0.274
+      },
+      {
+        "timeMs": 37908,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 38757,
         "lane": "center",
-        "strength": 0.962
+        "strength": 0.986
       },
       {
         "timeMs": 39432,
         "lane": "center",
-        "strength": 0.508
+        "strength": 0.524
       },
       {
         "timeMs": 39782,
         "lane": "center",
-        "strength": 0.48
+        "strength": 0.493
       },
       {
         "timeMs": 40207,
         "lane": "center",
-        "strength": 0.243
+        "strength": 0.245
       },
       {
         "timeMs": 40557,
@@ -4946,34 +4961,39 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 41331,
+        "timeMs": 41106,
         "lane": "center",
-        "strength": 0.12
+        "strength": 1
+      },
+      {
+        "timeMs": 41431,
+        "lane": "center",
+        "strength": 1
       },
       {
         "timeMs": 41906,
         "lane": "center",
-        "strength": 0.237
+        "strength": 0.221
       },
       {
         "timeMs": 42856,
         "lane": "center",
-        "strength": 0.254
+        "strength": 0.262
       },
       {
         "timeMs": 43230,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.18
       },
       {
         "timeMs": 44055,
         "lane": "center",
-        "strength": 0.236
+        "strength": 0.21
       },
       {
         "timeMs": 44405,
         "lane": "center",
-        "strength": 0.122
+        "strength": 0.15
       },
       {
         "timeMs": 44730,
@@ -4988,7 +5008,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45729,
         "lane": "center",
-        "strength": 0.396
+        "strength": 0.391
       },
       {
         "timeMs": 46079,
@@ -5003,7 +5023,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47379,
         "lane": "center",
-        "strength": 0.245
+        "strength": 0.248
       },
       {
         "timeMs": 47728,
@@ -5018,22 +5038,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49078,
         "lane": "center",
-        "strength": 0.257
+        "strength": 0.269
       },
       {
         "timeMs": 49702,
         "lane": "center",
-        "strength": 0.841
+        "strength": 0.857
       },
       {
         "timeMs": 50402,
         "lane": "center",
-        "strength": 0.945
+        "strength": 0.956
       },
       {
         "timeMs": 50952,
         "lane": "center",
-        "strength": 0.29
+        "strength": 0.33
       },
       {
         "timeMs": 51252,
@@ -5043,27 +5063,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 52051,
         "lane": "center",
-        "strength": 0.982
+        "strength": 0.949
       },
       {
         "timeMs": 52526,
         "lane": "center",
-        "strength": 0.324
+        "strength": 0.342
       },
       {
         "timeMs": 53076,
         "lane": "center",
-        "strength": 0.242
+        "strength": 0.261
       },
       {
-        "timeMs": 53601,
+        "timeMs": 53651,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.516
       },
       {
         "timeMs": 54900,
         "lane": "center",
-        "strength": 0.43
+        "strength": 0.407
       },
       {
         "timeMs": 55300,
@@ -5073,47 +5093,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 55775,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.142
       },
       {
         "timeMs": 56200,
         "lane": "center",
-        "strength": 0.163
+        "strength": 0.184
       },
       {
         "timeMs": 56474,
         "lane": "center",
-        "strength": 0.311
+        "strength": 0.334
       },
       {
         "timeMs": 56949,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.122
       },
       {
         "timeMs": 57874,
         "lane": "center",
-        "strength": 0.501
+        "strength": 0.469
       },
       {
         "timeMs": 58224,
         "lane": "center",
-        "strength": 0.496
+        "strength": 0.468
       },
       {
         "timeMs": 58523,
         "lane": "center",
-        "strength": 0.212
-      },
-      {
-        "timeMs": 59198,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.192
       },
       {
         "timeMs": 60473,
         "lane": "center",
-        "strength": 0.637
+        "strength": 0.635
       },
       {
         "timeMs": 60822,
@@ -5126,39 +5141,44 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 62347,
+        "timeMs": 62422,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.181
       },
       {
         "timeMs": 62971,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.377
       },
       {
         "timeMs": 63346,
         "lane": "center",
-        "strength": 0.755
+        "strength": 0.754
       },
       {
         "timeMs": 63621,
         "lane": "center",
-        "strength": 0.383
+        "strength": 0.388
       },
       {
         "timeMs": 64696,
         "lane": "center",
-        "strength": 0.262
+        "strength": 0.248
+      },
+      {
+        "timeMs": 65270,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 67070,
         "lane": "center",
-        "strength": 0.993
+        "strength": 0.992
       },
       {
         "timeMs": 67419,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.19
       },
       {
         "timeMs": 67819,
@@ -5168,12 +5188,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 68169,
         "lane": "center",
-        "strength": 0.571
+        "strength": 0.573
       },
       {
         "timeMs": 68769,
         "lane": "center",
-        "strength": 0.159
+        "strength": 0.145
       },
       {
         "timeMs": 69169,
@@ -5183,17 +5203,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 69968,
         "lane": "center",
-        "strength": 0.464
+        "strength": 0.478
       },
       {
         "timeMs": 70243,
         "lane": "center",
-        "strength": 0.428
+        "strength": 0.437
       },
       {
         "timeMs": 70568,
         "lane": "center",
-        "strength": 0.67
+        "strength": 0.627
       },
       {
         "timeMs": 72267,
@@ -5208,17 +5228,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 73167,
         "lane": "center",
-        "strength": 0.509
+        "strength": 0.511
       },
       {
         "timeMs": 73642,
         "lane": "center",
-        "strength": 0.181
-      },
-      {
-        "timeMs": 73916,
-        "lane": "center",
-        "strength": 1
+        "strength": 0.191
       },
       {
         "timeMs": 75066,
@@ -5228,12 +5243,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 75391,
         "lane": "center",
-        "strength": 0.717
+        "strength": 0.682
       },
       {
         "timeMs": 75741,
         "lane": "center",
-        "strength": 0.202
+        "strength": 0.185
       },
       {
         "timeMs": 76240,
@@ -5258,27 +5273,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 78564,
         "lane": "center",
-        "strength": 0.707
+        "strength": 0.712
       },
       {
         "timeMs": 78839,
         "lane": "center",
-        "strength": 0.413
+        "strength": 0.421
       },
       {
-        "timeMs": 79139,
+        "timeMs": 79314,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.293
       },
       {
-        "timeMs": 79414,
+        "timeMs": 79614,
         "lane": "center",
-        "strength": 0.657
+        "strength": 0.725
       },
       {
         "timeMs": 80513,
         "lane": "center",
-        "strength": 0.524
+        "strength": 0.533
       },
       {
         "timeMs": 80913,
@@ -5288,12 +5303,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 81238,
         "lane": "center",
-        "strength": 0.785
+        "strength": 0.79
       },
       {
-        "timeMs": 81988,
+        "timeMs": 81863,
         "lane": "center",
-        "strength": 1
+        "strength": 0.12
+      },
+      {
+        "timeMs": 82188,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 83687,
@@ -5303,10 +5323,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 84037,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.123
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/dariya/dariya08_ending3.mp3": {
     "id": "dariya08_ending3",
@@ -5321,9 +5341,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 84987,
       "leadingMs": 200,
       "trailingMs": 956,
-      "threshold": 0.076755
+      "threshold": 0.073042
     },
-    "noteCount": 141,
+    "noteCount": 142,
     "notes": [
       {
         "timeMs": 625,
@@ -5333,7 +5353,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2799,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.225
       },
       {
         "timeMs": 3598,
@@ -5343,7 +5363,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4573,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.135
       },
       {
         "timeMs": 5797,
@@ -5353,7 +5373,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8796,
         "lane": "center",
-        "strength": 0.124
+        "strength": 0.121
       },
       {
         "timeMs": 9346,
@@ -5368,7 +5388,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10720,
         "lane": "center",
-        "strength": 0.725
+        "strength": 0.698
       },
       {
         "timeMs": 11520,
@@ -5378,7 +5398,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12369,
         "lane": "center",
-        "strength": 0.483
+        "strength": 0.468
       },
       {
         "timeMs": 12894,
@@ -5388,7 +5408,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13744,
         "lane": "center",
-        "strength": 0.535
+        "strength": 0.528
       },
       {
         "timeMs": 14144,
@@ -5398,7 +5418,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14543,
         "lane": "center",
-        "strength": 0.39
+        "strength": 0.382
       },
       {
         "timeMs": 15093,
@@ -5408,17 +5428,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15918,
         "lane": "center",
-        "strength": 0.179
+        "strength": 0.185
       },
       {
         "timeMs": 16692,
         "lane": "center",
-        "strength": 0.139
+        "strength": 0.125
       },
       {
         "timeMs": 17017,
         "lane": "center",
-        "strength": 0.582
+        "strength": 0.566
       },
       {
         "timeMs": 17517,
@@ -5443,7 +5463,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20266,
         "lane": "center",
-        "strength": 0.615
+        "strength": 0.592
       },
       {
         "timeMs": 20940,
@@ -5453,22 +5473,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21365,
         "lane": "center",
-        "strength": 0.262
+        "strength": 0.254
       },
       {
         "timeMs": 22040,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.778
       },
       {
         "timeMs": 22440,
         "lane": "center",
-        "strength": 0.862
+        "strength": 0.841
       },
       {
         "timeMs": 22740,
         "lane": "center",
-        "strength": 0.152
+        "strength": 0.156
       },
       {
         "timeMs": 23464,
@@ -5488,17 +5508,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25039,
         "lane": "center",
-        "strength": 0.401
+        "strength": 0.403
       },
       {
         "timeMs": 25438,
         "lane": "center",
-        "strength": 0.274
+        "strength": 0.256
       },
       {
         "timeMs": 25713,
         "lane": "center",
-        "strength": 0.784
+        "strength": 0.776
       },
       {
         "timeMs": 26388,
@@ -5508,12 +5528,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26813,
         "lane": "center",
-        "strength": 0.147
+        "strength": 0.12
       },
       {
         "timeMs": 27238,
         "lane": "center",
-        "strength": 0.352
+        "strength": 0.338
       },
       {
         "timeMs": 27637,
@@ -5531,14 +5551,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 29836,
+        "timeMs": 30086,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 30361,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.348
       },
       {
         "timeMs": 30761,
@@ -5553,7 +5573,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31436,
         "lane": "center",
-        "strength": 0.288
+        "strength": 0.293
       },
       {
         "timeMs": 33135,
@@ -5563,12 +5583,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33610,
         "lane": "center",
-        "strength": 0.271
+        "strength": 0.26
       },
       {
         "timeMs": 34184,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.224
       },
       {
         "timeMs": 34459,
@@ -5578,22 +5598,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35134,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.141
       },
       {
         "timeMs": 35534,
         "lane": "center",
-        "strength": 0.94
+        "strength": 0.9
       },
       {
         "timeMs": 35834,
         "lane": "center",
-        "strength": 0.214
+        "strength": 0.215
       },
       {
         "timeMs": 36209,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.143
       },
       {
         "timeMs": 36583,
@@ -5603,7 +5623,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36908,
         "lane": "center",
-        "strength": 0.438
+        "strength": 0.412
       },
       {
         "timeMs": 37283,
@@ -5628,7 +5648,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39357,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.189
       },
       {
         "timeMs": 39832,
@@ -5638,7 +5658,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40732,
         "lane": "center",
-        "strength": 0.319
+        "strength": 0.301
       },
       {
         "timeMs": 42006,
@@ -5653,12 +5673,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43180,
         "lane": "center",
-        "strength": 0.77
+        "strength": 0.719
       },
       {
         "timeMs": 43705,
         "lane": "center",
-        "strength": 0.76
+        "strength": 0.757
       },
       {
         "timeMs": 44130,
@@ -5668,15 +5688,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44480,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.145
       },
       {
         "timeMs": 44805,
         "lane": "center",
-        "strength": 0.91
+        "strength": 0.887
       },
       {
-        "timeMs": 45180,
+        "timeMs": 45105,
         "lane": "center",
         "strength": 0.12
       },
@@ -5693,17 +5713,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46504,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.14
       },
       {
         "timeMs": 46879,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.372
       },
       {
         "timeMs": 47254,
         "lane": "center",
-        "strength": 0.741
+        "strength": 0.733
       },
       {
         "timeMs": 47528,
@@ -5713,7 +5733,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47828,
         "lane": "center",
-        "strength": 0.468
+        "strength": 0.446
       },
       {
         "timeMs": 48278,
@@ -5728,12 +5748,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49178,
         "lane": "center",
-        "strength": 0.135
+        "strength": 0.12
       },
       {
         "timeMs": 49453,
         "lane": "center",
-        "strength": 0.602
+        "strength": 0.565
       },
       {
         "timeMs": 50252,
@@ -5748,17 +5768,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51577,
         "lane": "center",
-        "strength": 0.162
+        "strength": 0.164
       },
       {
         "timeMs": 51901,
         "lane": "center",
-        "strength": 0.705
+        "strength": 0.69
       },
       {
         "timeMs": 52201,
         "lane": "center",
-        "strength": 0.163
+        "strength": 0.16
       },
       {
         "timeMs": 52901,
@@ -5773,7 +5793,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 53801,
         "lane": "center",
-        "strength": 0.244
+        "strength": 0.231
       },
       {
         "timeMs": 54075,
@@ -5783,7 +5803,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54350,
         "lane": "center",
-        "strength": 0.355
+        "strength": 0.319
       },
       {
         "timeMs": 55450,
@@ -5793,7 +5813,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56274,
         "lane": "center",
-        "strength": 0.215
+        "strength": 0.198
       },
       {
         "timeMs": 56799,
@@ -5806,24 +5826,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 57774,
+        "timeMs": 57899,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 58099,
+        "timeMs": 58174,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.338
       },
       {
-        "timeMs": 58374,
+        "timeMs": 58448,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.463
       },
       {
-        "timeMs": 58648,
+        "timeMs": 58723,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.142
       },
       {
         "timeMs": 59023,
@@ -5853,22 +5873,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 61197,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.192
       },
       {
         "timeMs": 61497,
         "lane": "center",
-        "strength": 0.442
+        "strength": 0.432
       },
       {
         "timeMs": 62122,
         "lane": "center",
-        "strength": 0.822
+        "strength": 0.781
       },
       {
         "timeMs": 62422,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.375
       },
       {
         "timeMs": 62747,
@@ -5883,7 +5903,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 63646,
         "lane": "center",
-        "strength": 0.318
+        "strength": 0.275
       },
       {
         "timeMs": 64171,
@@ -5898,7 +5918,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 65820,
         "lane": "center",
-        "strength": 0.261
+        "strength": 0.252
       },
       {
         "timeMs": 66120,
@@ -5913,27 +5933,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 67020,
         "lane": "center",
-        "strength": 0.275
+        "strength": 0.264
       },
       {
         "timeMs": 67844,
         "lane": "center",
-        "strength": 0.146
+        "strength": 0.124
       },
       {
         "timeMs": 68269,
         "lane": "center",
-        "strength": 0.407
+        "strength": 0.414
       },
       {
         "timeMs": 68794,
         "lane": "center",
-        "strength": 0.938
+        "strength": 0.961
       },
       {
         "timeMs": 69094,
         "lane": "center",
-        "strength": 0.383
+        "strength": 0.368
       },
       {
         "timeMs": 69643,
@@ -5948,12 +5968,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 70443,
         "lane": "center",
-        "strength": 0.593
+        "strength": 0.557
       },
       {
         "timeMs": 70868,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.269
       },
       {
         "timeMs": 71792,
@@ -5966,9 +5986,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 72517,
+        "timeMs": 72442,
         "lane": "center",
-        "strength": 0.184
+        "strength": 0.12
+      },
+      {
+        "timeMs": 72717,
+        "lane": "center",
+        "strength": 0.144
       },
       {
         "timeMs": 73567,
@@ -5978,12 +6003,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 74266,
         "lane": "center",
-        "strength": 0.508
+        "strength": 0.506
       },
       {
         "timeMs": 75191,
         "lane": "center",
-        "strength": 0.317
+        "strength": 0.309
       },
       {
         "timeMs": 76340,
@@ -5998,7 +6023,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 78839,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.202
       },
       {
         "timeMs": 79164,
@@ -6013,7 +6038,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 82188,
         "lane": "center",
-        "strength": 0.36
+        "strength": 0.357
       },
       {
         "timeMs": 82538,
@@ -6028,790 +6053,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 83562,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.127
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
-  },
-  "audio/bgm/extra/anger1.mp3": {
-    "id": "anger1",
-    "path": "audio/bgm/extra/anger1.mp3",
-    "source": "public/audio/bgm/extra/anger1.mp3",
-    "analyzer": "onset-energy-v2",
-    "durationMs": 51043,
-    "beatIntervalMs": 425,
-    "playbackTrim": {
-      "enabled": false,
-      "startMs": 0,
-      "endMs": 51043,
-      "leadingMs": 0,
-      "trailingMs": 0,
-      "threshold": 0.041737
-    },
-    "noteCount": 63,
-    "notes": [
-      {
-        "timeMs": 125,
-        "lane": "center",
-        "strength": 0.202
-      },
-      {
-        "timeMs": 2374,
-        "lane": "center",
-        "strength": 0.139
-      },
-      {
-        "timeMs": 3124,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 4248,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10645,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 11370,
-        "lane": "center",
-        "strength": 0.22
-      },
-      {
-        "timeMs": 13594,
-        "lane": "center",
-        "strength": 0.167
-      },
-      {
-        "timeMs": 14368,
-        "lane": "center",
-        "strength": 0.167
-      },
-      {
-        "timeMs": 15118,
-        "lane": "center",
-        "strength": 0.122
-      },
-      {
-        "timeMs": 16617,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17642,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 18117,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20466,
-        "lane": "center",
-        "strength": 0.255
-      },
-      {
-        "timeMs": 20816,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26838,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 27188,
-        "lane": "center",
-        "strength": 0.288
-      },
-      {
-        "timeMs": 28962,
-        "lane": "center",
-        "strength": 0.572
-      },
-      {
-        "timeMs": 29312,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 29986,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 31236,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 31786,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32160,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32485,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32760,
-        "lane": "center",
-        "strength": 0.161
-      },
-      {
-        "timeMs": 33110,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 34209,
-        "lane": "center",
-        "strength": 0.249
-      },
-      {
-        "timeMs": 34984,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35309,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 36184,
-        "lane": "center",
-        "strength": 0.442
-      },
-      {
-        "timeMs": 36658,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37133,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37408,
-        "lane": "center",
-        "strength": 0.425
-      },
-      {
-        "timeMs": 37683,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37983,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 38258,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 39107,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 39382,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 40207,
-        "lane": "center",
-        "strength": 0.295
-      },
-      {
-        "timeMs": 40507,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 40981,
-        "lane": "center",
-        "strength": 0.427
-      },
-      {
-        "timeMs": 41256,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41706,
-        "lane": "center",
-        "strength": 0.178
-      },
-      {
-        "timeMs": 42006,
-        "lane": "center",
-        "strength": 0.497
-      },
-      {
-        "timeMs": 42431,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42756,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43205,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43480,
-        "lane": "center",
-        "strength": 0.252
-      },
-      {
-        "timeMs": 43955,
-        "lane": "center",
-        "strength": 0.669
-      },
-      {
-        "timeMs": 44330,
-        "lane": "center",
-        "strength": 0.248
-      },
-      {
-        "timeMs": 44955,
-        "lane": "center",
-        "strength": 0.154
-      },
-      {
-        "timeMs": 45379,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45904,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 46429,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 47029,
-        "lane": "center",
-        "strength": 0.301
-      },
-      {
-        "timeMs": 47329,
-        "lane": "center",
-        "strength": 0.232
-      },
-      {
-        "timeMs": 47628,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 47903,
-        "lane": "center",
-        "strength": 0.206
-      },
-      {
-        "timeMs": 48178,
-        "lane": "center",
-        "strength": 0.53
-      },
-      {
-        "timeMs": 48553,
-        "lane": "center",
-        "strength": 0.481
-      },
-      {
-        "timeMs": 48828,
-        "lane": "center",
-        "strength": 0.317
-      },
-      {
-        "timeMs": 49103,
-        "lane": "center",
-        "strength": 0.552
-      },
-      {
-        "timeMs": 49677,
-        "lane": "center",
-        "strength": 0.34
-      },
-      {
-        "timeMs": 50102,
-        "lane": "center",
-        "strength": 0.192
-      }
-    ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
-  },
-  "audio/bgm/extra/anger2.mp3": {
-    "id": "anger2",
-    "path": "audio/bgm/extra/anger2.mp3",
-    "source": "public/audio/bgm/extra/anger2.mp3",
-    "analyzer": "onset-energy-v2",
-    "durationMs": 60918,
-    "beatIntervalMs": 424,
-    "playbackTrim": {
-      "enabled": false,
-      "startMs": 0,
-      "endMs": 60918,
-      "leadingMs": 0,
-      "trailingMs": 0,
-      "threshold": 0.028511
-    },
-    "noteCount": 85,
-    "notes": [
-      {
-        "timeMs": 6497,
-        "lane": "center",
-        "strength": 0.334
-      },
-      {
-        "timeMs": 7297,
-        "lane": "center",
-        "strength": 0.271
-      },
-      {
-        "timeMs": 8096,
-        "lane": "center",
-        "strength": 0.389
-      },
-      {
-        "timeMs": 8896,
-        "lane": "center",
-        "strength": 0.327
-      },
-      {
-        "timeMs": 9696,
-        "lane": "center",
-        "strength": 0.398
-      },
-      {
-        "timeMs": 10095,
-        "lane": "center",
-        "strength": 0.454
-      },
-      {
-        "timeMs": 12269,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 12894,
-        "lane": "center",
-        "strength": 0.56
-      },
-      {
-        "timeMs": 13694,
-        "lane": "center",
-        "strength": 0.593
-      },
-      {
-        "timeMs": 14019,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 14319,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 14893,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 15593,
-        "lane": "center",
-        "strength": 0.631
-      },
-      {
-        "timeMs": 15893,
-        "lane": "center",
-        "strength": 0.534
-      },
-      {
-        "timeMs": 16493,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 16892,
-        "lane": "center",
-        "strength": 0.376
-      },
-      {
-        "timeMs": 17217,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17492,
-        "lane": "center",
-        "strength": 0.922
-      },
-      {
-        "timeMs": 18092,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 18492,
-        "lane": "center",
-        "strength": 0.516
-      },
-      {
-        "timeMs": 18791,
-        "lane": "center",
-        "strength": 0.631
-      },
-      {
-        "timeMs": 19091,
-        "lane": "center",
-        "strength": 0.705
-      },
-      {
-        "timeMs": 19691,
-        "lane": "center",
-        "strength": 0.223
-      },
-      {
-        "timeMs": 20091,
-        "lane": "center",
-        "strength": 0.569
-      },
-      {
-        "timeMs": 20416,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20691,
-        "lane": "center",
-        "strength": 0.59
-      },
-      {
-        "timeMs": 21290,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 21715,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 21990,
-        "lane": "center",
-        "strength": 0.627
-      },
-      {
-        "timeMs": 22290,
-        "lane": "center",
-        "strength": 0.758
-      },
-      {
-        "timeMs": 22590,
-        "lane": "center",
-        "strength": 0.171
-      },
-      {
-        "timeMs": 22890,
-        "lane": "center",
-        "strength": 0.171
-      },
-      {
-        "timeMs": 23589,
-        "lane": "center",
-        "strength": 0.924
-      },
-      {
-        "timeMs": 23914,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24489,
-        "lane": "center",
-        "strength": 0.158
-      },
-      {
-        "timeMs": 25289,
-        "lane": "center",
-        "strength": 0.335
-      },
-      {
-        "timeMs": 25688,
-        "lane": "center",
-        "strength": 0.755
-      },
-      {
-        "timeMs": 27313,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 29687,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 30486,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 30886,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 31286,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 32485,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 32910,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 33285,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 33885,
-        "lane": "center",
-        "strength": 0.881
-      },
-      {
-        "timeMs": 34284,
-        "lane": "center",
-        "strength": 0.801
-      },
-      {
-        "timeMs": 34584,
-        "lane": "center",
-        "strength": 0.333
-      },
-      {
-        "timeMs": 35059,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 38882,
-        "lane": "center",
-        "strength": 0.393
-      },
-      {
-        "timeMs": 39282,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39682,
-        "lane": "center",
-        "strength": 0.316
-      },
-      {
-        "timeMs": 40082,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 40482,
-        "lane": "center",
-        "strength": 0.285
-      },
-      {
-        "timeMs": 40881,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 41481,
-        "lane": "center",
-        "strength": 0.84
-      },
-      {
-        "timeMs": 42081,
-        "lane": "center",
-        "strength": 0.591
-      },
-      {
-        "timeMs": 42881,
-        "lane": "center",
-        "strength": 0.742
-      },
-      {
-        "timeMs": 43305,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43680,
-        "lane": "center",
-        "strength": 0.459
-      },
-      {
-        "timeMs": 44080,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 44380,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 44680,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 45180,
-        "lane": "center",
-        "strength": 0.494
-      },
-      {
-        "timeMs": 46079,
-        "lane": "center",
-        "strength": 0.203
-      },
-      {
-        "timeMs": 46654,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 47478,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 48103,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 48478,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 48903,
-        "lane": "center",
-        "strength": 0.146
-      },
-      {
-        "timeMs": 49278,
-        "lane": "center",
-        "strength": 0.792
-      },
-      {
-        "timeMs": 49702,
-        "lane": "center",
-        "strength": 0.205
-      },
-      {
-        "timeMs": 49977,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 51302,
-        "lane": "center",
-        "strength": 0.121
-      },
-      {
-        "timeMs": 52101,
-        "lane": "center",
-        "strength": 0.174
-      },
-      {
-        "timeMs": 52901,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 53176,
-        "lane": "center",
-        "strength": 0.17
-      },
-      {
-        "timeMs": 54275,
-        "lane": "center",
-        "strength": 0.651
-      },
-      {
-        "timeMs": 54775,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 56100,
-        "lane": "center",
-        "strength": 0.241
-      },
-      {
-        "timeMs": 56699,
-        "lane": "center",
-        "strength": 0.134
-      },
-      {
-        "timeMs": 57074,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 57774,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 58299,
-        "lane": "center",
-        "strength": 0.432
-      },
-      {
-        "timeMs": 58898,
-        "lane": "center",
-        "strength": 0.187
-      }
-    ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/cry1.mp3": {
     "id": "cry1",
@@ -6826,9 +6071,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 54936,
       "leadingMs": 0,
       "trailingMs": 0,
-      "threshold": 0.061658
+      "threshold": 0.05858
     },
-    "noteCount": 99,
+    "noteCount": 102,
     "notes": [
       {
         "timeMs": 125,
@@ -6863,7 +6108,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2924,
         "lane": "center",
-        "strength": 0.201
+        "strength": 0.214
       },
       {
         "timeMs": 3648,
@@ -6873,12 +6118,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6122,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.249
       },
       {
         "timeMs": 6522,
         "lane": "center",
-        "strength": 0.842
+        "strength": 0.824
       },
       {
         "timeMs": 6922,
@@ -6908,7 +6153,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9696,
         "lane": "center",
-        "strength": 0.586
+        "strength": 0.613
       },
       {
         "timeMs": 10020,
@@ -6918,12 +6163,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12919,
         "lane": "center",
-        "strength": 1
+        "strength": 0.982
       },
       {
         "timeMs": 13319,
         "lane": "center",
-        "strength": 0.242
+        "strength": 0.254
       },
       {
         "timeMs": 13694,
@@ -6933,12 +6178,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14019,
         "lane": "center",
-        "strength": 0.141
+        "strength": 0.185
       },
       {
         "timeMs": 14493,
         "lane": "center",
         "strength": 1
+      },
+      {
+        "timeMs": 14918,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 15293,
@@ -6963,7 +6213,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17717,
         "lane": "center",
-        "strength": 0.29
+        "strength": 0.275
       },
       {
         "timeMs": 18142,
@@ -6981,14 +6231,19 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 19691,
+        "timeMs": 19491,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 19791,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 20091,
         "lane": "center",
-        "strength": 0.943
+        "strength": 0.905
       },
       {
         "timeMs": 20516,
@@ -6998,7 +6253,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20916,
         "lane": "center",
-        "strength": 0.721
+        "strength": 0.729
       },
       {
         "timeMs": 21315,
@@ -7008,12 +6263,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21715,
         "lane": "center",
-        "strength": 0.291
+        "strength": 0.313
       },
       {
         "timeMs": 22115,
         "lane": "center",
-        "strength": 0.232
+        "strength": 0.254
       },
       {
         "timeMs": 22690,
@@ -7023,17 +6278,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22965,
         "lane": "center",
-        "strength": 0.167
+        "strength": 0.18
       },
       {
         "timeMs": 23389,
         "lane": "center",
-        "strength": 0.193
+        "strength": 0.207
       },
       {
         "timeMs": 25314,
         "lane": "center",
-        "strength": 0.969
+        "strength": 0.976
       },
       {
         "timeMs": 25688,
@@ -7043,30 +6298,30 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26488,
         "lane": "center",
-        "strength": 0.362
+        "strength": 0.397
       },
       {
         "timeMs": 26888,
         "lane": "center",
-        "strength": 0.34
+        "strength": 0.333
       },
       {
         "timeMs": 27288,
         "lane": "center",
-        "strength": 0.66
+        "strength": 0.674
       },
       {
         "timeMs": 28187,
         "lane": "center",
-        "strength": 0.354
+        "strength": 0.396
       },
       {
         "timeMs": 28512,
         "lane": "center",
-        "strength": 0.628
+        "strength": 0.607
       },
       {
-        "timeMs": 28912,
+        "timeMs": 28787,
         "lane": "center",
         "strength": 0.12
       },
@@ -7091,19 +6346,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
+        "timeMs": 32985,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
         "timeMs": 33310,
         "lane": "center",
-        "strength": 0.517
+        "strength": 0.52
       },
       {
         "timeMs": 33710,
         "lane": "center",
-        "strength": 0.336
+        "strength": 0.33
       },
       {
         "timeMs": 34110,
         "lane": "center",
-        "strength": 0.213
+        "strength": 0.217
       },
       {
         "timeMs": 34509,
@@ -7133,7 +6393,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36408,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.238
       },
       {
         "timeMs": 36683,
@@ -7153,27 +6413,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38907,
         "lane": "center",
-        "strength": 0.676
+        "strength": 0.69
       },
       {
         "timeMs": 39307,
         "lane": "center",
-        "strength": 0.888
+        "strength": 0.874
       },
       {
         "timeMs": 39707,
         "lane": "center",
-        "strength": 0.271
+        "strength": 0.282
       },
       {
         "timeMs": 40132,
         "lane": "center",
-        "strength": 0.236
+        "strength": 0.197
       },
       {
         "timeMs": 40432,
         "lane": "center",
-        "strength": 0.165
+        "strength": 0.176
       },
       {
         "timeMs": 40981,
@@ -7188,17 +6448,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41681,
         "lane": "center",
-        "strength": 0.749
+        "strength": 0.789
       },
       {
         "timeMs": 42106,
         "lane": "center",
-        "strength": 0.564
+        "strength": 0.561
       },
       {
         "timeMs": 42906,
         "lane": "center",
-        "strength": 0.413
+        "strength": 0.424
       },
       {
         "timeMs": 43305,
@@ -7228,17 +6488,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45304,
         "lane": "center",
-        "strength": 0.471
+        "strength": 0.46
       },
       {
         "timeMs": 45704,
         "lane": "center",
-        "strength": 0.738
+        "strength": 0.774
       },
       {
         "timeMs": 46104,
         "lane": "center",
-        "strength": 0.413
+        "strength": 0.423
       },
       {
         "timeMs": 46429,
@@ -7258,27 +6518,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47703,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.211
       },
       {
         "timeMs": 48028,
         "lane": "center",
-        "strength": 0.391
+        "strength": 0.375
       },
       {
-        "timeMs": 48478,
+        "timeMs": 48428,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 49003,
         "lane": "center",
-        "strength": 0.303
+        "strength": 0.316
       },
       {
         "timeMs": 49677,
         "lane": "center",
-        "strength": 0.122
+        "strength": 0.128
       },
       {
         "timeMs": 50902,
@@ -7288,27 +6548,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51327,
         "lane": "center",
-        "strength": 0.21
+        "strength": 0.224
       },
       {
         "timeMs": 51702,
         "lane": "center",
-        "strength": 0.411
+        "strength": 0.422
       },
       {
         "timeMs": 52101,
         "lane": "center",
-        "strength": 0.314
+        "strength": 0.327
       },
       {
         "timeMs": 52501,
         "lane": "center",
-        "strength": 0.754
+        "strength": 0.748
       },
       {
         "timeMs": 53226,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.245
       },
       {
         "timeMs": 53701,
@@ -7323,10 +6583,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54300,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.126
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/cry2.mp3": {
     "id": "cry2",
@@ -7341,7 +6601,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 48078,
       "leadingMs": 0,
       "trailingMs": 1058,
-      "threshold": 0.093638
+      "threshold": 0.089022
     },
     "noteCount": 94,
     "notes": [
@@ -7353,17 +6613,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 1224,
         "lane": "center",
-        "strength": 0.541
+        "strength": 0.474
       },
       {
         "timeMs": 1599,
         "lane": "center",
-        "strength": 0.299
+        "strength": 0.277
       },
       {
         "timeMs": 1974,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.232
       },
       {
         "timeMs": 2349,
@@ -7373,32 +6633,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2724,
         "lane": "center",
-        "strength": 0.829
+        "strength": 0.826
       },
       {
         "timeMs": 3174,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.123
       },
       {
         "timeMs": 3473,
         "lane": "center",
-        "strength": 0.234
+        "strength": 0.231
       },
       {
         "timeMs": 3848,
         "lane": "center",
-        "strength": 0.665
+        "strength": 0.672
       },
       {
         "timeMs": 4223,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.166
       },
       {
         "timeMs": 4598,
         "lane": "center",
-        "strength": 0.922
+        "strength": 0.894
       },
       {
         "timeMs": 4898,
@@ -7428,12 +6688,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8346,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.401
       },
       {
         "timeMs": 8721,
         "lane": "center",
-        "strength": 0.472
+        "strength": 0.482
       },
       {
         "timeMs": 9096,
@@ -7443,12 +6703,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9846,
         "lane": "center",
-        "strength": 0.628
+        "strength": 0.63
       },
       {
         "timeMs": 10220,
         "lane": "center",
-        "strength": 0.597
+        "strength": 0.595
       },
       {
         "timeMs": 10595,
@@ -7457,6 +6717,11 @@ const RHYTHM_NOTE_MAPS = {
       },
       {
         "timeMs": 11095,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 12120,
         "lane": "center",
         "strength": 0.12
       },
@@ -7488,12 +6753,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14343,
         "lane": "center",
-        "strength": 0.704
+        "strength": 0.733
       },
       {
         "timeMs": 14718,
         "lane": "center",
-        "strength": 0.865
+        "strength": 0.852
       },
       {
         "timeMs": 15118,
@@ -7508,12 +6773,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16218,
         "lane": "center",
-        "strength": 0.615
+        "strength": 0.612
       },
       {
         "timeMs": 16592,
         "lane": "center",
         "strength": 1
+      },
+      {
+        "timeMs": 16917,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 17342,
@@ -7548,7 +6818,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19791,
         "lane": "center",
-        "strength": 0.135
+        "strength": 0.137
       },
       {
         "timeMs": 20366,
@@ -7558,7 +6828,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20716,
         "lane": "center",
-        "strength": 0.972
+        "strength": 0.953
       },
       {
         "timeMs": 21090,
@@ -7568,17 +6838,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21565,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.2
       },
       {
         "timeMs": 21840,
         "lane": "center",
-        "strength": 0.547
+        "strength": 0.544
       },
       {
         "timeMs": 22215,
         "lane": "center",
-        "strength": 0.322
+        "strength": 0.324
       },
       {
         "timeMs": 22590,
@@ -7598,17 +6868,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24864,
         "lane": "center",
-        "strength": 0.191
-      },
-      {
-        "timeMs": 25239,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.174
       },
       {
         "timeMs": 25513,
         "lane": "center",
-        "strength": 0.453
+        "strength": 0.441
       },
       {
         "timeMs": 26288,
@@ -7618,7 +6883,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26738,
         "lane": "center",
-        "strength": 0.733
+        "strength": 0.715
       },
       {
         "timeMs": 27587,
@@ -7638,17 +6903,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29437,
         "lane": "center",
-        "strength": 0.588
+        "strength": 0.598
       },
       {
         "timeMs": 30486,
         "lane": "center",
-        "strength": 0.444
+        "strength": 0.429
       },
       {
         "timeMs": 30861,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.207
       },
       {
         "timeMs": 31161,
@@ -7658,32 +6923,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31611,
         "lane": "center",
-        "strength": 0.702
+        "strength": 0.704
       },
       {
-        "timeMs": 31985,
+        "timeMs": 32110,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32360,
-        "lane": "center",
-        "strength": 0.281
+        "strength": 0.151
       },
       {
         "timeMs": 32635,
         "lane": "center",
-        "strength": 0.127
+        "strength": 0.12
       },
       {
         "timeMs": 33160,
         "lane": "center",
-        "strength": 0.347
+        "strength": 0.341
       },
       {
         "timeMs": 33485,
         "lane": "center",
-        "strength": 0.262
+        "strength": 0.242
       },
       {
         "timeMs": 33860,
@@ -7708,12 +6968,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36483,
         "lane": "center",
-        "strength": 0.183
+        "strength": 0.147
       },
       {
         "timeMs": 36858,
         "lane": "center",
-        "strength": 0.427
+        "strength": 0.461
       },
       {
         "timeMs": 37608,
@@ -7738,17 +6998,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39482,
         "lane": "center",
-        "strength": 0.337
+        "strength": 0.339
       },
       {
         "timeMs": 39857,
         "lane": "center",
-        "strength": 0.94
+        "strength": 0.933
       },
       {
         "timeMs": 40232,
         "lane": "center",
-        "strength": 0.324
+        "strength": 0.327
       },
       {
         "timeMs": 40607,
@@ -7763,7 +7023,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41256,
         "lane": "center",
-        "strength": 0.163
+        "strength": 0.165
       },
       {
         "timeMs": 42181,
@@ -7778,7 +7038,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43355,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.23
       },
       {
         "timeMs": 43855,
@@ -7788,35 +7048,35 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44355,
         "lane": "center",
-        "strength": 0.521
+        "strength": 0.506
       },
       {
         "timeMs": 44730,
         "lane": "center",
-        "strength": 0.602
+        "strength": 0.604
       },
       {
         "timeMs": 45105,
         "lane": "center",
-        "strength": 0.807
+        "strength": 0.814
       },
       {
         "timeMs": 45479,
         "lane": "center",
-        "strength": 0.676
+        "strength": 0.731
       },
       {
         "timeMs": 46229,
         "lane": "center",
-        "strength": 0.973
+        "strength": 1
       },
       {
         "timeMs": 46604,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.397
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/fun1.mp3": {
     "id": "fun1",
@@ -7831,14 +7091,14 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 57887,
       "leadingMs": 0,
       "trailingMs": 0,
-      "threshold": 0.113505
+      "threshold": 0.107716
     },
-    "noteCount": 121,
+    "noteCount": 120,
     "notes": [
       {
         "timeMs": 100,
         "lane": "center",
-        "strength": 0.435
+        "strength": 0.428
       },
       {
         "timeMs": 425,
@@ -7848,12 +7108,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 925,
         "lane": "center",
-        "strength": 0.989
+        "strength": 0.981
       },
       {
         "timeMs": 1424,
         "lane": "center",
-        "strength": 0.881
+        "strength": 0.876
       },
       {
         "timeMs": 1924,
@@ -7866,49 +7126,44 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 2749,
-        "lane": "center",
-        "strength": 0.465
-      },
-      {
         "timeMs": 3099,
         "lane": "center",
-        "strength": 0.173
+        "strength": 0.136
       },
       {
         "timeMs": 3598,
         "lane": "center",
-        "strength": 0.317
+        "strength": 0.297
       },
       {
         "timeMs": 4098,
         "lane": "center",
-        "strength": 0.455
+        "strength": 0.433
       },
       {
         "timeMs": 4598,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.388
       },
       {
         "timeMs": 5098,
         "lane": "center",
-        "strength": 0.131
+        "strength": 0.12
       },
       {
         "timeMs": 5423,
         "lane": "center",
-        "strength": 0.559
+        "strength": 0.562
       },
       {
         "timeMs": 5747,
         "lane": "center",
-        "strength": 0.819
+        "strength": 0.807
       },
       {
         "timeMs": 6372,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.162
       },
       {
         "timeMs": 6772,
@@ -7923,17 +7178,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7771,
         "lane": "center",
-        "strength": 0.249
+        "strength": 0.236
       },
       {
         "timeMs": 8096,
         "lane": "center",
-        "strength": 0.37
+        "strength": 0.363
       },
       {
         "timeMs": 8421,
         "lane": "center",
-        "strength": 0.826
+        "strength": 0.803
       },
       {
         "timeMs": 8921,
@@ -7943,12 +7198,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9421,
         "lane": "center",
-        "strength": 0.929
+        "strength": 0.911
       },
       {
         "timeMs": 9920,
         "lane": "center",
-        "strength": 0.844
+        "strength": 0.829
       },
       {
         "timeMs": 10420,
@@ -7963,22 +7218,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11095,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.399
       },
       {
         "timeMs": 11595,
         "lane": "center",
-        "strength": 0.646
+        "strength": 0.649
       },
       {
         "timeMs": 12095,
         "lane": "center",
-        "strength": 0.732
+        "strength": 0.734
       },
       {
         "timeMs": 12594,
         "lane": "center",
-        "strength": 0.545
+        "strength": 0.56
       },
       {
         "timeMs": 13094,
@@ -7988,57 +7243,57 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13419,
         "lane": "center",
-        "strength": 0.529
+        "strength": 0.547
       },
       {
         "timeMs": 13769,
         "lane": "center",
-        "strength": 0.46
+        "strength": 0.475
       },
       {
         "timeMs": 14269,
         "lane": "center",
-        "strength": 0.357
+        "strength": 0.376
       },
       {
         "timeMs": 14768,
         "lane": "center",
-        "strength": 0.453
+        "strength": 0.437
       },
       {
         "timeMs": 15268,
         "lane": "center",
-        "strength": 0.379
+        "strength": 0.378
       },
       {
         "timeMs": 15768,
         "lane": "center",
-        "strength": 0.362
+        "strength": 0.352
       },
       {
         "timeMs": 16093,
         "lane": "center",
-        "strength": 0.587
+        "strength": 0.58
       },
       {
         "timeMs": 16443,
         "lane": "center",
-        "strength": 0.159
+        "strength": 0.172
       },
       {
         "timeMs": 16942,
         "lane": "center",
-        "strength": 0.139
+        "strength": 0.141
       },
       {
         "timeMs": 17417,
         "lane": "center",
-        "strength": 0.798
+        "strength": 0.785
       },
       {
         "timeMs": 18092,
         "lane": "center",
-        "strength": 0.447
+        "strength": 0.452
       },
       {
         "timeMs": 18442,
@@ -8068,7 +7323,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21090,
         "lane": "center",
-        "strength": 0.853
+        "strength": 0.87
       },
       {
         "timeMs": 21440,
@@ -8083,42 +7338,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22265,
         "lane": "center",
-        "strength": 0.461
+        "strength": 0.467
       },
       {
         "timeMs": 22765,
         "lane": "center",
-        "strength": 0.281
+        "strength": 0.284
       },
       {
         "timeMs": 23264,
         "lane": "center",
-        "strength": 0.37
+        "strength": 0.367
       },
       {
         "timeMs": 23764,
         "lane": "center",
-        "strength": 0.427
+        "strength": 0.444
       },
       {
         "timeMs": 24439,
         "lane": "center",
-        "strength": 0.234
+        "strength": 0.241
       },
       {
         "timeMs": 24989,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.125
       },
       {
         "timeMs": 25264,
         "lane": "center",
-        "strength": 0.448
+        "strength": 0.445
       },
       {
         "timeMs": 25938,
         "lane": "center",
-        "strength": 0.27
+        "strength": 0.286
       },
       {
         "timeMs": 26438,
@@ -8128,7 +7383,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26763,
         "lane": "center",
-        "strength": 0.507
+        "strength": 0.509
       },
       {
         "timeMs": 27088,
@@ -8143,7 +7398,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27937,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.243
       },
       {
         "timeMs": 29087,
@@ -8153,27 +7408,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29437,
         "lane": "center",
-        "strength": 0.146
+        "strength": 0.152
       },
       {
         "timeMs": 29761,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.273
       },
       {
         "timeMs": 30261,
         "lane": "center",
-        "strength": 0.636
+        "strength": 0.639
       },
       {
         "timeMs": 30611,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.167
       },
       {
         "timeMs": 31261,
         "lane": "center",
-        "strength": 0.887
+        "strength": 0.857
       },
       {
         "timeMs": 31761,
@@ -8183,7 +7438,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32085,
         "lane": "center",
-        "strength": 0.613
+        "strength": 0.616
       },
       {
         "timeMs": 32435,
@@ -8193,22 +7448,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32935,
         "lane": "center",
-        "strength": 0.319
+        "strength": 0.342
       },
       {
         "timeMs": 33260,
         "lane": "center",
-        "strength": 0.585
+        "strength": 0.586
       },
       {
         "timeMs": 33935,
         "lane": "center",
-        "strength": 0.311
+        "strength": 0.298
       },
       {
         "timeMs": 34434,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.135
+      },
+      {
+        "timeMs": 35334,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 35609,
@@ -8218,17 +7478,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35934,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.237
       },
       {
         "timeMs": 36758,
         "lane": "center",
-        "strength": 0.451
+        "strength": 0.455
       },
       {
         "timeMs": 37433,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.138
       },
       {
         "timeMs": 37758,
@@ -8243,7 +7503,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38607,
         "lane": "center",
-        "strength": 0.158
+        "strength": 0.168
       },
       {
         "timeMs": 39257,
@@ -8258,12 +7518,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40082,
         "lane": "center",
-        "strength": 0.47
+        "strength": 0.477
       },
       {
         "timeMs": 40432,
         "lane": "center",
-        "strength": 0.344
+        "strength": 0.337
       },
       {
         "timeMs": 40931,
@@ -8273,22 +7533,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41256,
         "lane": "center",
-        "strength": 0.444
+        "strength": 0.44
       },
       {
         "timeMs": 41931,
         "lane": "center",
-        "strength": 0.392
+        "strength": 0.42
       },
       {
         "timeMs": 42431,
         "lane": "center",
-        "strength": 0.612
+        "strength": 0.606
       },
       {
         "timeMs": 42756,
         "lane": "center",
-        "strength": 0.511
+        "strength": 0.53
       },
       {
         "timeMs": 43605,
@@ -8298,7 +7558,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43930,
         "lane": "center",
-        "strength": 0.632
+        "strength": 0.622
       },
       {
         "timeMs": 44605,
@@ -8308,7 +7568,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45429,
         "lane": "center",
-        "strength": 0.21
+        "strength": 0.213
       },
       {
         "timeMs": 45754,
@@ -8323,7 +7583,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46604,
         "lane": "center",
-        "strength": 0.262
+        "strength": 0.264
       },
       {
         "timeMs": 47254,
@@ -8338,12 +7598,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48103,
         "lane": "center",
-        "strength": 0.159
+        "strength": 0.165
       },
       {
         "timeMs": 48428,
         "lane": "center",
-        "strength": 0.579
+        "strength": 0.578
       },
       {
         "timeMs": 48928,
@@ -8363,7 +7623,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50427,
         "lane": "center",
-        "strength": 0.678
+        "strength": 0.648
       },
       {
         "timeMs": 50777,
@@ -8373,22 +7633,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51102,
         "lane": "center",
-        "strength": 0.277
+        "strength": 0.286
       },
       {
         "timeMs": 51602,
         "lane": "center",
-        "strength": 0.641
-      },
-      {
-        "timeMs": 52101,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.634
       },
       {
         "timeMs": 52601,
         "lane": "center",
-        "strength": 0.668
+        "strength": 0.689
       },
       {
         "timeMs": 53101,
@@ -8398,7 +7653,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 53426,
         "lane": "center",
-        "strength": 0.494
+        "strength": 0.493
       },
       {
         "timeMs": 53751,
@@ -8408,12 +7663,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54600,
         "lane": "center",
-        "strength": 0.387
+        "strength": 0.38
       },
       {
-        "timeMs": 55425,
+        "timeMs": 55275,
         "lane": "center",
-        "strength": 0.512
+        "strength": 0.12
       },
       {
         "timeMs": 55750,
@@ -8423,7 +7678,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56100,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.218
       },
       {
         "timeMs": 56424,
@@ -8436,472 +7691,12 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 57424,
+        "timeMs": 57274,
         "lane": "center",
-        "strength": 0.775
+        "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
-  },
-  "audio/bgm/extra/fun2.mp3": {
-    "id": "fun2",
-    "path": "audio/bgm/extra/fun2.mp3",
-    "source": "public/audio/bgm/extra/fun2.mp3",
-    "analyzer": "onset-energy-v2",
-    "durationMs": 56268,
-    "beatIntervalMs": 400,
-    "playbackTrim": {
-      "enabled": false,
-      "startMs": 0,
-      "endMs": 56268,
-      "leadingMs": 0,
-      "trailingMs": 0,
-      "threshold": 0.01752
-    },
-    "noteCount": 88,
-    "notes": [
-      {
-        "timeMs": 50,
-        "lane": "center",
-        "strength": 0.465
-      },
-      {
-        "timeMs": 450,
-        "lane": "center",
-        "strength": 0.149
-      },
-      {
-        "timeMs": 850,
-        "lane": "center",
-        "strength": 0.246
-      },
-      {
-        "timeMs": 1249,
-        "lane": "center",
-        "strength": 0.121
-      },
-      {
-        "timeMs": 1649,
-        "lane": "center",
-        "strength": 0.203
-      },
-      {
-        "timeMs": 2049,
-        "lane": "center",
-        "strength": 0.144
-      },
-      {
-        "timeMs": 2449,
-        "lane": "center",
-        "strength": 0.195
-      },
-      {
-        "timeMs": 3249,
-        "lane": "center",
-        "strength": 0.211
-      },
-      {
-        "timeMs": 3648,
-        "lane": "center",
-        "strength": 0.145
-      },
-      {
-        "timeMs": 4048,
-        "lane": "center",
-        "strength": 0.192
-      },
-      {
-        "timeMs": 4448,
-        "lane": "center",
-        "strength": 0.173
-      },
-      {
-        "timeMs": 5048,
-        "lane": "center",
-        "strength": 0.204
-      },
-      {
-        "timeMs": 5448,
-        "lane": "center",
-        "strength": 0.159
-      },
-      {
-        "timeMs": 6847,
-        "lane": "center",
-        "strength": 0.169
-      },
-      {
-        "timeMs": 7272,
-        "lane": "center",
-        "strength": 0.193
-      },
-      {
-        "timeMs": 7572,
-        "lane": "center",
-        "strength": 0.215
-      },
-      {
-        "timeMs": 8071,
-        "lane": "center",
-        "strength": 0.399
-      },
-      {
-        "timeMs": 8871,
-        "lane": "center",
-        "strength": 0.543
-      },
-      {
-        "timeMs": 9171,
-        "lane": "center",
-        "strength": 0.363
-      },
-      {
-        "timeMs": 9671,
-        "lane": "center",
-        "strength": 0.317
-      },
-      {
-        "timeMs": 10470,
-        "lane": "center",
-        "strength": 0.29
-      },
-      {
-        "timeMs": 10870,
-        "lane": "center",
-        "strength": 0.527
-      },
-      {
-        "timeMs": 12869,
-        "lane": "center",
-        "strength": 0.594
-      },
-      {
-        "timeMs": 13269,
-        "lane": "center",
-        "strength": 0.351
-      },
-      {
-        "timeMs": 13669,
-        "lane": "center",
-        "strength": 0.567
-      },
-      {
-        "timeMs": 13969,
-        "lane": "center",
-        "strength": 0.587
-      },
-      {
-        "timeMs": 14269,
-        "lane": "center",
-        "strength": 0.441
-      },
-      {
-        "timeMs": 14868,
-        "lane": "center",
-        "strength": 0.316
-      },
-      {
-        "timeMs": 15268,
-        "lane": "center",
-        "strength": 0.545
-      },
-      {
-        "timeMs": 15568,
-        "lane": "center",
-        "strength": 0.435
-      },
-      {
-        "timeMs": 15868,
-        "lane": "center",
-        "strength": 0.495
-      },
-      {
-        "timeMs": 16468,
-        "lane": "center",
-        "strength": 0.516
-      },
-      {
-        "timeMs": 16867,
-        "lane": "center",
-        "strength": 0.44
-      },
-      {
-        "timeMs": 17167,
-        "lane": "center",
-        "strength": 0.596
-      },
-      {
-        "timeMs": 17467,
-        "lane": "center",
-        "strength": 0.597
-      },
-      {
-        "timeMs": 17867,
-        "lane": "center",
-        "strength": 0.212
-      },
-      {
-        "timeMs": 18467,
-        "lane": "center",
-        "strength": 0.6
-      },
-      {
-        "timeMs": 18766,
-        "lane": "center",
-        "strength": 0.58
-      },
-      {
-        "timeMs": 19066,
-        "lane": "center",
-        "strength": 0.542
-      },
-      {
-        "timeMs": 19666,
-        "lane": "center",
-        "strength": 0.48
-      },
-      {
-        "timeMs": 20066,
-        "lane": "center",
-        "strength": 0.521
-      },
-      {
-        "timeMs": 20366,
-        "lane": "center",
-        "strength": 0.444
-      },
-      {
-        "timeMs": 20666,
-        "lane": "center",
-        "strength": 0.348
-      },
-      {
-        "timeMs": 21065,
-        "lane": "center",
-        "strength": 0.134
-      },
-      {
-        "timeMs": 21465,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22090,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22465,
-        "lane": "center",
-        "strength": 0.312
-      },
-      {
-        "timeMs": 23065,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 23564,
-        "lane": "center",
-        "strength": 0.709
-      },
-      {
-        "timeMs": 24064,
-        "lane": "center",
-        "strength": 0.62
-      },
-      {
-        "timeMs": 24464,
-        "lane": "center",
-        "strength": 0.698
-      },
-      {
-        "timeMs": 24864,
-        "lane": "center",
-        "strength": 0.77
-      },
-      {
-        "timeMs": 25164,
-        "lane": "center",
-        "strength": 0.584
-      },
-      {
-        "timeMs": 25563,
-        "lane": "center",
-        "strength": 0.169
-      },
-      {
-        "timeMs": 35259,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 35659,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 36359,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 36658,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 37258,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 37958,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38258,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38857,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39257,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 40057,
-        "lane": "center",
-        "strength": 0.984
-      },
-      {
-        "timeMs": 40457,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 41181,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41606,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42056,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42481,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42781,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43655,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 44205,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 44855,
-        "lane": "center",
-        "strength": 0.854
-      },
-      {
-        "timeMs": 45279,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 46279,
-        "lane": "center",
-        "strength": 0.195
-      },
-      {
-        "timeMs": 47279,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 48078,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 48453,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 49053,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 49652,
-        "lane": "center",
-        "strength": 0.757
-      },
-      {
-        "timeMs": 50252,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 51652,
-        "lane": "center",
-        "strength": 0.992
-      },
-      {
-        "timeMs": 52076,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 52376,
-        "lane": "center",
-        "strength": 0.221
-      },
-      {
-        "timeMs": 52676,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 53251,
-        "lane": "center",
-        "strength": 0.812
-      },
-      {
-        "timeMs": 53676,
-        "lane": "center",
-        "strength": 0.173
-      },
-      {
-        "timeMs": 54050,
-        "lane": "center",
-        "strength": 0.926
-      }
-    ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/joy1.mp3": {
     "id": "joy1",
@@ -8916,14 +7711,14 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 44680,
       "leadingMs": 0,
       "trailingMs": 695,
-      "threshold": 0.081471
+      "threshold": 0.077894
     },
     "noteCount": 91,
     "notes": [
       {
         "timeMs": 100,
         "lane": "center",
-        "strength": 0.624
+        "strength": 0.612
       },
       {
         "timeMs": 700,
@@ -8933,7 +7728,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 1149,
         "lane": "center",
-        "strength": 0.222
+        "strength": 0.232
       },
       {
         "timeMs": 1599,
@@ -8943,7 +7738,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2049,
         "lane": "center",
-        "strength": 0.399
+        "strength": 0.4
       },
       {
         "timeMs": 2349,
@@ -8953,17 +7748,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3099,
         "lane": "center",
-        "strength": 0.385
+        "strength": 0.388
       },
       {
         "timeMs": 3698,
         "lane": "center",
-        "strength": 0.676
+        "strength": 0.664
       },
       {
         "timeMs": 4448,
         "lane": "center",
-        "strength": 0.479
+        "strength": 0.483
       },
       {
         "timeMs": 4898,
@@ -8973,7 +7768,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5498,
         "lane": "center",
-        "strength": 0.265
+        "strength": 0.246
       },
       {
         "timeMs": 5947,
@@ -8988,52 +7783,52 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6747,
         "lane": "center",
-        "strength": 0.189
+        "strength": 0.186
       },
       {
         "timeMs": 7597,
         "lane": "center",
-        "strength": 0.441
+        "strength": 0.44
       },
       {
         "timeMs": 8196,
         "lane": "center",
-        "strength": 0.3
+        "strength": 0.282
       },
       {
         "timeMs": 8496,
         "lane": "center",
-        "strength": 0.301
+        "strength": 0.338
       },
       {
         "timeMs": 9096,
         "lane": "center",
-        "strength": 0.243
+        "strength": 0.241
       },
       {
         "timeMs": 10595,
         "lane": "center",
-        "strength": 0.459
+        "strength": 0.451
       },
       {
         "timeMs": 11195,
         "lane": "center",
-        "strength": 0.453
+        "strength": 0.434
       },
       {
         "timeMs": 11795,
         "lane": "center",
-        "strength": 0.492
+        "strength": 0.486
       },
       {
         "timeMs": 12394,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.151
       },
       {
         "timeMs": 12994,
         "lane": "center",
-        "strength": 0.482
+        "strength": 0.483
       },
       {
         "timeMs": 13894,
@@ -9043,37 +7838,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14493,
         "lane": "center",
-        "strength": 0.765
+        "strength": 0.75
       },
       {
         "timeMs": 14793,
         "lane": "center",
-        "strength": 0.262
+        "strength": 0.266
       },
       {
         "timeMs": 15993,
         "lane": "center",
-        "strength": 0.68
+        "strength": 0.674
       },
       {
         "timeMs": 16592,
         "lane": "center",
-        "strength": 0.402
+        "strength": 0.395
       },
       {
         "timeMs": 16892,
         "lane": "center",
-        "strength": 0.182
+        "strength": 0.19
       },
       {
         "timeMs": 17192,
         "lane": "center",
-        "strength": 0.611
+        "strength": 0.61
       },
       {
         "timeMs": 17492,
         "lane": "center",
-        "strength": 0.515
+        "strength": 0.512
       },
       {
         "timeMs": 18692,
@@ -9083,17 +7878,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18991,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.156
       },
       {
         "timeMs": 19666,
         "lane": "center",
-        "strength": 0.317
+        "strength": 0.323
       },
       {
         "timeMs": 19966,
         "lane": "center",
-        "strength": 0.715
+        "strength": 0.69
       },
       {
         "timeMs": 20491,
@@ -9103,12 +7898,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20816,
         "lane": "center",
-        "strength": 0.397
+        "strength": 0.378
       },
       {
         "timeMs": 21090,
         "lane": "center",
-        "strength": 0.95
+        "strength": 0.914
       },
       {
         "timeMs": 21690,
@@ -9143,12 +7938,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24089,
         "lane": "center",
-        "strength": 0.745
+        "strength": 0.733
       },
       {
         "timeMs": 24389,
         "lane": "center",
-        "strength": 0.293
+        "strength": 0.274
       },
       {
         "timeMs": 24689,
@@ -9158,7 +7953,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24989,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.123
       },
       {
         "timeMs": 25289,
@@ -9168,7 +7963,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25588,
         "lane": "center",
-        "strength": 0.377
+        "strength": 0.358
       },
       {
         "timeMs": 25888,
@@ -9178,7 +7973,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26538,
         "lane": "center",
-        "strength": 0.342
+        "strength": 0.361
       },
       {
         "timeMs": 27088,
@@ -9188,7 +7983,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27388,
         "lane": "center",
-        "strength": 0.7
+        "strength": 0.72
       },
       {
         "timeMs": 27687,
@@ -9198,12 +7993,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28137,
         "lane": "center",
-        "strength": 0.194
+        "strength": 0.197
       },
       {
-        "timeMs": 28487,
+        "timeMs": 28412,
         "lane": "center",
-        "strength": 0.645
+        "strength": 0.12
       },
       {
         "timeMs": 29262,
@@ -9213,17 +8008,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29537,
         "lane": "center",
-        "strength": 0.622
+        "strength": 0.585
       },
       {
         "timeMs": 30136,
         "lane": "center",
-        "strength": 0.683
+        "strength": 0.66
       },
       {
         "timeMs": 30511,
         "lane": "center",
-        "strength": 0.196
+        "strength": 0.191
       },
       {
         "timeMs": 30811,
@@ -9238,7 +8033,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31586,
         "lane": "center",
-        "strength": 0.175
+        "strength": 0.16
       },
       {
         "timeMs": 31886,
@@ -9248,12 +8043,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32235,
         "lane": "center",
-        "strength": 0.177
+        "strength": 0.215
       },
       {
         "timeMs": 32560,
         "lane": "center",
-        "strength": 0.415
+        "strength": 0.411
       },
       {
         "timeMs": 32910,
@@ -9263,7 +8058,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33310,
         "lane": "center",
-        "strength": 0.742
+        "strength": 0.744
       },
       {
         "timeMs": 33685,
@@ -9273,7 +8068,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33985,
         "lane": "center",
-        "strength": 0.325
+        "strength": 0.329
       },
       {
         "timeMs": 34284,
@@ -9303,7 +8098,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36383,
         "lane": "center",
-        "strength": 0.212
+        "strength": 0.238
       },
       {
         "timeMs": 36683,
@@ -9318,7 +8113,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37583,
         "lane": "center",
-        "strength": 0.655
+        "strength": 0.631
       },
       {
         "timeMs": 37883,
@@ -9328,7 +8123,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38333,
         "lane": "center",
-        "strength": 0.18
+        "strength": 0.17
       },
       {
         "timeMs": 38782,
@@ -9338,37 +8133,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39382,
         "lane": "center",
-        "strength": 0.165
+        "strength": 0.164
       },
       {
         "timeMs": 39682,
         "lane": "center",
-        "strength": 0.97
+        "strength": 0.956
       },
       {
         "timeMs": 39982,
         "lane": "center",
-        "strength": 0.715
+        "strength": 0.72
       },
       {
         "timeMs": 40407,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.12
       },
       {
         "timeMs": 41031,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.135
       },
       {
         "timeMs": 41506,
         "lane": "center",
-        "strength": 0.833
+        "strength": 0.876
       },
       {
         "timeMs": 41856,
         "lane": "center",
-        "strength": 0.123
+        "strength": 0.126
       },
       {
         "timeMs": 42206,
@@ -9376,7 +8171,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/joy2.mp3": {
     "id": "joy2",
@@ -9391,9 +8186,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 43381,
       "leadingMs": 650,
       "trailingMs": 2516,
-      "threshold": 0.096574
+      "threshold": 0.091477
     },
-    "noteCount": 70,
+    "noteCount": 69,
     "notes": [
       {
         "timeMs": 1000,
@@ -9403,7 +8198,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 1799,
         "lane": "center",
-        "strength": 0.356
+        "strength": 0.361
       },
       {
         "timeMs": 2549,
@@ -9413,22 +8208,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2824,
         "lane": "center",
-        "strength": 0.309
+        "strength": 0.324
       },
       {
         "timeMs": 3823,
         "lane": "center",
-        "strength": 0.414
+        "strength": 0.435
       },
       {
         "timeMs": 4323,
         "lane": "center",
-        "strength": 0.915
+        "strength": 0.945
       },
       {
         "timeMs": 4823,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.156
       },
       {
         "timeMs": 5572,
@@ -9448,7 +8243,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7072,
         "lane": "center",
-        "strength": 0.981
+        "strength": 0.961
       },
       {
         "timeMs": 8571,
@@ -9458,32 +8253,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9071,
         "lane": "center",
-        "strength": 1
+        "strength": 0.998
       },
       {
         "timeMs": 9571,
         "lane": "center",
-        "strength": 0.141
+        "strength": 0.12
       },
       {
         "timeMs": 10820,
         "lane": "center",
-        "strength": 0.633
+        "strength": 0.651
       },
       {
         "timeMs": 11570,
         "lane": "center",
-        "strength": 1
+        "strength": 0.998
       },
       {
-        "timeMs": 12319,
+        "timeMs": 12569,
         "lane": "center",
-        "strength": 1
+        "strength": 0.701
       },
       {
-        "timeMs": 12819,
+        "timeMs": 13069,
         "lane": "center",
-        "strength": 1
+        "strength": 0.787
       },
       {
         "timeMs": 14069,
@@ -9508,12 +8303,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16567,
         "lane": "center",
-        "strength": 0.781
+        "strength": 0.762
       },
       {
         "timeMs": 17642,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.133
       },
       {
         "timeMs": 17942,
@@ -9523,7 +8318,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18242,
         "lane": "center",
-        "strength": 0.257
+        "strength": 0.282
       },
       {
         "timeMs": 18717,
@@ -9543,7 +8338,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20041,
         "lane": "center",
-        "strength": 0.21
+        "strength": 0.222
       },
       {
         "timeMs": 20816,
@@ -9553,7 +8348,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21315,
         "lane": "center",
-        "strength": 0.604
+        "strength": 0.606
       },
       {
         "timeMs": 21915,
@@ -9563,47 +8358,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22315,
         "lane": "center",
-        "strength": 0.657
+        "strength": 0.671
       },
       {
         "timeMs": 22840,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.126
       },
       {
         "timeMs": 23314,
         "lane": "center",
-        "strength": 0.761
+        "strength": 0.795
       },
       {
         "timeMs": 23739,
         "lane": "center",
-        "strength": 0.28
+        "strength": 0.297
       },
       {
         "timeMs": 24239,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.12
       },
       {
-        "timeMs": 24789,
+        "timeMs": 24664,
         "lane": "center",
-        "strength": 0.912
+        "strength": 0.12
       },
       {
         "timeMs": 25089,
         "lane": "center",
-        "strength": 0.671
+        "strength": 0.697
       },
       {
         "timeMs": 26088,
         "lane": "center",
-        "strength": 0.276
+        "strength": 0.236
       },
       {
         "timeMs": 27113,
         "lane": "center",
-        "strength": 0.146
+        "strength": 0.12
       },
       {
         "timeMs": 27562,
@@ -9613,7 +8408,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27837,
         "lane": "center",
-        "strength": 0.323
+        "strength": 0.333
       },
       {
         "timeMs": 28512,
@@ -9623,7 +8418,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29212,
         "lane": "center",
-        "strength": 0.174
+        "strength": 0.195
       },
       {
         "timeMs": 29537,
@@ -9638,7 +8433,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30311,
         "lane": "center",
-        "strength": 0.299
+        "strength": 0.305
       },
       {
         "timeMs": 30861,
@@ -9653,32 +8448,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31911,
         "lane": "center",
-        "strength": 0.397
+        "strength": 0.411
       },
       {
         "timeMs": 32410,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.165
       },
       {
         "timeMs": 32985,
         "lane": "center",
-        "strength": 0.175
+        "strength": 0.179
       },
       {
         "timeMs": 34085,
         "lane": "center",
-        "strength": 0.165
+        "strength": 0.16
       },
       {
         "timeMs": 34584,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.35
       },
       {
         "timeMs": 35084,
         "lane": "center",
-        "strength": 0.697
+        "strength": 0.688
       },
       {
         "timeMs": 35609,
@@ -9688,7 +8483,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35884,
         "lane": "center",
-        "strength": 0.601
+        "strength": 0.567
       },
       {
         "timeMs": 36408,
@@ -9703,12 +8498,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37308,
         "lane": "center",
-        "strength": 0.793
+        "strength": 0.782
       },
       {
         "timeMs": 37808,
         "lane": "center",
-        "strength": 0.283
+        "strength": 0.278
       },
       {
         "timeMs": 38208,
@@ -9718,515 +8513,30 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38982,
         "lane": "center",
-        "strength": 0.464
+        "strength": 0.476
       },
       {
         "timeMs": 39307,
         "lane": "center",
-        "strength": 0.429
+        "strength": 0.514
       },
       {
         "timeMs": 39982,
         "lane": "center",
-        "strength": 0.193
+        "strength": 0.171
       },
       {
         "timeMs": 40407,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.136
       },
       {
         "timeMs": 41081,
         "lane": "center",
-        "strength": 0.646
-      },
-      {
-        "timeMs": 42231,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.559
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
-  },
-  "audio/bgm/extra/sorrow1.mp3": {
-    "id": "sorrow1",
-    "path": "audio/bgm/extra/sorrow1.mp3",
-    "source": "public/audio/bgm/extra/sorrow1.mp3",
-    "analyzer": "onset-energy-v2",
-    "durationMs": 60108,
-    "beatIntervalMs": 350,
-    "playbackTrim": {
-      "enabled": true,
-      "startMs": 0,
-      "endMs": 59798,
-      "leadingMs": 0,
-      "trailingMs": 310,
-      "threshold": 0.04992
-    },
-    "noteCount": 92,
-    "notes": [
-      {
-        "timeMs": 125,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 2749,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 9146,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10620,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 13594,
-        "lane": "center",
-        "strength": 0.191
-      },
-      {
-        "timeMs": 18866,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20716,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 21115,
-        "lane": "center",
-        "strength": 0.259
-      },
-      {
-        "timeMs": 24064,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 24339,
-        "lane": "center",
-        "strength": 0.328
-      },
-      {
-        "timeMs": 24614,
-        "lane": "center",
-        "strength": 0.127
-      },
-      {
-        "timeMs": 25189,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 25463,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 25813,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26213,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26563,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26988,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 27413,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 27737,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 28187,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 28462,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 28737,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 29087,
-        "lane": "center",
-        "strength": 0.276
-      },
-      {
-        "timeMs": 29462,
-        "lane": "center",
-        "strength": 0.129
-      },
-      {
-        "timeMs": 29961,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 30261,
-        "lane": "center",
-        "strength": 0.203
-      },
-      {
-        "timeMs": 30536,
-        "lane": "center",
-        "strength": 0.173
-      },
-      {
-        "timeMs": 31186,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 31736,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32135,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32410,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32685,
-        "lane": "center",
-        "strength": 0.14
-      },
-      {
-        "timeMs": 32985,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 34284,
-        "lane": "center",
-        "strength": 0.49
-      },
-      {
-        "timeMs": 34934,
-        "lane": "center",
-        "strength": 0.686
-      },
-      {
-        "timeMs": 36059,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 36433,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 36758,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37033,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37308,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37933,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38258,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 39057,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39382,
-        "lane": "center",
-        "strength": 0.3
-      },
-      {
-        "timeMs": 39657,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 40007,
-        "lane": "center",
-        "strength": 0.999
-      },
-      {
-        "timeMs": 40282,
-        "lane": "center",
-        "strength": 0.414
-      },
-      {
-        "timeMs": 40557,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 40931,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 41256,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41681,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42081,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42431,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42756,
-        "lane": "center",
-        "strength": 0.221
-      },
-      {
-        "timeMs": 43580,
-        "lane": "center",
-        "strength": 0.135
-      },
-      {
-        "timeMs": 43955,
-        "lane": "center",
-        "strength": 0.173
-      },
-      {
-        "timeMs": 44305,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 44680,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 45279,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45804,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 46379,
-        "lane": "center",
-        "strength": 0.289
-      },
-      {
-        "timeMs": 47204,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 47728,
-        "lane": "center",
-        "strength": 0.131
-      },
-      {
-        "timeMs": 48003,
-        "lane": "center",
-        "strength": 0.201
-      },
-      {
-        "timeMs": 48278,
-        "lane": "center",
-        "strength": 0.132
-      },
-      {
-        "timeMs": 48553,
-        "lane": "center",
-        "strength": 0.176
-      },
-      {
-        "timeMs": 49003,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 49403,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 49752,
-        "lane": "center",
-        "strength": 0.226
-      },
-      {
-        "timeMs": 50152,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 50427,
-        "lane": "center",
-        "strength": 0.185
-      },
-      {
-        "timeMs": 50702,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 51002,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 51352,
-        "lane": "center",
-        "strength": 0.252
-      },
-      {
-        "timeMs": 51627,
-        "lane": "center",
-        "strength": 0.141
-      },
-      {
-        "timeMs": 52201,
-        "lane": "center",
-        "strength": 0.332
-      },
-      {
-        "timeMs": 52626,
-        "lane": "center",
-        "strength": 0.125
-      },
-      {
-        "timeMs": 52926,
-        "lane": "center",
-        "strength": 0.518
-      },
-      {
-        "timeMs": 53451,
-        "lane": "center",
-        "strength": 0.154
-      },
-      {
-        "timeMs": 53726,
-        "lane": "center",
-        "strength": 0.156
-      },
-      {
-        "timeMs": 54175,
-        "lane": "center",
-        "strength": 0.53
-      },
-      {
-        "timeMs": 54475,
-        "lane": "center",
-        "strength": 0.18
-      },
-      {
-        "timeMs": 54750,
-        "lane": "center",
-        "strength": 0.212
-      },
-      {
-        "timeMs": 55200,
-        "lane": "center",
-        "strength": 0.406
-      },
-      {
-        "timeMs": 55525,
-        "lane": "center",
-        "strength": 0.131
-      },
-      {
-        "timeMs": 55875,
-        "lane": "center",
-        "strength": 0.312
-      },
-      {
-        "timeMs": 56424,
-        "lane": "center",
-        "strength": 0.212
-      },
-      {
-        "timeMs": 56899,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 57999,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 58274,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 58573,
-        "lane": "center",
-        "strength": 0.205
-      },
-      {
-        "timeMs": 58948,
-        "lane": "center",
-        "strength": 0.308
-      }
-    ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/sorrow2.mp3": {
     "id": "sorrow2",
@@ -10241,49 +8551,44 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 48703,
       "leadingMs": 0,
       "trailingMs": 1321,
-      "threshold": 0.096799
+      "threshold": 0.092394
     },
-    "noteCount": 79,
+    "noteCount": 78,
     "notes": [
       {
-        "timeMs": 175,
+        "timeMs": 125,
         "lane": "center",
-        "strength": 0.585
+        "strength": 0.193
       },
       {
         "timeMs": 875,
         "lane": "center",
-        "strength": 0.309
+        "strength": 0.291
       },
       {
         "timeMs": 2774,
         "lane": "center",
-        "strength": 0.128
-      },
-      {
-        "timeMs": 3149,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.146
       },
       {
         "timeMs": 3873,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.33
       },
       {
         "timeMs": 4398,
         "lane": "center",
-        "strength": 0.515
+        "strength": 0.499
       },
       {
         "timeMs": 4698,
         "lane": "center",
-        "strength": 0.182
+        "strength": 0.181
       },
       {
         "timeMs": 5098,
         "lane": "center",
-        "strength": 0.131
+        "strength": 0.123
       },
       {
         "timeMs": 5398,
@@ -10298,12 +8603,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6897,
         "lane": "center",
-        "strength": 0.343
+        "strength": 0.327
+      },
+      {
+        "timeMs": 7647,
+        "lane": "center",
+        "strength": 0.454
       },
       {
         "timeMs": 9146,
         "lane": "center",
-        "strength": 0.993
+        "strength": 0.959
       },
       {
         "timeMs": 10120,
@@ -10313,7 +8623,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10495,
         "lane": "center",
-        "strength": 0.514
+        "strength": 0.527
       },
       {
         "timeMs": 11145,
@@ -10326,14 +8636,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 12269,
+        "timeMs": 12144,
         "lane": "center",
-        "strength": 0.163
+        "strength": 0.12
       },
       {
         "timeMs": 13519,
         "lane": "center",
-        "strength": 0.13
+        "strength": 0.137
       },
       {
         "timeMs": 14393,
@@ -10348,45 +8658,40 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15893,
         "lane": "center",
-        "strength": 0.725
+        "strength": 0.712
       },
       {
         "timeMs": 18142,
         "lane": "center",
-        "strength": 0.184
+        "strength": 0.252
       },
       {
-        "timeMs": 19241,
+        "timeMs": 19366,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 19641,
         "lane": "center",
-        "strength": 0.123
+        "strength": 0.12
       },
       {
         "timeMs": 20391,
         "lane": "center",
-        "strength": 0.47
+        "strength": 0.604
       },
       {
         "timeMs": 21515,
         "lane": "center",
-        "strength": 0.205
+        "strength": 0.244
       },
       {
         "timeMs": 21965,
         "lane": "center",
-        "strength": 0.912
+        "strength": 0.958
       },
       {
         "timeMs": 22490,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22840,
         "lane": "center",
         "strength": 0.12
       },
@@ -10398,22 +8703,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24464,
         "lane": "center",
-        "strength": 0.293
+        "strength": 0.317
       },
       {
         "timeMs": 24839,
         "lane": "center",
-        "strength": 0.923
+        "strength": 0.936
       },
       {
         "timeMs": 25513,
         "lane": "center",
-        "strength": 0.721
+        "strength": 0.741
       },
       {
         "timeMs": 26188,
         "lane": "center",
-        "strength": 0.201
+        "strength": 0.134
       },
       {
         "timeMs": 27088,
@@ -10433,22 +8738,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28762,
         "lane": "center",
-        "strength": 0.312
+        "strength": 0.381
       },
       {
         "timeMs": 29287,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.297
       },
       {
         "timeMs": 29587,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.131
       },
       {
         "timeMs": 30086,
         "lane": "center",
-        "strength": 0.424
+        "strength": 0.376
       },
       {
         "timeMs": 30461,
@@ -10458,7 +8763,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30836,
         "lane": "center",
-        "strength": 0.235
+        "strength": 0.325
       },
       {
         "timeMs": 31261,
@@ -10468,12 +8773,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31536,
         "lane": "center",
-        "strength": 0.649
+        "strength": 0.703
       },
       {
         "timeMs": 31911,
         "lane": "center",
-        "strength": 0.249
+        "strength": 0.225
       },
       {
         "timeMs": 32335,
@@ -10483,32 +8788,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32735,
         "lane": "center",
-        "strength": 0.943
+        "strength": 0.931
       },
       {
         "timeMs": 33135,
         "lane": "center",
-        "strength": 0.525
+        "strength": 0.457
       },
       {
         "timeMs": 33510,
         "lane": "center",
-        "strength": 0.739
+        "strength": 0.628
       },
       {
         "timeMs": 33960,
         "lane": "center",
-        "strength": 0.456
+        "strength": 0.525
       },
       {
         "timeMs": 34559,
         "lane": "center",
-        "strength": 0.396
+        "strength": 0.526
       },
       {
         "timeMs": 34859,
         "lane": "center",
-        "strength": 0.395
+        "strength": 0.325
       },
       {
         "timeMs": 35334,
@@ -10518,7 +8823,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35834,
         "lane": "center",
-        "strength": 0.523
+        "strength": 0.514
       },
       {
         "timeMs": 36159,
@@ -10526,59 +8831,59 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 36658,
+        "timeMs": 36908,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 36983,
-        "lane": "center",
-        "strength": 0.576
+        "strength": 0.843
       },
       {
         "timeMs": 37408,
         "lane": "center",
-        "strength": 0.511
+        "strength": 0.462
       },
       {
-        "timeMs": 37883,
+        "timeMs": 37958,
         "lane": "center",
-        "strength": 0.21
+        "strength": 0.142
       },
       {
         "timeMs": 38707,
         "lane": "center",
-        "strength": 0.432
+        "strength": 0.402
       },
       {
         "timeMs": 39332,
         "lane": "center",
-        "strength": 0.182
+        "strength": 0.127
       },
       {
         "timeMs": 39907,
         "lane": "center",
-        "strength": 0.467
+        "strength": 0.4
       },
       {
-        "timeMs": 40432,
+        "timeMs": 40232,
         "lane": "center",
         "strength": 0.12
       },
       {
+        "timeMs": 40507,
+        "lane": "center",
+        "strength": 0.773
+      },
+      {
         "timeMs": 40906,
         "lane": "center",
-        "strength": 0.328
+        "strength": 0.311
       },
       {
         "timeMs": 41281,
         "lane": "center",
-        "strength": 0.387
+        "strength": 0.452
       },
       {
         "timeMs": 41556,
         "lane": "center",
-        "strength": 0.4
+        "strength": 0.404
       },
       {
         "timeMs": 42081,
@@ -10588,17 +8893,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42356,
         "lane": "center",
-        "strength": 0.225
+        "strength": 0.228
       },
       {
         "timeMs": 42681,
         "lane": "center",
-        "strength": 0.124
+        "strength": 0.12
       },
       {
         "timeMs": 43255,
         "lane": "center",
-        "strength": 0.325
+        "strength": 0.338
       },
       {
         "timeMs": 43630,
@@ -10608,7 +8913,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44930,
         "lane": "center",
-        "strength": 0.139
+        "strength": 0.163
       },
       {
         "timeMs": 45229,
@@ -10618,30 +8923,30 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45579,
         "lane": "center",
-        "strength": 0.704
+        "strength": 0.755
       },
       {
         "timeMs": 45904,
         "lane": "center",
-        "strength": 0.192
+        "strength": 0.168
       },
       {
         "timeMs": 46229,
         "lane": "center",
-        "strength": 0.866
+        "strength": 0.7
       },
       {
         "timeMs": 46604,
         "lane": "center",
-        "strength": 0.753
+        "strength": 0.744
       },
       {
         "timeMs": 48178,
         "lane": "center",
-        "strength": 0.162
+        "strength": 0.208
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/surprise1.mp3": {
     "id": "surprise1",
@@ -10649,21 +8954,21 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/extra/surprise1.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 60108,
-    "beatIntervalMs": 424,
+    "beatIntervalMs": 425,
     "playbackTrim": {
       "enabled": false,
       "startMs": 0,
       "endMs": 60108,
       "leadingMs": 0,
       "trailingMs": 0,
-      "threshold": 0.048543
+      "threshold": 0.046125
     },
     "noteCount": 87,
     "notes": [
       {
         "timeMs": 100,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.138
       },
       {
         "timeMs": 2374,
@@ -10733,7 +9038,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20366,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.215
       },
       {
         "timeMs": 22315,
@@ -10748,22 +9053,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25014,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.235
       },
       {
         "timeMs": 25763,
         "lane": "center",
-        "strength": 0.391
+        "strength": 0.438
       },
       {
         "timeMs": 26513,
         "lane": "center",
-        "strength": 0.392
+        "strength": 0.411
       },
       {
         "timeMs": 26888,
         "lane": "center",
-        "strength": 0.413
+        "strength": 0.415
       },
       {
         "timeMs": 27388,
@@ -10771,9 +9076,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 28012,
+        "timeMs": 28187,
         "lane": "center",
-        "strength": 0.542
+        "strength": 1
       },
       {
         "timeMs": 28937,
@@ -10823,7 +9128,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33810,
         "lane": "center",
-        "strength": 0.336
+        "strength": 0.327
       },
       {
         "timeMs": 34209,
@@ -10838,7 +9143,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35509,
         "lane": "center",
-        "strength": 0.478
+        "strength": 0.487
       },
       {
         "timeMs": 35909,
@@ -10848,7 +9153,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36808,
         "lane": "center",
-        "strength": 0.694
+        "strength": 0.71
       },
       {
         "timeMs": 37183,
@@ -10858,12 +9163,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37783,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.163
       },
       {
         "timeMs": 38308,
         "lane": "center",
-        "strength": 0.183
+        "strength": 0.186
       },
       {
         "timeMs": 39157,
@@ -10873,7 +9178,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39807,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.237
       },
       {
         "timeMs": 40182,
@@ -10888,7 +9193,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41306,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.233
       },
       {
         "timeMs": 41756,
@@ -10898,7 +9203,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42081,
         "lane": "center",
-        "strength": 0.223
+        "strength": 0.241
       },
       {
         "timeMs": 42381,
@@ -10918,12 +9223,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43380,
         "lane": "center",
-        "strength": 0.472
+        "strength": 0.497
       },
       {
         "timeMs": 43780,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.243
       },
       {
         "timeMs": 44055,
@@ -10931,44 +9236,44 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 44880,
+        "timeMs": 44930,
         "lane": "center",
-        "strength": 0.81
+        "strength": 0.12
       },
       {
         "timeMs": 45804,
         "lane": "center",
-        "strength": 0.773
+        "strength": 0.809
       },
       {
         "timeMs": 46579,
         "lane": "center",
-        "strength": 0.32
+        "strength": 0.348
       },
       {
         "timeMs": 46954,
         "lane": "center",
-        "strength": 0.124
+        "strength": 0.133
       },
       {
         "timeMs": 47304,
         "lane": "center",
-        "strength": 0.643
+        "strength": 0.657
       },
       {
         "timeMs": 47978,
         "lane": "center",
-        "strength": 0.147
+        "strength": 0.167
       },
       {
         "timeMs": 48803,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.392
       },
       {
         "timeMs": 49203,
         "lane": "center",
-        "strength": 0.407
+        "strength": 0.412
       },
       {
         "timeMs": 49952,
@@ -10978,7 +9283,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50302,
         "lane": "center",
-        "strength": 0.222
+        "strength": 0.258
       },
       {
         "timeMs": 51002,
@@ -10988,7 +9293,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51277,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.165
       },
       {
         "timeMs": 51627,
@@ -10998,22 +9303,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 52201,
         "lane": "center",
-        "strength": 0.517
+        "strength": 0.532
       },
       {
-        "timeMs": 52601,
+        "timeMs": 52551,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 52976,
         "lane": "center",
-        "strength": 0.282
+        "strength": 0.28
       },
       {
-        "timeMs": 53251,
+        "timeMs": 53301,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.134
       },
       {
         "timeMs": 53726,
@@ -11023,7 +9328,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54075,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.16
       },
       {
         "timeMs": 54350,
@@ -11033,17 +9338,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54625,
         "lane": "center",
-        "strength": 0.157
+        "strength": 0.154
       },
       {
         "timeMs": 55000,
         "lane": "center",
-        "strength": 0.142
+        "strength": 0.132
       },
       {
         "timeMs": 55375,
         "lane": "center",
-        "strength": 0.423
+        "strength": 0.412
       },
       {
         "timeMs": 55775,
@@ -11053,10 +9358,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56125,
         "lane": "center",
-        "strength": 0.496
+        "strength": 0.458
       },
       {
-        "timeMs": 56449,
+        "timeMs": 56549,
         "lane": "center",
         "strength": 0.12
       },
@@ -11073,17 +9378,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 57749,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.236
       },
       {
         "timeMs": 58024,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.151
       },
       {
         "timeMs": 58324,
         "lane": "center",
-        "strength": 0.487
+        "strength": 0.491
       },
       {
         "timeMs": 58623,
@@ -11093,10 +9398,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 58948,
         "lane": "center",
-        "strength": 0.512
+        "strength": 0.51
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/extra/surprise2.mp3": {
     "id": "surprise2",
@@ -11111,14 +9416,14 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 50939,
       "leadingMs": 625,
       "trailingMs": 0,
-      "threshold": 0.02328
+      "threshold": 0.02233
     },
     "noteCount": 107,
     "notes": [
       {
         "timeMs": 2549,
         "lane": "center",
-        "strength": 0.705
+        "strength": 0.691
       },
       {
         "timeMs": 3224,
@@ -11133,17 +9438,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5223,
         "lane": "center",
-        "strength": 0.379
+        "strength": 0.365
       },
       {
         "timeMs": 5822,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.192
       },
       {
         "timeMs": 6547,
         "lane": "center",
-        "strength": 0.391
+        "strength": 0.381
       },
       {
         "timeMs": 6847,
@@ -11161,6 +9466,11 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
+        "timeMs": 8146,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
         "timeMs": 8546,
         "lane": "center",
         "strength": 1
@@ -11173,22 +9483,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10545,
         "lane": "center",
-        "strength": 0.937
+        "strength": 0.947
       },
       {
         "timeMs": 10870,
         "lane": "center",
-        "strength": 0.407
+        "strength": 0.387
       },
       {
         "timeMs": 11195,
         "lane": "center",
-        "strength": 0.869
+        "strength": 0.849
       },
       {
         "timeMs": 11520,
         "lane": "center",
-        "strength": 0.517
+        "strength": 0.512
       },
       {
         "timeMs": 11870,
@@ -11198,12 +9508,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12194,
         "lane": "center",
-        "strength": 0.835
+        "strength": 0.808
       },
       {
         "timeMs": 12519,
         "lane": "center",
-        "strength": 0.845
+        "strength": 0.821
       },
       {
         "timeMs": 12869,
@@ -11213,7 +9523,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13194,
         "lane": "center",
-        "strength": 0.842
+        "strength": 0.812
       },
       {
         "timeMs": 13544,
@@ -11223,7 +9533,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13869,
         "lane": "center",
-        "strength": 0.857
+        "strength": 0.832
       },
       {
         "timeMs": 14194,
@@ -11238,22 +9548,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14868,
         "lane": "center",
-        "strength": 0.795
+        "strength": 0.786
       },
       {
         "timeMs": 15193,
         "lane": "center",
-        "strength": 0.946
+        "strength": 0.947
       },
       {
         "timeMs": 15743,
         "lane": "center",
-        "strength": 0.83
+        "strength": 0.821
       },
       {
         "timeMs": 16193,
         "lane": "center",
-        "strength": 0.443
+        "strength": 0.431
       },
       {
         "timeMs": 16542,
@@ -11263,22 +9573,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16867,
         "lane": "center",
-        "strength": 0.631
+        "strength": 0.635
       },
       {
         "timeMs": 17192,
         "lane": "center",
-        "strength": 0.81
+        "strength": 0.791
       },
       {
         "timeMs": 17542,
         "lane": "center",
-        "strength": 0.67
+        "strength": 0.635
       },
       {
         "timeMs": 17867,
         "lane": "center",
-        "strength": 0.858
+        "strength": 0.829
       },
       {
         "timeMs": 18192,
@@ -11288,7 +9598,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18542,
         "lane": "center",
-        "strength": 0.911
+        "strength": 0.889
       },
       {
         "timeMs": 18866,
@@ -11298,52 +9608,52 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19191,
         "lane": "center",
-        "strength": 0.661
+        "strength": 0.653
       },
       {
         "timeMs": 19541,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.408
       },
       {
         "timeMs": 19866,
         "lane": "center",
-        "strength": 0.987
+        "strength": 0.979
       },
       {
         "timeMs": 20191,
         "lane": "center",
-        "strength": 0.83
+        "strength": 0.801
       },
       {
         "timeMs": 20541,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.756
       },
       {
         "timeMs": 20866,
         "lane": "center",
-        "strength": 0.822
+        "strength": 0.788
       },
       {
         "timeMs": 21215,
         "lane": "center",
-        "strength": 0.51
+        "strength": 0.437
       },
       {
         "timeMs": 21540,
         "lane": "center",
-        "strength": 0.555
+        "strength": 0.543
       },
       {
         "timeMs": 21865,
         "lane": "center",
-        "strength": 0.45
+        "strength": 0.46
       },
       {
         "timeMs": 22190,
         "lane": "center",
-        "strength": 0.56
+        "strength": 0.542
       },
       {
         "timeMs": 22540,
@@ -11353,7 +9663,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22865,
         "lane": "center",
-        "strength": 0.71
+        "strength": 0.69
       },
       {
         "timeMs": 23189,
@@ -11368,12 +9678,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23864,
         "lane": "center",
-        "strength": 0.712
+        "strength": 0.69
       },
       {
         "timeMs": 24189,
         "lane": "center",
-        "strength": 0.591
+        "strength": 0.58
       },
       {
         "timeMs": 24539,
@@ -11383,12 +9693,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24864,
         "lane": "center",
-        "strength": 0.843
+        "strength": 0.836
       },
       {
         "timeMs": 25214,
         "lane": "center",
-        "strength": 0.769
+        "strength": 0.755
       },
       {
         "timeMs": 25538,
@@ -11396,24 +9706,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.433
       },
       {
-        "timeMs": 26188,
+        "timeMs": 25888,
         "lane": "center",
-        "strength": 0.142
+        "strength": 0.12
       },
       {
-        "timeMs": 26538,
+        "timeMs": 26413,
         "lane": "center",
-        "strength": 1
+        "strength": 0.393
       },
       {
         "timeMs": 26863,
         "lane": "center",
-        "strength": 0.324
+        "strength": 0.32
       },
       {
         "timeMs": 27188,
         "lane": "center",
-        "strength": 0.374
+        "strength": 0.372
       },
       {
         "timeMs": 27538,
@@ -11423,17 +9733,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27862,
         "lane": "center",
-        "strength": 0.863
+        "strength": 0.844
       },
       {
         "timeMs": 28537,
         "lane": "center",
-        "strength": 0.96
+        "strength": 0.948
       },
       {
         "timeMs": 28862,
         "lane": "center",
-        "strength": 0.712
+        "strength": 0.693
       },
       {
         "timeMs": 29212,
@@ -11443,12 +9753,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29537,
         "lane": "center",
-        "strength": 0.319
+        "strength": 0.323
       },
       {
         "timeMs": 29861,
         "lane": "center",
-        "strength": 0.775
+        "strength": 0.754
       },
       {
         "timeMs": 30211,
@@ -11463,7 +9773,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30861,
         "lane": "center",
-        "strength": 0.753
+        "strength": 0.725
       },
       {
         "timeMs": 31211,
@@ -11473,27 +9783,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31536,
         "lane": "center",
-        "strength": 0.242
+        "strength": 0.233
       },
       {
         "timeMs": 31886,
         "lane": "center",
-        "strength": 0.212
+        "strength": 0.202
       },
       {
         "timeMs": 32185,
         "lane": "center",
-        "strength": 0.246
+        "strength": 0.279
       },
       {
         "timeMs": 32535,
         "lane": "center",
-        "strength": 0.488
+        "strength": 0.481
       },
       {
         "timeMs": 32860,
         "lane": "center",
-        "strength": 0.429
+        "strength": 0.411
       },
       {
         "timeMs": 33210,
@@ -11503,17 +9813,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33535,
         "lane": "center",
-        "strength": 0.336
+        "strength": 0.317
       },
       {
         "timeMs": 33860,
         "lane": "center",
-        "strength": 0.347
+        "strength": 0.309
       },
       {
         "timeMs": 34184,
         "lane": "center",
-        "strength": 0.191
+        "strength": 0.164
       },
       {
         "timeMs": 34459,
@@ -11523,7 +9833,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34859,
         "lane": "center",
-        "strength": 0.586
+        "strength": 0.566
       },
       {
         "timeMs": 35209,
@@ -11533,12 +9843,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35734,
         "lane": "center",
-        "strength": 0.183
+        "strength": 0.179
       },
       {
-        "timeMs": 36359,
+        "timeMs": 36209,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.12
+      },
+      {
+        "timeMs": 36533,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 36958,
@@ -11546,37 +9861,32 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 37333,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 38008,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 38283,
+        "timeMs": 38208,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 38632,
         "lane": "center",
-        "strength": 0.371
+        "strength": 0.385
       },
       {
         "timeMs": 39007,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.176
       },
       {
-        "timeMs": 39632,
+        "timeMs": 39432,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 40057,
+        "timeMs": 39882,
+        "lane": "center",
+        "strength": 0.531
+      },
+      {
+        "timeMs": 40257,
         "lane": "center",
         "strength": 0.12
       },
@@ -11588,7 +9898,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40956,
         "lane": "center",
-        "strength": 0.164
+        "strength": 0.138
       },
       {
         "timeMs": 41231,
@@ -11596,9 +9906,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 41706,
+        "timeMs": 41656,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.144
       },
       {
         "timeMs": 42131,
@@ -11606,19 +9916,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 42706,
-        "lane": "center",
-        "strength": 0.25
-      },
-      {
         "timeMs": 43305,
         "lane": "center",
-        "strength": 0.292
+        "strength": 0.278
       },
       {
         "timeMs": 43630,
         "lane": "center",
-        "strength": 0.146
+        "strength": 0.148
       },
       {
         "timeMs": 44280,
@@ -11628,7 +9933,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45204,
         "lane": "center",
-        "strength": 0.484
+        "strength": 0.495
       },
       {
         "timeMs": 47204,
@@ -11643,15 +9948,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49203,
         "lane": "center",
-        "strength": 0.82
+        "strength": 0.801
       },
       {
         "timeMs": 50527,
         "lane": "center",
-        "strength": 0.685
+        "strength": 0.674
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima01_theme.mp3": {
     "id": "hakima01_theme",
@@ -11666,24 +9971,24 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 28337,
       "leadingMs": 0,
       "trailingMs": 633,
-      "threshold": 0.045187
+      "threshold": 0.042974
     },
-    "noteCount": 47,
+    "noteCount": 49,
     "notes": [
       {
         "timeMs": 75,
         "lane": "center",
-        "strength": 0.626
+        "strength": 0.627
       },
       {
         "timeMs": 350,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.147
       },
       {
         "timeMs": 900,
         "lane": "center",
-        "strength": 0.477
+        "strength": 0.484
       },
       {
         "timeMs": 1699,
@@ -11693,27 +9998,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2549,
         "lane": "center",
-        "strength": 0.294
+        "strength": 0.311
       },
       {
         "timeMs": 3099,
         "lane": "center",
-        "strength": 0.402
+        "strength": 0.382
       },
       {
         "timeMs": 4748,
         "lane": "center",
-        "strength": 0.525
+        "strength": 0.537
       },
       {
         "timeMs": 5547,
         "lane": "center",
-        "strength": 0.352
+        "strength": 0.342
       },
       {
         "timeMs": 6622,
         "lane": "center",
-        "strength": 0.779
+        "strength": 0.79
       },
       {
         "timeMs": 6922,
@@ -11723,22 +10028,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7447,
         "lane": "center",
-        "strength": 0.567
+        "strength": 0.57
       },
       {
         "timeMs": 7721,
         "lane": "center",
-        "strength": 0.478
+        "strength": 0.494
       },
       {
         "timeMs": 8271,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.131
       },
       {
         "timeMs": 8821,
         "lane": "center",
-        "strength": 0.783
+        "strength": 0.77
       },
       {
         "timeMs": 9221,
@@ -11748,32 +10053,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9920,
         "lane": "center",
-        "strength": 0.457
+        "strength": 0.447
       },
       {
         "timeMs": 10445,
         "lane": "center",
-        "strength": 0.356
+        "strength": 0.359
       },
       {
         "timeMs": 11020,
         "lane": "center",
-        "strength": 0.648
+        "strength": 0.551
       },
       {
         "timeMs": 11520,
         "lane": "center",
-        "strength": 0.761
+        "strength": 0.768
+      },
+      {
+        "timeMs": 11820,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 13469,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 13994,
         "lane": "center",
-        "strength": 0.486
+        "strength": 0.504
       },
       {
         "timeMs": 15393,
         "lane": "center",
-        "strength": 0.336
+        "strength": 0.347
       },
       {
         "timeMs": 16168,
@@ -11793,17 +10108,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17167,
         "lane": "center",
-        "strength": 0.24
+        "strength": 0.257
       },
       {
         "timeMs": 17717,
         "lane": "center",
-        "strength": 0.189
+        "strength": 0.197
       },
       {
         "timeMs": 18092,
         "lane": "center",
-        "strength": 0.141
+        "strength": 0.133
       },
       {
         "timeMs": 18467,
@@ -11813,32 +10128,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18816,
         "lane": "center",
-        "strength": 0.461
+        "strength": 0.478
       },
       {
         "timeMs": 19091,
         "lane": "center",
-        "strength": 0.207
+        "strength": 0.214
       },
       {
         "timeMs": 19441,
         "lane": "center",
-        "strength": 0.469
+        "strength": 0.471
       },
       {
         "timeMs": 19741,
         "lane": "center",
-        "strength": 0.379
+        "strength": 0.386
       },
       {
         "timeMs": 20016,
         "lane": "center",
-        "strength": 0.475
+        "strength": 0.468
       },
       {
         "timeMs": 20416,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.351
       },
       {
         "timeMs": 20816,
@@ -11848,7 +10163,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21165,
         "lane": "center",
-        "strength": 0.436
+        "strength": 0.447
       },
       {
         "timeMs": 21915,
@@ -11858,17 +10173,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22315,
         "lane": "center",
-        "strength": 0.173
+        "strength": 0.175
       },
       {
         "timeMs": 22715,
         "lane": "center",
-        "strength": 0.158
+        "strength": 0.191
       },
       {
         "timeMs": 22990,
         "lane": "center",
-        "strength": 0.909
+        "strength": 0.957
       },
       {
         "timeMs": 23539,
@@ -11878,7 +10193,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24889,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.202
       },
       {
         "timeMs": 25164,
@@ -11898,15 +10213,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26813,
         "lane": "center",
-        "strength": 0.434
+        "strength": 0.428
       },
       {
         "timeMs": 27363,
         "lane": "center",
-        "strength": 0.385
+        "strength": 0.379
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima02_game_a.mp3": {
     "id": "hakima02_game_a",
@@ -11921,9 +10236,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 29187,
       "leadingMs": 0,
       "trailingMs": 462,
-      "threshold": 0.049227
+      "threshold": 0.046811
     },
-    "noteCount": 54,
+    "noteCount": 52,
     "notes": [
       {
         "timeMs": 75,
@@ -11933,42 +10248,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 375,
         "lane": "center",
-        "strength": 0.155
+        "strength": 0.147
       },
       {
         "timeMs": 1274,
         "lane": "center",
-        "strength": 0.868
+        "strength": 0.886
       },
       {
         "timeMs": 1724,
         "lane": "center",
-        "strength": 0.418
+        "strength": 0.4
       },
       {
         "timeMs": 2024,
         "lane": "center",
-        "strength": 0.813
+        "strength": 0.824
       },
       {
         "timeMs": 2774,
         "lane": "center",
-        "strength": 0.236
+        "strength": 0.232
       },
       {
         "timeMs": 3673,
         "lane": "center",
-        "strength": 0.576
+        "strength": 0.579
       },
       {
         "timeMs": 4123,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.139
       },
       {
         "timeMs": 4423,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.222
       },
       {
         "timeMs": 4848,
@@ -11978,12 +10293,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5173,
         "lane": "center",
-        "strength": 0.714
+        "strength": 0.738
       },
       {
         "timeMs": 5747,
         "lane": "center",
-        "strength": 0.558
+        "strength": 0.569
       },
       {
         "timeMs": 7272,
@@ -11998,37 +10313,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7871,
         "lane": "center",
-        "strength": 0.51
+        "strength": 0.537
       },
       {
         "timeMs": 9071,
         "lane": "center",
-        "strength": 0.688
+        "strength": 0.707
       },
       {
         "timeMs": 9346,
         "lane": "center",
-        "strength": 0.402
+        "strength": 0.393
       },
       {
         "timeMs": 9970,
         "lane": "center",
-        "strength": 0.437
+        "strength": 0.452
       },
       {
         "timeMs": 11020,
         "lane": "center",
-        "strength": 0.139
-      },
-      {
-        "timeMs": 12070,
-        "lane": "center",
-        "strength": 0.693
+        "strength": 0.126
       },
       {
         "timeMs": 12369,
         "lane": "center",
-        "strength": 0.381
+        "strength": 0.361
       },
       {
         "timeMs": 12969,
@@ -12048,12 +10358,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14319,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.222
       },
       {
         "timeMs": 14768,
         "lane": "center",
-        "strength": 0.574
+        "strength": 0.575
       },
       {
         "timeMs": 15093,
@@ -12063,12 +10373,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15968,
         "lane": "center",
-        "strength": 0.778
+        "strength": 0.783
       },
       {
         "timeMs": 16742,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.123
       },
       {
         "timeMs": 17767,
@@ -12078,7 +10388,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18067,
         "lane": "center",
-        "strength": 0.506
+        "strength": 0.436
       },
       {
         "timeMs": 18392,
@@ -12093,97 +10403,92 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19266,
         "lane": "center",
-        "strength": 0.692
+        "strength": 0.741
       },
       {
         "timeMs": 19566,
         "lane": "center",
-        "strength": 0.471
+        "strength": 0.499
       },
       {
         "timeMs": 19866,
         "lane": "center",
-        "strength": 0.957
+        "strength": 0.964
       },
       {
         "timeMs": 20141,
         "lane": "center",
-        "strength": 0.304
+        "strength": 0.332
       },
       {
         "timeMs": 20466,
         "lane": "center",
-        "strength": 1
+        "strength": 0.97
       },
       {
         "timeMs": 20766,
         "lane": "center",
-        "strength": 0.257
+        "strength": 0.312
       },
       {
         "timeMs": 21540,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.159
       },
       {
         "timeMs": 21965,
         "lane": "center",
-        "strength": 0.647
+        "strength": 0.706
       },
       {
         "timeMs": 22540,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.17
       },
       {
-        "timeMs": 23339,
+        "timeMs": 23464,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.923
       },
       {
         "timeMs": 23914,
         "lane": "center",
-        "strength": 0.673
-      },
-      {
-        "timeMs": 24364,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.693
       },
       {
         "timeMs": 24939,
         "lane": "center",
-        "strength": 0.184
+        "strength": 0.155
       },
       {
         "timeMs": 25264,
         "lane": "center",
-        "strength": 0.985
+        "strength": 1
       },
       {
         "timeMs": 25563,
         "lane": "center",
-        "strength": 0.527
+        "strength": 0.506
       },
       {
         "timeMs": 25863,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.12
       },
       {
-        "timeMs": 26338,
+        "timeMs": 26188,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 27088,
+        "timeMs": 26463,
         "lane": "center",
-        "strength": 0.172
+        "strength": 1
       },
       {
-        "timeMs": 27363,
+        "timeMs": 27088,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.156
       },
       {
         "timeMs": 27987,
@@ -12196,342 +10501,552 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima03_game_b.mp3": {
     "id": "hakima03_game_b",
     "path": "audio/bgm/hakima/hakima03_game_b.mp3",
     "source": "public/audio/bgm/hakima/hakima03_game_b.mp3",
     "analyzer": "onset-energy-v2",
-    "durationMs": 48457,
+    "durationMs": 58305,
     "beatIntervalMs": 400,
     "playbackTrim": {
-      "enabled": false,
+      "enabled": true,
       "startMs": 0,
-      "endMs": 48457,
+      "endMs": 56674,
       "leadingMs": 0,
-      "trailingMs": 0,
-      "threshold": 0.007123
+      "trailingMs": 1631,
+      "threshold": 0.080797
     },
-    "noteCount": 63,
+    "noteCount": 105,
     "notes": [
       {
-        "timeMs": 100,
+        "timeMs": 775,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 1424,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 2449,
+        "lane": "center",
+        "strength": 0.311
+      },
+      {
+        "timeMs": 2899,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 3448,
+        "lane": "center",
+        "strength": 0.333
+      },
+      {
+        "timeMs": 3948,
+        "lane": "center",
+        "strength": 0.156
+      },
+      {
+        "timeMs": 5098,
+        "lane": "center",
+        "strength": 0.264
+      },
+      {
+        "timeMs": 6772,
+        "lane": "center",
+        "strength": 0.45
+      },
+      {
+        "timeMs": 7447,
+        "lane": "center",
+        "strength": 0.271
+      },
+      {
+        "timeMs": 7771,
+        "lane": "center",
+        "strength": 0.134
+      },
+      {
+        "timeMs": 8096,
+        "lane": "center",
+        "strength": 0.676
+      },
+      {
+        "timeMs": 8446,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 8771,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 525,
+        "timeMs": 9446,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.191
       },
       {
-        "timeMs": 2049,
+        "timeMs": 10120,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.16
       },
       {
-        "timeMs": 2774,
+        "timeMs": 10445,
         "lane": "center",
-        "strength": 0.376
+        "strength": 0.314
       },
       {
-        "timeMs": 3723,
+        "timeMs": 10770,
         "lane": "center",
-        "strength": 0.202
+        "strength": 0.788
       },
       {
-        "timeMs": 4073,
+        "timeMs": 11120,
+        "lane": "center",
+        "strength": 0.193
+      },
+      {
+        "timeMs": 11420,
+        "lane": "center",
+        "strength": 0.221
+      },
+      {
+        "timeMs": 11770,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 4723,
+        "timeMs": 12444,
         "lane": "center",
-        "strength": 0.394
+        "strength": 0.352
       },
       {
-        "timeMs": 5423,
+        "timeMs": 13769,
         "lane": "center",
-        "strength": 0.26
+        "strength": 0.256
       },
       {
-        "timeMs": 5722,
+        "timeMs": 14468,
         "lane": "center",
-        "strength": 0.278
-      },
-      {
-        "timeMs": 6722,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 9046,
-        "lane": "center",
-        "strength": 0.137
-      },
-      {
-        "timeMs": 9496,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10045,
-        "lane": "center",
-        "strength": 0.327
-      },
-      {
-        "timeMs": 10595,
-        "lane": "center",
-        "strength": 0.324
-      },
-      {
-        "timeMs": 11070,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 11795,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 12095,
-        "lane": "center",
-        "strength": 0.197
-      },
-      {
-        "timeMs": 12394,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 12719,
-        "lane": "center",
-        "strength": 0.449
-      },
-      {
-        "timeMs": 12994,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 13294,
-        "lane": "center",
-        "strength": 0.808
-      },
-      {
-        "timeMs": 13594,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 13919,
-        "lane": "center",
-        "strength": 0.656
-      },
-      {
-        "timeMs": 14294,
-        "lane": "center",
-        "strength": 0.66
+        "strength": 0.328
       },
       {
         "timeMs": 14793,
         "lane": "center",
-        "strength": 1
+        "strength": 0.12
       },
       {
-        "timeMs": 15093,
+        "timeMs": 15118,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 15843,
+        "timeMs": 15443,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 16143,
+        "timeMs": 16118,
         "lane": "center",
-        "strength": 0.894
+        "strength": 0.529
       },
       {
-        "timeMs": 16518,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 16917,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17267,
+        "timeMs": 16767,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 17667,
-        "lane": "center",
-        "strength": 0.659
-      },
-      {
-        "timeMs": 17992,
-        "lane": "center",
-        "strength": 0.297
-      },
-      {
-        "timeMs": 18567,
+        "timeMs": 17492,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 20816,
+        "timeMs": 17767,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.154
       },
       {
-        "timeMs": 21140,
+        "timeMs": 18442,
         "lane": "center",
-        "strength": 0.335
+        "strength": 0.163
       },
       {
-        "timeMs": 22390,
+        "timeMs": 19116,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.198
       },
       {
-        "timeMs": 23764,
+        "timeMs": 19766,
         "lane": "center",
-        "strength": 0.556
+        "strength": 0.736
       },
       {
-        "timeMs": 24139,
+        "timeMs": 20116,
         "lane": "center",
-        "strength": 0.199
+        "strength": 0.375
       },
       {
-        "timeMs": 24414,
+        "timeMs": 21440,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.791
       },
       {
-        "timeMs": 24739,
+        "timeMs": 22090,
         "lane": "center",
-        "strength": 0.499
+        "strength": 0.143
       },
       {
-        "timeMs": 25189,
+        "timeMs": 22415,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.796
       },
       {
-        "timeMs": 33560,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 33985,
-        "lane": "center",
-        "strength": 0.47
-      },
-      {
-        "timeMs": 34434,
+        "timeMs": 22790,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 34759,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35084,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35484,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35759,
-        "lane": "center",
-        "strength": 0.874
-      },
-      {
-        "timeMs": 36084,
-        "lane": "center",
-        "strength": 0.751
-      },
-      {
-        "timeMs": 36708,
-        "lane": "center",
-        "strength": 0.308
-      },
-      {
-        "timeMs": 37408,
+        "timeMs": 24439,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 42806,
+        "timeMs": 24764,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.195
       },
       {
-        "timeMs": 43630,
+        "timeMs": 25513,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.153
       },
       {
-        "timeMs": 43905,
+        "timeMs": 25913,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.46
       },
       {
-        "timeMs": 44780,
+        "timeMs": 26763,
+        "lane": "center",
+        "strength": 0.464
+      },
+      {
+        "timeMs": 27113,
+        "lane": "center",
+        "strength": 0.352
+      },
+      {
+        "timeMs": 27438,
+        "lane": "center",
+        "strength": 0.187
+      },
+      {
+        "timeMs": 27812,
+        "lane": "center",
+        "strength": 0.165
+      },
+      {
+        "timeMs": 28612,
+        "lane": "center",
+        "strength": 0.184
+      },
+      {
+        "timeMs": 29087,
+        "lane": "center",
+        "strength": 0.392
+      },
+      {
+        "timeMs": 29437,
+        "lane": "center",
+        "strength": 0.833
+      },
+      {
+        "timeMs": 29761,
+        "lane": "center",
+        "strength": 0.275
+      },
+      {
+        "timeMs": 30111,
+        "lane": "center",
+        "strength": 0.562
+      },
+      {
+        "timeMs": 30436,
+        "lane": "center",
+        "strength": 0.682
+      },
+      {
+        "timeMs": 30761,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 45105,
+        "timeMs": 31461,
         "lane": "center",
-        "strength": 0.95
+        "strength": 0.291
       },
       {
-        "timeMs": 45554,
+        "timeMs": 31836,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.152
       },
       {
-        "timeMs": 46079,
+        "timeMs": 32185,
+        "lane": "center",
+        "strength": 0.265
+      },
+      {
+        "timeMs": 32610,
+        "lane": "center",
+        "strength": 0.129
+      },
+      {
+        "timeMs": 33085,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 33510,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 34459,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 34784,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 35109,
+        "lane": "center",
+        "strength": 0.211
+      },
+      {
+        "timeMs": 36109,
+        "lane": "center",
+        "strength": 0.53
+      },
+      {
+        "timeMs": 36433,
+        "lane": "center",
+        "strength": 0.163
+      },
+      {
+        "timeMs": 36783,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 46729,
+        "timeMs": 37508,
         "lane": "center",
-        "strength": 1
+        "strength": 0.193
       },
       {
-        "timeMs": 47129,
+        "timeMs": 37933,
         "lane": "center",
-        "strength": 1
+        "strength": 0.219
       },
       {
-        "timeMs": 47403,
+        "timeMs": 38458,
         "lane": "center",
-        "strength": 1
+        "strength": 0.559
       },
       {
-        "timeMs": 47878,
+        "timeMs": 39232,
         "lane": "center",
         "strength": 0.12
+      },
+      {
+        "timeMs": 39757,
+        "lane": "center",
+        "strength": 0.159
+      },
+      {
+        "timeMs": 40307,
+        "lane": "center",
+        "strength": 0.235
+      },
+      {
+        "timeMs": 40582,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 40906,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 41456,
+        "lane": "center",
+        "strength": 0.467
+      },
+      {
+        "timeMs": 42106,
+        "lane": "center",
+        "strength": 0.14
+      },
+      {
+        "timeMs": 42431,
+        "lane": "center",
+        "strength": 0.24
+      },
+      {
+        "timeMs": 42781,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 43105,
+        "lane": "center",
+        "strength": 0.358
+      },
+      {
+        "timeMs": 43530,
+        "lane": "center",
+        "strength": 0.487
+      },
+      {
+        "timeMs": 44180,
+        "lane": "center",
+        "strength": 0.232
+      },
+      {
+        "timeMs": 44580,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 45030,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 45429,
+        "lane": "center",
+        "strength": 0.944
+      },
+      {
+        "timeMs": 45779,
+        "lane": "center",
+        "strength": 0.59
+      },
+      {
+        "timeMs": 46054,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 46379,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 46754,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 47778,
+        "lane": "center",
+        "strength": 0.794
+      },
+      {
+        "timeMs": 48103,
+        "lane": "center",
+        "strength": 0.969
+      },
+      {
+        "timeMs": 48578,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 49453,
+        "lane": "center",
+        "strength": 0.236
+      },
+      {
+        "timeMs": 49927,
+        "lane": "center",
+        "strength": 0.406
+      },
+      {
+        "timeMs": 50452,
+        "lane": "center",
+        "strength": 0.743
+      },
+      {
+        "timeMs": 50802,
+        "lane": "center",
+        "strength": 0.369
+      },
+      {
+        "timeMs": 51077,
+        "lane": "center",
+        "strength": 0.309
+      },
+      {
+        "timeMs": 51352,
+        "lane": "center",
+        "strength": 0.249
+      },
+      {
+        "timeMs": 51652,
+        "lane": "center",
+        "strength": 0.386
+      },
+      {
+        "timeMs": 52101,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 53026,
+        "lane": "center",
+        "strength": 0.677
+      },
+      {
+        "timeMs": 53426,
+        "lane": "center",
+        "strength": 0.319
+      },
+      {
+        "timeMs": 54275,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54600,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54875,
+        "lane": "center",
+        "strength": 0.251
+      },
+      {
+        "timeMs": 55300,
+        "lane": "center",
+        "strength": 0.544
+      },
+      {
+        "timeMs": 55725,
+        "lane": "center",
+        "strength": 0.334
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima04_game_c.mp3": {
     "id": "hakima04_game_c",
@@ -12546,7 +11061,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 28512,
       "leadingMs": 0,
       "trailingMs": 745,
-      "threshold": 0.049371
+      "threshold": 0.047257
     },
     "noteCount": 44,
     "notes": [
@@ -12558,12 +11073,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 600,
         "lane": "center",
-        "strength": 0.197
+        "strength": 0.183
       },
       {
         "timeMs": 2099,
         "lane": "center",
-        "strength": 0.846
+        "strength": 0.836
       },
       {
         "timeMs": 2874,
@@ -12573,17 +11088,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4873,
         "lane": "center",
-        "strength": 0.247
+        "strength": 0.245
       },
       {
         "timeMs": 6097,
         "lane": "center",
-        "strength": 0.155
+        "strength": 0.153
       },
       {
         "timeMs": 6597,
         "lane": "center",
-        "strength": 0.791
+        "strength": 0.817
       },
       {
         "timeMs": 6972,
@@ -12593,32 +11108,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8096,
         "lane": "center",
-        "strength": 0.418
+        "strength": 0.412
       },
       {
         "timeMs": 8596,
         "lane": "center",
-        "strength": 0.714
+        "strength": 0.709
       },
       {
         "timeMs": 9096,
         "lane": "center",
-        "strength": 0.161
+        "strength": 0.148
       },
       {
         "timeMs": 9571,
         "lane": "center",
-        "strength": 0.769
+        "strength": 0.77
       },
       {
         "timeMs": 9846,
         "lane": "center",
-        "strength": 0.365
+        "strength": 0.367
       },
       {
         "timeMs": 10595,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.195
       },
       {
         "timeMs": 11095,
@@ -12638,17 +11153,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12319,
         "lane": "center",
-        "strength": 0.198
+        "strength": 0.226
       },
       {
         "timeMs": 12819,
         "lane": "center",
-        "strength": 0.434
+        "strength": 0.429
       },
       {
         "timeMs": 13094,
         "lane": "center",
-        "strength": 0.931
+        "strength": 0.912
       },
       {
         "timeMs": 13569,
@@ -12668,47 +11183,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15568,
         "lane": "center",
-        "strength": 0.362
+        "strength": 0.363
       },
       {
         "timeMs": 16118,
         "lane": "center",
-        "strength": 0.587
+        "strength": 0.561
       },
       {
         "timeMs": 16867,
         "lane": "center",
-        "strength": 0.288
+        "strength": 0.32
       },
       {
         "timeMs": 17192,
         "lane": "center",
-        "strength": 0.392
+        "strength": 0.408
       },
       {
         "timeMs": 17492,
         "lane": "center",
-        "strength": 0.213
+        "strength": 0.204
       },
       {
         "timeMs": 18317,
         "lane": "center",
-        "strength": 0.481
+        "strength": 0.516
       },
       {
         "timeMs": 18866,
         "lane": "center",
-        "strength": 0.654
+        "strength": 0.641
       },
       {
         "timeMs": 19566,
         "lane": "center",
-        "strength": 0.369
+        "strength": 0.347
       },
       {
         "timeMs": 20116,
         "lane": "center",
-        "strength": 0.569
+        "strength": 0.484
       },
       {
         "timeMs": 20616,
@@ -12718,12 +11233,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21115,
         "lane": "center",
-        "strength": 0.59
+        "strength": 0.56
       },
       {
         "timeMs": 21615,
         "lane": "center",
-        "strength": 0.266
+        "strength": 0.212
       },
       {
         "timeMs": 22090,
@@ -12733,12 +11248,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22865,
         "lane": "center",
-        "strength": 0.482
+        "strength": 0.479
       },
       {
         "timeMs": 23564,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.367
       },
       {
         "timeMs": 24089,
@@ -12748,7 +11263,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25114,
         "lane": "center",
-        "strength": 0.795
+        "strength": 0.74
       },
       {
         "timeMs": 25613,
@@ -12758,20 +11273,20 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26188,
         "lane": "center",
-        "strength": 0.653
+        "strength": 0.518
       },
       {
         "timeMs": 27113,
         "lane": "center",
-        "strength": 0.869
+        "strength": 0.925
       },
       {
         "timeMs": 27612,
         "lane": "center",
-        "strength": 0.661
+        "strength": 0.601
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima05_game_d.mp3": {
     "id": "hakima05_game_d",
@@ -12786,39 +11301,39 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 50677,
       "leadingMs": 0,
       "trailingMs": 1411,
-      "threshold": 0.043831
+      "threshold": 0.041765
     },
-    "noteCount": 88,
+    "noteCount": 86,
     "notes": [
       {
         "timeMs": 1075,
         "lane": "center",
-        "strength": 0.512
+        "strength": 0.505
       },
       {
         "timeMs": 2024,
         "lane": "center",
-        "strength": 0.955
+        "strength": 0.956
       },
       {
         "timeMs": 2999,
         "lane": "center",
-        "strength": 0.352
+        "strength": 0.357
       },
       {
         "timeMs": 3473,
         "lane": "center",
-        "strength": 0.606
+        "strength": 0.592
       },
       {
         "timeMs": 3948,
         "lane": "center",
-        "strength": 0.535
+        "strength": 0.541
       },
       {
         "timeMs": 4423,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.157
       },
       {
         "timeMs": 5722,
@@ -12828,7 +11343,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6072,
         "lane": "center",
-        "strength": 0.433
+        "strength": 0.426
       },
       {
         "timeMs": 6822,
@@ -12843,17 +11358,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8471,
         "lane": "center",
-        "strength": 0.63
+        "strength": 0.634
       },
       {
         "timeMs": 8746,
         "lane": "center",
-        "strength": 0.342
+        "strength": 0.323
       },
       {
         "timeMs": 9196,
         "lane": "center",
-        "strength": 0.587
+        "strength": 0.59
       },
       {
         "timeMs": 9571,
@@ -12863,7 +11378,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9920,
         "lane": "center",
-        "strength": 0.611
+        "strength": 0.622
       },
       {
         "timeMs": 10670,
@@ -12878,7 +11393,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11620,
         "lane": "center",
-        "strength": 0.938
+        "strength": 0.952
       },
       {
         "timeMs": 11970,
@@ -12888,12 +11403,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12594,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.75
       },
       {
         "timeMs": 13044,
         "lane": "center",
-        "strength": 0.677
+        "strength": 0.68
       },
       {
         "timeMs": 13569,
@@ -12903,25 +11418,20 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13894,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.212
       },
       {
         "timeMs": 14269,
         "lane": "center",
-        "strength": 0.307
+        "strength": 0.3
       },
       {
         "timeMs": 14868,
         "lane": "center",
-        "strength": 0.201
+        "strength": 0.213
       },
       {
         "timeMs": 15468,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 16418,
         "lane": "center",
         "strength": 1
       },
@@ -12933,7 +11443,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17392,
         "lane": "center",
-        "strength": 0.906
+        "strength": 0.981
       },
       {
         "timeMs": 17742,
@@ -12943,7 +11453,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18092,
         "lane": "center",
-        "strength": 0.619
+        "strength": 0.611
       },
       {
         "timeMs": 19491,
@@ -12951,49 +11461,44 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 19766,
+        "timeMs": 20016,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.581
       },
       {
-        "timeMs": 20266,
+        "timeMs": 20391,
         "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 20716,
-        "lane": "center",
-        "strength": 0.264
+        "strength": 0.278
       },
       {
         "timeMs": 20990,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.12
       },
       {
         "timeMs": 21565,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.147
       },
       {
         "timeMs": 21940,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.196
       },
       {
         "timeMs": 22640,
         "lane": "center",
-        "strength": 0.538
+        "strength": 0.537
       },
       {
-        "timeMs": 23364,
+        "timeMs": 23140,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.463
       },
       {
         "timeMs": 23639,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.133
       },
       {
         "timeMs": 24114,
@@ -13003,7 +11508,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24564,
         "lane": "center",
-        "strength": 0.549
+        "strength": 0.557
       },
       {
         "timeMs": 25289,
@@ -13013,22 +11518,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25763,
         "lane": "center",
-        "strength": 0.691
+        "strength": 0.686
       },
       {
-        "timeMs": 26063,
+        "timeMs": 26263,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26513,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.865
       },
       {
         "timeMs": 27213,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.146
       },
       {
         "timeMs": 27687,
@@ -13043,12 +11543,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29137,
         "lane": "center",
-        "strength": 0.285
+        "strength": 0.28
       },
       {
         "timeMs": 29612,
         "lane": "center",
-        "strength": 0.696
+        "strength": 0.687
       },
       {
         "timeMs": 31311,
@@ -13058,12 +11558,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31786,
         "lane": "center",
-        "strength": 0.492
+        "strength": 0.485
       },
       {
         "timeMs": 32235,
         "lane": "center",
-        "strength": 0.199
+        "strength": 0.198
       },
       {
         "timeMs": 32960,
@@ -13073,17 +11573,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33435,
         "lane": "center",
-        "strength": 0.178
+        "strength": 0.185
       },
       {
         "timeMs": 33710,
         "lane": "center",
-        "strength": 0.216
+        "strength": 0.207
       },
       {
         "timeMs": 34184,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.211
       },
       {
         "timeMs": 34659,
@@ -13098,32 +11598,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36084,
         "lane": "center",
-        "strength": 0.494
+        "strength": 0.53
       },
       {
         "timeMs": 36359,
         "lane": "center",
-        "strength": 0.255
+        "strength": 0.25
       },
       {
         "timeMs": 36708,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.26
       },
       {
         "timeMs": 37308,
         "lane": "center",
-        "strength": 0.338
+        "strength": 0.32
       },
       {
         "timeMs": 37783,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.161
       },
       {
         "timeMs": 38508,
         "lane": "center",
-        "strength": 0.959
+        "strength": 0.975
       },
       {
         "timeMs": 39207,
@@ -13148,17 +11648,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41856,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.176
       },
       {
         "timeMs": 42681,
         "lane": "center",
-        "strength": 0.247
+        "strength": 0.242
       },
       {
         "timeMs": 43055,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.194
       },
       {
         "timeMs": 43430,
@@ -13168,7 +11668,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43755,
         "lane": "center",
-        "strength": 0.499
+        "strength": 0.489
       },
       {
         "timeMs": 44030,
@@ -13183,37 +11683,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44980,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.231
       },
       {
         "timeMs": 45404,
         "lane": "center",
-        "strength": 0.377
+        "strength": 0.394
+      },
+      {
+        "timeMs": 45679,
+        "lane": "center",
+        "strength": 0.359
       },
       {
         "timeMs": 46404,
         "lane": "center",
-        "strength": 0.331
+        "strength": 0.327
       },
       {
         "timeMs": 46879,
         "lane": "center",
-        "strength": 1
+        "strength": 0.979
       },
       {
         "timeMs": 47154,
         "lane": "center",
-        "strength": 0.969
+        "strength": 0.95
       },
       {
         "timeMs": 47603,
         "lane": "center",
-        "strength": 0.743
+        "strength": 0.741
       },
       {
         "timeMs": 48103,
         "lane": "center",
-        "strength": 0.913
+        "strength": 0.861
       },
       {
         "timeMs": 48453,
@@ -13223,460 +11728,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49528,
         "lane": "center",
-        "strength": 0.786
+        "strength": 0.777
       },
       {
         "timeMs": 50027,
         "lane": "center",
-        "strength": 0.696
+        "strength": 0.73
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
-  },
-  "audio/bgm/hakima/hakima06_ending.mp3": {
-    "id": "hakima06_ending",
-    "path": "audio/bgm/hakima/hakima06_ending.mp3",
-    "source": "public/audio/bgm/hakima/hakima06_ending.mp3",
-    "analyzer": "onset-energy-v2",
-    "durationMs": 57287,
-    "beatIntervalMs": 400,
-    "playbackTrim": {
-      "enabled": true,
-      "startMs": 0,
-      "endMs": 53601,
-      "leadingMs": 0,
-      "trailingMs": 3686,
-      "threshold": 0.046211
-    },
-    "noteCount": 85,
-    "notes": [
-      {
-        "timeMs": 225,
-        "lane": "center",
-        "strength": 0.136
-      },
-      {
-        "timeMs": 625,
-        "lane": "center",
-        "strength": 0.624
-      },
-      {
-        "timeMs": 3099,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 4348,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 6097,
-        "lane": "center",
-        "strength": 0.629
-      },
-      {
-        "timeMs": 6622,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 6997,
-        "lane": "center",
-        "strength": 0.198
-      },
-      {
-        "timeMs": 8921,
-        "lane": "center",
-        "strength": 0.736
-      },
-      {
-        "timeMs": 9196,
-        "lane": "center",
-        "strength": 0.384
-      },
-      {
-        "timeMs": 9970,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10345,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 11070,
-        "lane": "center",
-        "strength": 0.261
-      },
-      {
-        "timeMs": 11445,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 12294,
-        "lane": "center",
-        "strength": 0.777
-      },
-      {
-        "timeMs": 12994,
-        "lane": "center",
-        "strength": 0.401
-      },
-      {
-        "timeMs": 13294,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 17892,
-        "lane": "center",
-        "strength": 0.505
-      },
-      {
-        "timeMs": 18267,
-        "lane": "center",
-        "strength": 0.324
-      },
-      {
-        "timeMs": 18642,
-        "lane": "center",
-        "strength": 0.231
-      },
-      {
-        "timeMs": 19016,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 19741,
-        "lane": "center",
-        "strength": 0.772
-      },
-      {
-        "timeMs": 20116,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20791,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 21065,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 21490,
-        "lane": "center",
-        "strength": 0.959
-      },
-      {
-        "timeMs": 21765,
-        "lane": "center",
-        "strength": 0.597
-      },
-      {
-        "timeMs": 22240,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 22565,
-        "lane": "center",
-        "strength": 0.146
-      },
-      {
-        "timeMs": 23314,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 23864,
-        "lane": "center",
-        "strength": 0.2
-      },
-      {
-        "timeMs": 24264,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24764,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 25363,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26313,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26888,
-        "lane": "center",
-        "strength": 0.294
-      },
-      {
-        "timeMs": 27263,
-        "lane": "center",
-        "strength": 0.317
-      },
-      {
-        "timeMs": 27712,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 27987,
-        "lane": "center",
-        "strength": 0.763
-      },
-      {
-        "timeMs": 28537,
-        "lane": "center",
-        "strength": 0.649
-      },
-      {
-        "timeMs": 28912,
-        "lane": "center",
-        "strength": 0.192
-      },
-      {
-        "timeMs": 29462,
-        "lane": "center",
-        "strength": 0.858
-      },
-      {
-        "timeMs": 29861,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 30261,
-        "lane": "center",
-        "strength": 0.515
-      },
-      {
-        "timeMs": 30561,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 31011,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 31361,
-        "lane": "center",
-        "strength": 0.712
-      },
-      {
-        "timeMs": 31736,
-        "lane": "center",
-        "strength": 0.872
-      },
-      {
-        "timeMs": 32010,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 32660,
-        "lane": "center",
-        "strength": 0.425
-      },
-      {
-        "timeMs": 33060,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 33435,
-        "lane": "center",
-        "strength": 0.497
-      },
-      {
-        "timeMs": 33735,
-        "lane": "center",
-        "strength": 0.839
-      },
-      {
-        "timeMs": 34184,
-        "lane": "center",
-        "strength": 0.66
-      },
-      {
-        "timeMs": 34484,
-        "lane": "center",
-        "strength": 0.218
-      },
-      {
-        "timeMs": 34909,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35484,
-        "lane": "center",
-        "strength": 0.394
-      },
-      {
-        "timeMs": 35884,
-        "lane": "center",
-        "strength": 0.122
-      },
-      {
-        "timeMs": 36633,
-        "lane": "center",
-        "strength": 0.155
-      },
-      {
-        "timeMs": 37158,
-        "lane": "center",
-        "strength": 0.237
-      },
-      {
-        "timeMs": 37658,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 38133,
-        "lane": "center",
-        "strength": 0.265
-      },
-      {
-        "timeMs": 38907,
-        "lane": "center",
-        "strength": 0.122
-      },
-      {
-        "timeMs": 40282,
-        "lane": "center",
-        "strength": 0.25
-      },
-      {
-        "timeMs": 40732,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 41106,
-        "lane": "center",
-        "strength": 0.125
-      },
-      {
-        "timeMs": 41406,
-        "lane": "center",
-        "strength": 0.256
-      },
-      {
-        "timeMs": 42231,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42856,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 43530,
-        "lane": "center",
-        "strength": 0.166
-      },
-      {
-        "timeMs": 43880,
-        "lane": "center",
-        "strength": 0.297
-      },
-      {
-        "timeMs": 44205,
-        "lane": "center",
-        "strength": 0.35
-      },
-      {
-        "timeMs": 44505,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 44855,
-        "lane": "center",
-        "strength": 0.805
-      },
-      {
-        "timeMs": 45155,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45454,
-        "lane": "center",
-        "strength": 0.359
-      },
-      {
-        "timeMs": 45979,
-        "lane": "center",
-        "strength": 0.574
-      },
-      {
-        "timeMs": 46304,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 46604,
-        "lane": "center",
-        "strength": 0.287
-      },
-      {
-        "timeMs": 46904,
-        "lane": "center",
-        "strength": 0.184
-      },
-      {
-        "timeMs": 47204,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 47503,
-        "lane": "center",
-        "strength": 0.433
-      },
-      {
-        "timeMs": 47903,
-        "lane": "center",
-        "strength": 0.459
-      },
-      {
-        "timeMs": 48853,
-        "lane": "center",
-        "strength": 0.296
-      },
-      {
-        "timeMs": 50452,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 50902,
-        "lane": "center",
-        "strength": 0.12
-      }
-    ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima07_ending2.mp3": {
     "id": "hakima07_ending2",
@@ -13691,9 +11751,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 84837,
       "leadingMs": 100,
       "trailingMs": 2621,
-      "threshold": 0.08507
+      "threshold": 0.080795
     },
-    "noteCount": 136,
+    "noteCount": 137,
     "notes": [
       {
         "timeMs": 525,
@@ -13706,19 +11766,19 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 1449,
+        "timeMs": 1399,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.12
       },
       {
         "timeMs": 2424,
         "lane": "center",
-        "strength": 0.69
+        "strength": 0.696
       },
       {
         "timeMs": 2874,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.237
       },
       {
         "timeMs": 3348,
@@ -13738,12 +11798,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5273,
         "lane": "center",
-        "strength": 0.494
+        "strength": 0.501
       },
       {
         "timeMs": 5747,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.77
       },
       {
         "timeMs": 6697,
@@ -13753,7 +11813,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7222,
         "lane": "center",
-        "strength": 0.265
+        "strength": 0.277
       },
       {
         "timeMs": 7572,
@@ -13768,22 +11828,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8521,
         "lane": "center",
-        "strength": 0.303
+        "strength": 0.323
       },
       {
         "timeMs": 8971,
         "lane": "center",
-        "strength": 0.92
+        "strength": 0.938
       },
       {
         "timeMs": 9945,
         "lane": "center",
-        "strength": 0.466
+        "strength": 0.416
       },
       {
         "timeMs": 10420,
         "lane": "center",
-        "strength": 0.756
+        "strength": 0.754
       },
       {
         "timeMs": 11370,
@@ -13808,22 +11868,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13294,
         "lane": "center",
-        "strength": 0.165
+        "strength": 0.157
       },
       {
         "timeMs": 13769,
         "lane": "center",
-        "strength": 0.7
+        "strength": 0.697
       },
       {
         "timeMs": 15193,
         "lane": "center",
-        "strength": 0.277
+        "strength": 0.274
       },
       {
         "timeMs": 15693,
         "lane": "center",
-        "strength": 0.478
+        "strength": 0.471
       },
       {
         "timeMs": 16143,
@@ -13833,7 +11893,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16418,
         "lane": "center",
-        "strength": 0.488
+        "strength": 0.509
       },
       {
         "timeMs": 16842,
@@ -13843,7 +11903,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17117,
         "lane": "center",
-        "strength": 0.378
+        "strength": 0.389
       },
       {
         "timeMs": 17517,
@@ -13853,7 +11913,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18042,
         "lane": "center",
-        "strength": 0.601
+        "strength": 0.592
       },
       {
         "timeMs": 18317,
@@ -13863,27 +11923,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19016,
         "lane": "center",
-        "strength": 0.559
+        "strength": 0.574
       },
       {
         "timeMs": 20216,
         "lane": "center",
-        "strength": 0.348
+        "strength": 0.365
       },
       {
         "timeMs": 20916,
         "lane": "center",
-        "strength": 0.269
+        "strength": 0.247
       },
       {
         "timeMs": 21890,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.194
       },
       {
         "timeMs": 22840,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.278
       },
       {
         "timeMs": 23314,
@@ -13898,27 +11958,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24514,
         "lane": "center",
-        "strength": 0.58
+        "strength": 0.566
       },
       {
         "timeMs": 25239,
         "lane": "center",
-        "strength": 0.993
+        "strength": 1
       },
       {
         "timeMs": 25688,
         "lane": "center",
-        "strength": 0.206
+        "strength": 0.199
       },
       {
         "timeMs": 26863,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.241
       },
       {
         "timeMs": 27587,
         "lane": "center",
-        "strength": 0.466
+        "strength": 0.457
       },
       {
         "timeMs": 28087,
@@ -13928,47 +11988,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28562,
         "lane": "center",
-        "strength": 0.28
+        "strength": 0.259
       },
       {
         "timeMs": 29062,
         "lane": "center",
-        "strength": 0.344
+        "strength": 0.391
       },
       {
         "timeMs": 29512,
         "lane": "center",
-        "strength": 0.328
+        "strength": 0.305
       },
       {
         "timeMs": 30461,
         "lane": "center",
-        "strength": 0.347
+        "strength": 0.351
       },
       {
         "timeMs": 31061,
         "lane": "center",
-        "strength": 0.308
+        "strength": 0.28
       },
       {
         "timeMs": 31361,
         "lane": "center",
-        "strength": 0.205
+        "strength": 0.211
       },
       {
         "timeMs": 31886,
         "lane": "center",
-        "strength": 0.24
+        "strength": 0.185
       },
       {
         "timeMs": 32360,
         "lane": "center",
-        "strength": 0.894
+        "strength": 0.877
       },
       {
         "timeMs": 32885,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.136
       },
       {
         "timeMs": 33560,
@@ -13978,17 +12038,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34259,
         "lane": "center",
-        "strength": 0.85
+        "strength": 0.879
       },
       {
-        "timeMs": 34734,
+        "timeMs": 34684,
         "lane": "center",
-        "strength": 1
+        "strength": 0.12
       },
       {
-        "timeMs": 35209,
+        "timeMs": 34984,
         "lane": "center",
-        "strength": 0.604
+        "strength": 0.209
+      },
+      {
+        "timeMs": 35334,
+        "lane": "center",
+        "strength": 0.222
       },
       {
         "timeMs": 35959,
@@ -13998,27 +12063,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36284,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.228
       },
       {
         "timeMs": 36658,
         "lane": "center",
-        "strength": 0.954
+        "strength": 0.945
       },
       {
         "timeMs": 37408,
         "lane": "center",
-        "strength": 0.349
+        "strength": 0.365
       },
       {
         "timeMs": 37858,
         "lane": "center",
-        "strength": 0.464
+        "strength": 0.496
       },
       {
         "timeMs": 38333,
         "lane": "center",
-        "strength": 0.125
+        "strength": 0.127
       },
       {
         "timeMs": 38607,
@@ -14028,7 +12093,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39032,
         "lane": "center",
-        "strength": 0.588
+        "strength": 0.621
       },
       {
         "timeMs": 39332,
@@ -14036,19 +12101,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 39607,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
         "timeMs": 40007,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.121
       },
       {
         "timeMs": 40707,
         "lane": "center",
-        "strength": 0.662
+        "strength": 0.612
       },
       {
         "timeMs": 41206,
@@ -14063,7 +12123,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41981,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.121
       },
       {
         "timeMs": 42381,
@@ -14078,7 +12138,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43080,
         "lane": "center",
-        "strength": 0.42
+        "strength": 0.446
       },
       {
         "timeMs": 43580,
@@ -14088,7 +12148,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44055,
         "lane": "center",
-        "strength": 0.353
+        "strength": 0.342
       },
       {
         "timeMs": 44730,
@@ -14098,7 +12158,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45105,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.198
       },
       {
         "timeMs": 45479,
@@ -14108,12 +12168,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46204,
         "lane": "center",
-        "strength": 0.249
+        "strength": 0.195
       },
       {
         "timeMs": 46479,
         "lane": "center",
-        "strength": 0.453
+        "strength": 0.459
       },
       {
         "timeMs": 46929,
@@ -14123,17 +12183,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47428,
         "lane": "center",
-        "strength": 0.281
+        "strength": 0.26
       },
       {
         "timeMs": 48328,
         "lane": "center",
-        "strength": 0.511
+        "strength": 0.513
       },
       {
         "timeMs": 48828,
         "lane": "center",
-        "strength": 0.152
+        "strength": 0.15
       },
       {
         "timeMs": 49303,
@@ -14143,32 +12203,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49802,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.377
       },
       {
         "timeMs": 50427,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.138
       },
       {
         "timeMs": 50977,
         "lane": "center",
-        "strength": 0.424
+        "strength": 0.444
       },
       {
         "timeMs": 51277,
         "lane": "center",
-        "strength": 0.143
+        "strength": 0.159
       },
       {
         "timeMs": 51677,
         "lane": "center",
-        "strength": 0.596
+        "strength": 0.575
       },
       {
         "timeMs": 51976,
         "lane": "center",
-        "strength": 0.395
+        "strength": 0.447
       },
       {
         "timeMs": 52901,
@@ -14178,7 +12238,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 53601,
         "lane": "center",
-        "strength": 0.197
+        "strength": 0.204
       },
       {
         "timeMs": 54075,
@@ -14193,17 +12253,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 55125,
         "lane": "center",
-        "strength": 0.942
+        "strength": 0.949
       },
       {
         "timeMs": 55500,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.24
       },
       {
         "timeMs": 56125,
         "lane": "center",
-        "strength": 0.479
+        "strength": 0.434
       },
       {
         "timeMs": 56449,
@@ -14218,12 +12278,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 57649,
         "lane": "center",
-        "strength": 0.757
+        "strength": 0.807
       },
       {
         "timeMs": 58399,
         "lane": "center",
-        "strength": 0.633
+        "strength": 0.634
       },
       {
         "timeMs": 58898,
@@ -14233,27 +12293,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 60922,
         "lane": "center",
-        "strength": 0.179
+        "strength": 0.187
       },
       {
         "timeMs": 61247,
         "lane": "center",
-        "strength": 0.321
+        "strength": 0.334
       },
       {
         "timeMs": 61722,
         "lane": "center",
-        "strength": 0.197
+        "strength": 0.223
       },
       {
         "timeMs": 62197,
         "lane": "center",
-        "strength": 0.32
+        "strength": 0.332
       },
       {
         "timeMs": 62647,
         "lane": "center",
-        "strength": 0.963
+        "strength": 0.972
       },
       {
         "timeMs": 63571,
@@ -14263,7 +12323,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 64796,
         "lane": "center",
-        "strength": 0.485
+        "strength": 0.492
       },
       {
         "timeMs": 65395,
@@ -14273,10 +12333,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 66695,
         "lane": "center",
-        "strength": 0.76
+        "strength": 0.77
       },
       {
         "timeMs": 67045,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 68594,
         "lane": "center",
         "strength": 0.12
       },
@@ -14288,17 +12353,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 69344,
         "lane": "center",
-        "strength": 0.6
+        "strength": 0.608
       },
       {
         "timeMs": 69818,
         "lane": "center",
-        "strength": 0.34
+        "strength": 0.363
       },
       {
         "timeMs": 71218,
         "lane": "center",
-        "strength": 0.528
+        "strength": 0.55
       },
       {
         "timeMs": 71667,
@@ -14323,12 +12388,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 74791,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.213
       },
       {
         "timeMs": 76215,
         "lane": "center",
-        "strength": 0.826
+        "strength": 0.809
       },
       {
         "timeMs": 76715,
@@ -14338,32 +12403,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 78090,
         "lane": "center",
-        "strength": 0.719
+        "strength": 0.734
       },
       {
         "timeMs": 79064,
         "lane": "center",
-        "strength": 0.822
+        "strength": 0.841
       },
       {
         "timeMs": 79364,
         "lane": "center",
-        "strength": 0.211
+        "strength": 0.27
       },
       {
         "timeMs": 79839,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.199
       },
       {
         "timeMs": 80264,
         "lane": "center",
-        "strength": 0.248
+        "strength": 0.255
       },
       {
         "timeMs": 81263,
         "lane": "center",
-        "strength": 0.139
+        "strength": 0.144
       },
       {
         "timeMs": 81538,
@@ -14376,7 +12441,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/hakima/hakima08_ending3.mp3": {
     "id": "hakima08_ending3",
@@ -14391,19 +12456,19 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 83812,
       "leadingMs": 250,
       "trailingMs": 3829,
-      "threshold": 0.094129
+      "threshold": 0.089519
     },
-    "noteCount": 152,
+    "noteCount": 151,
     "notes": [
       {
         "timeMs": 825,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.164
       },
       {
         "timeMs": 1474,
         "lane": "center",
-        "strength": 0.554
+        "strength": 0.542
       },
       {
         "timeMs": 1824,
@@ -14413,12 +12478,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2399,
         "lane": "center",
-        "strength": 0.218
+        "strength": 0.191
       },
       {
         "timeMs": 3523,
         "lane": "center",
-        "strength": 0.843
+        "strength": 0.835
       },
       {
         "timeMs": 3823,
@@ -14428,12 +12493,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4473,
         "lane": "center",
-        "strength": 0.807
+        "strength": 0.812
       },
       {
         "timeMs": 4948,
         "lane": "center",
-        "strength": 0.729
+        "strength": 0.723
       },
       {
         "timeMs": 5722,
@@ -14443,7 +12508,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6047,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.15
       },
       {
         "timeMs": 6347,
@@ -14453,7 +12518,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6847,
         "lane": "center",
-        "strength": 0.913
+        "strength": 0.909
       },
       {
         "timeMs": 7447,
@@ -14468,12 +12533,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8571,
         "lane": "center",
-        "strength": 0.255
+        "strength": 0.26
       },
       {
         "timeMs": 8871,
         "lane": "center",
-        "strength": 0.624
+        "strength": 0.606
       },
       {
         "timeMs": 9496,
@@ -14488,37 +12553,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10470,
         "lane": "center",
-        "strength": 0.465
+        "strength": 0.455
       },
       {
         "timeMs": 10795,
         "lane": "center",
-        "strength": 0.415
+        "strength": 0.409
       },
       {
         "timeMs": 11145,
         "lane": "center",
-        "strength": 0.377
+        "strength": 0.382
       },
       {
         "timeMs": 11420,
         "lane": "center",
-        "strength": 0.718
+        "strength": 0.724
       },
       {
         "timeMs": 12269,
         "lane": "center",
-        "strength": 0.455
+        "strength": 0.481
       },
       {
         "timeMs": 12669,
         "lane": "center",
-        "strength": 0.677
+        "strength": 0.669
       },
       {
         "timeMs": 12969,
         "lane": "center",
-        "strength": 0.252
+        "strength": 0.243
       },
       {
         "timeMs": 13294,
@@ -14533,17 +12598,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 14818,
         "lane": "center",
-        "strength": 0.176
+        "strength": 0.182
       },
       {
         "timeMs": 15193,
         "lane": "center",
-        "strength": 0.354
+        "strength": 0.344
       },
       {
         "timeMs": 15493,
         "lane": "center",
-        "strength": 0.492
+        "strength": 0.485
       },
       {
         "timeMs": 16617,
@@ -14568,7 +12633,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18042,
         "lane": "center",
-        "strength": 0.497
+        "strength": 0.532
       },
       {
         "timeMs": 18342,
@@ -14578,22 +12643,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18667,
         "lane": "center",
-        "strength": 0.321
+        "strength": 0.291
       },
       {
         "timeMs": 18991,
         "lane": "center",
-        "strength": 0.349
+        "strength": 0.34
       },
       {
         "timeMs": 19316,
         "lane": "center",
-        "strength": 0.255
+        "strength": 0.272
       },
       {
         "timeMs": 19616,
         "lane": "center",
-        "strength": 0.466
+        "strength": 0.46
       },
       {
         "timeMs": 20241,
@@ -14613,7 +12678,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22140,
         "lane": "center",
-        "strength": 0.58
+        "strength": 0.57
       },
       {
         "timeMs": 22765,
@@ -14633,12 +12698,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24039,
         "lane": "center",
-        "strength": 0.593
+        "strength": 0.591
       },
       {
         "timeMs": 24864,
         "lane": "center",
-        "strength": 0.212
+        "strength": 0.214
       },
       {
         "timeMs": 25164,
@@ -14648,7 +12713,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25613,
         "lane": "center",
-        "strength": 0.398
+        "strength": 0.427
       },
       {
         "timeMs": 26138,
@@ -14663,17 +12728,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27288,
         "lane": "center",
-        "strength": 0.162
+        "strength": 0.159
       },
       {
         "timeMs": 27587,
         "lane": "center",
-        "strength": 0.167
+        "strength": 0.165
       },
       {
         "timeMs": 27912,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.121
       },
       {
         "timeMs": 28312,
@@ -14683,17 +12748,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29087,
         "lane": "center",
-        "strength": 0.798
+        "strength": 0.795
       },
       {
         "timeMs": 29537,
         "lane": "center",
-        "strength": 0.267
+        "strength": 0.271
       },
       {
         "timeMs": 29861,
         "lane": "center",
-        "strength": 0.227
+        "strength": 0.234
       },
       {
         "timeMs": 30211,
@@ -14708,7 +12773,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31611,
         "lane": "center",
-        "strength": 0.466
+        "strength": 0.464
       },
       {
         "timeMs": 32085,
@@ -14718,12 +12783,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32885,
         "lane": "center",
-        "strength": 0.352
+        "strength": 0.347
       },
       {
         "timeMs": 33185,
         "lane": "center",
-        "strength": 0.173
+        "strength": 0.165
       },
       {
         "timeMs": 34135,
@@ -14733,12 +12798,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34784,
         "lane": "center",
-        "strength": 0.716
+        "strength": 0.708
       },
       {
         "timeMs": 35409,
         "lane": "center",
-        "strength": 0.327
+        "strength": 0.343
       },
       {
         "timeMs": 35709,
@@ -14748,12 +12813,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36034,
         "lane": "center",
-        "strength": 0.983
+        "strength": 1
       },
       {
         "timeMs": 36334,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.262
       },
       {
         "timeMs": 36658,
@@ -14763,12 +12828,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37108,
         "lane": "center",
-        "strength": 0.387
+        "strength": 0.391
       },
       {
         "timeMs": 37483,
         "lane": "center",
-        "strength": 0.158
+        "strength": 0.15
       },
       {
         "timeMs": 38258,
@@ -14783,17 +12848,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39182,
         "lane": "center",
-        "strength": 0.984
+        "strength": 0.967
       },
       {
         "timeMs": 39507,
         "lane": "center",
-        "strength": 0.232
+        "strength": 0.196
       },
       {
         "timeMs": 40057,
         "lane": "center",
-        "strength": 0.245
+        "strength": 0.235
       },
       {
         "timeMs": 40757,
@@ -14803,7 +12868,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41406,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.135
       },
       {
         "timeMs": 41906,
@@ -14813,7 +12878,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42181,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.136
       },
       {
         "timeMs": 42856,
@@ -14823,7 +12888,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43630,
         "lane": "center",
-        "strength": 0.892
+        "strength": 0.909
       },
       {
         "timeMs": 44030,
@@ -14833,27 +12898,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44405,
         "lane": "center",
-        "strength": 0.535
+        "strength": 0.533
       },
       {
         "timeMs": 45105,
         "lane": "center",
-        "strength": 0.143
+        "strength": 0.149
       },
       {
         "timeMs": 45379,
         "lane": "center",
-        "strength": 0.26
+        "strength": 0.269
       },
       {
         "timeMs": 45829,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.237
       },
       {
         "timeMs": 46329,
         "lane": "center",
-        "strength": 0.396
+        "strength": 0.404
       },
       {
         "timeMs": 46604,
@@ -14868,17 +12933,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48028,
         "lane": "center",
-        "strength": 0.182
-      },
-      {
-        "timeMs": 48328,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.178
       },
       {
         "timeMs": 48678,
         "lane": "center",
-        "strength": 0.345
+        "strength": 0.343
       },
       {
         "timeMs": 48978,
@@ -14888,12 +12948,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49303,
         "lane": "center",
-        "strength": 0.335
+        "strength": 0.326
       },
       {
         "timeMs": 49627,
         "lane": "center",
-        "strength": 0.694
+        "strength": 0.666
       },
       {
         "timeMs": 49927,
@@ -14903,7 +12963,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50427,
         "lane": "center",
-        "strength": 0.549
+        "strength": 0.546
       },
       {
         "timeMs": 50877,
@@ -14918,17 +12978,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51502,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.173
       },
       {
         "timeMs": 52001,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.294
       },
       {
         "timeMs": 52326,
         "lane": "center",
-        "strength": 0.622
+        "strength": 0.631
       },
       {
         "timeMs": 52626,
@@ -14938,7 +12998,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 52926,
         "lane": "center",
-        "strength": 0.325
+        "strength": 0.329
       },
       {
         "timeMs": 53926,
@@ -14948,7 +13008,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54350,
         "lane": "center",
-        "strength": 0.794
+        "strength": 0.796
       },
       {
         "timeMs": 55000,
@@ -14958,12 +13018,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 55450,
         "lane": "center",
-        "strength": 0.387
+        "strength": 0.381
       },
       {
         "timeMs": 55925,
         "lane": "center",
-        "strength": 0.985
+        "strength": 0.981
       },
       {
         "timeMs": 56249,
@@ -14973,12 +13033,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56749,
         "lane": "center",
-        "strength": 0.542
+        "strength": 0.535
       },
       {
         "timeMs": 57199,
         "lane": "center",
-        "strength": 0.189
+        "strength": 0.173
       },
       {
         "timeMs": 57499,
@@ -14998,12 +13058,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 58798,
         "lane": "center",
-        "strength": 0.205
+        "strength": 0.206
       },
       {
         "timeMs": 59548,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.3
       },
       {
         "timeMs": 60348,
@@ -15028,17 +13088,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 62896,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.228
       },
       {
         "timeMs": 63271,
         "lane": "center",
-        "strength": 0.196
+        "strength": 0.189
       },
       {
         "timeMs": 63571,
         "lane": "center",
-        "strength": 0.852
+        "strength": 0.849
       },
       {
         "timeMs": 66270,
@@ -15073,7 +13133,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 71667,
         "lane": "center",
-        "strength": 0.142
+        "strength": 0.194
       },
       {
         "timeMs": 71942,
@@ -15083,12 +13143,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 72217,
         "lane": "center",
-        "strength": 0.558
+        "strength": 0.566
       },
       {
         "timeMs": 72667,
         "lane": "center",
-        "strength": 0.337
+        "strength": 0.335
       },
       {
         "timeMs": 73292,
@@ -15103,32 +13163,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 75066,
         "lane": "center",
-        "strength": 0.256
+        "strength": 0.246
       },
       {
         "timeMs": 75441,
         "lane": "center",
-        "strength": 0.198
+        "strength": 0.196
       },
       {
         "timeMs": 75716,
         "lane": "center",
-        "strength": 0.311
+        "strength": 0.317
       },
       {
         "timeMs": 76140,
         "lane": "center",
-        "strength": 0.531
+        "strength": 0.521
       },
       {
         "timeMs": 77090,
         "lane": "center",
-        "strength": 0.225
+        "strength": 0.233
       },
       {
         "timeMs": 77515,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.132
       },
       {
         "timeMs": 78564,
@@ -15138,25 +13198,25 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 79689,
         "lane": "center",
-        "strength": 0.4
+        "strength": 0.388
       },
       {
         "timeMs": 80089,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.23
       },
       {
         "timeMs": 81588,
         "lane": "center",
-        "strength": 0.723
+        "strength": 0.729
       },
       {
         "timeMs": 82013,
         "lane": "center",
-        "strength": 0.462
+        "strength": 0.453
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/main/main01_title.mp3": {
     "id": "main01_title",
@@ -15171,9 +13231,9 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 27288,
       "leadingMs": 0,
       "trailingMs": 2413,
-      "threshold": 0.045399
+      "threshold": 0.043214
     },
-    "noteCount": 44,
+    "noteCount": 42,
     "notes": [
       {
         "timeMs": 100,
@@ -15188,12 +13248,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3723,
         "lane": "center",
-        "strength": 0.28
+        "strength": 0.29
       },
       {
         "timeMs": 4398,
         "lane": "center",
-        "strength": 0.648
+        "strength": 0.647
       },
       {
         "timeMs": 5398,
@@ -15203,12 +13263,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6722,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.145
       },
       {
         "timeMs": 7397,
         "lane": "center",
-        "strength": 0.209
+        "strength": 0.205
       },
       {
         "timeMs": 8071,
@@ -15218,17 +13278,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8946,
         "lane": "center",
-        "strength": 0.312
+        "strength": 0.326
       },
       {
         "timeMs": 9321,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.158
       },
       {
         "timeMs": 9696,
         "lane": "center",
-        "strength": 0.137
+        "strength": 0.129
       },
       {
         "timeMs": 10595,
@@ -15243,52 +13303,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11720,
         "lane": "center",
-        "strength": 0.379
+        "strength": 0.373
       },
       {
         "timeMs": 12020,
         "lane": "center",
-        "strength": 0.751
+        "strength": 0.736
       },
       {
         "timeMs": 12294,
         "lane": "center",
-        "strength": 0.263
+        "strength": 0.271
       },
       {
-        "timeMs": 12594,
+        "timeMs": 13019,
         "lane": "center",
-        "strength": 0.686
-      },
-      {
-        "timeMs": 12944,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.82
       },
       {
         "timeMs": 13294,
         "lane": "center",
-        "strength": 0.23
+        "strength": 0.197
       },
       {
         "timeMs": 14094,
         "lane": "center",
-        "strength": 0.441
+        "strength": 0.435
       },
       {
         "timeMs": 15368,
         "lane": "center",
-        "strength": 0.212
+        "strength": 0.205
       },
       {
         "timeMs": 15693,
         "lane": "center",
-        "strength": 0.541
+        "strength": 0.542
       },
       {
         "timeMs": 15968,
         "lane": "center",
-        "strength": 0.605
+        "strength": 0.601
       },
       {
         "timeMs": 16243,
@@ -15298,22 +13353,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16667,
         "lane": "center",
-        "strength": 0.627
+        "strength": 0.634
       },
       {
         "timeMs": 16992,
         "lane": "center",
-        "strength": 0.54
+        "strength": 0.579
       },
       {
         "timeMs": 17317,
         "lane": "center",
-        "strength": 0.484
+        "strength": 0.493
       },
       {
         "timeMs": 17692,
         "lane": "center",
-        "strength": 0.344
+        "strength": 0.339
       },
       {
         "timeMs": 18017,
@@ -15323,7 +13378,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18342,
         "lane": "center",
-        "strength": 0.324
+        "strength": 0.327
       },
       {
         "timeMs": 18642,
@@ -15333,12 +13388,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18916,
         "lane": "center",
-        "strength": 0.143
+        "strength": 0.132
       },
       {
         "timeMs": 19216,
         "lane": "center",
-        "strength": 0.171
+        "strength": 0.15
       },
       {
         "timeMs": 19541,
@@ -15348,17 +13403,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20091,
         "lane": "center",
-        "strength": 0.601
+        "strength": 0.585
       },
       {
         "timeMs": 20716,
         "lane": "center",
-        "strength": 0.28
+        "strength": 0.279
       },
       {
         "timeMs": 21140,
         "lane": "center",
-        "strength": 0.14
+        "strength": 0.127
       },
       {
         "timeMs": 21440,
@@ -15368,7 +13423,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21840,
         "lane": "center",
-        "strength": 0.535
+        "strength": 0.533
       },
       {
         "timeMs": 22490,
@@ -15378,17 +13433,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23140,
         "lane": "center",
-        "strength": 0.191
-      },
-      {
-        "timeMs": 23414,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.201
       },
       {
         "timeMs": 24064,
         "lane": "center",
-        "strength": 0.384
+        "strength": 0.376
       },
       {
         "timeMs": 24414,
@@ -15396,24 +13446,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/main/main02_shop.mp3": {
     "id": "main02_shop",
     "path": "audio/bgm/main/main02_shop.mp3",
     "source": "public/audio/bgm/main/main02_shop.mp3",
     "analyzer": "onset-energy-v2",
-    "durationMs": 53943,
+    "durationMs": 30000,
     "beatIntervalMs": 375,
     "playbackTrim": {
       "enabled": true,
       "startMs": 0,
-      "endMs": 53551,
+      "endMs": 28987,
       "leadingMs": 0,
-      "trailingMs": 392,
-      "threshold": 0.022089
+      "trailingMs": 1013,
+      "threshold": 0.063874
     },
-    "noteCount": 108,
+    "noteCount": 63,
     "notes": [
       {
         "timeMs": 50,
@@ -15448,7 +13498,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3348,
         "lane": "center",
-        "strength": 0.65
+        "strength": 0.549
       },
       {
         "timeMs": 3648,
@@ -15458,7 +13508,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4098,
         "lane": "center",
-        "strength": 0.793
+        "strength": 0.681
       },
       {
         "timeMs": 4848,
@@ -15468,7 +13518,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5298,
         "lane": "center",
-        "strength": 0.853
+        "strength": 0.703
       },
       {
         "timeMs": 5772,
@@ -15488,17 +13538,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7247,
         "lane": "center",
-        "strength": 1
+        "strength": 0.968
       },
       {
         "timeMs": 7697,
         "lane": "center",
-        "strength": 1
+        "strength": 0.897
       },
       {
         "timeMs": 8146,
         "lane": "center",
-        "strength": 0.218
+        "strength": 0.184
       },
       {
         "timeMs": 8521,
@@ -15508,7 +13558,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9071,
         "lane": "center",
-        "strength": 0.386
+        "strength": 0.318
       },
       {
         "timeMs": 9646,
@@ -15528,37 +13578,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11295,
         "lane": "center",
-        "strength": 1
+        "strength": 0.84
       },
       {
         "timeMs": 11770,
         "lane": "center",
-        "strength": 0.391
+        "strength": 0.339
       },
       {
         "timeMs": 12045,
         "lane": "center",
-        "strength": 1
+        "strength": 0.864
       },
       {
         "timeMs": 12969,
         "lane": "center",
-        "strength": 0.138
+        "strength": 0.12
       },
       {
         "timeMs": 13244,
         "lane": "center",
-        "strength": 1
+        "strength": 0.992
       },
       {
         "timeMs": 13694,
         "lane": "center",
-        "strength": 0.553
+        "strength": 0.469
       },
       {
         "timeMs": 14468,
         "lane": "center",
-        "strength": 0.672
+        "strength": 0.564
       },
       {
         "timeMs": 16118,
@@ -15568,7 +13618,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16567,
         "lane": "center",
-        "strength": 0.561
+        "strength": 0.502
       },
       {
         "timeMs": 16867,
@@ -15578,32 +13628,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17317,
         "lane": "center",
-        "strength": 0.532
+        "strength": 0.461
       },
       {
         "timeMs": 18067,
         "lane": "center",
-        "strength": 0.877
+        "strength": 0.746
       },
       {
         "timeMs": 18367,
         "lane": "center",
-        "strength": 0.425
+        "strength": 0.363
       },
       {
         "timeMs": 18667,
         "lane": "center",
-        "strength": 0.393
+        "strength": 0.324
       },
       {
         "timeMs": 19266,
         "lane": "center",
-        "strength": 0.382
+        "strength": 0.315
       },
       {
         "timeMs": 19616,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.12
       },
       {
         "timeMs": 19891,
@@ -15623,37 +13673,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20791,
         "lane": "center",
-        "strength": 0.469
+        "strength": 0.403
       },
       {
         "timeMs": 21090,
         "lane": "center",
-        "strength": 0.385
+        "strength": 0.32
       },
       {
         "timeMs": 21665,
         "lane": "center",
-        "strength": 0.363
+        "strength": 0.304
       },
       {
         "timeMs": 22015,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.127
       },
       {
         "timeMs": 22290,
         "lane": "center",
-        "strength": 0.266
+        "strength": 0.228
       },
       {
         "timeMs": 22865,
         "lane": "center",
-        "strength": 0.574
+        "strength": 0.468
       },
       {
         "timeMs": 23314,
         "lane": "center",
-        "strength": 0.371
+        "strength": 0.315
       },
       {
         "timeMs": 23664,
@@ -15663,17 +13713,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24064,
         "lane": "center",
-        "strength": 1
+        "strength": 0.937
       },
       {
         "timeMs": 24389,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.174
       },
       {
         "timeMs": 24664,
         "lane": "center",
-        "strength": 0.771
+        "strength": 0.65
       },
       {
         "timeMs": 24964,
@@ -15688,12 +13738,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25563,
         "lane": "center",
-        "strength": 0.82
+        "strength": 0.701
       },
       {
         "timeMs": 25888,
         "lane": "center",
-        "strength": 0.257
+        "strength": 0.212
       },
       {
         "timeMs": 26188,
@@ -15713,250 +13763,25 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27088,
         "lane": "center",
-        "strength": 0.669
+        "strength": 0.56
       },
       {
         "timeMs": 27388,
         "lane": "center",
-        "strength": 0.385
+        "strength": 0.345
       },
       {
         "timeMs": 27662,
         "lane": "center",
-        "strength": 1
+        "strength": 0.915
       },
       {
         "timeMs": 27962,
         "lane": "center",
         "strength": 1
-      },
-      {
-        "timeMs": 33710,
-        "lane": "center",
-        "strength": 0.341
-      },
-      {
-        "timeMs": 34110,
-        "lane": "center",
-        "strength": 0.415
-      },
-      {
-        "timeMs": 34784,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35084,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35459,
-        "lane": "center",
-        "strength": 0.316
-      },
-      {
-        "timeMs": 35784,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 36059,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 36383,
-        "lane": "center",
-        "strength": 0.136
-      },
-      {
-        "timeMs": 36758,
-        "lane": "center",
-        "strength": 0.252
-      },
-      {
-        "timeMs": 37133,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 37708,
-        "lane": "center",
-        "strength": 0.595
-      },
-      {
-        "timeMs": 38458,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38907,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39357,
-        "lane": "center",
-        "strength": 0.963
-      },
-      {
-        "timeMs": 39657,
-        "lane": "center",
-        "strength": 0.574
-      },
-      {
-        "timeMs": 40107,
-        "lane": "center",
-        "strength": 0.194
-      },
-      {
-        "timeMs": 40707,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 41306,
-        "lane": "center",
-        "strength": 0.741
-      },
-      {
-        "timeMs": 41756,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42056,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42506,
-        "lane": "center",
-        "strength": 0.521
-      },
-      {
-        "timeMs": 42956,
-        "lane": "center",
-        "strength": 0.25
-      },
-      {
-        "timeMs": 43255,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 43705,
-        "lane": "center",
-        "strength": 0.777
-      },
-      {
-        "timeMs": 44180,
-        "lane": "center",
-        "strength": 0.253
-      },
-      {
-        "timeMs": 44655,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45030,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 45979,
-        "lane": "center",
-        "strength": 0.723
-      },
-      {
-        "timeMs": 46279,
-        "lane": "center",
-        "strength": 0.124
-      },
-      {
-        "timeMs": 46729,
-        "lane": "center",
-        "strength": 0.358
-      },
-      {
-        "timeMs": 47304,
-        "lane": "center",
-        "strength": 0.904
-      },
-      {
-        "timeMs": 47778,
-        "lane": "center",
-        "strength": 0.385
-      },
-      {
-        "timeMs": 48053,
-        "lane": "center",
-        "strength": 0.947
-      },
-      {
-        "timeMs": 48403,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 48753,
-        "lane": "center",
-        "strength": 0.253
-      },
-      {
-        "timeMs": 49178,
-        "lane": "center",
-        "strength": 0.293
-      },
-      {
-        "timeMs": 49453,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 49802,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 50077,
-        "lane": "center",
-        "strength": 0.176
-      },
-      {
-        "timeMs": 50452,
-        "lane": "center",
-        "strength": 0.916
-      },
-      {
-        "timeMs": 50902,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 51352,
-        "lane": "center",
-        "strength": 0.194
-      },
-      {
-        "timeMs": 51652,
-        "lane": "center",
-        "strength": 0.977
-      },
-      {
-        "timeMs": 51951,
-        "lane": "center",
-        "strength": 0.552
-      },
-      {
-        "timeMs": 52276,
-        "lane": "center",
-        "strength": 0.125
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/main/main03_puzzle.mp3": {
     "id": "main03_puzzle",
@@ -15964,41 +13789,41 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/main/main03_puzzle.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 87275,
-    "beatIntervalMs": 475,
+    "beatIntervalMs": 499,
     "playbackTrim": {
       "enabled": true,
       "startMs": 1324,
       "endMs": 86436,
       "leadingMs": 1324,
       "trailingMs": 839,
-      "threshold": 0.068595
+      "threshold": 0.065344
     },
-    "noteCount": 143,
+    "noteCount": 141,
     "notes": [
       {
         "timeMs": 6047,
         "lane": "center",
-        "strength": 0.609
+        "strength": 0.604
       },
       {
         "timeMs": 6572,
         "lane": "center",
-        "strength": 0.536
+        "strength": 0.526
       },
       {
         "timeMs": 7047,
         "lane": "center",
-        "strength": 0.858
+        "strength": 0.861
       },
       {
         "timeMs": 8546,
         "lane": "center",
-        "strength": 0.589
+        "strength": 0.583
       },
       {
         "timeMs": 9046,
         "lane": "center",
-        "strength": 0.404
+        "strength": 0.406
       },
       {
         "timeMs": 10070,
@@ -16008,7 +13833,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11070,
         "lane": "center",
-        "strength": 0.175
+        "strength": 0.174
       },
       {
         "timeMs": 12144,
@@ -16023,7 +13848,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13844,
         "lane": "center",
-        "strength": 0.16
+        "strength": 0.155
       },
       {
         "timeMs": 14319,
@@ -16038,17 +13863,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15068,
         "lane": "center",
-        "strength": 0.406
+        "strength": 0.422
       },
       {
         "timeMs": 16567,
         "lane": "center",
-        "strength": 0.202
+        "strength": 0.192
       },
       {
         "timeMs": 17067,
         "lane": "center",
-        "strength": 0.787
+        "strength": 0.767
       },
       {
         "timeMs": 17567,
@@ -16063,7 +13888,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20566,
         "lane": "center",
-        "strength": 0.322
+        "strength": 0.377
       },
       {
         "timeMs": 21115,
@@ -16073,7 +13898,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21565,
         "lane": "center",
-        "strength": 0.865
+        "strength": 0.876
       },
       {
         "timeMs": 22040,
@@ -16081,19 +13906,19 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 22565,
+        "timeMs": 22315,
         "lane": "center",
-        "strength": 1
+        "strength": 0.12
       },
       {
         "timeMs": 23564,
         "lane": "center",
-        "strength": 0.496
+        "strength": 0.456
       },
       {
         "timeMs": 24114,
         "lane": "center",
-        "strength": 0.343
+        "strength": 0.348
       },
       {
         "timeMs": 24564,
@@ -16103,12 +13928,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25314,
         "lane": "center",
-        "strength": 0.155
+        "strength": 0.133
       },
       {
         "timeMs": 26113,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.135
       },
       {
         "timeMs": 26563,
@@ -16123,17 +13948,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 27363,
         "lane": "center",
-        "strength": 0.232
+        "strength": 0.209
       },
       {
         "timeMs": 27737,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.138
       },
       {
         "timeMs": 28087,
         "lane": "center",
-        "strength": 0.198
+        "strength": 0.194
       },
       {
         "timeMs": 28562,
@@ -16143,7 +13968,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29562,
         "lane": "center",
-        "strength": 0.846
+        "strength": 0.857
       },
       {
         "timeMs": 30086,
@@ -16163,27 +13988,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31586,
         "lane": "center",
-        "strength": 0.533
+        "strength": 0.557
       },
       {
         "timeMs": 32560,
         "lane": "center",
-        "strength": 0.581
+        "strength": 0.579
       },
       {
         "timeMs": 33110,
         "lane": "center",
-        "strength": 0.167
+        "strength": 0.17
       },
       {
         "timeMs": 33610,
         "lane": "center",
-        "strength": 0.278
+        "strength": 0.259
       },
       {
         "timeMs": 34110,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.142
       },
       {
         "timeMs": 34559,
@@ -16198,7 +14023,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35584,
         "lane": "center",
-        "strength": 0.216
+        "strength": 0.306
       },
       {
         "timeMs": 36059,
@@ -16208,17 +14033,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36558,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.182
       },
       {
         "timeMs": 37083,
         "lane": "center",
-        "strength": 0.434
+        "strength": 0.401
       },
       {
         "timeMs": 37533,
         "lane": "center",
-        "strength": 0.458
+        "strength": 0.462
       },
       {
         "timeMs": 38058,
@@ -16238,12 +14063,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39532,
         "lane": "center",
-        "strength": 0.214
+        "strength": 0.204
       },
       {
         "timeMs": 40032,
         "lane": "center",
-        "strength": 0.135
+        "strength": 0.12
       },
       {
         "timeMs": 40407,
@@ -16253,17 +14078,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40781,
         "lane": "center",
-        "strength": 0.993
+        "strength": 0.987
       },
       {
         "timeMs": 41281,
         "lane": "center",
-        "strength": 0.234
+        "strength": 0.23
       },
       {
         "timeMs": 41781,
         "lane": "center",
-        "strength": 0.357
+        "strength": 0.354
       },
       {
         "timeMs": 42531,
@@ -16283,7 +14108,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 44080,
         "lane": "center",
-        "strength": 0.662
+        "strength": 0.631
       },
       {
         "timeMs": 44805,
@@ -16298,12 +14123,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45554,
         "lane": "center",
-        "strength": 0.437
+        "strength": 0.431
       },
       {
         "timeMs": 46279,
         "lane": "center",
-        "strength": 0.339
+        "strength": 0.323
       },
       {
         "timeMs": 46804,
@@ -16318,7 +14143,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48078,
         "lane": "center",
-        "strength": 0.382
+        "strength": 0.372
       },
       {
         "timeMs": 48528,
@@ -16333,7 +14158,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 49278,
         "lane": "center",
-        "strength": 0.127
+        "strength": 0.126
       },
       {
         "timeMs": 50052,
@@ -16343,7 +14168,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50577,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.242
       },
       {
         "timeMs": 51052,
@@ -16358,27 +14183,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 52051,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.215
       },
       {
         "timeMs": 52576,
         "lane": "center",
-        "strength": 0.642
+        "strength": 0.635
       },
       {
         "timeMs": 53201,
         "lane": "center",
-        "strength": 0.497
+        "strength": 0.489
       },
       {
         "timeMs": 53526,
         "lane": "center",
-        "strength": 0.836
+        "strength": 0.853
       },
       {
         "timeMs": 53851,
         "lane": "center",
-        "strength": 0.176
+        "strength": 0.16
       },
       {
         "timeMs": 54475,
@@ -16388,12 +14213,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54800,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.256
       },
       {
         "timeMs": 55325,
         "lane": "center",
-        "strength": 0.472
+        "strength": 0.461
       },
       {
         "timeMs": 56050,
@@ -16403,7 +14228,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56574,
         "lane": "center",
-        "strength": 0.635
+        "strength": 0.624
       },
       {
         "timeMs": 57049,
@@ -16413,12 +14238,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 57524,
         "lane": "center",
-        "strength": 0.729
+        "strength": 0.726
       },
       {
         "timeMs": 57824,
         "lane": "center",
-        "strength": 0.561
+        "strength": 0.549
       },
       {
         "timeMs": 58423,
@@ -16433,52 +14258,52 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 59073,
         "lane": "center",
-        "strength": 0.279
+        "strength": 0.268
       },
       {
         "timeMs": 59523,
         "lane": "center",
-        "strength": 0.345
+        "strength": 0.298
       },
       {
         "timeMs": 59923,
         "lane": "center",
-        "strength": 0.436
+        "strength": 0.433
       },
       {
         "timeMs": 60697,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.158
       },
       {
         "timeMs": 61072,
         "lane": "center",
-        "strength": 0.437
+        "strength": 0.385
       },
       {
         "timeMs": 61497,
         "lane": "center",
-        "strength": 0.168
+        "strength": 0.163
       },
       {
         "timeMs": 61922,
         "lane": "center",
-        "strength": 0.355
+        "strength": 0.365
       },
       {
         "timeMs": 62722,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.12
       },
       {
         "timeMs": 63071,
         "lane": "center",
-        "strength": 0.176
+        "strength": 0.179
       },
       {
         "timeMs": 63546,
         "lane": "center",
-        "strength": 0.285
+        "strength": 0.274
       },
       {
         "timeMs": 64046,
@@ -16486,24 +14311,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 64921,
+        "timeMs": 64721,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 65320,
         "lane": "center",
-        "strength": 0.449
+        "strength": 0.437
       },
       {
         "timeMs": 65795,
         "lane": "center",
-        "strength": 0.707
+        "strength": 0.737
       },
       {
         "timeMs": 66170,
         "lane": "center",
-        "strength": 0.367
+        "strength": 0.368
       },
       {
         "timeMs": 66495,
@@ -16513,12 +14338,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 66920,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.129
       },
       {
         "timeMs": 67419,
         "lane": "center",
-        "strength": 0.215
+        "strength": 0.213
       },
       {
         "timeMs": 67744,
@@ -16528,17 +14353,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 68069,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 68444,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.151
       },
       {
         "timeMs": 68769,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.125
       },
       {
         "timeMs": 69119,
@@ -16553,12 +14373,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 70068,
         "lane": "center",
-        "strength": 0.129
-      },
-      {
-        "timeMs": 70343,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.147
       },
       {
         "timeMs": 70668,
@@ -16568,7 +14383,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 71543,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.199
       },
       {
         "timeMs": 71992,
@@ -16598,7 +14413,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 74966,
         "lane": "center",
-        "strength": 0.221
+        "strength": 0.217
       },
       {
         "timeMs": 75316,
@@ -16608,17 +14423,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 75791,
         "lane": "center",
-        "strength": 0.944
+        "strength": 0.923
       },
       {
         "timeMs": 76140,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.226
       },
       {
         "timeMs": 76790,
         "lane": "center",
-        "strength": 0.204
+        "strength": 0.2
       },
       {
         "timeMs": 77065,
@@ -16638,7 +14453,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 78065,
         "lane": "center",
-        "strength": 0.519
+        "strength": 0.525
       },
       {
         "timeMs": 78564,
@@ -16646,14 +14461,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 78964,
+        "timeMs": 79039,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.169
       },
       {
-        "timeMs": 79289,
+        "timeMs": 79539,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.179
       },
       {
         "timeMs": 79864,
@@ -16673,17 +14488,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 81538,
         "lane": "center",
-        "strength": 0.469
+        "strength": 0.457
       },
       {
         "timeMs": 81838,
         "lane": "center",
-        "strength": 0.246
+        "strength": 0.237
       },
       {
         "timeMs": 82113,
         "lane": "center",
-        "strength": 0.511
+        "strength": 0.437
       },
       {
         "timeMs": 84537,
@@ -16691,104 +14506,44 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira01_theme.mp3": {
     "id": "mira01_theme",
     "path": "audio/bgm/mira/mira01_theme.mp3",
     "source": "public/audio/bgm/mira/mira01_theme.mp3",
     "analyzer": "onset-energy-v2",
-    "durationMs": 53943,
-    "beatIntervalMs": 350,
+    "durationMs": 101303,
+    "beatIntervalMs": 450,
     "playbackTrim": {
       "enabled": true,
       "startMs": 0,
-      "endMs": 53601,
+      "endMs": 96756,
       "leadingMs": 0,
-      "trailingMs": 342,
-      "threshold": 0.021452
+      "trailingMs": 4547,
+      "threshold": 0.045962
     },
-    "noteCount": 120,
+    "noteCount": 148,
     "notes": [
       {
-        "timeMs": 50,
+        "timeMs": 100,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 375,
-        "lane": "center",
-        "strength": 0.179
-      },
-      {
-        "timeMs": 675,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 950,
-        "lane": "center",
-        "strength": 0.263
-      },
-      {
-        "timeMs": 1249,
+        "timeMs": 725,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 1699,
+        "timeMs": 2674,
         "lane": "center",
-        "strength": 1
+        "strength": 0.307
       },
       {
-        "timeMs": 2174,
+        "timeMs": 4148,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 2574,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 2899,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 3373,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 3648,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 4098,
-        "lane": "center",
-        "strength": 0.877
-      },
-      {
-        "timeMs": 4398,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 4848,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 5298,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 5772,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.183
       },
       {
         "timeMs": 6122,
@@ -16796,522 +14551,722 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 6497,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 7247,
-        "lane": "center",
-        "strength": 0.848
-      },
-      {
-        "timeMs": 7697,
-        "lane": "center",
-        "strength": 0.898
-      },
-      {
-        "timeMs": 8171,
-        "lane": "center",
-        "strength": 0.154
-      },
-      {
-        "timeMs": 8471,
+        "timeMs": 6797,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 8746,
+        "timeMs": 7597,
         "lane": "center",
-        "strength": 1
+        "strength": 0.962
       },
       {
-        "timeMs": 9071,
+        "timeMs": 10395,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.292
       },
       {
-        "timeMs": 9646,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 10095,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 10570,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 10870,
-        "lane": "center",
-        "strength": 0.208
-      },
-      {
-        "timeMs": 11295,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 11770,
-        "lane": "center",
-        "strength": 0.144
-      },
-      {
-        "timeMs": 12070,
-        "lane": "center",
-        "strength": 0.172
-      },
-      {
-        "timeMs": 12494,
-        "lane": "center",
-        "strength": 0.961
-      },
-      {
-        "timeMs": 12969,
-        "lane": "center",
-        "strength": 0.414
-      },
-      {
-        "timeMs": 13244,
-        "lane": "center",
-        "strength": 0.934
-      },
-      {
-        "timeMs": 13594,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 14219,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 14768,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 15393,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 15668,
-        "lane": "center",
-        "strength": 0.443
-      },
-      {
-        "timeMs": 15968,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 16268,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 16567,
-        "lane": "center",
-        "strength": 0.339
-      },
-      {
-        "timeMs": 16867,
-        "lane": "center",
-        "strength": 0.587
-      },
-      {
-        "timeMs": 17317,
-        "lane": "center",
-        "strength": 0.549
-      },
-      {
-        "timeMs": 17767,
-        "lane": "center",
-        "strength": 0.315
-      },
-      {
-        "timeMs": 18067,
-        "lane": "center",
-        "strength": 0.571
-      },
-      {
-        "timeMs": 18367,
-        "lane": "center",
-        "strength": 0.719
-      },
-      {
-        "timeMs": 18667,
-        "lane": "center",
-        "strength": 0.442
-      },
-      {
-        "timeMs": 19266,
-        "lane": "center",
-        "strength": 0.475
-      },
-      {
-        "timeMs": 19716,
-        "lane": "center",
-        "strength": 0.343
-      },
-      {
-        "timeMs": 20041,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20316,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20641,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 20916,
-        "lane": "center",
-        "strength": 0.412
-      },
-      {
-        "timeMs": 21365,
-        "lane": "center",
-        "strength": 0.278
-      },
-      {
-        "timeMs": 21665,
-        "lane": "center",
-        "strength": 0.295
-      },
-      {
-        "timeMs": 21990,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22565,
-        "lane": "center",
-        "strength": 0.538
-      },
-      {
-        "timeMs": 22865,
-        "lane": "center",
-        "strength": 0.602
-      },
-      {
-        "timeMs": 23314,
-        "lane": "center",
-        "strength": 0.383
-      },
-      {
-        "timeMs": 23764,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24064,
-        "lane": "center",
-        "strength": 0.994
-      },
-      {
-        "timeMs": 24389,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24689,
-        "lane": "center",
-        "strength": 0.147
-      },
-      {
-        "timeMs": 24964,
-        "lane": "center",
-        "strength": 0.758
-      },
-      {
-        "timeMs": 25264,
-        "lane": "center",
-        "strength": 0.95
-      },
-      {
-        "timeMs": 25588,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26013,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 26463,
+        "timeMs": 11020,
         "lane": "center",
         "strength": 0.888
       },
       {
-        "timeMs": 26913,
-        "lane": "center",
-        "strength": 0.681
-      },
-      {
-        "timeMs": 27238,
+        "timeMs": 12944,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 27662,
+        "timeMs": 14443,
         "lane": "center",
-        "strength": 0.922
+        "strength": 0.926
       },
       {
-        "timeMs": 27962,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 34110,
+        "timeMs": 16817,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 34584,
-        "lane": "center",
-        "strength": 0.134
-      },
-      {
-        "timeMs": 34859,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 35184,
-        "lane": "center",
-        "strength": 0.321
-      },
-      {
-        "timeMs": 35484,
+        "timeMs": 17167,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 36059,
-        "lane": "center",
-        "strength": 0.717
-      },
-      {
-        "timeMs": 36383,
-        "lane": "center",
-        "strength": 0.255
-      },
-      {
-        "timeMs": 36958,
-        "lane": "center",
-        "strength": 0.233
-      },
-      {
-        "timeMs": 37258,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 37708,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38158,
-        "lane": "center",
-        "strength": 0.222
-      },
-      {
-        "timeMs": 38458,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 38907,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39232,
+        "timeMs": 17942,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 39657,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 39982,
-        "lane": "center",
-        "strength": 0.264
-      },
-      {
-        "timeMs": 40282,
+        "timeMs": 18991,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 40856,
+        "timeMs": 19791,
         "lane": "center",
-        "strength": 0.745
+        "strength": 0.148
       },
       {
-        "timeMs": 41181,
+        "timeMs": 20241,
         "lane": "center",
-        "strength": 0.24
+        "strength": 0.988
       },
       {
-        "timeMs": 41481,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42056,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 42431,
+        "timeMs": 20741,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 42956,
+        "timeMs": 21315,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.169
       },
       {
-        "timeMs": 43255,
+        "timeMs": 23214,
+        "lane": "center",
+        "strength": 0.25
+      },
+      {
+        "timeMs": 23689,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 43705,
+        "timeMs": 24114,
         "lane": "center",
-        "strength": 1
+        "strength": 0.232
       },
       {
-        "timeMs": 44055,
+        "timeMs": 24739,
+        "lane": "center",
+        "strength": 0.405
+      },
+      {
+        "timeMs": 26663,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 44455,
+        "timeMs": 27562,
+        "lane": "center",
+        "strength": 0.445
+      },
+      {
+        "timeMs": 28162,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 44780,
+        "timeMs": 28812,
+        "lane": "center",
+        "strength": 0.344
+      },
+      {
+        "timeMs": 29262,
+        "lane": "center",
+        "strength": 0.125
+      },
+      {
+        "timeMs": 30086,
+        "lane": "center",
+        "strength": 0.469
+      },
+      {
+        "timeMs": 30536,
+        "lane": "center",
+        "strength": 0.315
+      },
+      {
+        "timeMs": 31486,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 32235,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 32685,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 33510,
+        "lane": "center",
+        "strength": 0.388
+      },
+      {
+        "timeMs": 34010,
         "lane": "center",
         "strength": 0.246
       },
       {
-        "timeMs": 45229,
+        "timeMs": 34559,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 45654,
+        "timeMs": 35034,
         "lane": "center",
-        "strength": 0.697
+        "strength": 0.12
       },
       {
-        "timeMs": 45979,
+        "timeMs": 35684,
         "lane": "center",
-        "strength": 0.265
+        "strength": 0.12
       },
       {
-        "timeMs": 46554,
-        "lane": "center",
-        "strength": 0.31
-      },
-      {
-        "timeMs": 46854,
+        "timeMs": 36109,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 47304,
+        "timeMs": 36933,
         "lane": "center",
-        "strength": 0.766
+        "strength": 0.427
       },
       {
-        "timeMs": 47753,
+        "timeMs": 37383,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.771
       },
       {
-        "timeMs": 48053,
+        "timeMs": 37808,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 48503,
-        "lane": "center",
-        "strength": 0.879
-      },
-      {
-        "timeMs": 48853,
+        "timeMs": 38233,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 49278,
+        "timeMs": 38533,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 49578,
+        "timeMs": 39107,
         "lane": "center",
-        "strength": 0.368
+        "strength": 0.852
       },
       {
-        "timeMs": 50002,
+        "timeMs": 39757,
         "lane": "center",
-        "strength": 0.167
+        "strength": 0.132
       },
       {
-        "timeMs": 50452,
+        "timeMs": 40357,
+        "lane": "center",
+        "strength": 0.282
+      },
+      {
+        "timeMs": 41881,
         "lane": "center",
         "strength": 0.872
       },
       {
-        "timeMs": 50902,
+        "timeMs": 42531,
         "lane": "center",
-        "strength": 0.397
+        "strength": 0.969
       },
       {
-        "timeMs": 51352,
-        "lane": "center",
-        "strength": 0.266
-      },
-      {
-        "timeMs": 51652,
+        "timeMs": 42956,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 51951,
+        "timeMs": 43455,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 44305,
+        "lane": "center",
+        "strength": 0.353
+      },
+      {
+        "timeMs": 44680,
         "lane": "center",
         "strength": 1
       },
       {
-        "timeMs": 52251,
+        "timeMs": 44980,
         "lane": "center",
-        "strength": 0.442
+        "strength": 0.12
+      },
+      {
+        "timeMs": 45304,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 45979,
+        "lane": "center",
+        "strength": 0.699
+      },
+      {
+        "timeMs": 46379,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 47229,
+        "lane": "center",
+        "strength": 0.293
+      },
+      {
+        "timeMs": 47753,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 48128,
+        "lane": "center",
+        "strength": 0.689
+      },
+      {
+        "timeMs": 48528,
+        "lane": "center",
+        "strength": 0.227
+      },
+      {
+        "timeMs": 49403,
+        "lane": "center",
+        "strength": 0.37
+      },
+      {
+        "timeMs": 49702,
+        "lane": "center",
+        "strength": 0.139
+      },
+      {
+        "timeMs": 51152,
+        "lane": "center",
+        "strength": 0.137
+      },
+      {
+        "timeMs": 51527,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 52826,
+        "lane": "center",
+        "strength": 0.405
+      },
+      {
+        "timeMs": 53126,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 53651,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54250,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54825,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 55200,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 55600,
+        "lane": "center",
+        "strength": 0.218
+      },
+      {
+        "timeMs": 56125,
+        "lane": "center",
+        "strength": 0.402
+      },
+      {
+        "timeMs": 56474,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 57049,
+        "lane": "center",
+        "strength": 0.153
+      },
+      {
+        "timeMs": 57449,
+        "lane": "center",
+        "strength": 0.567
+      },
+      {
+        "timeMs": 57749,
+        "lane": "center",
+        "strength": 0.126
+      },
+      {
+        "timeMs": 58074,
+        "lane": "center",
+        "strength": 0.126
+      },
+      {
+        "timeMs": 58374,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 59048,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 59398,
+        "lane": "center",
+        "strength": 0.252
+      },
+      {
+        "timeMs": 59673,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 60098,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 60598,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 61147,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 61497,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 62347,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 62647,
+        "lane": "center",
+        "strength": 0.248
+      },
+      {
+        "timeMs": 63521,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 64271,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 64596,
+        "lane": "center",
+        "strength": 0.293
+      },
+      {
+        "timeMs": 65920,
+        "lane": "center",
+        "strength": 0.647
+      },
+      {
+        "timeMs": 66520,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 66945,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 67444,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 67794,
+        "lane": "center",
+        "strength": 0.451
+      },
+      {
+        "timeMs": 68469,
+        "lane": "center",
+        "strength": 0.312
+      },
+      {
+        "timeMs": 68969,
+        "lane": "center",
+        "strength": 0.188
+      },
+      {
+        "timeMs": 69319,
+        "lane": "center",
+        "strength": 0.385
+      },
+      {
+        "timeMs": 69668,
+        "lane": "center",
+        "strength": 0.742
+      },
+      {
+        "timeMs": 69968,
+        "lane": "center",
+        "strength": 0.183
+      },
+      {
+        "timeMs": 70418,
+        "lane": "center",
+        "strength": 0.352
+      },
+      {
+        "timeMs": 70693,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 71018,
+        "lane": "center",
+        "strength": 0.213
+      },
+      {
+        "timeMs": 71468,
+        "lane": "center",
+        "strength": 0.225
+      },
+      {
+        "timeMs": 71792,
+        "lane": "center",
+        "strength": 0.21
+      },
+      {
+        "timeMs": 72142,
+        "lane": "center",
+        "strength": 0.689
+      },
+      {
+        "timeMs": 72492,
+        "lane": "center",
+        "strength": 0.439
+      },
+      {
+        "timeMs": 72942,
+        "lane": "center",
+        "strength": 0.17
+      },
+      {
+        "timeMs": 73242,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 73592,
+        "lane": "center",
+        "strength": 0.216
+      },
+      {
+        "timeMs": 73866,
+        "lane": "center",
+        "strength": 0.275
+      },
+      {
+        "timeMs": 74141,
+        "lane": "center",
+        "strength": 0.148
+      },
+      {
+        "timeMs": 74466,
+        "lane": "center",
+        "strength": 0.133
+      },
+      {
+        "timeMs": 74816,
+        "lane": "center",
+        "strength": 0.367
+      },
+      {
+        "timeMs": 75216,
+        "lane": "center",
+        "strength": 0.174
+      },
+      {
+        "timeMs": 76090,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 76815,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 77090,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 77465,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 77965,
+        "lane": "center",
+        "strength": 0.368
+      },
+      {
+        "timeMs": 78289,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 78789,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 79264,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 79639,
+        "lane": "center",
+        "strength": 0.125
+      },
+      {
+        "timeMs": 80139,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 80663,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 81063,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 81363,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 81738,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 82388,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 83087,
+        "lane": "center",
+        "strength": 0.184
+      },
+      {
+        "timeMs": 83362,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 83687,
+        "lane": "center",
+        "strength": 0.289
+      },
+      {
+        "timeMs": 84162,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 84562,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 84886,
+        "lane": "center",
+        "strength": 0.532
+      },
+      {
+        "timeMs": 85186,
+        "lane": "center",
+        "strength": 0.54
+      },
+      {
+        "timeMs": 85486,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 86336,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 87036,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 87360,
+        "lane": "center",
+        "strength": 0.145
+      },
+      {
+        "timeMs": 89060,
+        "lane": "center",
+        "strength": 0.161
+      },
+      {
+        "timeMs": 90859,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 91858,
+        "lane": "center",
+        "strength": 0.148
+      },
+      {
+        "timeMs": 92883,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 94232,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 94907,
+        "lane": "center",
+        "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira02_game_a.mp3": {
     "id": "mira02_game_a",
@@ -17319,16 +15274,16 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/mira/mira02_game_a.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 28473,
-    "beatIntervalMs": 449,
+    "beatIntervalMs": 375,
     "playbackTrim": {
       "enabled": true,
       "startMs": 0,
       "endMs": 27413,
       "leadingMs": 0,
       "trailingMs": 1060,
-      "threshold": 0.071989
+      "threshold": 0.068599
     },
-    "noteCount": 55,
+    "noteCount": 54,
     "notes": [
       {
         "timeMs": 100,
@@ -17338,22 +15293,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 450,
         "lane": "center",
-        "strength": 0.338
+        "strength": 0.355
       },
       {
         "timeMs": 800,
         "lane": "center",
-        "strength": 0.56
+        "strength": 0.552
       },
       {
         "timeMs": 1399,
         "lane": "center",
-        "strength": 0.247
+        "strength": 0.25
       },
       {
         "timeMs": 2024,
         "lane": "center",
-        "strength": 0.893
+        "strength": 0.909
       },
       {
         "timeMs": 2374,
@@ -17363,17 +15318,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 2724,
         "lane": "center",
-        "strength": 0.494
+        "strength": 0.503
       },
       {
         "timeMs": 3673,
         "lane": "center",
-        "strength": 0.382
+        "strength": 0.393
       },
       {
         "timeMs": 3948,
         "lane": "center",
-        "strength": 0.746
+        "strength": 0.749
       },
       {
         "timeMs": 4423,
@@ -17383,12 +15338,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4898,
         "lane": "center",
-        "strength": 0.779
+        "strength": 0.772
       },
       {
         "timeMs": 5248,
         "lane": "center",
-        "strength": 0.509
+        "strength": 0.493
       },
       {
         "timeMs": 5847,
@@ -17398,27 +15353,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6197,
         "lane": "center",
-        "strength": 0.397
+        "strength": 0.405
       },
       {
         "timeMs": 6572,
         "lane": "center",
-        "strength": 0.251
+        "strength": 0.252
       },
       {
         "timeMs": 7297,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.134
       },
       {
         "timeMs": 7672,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.127
       },
       {
         "timeMs": 8121,
         "lane": "center",
-        "strength": 0.567
+        "strength": 0.557
+      },
+      {
+        "timeMs": 8471,
+        "lane": "center",
+        "strength": 0.587
       },
       {
         "timeMs": 8746,
@@ -17428,12 +15388,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9096,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.128
       },
       {
         "timeMs": 9446,
         "lane": "center",
-        "strength": 0.875
+        "strength": 0.87
       },
       {
         "timeMs": 10045,
@@ -17443,7 +15403,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10395,
         "lane": "center",
-        "strength": 0.52
+        "strength": 0.518
       },
       {
         "timeMs": 10670,
@@ -17453,17 +15413,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11145,
         "lane": "center",
-        "strength": 0.24
+        "strength": 0.259
       },
       {
         "timeMs": 11620,
         "lane": "center",
-        "strength": 0.643
+        "strength": 0.675
       },
       {
         "timeMs": 11970,
         "lane": "center",
-        "strength": 0.251
+        "strength": 0.261
       },
       {
         "timeMs": 12319,
@@ -17473,12 +15433,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 12594,
         "lane": "center",
-        "strength": 0.17
+        "strength": 0.164
       },
       {
         "timeMs": 12919,
         "lane": "center",
-        "strength": 0.214
+        "strength": 0.216
       },
       {
         "timeMs": 13294,
@@ -17488,17 +15448,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13894,
         "lane": "center",
-        "strength": 0.732
+        "strength": 0.74
       },
       {
         "timeMs": 14244,
         "lane": "center",
-        "strength": 0.946
+        "strength": 0.945
       },
       {
         "timeMs": 14518,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.205
       },
       {
         "timeMs": 14993,
@@ -17508,12 +15468,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15468,
         "lane": "center",
-        "strength": 0.326
+        "strength": 0.361
       },
       {
         "timeMs": 16418,
         "lane": "center",
-        "strength": 0.899
+        "strength": 0.931
       },
       {
         "timeMs": 16892,
@@ -17528,37 +15488,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17867,
         "lane": "center",
-        "strength": 0.123
-      },
-      {
-        "timeMs": 18592,
-        "lane": "center",
-        "strength": 0.62
+        "strength": 0.149
       },
       {
         "timeMs": 20266,
         "lane": "center",
-        "strength": 0.728
+        "strength": 0.693
       },
       {
         "timeMs": 20741,
         "lane": "center",
-        "strength": 0.508
-      },
-      {
-        "timeMs": 21240,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.522
       },
       {
         "timeMs": 21565,
         "lane": "center",
-        "strength": 0.132
+        "strength": 0.15
       },
       {
         "timeMs": 22190,
         "lane": "center",
-        "strength": 0.594
+        "strength": 0.609
       },
       {
         "timeMs": 22690,
@@ -17568,7 +15518,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23140,
         "lane": "center",
-        "strength": 0.588
+        "strength": 0.594
       },
       {
         "timeMs": 23489,
@@ -17578,22 +15528,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23839,
         "lane": "center",
-        "strength": 0.485
+        "strength": 0.498
       },
       {
         "timeMs": 24114,
         "lane": "center",
-        "strength": 0.193
+        "strength": 0.232
       },
       {
         "timeMs": 24614,
         "lane": "center",
-        "strength": 0.192
+        "strength": 0.212
       },
       {
         "timeMs": 25763,
         "lane": "center",
-        "strength": 0.386
+        "strength": 0.396
       },
       {
         "timeMs": 26038,
@@ -17603,10 +15553,10 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26513,
         "lane": "center",
-        "strength": 0.959
+        "strength": 0.931
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira03_game_b.mp3": {
     "id": "mira03_game_b",
@@ -17621,7 +15571,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 27113,
       "leadingMs": 0,
       "trailingMs": 603,
-      "threshold": 0.020145
+      "threshold": 0.019169
     },
     "noteCount": 46,
     "notes": [
@@ -17633,12 +15583,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 900,
         "lane": "center",
-        "strength": 0.752
+        "strength": 0.732
       },
       {
         "timeMs": 1399,
         "lane": "center",
-        "strength": 0.515
+        "strength": 0.517
       },
       {
         "timeMs": 1899,
@@ -17653,12 +15603,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3199,
         "lane": "center",
-        "strength": 0.602
+        "strength": 0.584
       },
       {
         "timeMs": 3573,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.209
       },
       {
         "timeMs": 4248,
@@ -17673,22 +15623,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 5872,
         "lane": "center",
-        "strength": 0.943
+        "strength": 0.96
       },
       {
         "timeMs": 6222,
         "lane": "center",
-        "strength": 0.78
+        "strength": 0.776
       },
       {
         "timeMs": 6722,
         "lane": "center",
-        "strength": 0.205
+        "strength": 0.188
       },
       {
         "timeMs": 7372,
         "lane": "center",
-        "strength": 0.811
+        "strength": 0.812
       },
       {
         "timeMs": 8046,
@@ -17703,17 +15653,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9021,
         "lane": "center",
-        "strength": 0.759
+        "strength": 0.728
       },
       {
         "timeMs": 9571,
         "lane": "center",
-        "strength": 0.235
+        "strength": 0.171
       },
       {
         "timeMs": 9846,
         "lane": "center",
-        "strength": 0.398
+        "strength": 0.41
       },
       {
         "timeMs": 10345,
@@ -17723,42 +15673,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 11370,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.142
       },
       {
         "timeMs": 11695,
         "lane": "center",
-        "strength": 0.869
+        "strength": 0.858
       },
       {
         "timeMs": 12045,
         "lane": "center",
-        "strength": 0.332
+        "strength": 0.323
       },
       {
         "timeMs": 12719,
         "lane": "center",
-        "strength": 0.338
+        "strength": 0.345
       },
       {
         "timeMs": 13369,
         "lane": "center",
-        "strength": 0.617
+        "strength": 0.62
       },
       {
         "timeMs": 14219,
         "lane": "center",
-        "strength": 0.182
+        "strength": 0.19
       },
       {
         "timeMs": 14893,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.167
       },
       {
         "timeMs": 15393,
         "lane": "center",
-        "strength": 0.328
+        "strength": 0.307
       },
       {
         "timeMs": 15768,
@@ -17778,12 +15728,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16867,
         "lane": "center",
-        "strength": 0.392
+        "strength": 0.383
       },
       {
         "timeMs": 17392,
         "lane": "center",
-        "strength": 0.692
+        "strength": 0.688
       },
       {
         "timeMs": 17842,
@@ -17793,7 +15743,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18217,
         "lane": "center",
-        "strength": 0.13
+        "strength": 0.154
       },
       {
         "timeMs": 18692,
@@ -17803,17 +15753,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 19541,
         "lane": "center",
-        "strength": 0.449
+        "strength": 0.437
       },
       {
         "timeMs": 19866,
         "lane": "center",
-        "strength": 0.441
+        "strength": 0.432
       },
       {
         "timeMs": 20516,
         "lane": "center",
-        "strength": 0.567
+        "strength": 0.581
       },
       {
         "timeMs": 21015,
@@ -17823,12 +15773,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21540,
         "lane": "center",
-        "strength": 0.199
+        "strength": 0.194
       },
       {
         "timeMs": 21840,
         "lane": "center",
-        "strength": 0.851
+        "strength": 0.857
       },
       {
         "timeMs": 22365,
@@ -17838,17 +15788,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22690,
         "lane": "center",
-        "strength": 0.774
+        "strength": 0.747
       },
       {
         "timeMs": 23040,
         "lane": "center",
-        "strength": 0.529
+        "strength": 0.527
       },
       {
         "timeMs": 23664,
         "lane": "center",
-        "strength": 0.576
+        "strength": 0.585
       },
       {
         "timeMs": 24014,
@@ -17856,7 +15806,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.69
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira04_game_c.mp3": {
     "id": "mira04_game_c",
@@ -17871,14 +15821,14 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 49267,
       "leadingMs": 774,
       "trailingMs": 0,
-      "threshold": 0.026538
+      "threshold": 0.025216
     },
-    "noteCount": 95,
+    "noteCount": 96,
     "notes": [
       {
         "timeMs": 2649,
         "lane": "center",
-        "strength": 0.201
+        "strength": 0.205
       },
       {
         "timeMs": 3773,
@@ -17893,7 +15843,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4498,
         "lane": "center",
-        "strength": 0.532
+        "strength": 0.527
       },
       {
         "timeMs": 4923,
@@ -17903,12 +15853,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6072,
         "lane": "center",
-        "strength": 0.58
+        "strength": 0.573
       },
       {
         "timeMs": 6372,
         "lane": "center",
-        "strength": 0.162
+        "strength": 0.164
       },
       {
         "timeMs": 8621,
@@ -17918,30 +15868,35 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 9071,
         "lane": "center",
-        "strength": 0.184
+        "strength": 0.181
       },
       {
         "timeMs": 9496,
         "lane": "center",
-        "strength": 0.66
+        "strength": 0.656
       },
       {
         "timeMs": 10220,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.166
       },
       {
         "timeMs": 10645,
         "lane": "center",
-        "strength": 0.458
+        "strength": 0.453
       },
       {
         "timeMs": 11345,
         "lane": "center",
-        "strength": 0.189
+        "strength": 0.188
       },
       {
         "timeMs": 12494,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 12919,
         "lane": "center",
         "strength": 0.12
       },
@@ -17953,17 +15908,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13619,
         "lane": "center",
-        "strength": 0.125
+        "strength": 0.149
       },
       {
         "timeMs": 14069,
         "lane": "center",
-        "strength": 0.252
+        "strength": 0.258
       },
       {
         "timeMs": 14368,
         "lane": "center",
-        "strength": 0.48
+        "strength": 0.426
       },
       {
         "timeMs": 14768,
@@ -17973,7 +15928,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15193,
         "lane": "center",
-        "strength": 0.688
+        "strength": 0.713
       },
       {
         "timeMs": 15518,
@@ -17988,7 +15943,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16343,
         "lane": "center",
-        "strength": 0.484
+        "strength": 0.468
       },
       {
         "timeMs": 16642,
@@ -17998,7 +15953,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 16917,
         "lane": "center",
-        "strength": 0.24
+        "strength": 0.232
       },
       {
         "timeMs": 17217,
@@ -18008,7 +15963,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17792,
         "lane": "center",
-        "strength": 0.583
+        "strength": 0.563
       },
       {
         "timeMs": 18217,
@@ -18018,17 +15973,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18941,
         "lane": "center",
-        "strength": 0.593
+        "strength": 0.586
       },
       {
         "timeMs": 19341,
         "lane": "center",
-        "strength": 0.446
+        "strength": 0.455
       },
       {
         "timeMs": 19766,
         "lane": "center",
-        "strength": 0.959
+        "strength": 0.933
       },
       {
         "timeMs": 20641,
@@ -18038,7 +15993,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20916,
         "lane": "center",
-        "strength": 0.565
+        "strength": 0.548
       },
       {
         "timeMs": 21215,
@@ -18053,27 +16008,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 22065,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.133
       },
       {
         "timeMs": 22765,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.122
       },
       {
         "timeMs": 23189,
         "lane": "center",
-        "strength": 0.659
+        "strength": 0.643
       },
       {
         "timeMs": 23489,
         "lane": "center",
-        "strength": 0.123
+        "strength": 0.12
       },
       {
         "timeMs": 23914,
         "lane": "center",
-        "strength": 0.222
+        "strength": 0.216
       },
       {
         "timeMs": 24339,
@@ -18083,37 +16038,37 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25039,
         "lane": "center",
-        "strength": 0.629
+        "strength": 0.624
       },
       {
         "timeMs": 25763,
         "lane": "center",
-        "strength": 0.495
+        "strength": 0.493
       },
       {
         "timeMs": 26188,
         "lane": "center",
-        "strength": 0.825
+        "strength": 0.805
       },
       {
         "timeMs": 26613,
         "lane": "center",
-        "strength": 0.765
+        "strength": 0.758
       },
       {
         "timeMs": 27338,
         "lane": "center",
-        "strength": 0.595
+        "strength": 0.579
       },
       {
         "timeMs": 27762,
         "lane": "center",
-        "strength": 0.809
+        "strength": 0.796
       },
       {
         "timeMs": 28462,
         "lane": "center",
-        "strength": 0.542
+        "strength": 0.532
       },
       {
         "timeMs": 28912,
@@ -18123,47 +16078,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29212,
         "lane": "center",
-        "strength": 0.134
+        "strength": 0.145
       },
       {
         "timeMs": 30061,
         "lane": "center",
-        "strength": 0.257
+        "strength": 0.26
       },
       {
         "timeMs": 30336,
         "lane": "center",
-        "strength": 0.292
+        "strength": 0.285
       },
       {
         "timeMs": 30761,
         "lane": "center",
-        "strength": 0.777
+        "strength": 0.762
       },
       {
         "timeMs": 31186,
         "lane": "center",
-        "strength": 0.32
+        "strength": 0.316
       },
       {
         "timeMs": 31911,
         "lane": "center",
-        "strength": 0.762
+        "strength": 0.746
       },
       {
         "timeMs": 32335,
         "lane": "center",
-        "strength": 0.886
+        "strength": 0.868
       },
       {
         "timeMs": 34184,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.218
       },
       {
         "timeMs": 34634,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.312
       },
       {
         "timeMs": 34934,
@@ -18173,7 +16128,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35509,
         "lane": "center",
-        "strength": 0.281
+        "strength": 0.273
       },
       {
         "timeMs": 36084,
@@ -18183,7 +16138,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36483,
         "lane": "center",
-        "strength": 0.776
+        "strength": 0.767
       },
       {
         "timeMs": 36858,
@@ -18193,7 +16148,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37233,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.238
       },
       {
         "timeMs": 37708,
@@ -18203,7 +16158,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38058,
         "lane": "center",
-        "strength": 0.549
+        "strength": 0.581
       },
       {
         "timeMs": 38358,
@@ -18223,12 +16178,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39207,
         "lane": "center",
-        "strength": 0.126
+        "strength": 0.12
       },
       {
         "timeMs": 39507,
         "lane": "center",
-        "strength": 0.941
+        "strength": 0.918
       },
       {
         "timeMs": 39907,
@@ -18238,17 +16193,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40482,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.158
       },
       {
         "timeMs": 41056,
         "lane": "center",
-        "strength": 0.373
+        "strength": 0.351
       },
       {
         "timeMs": 41481,
         "lane": "center",
-        "strength": 0.583
+        "strength": 0.573
       },
       {
         "timeMs": 41881,
@@ -18263,12 +16218,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42631,
         "lane": "center",
-        "strength": 0.136
+        "strength": 0.127
       },
       {
         "timeMs": 42931,
         "lane": "center",
-        "strength": 0.853
+        "strength": 0.836
       },
       {
         "timeMs": 43505,
@@ -18278,17 +16233,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43780,
         "lane": "center",
-        "strength": 0.333
+        "strength": 0.369
       },
       {
         "timeMs": 44080,
         "lane": "center",
-        "strength": 0.325
+        "strength": 0.305
       },
       {
         "timeMs": 44480,
         "lane": "center",
-        "strength": 0.401
+        "strength": 0.377
       },
       {
         "timeMs": 44980,
@@ -18298,17 +16253,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45329,
         "lane": "center",
-        "strength": 0.223
+        "strength": 0.152
       },
       {
         "timeMs": 45629,
         "lane": "center",
-        "strength": 0.607
+        "strength": 0.595
       },
       {
         "timeMs": 46054,
         "lane": "center",
-        "strength": 0.773
+        "strength": 0.73
       },
       {
         "timeMs": 46354,
@@ -18321,9 +16276,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 47079,
+        "timeMs": 47204,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.314
       },
       {
         "timeMs": 47503,
@@ -18343,7 +16298,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 48653,
         "lane": "center",
-        "strength": 0.647
+        "strength": 0.652
       },
       {
         "timeMs": 49003,
@@ -18351,367 +16306,917 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira05_game_d.mp3": {
     "id": "mira05_game_d",
     "path": "audio/bgm/mira/mira05_game_d.mp3",
     "source": "public/audio/bgm/mira/mira05_game_d.mp3",
     "analyzer": "onset-energy-v2",
-    "durationMs": 53629,
-    "beatIntervalMs": 400,
+    "durationMs": 112797,
+    "beatIntervalMs": 375,
     "playbackTrim": {
       "enabled": true,
-      "startMs": 650,
-      "endMs": 53051,
-      "leadingMs": 650,
-      "trailingMs": 578,
-      "threshold": 0.021677
+      "startMs": 500,
+      "endMs": 107851,
+      "leadingMs": 500,
+      "trailingMs": 4946,
+      "threshold": 0.051542
     },
-    "noteCount": 68,
+    "noteCount": 178,
     "notes": [
       {
-        "timeMs": 1075,
+        "timeMs": 950,
         "lane": "center",
-        "strength": 0.99
+        "strength": 0.275
       },
       {
-        "timeMs": 1474,
+        "timeMs": 1324,
         "lane": "center",
-        "strength": 1
+        "strength": 0.406
       },
       {
-        "timeMs": 1874,
+        "timeMs": 1699,
         "lane": "center",
-        "strength": 0.93
+        "strength": 0.458
       },
       {
-        "timeMs": 2274,
+        "timeMs": 2074,
         "lane": "center",
-        "strength": 1
+        "strength": 0.154
       },
       {
-        "timeMs": 2574,
+        "timeMs": 2449,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.229
       },
       {
-        "timeMs": 4473,
+        "timeMs": 2824,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.458
       },
       {
-        "timeMs": 6372,
+        "timeMs": 3199,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.413
       },
       {
-        "timeMs": 7472,
+        "timeMs": 3573,
         "lane": "center",
-        "strength": 1
+        "strength": 0.256
       },
       {
-        "timeMs": 8871,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 9271,
+        "timeMs": 3948,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 10270,
+        "timeMs": 4323,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.457
       },
       {
-        "timeMs": 10695,
+        "timeMs": 4698,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.432
       },
       {
-        "timeMs": 11495,
+        "timeMs": 5073,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.223
       },
       {
-        "timeMs": 11770,
+        "timeMs": 5448,
         "lane": "center",
-        "strength": 0.972
+        "strength": 0.205
       },
       {
-        "timeMs": 12469,
+        "timeMs": 5822,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.33
       },
       {
-        "timeMs": 13069,
+        "timeMs": 6197,
         "lane": "center",
-        "strength": 1
+        "strength": 0.536
       },
       {
-        "timeMs": 13669,
+        "timeMs": 6572,
         "lane": "center",
-        "strength": 1
+        "strength": 0.37
       },
       {
-        "timeMs": 15293,
+        "timeMs": 6947,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.289
       },
       {
-        "timeMs": 16293,
+        "timeMs": 7322,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.472
       },
       {
-        "timeMs": 16592,
+        "timeMs": 7697,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.57
       },
       {
-        "timeMs": 16892,
+        "timeMs": 8071,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.628
       },
       {
-        "timeMs": 18092,
+        "timeMs": 8446,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.625
       },
       {
-        "timeMs": 19791,
+        "timeMs": 8821,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.479
       },
       {
-        "timeMs": 20091,
+        "timeMs": 9196,
         "lane": "center",
-        "strength": 0.224
+        "strength": 0.635
       },
       {
-        "timeMs": 21065,
+        "timeMs": 9571,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.611
       },
       {
-        "timeMs": 21390,
-        "lane": "center",
-        "strength": 0.13
-      },
-      {
-        "timeMs": 21690,
-        "lane": "center",
-        "strength": 0.152
-      },
-      {
-        "timeMs": 22465,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 22965,
-        "lane": "center",
-        "strength": 1
-      },
-      {
-        "timeMs": 23314,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 24889,
-        "lane": "center",
-        "strength": 0.184
-      },
-      {
-        "timeMs": 25888,
-        "lane": "center",
-        "strength": 0.133
-      },
-      {
-        "timeMs": 26188,
-        "lane": "center",
-        "strength": 0.207
-      },
-      {
-        "timeMs": 26488,
-        "lane": "center",
-        "strength": 0.222
-      },
-      {
-        "timeMs": 30886,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 31286,
-        "lane": "center",
-        "strength": 0.293
-      },
-      {
-        "timeMs": 32585,
-        "lane": "center",
-        "strength": 0.228
-      },
-      {
-        "timeMs": 33085,
-        "lane": "center",
-        "strength": 0.298
-      },
-      {
-        "timeMs": 33885,
-        "lane": "center",
-        "strength": 0.24
-      },
-      {
-        "timeMs": 34484,
-        "lane": "center",
-        "strength": 0.25
-      },
-      {
-        "timeMs": 34859,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 35784,
-        "lane": "center",
-        "strength": 0.344
-      },
-      {
-        "timeMs": 36084,
-        "lane": "center",
-        "strength": 0.412
-      },
-      {
-        "timeMs": 37083,
-        "lane": "center",
-        "strength": 0.547
-      },
-      {
-        "timeMs": 37383,
-        "lane": "center",
-        "strength": 0.549
-      },
-      {
-        "timeMs": 38682,
-        "lane": "center",
-        "strength": 0.404
-      },
-      {
-        "timeMs": 40307,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 42181,
-        "lane": "center",
-        "strength": 0.559
-      },
-      {
-        "timeMs": 42481,
-        "lane": "center",
-        "strength": 0.642
-      },
-      {
-        "timeMs": 43480,
-        "lane": "center",
-        "strength": 0.667
-      },
-      {
-        "timeMs": 43780,
+        "timeMs": 9945,
         "lane": "center",
         "strength": 0.54
       },
       {
-        "timeMs": 44080,
+        "timeMs": 10320,
         "lane": "center",
-        "strength": 0.415
+        "strength": 0.476
       },
       {
-        "timeMs": 45080,
+        "timeMs": 10695,
         "lane": "center",
-        "strength": 0.55
+        "strength": 0.494
       },
       {
-        "timeMs": 45379,
+        "timeMs": 11070,
         "lane": "center",
-        "strength": 0.515
+        "strength": 0.781
       },
       {
-        "timeMs": 45679,
+        "timeMs": 11445,
         "lane": "center",
-        "strength": 0.748
+        "strength": 0.674
       },
       {
-        "timeMs": 46704,
+        "timeMs": 11820,
+        "lane": "center",
+        "strength": 0.422
+      },
+      {
+        "timeMs": 12194,
+        "lane": "center",
+        "strength": 0.471
+      },
+      {
+        "timeMs": 12569,
+        "lane": "center",
+        "strength": 0.673
+      },
+      {
+        "timeMs": 12944,
+        "lane": "center",
+        "strength": 0.97
+      },
+      {
+        "timeMs": 13694,
+        "lane": "center",
+        "strength": 0.723
+      },
+      {
+        "timeMs": 14069,
+        "lane": "center",
+        "strength": 0.82
+      },
+      {
+        "timeMs": 14443,
+        "lane": "center",
+        "strength": 0.833
+      },
+      {
+        "timeMs": 14818,
+        "lane": "center",
+        "strength": 0.394
+      },
+      {
+        "timeMs": 15193,
+        "lane": "center",
+        "strength": 0.507
+      },
+      {
+        "timeMs": 15568,
+        "lane": "center",
+        "strength": 0.726
+      },
+      {
+        "timeMs": 16717,
         "lane": "center",
         "strength": 0.12
       },
       {
-        "timeMs": 46979,
+        "timeMs": 17442,
         "lane": "center",
-        "strength": 0.713
+        "strength": 1
       },
       {
-        "timeMs": 47279,
+        "timeMs": 17817,
         "lane": "center",
-        "strength": 0.739
+        "strength": 0.929
       },
       {
-        "timeMs": 48278,
+        "timeMs": 18192,
         "lane": "center",
-        "strength": 0.694
+        "strength": 0.816
       },
       {
-        "timeMs": 48578,
+        "timeMs": 18567,
         "lane": "center",
-        "strength": 0.668
+        "strength": 0.537
       },
       {
-        "timeMs": 48878,
+        "timeMs": 18941,
         "lane": "center",
-        "strength": 0.666
+        "strength": 1
       },
       {
-        "timeMs": 49877,
+        "timeMs": 19316,
         "lane": "center",
-        "strength": 0.744
+        "strength": 1
       },
       {
-        "timeMs": 50177,
+        "timeMs": 19716,
         "lane": "center",
-        "strength": 0.568
+        "strength": 0.12
       },
       {
-        "timeMs": 50477,
+        "timeMs": 20066,
         "lane": "center",
-        "strength": 0.826
+        "strength": 0.705
       },
       {
-        "timeMs": 51077,
+        "timeMs": 20441,
         "lane": "center",
-        "strength": 0.167
+        "strength": 1
       },
       {
-        "timeMs": 51477,
+        "timeMs": 20816,
         "lane": "center",
-        "strength": 0.697
+        "strength": 0.977
       },
       {
-        "timeMs": 51777,
+        "timeMs": 21190,
         "lane": "center",
-        "strength": 0.728
+        "strength": 1
+      },
+      {
+        "timeMs": 21740,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 22090,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 22840,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 23589,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 24564,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 24939,
+        "lane": "center",
+        "strength": 0.962
+      },
+      {
+        "timeMs": 25314,
+        "lane": "center",
+        "strength": 0.778
+      },
+      {
+        "timeMs": 25688,
+        "lane": "center",
+        "strength": 0.965
+      },
+      {
+        "timeMs": 26063,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 26438,
+        "lane": "center",
+        "strength": 0.855
+      },
+      {
+        "timeMs": 26813,
+        "lane": "center",
+        "strength": 0.849
+      },
+      {
+        "timeMs": 27188,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 27562,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 28712,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 29062,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 29437,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 29811,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 30186,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 30561,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 30936,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 31311,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 31861,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 32435,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 32810,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 34309,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 35059,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 35434,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 35809,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 36284,
+        "lane": "center",
+        "strength": 0.15
+      },
+      {
+        "timeMs": 37308,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 38433,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 39182,
+        "lane": "center",
+        "strength": 0.15
+      },
+      {
+        "timeMs": 39732,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 40507,
+        "lane": "center",
+        "strength": 0.158
+      },
+      {
+        "timeMs": 41281,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 41806,
+        "lane": "center",
+        "strength": 0.365
+      },
+      {
+        "timeMs": 42756,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 43480,
+        "lane": "center",
+        "strength": 0.268
+      },
+      {
+        "timeMs": 43855,
+        "lane": "center",
+        "strength": 0.383
+      },
+      {
+        "timeMs": 44255,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 44805,
+        "lane": "center",
+        "strength": 0.427
+      },
+      {
+        "timeMs": 45954,
+        "lane": "center",
+        "strength": 0.352
+      },
+      {
+        "timeMs": 46504,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 47254,
+        "lane": "center",
+        "strength": 0.596
+      },
+      {
+        "timeMs": 47828,
+        "lane": "center",
+        "strength": 0.283
+      },
+      {
+        "timeMs": 48478,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 49852,
+        "lane": "center",
+        "strength": 0.345
+      },
+      {
+        "timeMs": 50252,
+        "lane": "center",
+        "strength": 0.925
+      },
+      {
+        "timeMs": 50827,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 51752,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 52076,
         "lane": "center",
-        "strength": 0.859
+        "strength": 0.12
+      },
+      {
+        "timeMs": 52376,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 52851,
+        "lane": "center",
+        "strength": 0.206
+      },
+      {
+        "timeMs": 53251,
+        "lane": "center",
+        "strength": 0.958
+      },
+      {
+        "timeMs": 53626,
+        "lane": "center",
+        "strength": 0.122
+      },
+      {
+        "timeMs": 54050,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54375,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 54950,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 55875,
+        "lane": "center",
+        "strength": 0.195
+      },
+      {
+        "timeMs": 56449,
+        "lane": "center",
+        "strength": 0.178
+      },
+      {
+        "timeMs": 56999,
+        "lane": "center",
+        "strength": 0.235
+      },
+      {
+        "timeMs": 57749,
+        "lane": "center",
+        "strength": 0.243
+      },
+      {
+        "timeMs": 59448,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 60173,
+        "lane": "center",
+        "strength": 0.13
+      },
+      {
+        "timeMs": 62821,
+        "lane": "center",
+        "strength": 0.125
+      },
+      {
+        "timeMs": 63196,
+        "lane": "center",
+        "strength": 0.331
+      },
+      {
+        "timeMs": 65320,
+        "lane": "center",
+        "strength": 0.191
+      },
+      {
+        "timeMs": 65795,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 66945,
+        "lane": "center",
+        "strength": 0.208
+      },
+      {
+        "timeMs": 67444,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 68194,
+        "lane": "center",
+        "strength": 0.236
+      },
+      {
+        "timeMs": 68944,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 69568,
+        "lane": "center",
+        "strength": 0.376
+      },
+      {
+        "timeMs": 71193,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 72192,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 72942,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 73941,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 74691,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 75941,
+        "lane": "center",
+        "strength": 0.144
+      },
+      {
+        "timeMs": 76465,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 77190,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 77690,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 78190,
+        "lane": "center",
+        "strength": 0.488
+      },
+      {
+        "timeMs": 80439,
+        "lane": "center",
+        "strength": 0.971
+      },
+      {
+        "timeMs": 80813,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 81188,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 81563,
+        "lane": "center",
+        "strength": 0.953
+      },
+      {
+        "timeMs": 81938,
+        "lane": "center",
+        "strength": 0.837
+      },
+      {
+        "timeMs": 82313,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 82687,
+        "lane": "center",
+        "strength": 0.684
+      },
+      {
+        "timeMs": 83062,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 83462,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 83812,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 84187,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 84562,
+        "lane": "center",
+        "strength": 0.943
+      },
+      {
+        "timeMs": 84936,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 85311,
+        "lane": "center",
+        "strength": 0.829
+      },
+      {
+        "timeMs": 85686,
+        "lane": "center",
+        "strength": 0.863
+      },
+      {
+        "timeMs": 86436,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 86811,
+        "lane": "center",
+        "strength": 0.868
+      },
+      {
+        "timeMs": 87185,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 88310,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 89060,
+        "lane": "center",
+        "strength": 0.972
+      },
+      {
+        "timeMs": 89434,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 89834,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 90184,
+        "lane": "center",
+        "strength": 0.896
+      },
+      {
+        "timeMs": 90559,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 90934,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 91334,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 91683,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 92058,
+        "lane": "center",
+        "strength": 0.975
+      },
+      {
+        "timeMs": 92908,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 93208,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 93932,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 94307,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 94607,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 95057,
+        "lane": "center",
+        "strength": 0.978
+      },
+      {
+        "timeMs": 95432,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 95807,
+        "lane": "center",
+        "strength": 0.976
+      },
+      {
+        "timeMs": 96181,
+        "lane": "center",
+        "strength": 0.844
+      },
+      {
+        "timeMs": 97306,
+        "lane": "center",
+        "strength": 0.392
+      },
+      {
+        "timeMs": 98455,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 99180,
+        "lane": "center",
+        "strength": 0.34
+      },
+      {
+        "timeMs": 100304,
+        "lane": "center",
+        "strength": 0.326
+      },
+      {
+        "timeMs": 103303,
+        "lane": "center",
+        "strength": 0.374
+      },
+      {
+        "timeMs": 104453,
+        "lane": "center",
+        "strength": 0.157
+      },
+      {
+        "timeMs": 105177,
+        "lane": "center",
+        "strength": 0.295
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira06_ending.mp3": {
     "id": "mira06_ending",
@@ -18726,7 +17231,7 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 50827,
       "leadingMs": 0,
       "trailingMs": 3351,
-      "threshold": 0.056061
+      "threshold": 0.053471
     },
     "noteCount": 89,
     "notes": [
@@ -18738,17 +17243,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 750,
         "lane": "center",
-        "strength": 0.197
+        "strength": 0.21
       },
       {
         "timeMs": 1124,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.185
       },
       {
         "timeMs": 1474,
         "lane": "center",
-        "strength": 0.15
+        "strength": 0.161
       },
       {
         "timeMs": 2899,
@@ -18758,12 +17263,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3773,
         "lane": "center",
-        "strength": 0.151
+        "strength": 0.153
       },
       {
         "timeMs": 5572,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.193
       },
       {
         "timeMs": 6022,
@@ -18771,9 +17276,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
+        "timeMs": 6422,
+        "lane": "center",
+        "strength": 0.257
+      },
+      {
         "timeMs": 6897,
         "lane": "center",
-        "strength": 0.207
+        "strength": 0.211
       },
       {
         "timeMs": 7522,
@@ -18783,12 +17293,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8546,
         "lane": "center",
-        "strength": 0.366
+        "strength": 0.381
       },
       {
         "timeMs": 9596,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.281
       },
       {
         "timeMs": 9970,
@@ -18798,17 +17308,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 10320,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.242
       },
       {
         "timeMs": 10695,
         "lane": "center",
-        "strength": 0.211
+        "strength": 0.228
+      },
+      {
+        "timeMs": 11845,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 12619,
         "lane": "center",
-        "strength": 0.358
+        "strength": 0.359
       },
       {
         "timeMs": 12919,
@@ -18823,12 +17338,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13694,
         "lane": "center",
-        "strength": 0.438
+        "strength": 0.446
       },
       {
         "timeMs": 14743,
         "lane": "center",
-        "strength": 0.879
+        "strength": 0.887
       },
       {
         "timeMs": 15018,
@@ -18856,29 +17371,24 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 17692,
+        "timeMs": 17867,
         "lane": "center",
-        "strength": 0.169
+        "strength": 0.205
       },
       {
-        "timeMs": 18092,
+        "timeMs": 18267,
         "lane": "center",
-        "strength": 0.446
-      },
-      {
-        "timeMs": 18417,
-        "lane": "center",
-        "strength": 0.538
+        "strength": 0.362
       },
       {
         "timeMs": 19541,
         "lane": "center",
-        "strength": 0.286
+        "strength": 0.289
       },
       {
         "timeMs": 20891,
         "lane": "center",
-        "strength": 0.445
+        "strength": 0.472
       },
       {
         "timeMs": 21165,
@@ -18893,12 +17403,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21940,
         "lane": "center",
-        "strength": 0.482
+        "strength": 0.488
       },
       {
         "timeMs": 22340,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.218
       },
       {
         "timeMs": 22640,
@@ -18908,32 +17418,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 23115,
         "lane": "center",
-        "strength": 0.315
+        "strength": 0.292
       },
       {
         "timeMs": 23464,
         "lane": "center",
-        "strength": 0.402
+        "strength": 0.396
       },
       {
         "timeMs": 23914,
         "lane": "center",
-        "strength": 0.531
+        "strength": 0.541
       },
       {
         "timeMs": 24264,
         "lane": "center",
-        "strength": 0.999
+        "strength": 0.994
       },
       {
         "timeMs": 24639,
         "lane": "center",
-        "strength": 0.36
+        "strength": 0.373
       },
       {
         "timeMs": 25014,
         "lane": "center",
-        "strength": 0.323
+        "strength": 0.314
       },
       {
         "timeMs": 25463,
@@ -18943,12 +17453,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 26013,
         "lane": "center",
-        "strength": 0.121
+        "strength": 0.12
       },
       {
         "timeMs": 26538,
         "lane": "center",
-        "strength": 0.536
+        "strength": 0.564
       },
       {
         "timeMs": 26888,
@@ -18964,6 +17474,11 @@ const RHYTHM_NOTE_MAPS = {
         "timeMs": 27587,
         "lane": "center",
         "strength": 1
+      },
+      {
+        "timeMs": 27987,
+        "lane": "center",
+        "strength": 0.12
       },
       {
         "timeMs": 28287,
@@ -19003,12 +17518,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31636,
         "lane": "center",
-        "strength": 0.138
-      },
-      {
-        "timeMs": 32010,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.136
       },
       {
         "timeMs": 32535,
@@ -19028,7 +17538,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34659,
         "lane": "center",
-        "strength": 0.999
+        "strength": 0.998
       },
       {
         "timeMs": 35084,
@@ -19043,27 +17553,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35634,
         "lane": "center",
-        "strength": 0.632
+        "strength": 0.644
       },
       {
         "timeMs": 35909,
         "lane": "center",
-        "strength": 0.783
+        "strength": 0.755
       },
       {
-        "timeMs": 36184,
-        "lane": "center",
-        "strength": 0.32
-      },
-      {
-        "timeMs": 36483,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 36758,
+        "timeMs": 36284,
         "lane": "center",
         "strength": 1
+      },
+      {
+        "timeMs": 36633,
+        "lane": "center",
+        "strength": 0.189
       },
       {
         "timeMs": 37933,
@@ -19073,17 +17578,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 38483,
         "lane": "center",
-        "strength": 0.241
+        "strength": 0.238
       },
       {
         "timeMs": 39032,
         "lane": "center",
-        "strength": 0.302
+        "strength": 0.294
       },
       {
         "timeMs": 39532,
         "lane": "center",
-        "strength": 0.432
+        "strength": 0.422
       },
       {
         "timeMs": 39807,
@@ -19113,7 +17618,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42081,
         "lane": "center",
-        "strength": 0.42
+        "strength": 0.412
       },
       {
         "timeMs": 42406,
@@ -19121,9 +17626,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 43080,
+        "timeMs": 42931,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.328
       },
       {
         "timeMs": 43830,
@@ -19143,17 +17648,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45229,
         "lane": "center",
-        "strength": 0.749
+        "strength": 0.753
       },
       {
         "timeMs": 45579,
         "lane": "center",
-        "strength": 0.316
+        "strength": 0.315
       },
       {
         "timeMs": 45954,
         "lane": "center",
-        "strength": 0.149
+        "strength": 0.167
       },
       {
         "timeMs": 46679,
@@ -19168,7 +17673,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 47403,
         "lane": "center",
-        "strength": 0.366
+        "strength": 0.4
       },
       {
         "timeMs": 47828,
@@ -19176,7 +17681,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira07_ending2.mp3": {
     "id": "mira07_ending2",
@@ -19184,21 +17689,26 @@ const RHYTHM_NOTE_MAPS = {
     "source": "public/audio/bgm/mira/mira07_ending2.mp3",
     "analyzer": "onset-energy-v2",
     "durationMs": 86126,
-    "beatIntervalMs": 449,
+    "beatIntervalMs": 425,
     "playbackTrim": {
       "enabled": true,
       "startMs": 475,
       "endMs": 85336,
       "leadingMs": 475,
       "trailingMs": 790,
-      "threshold": 0.064086
+      "threshold": 0.061069
     },
-    "noteCount": 131,
+    "noteCount": 130,
     "notes": [
+      {
+        "timeMs": 925,
+        "lane": "center",
+        "strength": 0.12
+      },
       {
         "timeMs": 1299,
         "lane": "center",
-        "strength": 0.133
+        "strength": 0.13
       },
       {
         "timeMs": 2499,
@@ -19238,7 +17748,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 6697,
         "lane": "center",
-        "strength": 0.129
+        "strength": 0.13
       },
       {
         "timeMs": 7721,
@@ -19288,7 +17798,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 13519,
         "lane": "center",
-        "strength": 0.49
+        "strength": 0.493
       },
       {
         "timeMs": 15718,
@@ -19296,9 +17806,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.149
       },
       {
-        "timeMs": 16892,
+        "timeMs": 16942,
         "lane": "center",
-        "strength": 1
+        "strength": 0.12
       },
       {
         "timeMs": 17492,
@@ -19308,17 +17818,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 18117,
         "lane": "center",
-        "strength": 0.319
+        "strength": 0.32
       },
       {
         "timeMs": 18916,
         "lane": "center",
-        "strength": 0.362
+        "strength": 0.355
       },
       {
         "timeMs": 19916,
         "lane": "center",
-        "strength": 0.309
+        "strength": 0.298
       },
       {
         "timeMs": 20516,
@@ -19328,7 +17838,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 21115,
         "lane": "center",
-        "strength": 0.143
+        "strength": 0.145
       },
       {
         "timeMs": 22065,
@@ -19353,12 +17863,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24489,
         "lane": "center",
-        "strength": 0.261
+        "strength": 0.26
       },
       {
         "timeMs": 24939,
         "lane": "center",
-        "strength": 0.236
+        "strength": 0.241
       },
       {
         "timeMs": 25314,
@@ -19368,27 +17878,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25913,
         "lane": "center",
-        "strength": 0.253
+        "strength": 0.262
       },
       {
         "timeMs": 26538,
         "lane": "center",
-        "strength": 0.551
+        "strength": 0.565
       },
       {
         "timeMs": 26888,
         "lane": "center",
-        "strength": 0.738
+        "strength": 0.747
       },
       {
         "timeMs": 27712,
         "lane": "center",
-        "strength": 0.175
+        "strength": 0.182
       },
       {
         "timeMs": 28137,
         "lane": "center",
-        "strength": 0.573
+        "strength": 0.577
       },
       {
         "timeMs": 28487,
@@ -19408,7 +17918,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31336,
         "lane": "center",
-        "strength": 0.591
+        "strength": 0.622
       },
       {
         "timeMs": 31886,
@@ -19418,7 +17928,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32710,
         "lane": "center",
-        "strength": 0.706
+        "strength": 0.707
       },
       {
         "timeMs": 33335,
@@ -19428,7 +17938,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 33685,
         "lane": "center",
-        "strength": 0.822
+        "strength": 0.845
       },
       {
         "timeMs": 34085,
@@ -19438,22 +17948,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34809,
         "lane": "center",
-        "strength": 0.2
+        "strength": 0.193
       },
       {
         "timeMs": 35134,
         "lane": "center",
-        "strength": 0.19
+        "strength": 0.142
       },
       {
         "timeMs": 35684,
         "lane": "center",
-        "strength": 0.243
+        "strength": 0.222
       },
       {
         "timeMs": 36109,
         "lane": "center",
-        "strength": 0.475
+        "strength": 0.486
       },
       {
         "timeMs": 36508,
@@ -19463,22 +17973,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 36908,
         "lane": "center",
-        "strength": 0.232
+        "strength": 0.229
       },
       {
         "timeMs": 37583,
         "lane": "center",
-        "strength": 0.377
+        "strength": 0.393
       },
       {
         "timeMs": 38283,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.171
       },
       {
         "timeMs": 38707,
         "lane": "center",
-        "strength": 0.188
+        "strength": 0.194
       },
       {
         "timeMs": 39107,
@@ -19488,7 +17998,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 39432,
         "lane": "center",
-        "strength": 0.199
+        "strength": 0.221
       },
       {
         "timeMs": 39707,
@@ -19498,7 +18008,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 40107,
         "lane": "center",
-        "strength": 0.307
+        "strength": 0.322
       },
       {
         "timeMs": 40732,
@@ -19509,11 +18019,6 @@ const RHYTHM_NOTE_MAPS = {
         "timeMs": 41106,
         "lane": "center",
         "strength": 0.12
-      },
-      {
-        "timeMs": 41506,
-        "lane": "center",
-        "strength": 0.274
       },
       {
         "timeMs": 41981,
@@ -19528,30 +18033,35 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43680,
         "lane": "center",
-        "strength": 0.599
+        "strength": 0.586
       },
       {
         "timeMs": 44005,
         "lane": "center",
-        "strength": 0.187
+        "strength": 0.176
       },
       {
         "timeMs": 44305,
         "lane": "center",
-        "strength": 0.878
+        "strength": 0.867
       },
       {
         "timeMs": 44630,
         "lane": "center",
-        "strength": 0.382
+        "strength": 0.408
       },
       {
         "timeMs": 45704,
         "lane": "center",
-        "strength": 0.633
+        "strength": 0.655
       },
       {
         "timeMs": 46504,
+        "lane": "center",
+        "strength": 0.12
+      },
+      {
+        "timeMs": 47503,
         "lane": "center",
         "strength": 0.12
       },
@@ -19561,49 +18071,39 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 48478,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
         "timeMs": 48903,
         "lane": "center",
-        "strength": 0.865
+        "strength": 0.867
       },
       {
         "timeMs": 49278,
         "lane": "center",
-        "strength": 0.16
+        "strength": 0.176
       },
       {
         "timeMs": 50302,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.154
       },
       {
         "timeMs": 50727,
         "lane": "center",
-        "strength": 0.272
+        "strength": 0.2
       },
       {
         "timeMs": 51002,
         "lane": "center",
-        "strength": 0.451
-      },
-      {
-        "timeMs": 52101,
-        "lane": "center",
-        "strength": 0.609
+        "strength": 0.438
       },
       {
         "timeMs": 52501,
         "lane": "center",
-        "strength": 0.747
+        "strength": 0.757
       },
       {
         "timeMs": 52901,
         "lane": "center",
-        "strength": 0.141
+        "strength": 0.19
       },
       {
         "timeMs": 53251,
@@ -19618,7 +18118,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 53976,
         "lane": "center",
-        "strength": 0.178
+        "strength": 0.197
       },
       {
         "timeMs": 54425,
@@ -19638,62 +18138,62 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56100,
         "lane": "center",
-        "strength": 0.789
+        "strength": 0.802
       },
       {
         "timeMs": 56399,
         "lane": "center",
-        "strength": 0.635
+        "strength": 0.644
       },
       {
         "timeMs": 56699,
         "lane": "center",
-        "strength": 0.901
+        "strength": 0.914
       },
       {
         "timeMs": 56999,
         "lane": "center",
-        "strength": 0.25
+        "strength": 0.227
       },
       {
         "timeMs": 57299,
         "lane": "center",
-        "strength": 0.38
+        "strength": 0.402
       },
       {
         "timeMs": 57699,
         "lane": "center",
-        "strength": 0.471
+        "strength": 0.543
       },
       {
         "timeMs": 57999,
         "lane": "center",
-        "strength": 0.854
+        "strength": 0.877
       },
       {
         "timeMs": 58324,
         "lane": "center",
-        "strength": 0.292
+        "strength": 0.31
       },
       {
-        "timeMs": 58848,
+        "timeMs": 58748,
         "lane": "center",
         "strength": 0.12
       },
       {
         "timeMs": 59123,
         "lane": "center",
-        "strength": 0.317
+        "strength": 0.33
       },
       {
         "timeMs": 59598,
         "lane": "center",
-        "strength": 0.696
+        "strength": 0.744
       },
       {
         "timeMs": 59898,
         "lane": "center",
-        "strength": 0.704
+        "strength": 0.705
       },
       {
         "timeMs": 60697,
@@ -19703,12 +18203,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 61022,
         "lane": "center",
-        "strength": 0.122
+        "strength": 0.12
       },
       {
         "timeMs": 62497,
         "lane": "center",
-        "strength": 0.356
+        "strength": 0.361
       },
       {
         "timeMs": 62896,
@@ -19718,32 +18218,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 63496,
         "lane": "center",
-        "strength": 0.578
+        "strength": 0.586
       },
       {
         "timeMs": 64496,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.15
       },
       {
         "timeMs": 64896,
         "lane": "center",
-        "strength": 0.153
+        "strength": 0.156
       },
       {
         "timeMs": 65495,
         "lane": "center",
-        "strength": 0.204
+        "strength": 0.207
       },
       {
         "timeMs": 66495,
         "lane": "center",
-        "strength": 0.148
+        "strength": 0.146
       },
       {
         "timeMs": 67095,
         "lane": "center",
-        "strength": 0.245
+        "strength": 0.246
       },
       {
         "timeMs": 67494,
@@ -19768,7 +18268,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 69294,
         "lane": "center",
-        "strength": 1
+        "strength": 0.995
       },
       {
         "timeMs": 69693,
@@ -19808,10 +18308,15 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 72542,
         "lane": "center",
-        "strength": 0.122
+        "strength": 0.12
       },
       {
         "timeMs": 72892,
+        "lane": "center",
+        "strength": 1
+      },
+      {
+        "timeMs": 73292,
         "lane": "center",
         "strength": 1
       },
@@ -19826,14 +18331,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 75116,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
         "timeMs": 77715,
         "lane": "center",
-        "strength": 0.775
+        "strength": 0.796
       },
       {
         "timeMs": 78939,
@@ -19843,7 +18343,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 79714,
         "lane": "center",
-        "strength": 0.38
+        "strength": 0.382
       },
       {
         "timeMs": 80314,
@@ -19851,7 +18351,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   },
   "audio/bgm/mira/mira08_ending3.mp3": {
     "id": "mira08_ending3",
@@ -19866,19 +18366,19 @@ const RHYTHM_NOTE_MAPS = {
       "endMs": 84112,
       "leadingMs": 1399,
       "trailingMs": 2641,
-      "threshold": 0.032079
+      "threshold": 0.030884
     },
-    "noteCount": 164,
+    "noteCount": 161,
     "notes": [
       {
         "timeMs": 2274,
         "lane": "center",
-        "strength": 0.229
+        "strength": 0.219
       },
       {
         "timeMs": 2574,
         "lane": "center",
-        "strength": 0.195
+        "strength": 0.182
       },
       {
         "timeMs": 3024,
@@ -19888,12 +18388,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 3323,
         "lane": "center",
-        "strength": 0.143
+        "strength": 0.135
       },
       {
         "timeMs": 3623,
         "lane": "center",
-        "strength": 0.155
+        "strength": 0.164
       },
       {
         "timeMs": 4673,
@@ -19903,17 +18403,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 4973,
         "lane": "center",
-        "strength": 0.152
+        "strength": 0.148
       },
       {
         "timeMs": 5423,
         "lane": "center",
-        "strength": 0.241
+        "strength": 0.239
       },
       {
         "timeMs": 5722,
         "lane": "center",
-        "strength": 0.169
+        "strength": 0.159
       },
       {
         "timeMs": 6172,
@@ -19928,22 +18428,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 7072,
         "lane": "center",
-        "strength": 0.329
+        "strength": 0.319
       },
       {
         "timeMs": 7372,
         "lane": "center",
-        "strength": 0.169
+        "strength": 0.163
       },
       {
         "timeMs": 7821,
         "lane": "center",
-        "strength": 0.289
+        "strength": 0.284
       },
       {
         "timeMs": 8121,
         "lane": "center",
-        "strength": 0.429
+        "strength": 0.42
       },
       {
         "timeMs": 8421,
@@ -19953,47 +18453,47 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 8871,
         "lane": "center",
-        "strength": 0.355
+        "strength": 0.349
       },
       {
         "timeMs": 9171,
         "lane": "center",
-        "strength": 0.285
+        "strength": 0.287
       },
       {
         "timeMs": 9471,
         "lane": "center",
-        "strength": 0.699
+        "strength": 0.705
       },
       {
         "timeMs": 9771,
         "lane": "center",
-        "strength": 0.261
+        "strength": 0.259
       },
       {
         "timeMs": 10220,
         "lane": "center",
-        "strength": 0.511
+        "strength": 0.503
       },
       {
         "timeMs": 10520,
         "lane": "center",
-        "strength": 0.589
+        "strength": 0.593
       },
       {
         "timeMs": 11120,
         "lane": "center",
-        "strength": 0.162
+        "strength": 0.16
       },
       {
         "timeMs": 11995,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.216
       },
       {
         "timeMs": 12494,
         "lane": "center",
-        "strength": 0.351
+        "strength": 0.345
       },
       {
         "timeMs": 12919,
@@ -20013,17 +18513,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 15018,
         "lane": "center",
-        "strength": 0.181
+        "strength": 0.183
       },
       {
         "timeMs": 15343,
         "lane": "center",
-        "strength": 0.627
+        "strength": 0.62
       },
       {
         "timeMs": 15793,
         "lane": "center",
-        "strength": 0.697
+        "strength": 0.696
       },
       {
         "timeMs": 16842,
@@ -20038,17 +18538,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 17742,
         "lane": "center",
-        "strength": 0.75
+        "strength": 0.749
       },
       {
         "timeMs": 18342,
         "lane": "center",
-        "strength": 0.395
+        "strength": 0.401
       },
       {
         "timeMs": 18617,
         "lane": "center",
-        "strength": 0.124
+        "strength": 0.138
       },
       {
         "timeMs": 19091,
@@ -20063,22 +18563,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 20216,
         "lane": "center",
-        "strength": 0.468
+        "strength": 0.46
       },
       {
         "timeMs": 20591,
         "lane": "center",
-        "strength": 0.659
+        "strength": 0.65
       },
       {
         "timeMs": 21015,
         "lane": "center",
-        "strength": 0.495
+        "strength": 0.478
       },
       {
         "timeMs": 21490,
         "lane": "center",
-        "strength": 0.727
+        "strength": 0.719
       },
       {
         "timeMs": 21815,
@@ -20086,19 +18586,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 22115,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
         "timeMs": 22540,
         "lane": "center",
-        "strength": 0.943
+        "strength": 0.948
       },
       {
         "timeMs": 22840,
         "lane": "center",
-        "strength": 0.219
+        "strength": 0.228
       },
       {
         "timeMs": 23339,
@@ -20113,7 +18608,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 24489,
         "lane": "center",
-        "strength": 0.437
+        "strength": 0.442
       },
       {
         "timeMs": 24789,
@@ -20123,17 +18618,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 25388,
         "lane": "center",
-        "strength": 0.837
+        "strength": 0.83
       },
       {
         "timeMs": 25988,
         "lane": "center",
-        "strength": 0.239
+        "strength": 0.263
       },
       {
         "timeMs": 26438,
         "lane": "center",
-        "strength": 0.264
+        "strength": 0.258
       },
       {
         "timeMs": 27363,
@@ -20143,12 +18638,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 28237,
         "lane": "center",
-        "strength": 0.284
+        "strength": 0.282
       },
       {
         "timeMs": 28687,
         "lane": "center",
-        "strength": 0.868
+        "strength": 0.863
       },
       {
         "timeMs": 29137,
@@ -20158,7 +18653,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 29737,
         "lane": "center",
-        "strength": 0.386
+        "strength": 0.37
       },
       {
         "timeMs": 30186,
@@ -20168,7 +18663,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 30786,
         "lane": "center",
-        "strength": 0.982
+        "strength": 0.967
       },
       {
         "timeMs": 31086,
@@ -20178,7 +18673,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 31836,
         "lane": "center",
-        "strength": 0.393
+        "strength": 0.375
       },
       {
         "timeMs": 32135,
@@ -20188,7 +18683,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 32585,
         "lane": "center",
-        "strength": 0.727
+        "strength": 0.716
       },
       {
         "timeMs": 32935,
@@ -20203,7 +18698,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 34234,
         "lane": "center",
-        "strength": 0.588
+        "strength": 0.521
       },
       {
         "timeMs": 34609,
@@ -20218,17 +18713,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 35584,
         "lane": "center",
-        "strength": 0.776
+        "strength": 0.8
       },
       {
         "timeMs": 35884,
         "lane": "center",
-        "strength": 1
+        "strength": 0.984
       },
       {
         "timeMs": 36184,
         "lane": "center",
-        "strength": 0.185
+        "strength": 0.194
       },
       {
         "timeMs": 36933,
@@ -20238,32 +18733,32 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 37383,
         "lane": "center",
-        "strength": 0.142
+        "strength": 0.148
       },
       {
         "timeMs": 37983,
         "lane": "center",
-        "strength": 0.128
+        "strength": 0.144
       },
       {
         "timeMs": 38283,
         "lane": "center",
-        "strength": 0.961
+        "strength": 0.957
       },
       {
         "timeMs": 38582,
         "lane": "center",
-        "strength": 0.297
+        "strength": 0.276
       },
       {
         "timeMs": 38857,
         "lane": "center",
-        "strength": 0.396
+        "strength": 0.403
       },
       {
         "timeMs": 39332,
         "lane": "center",
-        "strength": 0.721
+        "strength": 0.736
       },
       {
         "timeMs": 39782,
@@ -20278,7 +18773,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 41731,
         "lane": "center",
-        "strength": 0.539
+        "strength": 0.541
       },
       {
         "timeMs": 42056,
@@ -20288,7 +18783,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 42356,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.19
       },
       {
         "timeMs": 42631,
@@ -20303,12 +18798,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 43230,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.125
       },
       {
         "timeMs": 43530,
         "lane": "center",
-        "strength": 0.561
+        "strength": 0.575
       },
       {
         "timeMs": 44130,
@@ -20323,7 +18818,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45030,
         "lane": "center",
-        "strength": 0.178
+        "strength": 0.163
       },
       {
         "timeMs": 45329,
@@ -20333,7 +18828,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 45629,
         "lane": "center",
-        "strength": 0.593
+        "strength": 0.563
       },
       {
         "timeMs": 45929,
@@ -20348,22 +18843,22 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 46979,
         "lane": "center",
-        "strength": 0.992
+        "strength": 1
       },
       {
         "timeMs": 47428,
         "lane": "center",
-        "strength": 0.487
+        "strength": 0.528
       },
       {
         "timeMs": 47728,
         "lane": "center",
-        "strength": 0.968
+        "strength": 0.975
       },
       {
         "timeMs": 48178,
         "lane": "center",
-        "strength": 0.35
+        "strength": 0.346
       },
       {
         "timeMs": 48453,
@@ -20376,19 +18871,14 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 1
       },
       {
-        "timeMs": 49203,
+        "timeMs": 49378,
         "lane": "center",
-        "strength": 0.12
-      },
-      {
-        "timeMs": 49553,
-        "lane": "center",
-        "strength": 0.41
+        "strength": 0.972
       },
       {
         "timeMs": 50002,
         "lane": "center",
-        "strength": 0.31
+        "strength": 0.359
       },
       {
         "timeMs": 50277,
@@ -20398,7 +18888,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 50577,
         "lane": "center",
-        "strength": 0.894
+        "strength": 0.929
       },
       {
         "timeMs": 51327,
@@ -20408,27 +18898,27 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 51777,
         "lane": "center",
-        "strength": 0.633
+        "strength": 0.673
       },
       {
         "timeMs": 52526,
         "lane": "center",
-        "strength": 0.611
+        "strength": 0.641
       },
       {
         "timeMs": 52976,
         "lane": "center",
-        "strength": 0.597
+        "strength": 0.594
       },
       {
         "timeMs": 53301,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.244
       },
       {
         "timeMs": 53726,
         "lane": "center",
-        "strength": 0.699
+        "strength": 0.687
       },
       {
         "timeMs": 54275,
@@ -20438,7 +18928,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 54625,
         "lane": "center",
-        "strength": 0.347
+        "strength": 0.34
       },
       {
         "timeMs": 54925,
@@ -20448,7 +18938,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 55500,
         "lane": "center",
-        "strength": 0.258
+        "strength": 0.278
       },
       {
         "timeMs": 55825,
@@ -20458,7 +18948,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 56224,
         "lane": "center",
-        "strength": 0.406
+        "strength": 0.428
       },
       {
         "timeMs": 56574,
@@ -20473,42 +18963,42 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 57624,
         "lane": "center",
-        "strength": 0.345
+        "strength": 0.38
       },
       {
         "timeMs": 58973,
         "lane": "center",
-        "strength": 0.893
+        "strength": 0.895
       },
       {
         "timeMs": 59598,
         "lane": "center",
-        "strength": 0.175
-      },
-      {
-        "timeMs": 59873,
-        "lane": "center",
-        "strength": 0.12
+        "strength": 0.172
       },
       {
         "timeMs": 60173,
         "lane": "center",
-        "strength": 0.493
+        "strength": 0.537
       },
       {
         "timeMs": 60922,
         "lane": "center",
-        "strength": 0.981
+        "strength": 1
       },
       {
-        "timeMs": 61372,
-        "lane": "center",
-        "strength": 0.803
-      },
-      {
-        "timeMs": 61772,
+        "timeMs": 61222,
         "lane": "center",
         "strength": 0.12
+      },
+      {
+        "timeMs": 61522,
+        "lane": "center",
+        "strength": 0.439
+      },
+      {
+        "timeMs": 61822,
+        "lane": "center",
+        "strength": 0.31
       },
       {
         "timeMs": 62122,
@@ -20518,7 +19008,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 62572,
         "lane": "center",
-        "strength": 0.735
+        "strength": 0.754
       },
       {
         "timeMs": 63321,
@@ -20533,12 +19023,12 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 63921,
         "lane": "center",
-        "strength": 0.426
+        "strength": 0.425
       },
       {
         "timeMs": 64221,
         "lane": "center",
-        "strength": 0.649
+        "strength": 0.602
       },
       {
         "timeMs": 64521,
@@ -20548,62 +19038,62 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 64846,
         "lane": "center",
-        "strength": 0.179
+        "strength": 0.187
       },
       {
         "timeMs": 65120,
         "lane": "center",
-        "strength": 0.234
+        "strength": 0.252
       },
       {
-        "timeMs": 65570,
+        "timeMs": 65420,
         "lane": "center",
-        "strength": 0.217
+        "strength": 0.502
       },
       {
-        "timeMs": 65845,
+        "timeMs": 65720,
         "lane": "center",
-        "strength": 0.12
+        "strength": 0.278
       },
       {
         "timeMs": 66220,
         "lane": "center",
-        "strength": 0.313
+        "strength": 0.316
       },
       {
         "timeMs": 66770,
         "lane": "center",
-        "strength": 0.354
+        "strength": 0.342
       },
       {
         "timeMs": 67095,
         "lane": "center",
-        "strength": 0.203
+        "strength": 0.184
       },
       {
         "timeMs": 67369,
         "lane": "center",
-        "strength": 0.557
+        "strength": 0.554
       },
       {
         "timeMs": 67819,
         "lane": "center",
-        "strength": 0.765
+        "strength": 0.751
       },
       {
         "timeMs": 68119,
         "lane": "center",
-        "strength": 0.96
+        "strength": 0.996
       },
       {
-        "timeMs": 68594,
+        "timeMs": 68444,
         "lane": "center",
-        "strength": 0.231
+        "strength": 0.12
       },
       {
         "timeMs": 69019,
         "lane": "center",
-        "strength": 0.772
+        "strength": 0.757
       },
       {
         "timeMs": 69319,
@@ -20613,7 +19103,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 69793,
         "lane": "center",
-        "strength": 0.456
+        "strength": 0.471
       },
       {
         "timeMs": 70118,
@@ -20628,7 +19118,7 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 70993,
         "lane": "center",
-        "strength": 0.22
+        "strength": 0.193
       },
       {
         "timeMs": 71418,
@@ -20638,17 +19128,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 71717,
         "lane": "center",
-        "strength": 0.293
+        "strength": 0.273
       },
       {
         "timeMs": 72067,
         "lane": "center",
-        "strength": 0.464
+        "strength": 0.453
       },
       {
         "timeMs": 72917,
         "lane": "center",
-        "strength": 0.5
+        "strength": 0.504
       },
       {
         "timeMs": 73492,
@@ -20658,17 +19148,17 @@ const RHYTHM_NOTE_MAPS = {
       {
         "timeMs": 73841,
         "lane": "center",
-        "strength": 0.376
+        "strength": 0.371
       },
       {
         "timeMs": 75341,
         "lane": "center",
-        "strength": 0.356
+        "strength": 0.348
       },
       {
         "timeMs": 75941,
         "lane": "center",
-        "strength": 0.144
+        "strength": 0.135
       },
       {
         "timeMs": 76240,
@@ -20676,14 +19166,9 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       },
       {
-        "timeMs": 78639,
-        "lane": "center",
-        "strength": 0.12
-      },
-      {
         "timeMs": 79564,
         "lane": "center",
-        "strength": 0.156
+        "strength": 0.147
       },
       {
         "timeMs": 82413,
@@ -20691,7 +19176,7 @@ const RHYTHM_NOTE_MAPS = {
         "strength": 0.12
       }
     ],
-    "generatedAt": "2026-05-08T09:29:09.635Z"
+    "generatedAt": "2026-05-08T10:58:25.787Z"
   }
 };
 
@@ -29688,12 +28173,12 @@ function renderOptionsModal(controller, container) {
 
 function renderHelpModal(controller, container) {
   container.innerHTML = `
-    <div class="ui-modal">
-      <h2>ヘルプ</h2>
-      <div style="line-height: 1.8; font-size: 0.95rem;">
-        <p>・クイズではお客さんの要望に合う品を選びます。</p>
-        <p>・リズムよく答えると評判が上がります。</p>
-        <p>・早く答えると満足度が上がります。</p>
+    <div class="ui-modal help-modal">
+      <div class="help-content">
+        <img src="images/ui/help.webp" alt="操作説明" class="help-infographic" />
+
+
+
       </div>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
     </div>
@@ -30441,7 +28926,8 @@ function applyDebugJumpFromUrl(controller) {
 function applyDebugJump(controller, jump) {
   const params = new URLSearchParams(window.location.search);
   const heroine = (params.get('heroine') || 'HAKIMA').toUpperCase();
-  console.log('Applying debug jump:', jump);
+  const routeMode = params.get('routeMode') || 'normal';
+  console.log('Applying debug jump:', jump, 'Heroine:', heroine, 'Route:', routeMode);
 
   if (jump === 'title') {
     controller.session.phase = 'TITLE';
@@ -30461,7 +28947,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'before_open') {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'BEFORE_OPEN';
     controller.session.scores = { revenue: 0, satisfaction: 0, reputation: 0 };
@@ -30471,7 +28957,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'after_close') {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'AFTER_CLOSE';
     controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
@@ -30481,7 +28967,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'quiz') {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'QUIZ';
     controller.startQuiz();
@@ -30491,7 +28977,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'turn_result') {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'TURN_RESULT';
     controller.session.scores = { revenue: 80, satisfaction: 14, reputation: 9 };
@@ -30520,7 +29006,7 @@ function applyDebugJump(controller, jump) {
     const score = presets[jump];
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = Number(params.get('turn') || 1);
     controller.session.subPhase = 'TURN_RESULT';
     controller.session.scores = { ...score };
@@ -30539,7 +29025,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'turn5_after_close') {
     controller.session.phase = 'MAIN_GAME';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = 5;
     controller.session.subPhase = 'AFTER_CLOSE';
     controller.session.scores = { revenue: 420, satisfaction: 80, reputation: 70 };
@@ -30549,7 +29035,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'ending_good') {
     controller.session.phase = 'ENDING';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = 5;
     controller.session.subPhase = 'AFTER_CLOSE';
     controller.session.scores = { revenue: 500, satisfaction: 100, reputation: 100 };
@@ -30559,7 +29045,7 @@ function applyDebugJump(controller, jump) {
   if (jump === 'ending_normal') {
     controller.session.phase = 'ENDING';
     controller.session.selectedHeroineId = heroine;
-    controller.session.routeMode = 'normal';
+    controller.session.routeMode = routeMode;
     controller.session.turn = 5;
     controller.session.subPhase = 'AFTER_CLOSE';
     controller.session.scores = { revenue: 100, satisfaction: 10, reputation: 10 };
@@ -31350,6 +29836,12 @@ function createAssetPreloader() {
     // 個別ヒロインBGMとnormal以外の立ち絵は、ヒロイン選択後まで読まない。
     const startImagePaths = [
       'images/ui/item.webp',
+      'images/ui/help.webp',
+      'images/ui/logo.webp',
+      'images/ui/title.webp',
+      'images/ui/clock.webp',
+      'images/ui/turn_clock.webp',
+      'images/ui/run.webp',
       ...collectOpeningGalleryImagePaths(),
       ...HEROINE_IDS.flatMap((id) => ([
         ...HEROINE_EXPRESSIONS.map((expression) => getCharacterVisualImagePath(id, expression, 'face')),

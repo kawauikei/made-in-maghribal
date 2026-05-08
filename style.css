@@ -1287,6 +1287,66 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   }
 }
 
+/* 
+ * Help Infographic & Global UI Icon Styles
+ */
+.global-ui-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* 
+ * Help Infographic - Optimized for 941x1672 image on 720x1280 screen
+ */
+.ui-modal-backdrop:has(.help-modal) {
+  padding: 0 !important; /* Force open 720px width */
+}
+
+.help-modal {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: 100%;
+  padding: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden; /* No scroll at modal level */
+}
+
+.help-content {
+  flex: 0 1 auto; /* Grow/shrink to fit, but don't force overflow */
+  width: 100%;
+  max-height: 88vh; /* Leave room for button at bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* NO SCROLLBAR */
+}
+
+.help-infographic {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Maintain ratio and fit within content area */
+  display: block;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.help-modal .modal-close-btn {
+  margin: 12px 0 20px;
+  width: 260px;
+  flex-shrink: 0;
+}
+
 /* --- END: 02_shared.css --- */
 
 /* --- START: 03_turn_transition.css --- */
