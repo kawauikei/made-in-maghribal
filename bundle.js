@@ -33146,18 +33146,28 @@ class GameController {
 
     const labels = ['3', '2', '1'];
     const stepMs = 1000;
+    const initialDelayMs = 500;
+    
     this.quizState.countdownActive = true;
-    this.quizState.countdownLabel = labels[0];
+    this.quizState.countdownLabel = ''; // Start empty during initial delay
     this.quizState.inputLocked = true;
-    this.playSfx('quizCountdownTick');
     this.updateQuizContent();
 
+    // First tick after initial delay
+    const firstTickTimerId = setTimeout(() => {
+      this.quizState.countdownLabel = labels[0];
+      this.playSfx('quizCountdownTick');
+      this.updateQuizContent();
+    }, initialDelayMs);
+    this.quizState.countdownTimers.push(firstTickTimerId);
+
+    // Subsequent ticks
     labels.slice(1).forEach((label, index) => {
       const timerId = setTimeout(() => {
         this.quizState.countdownLabel = label;
         this.playSfx('quizCountdownTick');
         this.updateQuizContent();
-      }, stepMs * (index + 1));
+      }, initialDelayMs + stepMs * (index + 1));
       this.quizState.countdownTimers.push(timerId);
     });
 
@@ -33169,7 +33179,7 @@ class GameController {
       this.quizState.promptShownAt = performance.now();
       this.playSfx('quizStartChime');
       this.updateQuizContent();
-    }, stepMs * labels.length);
+    }, initialDelayMs + stepMs * labels.length);
     this.quizState.countdownTimers.push(finishTimerId);
   }
 
