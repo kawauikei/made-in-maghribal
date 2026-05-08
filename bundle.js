@@ -346,10 +346,14 @@ class FreePlayRecords {
    * Clears all freeplay records from storage
    */
   clearAllRecords() {
-    if (this.storage === _memoryStorage) {
+    if (this.storage === memoryStorageInterface) {
       Object.keys(_memoryStorage).forEach(k => {
         if (k.startsWith('freeplay:')) delete _memoryStorage[k];
       });
+      return;
+    }
+    if (!this.storage || typeof this.storage.removeItem !== 'function') return;
+    if (typeof this.storage.key !== 'function' || typeof this.storage.length !== 'number') {
       return;
     }
     const keysToRemove = [];
@@ -24230,7 +24234,6 @@ function bindInputHandlers(controller) {
     // 中断ボタンはinputLocked中でも動作させる
     if (target.closest('[data-action="fp-abort"]')) {
       event.stopPropagation();
-      console.log('[fp-abort] caught, calling abortFreePlay');
       controller.playSfx?.('uiTapBottle');
       controller.abortFreePlay();
       return;
@@ -24327,12 +24330,6 @@ function bindInputHandlers(controller) {
       controller.startFreePlay(songId, mode);
       return;
     }
-    if (target.closest('[data-action="fp-abort"]')) {
-      event.stopPropagation();
-      controller.playSfx('uiTapBottle');
-      controller.abortFreePlay();
-      return;
-    }
     if (target.closest('[data-action="fp-retry"]')) {
       event.stopPropagation();
       controller.playSfx('uiConfirmChime');
@@ -24348,17 +24345,6 @@ function bindInputHandlers(controller) {
       controller.update();
       return;
     }
-    if (target.closest('[data-action="start-freeplay"]')) {
-      event.stopPropagation();
-      const bgmEl = document.getElementById('freeplay-bgm');
-      const countEl = document.getElementById('freeplay-count');
-      await controller.startFreePlay({
-        bgmPath: bgmEl ? bgmEl.value : null,
-        questionCount: countEl ? Number(countEl.value) : 10
-      });
-      return;
-    }
-
     const itemDetailBtn = target.closest('[data-item-detail-index]');
     if (itemDetailBtn) {
       event.stopPropagation();
@@ -27487,7 +27473,6 @@ function renderPanelBody(controller, panel) {
   if (panel === 'sound') return renderSoundTest(controller);
   if (panel === 'event') return renderEventGallery(controller);
   if (panel === 'image') return renderImageGallery(controller);
-  if (panel === 'freeplay') return renderFreePlay(controller);
   return renderPlaceholder(panel);
 }
 
@@ -27533,7 +27518,7 @@ function renderLoadPanel(controller) {
         </div>
         <div class="load-save-actions">
           <button class="title-start-btn title-panel-continue" type="button" data-action="title-continue">このセーブから再開</button>
-          <button class="title-menu-btn title-panel-clear-save" type="button" data-action="title-clear-save">セーブを消す</button>
+          <button class="title-menu-btn title-panel-clear-save" type="button" data-action="title-clear-save">途中データを消す</button>
         </div>
         <p class="title-panel-note">現在は自動保存1枠です。複数スロットと長期記録は後続で統合します。</p>
       </div>
@@ -27779,42 +27764,6 @@ function renderImageGallery(controller) {
         <div class="image-gallery-thumbnails">
           ${thumbnails}
         </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderFreePlay(controller) {
-  const bgmGroups = buildBgmGroups();
-  const options = bgmGroups.flatMap(g => g.tracks).map(track => {
-    const label = formatTrackButtonLabel(track.kind, track.title || track.label || track.id);
-    return `<option value="${track.path}">${escapeHtml(label)}</option>`;
-  }).join('');
-
-  return `
-    <div class="title-panel-empty">
-      <div class="load-save-card">
-        <h3>フリー接客設定</h3>
-        <div class="load-save-meta">
-          <div class="load-save-row">
-            <span>BGM</span>
-            <select id="freeplay-bgm" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
-              ${options}
-            </select>
-          </div>
-          <div class="load-save-row">
-            <span>問題数</span>
-            <select id="freeplay-count" style="width: 200px; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
-              <option value="5">5問</option>
-              <option value="10" selected>10問</option>
-              <option value="20">20問</option>
-            </select>
-          </div>
-        </div>
-        <div class="load-save-actions">
-          <button class="title-start-btn" type="button" data-action="start-freeplay">接客開始</button>
-        </div>
-        <p class="title-panel-note">好きなBGMで接客の練習ができます。</p>
       </div>
     </div>
   `;
@@ -28798,7 +28747,7 @@ function renderOptionsModal(controller, container) {
       </div>
       <div class="option-row option-danger-row">
         <p style="margin-bottom: 8px; font-weight: 900;">セーブデータ</p>
-        <p class="option-help-text">イベント既読・アイテム収集・ヒロイン別満足度/評判・現在の自動保存を削除します。ヒロイン別記録は通常/幼馴染モード別に保存されています。</p>
+        <p class="option-help-text">現在の自動保存・イベント既読・アイテム収集・過去問履歴・フリープレイ記録を削除します。</p>
         <button class="option-button option-danger-button" data-action="clear-all-save-data">セーブデータ削除</button>
       </div>
       <button class="modal-close-btn" data-action="close-modal">閉じる</button>
