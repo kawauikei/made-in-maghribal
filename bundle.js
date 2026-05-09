@@ -1733,7 +1733,11 @@ const AUDIO_MANIFEST = {
       'workshop_day_end_01.mp3',
       'workshop_day_end_01_2.mp3',
       'workshop_day_end_01_3.mp3',
-      'workshop_day_end_01_4.mp3'
+      'workshop_day_end_01_4.mp3',
+      'se_page_turn_01.mp3',
+      'se_page_turn_02.mp3',
+      'se_page_turn_03.mp3',
+      'se_page_turn_04.mp3'
     ].map((filename) => ({
       id: filename.replace(/\.mp3$/, ''),
       key: filename.replace(/\.mp3$/, ''),
@@ -1748,9 +1752,13 @@ const AUDIO_MANIFEST = {
       { id: 'SE_QUIZ_CORRECT', key: 'quizCorrectStarChime', path: 'audio/se/quiz_correct_star_chime_01.mp3', volume: 0.46, start: 0, end: null },
       { id: 'SE_QUIZ_WRONG', key: 'quizWrongSandTap', path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3', volume: 0.42, start: 0, end: null }
     ],
+    page_turn: [
+      { id: 'SE_PAGE_TURN', key: 'sePageTurn', path: 'audio/se/se_page_turn_02.mp3', volume: 0.50, playbackRate: 3.0, start: 0, end: null }
+    ],
     ui: [
       { id: 'SE_UI_TAP', key: 'uiTapBottle', path: 'audio/se/ui_tap_bottle_01_3.mp3', volume: 0.50, start: 0, end: null },
-      { id: 'SE_UI_DECIDE', key: 'uiConfirmChime', path: 'audio/se/ui_confirm_chime_01_3.mp3', volume: 0.42, start: 0, end: null }
+      { id: 'SE_UI_DECIDE', key: 'uiConfirmChime', path: 'audio/se/ui_confirm_chime_01_3.mp3', volume: 0.42, start: 0, end: null },
+      { id: 'SE_UI_LIGHT_CONFIRM', key: 'uiLightConfirm', path: 'audio/se/se_page_turn_03.mp3', volume: 0.74, start: 0, end: null }
     ],
     day_end: [
       { id: 'SE_DAY_END_REST', key: 'workshopDayEnd', path: 'audio/se/workshop_day_end_01_2.mp3', volume: 0.40, start: 0, end: null }
@@ -1973,8 +1981,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -1993,8 +2001,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -2013,8 +2021,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -2033,8 +2041,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -2053,8 +2061,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -2068,21 +2076,21 @@ const EVENT_MANIFEST = [
     "id": "hakima_normal_sample_001",
     "title": "サンプルイベント",
     "heroineId": "HAKIMA",
-    "summary": "執筆演出の動作確認用サンプル。背景・BGM切り替え・SE・スチル・選択肢をテストします。",
+    "summary": "執筆用の標準サンプル。背景・BGM・SE・選択肢・場面転換・スチルを自然な流れで確認します。",
     "unlock": {
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
+      "thumbnail": "bg_shop_interior_service",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
     },
-    "scriptStepCount": 32
+    "scriptStepCount": 23
   },
   {
     "id": "hakima_sfx_sample_001",
@@ -2093,8 +2101,8 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
@@ -2108,21 +2116,21 @@ const EVENT_MANIFEST = [
     "id": "hakima_simple_001",
     "title": "演出確認用（シンプル）",
     "heroineId": "HAKIMA",
-    "summary": "選択肢なし。演出と立ち絵の接地感を確認するためのスクリプトです。",
+    "summary": "選択肢なし。背景・立ち絵・スチル・ページ送りを素直な流れで確認するサンプルです。",
     "unlock": {
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
+    "galleryTab": "hakima_normal",
+    "eventType": "sample",
     "thumbnail": null,
     "gallery": {
       "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
+      "thumbnail": "bg_shop_interior_service",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
     },
-    "scriptStepCount": 11
+    "scriptStepCount": 15
   }
 ];
 
@@ -2578,42 +2586,62 @@ const EVENT_SCRIPTS = {
       "type": "enter",
       "characterId": "HAKIMA",
       "expression": "normal",
-      "position": "center"
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "開店前に顔を出しておいたわ。今日は少し暑くなりそうね。"
+    },
+    {
+      "type": "sfx",
+      "id": "ui_tap_bottle_01_4"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "小瓶の在庫も見ておいた方がいいわ。氷系の素材、足りてる？"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "いらっしゃい！ ちょうどお茶が入ったところよ。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "今日はいい風が吹いているわ。街も賑わっているみたい。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "あなたも一杯、どうかしら？"
+      "text": "……ふふ、慌てた顔。ちゃんと準備しているなら、それでいいの。"
     },
     {
       "type": "choice",
       "choices": [
         {
-          "label": "いただく",
-          "jump": "L_YES"
+          "label": "市場を見に行く",
+          "jump": "L_MARKET"
         },
         {
-          "label": "遠慮する",
-          "jump": "L_NO"
+          "label": "店で確認を続ける",
+          "jump": "L_SHOP"
         }
       ]
     },
     {
       "type": "label",
-      "id": "L_YES"
+      "id": "L_SHOP"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "慎重なのは悪くないわね。でも、外の空気を見るのも大事よ。"
+    },
+    {
+      "type": "jump",
+      "id": "L_MARKET"
+    },
+    {
+      "type": "label",
+      "id": "L_MARKET"
     },
     {
       "type": "sfx",
@@ -2624,62 +2652,16 @@ const EVENT_SCRIPTS = {
       "id": "main02_shop"
     },
     {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "ふふっ、いい返事ね。最高の一杯を淹れてあげるわ。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "この茶葉はね、西の山で採れた特別なものなの。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "香りがとてもいいでしょう？"
-    },
-    {
-      "type": "jump",
-      "id": "L_DIRECTION"
-    },
-    {
-      "type": "label",
-      "id": "L_NO"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "sorrow",
-      "text": "あら、残念。せっかく用意したのに。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "でも、無理にとは言わないわ。気分じゃない時もあるものね。"
-    },
-    {
-      "type": "label",
-      "id": "L_DIRECTION"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "さて、少し外の様子を見てきましょうか。"
-    },
-    {
       "type": "scene",
       "bg": "bg_market_central",
       "characters": [
         {
           "id": "HAKIMA",
-          "expression": "normal"
+          "expression": "normal",
+          "position": "center"
         }
       ],
+      "still": null,
       "transition": "fadeScene",
       "speed": "long"
     },
@@ -2687,19 +2669,13 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "いい天気。活気があって、悪くない街ね。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "ほら、あっちの露店を見て。新しい果物が並んでいるわ。"
+      "text": "市場はもう動き始めているわね。香辛料も果物も、朝の方が品がいいの。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "後で寄ってみようかしら。掘り出し物があるかもしれないわよ。"
+      "text": "掘り出し物があったら、あとで一緒に見に行きましょう。"
     },
     {
       "type": "still",
@@ -2710,12 +2686,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "text": "（こうして、ハキマとの穏やかな時間は流れていく……）"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "text": "（彼女の横顔を見ていると、不思議と心が落ち着くのを感じた。）"
+      "text": "こういう一枚絵は、重要な場面だけで使う。立ち絵は重ねない方が自然ね。"
     },
     {
       "type": "still",
@@ -2727,22 +2698,13 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "あ、そうだ。最後にBGMを止める演出を確認しましょう。"
-    },
-    {
-      "type": "stopBgm"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "静かになったかしら？ 演出確認はこれで終わりよ。"
+      "text": "確認はこのくらいで十分。あとは、実際のイベント本文を増やしていくだけね。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "お疲れ様！ またお店で会いましょうね。"
+      "text": "まずは数本ずつ、きれいに仕上げていきましょう。"
     },
     {
       "type": "end"
@@ -2842,13 +2804,21 @@ const EVENT_SCRIPTS = {
       "type": "enter",
       "characterId": "HAKIMA",
       "expression": "normal",
-      "position": "center"
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "まずは店内。背景と立ち絵が落ち着いて見えるか確認しましょう。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "いらっしゃい！ 立ち絵の接地感はどうかしら？"
+      "text": "台詞送りの音も、このタイミングで控えめに鳴るはずよ。"
     },
     {
       "type": "scene",
@@ -2856,9 +2826,11 @@ const EVENT_SCRIPTS = {
       "characters": [
         {
           "id": "HAKIMA",
-          "expression": "normal"
+          "expression": "normal",
+          "position": "center"
         }
       ],
+      "still": null,
       "transition": "fadeScene",
       "speed": "long"
     },
@@ -2866,7 +2838,13 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "場所を変えても、ちゃんと足元が接地しているはずだわ。"
+      "text": "場面転換後。背景と立ち絵が同時に切り替わっているかを見る場面ね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "表情はここでは変えない。場面転換そのものを確認しやすくするためよ。"
     },
     {
       "type": "still",
@@ -2877,7 +2855,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "text": "スチル表示中は、立ち絵が消えて一枚絵が全画面で見えるはずよ。"
+      "text": "スチル表示中は立ち絵を消して、一枚絵だけを見せる。ここも重要ね。"
     },
     {
       "type": "still",
@@ -2888,8 +2866,28 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "スチルを解除すると、さっきの背景と立ち絵に戻る。これで基本確認は終わり。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "characters": [
+        {
+          "id": "HAKIMA",
+          "expression": "joy",
+          "position": "center"
+        }
+      ],
+      "still": null,
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "スチルを解除すると、元の背景と立ち絵に戻るわね。成功よ！"
+      "text": "最後に店内へ戻して完了。基本演出の基準はこの流れで見ればいいわ。"
     },
     {
       "type": "end"
@@ -25100,7 +25098,7 @@ function bindInputHandlers(controller) {
 
     if (target.closest('[data-action="fp-start"]')) {
       event.stopPropagation();
-      controller.playSfx('uiConfirmChime');
+      controller.playSfx('uiLightConfirm');
       const songId = controller.uiState.freePlaySongId || 'main03_puzzle';
       const mode = controller.uiState.freePlayMode || 'timeAttack10';
       controller.startFreePlay(songId, mode);
@@ -25108,7 +25106,7 @@ function bindInputHandlers(controller) {
     }
     if (target.closest('[data-action="fp-retry"]')) {
       event.stopPropagation();
-      controller.playSfx('uiConfirmChime');
+      controller.playSfx('uiLightConfirm');
       controller.retryFreePlay();
       return;
     }
@@ -25217,7 +25215,7 @@ function bindInputHandlers(controller) {
     if (startEventBtn) {
       event.stopPropagation();
       const eventId = startEventBtn.getAttribute('data-event-id');
-      controller.playSfx('uiConfirmChime');
+      controller.playSfx('uiLightConfirm');
       controller.startEvent(eventId);
       return;
     }
@@ -32484,78 +32482,86 @@ module.exports = {
 
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
-const SFX_OUTPUT_GAIN = 1.75;
+const SFX_OUTPUT_GAIN = 1.0;
 
 const SELECTED_SFX = {
   uiTapBottle: {
     path: 'audio/se/ui_tap_bottle_01_3.mp3',
-    volume: 0.68,
+    volume: 1.00,
     start: 0,
     end: null
   },
   uiConfirmChime: {
     path: 'audio/se/ui_confirm_chime_01_3.mp3',
-    volume: 0.56,
+    volume: 0.92,
+    start: 0,
+    end: null
+  },
+  uiLightConfirm: {
+    path: 'audio/se/se_page_turn_03.mp3',
+    volume: 0.74,
+    playbackRate: 1.0,
     start: 0,
     end: null
   },
   quizChoicePick: {
     path: 'audio/se/quiz_choice_pick_01_3.mp3',
-    volume: 0.62,
+    volume: 0.95,
     start: 0,
     end: 1.0
   },
   quizCorrectStarChime: {
     path: 'audio/se/quiz_correct_star_chime_01.mp3',
-    volume: 0.74,
+    volume: 0.96,
     start: 0,
     end: null
   },
   quizCountdownTick: {
     path: 'audio/se/clock_ticking_1.mp3',
-    volume: 0.60,
+    volume: 0.82,
     start: 0,
     end: null
   },
   quizStartChime: {
     path: 'audio/se/quiz_correct_star_chime_01_4.mp3',
-    volume: 0.66,
+    volume: 0.90,
     start: 0,
     end: null
   },
   quizWrongSandTap: {
     path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3',
-    volume: 0.64,
+    volume: 0.88,
     start: 0,
     end: null
   },
   workshopDayEnd: {
     path: 'audio/se/workshop_day_end_01_2.mp3',
-    volume: 0.66,
+    volume: 0.90,
     start: 0,
     end: null
   },
   turnClockTick: {
     path: 'audio/se/clock_ticking_4.mp3',
-    volume: 0.70,
+    volume: 0.86,
     start: 0,
     end: null
   },
   turnClockComplete: {
     path: 'audio/se/ui_confirm_chime_01_2.mp3',
-    volume: 0.58,
+    volume: 0.92,
     start: 0,
     end: null
   },
   secretUnlock: {
     path: 'audio/se/workshop_day_end_01_4.mp3',
-    volume: 0.70,
+    volume: 0.95,
     start: 0,
     end: null
   },
   eventPageTurn: {
-    path: 'audio/se/ui_tap_bottle_01.mp3',
-    volume: 0.48,
+    path: 'audio/se/se_page_turn_02.mp3',
+    volume: 0.50,
+    playbackRate: 3.0,
     start: 0,
     end: null
   }
@@ -32571,6 +32577,7 @@ function collectManifestSfxConfig() {
       const spec = {
         path: track.path,
         volume: typeof track.volume === 'number' ? track.volume : 0.42,
+        playbackRate: typeof track.playbackRate === 'number' ? track.playbackRate : 1.0,
         start: typeof track.start === 'number' ? track.start : 0,
         end: typeof track.end === 'number' ? track.end : null
       };
@@ -32659,6 +32666,7 @@ class SfxEngine {
 
     try {
       audio.volume = getElementVolume(spec, this.volume);
+      audio.playbackRate = getPlaybackRate(spec);
       
       if (typeof spec.start === 'number' && spec.start > 0) {
         audio.currentTime = spec.start;
@@ -32687,6 +32695,12 @@ class SfxEngine {
       // SFX must never break gameplay.
     }
   }
+}
+
+function getPlaybackRate(spec) {
+  const rate = spec?.playbackRate;
+  if (typeof rate !== 'number' || Number.isNaN(rate)) return 1.0;
+  return Math.max(0.25, Math.min(4.0, rate));
 }
 
 function getElementVolume(spec, masterVolume) {
@@ -33805,7 +33819,7 @@ class GameController {
       if (this.session.phase === 'MAIN_GAME' && this.session.subPhase === 'QUIZ' && this.quizState.currentQuestion) {
         this.quizState.promptShownAt = performance.now();
       }
-      this.playSfx('uiConfirmChime');
+      this.playSfx('uiLightConfirm');
       this.update();
     }
     return applied;
