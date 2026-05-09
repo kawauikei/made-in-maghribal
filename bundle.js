@@ -1893,6 +1893,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "dariya_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_dariya_after_hours_01",
@@ -1910,6 +1913,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -1927,6 +1933,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "mira_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_mira_after_school_01",
@@ -1944,6 +1953,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "always",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "event",
       "thumbnail": "bg_market_central",
@@ -1961,6 +1973,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -1978,6 +1993,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -1995,6 +2013,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -2012,6 +2033,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -2029,6 +2053,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -2046,6 +2073,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -2063,6 +2093,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -2080,6 +2113,9 @@ const EVENT_MANIFEST = [
       "type": "always"
     },
     "unlockGroup": "hakima_normal",
+    "galleryTab": null,
+    "eventType": null,
+    "thumbnail": null,
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -24999,6 +25035,7 @@ function bindInputHandlers(controller) {
       if (backToTitleBtn) controller.uiState.modal = null;
       controller.closeTitlePanel();
       controller.session.backToTitle();
+      controller.bgm?.stop();
       controller.update();
       return;
     }
@@ -25050,6 +25087,7 @@ function bindInputHandlers(controller) {
       event.stopPropagation();
       controller.playSfx('uiTapBottle');
       controller.session.backToTitle();
+      controller.bgm?.stop();
       controller.update();
       return;
     }
@@ -25080,6 +25118,7 @@ function bindInputHandlers(controller) {
       controller.session.subPhase = 'BEFORE_OPEN';
       controller.uiState.titlePanel = 'freeplay';
       controller.session.backToTitle();
+      controller.bgm?.stop();
       controller.update();
       return;
     }
@@ -25134,6 +25173,21 @@ function bindInputHandlers(controller) {
       controller.playSfx('uiTapBottle');
       controller.bgm?.stop();
       controller.updateSoundTestStatus('');
+      return;
+    }
+
+    const eventGalleryTabBtn = target.closest('[data-action="event-gallery-tab"]');
+    if (eventGalleryTabBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateEventGalleryTab(eventGalleryTabBtn.getAttribute('data-event-gallery-tab'));
+      return;
+    }
+    const eventGalleryTypeBtn = target.closest('[data-action="event-gallery-type"]');
+    if (eventGalleryTypeBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.updateEventGalleryType(eventGalleryTypeBtn.getAttribute('data-event-gallery-type'));
       return;
     }
 
@@ -28095,11 +28149,17 @@ const { ITEM_MASTER } = require('../data/itemMaster.cjs');
 const { ITEM_DISPLAY_NAMES } = require('../data/itemDisplayNames.cjs');
 const { ITEM_TEXTS } = require('../data/itemTexts.cjs');
 const { getItemSpriteStyle } = require('../utils/itemSprite.js');
-const { getCharacterIconPath } = require('../utils/assetPaths.js');
+const { getCharacterIconPath, getBackgroundPath, getStillPath } = require('../utils/assetPaths.js');
 const { loadItemCollection } = require('../utils/itemCollection.js');
 const { getHeroineDisplayName } = require('../utils/displayNames.js');
 const { escapeHtml } = require('../utils/html.js');
 const { GALLERY_MANIFEST } = require('../data/galleryManifest.js');
+let EVENT_SCRIPTS = {};
+try {
+  EVENT_SCRIPTS = require('../data/generated/eventScripts.cjs').EVENT_SCRIPTS || {};
+} catch (e) {
+  EVENT_SCRIPTS = {};
+}
 let EVENT_MASTER;
 try {
   EVENT_MASTER = require('../data/generated/eventManifest.cjs').EVENT_MANIFEST;
@@ -28219,7 +28279,7 @@ function renderTitlePanel(controller, view) {
   }
 
   contentEl.innerHTML = `
-    <div class="title-panel-card">
+    <div class="title-panel-card title-panel-card-${escapeHtml(panel)}">
       <div class="title-panel-header">
         <button class="title-panel-back" type="button" data-action="title-panel-back">戻る</button>
         <h2>${title}</h2>
@@ -28446,38 +28506,192 @@ function renderItemGallery(controller) {
   `;
 }
 
+
+const EVENT_GALLERY_TABS = [
+  { id: 'common_nadir_normal', label: '共通', charId: 'NADER', expression: 'normal' },
+  { id: 'hakima_normal', label: '通常', charId: 'HAKIMA', expression: 'normal' },
+  { id: 'hakima_maid', label: '幼馴染', charId: 'HAKIMA', expression: 'maid' },
+  { id: 'mira_normal', label: '通常', charId: 'MIRA', expression: 'normal' },
+  { id: 'mira_maid', label: '幼馴染', charId: 'MIRA', expression: 'maid' },
+  { id: 'dariya_normal', label: '通常', charId: 'DARIYA', expression: 'normal' },
+  { id: 'dariya_maid', label: '幼馴染', charId: 'DARIYA', expression: 'maid' }
+];
+
+const EVENT_TYPE_LABELS = {
+  opening: 'OP',
+  route_opening: 'ルートOP',
+  morning: '朝',
+  night: '夜',
+  date: 'デート',
+  ending: 'ED',
+  sample: '演出確認',
+  event: 'イベント',
+  heroine: 'イベント'
+};
+
+const EVENT_TYPE_FILTERS = [
+  { id: 'all', label: 'すべて' },
+  { id: 'opening', label: 'OP' },
+  { id: 'morning', label: '朝' },
+  { id: 'night', label: '夜' },
+  { id: 'date', label: 'デート' },
+  { id: 'ending', label: 'ED' },
+  { id: 'sample', label: '演出確認' }
+];
+
+const EVENT_TYPE_FILTER_MATCHES = {
+  opening: new Set(['opening', 'route_opening']),
+  ending: new Set(['ending'])
+};
+
+function eventTypeMatchesFilter(type, filterId) {
+  if (!filterId || filterId === 'all') return true;
+  const matches = EVENT_TYPE_FILTER_MATCHES[filterId];
+  return matches ? matches.has(type) : type === filterId;
+}
+
+function normalizeEventHeroineId(heroineId) {
+  return String(heroineId || 'COMMON').toUpperCase();
+}
+
+function inferGalleryTab(ev) {
+  if (ev.galleryTab) return ev.galleryTab;
+  const group = String(ev.unlockGroup || '').toLowerCase();
+  const heroineId = normalizeEventHeroineId(ev.heroineId);
+  if (heroineId === 'COMMON' || group === 'always' || group === 'common') return 'common_nadir_normal';
+  if (group.includes('childhood')) return `${heroineId.toLowerCase()}_maid`;
+  if (group.includes('normal')) return `${heroineId.toLowerCase()}_normal`;
+  if (heroineId === 'HAKIMA' || heroineId === 'MIRA' || heroineId === 'DARIYA') return `${heroineId.toLowerCase()}_normal`;
+  return 'common_nadir_normal';
+}
+
+function inferEventType(ev) {
+  if (ev.eventType) return ev.eventType;
+  const id = String(ev.id || '').toLowerCase();
+  const category = String(ev.gallery?.category || '').toLowerCase();
+  if (id.includes('_op_') || id.startsWith('ev_op') || category === 'event') return 'opening';
+  if (id.includes('sample') || id.includes('char_') || id.includes('sfx_') || id.includes('simple')) return 'sample';
+  if (id.includes('morning')) return 'morning';
+  if (id.includes('night')) return 'night';
+  if (id.includes('date')) return 'date';
+  if (id.includes('ending') || id.includes('_ed')) return 'ending';
+  return category || 'event';
+}
+
+function findEventThumbnailId(ev) {
+  if (ev.thumbnail) return ev.thumbnail;
+  const script = EVENT_SCRIPTS?.[ev.id];
+  if (Array.isArray(script)) {
+    const sceneWithBg = script.find((step) => step && step.type === 'scene' && step.bg);
+    if (sceneWithBg?.bg) return sceneWithBg.bg;
+    const bgStep = script.find((step) => step && step.type === 'bg' && step.id);
+    if (bgStep?.id) return bgStep.id;
+    const stillStep = script.find((step) => step && step.type === 'still' && step.id);
+    if (stillStep?.id) return stillStep.id;
+    const sceneWithStill = script.find((step) => step && step.type === 'scene' && step.still);
+    if (sceneWithStill?.still) return sceneWithStill.still;
+  }
+  return ev.gallery?.thumbnail || 'bg_shop_interior_service';
+}
+
+function getEventThumbnailPath(thumbnailId) {
+  const id = String(thumbnailId || 'bg_shop_interior_service');
+  if (id.startsWith('still_')) return getStillPath(id);
+  return getBackgroundPath(id);
+}
+
+function isEventUnlocked(ev, progress) {
+  const group = String(ev.unlockGroup || 'always');
+  return group === 'always' || group === 'common' || Boolean(progress?.galleryUnlockGroups?.[group]);
+}
+
 function renderEventGallery(controller) {
   const progress = controller.getPlayerProgressSummary ? controller.getPlayerProgressSummary() : null;
-  
   const events = Array.isArray(EVENT_MASTER) ? EVENT_MASTER : [];
-  const cards = events.map((ev) => {
-    // 解放条件: always または unlockGroup が解放済み
-    const isUnlocked = ev.unlockGroup === 'always' || (progress?.galleryUnlockGroups?.[ev.unlockGroup]);
-    const isSeen = progress?.viewedEventIds?.[ev.id];
-    
-    const displayTitle = isUnlocked ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
-    const displaySummary = isUnlocked ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '物語を読み進めると解放');
-    const conditionText = isUnlocked ? (HEROINE_LABELS[ev.heroineId] || '共通') : '未解放';
-    const newBadge = (isUnlocked && !isSeen) ? '<span class="event-new-badge">NEW</span>' : '';
+  const availableTabIds = new Set(EVENT_GALLERY_TABS.map((tab) => tab.id));
+  const activeTab = availableTabIds.has(controller.uiState?.eventGalleryTab)
+    ? controller.uiState.eventGalleryTab
+    : 'common_nadir_normal';
+  const activeTabMeta = EVENT_GALLERY_TABS.find((tab) => tab.id === activeTab) || EVENT_GALLERY_TABS[0];
+  const activeTypeFilter = EVENT_TYPE_FILTERS.some((filter) => filter.id === controller.uiState?.eventGalleryType)
+    ? controller.uiState.eventGalleryType
+    : 'all';
+  const tabEvents = events.filter((ev) => inferGalleryTab(ev) === activeTab);
+  const filteredEvents = tabEvents.filter((ev) => eventTypeMatchesFilter(inferEventType(ev), activeTypeFilter));
+  const eventsByType = filteredEvents.reduce((acc, ev) => {
+    const type = inferEventType(ev);
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(ev);
+    return acc;
+  }, {});
 
+  const tabs = EVENT_GALLERY_TABS.map((tab) => {
+    const isActive = tab.id === activeTab;
+    const eventCount = events.filter((ev) => inferGalleryTab(ev) === tab.id).length;
     return `
-      <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}${isSeen ? ' is-seen' : ''}"
-           ${isUnlocked ? `data-action="start-event" data-event-id="${ev.id}"` : ''}>
-        <div class="locked-gallery-mark">${ev.heroineId === 'COMMON' ? '✦' : '✧'}</div>
-        <div class="locked-gallery-content">
-          <h3>${newBadge}${escapeHtml(displayTitle)}</h3>
-          <p>${escapeHtml(displaySummary)}</p>
-          <small>${escapeHtml(conditionText)}</small>
-        </div>
-      </div>
+      <button class="event-gallery-tab${isActive ? ' is-active' : ''}" type="button" data-action="event-gallery-tab" data-event-gallery-tab="${tab.id}" aria-label="${escapeHtml(tab.label)}">
+        <img src="${getCharacterIconPath(tab.charId, tab.expression)}" alt="" />
+        ${isActive ? `<span>${escapeHtml(tab.label)}</span>` : ''}
+        ${eventCount ? `<small>${eventCount}</small>` : ''}
+      </button>
     `;
   }).join('');
 
+  const typeFilters = EVENT_TYPE_FILTERS.map((filter) => {
+    const count = filter.id === 'all'
+      ? tabEvents.length
+      : tabEvents.filter((ev) => eventTypeMatchesFilter(inferEventType(ev), filter.id)).length;
+    const isActive = filter.id === activeTypeFilter;
+    return `
+      <button class="event-gallery-type-tab${isActive ? ' is-active' : ''}" type="button" data-action="event-gallery-type" data-event-gallery-type="${filter.id}">
+        <span>${escapeHtml(filter.label)}</span>
+        ${count ? `<small>${count}</small>` : ''}
+      </button>
+    `;
+  }).join('');
+
+  const typeOrder = ['opening', 'route_opening', 'morning', 'night', 'date', 'ending', 'sample', 'event', 'heroine'];
+  const knownTypes = typeOrder.filter((type) => eventsByType[type]?.length);
+  const extraTypes = Object.keys(eventsByType).filter((type) => !typeOrder.includes(type)).sort();
+  const sections = [...knownTypes, ...extraTypes].map((type) => {
+    const cards = eventsByType[type].map((ev) => {
+      const isUnlocked = isEventUnlocked(ev, progress);
+      const isSeen = Boolean(progress?.viewedEventIds?.[ev.id]);
+      const displayTitle = isUnlocked ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
+      const displaySummary = isUnlocked ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '物語を読み進めると解放');
+      const newBadge = (isUnlocked && !isSeen) ? '<span class="event-new-badge">NEW</span>' : '';
+      const thumbPath = getEventThumbnailPath(findEventThumbnailId(ev));
+      return `
+        <div class="event-gallery-card${isUnlocked ? ' is-unlocked' : ' is-locked'}${isSeen ? ' is-seen' : ''}"
+             ${isUnlocked ? `data-action="start-event" data-event-id="${ev.id}"` : ''}>
+          <div class="event-gallery-thumb" aria-hidden="true">
+            <img src="${thumbPath}" alt="" />
+          </div>
+          <div class="event-gallery-card-body">
+            <h4>${newBadge}${escapeHtml(displayTitle)}</h4>
+            <p>${escapeHtml(displaySummary)}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+    return `
+      <section class="event-gallery-section">
+        <h3>${escapeHtml(EVENT_TYPE_LABELS[type] || type)}</h3>
+        <div class="event-gallery-card-grid">${cards}</div>
+      </section>
+    `;
+  }).join('') || '<div class="title-panel-empty">この分類のイベントはまだありません。</div>';
+
   return `
-    <div class="locked-gallery-panel">
-      <div class="title-panel-summary">物語の記録</div>
-      <div class="locked-gallery-grid">${cards}</div>
-      <p class="title-panel-note">一度見たイベントをこちらで振り返ることができます。</p>
+    <div class="locked-gallery-panel event-gallery-panel">
+      <div class="event-gallery-tabs" aria-label="イベント分類">${tabs}</div>
+      <div class="event-gallery-active-title">
+        <img src="${getCharacterIconPath(activeTabMeta.charId, activeTabMeta.expression)}" alt="" />
+        <strong>${escapeHtml(activeTabMeta.label)}</strong>
+      </div>
+      <div class="event-gallery-type-tabs" aria-label="イベント種別">${typeFilters}</div>
+      <div class="event-gallery-sections">${sections}</div>
+      <p class="title-panel-note">カードのサムネイルは、イベント内で最初に使われる背景を優先して表示します。</p>
     </div>
   `;
 }
@@ -32270,70 +32484,78 @@ module.exports = {
 
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 
+const SFX_OUTPUT_GAIN = 1.75;
+
 const SELECTED_SFX = {
   uiTapBottle: {
     path: 'audio/se/ui_tap_bottle_01_3.mp3',
-    volume: 1.10,
+    volume: 0.68,
     start: 0,
     end: null
   },
   uiConfirmChime: {
     path: 'audio/se/ui_confirm_chime_01_3.mp3',
-    volume: 0.30,
+    volume: 0.56,
     start: 0,
     end: null
   },
   quizChoicePick: {
     path: 'audio/se/quiz_choice_pick_01_3.mp3',
-    volume: 0.36,
+    volume: 0.62,
     start: 0,
     end: 1.0
   },
   quizCorrectStarChime: {
     path: 'audio/se/quiz_correct_star_chime_01.mp3',
-    volume: 0.46,
+    volume: 0.74,
     start: 0,
     end: null
   },
   quizCountdownTick: {
     path: 'audio/se/clock_ticking_1.mp3',
-    volume: 0.42,
+    volume: 0.60,
     start: 0,
     end: null
   },
   quizStartChime: {
     path: 'audio/se/quiz_correct_star_chime_01_4.mp3',
-    volume: 0.38,
+    volume: 0.66,
     start: 0,
     end: null
   },
   quizWrongSandTap: {
     path: 'audio/se/quiz_wrong_sand_tap_01_3.mp3',
-    volume: 0.42,
+    volume: 0.64,
     start: 0,
     end: null
   },
   workshopDayEnd: {
     path: 'audio/se/workshop_day_end_01_2.mp3',
-    volume: 0.40,
+    volume: 0.66,
     start: 0,
     end: null
   },
   turnClockTick: {
     path: 'audio/se/clock_ticking_4.mp3',
-    volume: 0.56,
+    volume: 0.70,
     start: 0,
     end: null
   },
   turnClockComplete: {
     path: 'audio/se/ui_confirm_chime_01_2.mp3',
-    volume: 0.34,
+    volume: 0.58,
     start: 0,
     end: null
   },
   secretUnlock: {
     path: 'audio/se/workshop_day_end_01_4.mp3',
-    volume: 0.50,
+    volume: 0.70,
+    start: 0,
+    end: null
+  },
+  eventPageTurn: {
+    path: 'audio/se/ui_tap_bottle_01.mp3',
+    volume: 0.48,
     start: 0,
     end: null
   }
@@ -32403,7 +32625,7 @@ class SfxEngine {
     // Update active pool volumes if needed
     this.pool.forEach((audios, id) => {
       const spec = this.config[id];
-      const vol = clampVolume(spec?.volume, 0.4) * this.volume;
+      const vol = getElementVolume(spec, this.volume);
       audios.forEach(a => { a.volume = vol; });
     });
   }
@@ -32436,7 +32658,7 @@ class SfxEngine {
     }
 
     try {
-      audio.volume = clampVolume(spec.volume, 0.4) * this.volume;
+      audio.volume = getElementVolume(spec, this.volume);
       
       if (typeof spec.start === 'number' && spec.start > 0) {
         audio.currentTime = spec.start;
@@ -32467,6 +32689,12 @@ class SfxEngine {
   }
 }
 
+function getElementVolume(spec, masterVolume) {
+  const base = clampVolume(spec?.volume, 0.4);
+  const master = clampVolume(masterVolume, 1);
+  return clampVolume(base * master * SFX_OUTPUT_GAIN, 1);
+}
+
 function clampVolume(value, fallback = 0.4) {
   if (typeof value !== 'number' || Number.isNaN(value)) return fallback;
   return Math.max(0, Math.min(1, value));
@@ -32477,6 +32705,7 @@ function createSfxEngine() {
 }
 
 module.exports = {
+  SFX_OUTPUT_GAIN,
   SELECTED_SFX,
   EVENT_SFX_CONFIG,
   SfxEngine,
@@ -32727,7 +32956,7 @@ class GameController {
       bgmEnabled: true,
       bgmVolume: 0.22,
       sfxEnabled: true,
-      sfxVolume: 1,
+      sfxVolume: 0.5,
       motionQuality: 'standard'
     };
     try {
@@ -32901,6 +33130,17 @@ class GameController {
 
   updateGalleryIndex(index) {
     this.uiState.galleryIndex = index;
+    this.update();
+  }
+
+  updateEventGalleryTab(tabId) {
+    this.uiState.eventGalleryTab = tabId || 'common_nadir_normal';
+    this.uiState.eventGalleryType = 'all';
+    this.update();
+  }
+
+  updateEventGalleryType(typeId) {
+    this.uiState.eventGalleryType = typeId || 'all';
     this.update();
   }
 
@@ -33404,7 +33644,8 @@ class GameController {
       this.finishTypewriter();
       return;
     }
-    
+
+    this.playSfx('eventPageTurn');
     this.nextEventStep();
   }
 
