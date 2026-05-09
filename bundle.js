@@ -30236,6 +30236,16 @@ function bindInputHandlers(controller) {
       controller.finishTurnTransition(true);
       return;
     }
+    // Event skip must stay live during typing, page handoff, and cut-ins. Do it
+    // before quiz inputLocked checks; otherwise the hit judgement vanishes in
+    // short transition windows and the user hears/feels a dead button.
+    if (controller.eventState?.active && target.closest('[data-action="skip-text"]')) {
+      event.preventDefault();
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.skipCurrentEventScene?.();
+      return;
+    }
     // 中断/デバッグ省略はinputLocked中（クイズカウントダウン中など）でも動作させる
     if (target.closest('[data-action="fp-abort"]')) {
       event.stopPropagation();
@@ -30760,7 +30770,7 @@ function createTurnTransitionController(controller) {
     const subtitle = isEnding ? '星が静かに幕を下ろす' : '夜が巡り、朝の光が店先を照らす';
 
     const overlay = document.createElement('div');
-    overlay.className = `turn-transition-overlay ${isEnding ? 'is-ending' : 'is-next-turn'}`;
+    overlay.className = `turn-transition-overlay is-entering ${isEnding ? 'is-ending' : 'is-next-turn'}`;
     overlay.setAttribute('data-action', 'skip-turn-transition');
     overlay.setAttribute('tabindex', '-1');
     overlay.setAttribute('role', 'presentation');
@@ -30778,6 +30788,13 @@ function createTurnTransitionController(controller) {
       </div>
     `;
     viewport.appendChild(overlay);
+
+    // The overlay itself is fully black from the first frame. Only the clock
+    // ornaments animate in, so the previous turn's final still/standing image
+    // can never be visible behind the turn handoff.
+    window.requestAnimationFrame(() => {
+      overlay.classList.remove('is-entering');
+    });
 
     const fadeInMs = 1000;
     const introHoldMs = 500;
@@ -30845,6 +30862,7 @@ function createTurnTransitionController(controller) {
     // Keep a fully black handoff veil while the next game state is rendered.
     // Fast-forwarding the clock may shorten the blackout, but it must never fade
     // the overlay out before callback/update or the previous day scene flashes.
+    overlay.classList.remove('is-entering');
     overlay.classList.add('is-handoff');
 
     window.requestAnimationFrame(() => {
@@ -34855,6 +34873,8 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   };
 
   const getTransitionDuration = (type, speed) => {
+    const override = Number(transition?.durationMs);
+    if (Number.isFinite(override) && override >= 0) return override;
     if (type === 'dissolve') return speed === 'long' ? 620 : 260;
     return speed === 'long' ? 520 : 220;
   };
@@ -35032,7 +35052,12 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   }
 
   const durationMs = getTransitionDuration(tType, tSpeed);
-  const holdMs = ((tType === 'fadeScene' || tType === 'dissolve') && tSpeed === 'long') ? 140 : 0;
+  const holdOverride = Number(transition?.holdMs);
+  const holdMs = Number.isFinite(holdOverride)
+    ? Math.max(0, holdOverride)
+    : (((tType === 'fadeScene' || tType === 'dissolve') && tSpeed === 'long') ? 140 : 0);
+  const revealOverride = Number(transition?.revealMs);
+  const revealMs = Number.isFinite(revealOverride) ? Math.max(0, revealOverride) : durationMs;
 
   // Event page visual changes must never reveal a one-frame image swap.
   // Use a dedicated black handoff veil above the whole VN shell, update all
@@ -35088,7 +35113,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
       const reveal = async (fast = false) => {
         updateUnderCover();
-        const revealDelay = fast ? 80 : durationMs;
+        const revealDelay = fast ? 80 : revealMs;
         await waitFrame();
         overlay.classList.remove('is-immediate');
         overlay.classList.remove('is-visible');
@@ -38230,7 +38255,7 @@ const { showResultStamp } = require('./ui/resultStamp.js');
 // Modularized Utilities
 const { isDebugMode, applyDebugJumpFromUrl } = require('./utils/debugJump.js');
 const { getHeroineDisplayName, getItemDisplayName, getItemIconPath, getTurnRank } = require('./utils/displayNames.js');
-const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath } = require('./utils/assetPaths.js');
+const { getCharacterStandingPath, getCharacterIconPath, getBackgroundPath, getStillPath } = require('./utils/assetPaths.js');
 const { createSfxEngine } = require('./utils/sfxEngine.js');
 const { createBgmEngine } = require('./utils/bgmEngine.js');
 const {
@@ -38370,6 +38395,8 @@ class GameController {
     this.quizState = this.createInitialQuizState();
     this.endingProgressRecorded = false;
     this.viewportScaleTimers = [];
+    this.eventVisualAudit = [];
+    this._lastEventVisualAuditKey = '';
     this._saveTimer = null;
     this.freePlayRecords = new FreePlayRecords();
     this.freePlaySession = null;
@@ -38939,6 +38966,20 @@ class GameController {
     return labels[timing] || '出来事';
   }
 
+  getRuntimeEventBoundaryMotion(timing) {
+    // Keep this independent from authored event data.  Cut-ins may vary their
+    // subtitle-card motion, but event scripts must not need transition markup.
+    const motions = {
+      opening: 'rise',
+      route_opening: 'slide-right',
+      morning: 'slide-left',
+      night: 'slide-right',
+      date: 'rise',
+      ending: 'slide-left'
+    };
+    return motions[timing] || 'rise';
+  }
+
   startRuntimeEvent(timing, options = {}) {
     if (this.eventState.active || this.session?.phase === 'FREE_PLAY') return false;
     const key = options.key || this.getRuntimeEventKey(timing);
@@ -38956,11 +38997,12 @@ class GameController {
       returnScreen: options.returnScreen || 'main',
       playbackMode: 'runtime',
       useBoundary: options.useBoundary ?? boundaryTimings.has(timing),
-      boundaryClickToStart: options.boundaryClickToStart ?? ['opening', 'route_opening', 'ending'].includes(timing),
+      boundaryClickToStart: options.boundaryClickToStart ?? true,
       boundaryLabel: options.boundaryLabel || this.getRuntimeEventBoundaryLabel(event.eventType || timing),
       boundaryTitle: options.boundaryTitle || event.title || event.summary || event.id,
+      boundaryMotion: options.boundaryMotion || this.getRuntimeEventBoundaryMotion(event.eventType || timing),
       boundaryAutoMs: options.boundaryAutoMs ?? (['morning', 'night', 'date'].includes(timing) ? 1080 : 860),
-      exitBoundaryMs: options.exitBoundaryMs ?? 820
+      exitBoundaryMs: options.exitBoundaryMs ?? 520
     });
     return true;
   }
@@ -39207,12 +39249,13 @@ class GameController {
       boundaryStage: useRuntimeBoundary ? 'entry' : 'none',
       boundaryLabel: playbackOptions.boundaryLabel || '',
       boundaryTitle: playbackOptions.boundaryTitle || '',
+      boundaryMotion: playbackOptions.boundaryMotion || 'rise',
       boundaryTimer: null,
       boundaryFinishing: false,
       boundaryClickToStart,
       boundaryAutoMs: Number(playbackOptions.boundaryAutoMs) || 760,
-      entryReleaseMs: Number(playbackOptions.entryReleaseMs) || 560,
-      exitBoundaryMs: Number(playbackOptions.exitBoundaryMs) || 720,
+      entryReleaseMs: Number(playbackOptions.entryReleaseMs) || 260,
+      exitBoundaryMs: Number(playbackOptions.exitBoundaryMs) || 520,
       pendingEndAdvance: false,
       suppressInitialVisualTransition: true,
       playbackPlan: null,
@@ -39225,6 +39268,18 @@ class GameController {
 
     this.eventState.playbackPlan = this.buildEventPlaybackPlan(script, baseVisual);
     this.eventState.labels = this.eventState.playbackPlan.labels || labels;
+    const firstEventPage = this.eventState.playbackPlan.pages?.[0] || null;
+    // Runtime cut-ins are part of the scene handoff. The VN layer underneath the
+    // cut-in must already be the incoming event's first visual, never the event
+    // that just ended. Otherwise skipping or releasing the cut-in can expose the
+    // previous night/date still for a single cheap frame.
+    if (useRuntimeBoundary) {
+      this.prepareEventBoundaryUnderlay(firstEventPage);
+    }
+    // Runtime cut-ins are not just decoration: while the chapter card is shown,
+    // the next event page must already be warmed. Otherwise the first still/bg
+    // appears as a cheap one-frame pop when the cut-in is skipped or released.
+    this.warmupEventPlaybackPage(firstEventPage);
 
     this.update();
     if (useRuntimeBoundary) {
@@ -39353,6 +39408,83 @@ class GameController {
     this.handleRuntimeEventFinished(eventId);
   }
 
+  skipCurrentEventScene() {
+    if (!this.eventState?.active) return false;
+    // The skip button means "cut this authored event scene", not "advance one
+    // line". Keep a black runtime veil while the skipped event completes and
+    // while the next event/screen is selected, so no previous still can leak
+    // across a cut-in boundary.
+    if (this.eventState.boundaryTimer) {
+      clearTimeout(this.eventState.boundaryTimer);
+      this.eventState.boundaryTimer = null;
+    }
+    if (this.eventState.waitTimer) {
+      clearTimeout(this.eventState.waitTimer);
+      this.eventState.waitTimer = null;
+    }
+    const resolver = this.eventState.transitionSkipResolver;
+    if (typeof resolver === 'function') {
+      this.eventState.transitionSkipResolver = null;
+      resolver();
+    }
+    this.eventState.boundaryFinishing = true;
+    this.eventState.inputState = 'skipping';
+    this.eventState.isAdvancing = false;
+    this.eventState.isTransitioning = false;
+    this.queueRuntimeScreenFade(720);
+    this.completeCurrentEvent();
+    return true;
+  }
+
+  isEventVisualAuditEnabled() {
+    if (typeof window === 'undefined') return false;
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      return params.get('eventAudit') === '1' || params.get('debug') === '1';
+    } catch (error) {
+      return false;
+    }
+  }
+
+  auditEventPresentation(reason, extra = {}) {
+    if (!this.isEventVisualAuditEnabled || !this.isEventVisualAuditEnabled()) return;
+    if (!this.eventState?.active) return;
+    const page = this.getCurrentEventPageInfo ? this.getCurrentEventPageInfo() : { current: 0, total: 0 };
+    const snapshot = {
+      reason,
+      eventId: this.eventState.eventId || '',
+      page: `${page.current || 0}/${page.total || 0}`,
+      boundaryStage: this.eventState.boundaryStage || 'none',
+      inputState: this.eventState.inputState || '',
+      hasLine: Boolean(this.eventState.currentDisplayStep),
+      isTransitioning: Boolean(this.eventState.isTransitioning),
+      isAdvancing: Boolean(this.eventState.isAdvancing),
+      hasVisualHandoff: Boolean(this.eventState.lastTransition && this.eventState.lastTransition.type === 'fadeScene'),
+      ...extra
+    };
+    const issues = [];
+    if (snapshot.boundaryStage === 'exit' && !snapshot.hasLine) {
+      issues.push('EXIT_LINE_CLEARED_BEFORE_BLACK_COVER');
+    }
+    if (snapshot.reason === 'show-page' && snapshot.visualChanged && !snapshot.hasVisualHandoff) {
+      issues.push('VISUAL_CHANGED_WITHOUT_BLACK_HANDOFF');
+    }
+    if (snapshot.reason === 'render-event' && !snapshot.hasLine && snapshot.boundaryStage === 'none' && !this.eventState.activeChoice) {
+      issues.push('EVENT_RENDERED_WITHOUT_LINE_OR_COVER');
+    }
+    snapshot.issues = issues;
+    const key = JSON.stringify({ reason: snapshot.reason, eventId: snapshot.eventId, page: snapshot.page, boundaryStage: snapshot.boundaryStage, inputState: snapshot.inputState, issues });
+    if (key === this._lastEventVisualAuditKey) return;
+    this._lastEventVisualAuditKey = key;
+    this.eventVisualAudit.push(snapshot);
+    if (this.eventVisualAudit.length > 120) this.eventVisualAudit.shift();
+    if (issues.length) {
+      console.warn('[event-visual-audit]', snapshot);
+    } else if (new URLSearchParams(window.location.search || '').get('eventAudit') === '1') {
+      console.info('[event-visual-audit]', snapshot);
+    }
+  }
+
   finishCurrentEvent(options = {}) {
     if (!this.eventState.active) return;
     const shouldUseBoundary = this.eventState.playbackMode === 'runtime'
@@ -39363,8 +39495,10 @@ class GameController {
       this.eventState.boundaryFinishing = true;
       this.eventState.boundaryStage = 'exit';
       this.eventState.inputState = 'waiting';
-      this.eventState.currentDisplayStep = null;
-      this.eventState.currentDisplayStepIndex = null;
+      // Keep the final VNBox and text alive under the fade-out cover. Clearing
+      // it here creates the cheap-looking "message box disappears first" frame
+      // before the black boundary has become opaque.
+      this.auditEventPresentation('start-exit-boundary', { keepLastLineUntilCovered: true });
       this.update();
       this.eventState.boundaryTimer = window.setTimeout(() => {
         if (!this.eventState.active) return;
@@ -39387,6 +39521,43 @@ class GameController {
       still: visual.still || null,
       characters
     };
+  }
+
+  getEventPagePreloadPaths(page) {
+    if (!page) return [];
+    const paths = [];
+    const visual = page.visual || {};
+    if (visual.background) paths.push(getBackgroundPath(visual.background));
+    if (visual.still) paths.push(getStillPath(visual.still));
+    Object.entries(visual.characters || {}).forEach(([charId, data]) => {
+      if (!charId || visual.still) return;
+      const expression = data?.expression || 'normal';
+      paths.push(getCharacterStandingPath(charId, expression));
+    });
+    const step = page.step || {};
+    const speakerId = step.speakerId || Object.keys(visual.characters || {})[0];
+    if (speakerId) paths.push(getCharacterIconPath(speakerId, step.expression || 'normal'));
+    return [...new Set(paths.filter(Boolean))];
+  }
+
+  warmupEventPlaybackPage(page) {
+    const paths = this.getEventPagePreloadPaths(page);
+    if (!paths.length || !this.assetPreloader?.preloadImages) return Promise.resolve([]);
+    return this.assetPreloader.preloadImages(paths).catch(() => []);
+  }
+
+  prepareEventBoundaryUnderlay(page) {
+    if (!this.eventState?.active || !page?.visual) return;
+    const visual = this.cloneEventVisualState(page.visual);
+    this.eventState.background = visual.background;
+    this.eventState.still = visual.still;
+    this.eventState.characters = visual.characters;
+    this.eventState.activeChoice = null;
+    this.eventState.currentDisplayStep = null;
+    this.eventState.currentDisplayStepIndex = null;
+    this.eventState.currentLineKey = null;
+    this.eventState.lastTransition = null;
+    this.eventState.inputState = this.eventState.boundaryClickToStart ? 'boundary' : 'waiting';
   }
 
   buildEventPlaybackPlan(script = [], baseVisual = {}) {
@@ -39558,14 +39729,27 @@ class GameController {
     this.eventState.lastTransition = shouldHandoff
       ? {
           type: 'fadeScene',
-          speed: 'long',
+          speed: coverBeforeUpdate ? 'short' : 'long',
           target: 'all',
           deferTypewriter: true,
-          coverBeforeUpdate
+          coverBeforeUpdate,
+          // If a full-black cut-in is already covering the screen, do not pay
+          // for a second long blackout.  Update underneath the black frame,
+          // then release quickly.  Normal page-to-page visual changes remain
+          // slower and more legible.
+          durationMs: coverBeforeUpdate ? 260 : undefined,
+          revealMs: coverBeforeUpdate ? 260 : undefined,
+          holdMs: coverBeforeUpdate ? 24 : undefined
         }
       : null;
     this.eventState.isTransitioning = shouldHandoff;
     this.eventState.inputState = shouldHandoff ? 'transitioning' : (this.eventState.activeChoice ? 'choice' : 'typing');
+    this.auditEventPresentation('show-page', {
+      pageNumber: page.pageNumber,
+      visualChanged: Boolean(page.needsVisualHandoff),
+      hasVisualHandoff: shouldHandoff,
+      coverBeforeUpdate
+    });
     this.update();
 
     const renderPromise = this.eventState.lastRenderPromise || Promise.resolve();
@@ -39593,6 +39777,8 @@ class GameController {
     const plan = this.eventState.playbackPlan;
     const pages = plan?.pages || [];
     const nextPageIndex = (this.eventState.pageIndex ?? -1) + 1;
+    this.warmupEventPlaybackPage(pages[nextPageIndex]);
+    this.warmupEventPlaybackPage(pages[nextPageIndex + 1]);
 
     if (nextPageIndex >= pages.length) {
       this.finishCurrentEvent();
@@ -39769,17 +39955,19 @@ class GameController {
       const label = escapeHtml(this.eventState.boundaryLabel || '出来事');
       const title = escapeHtml(this.eventState.boundaryTitle || this.eventState.eventId || '');
       const hint = this.eventState.boundaryClickToStart ? 'クリックで開始' : 'クリックでスキップ';
+      const rawMotion = this.eventState.boundaryMotion || 'rise';
+      const boundaryMotion = String(rawMotion).replace(/[^a-z0-9_-]/gi, '') || 'rise';
       const boundaryHtml = (boundaryStage === 'exit' || boundaryStage === 'entry-release')
         ? `<div class="event-boundary-dark"></div>`
         : `<div class="event-boundary-dark"></div><div class="event-boundary-frame"><div class="event-boundary-ornament">✦</div><div class="event-boundary-kind">${label}</div><div class="event-boundary-title">${title}</div></div><div class="event-boundary-hint">${hint}</div>`;
       if (!existingBoundary) {
         const boundary = document.createElement('div');
-        boundary.className = `event-boundary event-boundary-${boundaryStage}`;
+        boundary.className = `event-boundary event-boundary-${boundaryStage} event-boundary-motion-${boundaryMotion}`;
         boundary.setAttribute('data-event-boundary', '1');
         boundary.innerHTML = boundaryHtml;
         vnScreen.appendChild(boundary);
       } else {
-        existingBoundary.className = `event-boundary event-boundary-${boundaryStage}`;
+        existingBoundary.className = `event-boundary event-boundary-${boundaryStage} event-boundary-motion-${boundaryMotion}`;
         existingBoundary.innerHTML = boundaryHtml;
       }
     } else if (existingBoundary) {
@@ -39829,11 +40017,17 @@ class GameController {
     const charId = charIds[0];
     const charData = charId ? this.eventState.characters[charId] : null;
 
-    // Visibility of the message box
+    // Visibility of the message box. During exit boundary, the final VNBox must
+    // remain under the black cover until the event completes; otherwise the
+    // screen shows a cheap UI pop before the fade is finished.
     const messageBox = view.querySelector('.message-box');
+    const keepMessageForBoundary = Boolean(displayStep || this.eventState.boundaryStage === 'exit');
     if (messageBox) {
-      messageBox.style.display = displayStep ? 'block' : 'none';
+      messageBox.style.display = keepMessageForBoundary ? 'block' : 'none';
     }
+    this.auditEventPresentation('render-event', {
+      messageBoxDisplay: keepMessageForBoundary ? 'block' : 'none'
+    });
 
     this.eventState.lastRenderPromise = updateVnContent(this, {
       speakerName: speakerName,
@@ -40117,13 +40311,8 @@ class GameController {
     if (this.quizState.inputLocked || this.uiState.modal) return;
 
     if (this.eventState.active) {
-      if (this.isTypewriterActive()) {
-        this.finishTypewriter();
-        this.eventState.inputState = 'ready';
-        return;
-      }
       this.playSfx('uiTapBottle');
-      this.finishCurrentEvent();
+      this.skipCurrentEventScene();
       return;
     }
 

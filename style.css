@@ -1300,8 +1300,8 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   background: #000;
   color: var(--sand-2);
   cursor: pointer;
-  opacity: 0;
-  animation: turnTransitionFadeIn 1000ms ease-out both;
+  opacity: 1;
+  animation: none;
 }
 
 .turn-transition-overlay.is-exiting {
@@ -1311,6 +1311,11 @@ html[data-motion-quality="light"] .rhythm-water-shine {
 
 .turn-transition-overlay.is-skipping.is-exiting {
   animation-duration: 500ms;
+}
+
+.turn-transition-overlay.is-entering .turn-transition-clock-wrap,
+.turn-transition-overlay.is-entering .turn-transition-copy {
+  opacity: 0;
 }
 
 .turn-transition-darkness {
@@ -3921,9 +3926,9 @@ button.gallery-item-tile.is-seen:active {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 42%, rgba(190, 138, 50, 0.20), transparent 24%),
-    radial-gradient(circle at 50% 52%, rgba(20, 48, 72, 0.28), transparent 56%),
-    linear-gradient(180deg, rgba(8, 9, 15, 0.88), rgba(14, 9, 20, 0.94));
+    radial-gradient(circle at 50% 42%, rgba(190, 138, 50, 0.18), transparent 24%),
+    radial-gradient(circle at 50% 52%, rgba(20, 48, 72, 0.22), transparent 56%),
+    linear-gradient(180deg, #08090f, #0e0914);
 }
 
 .event-boundary-entry .event-boundary-dark::before,
@@ -4044,28 +4049,47 @@ button.gallery-item-tile.is-seen:active {
 }
 
 .event-boundary-entry {
-  animation: eventBoundaryEntry 520ms cubic-bezier(.18, .88, .22, 1.05) both;
+  /* Never fade the whole cut-in from transparent.  The boundary is the black
+     safety cover itself; if it starts at 0% opacity the incoming VN visual can
+     leak for a frame under the subtitle card. */
+  opacity: 1;
+  animation: none;
+}
+
+.event-boundary-entry .event-boundary-dark {
+  opacity: 1;
 }
 
 .event-boundary-entry .event-boundary-frame {
-  animation: eventBoundaryFrameIn 760ms cubic-bezier(.18, .88, .22, 1.05) both;
+  animation: eventBoundaryFrameIn 620ms cubic-bezier(.18, .88, .22, 1.05) 80ms both;
+}
+
+.event-boundary-entry.event-boundary-motion-slide-left .event-boundary-frame {
+  animation-name: eventBoundaryFrameSlideLeft;
+}
+
+.event-boundary-entry.event-boundary-motion-slide-right .event-boundary-frame {
+  animation-name: eventBoundaryFrameSlideRight;
+}
+
+.event-boundary-entry.event-boundary-motion-rise .event-boundary-frame {
+  animation-name: eventBoundaryFrameIn;
 }
 
 .event-boundary-entry .event-boundary-hint {
-  animation: eventBoundaryHintIn 920ms ease-out both;
+  animation: eventBoundaryHintIn 720ms ease-out 180ms both;
 }
 
 .event-boundary-entry-release {
-  animation: eventBoundaryEntryRelease 560ms ease-in-out both;
+  animation: eventBoundaryEntryRelease 260ms ease-in-out both;
 }
 
 .event-boundary-exit {
-  animation: eventBoundaryExit 820ms ease-in both;
+  animation: eventBoundaryExit 520ms ease-in both;
 }
 
 @keyframes eventBoundaryEntry {
-  0% { opacity: 0; filter: blur(8px); }
-  100% { opacity: 1; filter: blur(0); }
+  0%, 100% { opacity: 1; filter: blur(0); }
 }
 
 @keyframes eventBoundaryFrameIn {
@@ -4080,6 +4104,36 @@ button.gallery-item-tile.is-seen:active {
   100% {
     opacity: 1;
     transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes eventBoundaryFrameSlideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(48px) scale(0.96) rotate(0.8deg);
+  }
+  62% {
+    opacity: 1;
+    transform: translateX(-4px) scale(1.018) rotate(-0.35deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes eventBoundaryFrameSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-48px) scale(0.96) rotate(-0.8deg);
+  }
+  62% {
+    opacity: 1;
+    transform: translateX(4px) scale(1.018) rotate(0.35deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
   }
 }
 
@@ -4117,6 +4171,32 @@ button.gallery-item-tile.is-seen:active {
   100% { opacity: 1; filter: blur(0); }
 }
 
+
+/* Event visual handoff veil
+ * This is the hard black cover used while an event page applies bg/still/
+ * character/text changes underneath. It deliberately does not receive pointer
+ * events so skip/page input remains owned by the event player.
+ */
+.event-visual-handoff {
+  position: absolute;
+  inset: 0;
+  z-index: 42;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(187, 139, 56, 0.08), transparent 32%),
+    linear-gradient(180deg, #07080d, #0b0711);
+  opacity: 0;
+  transition: opacity 360ms ease-in-out;
+}
+
+.event-visual-handoff.is-visible {
+  opacity: 1;
+}
+
+.event-visual-handoff.is-immediate {
+  transition: none;
+}
+
 /* Runtime event handoff veil
  * Holds a black frame across event -> game-screen handoff so heroine select,
  * quiz, and turn screens do not pop in for one naked frame after the event
@@ -4134,37 +4214,13 @@ button.gallery-item-tile.is-seen:active {
 }
 
 .runtime-screen-fade.is-revealing {
-  animation: runtimeScreenFadeReveal 620ms ease-out both;
+  animation: runtimeScreenFadeReveal 420ms ease-out both;
 }
 
 @keyframes runtimeScreenFadeReveal {
   0% { opacity: 1; filter: blur(0); }
-  46% { opacity: 1; filter: blur(0); }
-  100% { opacity: 0; filter: blur(1.5px); }
-}
-
-/* Event visual handoff veil
- * All event background/still/standing changes pass under this black veil.
- * This prevents single-frame image popping during authored script playback.
- */
-.event-visual-handoff {
-  position: absolute;
-  inset: 0;
-  z-index: 36;
-  pointer-events: none;
-  opacity: 0;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(190, 138, 50, 0.10), transparent 28%),
-    linear-gradient(180deg, rgba(6, 7, 12, 0.99), rgba(10, 7, 16, 0.99));
-  transition: opacity 520ms ease-in-out;
-}
-
-.event-visual-handoff.is-visible {
-  opacity: 1;
-}
-
-.event-visual-handoff.is-immediate {
-  transition-duration: 1ms;
+  18% { opacity: 1; filter: blur(0); }
+  100% { opacity: 0; filter: blur(0); }
 }
 
 /* --- END: 30_vn.css --- */
