@@ -1892,6 +1892,7 @@ const EVENT_MANIFEST = [
     "unlock": {
       "type": "always"
     },
+    "unlockGroup": "dariya_normal",
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_dariya_after_hours_01",
@@ -1908,6 +1909,7 @@ const EVENT_MANIFEST = [
     "unlock": {
       "type": "always"
     },
+    "unlockGroup": "hakima_normal",
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_hakima_morning_visit_01",
@@ -1924,6 +1926,7 @@ const EVENT_MANIFEST = [
     "unlock": {
       "type": "always"
     },
+    "unlockGroup": "mira_normal",
     "gallery": {
       "category": "heroine",
       "thumbnail": "still_mira_after_school_01",
@@ -1940,6 +1943,7 @@ const EVENT_MANIFEST = [
     "unlock": {
       "type": "always"
     },
+    "unlockGroup": "always",
     "gallery": {
       "category": "event",
       "thumbnail": "bg_market_central",
@@ -1947,6 +1951,23 @@ const EVENT_MANIFEST = [
       "hiddenSummary": "物語を開始すると解放"
     },
     "scriptStepCount": 5
+  },
+  {
+    "id": "hakima_normal_sample_001",
+    "title": "サンプルイベント",
+    "heroineId": "HAKIMA",
+    "summary": "執筆演出の動作確認用サンプル。ハキマとの会話をテストします。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 15
   }
 ];
 
@@ -2132,6 +2153,88 @@ const EVENT_SCRIPTS = {
     {
       "type": "narration",
       "text": "今では語り草に過ぎないが、それでも人々は空を見上げる。"
+    },
+    {
+      "type": "end",
+      "markSeen": true
+    }
+  ],
+  "hakima_normal_sample_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "いらっしゃい！ ちょうどお茶が入ったところよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "あなたも一杯、どうかしら？"
+    },
+    {
+      "type": "choice",
+      "choices": [
+        {
+          "label": "いただく",
+          "jump": "L_YES"
+        },
+        {
+          "label": "遠慮する",
+          "jump": "L_NO"
+        }
+      ]
+    },
+    {
+      "type": "label",
+      "id": "L_YES"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "ふふっ、いい返事ね。最高の一杯を淹れてあげるわ。"
+    },
+    {
+      "type": "jump",
+      "id": "L_STILL"
+    },
+    {
+      "type": "label",
+      "id": "L_NO"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "あら、残念。せっかく用意したのに。"
+    },
+    {
+      "type": "label",
+      "id": "L_STILL"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_morning_visit_01"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "text": "（こうして、静かな時間が流れていく……）"
     },
     {
       "type": "end",
@@ -24324,6 +24427,21 @@ function bindInputHandlers(controller) {
       return;
     }
 
+    const backBtn = target.closest('[data-action="back-to-title"]');
+    if (backBtn) {
+      event.stopPropagation();
+      controller.playSfx('uiTapBottle');
+      controller.session.backToTitle();
+      controller.update();
+      return;
+    }
+
+    if (target.closest('[data-action="title-logo"]')) {
+      event.stopPropagation();
+      controller.handleTitleLogoClick();
+      return;
+    }
+
     if (target.closest('[data-action="fp-start"]')) {
       event.stopPropagation();
       controller.playSfx('uiConfirmChime');
@@ -24439,10 +24557,20 @@ function bindInputHandlers(controller) {
       return;
     }
 
-    if (target.closest('[data-action="event-click"]')) {
+    if (target.closest('[data-action="skip-text"]')) {
       event.stopPropagation();
-      controller.handleEventClick();
+      controller.playSfx('uiTapBottle');
+      controller.skipTextToNextScene();
       return;
+    }
+
+    if (target.closest('[data-action="event-click"]')) {
+      // Skip processing if we clicked something inside that has its own action (like skip button)
+      if (!target.closest('[data-action="skip-text"]')) {
+        event.stopPropagation();
+        controller.handleEventClick();
+        return;
+      }
     }
     const titleStub = target.closest('[data-title-stub]');
     if (titleStub) {
@@ -24537,12 +24665,7 @@ function bindInputHandlers(controller) {
       return;
     }
 
-    if (target.closest('[data-action="skip-text"]')) {
-      event.stopPropagation();
-      controller.playSfx('uiTapBottle');
-      controller.skipTextToNextScene();
-      return;
-    }
+
 
     if (target.closest('.choice-card')) {
       const choiceCard = target.closest('.choice-card');
@@ -27710,20 +27833,21 @@ function renderEventGallery(controller) {
   
   const events = Array.isArray(EVENT_MASTER) ? EVENT_MASTER : [];
   const cards = events.map((ev) => {
-    // 解放条件: always または ヒロインの通常ルートクリア
-    const isUnlocked = ev.unlock?.type === 'always' || (progress?.endings?.[ev.heroineId]?.normal?.normalCleared);
-    const isSeen = progress?.eventSeen?.[ev.id];
+    // 解放条件: always または unlockGroup が解放済み
+    const isUnlocked = ev.unlockGroup === 'always' || (progress?.galleryUnlockGroups?.[ev.unlockGroup]);
+    const isSeen = progress?.viewedEventIds?.[ev.id];
     
     const displayTitle = isUnlocked ? (ev.title || '？？？？') : (ev.gallery?.hiddenTitle || '？？？？');
     const displaySummary = isUnlocked ? (ev.summary || '') : (ev.gallery?.hiddenSummary || '物語を読み進めると解放');
     const conditionText = isUnlocked ? (HEROINE_LABELS[ev.heroineId] || '共通') : '未解放';
+    const newBadge = (isUnlocked && !isSeen) ? '<span class="event-new-badge">NEW</span>' : '';
 
     return `
       <div class="locked-gallery-card${isUnlocked ? ' is-unlocked' : ''}${isSeen ? ' is-seen' : ''}"
            ${isUnlocked ? `data-action="start-event" data-event-id="${ev.id}"` : ''}>
         <div class="locked-gallery-mark">${ev.heroineId === 'COMMON' ? '✦' : '✧'}</div>
         <div class="locked-gallery-content">
-          <h3>${escapeHtml(displayTitle)}</h3>
+          <h3>${newBadge}${escapeHtml(displayTitle)}</h3>
           <p>${escapeHtml(displaySummary)}</p>
           <small>${escapeHtml(conditionText)}</small>
         </div>
@@ -27970,7 +28094,7 @@ function renderTitle(controller, view) {
     : 'disabled aria-disabled="true"';
 
   contentEl.innerHTML = `
-    <h1 class="title-logo-anchor" aria-label="${titleModel.title}">
+    <h1 class="title-logo-anchor" aria-label="${titleModel.title}" data-action="title-logo">
       <span class="title-logo-water">
         <img class="title-logo-image" src="images/ui/logo.webp" alt="${titleModel.title}" />
       </span>
@@ -28428,27 +28552,40 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
   if (bgEl && bgId) {
     const bgPath = getBackgroundPath(bgId);
-    bgEl.style.backgroundImage = `url(${bgPath})`;
+    if (bgEl.dataset.currentBgId !== bgId) {
+      bgEl.style.backgroundImage = `url(${bgPath})`;
+      bgEl.dataset.currentBgId = bgId;
+    }
     if (controller.markImageSeen) controller.markImageSeen(bgId);
   }
 
   if (charEl) {
     if (charId) {
-      charEl.classList.remove('is-visible');
-      charEl.style.display = 'block';
-      applyCharacterVisualProfile(charEl, charId, 'standing');
       const expr = expression || 'normal';
-      charEl.src = getVisualImagePath(charId, 'standing', expr);
-      if (controller.markImageSeen) {
-        controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
-      }
-      charEl.onerror = () => { charEl.style.display = 'none'; };
-      requestAnimationFrame(() => {
+      const nextSrc = getVisualImagePath(charId, 'standing', expr);
+      
+      if (charEl.dataset.currentSrc !== nextSrc) {
+        charEl.classList.remove('is-visible');
+        charEl.style.display = 'block';
+        applyCharacterVisualProfile(charEl, charId, 'standing');
+        charEl.src = nextSrc;
+        charEl.dataset.currentSrc = nextSrc;
+        if (controller.markImageSeen) {
+          controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
+        }
+        charEl.onerror = () => { charEl.style.display = 'none'; };
+        requestAnimationFrame(() => {
+          charEl.classList.add('is-visible');
+        });
+      } else {
+        // Same image, just ensure it's visible and displayed
+        charEl.style.display = 'block';
         charEl.classList.add('is-visible');
-      });
+      }
     } else {
       charEl.classList.remove('is-visible');
       charEl.removeAttribute('src');
+      charEl.dataset.currentSrc = '';
       charEl.style.display = 'none';
     }
   }
@@ -28462,12 +28599,20 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
   if (speakerIconEl) {
     if (iconId) {
-      speakerIconEl.src = getVisualImagePath(iconId, 'speakerIcon', speakerExpression || expression || 'normal');
-      speakerIconEl.style.display = 'block';
-      applyCharacterVisualProfile(speakerIconEl, iconId, 'speakerIcon');
-      speakerIconEl.onerror = () => { speakerIconEl.style.display = 'none'; };
+      const expr = speakerExpression || expression || 'normal';
+      const nextIconSrc = getVisualImagePath(iconId, 'speakerIcon', expr);
+      if (speakerIconEl.dataset.currentSrc !== nextIconSrc) {
+        speakerIconEl.src = nextIconSrc;
+        speakerIconEl.dataset.currentSrc = nextIconSrc;
+        speakerIconEl.style.display = 'block';
+        applyCharacterVisualProfile(speakerIconEl, iconId, 'speakerIcon');
+        speakerIconEl.onerror = () => { speakerIconEl.style.display = 'none'; };
+      } else {
+        speakerIconEl.style.display = 'block';
+      }
     } else {
       speakerIconEl.removeAttribute('src');
+      speakerIconEl.dataset.currentSrc = '';
       speakerIconEl.style.display = 'none';
     }
   }
@@ -29809,6 +29954,7 @@ const ITEM_COLLECTION_SAVE_DELAY_MS = 250;
 let cachedItemCollection = null;
 let itemCollectionSaveTimer = null;
 
+let _memoryStorage = {};
 function canUseStorage() {
   try {
     return typeof localStorage !== 'undefined';
@@ -29817,11 +29963,22 @@ function canUseStorage() {
   }
 }
 
+const storageInterface = {
+  getItem: (key) => canUseStorage() ? localStorage.getItem(key) : (_memoryStorage[key] || null),
+  setItem: (key, val) => {
+    if (canUseStorage()) localStorage.setItem(key, val);
+    else _memoryStorage[key] = val;
+  },
+  removeItem: (key) => {
+    if (canUseStorage()) localStorage.removeItem(key);
+    else delete _memoryStorage[key];
+  }
+};
+
 function loadItemCollection() {
   if (cachedItemCollection) return JSON.parse(JSON.stringify(cachedItemCollection));
-  if (!canUseStorage()) return {};
   try {
-    const raw = localStorage.getItem(ITEM_COLLECTION_KEY);
+    const raw = storageInterface.getItem(ITEM_COLLECTION_KEY);
     if (!raw) {
       cachedItemCollection = {};
       return {};
@@ -29836,10 +29993,9 @@ function loadItemCollection() {
 }
 
 function saveItemCollection(collection) {
-  if (!canUseStorage()) return;
   try {
     cachedItemCollection = collection && typeof collection === 'object' ? collection : {};
-    localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
+    storageInterface.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
   } catch (e) {
     console.warn('Failed to save item collection:', e);
   }
@@ -29847,10 +30003,9 @@ function saveItemCollection(collection) {
 
 function scheduleItemCollectionSave(collection) {
   cachedItemCollection = collection && typeof collection === 'object' ? collection : {};
-  if (!canUseStorage()) return;
   if (typeof window === 'undefined') {
     try {
-      localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
+      storageInterface.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
     } catch (e) {
       console.warn('Failed to save item collection:', e);
     }
@@ -29860,7 +30015,7 @@ function scheduleItemCollectionSave(collection) {
   itemCollectionSaveTimer = setTimeout(() => {
     itemCollectionSaveTimer = null;
     try {
-      localStorage.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
+      storageInterface.setItem(ITEM_COLLECTION_KEY, JSON.stringify(cachedItemCollection));
     } catch (e) {
       console.warn('Failed to save item collection:', e);
     }
@@ -29868,14 +30023,13 @@ function scheduleItemCollectionSave(collection) {
 }
 
 function clearItemCollection() {
-  if (!canUseStorage()) return false;
   try {
     if (itemCollectionSaveTimer) {
       clearTimeout(itemCollectionSaveTimer);
       itemCollectionSaveTimer = null;
     }
     cachedItemCollection = null;
-    localStorage.removeItem(ITEM_COLLECTION_KEY);
+    storageInterface.removeItem(ITEM_COLLECTION_KEY);
     return true;
   } catch (e) {
     console.warn('Failed to clear item collection:', e);
@@ -29984,6 +30138,7 @@ const ROUTE_MODES = ['normal', 'long_history'];
 let cachedPlayerProgress = null;
 let playerProgressSaveTimer = null;
 
+let _memoryStorage = {};
 function canUseStorage() {
   try {
     return typeof localStorage !== 'undefined';
@@ -29991,6 +30146,18 @@ function canUseStorage() {
     return false;
   }
 }
+
+const storageInterface = {
+  getItem: (key) => canUseStorage() ? localStorage.getItem(key) : (_memoryStorage[key] || null),
+  setItem: (key, val) => {
+    if (canUseStorage()) localStorage.setItem(key, val);
+    else _memoryStorage[key] = val;
+  },
+  removeItem: (key) => {
+    if (canUseStorage()) localStorage.removeItem(key);
+    else delete _memoryStorage[key];
+  }
+};
 
 function cloneJson(value) {
   return JSON.parse(JSON.stringify(value));
@@ -30035,6 +30202,15 @@ function getDefaultPlayerProgress() {
     eventSeen: {},
     eventFlags: {},
     imageSeen: {},
+    galleryUnlockGroups: {
+      hakima_normal: false,
+      hakima_childhood: false,
+      mira_normal: false,
+      mira_childhood: false,
+      dariya_normal: false,
+      dariya_childhood: false
+    },
+    viewedEventIds: {},
     quizHistory: []
   };
 }
@@ -30052,6 +30228,8 @@ function normalizeProgress(progress) {
     eventSeen: src.eventSeen && typeof src.eventSeen === 'object' ? src.eventSeen : {},
     eventFlags: src.eventFlags && typeof src.eventFlags === 'object' ? src.eventFlags : {},
     imageSeen: src.imageSeen && typeof src.imageSeen === 'object' ? src.imageSeen : {},
+    galleryUnlockGroups: src.galleryUnlockGroups && typeof src.galleryUnlockGroups === 'object' ? { ...base.galleryUnlockGroups, ...src.galleryUnlockGroups } : { ...base.galleryUnlockGroups },
+    viewedEventIds: src.viewedEventIds && typeof src.viewedEventIds === 'object' ? src.viewedEventIds : {},
     quizHistory: Array.isArray(src.quizHistory) ? src.quizHistory : []
   };
 
@@ -30076,9 +30254,8 @@ function normalizeProgress(progress) {
 
 function loadPlayerProgress() {
   if (cachedPlayerProgress) return cloneJson(cachedPlayerProgress);
-  if (!canUseStorage()) return getDefaultPlayerProgress();
   try {
-    const raw = localStorage.getItem(PLAYER_PROGRESS_KEY);
+    const raw = storageInterface.getItem(PLAYER_PROGRESS_KEY);
     if (!raw) {
       cachedPlayerProgress = getDefaultPlayerProgress();
       return cloneJson(cachedPlayerProgress);
@@ -30093,14 +30270,13 @@ function loadPlayerProgress() {
 }
 
 function clearPlayerProgress() {
-  if (!canUseStorage()) return false;
   try {
     if (playerProgressSaveTimer) {
       clearTimeout(playerProgressSaveTimer);
       playerProgressSaveTimer = null;
     }
     cachedPlayerProgress = null;
-    localStorage.removeItem(PLAYER_PROGRESS_KEY);
+    storageInterface.removeItem(PLAYER_PROGRESS_KEY);
     return true;
   } catch (e) {
     console.warn('Failed to clear player progress:', e);
@@ -30109,10 +30285,9 @@ function clearPlayerProgress() {
 }
 
 function savePlayerProgress(progress) {
-  if (!canUseStorage()) return false;
   try {
     cachedPlayerProgress = normalizeProgress(progress);
-    localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
+    storageInterface.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
     return true;
   } catch (e) {
     console.warn('Failed to save player progress:', e);
@@ -30122,10 +30297,9 @@ function savePlayerProgress(progress) {
 
 function schedulePlayerProgressSave(progress) {
   cachedPlayerProgress = normalizeProgress(progress);
-  if (!canUseStorage()) return false;
   if (typeof window === 'undefined') {
     try {
-      localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
+      storageInterface.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
       return true;
     } catch (e) {
       console.warn('Failed to save player progress:', e);
@@ -30136,7 +30310,7 @@ function schedulePlayerProgressSave(progress) {
   playerProgressSaveTimer = setTimeout(() => {
     playerProgressSaveTimer = null;
     try {
-      localStorage.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
+      storageInterface.setItem(PLAYER_PROGRESS_KEY, JSON.stringify(cachedPlayerProgress));
     } catch (e) {
       console.warn('Failed to save player progress:', e);
     }
@@ -30172,6 +30346,13 @@ function recordEndingProgress(session, endingType, affection) {
 
   if (endingType === 'GOOD') {
     progress.heroineModeUnlocks[heroineId].long_history = true;
+    
+    // Unlock gallery group
+    const routeKey = routeMode === 'long_history' ? 'childhood' : 'normal';
+    const groupKey = `${heroineId.toLowerCase()}_${routeKey}`;
+    if (progress.galleryUnlockGroups[groupKey] !== undefined) {
+      progress.galleryUnlockGroups[groupKey] = true;
+    }
   }
 
   progress.updatedAt = now;
@@ -30196,6 +30377,8 @@ function getPlayerProgressSummary() {
     bestRecords: cloneJson(progress.bestRecords),
     endings: cloneJson(progress.endings),
     imageSeen: cloneJson(progress.imageSeen),
+    galleryUnlockGroups: cloneJson(progress.galleryUnlockGroups),
+    viewedEventIds: cloneJson(progress.viewedEventIds),
     quizHistory: cloneJson(progress.quizHistory || []),
     clearedEndingCount: clearedEndings.length,
     eventSeenCount: Object.keys(progress.eventSeen || {}).length,
@@ -30246,6 +30429,20 @@ function isEventSeen(eventId) {
   return !!progress.eventSeen[eventId];
 }
 
+function markEventViewed(eventId) {
+  if (!eventId) return;
+  const progress = loadPlayerProgress();
+  if (progress.viewedEventIds[eventId]) return;
+  progress.viewedEventIds[eventId] = true;
+  progress.updatedAt = new Date().toISOString();
+  savePlayerProgress(progress);
+}
+
+function isEventViewed(eventId) {
+  const progress = loadPlayerProgress();
+  return !!progress.viewedEventIds[eventId];
+}
+
 function setEventFlag(flagId, value) {
   if (!flagId) return;
   const progress = loadPlayerProgress();
@@ -30259,6 +30456,27 @@ function hasEventFlag(flagId) {
   return !!progress.eventFlags[flagId];
 }
 
+function unlockAllGalleryGroups() {
+  const progress = loadPlayerProgress();
+  const groups = [
+    'hakima_normal', 'hakima_childhood',
+    'mira_normal', 'mira_childhood',
+    'dariya_normal', 'dariya_childhood'
+  ];
+  let changed = false;
+  groups.forEach(group => {
+    if (progress.galleryUnlockGroups[group] === false) {
+      progress.galleryUnlockGroups[group] = true;
+      changed = true;
+    }
+  });
+  if (changed) {
+    progress.updatedAt = new Date().toISOString();
+    savePlayerProgress(progress);
+  }
+  return changed;
+}
+
 module.exports = {
   PLAYER_PROGRESS_KEY,
   HEROINE_IDS,
@@ -30268,10 +30486,13 @@ module.exports = {
   savePlayerProgress,
   clearPlayerProgress,
   recordEndingProgress,
+  unlockAllGalleryGroups,
   getPlayerProgressSummary,
   markImageSeen,
   markEventSeen,
   isEventSeen,
+  markEventViewed,
+  isEventViewed,
   setEventFlag,
   hasEventFlag,
   recordQuizHistory,
@@ -30934,19 +31155,40 @@ module.exports = {
  *   item collection state, and optional current run position.
  */
 
-const { GameSession } = require('../core/gameSessionFlow.cjs');
+let GameSession;
+try {
+  ({ GameSession } = require('../core/gameSessionFlow.cjs'));
+} catch (e) {
+  try {
+    ({ GameSession } = require('../../src/core/gameSessionFlow.cjs'));
+  } catch (e2) {
+    // Fallback for environments where it's not needed immediately
+  }
+}
 
 const RUN_SAVE_KEY = 'madeinmaghribal.autosave.run.v1';
 const SAVE_VERSION = 1;
 
-function safeLocalStorage() {
+let _memoryStorage = {};
+function canUseStorage() {
   try {
-    if (typeof localStorage === 'undefined') return null;
-    return localStorage;
+    return typeof localStorage !== 'undefined';
   } catch (e) {
-    return null;
+    return false;
   }
 }
+
+const storageInterface = {
+  getItem: (key) => canUseStorage() ? localStorage.getItem(key) : (_memoryStorage[key] || null),
+  setItem: (key, val) => {
+    if (canUseStorage()) localStorage.setItem(key, val);
+    else _memoryStorage[key] = val;
+  },
+  removeItem: (key) => {
+    if (canUseStorage()) localStorage.removeItem(key);
+    else delete _memoryStorage[key];
+  }
+};
 
 function cloneJson(value) {
   return JSON.parse(JSON.stringify(value));
@@ -30992,10 +31234,8 @@ function getRunSaveSummary() {
 }
 
 function loadRunSave() {
-  const storage = safeLocalStorage();
-  if (!storage) return null;
   try {
-    const raw = storage.getItem(RUN_SAVE_KEY);
+    const raw = storageInterface.getItem(RUN_SAVE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || parsed.version !== SAVE_VERSION || !parsed.session) return null;
@@ -31007,10 +31247,8 @@ function loadRunSave() {
 }
 
 function clearRunSave() {
-  const storage = safeLocalStorage();
-  if (!storage) return;
   try {
-    storage.removeItem(RUN_SAVE_KEY);
+    storageInterface.removeItem(RUN_SAVE_KEY);
   } catch (e) {
     console.warn('Failed to clear run autosave:', e);
   }
@@ -31058,10 +31296,9 @@ function buildRunSave(controller) {
 }
 
 function saveRun(controller) {
-  const storage = safeLocalStorage();
-  if (!storage || !shouldSaveCurrentRun(controller)) return false;
+  if (!shouldSaveCurrentRun(controller)) return false;
   try {
-    storage.setItem(RUN_SAVE_KEY, JSON.stringify(buildRunSave(controller)));
+    storageInterface.setItem(RUN_SAVE_KEY, JSON.stringify(buildRunSave(controller)));
     return true;
   } catch (e) {
     console.warn('Failed to save run autosave:', e);
@@ -31183,6 +31420,12 @@ const SELECTED_SFX = {
   turnClockComplete: {
     path: 'audio/se/ui_confirm_chime_01_2.mp3',
     volume: 0.34,
+    start: 0,
+    end: null
+  },
+  secretUnlock: {
+    path: 'audio/se/workshop_day_end_01_4.mp3',
+    volume: 0.50,
     start: 0,
     end: null
   }
@@ -31358,7 +31601,7 @@ const {
   getRhythmSilenceGraceMs,
   getRhythmSilenceGraceDebug
 } = require('./utils/rhythmNoteMaps.js');
-const { markImageSeen, recordEndingProgress, getPlayerProgressSummary, recordQuizHistory, clearPlayerProgress } = require('./utils/playerProgress.js');
+const { markImageSeen, recordEndingProgress, getPlayerProgressSummary, recordQuizHistory, clearPlayerProgress, markEventViewed, markEventSeen, unlockAllGalleryGroups } = require('./utils/playerProgress.js');
 const RHYTHM_NOTE_MAPS = loadRhythmNoteMaps();
 const { createAssetPreloader } = require('./utils/preloadAssets.js');
 const { registerSeenItems, clearItemCollection } = require('./utils/itemCollection.js');
@@ -31472,6 +31715,7 @@ class GameController {
     this._saveTimer = null;
     this.freePlayRecords = new FreePlayRecords();
     this.freePlaySession = null;
+    this.titleSecretClickCount = 0;
   }
 
   async boot() {
@@ -31714,6 +31958,10 @@ class GameController {
     markImageSeen(imageId);
   }
 
+  markEventViewed(eventId) {
+    markEventViewed(eventId);
+  }
+
   updateGalleryCategory(category) {
     this.uiState.galleryCategory = category;
     this.uiState.galleryIndex = 0;
@@ -31723,6 +31971,17 @@ class GameController {
   updateGalleryIndex(index) {
     this.uiState.galleryIndex = index;
     this.update();
+  }
+
+  handleTitleLogoClick() {
+    this.titleSecretClickCount++;
+    if (this.titleSecretClickCount >= 5) {
+      this.titleSecretClickCount = 0;
+      const changed = unlockAllGalleryGroups();
+      if (changed) {
+        this.playSfx('secretUnlock');
+      }
+    }
   }
 
   toggleFullscreen() {
@@ -31745,6 +32004,9 @@ class GameController {
    */
   update() {
     const phase = this.session.phase;
+    if (phase !== 'TITLE') {
+      this.titleSecretClickCount = 0;
+    }
     const transition = this.screenTransition.beforeRender(this.session);
     const newClassName = `phase-${phase.toLowerCase()}`;
     if (this.container.className !== newClassName) {
@@ -32002,6 +32264,17 @@ class GameController {
     this.update();
   }
 
+  finishCurrentEvent() {
+    if (!this.eventState.active) return;
+    const eventId = this.eventState.eventId;
+    if (eventId) {
+      // Mark both seen (replayability/history) and viewed (clears NEW badge)
+      markEventSeen(eventId);
+      markEventViewed(eventId);
+    }
+    this.stopEvent();
+  }
+
   nextEventStep() {
     if (!this.eventState.active || this.eventState.activeChoice) return;
 
@@ -32047,6 +32320,9 @@ class GameController {
         this.nextEventStep();
         break;
       case 'line':
+        if (step.speakerId && step.expression && this.eventState.characters[step.speakerId]) {
+          this.eventState.characters[step.speakerId].expression = step.expression;
+        }
       case 'narration':
         this.update(); // Trigger re-render to show text
         break;
@@ -32076,11 +32352,7 @@ class GameController {
         this.nextEventStep();
         break;
       case 'end':
-        if (step.markSeen) {
-          const { markEventSeen } = require('./utils/playerProgress.js');
-          markEventSeen(this.eventState.eventId);
-        }
-        this.stopEvent();
+        this.finishCurrentEvent();
         break;
       default:
         console.warn(`Unknown event command: ${step.type}`);
@@ -32100,32 +32372,6 @@ class GameController {
     this.nextEventStep();
   }
 
-  skipEventToNextScene() {
-    if (!this.eventState.active || this.eventState.activeChoice) return;
-    this.finishTypewriter();
-    if (this.eventState.waitTimer) {
-      clearTimeout(this.eventState.waitTimer);
-      this.eventState.waitTimer = null;
-    }
-
-    while (this.eventState.active && !this.eventState.activeChoice) {
-      if (this.eventState.stepIndex >= this.eventState.script.length) {
-        this.stopEvent();
-        return;
-      }
-
-      const step = this.eventState.script[this.eventState.stepIndex];
-      this.eventState.stepIndex++;
-      this.processEventStep(step);
-      if (this.eventState.waitTimer) {
-        clearTimeout(this.eventState.waitTimer);
-        this.eventState.waitTimer = null;
-      }
-      if (step?.type === 'line' || step?.type === 'narration' || step?.type === 'choice' || step?.type === 'end') {
-        return;
-      }
-    }
-  }
 
   handleEventChoice(choiceIndex) {
     if (!this.eventState.activeChoice) return;
@@ -32146,17 +32392,27 @@ class GameController {
     const step = this.eventState.script[this.eventState.stepIndex - 1];
     if (!step) return;
 
-    renderVnShell(this, view);
+    if (!view.querySelector('.vn-screen')) {
+      renderVnShell(this, view);
+    }
     
-    // Add choice layer if active
-    if (this.eventState.activeChoice) {
-      const choiceOverlay = document.createElement('div');
-      choiceOverlay.className = 'choice-overlay';
-      const choiceList = this.eventState.activeChoice.map((c, i) => `
-        <button class="choice-btn" data-action="event-choice" data-index="${i}">${escapeHtml(c.label)}</button>
-      `).join('');
-      choiceOverlay.innerHTML = `<div class="choice-container">${choiceList}</div>`;
-      view.querySelector('.vn-screen').appendChild(choiceOverlay);
+    // Add or remove choice layer
+    const vnScreen = view.querySelector('.vn-screen');
+    if (vnScreen) {
+      const existingOverlay = vnScreen.querySelector('.choice-overlay');
+      if (this.eventState.activeChoice) {
+        if (!existingOverlay) {
+          const choiceOverlay = document.createElement('div');
+          choiceOverlay.className = 'choice-overlay';
+          const choiceList = this.eventState.activeChoice.map((c, i) => `
+            <button class="choice-btn" data-action="event-choice" data-index="${i}">${escapeHtml(c.label)}</button>
+          `).join('');
+          choiceOverlay.innerHTML = `<div class="choice-container">${choiceList}</div>`;
+          vnScreen.appendChild(choiceOverlay);
+        }
+      } else if (existingOverlay) {
+        existingOverlay.remove();
+      }
     }
 
     const speakerId = step.type === 'line' ? step.speakerId : null;
@@ -32179,7 +32435,6 @@ class GameController {
     });
     
     // Override click behavior for event player
-    const vnScreen = view.querySelector('.vn-screen');
     if (vnScreen) {
       vnScreen.setAttribute('data-action', 'event-click');
     }
@@ -32399,7 +32654,8 @@ class GameController {
     if (this.quizState.inputLocked || this.uiState.modal) return;
 
     if (this.eventState.active) {
-      this.skipEventToNextScene();
+      this.playSfx('uiTapBottle');
+      this.finishCurrentEvent();
       return;
     }
 
