@@ -1471,6 +1471,23 @@ html[data-motion-quality="light"] .rhythm-water-shine {
   100% { opacity: 0; transform: translate(-50%, -8px); }
 }
 
+/* Keep the clock skip handoff black until the next game screen has rendered. */
+.turn-transition-overlay.is-handoff:not(.is-exiting) {
+  opacity: 1;
+  animation: none;
+  background: #000;
+}
+
+.turn-transition-overlay.is-handoff .turn-transition-darkness {
+  background: #000;
+}
+
+.turn-transition-overlay.is-handoff .turn-transition-clock-wrap,
+.turn-transition-overlay.is-handoff .turn-transition-copy {
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+
 /* --- END: 03_turn_transition.css --- */
 
 /* --- START: 10_title.css --- */
@@ -3370,6 +3387,14 @@ button.gallery-item-tile.is-seen:active {
   background: var(--night-2);
   overflow: hidden;
   --vn-art-height-ratio: 75.334821%; /* 9:16 HD shell × 1200 / 896 */
+  --vn-bottom-gradient: linear-gradient(
+    to bottom,
+    rgba(27, 45, 79, 0) 0%,
+    rgba(27, 45, 79, 0) 58%,
+    rgba(27, 45, 79, 0.20) 76%,
+    rgba(27, 45, 79, 0.54) 94%,
+    var(--night-2) 100%
+  );
 }
 
 .vn-scene-container {
@@ -3397,14 +3422,7 @@ button.gallery-item-tile.is-seen:active {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 45, 79, 0) 0%,
-    rgba(27, 45, 79, 0) 50%,
-    rgba(27, 45, 79, 0.28) 70%,
-    rgba(27, 45, 79, 0.68) 88%,
-    var(--night-2) 100%
-  );
+  background: var(--vn-bottom-gradient);
   pointer-events: none;
 }
 
@@ -3453,14 +3471,7 @@ button.gallery-item-tile.is-seen:active {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 45, 79, 0) 0%,
-    rgba(27, 45, 79, 0) 50%,
-    rgba(27, 45, 79, 0.28) 70%,
-    rgba(27, 45, 79, 0.68) 88%,
-    var(--night-2) 100%
-  );
+  background: var(--vn-bottom-gradient);
   pointer-events: none;
   z-index: 2;
 }
@@ -3687,6 +3698,7 @@ button.gallery-item-tile.is-seen:active {
   min-height: 260px;
   max-height: 260px;
   padding: 56px 38px 34px;
+  bottom: 2.5%;
 }
 
 .message-text {
@@ -3805,6 +3817,354 @@ button.gallery-item-tile.is-seen:active {
   background: #c9a063;
   color: #1a1510;
   text-shadow: none;
+}
+
+.event-debug-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 38;
+  max-width: calc(100% - 140px);
+  padding: 5px 8px;
+  border: 1px solid rgba(234, 194, 105, 0.78);
+  border-radius: 999px;
+  background: rgba(24, 22, 19, 0.72);
+  color: #f4dfad;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.event-debug-badge::before {
+  content: "ID ";
+  opacity: 0.75;
+}
+
+.event-page-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 44px;
+  z-index: 38;
+  padding: 5px 8px;
+  border: 1px solid rgba(234, 194, 105, 0.78);
+  border-radius: 999px;
+  background: rgba(24, 22, 19, 0.72);
+  color: #f4dfad;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+
+.vn-screen:not(.is-event-player) .event-hold-controls {
+  display: none;
+}
+
+.event-hold-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 38;
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.event-hold-btn {
+  min-width: 54px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(234, 194, 105, 0.78);
+  border-radius: 999px;
+  background: rgba(24, 22, 19, 0.72);
+  color: #f4dfad;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.event-hold-btn:active {
+  transform: translateY(1px);
+  background: rgba(63, 48, 28, 0.86);
+}
+
+.vn-screen.is-holding-message-hidden .message-box {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vn-screen.is-holding-character-hidden .vn-character-layer {
+  opacity: 0;
+}
+
+.event-boundary {
+  position: absolute;
+  inset: 0;
+  z-index: 34;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.event-boundary-dark {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(190, 138, 50, 0.20), transparent 24%),
+    radial-gradient(circle at 50% 52%, rgba(20, 48, 72, 0.28), transparent 56%),
+    linear-gradient(180deg, rgba(8, 9, 15, 0.88), rgba(14, 9, 20, 0.94));
+}
+
+.event-boundary-entry .event-boundary-dark::before,
+.event-boundary-entry .event-boundary-dark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 78vmin;
+  height: 78vmin;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.event-boundary-entry .event-boundary-dark::before {
+  border: 1px solid rgba(234, 194, 105, 0.35);
+  box-shadow:
+    0 0 24px rgba(234, 194, 105, 0.22),
+    inset 0 0 28px rgba(55, 37, 18, 0.38);
+  animation: eventBoundaryRing 1280ms ease-out both;
+}
+
+.event-boundary-entry .event-boundary-dark::after {
+  width: 48vmin;
+  height: 48vmin;
+  border: 1px dashed rgba(245, 223, 170, 0.32);
+  animation: eventBoundaryRingReverse 1480ms ease-out both;
+}
+
+.event-boundary-frame {
+  position: relative;
+  width: min(78%, 620px);
+  padding: 22px 26px 24px;
+  border: 2px solid rgba(234, 194, 105, 0.82);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(35, 22, 16, 0.86), rgba(20, 28, 54, 0.82)),
+    radial-gradient(circle at 50% 0%, rgba(234, 194, 105, 0.18), transparent 60%);
+  color: #f5dfaa;
+  text-align: center;
+  box-shadow:
+    0 0 36px rgba(198, 151, 71, 0.28),
+    0 18px 46px rgba(0, 0, 0, 0.48),
+    inset 0 0 22px rgba(234, 194, 105, 0.10);
+  overflow: hidden;
+}
+
+.event-boundary-frame::before,
+.event-boundary-frame::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(234, 194, 105, 0.74), transparent);
+}
+
+.event-boundary-frame::before { left: 5%; }
+.event-boundary-frame::after { right: 5%; }
+
+.event-boundary-ornament {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  color: #fff0bd;
+  font-size: 20px;
+  text-shadow: 0 0 14px rgba(234, 194, 105, 0.72);
+  animation: eventBoundaryOrnament 1200ms ease-in-out infinite alternate;
+}
+
+.event-boundary-kind {
+  position: relative;
+  margin-bottom: 7px;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: rgba(255, 236, 188, 0.96);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.74);
+}
+
+.event-boundary-title {
+  position: relative;
+  font-size: clamp(22px, 4.4vw, 36px);
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #f8dfa0;
+  text-shadow:
+    0 2px 0 rgba(73, 40, 15, 0.82),
+    0 0 18px rgba(234, 194, 105, 0.42);
+}
+
+.event-boundary-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 94px);
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(8, 9, 15, 0.42);
+  color: rgba(245, 223, 170, 0.88);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.74);
+}
+
+.event-boundary-exit .event-boundary-hint,
+.event-boundary-exit .event-boundary-frame,
+.event-boundary-entry-release .event-boundary-hint,
+.event-boundary-entry-release .event-boundary-frame {
+  display: none;
+}
+
+.event-boundary-entry {
+  animation: eventBoundaryEntry 520ms cubic-bezier(.18, .88, .22, 1.05) both;
+}
+
+.event-boundary-entry .event-boundary-frame {
+  animation: eventBoundaryFrameIn 760ms cubic-bezier(.18, .88, .22, 1.05) both;
+}
+
+.event-boundary-entry .event-boundary-hint {
+  animation: eventBoundaryHintIn 920ms ease-out both;
+}
+
+.event-boundary-entry-release {
+  animation: eventBoundaryEntryRelease 560ms ease-in-out both;
+}
+
+.event-boundary-exit {
+  animation: eventBoundaryExit 820ms ease-in both;
+}
+
+@keyframes eventBoundaryEntry {
+  0% { opacity: 0; filter: blur(8px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes eventBoundaryFrameIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.88) rotate(-1.2deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.025) rotate(0.4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes eventBoundaryHintIn {
+  0%, 45% { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes eventBoundaryRing {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.72) rotate(-10deg); }
+  48% { opacity: 1; }
+  100% { opacity: 0.72; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+
+@keyframes eventBoundaryRingReverse {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(1.18) rotate(14deg); }
+  55% { opacity: 0.9; }
+  100% { opacity: 0.56; transform: translate(-50%, -50%) scale(1) rotate(-6deg); }
+}
+
+@keyframes eventBoundaryOrnament {
+  0% { transform: translateY(0) rotate(-8deg) scale(1); }
+  100% { transform: translateY(-2px) rotate(8deg) scale(1.08); }
+}
+
+@keyframes eventBoundaryEntryRelease {
+  0% { opacity: 1; filter: blur(0); }
+  58% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes eventBoundaryExit {
+  0% { opacity: 0; filter: blur(4px); }
+  55% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+/* Runtime event handoff veil
+ * Holds a black frame across event -> game-screen handoff so heroine select,
+ * quiz, and turn screens do not pop in for one naked frame after the event
+ * boundary disappears.
+ */
+.runtime-screen-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(180, 132, 52, 0.10), transparent 30%),
+    linear-gradient(180deg, rgba(8, 9, 15, 0.98), rgba(12, 9, 19, 0.98));
+  opacity: 1;
+}
+
+.runtime-screen-fade.is-revealing {
+  animation: runtimeScreenFadeReveal 620ms ease-out both;
+}
+
+@keyframes runtimeScreenFadeReveal {
+  0% { opacity: 1; filter: blur(0); }
+  46% { opacity: 1; filter: blur(0); }
+  100% { opacity: 0; filter: blur(1.5px); }
+}
+
+/* Event visual handoff veil
+ * All event background/still/standing changes pass under this black veil.
+ * This prevents single-frame image popping during authored script playback.
+ */
+.event-visual-handoff {
+  position: absolute;
+  inset: 0;
+  z-index: 36;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(190, 138, 50, 0.10), transparent 28%),
+    linear-gradient(180deg, rgba(6, 7, 12, 0.99), rgba(10, 7, 16, 0.99));
+  transition: opacity 520ms ease-in-out;
+}
+
+.event-visual-handoff.is-visible {
+  opacity: 1;
+}
+
+.event-visual-handoff.is-immediate {
+  transition-duration: 1ms;
 }
 
 /* --- END: 30_vn.css --- */
@@ -4944,6 +5304,27 @@ button.gallery-item-tile.is-seen:active {
   0% { transform: translateY(5px) scale(0.92); opacity: 0; }
   18% { opacity: 1; }
   100% { transform: translateY(-13px) scale(1.05); opacity: 0; }
+}
+
+/* Debug-only quiz flow shortcut. Rendered only with ?debug=1. */
+.quiz-debug-skip-btn {
+  position: absolute;
+  left: 3.5%;
+  bottom: 2.5%;
+  z-index: 40;
+  border: 1px solid rgba(246, 218, 149, 0.66);
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  background: rgba(31, 23, 46, 0.72);
+  color: #f8e8bd;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.quiz-debug-skip-btn:active {
+  transform: translateY(1px);
 }
 
 /* --- END: 40_quiz.css --- */
