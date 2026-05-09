@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MadeInMaghribal Asset Index</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-hover: #334155;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #fbbf24;
+      --accent-hover: #f59e0b;
+      --line: rgba(255, 255, 255, 0.08);
+      --glass: rgba(30, 41, 59, 0.7);
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.05), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.05), transparent 40%);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 40px 20px;
+      text-align: center;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(1200px, calc(100% - 40px));
+      margin: 40px auto;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .asset-card {
+      background: var(--panel);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .asset-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .preview-container {
+      aspect-ratio: 16/9;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-container img, .preview-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-container.character-preview {
+      aspect-ratio: 2/3;
+    }
+    .preview-container.character-preview img {
+      object-fit: contain;
+      object-position: top;
+    }
+
+    .audio-player {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    audio {
+      width: 100%;
+      height: 32px;
+    }
+
+    .asset-info {
+      padding: 16px;
+      flex-grow: 1;
+    }
+
+    .asset-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .asset-path {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: ui-monospace, monospace;
+      word-break: break-all;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .tag.image { color: #38bdf8; }
+    .tag.audio { color: #fbbf24; }
+    .tag.video { color: #f472b6; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px;
+      font-size: 0.8rem;
+    }
+
+    #empty-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--muted);
+      display: none;
+    }
+
+    /* Loading shimmer */
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MadeInMaghribal Asset Index</h1>
+  <div class="nav-tabs" id="tabs">
+    <button class="tab-btn active" onclick="filterAssets('all')">All Assets</button>
+    <button class="tab-btn" onclick="filterAssets('background')">Backgrounds</button>
+    <button class="tab-btn" onclick="filterAssets('still')">Stills</button>
+    <button class="tab-btn" onclick="filterAssets('character')">Characters</button>
+    <button class="tab-btn" onclick="filterAssets('bgm')">BGM (Original)</button>
+    <button class="tab-btn" onclick="filterAssets('se')">Sound Effects</button>
+    <button class="tab-btn" onclick="filterAssets('video')">Videos</button>
+  </div>
+</header>
+
+<main>
+  <div class="asset-grid" id="asset-grid">
+    <!-- Assets will be injected here -->
+  </div>
+  <div id="empty-state">No assets found for this category.</div>
+</main>
+
+<footer>
+  &copy; 2026 MadeInMaghribal Project Asset Reference
+</footer>
+
+<script>
+  const assets = [
+    // Backgrounds
+    { name: 'bg_market_central.webp', category: 'background', type: 'image', path: 'images/background/bg_market_central.webp' },
+    { name: 'bg_palace_corridor.webp', category: 'background', type: 'image', path: 'images/background/bg_palace_corridor.webp' },
+    { name: 'bg_palace_lab.webp', category: 'background', type: 'image', path: 'images/background/bg_palace_lab.webp' },
+    { name: 'bg_shop_exterior_day.webp', category: 'background', type: 'image', path: 'images/background/bg_shop_exterior_day.webp' },
+    { name: 'bg_shop_exterior_night.webp', category: 'background', type: 'image', path: 'images/background/bg_shop_exterior_night.webp' },
+    { name: 'bg_shop_interior_night.webp', category: 'background', type: 'image', path: 'images/background/bg_shop_interior_night.webp' },
+    { name: 'bg_shop_interior_service.webp', category: 'background', type: 'image', path: 'images/background/bg_shop_interior_service.webp' },
+    { name: 'bg_spot_festival_street.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_festival_street.webp' },
+    { name: 'bg_spot_fountain.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_fountain.webp' },
+    { name: 'bg_spot_oasis_view.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_oasis_view.webp' },
+    { name: 'bg_spot_port_view.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_port_view.webp' },
+    { name: 'bg_spot_ruins.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_ruins.webp' },
+    { name: 'bg_spot_star_view.webp', category: 'background', type: 'image', path: 'images/background/bg_spot_star_view.webp' },
+
+    // Stills
+    { name: 'still_dariya_after_hours_01.webp', category: 'still', type: 'image', path: 'images/still/still_dariya_after_hours_01.webp' },
+    { name: 'still_dariya_limit_night_01.webp', category: 'still', type: 'image', path: 'images/still/still_dariya_limit_night_01.webp' },
+    { name: 'still_dariya_palace_collaboration_01.webp', category: 'still', type: 'image', path: 'images/still/still_dariya_palace_collaboration_01.webp' },
+    { name: 'still_dariya_rain_corridor_01.webp', category: 'still', type: 'image', path: 'images/still/still_dariya_rain_corridor_01.webp' },
+    { name: 'still_hakima_festival_night_01.webp', category: 'still', type: 'image', path: 'images/still/still_hakima_festival_night_01.webp' },
+    { name: 'still_hakima_market_argument_01.webp', category: 'still', type: 'image', path: 'images/still/still_hakima_market_argument_01.webp' },
+    { name: 'still_hakima_morning_visit_01.webp', category: 'still', type: 'image', path: 'images/still/still_hakima_morning_visit_01.webp' },
+    { name: 'still_hakima_rain_shelter_01.webp', category: 'still', type: 'image', path: 'images/still/still_hakima_rain_shelter_01.webp' },
+    { name: 'still_mira_after_school_01.webp', category: 'still', type: 'image', path: 'images/still/still_mira_after_school_01.webp' },
+    { name: 'still_mira_assignment_consult_01.webp', category: 'still', type: 'image', path: 'images/still/still_mira_assignment_consult_01.webp' },
+    { name: 'still_mira_starry_rooftop_01.webp', category: 'still', type: 'image', path: 'images/still/still_mira_starry_rooftop_01.webp' },
+    { name: 'still_mira_visit_sick_01.webp', category: 'still', type: 'image', path: 'images/still/still_mira_visit_sick_01.webp' },
+
+    // Characters - Standing
+    ...['hakima', 'mira', 'dariya', 'nader'].flatMap(char => 
+      ['normal', 'joy', 'fun', 'sorrow', 'cry', 'anger', 'surprise', 'maid', 'student', 'social'].map(pose => ({
+        name: `${char}_${pose}.webp`,
+        category: 'character',
+        type: 'image',
+        path: `characters/${char}/standing_proc/${pose}.webp`,
+        isChar: true
+      })).filter(a => !(char === 'nader' && ['maid', 'student', 'social'].includes(a.name.split('_')[1].split('.')[0])))
+    ),
+
+    // BGM Original (MP3 + MP4)
+    ...['main', 'hakima', 'mira', 'dariya', 'extra'].flatMap(folder => {
+      const files = [];
+      if (folder === 'main') {
+        ['title', 'shop', 'puzzle'].forEach((n, i) => {
+          files.push({ name: `main0${i+1}_${n}.mp3`, category: 'bgm', type: 'audio', path: `audio/bgm_org/main/main0${i+1}_${n}.mp3` });
+          files.push({ name: `main0${i+1}_${n}.mp4`, category: 'video', type: 'video', path: `audio/bgm_org/main/main0${i+1}_${n}.mp4` });
+        });
+      } else if (['hakima', 'mira', 'dariya'].includes(folder)) {
+        ['theme', 'game_a', 'game_b', 'game_c', 'game_d', 'ending', 'ending2', 'ending3'].forEach((n, i) => {
+          files.push({ name: `${folder}0${i+1}_${n}.mp3`, category: 'bgm', type: 'audio', path: `audio/bgm_org/${folder}/${folder}0${i+1}_${n}.mp3` });
+          files.push({ name: `${folder}0${i+1}_${n}.mp4`, category: 'video', type: 'video', path: `audio/bgm_org/${folder}/${folder}0${i+1}_${n}.mp4` });
+        });
+      } else {
+        ['anger', 'cry', 'fun', 'joy', 'sorrow', 'surprise'].forEach(n => {
+          [1, 2].forEach(v => {
+            files.push({ name: `${n}${v}.mp3`, category: 'bgm', type: 'audio', path: `audio/bgm_org/extra/${n}${v}.mp3` });
+            files.push({ name: `${n}${v}.mp4`, category: 'video', type: 'video', path: `audio/bgm_org/extra/${n}${v}.mp4` });
+          });
+        });
+      }
+      return files;
+    }),
+
+    // SE
+    ...['clock_ticking', 'quiz_choice_pick_01', 'quiz_correct_star_chime_01', 'quiz_wrong_sand_tap_01', 'se_page_turn', 'ui_confirm_chime_01', 'ui_tap_bottle_01', 'workshop_day_end_01'].flatMap(base => 
+      [1, 2, 3, 4].map(v => ({
+        name: `${base}${v === 1 && !base.startsWith('se_page_turn') && !base.startsWith('clock_ticking') ? '' : '_' + v}.mp3`.replace('__', '_'),
+        category: 'se',
+        type: 'audio',
+        path: `audio/se/${base}${v === 1 && !base.startsWith('se_page_turn') && !base.startsWith('clock_ticking') ? '' : '_' + v}.mp3`.replace('__', '_')
+      }))
+    )
+  ];
+
+  function renderAssets(filtered) {
+    const grid = document.getElementById('asset-grid');
+    const empty = document.getElementById('empty-state');
+    grid.innerHTML = '';
+    
+    if (filtered.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    filtered.forEach(asset => {
+      const card = document.createElement('div');
+      card.className = 'asset-card';
+      
+      let previewHtml = '';
+      if (asset.type === 'image') {
+        previewHtml = `<div class="preview-container ${asset.isChar ? 'character-preview' : ''}">
+          <img src="${asset.path}" alt="${asset.name}" loading="lazy">
+        </div>`;
+      } else if (asset.type === 'video') {
+        previewHtml = `<div class="preview-container">
+          <video controls preload="none">
+            <source src="${asset.path}" type="video/mp4">
+          </video>
+        </div>`;
+      } else {
+        previewHtml = `<div class="audio-player">
+          <audio controls preload="none">
+            <source src="${asset.path}" type="audio/mpeg">
+          </audio>
+        </div>`;
+      }
+
+      card.innerHTML = `
+        ${previewHtml}
+        <div class="asset-info">
+          <div class="asset-name">${asset.name}</div>
+          <div class="asset-path">${asset.path}</div>
+          <span class="tag ${asset.type}">${asset.type}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterAssets(category) {
+    // Update tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${category}'`));
+    });
+
+    const filtered = category === 'all' 
+      ? assets 
+      : assets.filter(a => a.category === category || (category === 'video' && a.type === 'video'));
+    
+    renderAssets(filtered);
+  }
+
+  // Initialize
+  filterAssets('all');
+</script>
+
+</body>
+</html>

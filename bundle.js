@@ -60595,7 +60595,8 @@ class GameController {
       itemDetailModal: null,
       turnTransitionActive: false,
       runtimeScreenFade: null,
-      convoLog: []
+      convoLog: [],
+      eventGalleryScrollTop: 0
     };
 
     this.totalTurns = TOTAL_TURNS;
@@ -60877,12 +60878,41 @@ class GameController {
   updateEventGalleryTab(tabId) {
     this.uiState.eventGalleryTab = tabId || 'common_nadir_normal';
     this.uiState.eventGalleryType = 'all';
+    this.uiState.eventGalleryScrollTop = 0;
     this.update();
   }
 
   updateEventGalleryType(typeId) {
     this.uiState.eventGalleryType = typeId || 'all';
+    this.uiState.eventGalleryScrollTop = 0;
     this.update();
+  }
+
+  getEventGalleryScrollElement() {
+    if (!this.container?.querySelector) return null;
+    return this.container.querySelector('.event-gallery-sections')
+      || this.container.querySelector('.title-panel-card-event .title-panel-body')
+      || this.container.querySelector('.title-panel-body');
+  }
+
+  rememberEventGalleryScrollPosition() {
+    const el = this.getEventGalleryScrollElement();
+    if (!el) return;
+    this.uiState.eventGalleryScrollTop = Math.max(0, Number(el.scrollTop) || 0);
+  }
+
+  restoreEventGalleryScrollPositionSoon() {
+    if (this.uiState?.titlePanel !== 'event') return;
+    const top = Math.max(0, Number(this.uiState.eventGalleryScrollTop) || 0);
+    const restore = () => {
+      const el = this.getEventGalleryScrollElement();
+      if (el) el.scrollTop = top;
+    };
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => requestAnimationFrame(restore));
+    } else {
+      setTimeout(restore, 0);
+    }
   }
 
   handleTitleLogoClick() {
@@ -61423,6 +61453,9 @@ class GameController {
       : { returnScreen };
     const eventReturnScreen = playbackOptions.returnScreen || 'title';
     const playbackMode = playbackOptions.playbackMode || 'gallery';
+    if (playbackMode === 'gallery' && this.uiState?.titlePanel === 'event') {
+      this.rememberEventGalleryScrollPosition();
+    }
     const useRuntimeBoundary = playbackMode === 'runtime' && playbackOptions.useBoundary !== false;
     const boundaryClickToStart = useRuntimeBoundary && playbackOptions.boundaryClickToStart !== false;
 
@@ -61621,6 +61654,7 @@ class GameController {
     if (!this.eventState.active) return;
     const eventId = this.eventState.eventId;
     const wasRuntimePlayback = this.eventState.playbackMode === 'runtime';
+    const wasGalleryPlayback = this.eventState.playbackMode === 'gallery';
     if (eventId) {
       markEventSeen(eventId);
       markEventViewed(eventId);
@@ -61636,6 +61670,7 @@ class GameController {
     }
     this.stopEvent({ skipUpdate: true, keepBgm: wasRuntimePlayback });
     this.handleRuntimeEventFinished(eventId);
+    if (wasGalleryPlayback) this.restoreEventGalleryScrollPositionSoon();
   }
 
 
@@ -61710,7 +61745,7 @@ class GameController {
     if (typeof window === 'undefined') return false;
     try {
       const params = new URLSearchParams(window.location.search || '');
-      return params.get('eventAudit') === '1' || params.get('debug') === '1';
+      return params.get('eventAudit') === '1';
     } catch (error) {
       return false;
     }
