@@ -3134,6 +3134,43 @@ button.gallery-item-tile.is-seen:active {
   justify-content: flex-end;
   background: var(--night-2);
   overflow: hidden;
+  --vn-art-height-ratio: 75.334821%; /* 9:16 HD shell × 1200 / 896 */
+}
+
+.vn-scene-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.vn-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--vn-art-height-ratio);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center top;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.vn-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 45, 79, 0) 0%,
+    rgba(27, 45, 79, 0) 50%,
+    rgba(27, 45, 79, 0.28) 70%,
+    rgba(27, 45, 79, 0.68) 88%,
+    var(--night-2) 100%
+  );
+  pointer-events: none;
 }
 
 .vn-character-layer {
@@ -3144,12 +3181,8 @@ button.gallery-item-tile.is-seen:active {
   overflow: hidden;
 }
 
-.vn-still-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 8;
-  overflow: hidden;
+.vn-character-layer.is-hidden-by-still {
+  display: none;
 }
 
 .standing-char {
@@ -3160,58 +3193,25 @@ button.gallery-item-tile.is-seen:active {
   max-height: 92%;
   width: auto;
   object-fit: contain;
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  --char-motion-ms: 240ms;
+  transition: opacity var(--char-motion-ms) ease-out, transform var(--char-motion-ms) ease-out, filter var(--char-motion-ms) ease-out;
   opacity: 0;
 }
 
-.still-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
-}
-
-.standing-char.is-visible, .still-img.is-visible {
-  opacity: 1;
-}
-
-.vn-bg {
+.vn-still-layer {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  height: 75%;
-  max-height: 75%;
-  background-size: cover;
-  background-position: center top;
-  z-index: 1;
-}
-
-/* Transitions */
-.is-transitioning {
-  transition: opacity 0.2s ease;
-}
-.t-soft-short.is-transitioning { opacity: 0.6; transition-duration: 0.2s; }
-.t-soft-long.is-transitioning { opacity: 0.4; transition-duration: 0.6s; }
-
-.t-fadeScene-short.is-transitioning { opacity: 0; transition-duration: 0.2s; }
-.t-fadeScene-long.is-transitioning { opacity: 0; transition-duration: 0.6s; }
-
-.vn-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(16, 35, 64, 0) 0%,
-    rgba(16, 35, 64, 0) 68%,
-    rgba(16, 35, 64, 0.72) 100%
-  );
+  width: 100%;
+  height: var(--vn-art-height-ratio);
   pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+  display: none;
+}
+
+.vn-still-layer.is-active {
+  display: block;
 }
 
 .vn-still-layer::after {
@@ -3220,13 +3220,128 @@ button.gallery-item-tile.is-seen:active {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(16, 35, 64, 0) 0%,
-    rgba(16, 35, 64, 0) 68%,
-    rgba(16, 35, 64, 0.72) 100%
+    rgba(27, 45, 79, 0) 0%,
+    rgba(27, 45, 79, 0) 50%,
+    rgba(27, 45, 79, 0.28) 70%,
+    rgba(27, 45, 79, 0.68) 88%,
+    var(--night-2) 100%
   );
   pointer-events: none;
-  z-index: 9;
+  z-index: 2;
 }
+
+.still-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center top;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+}
+
+.standing-char.is-visible, .still-img.is-visible {
+  opacity: 1;
+}
+
+.standing-char.is-visible {
+  transform: translateX(-50%);
+}
+
+.standing-char.char-motion-long {
+  --char-motion-ms: 420ms;
+}
+
+.standing-char.char-motion-crossfade {
+  opacity: 0;
+}
+
+.standing-char.char-motion-slideInRight,
+.standing-char.char-motion-slideOutRight {
+  opacity: 0;
+  transform: translateX(calc(-50% + 42px));
+}
+
+.standing-char.char-motion-slideInLeft,
+.standing-char.char-motion-slideOutLeft {
+  opacity: 0;
+  transform: translateX(calc(-50% - 42px));
+}
+
+.standing-char.char-motion-pop {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.94);
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1.08);
+}
+
+.standing-char.char-motion-shadowShift {
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(0.70) saturate(0.92);
+}
+
+.standing-char.char-motion-crossfade.is-visible,
+.standing-char.char-motion-slideInRight.is-visible,
+.standing-char.char-motion-slideInLeft.is-visible,
+.standing-char.char-motion-slideOutRight.is-visible,
+.standing-char.char-motion-slideOutLeft.is-visible,
+.standing-char.char-motion-pop.is-visible,
+.standing-char.char-motion-shadowShift.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.standing-char.is-expression-flash {
+  animation: vnExpressionFlash 260ms ease-out;
+}
+
+.standing-char.is-shadow-shifting {
+  animation: vnShadowShift 420ms ease-out;
+}
+
+@keyframes vnExpressionFlash {
+  0% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1); }
+  38% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1.16); }
+  100% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1); }
+}
+
+@keyframes vnShadowShift {
+  0% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1); }
+  40% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(0.68) saturate(0.86); }
+  100% { filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px) brightness(1); }
+}
+
+/* Transitions
+ * Keep the duration class armed for both fade-out and fade-in.
+ * If transition-duration only exists on .is-transitioning, removing that class
+ * makes the fade-in jump instantly.
+ */
+.t-soft-short,
+.t-soft-long,
+.t-fadeScene-short,
+.t-fadeScene-long,
+.t-dissolve-short,
+.t-dissolve-long {
+  transition-property: opacity, filter;
+  transition-timing-function: ease-in-out;
+}
+
+.t-soft-short { transition-duration: 0.22s; }
+.t-soft-long { transition-duration: 0.52s; }
+.t-fadeScene-short { transition-duration: 0.22s; }
+.t-fadeScene-long { transition-duration: 0.52s; }
+.t-dissolve-short { transition-duration: 0.26s; }
+.t-dissolve-long { transition-duration: 0.62s; }
+
+.t-soft-short.is-transitioning { opacity: 0.72; }
+.t-soft-long.is-transitioning { opacity: 0.55; }
+
+.t-fadeScene-short.is-transitioning { opacity: 0; }
+.t-fadeScene-long.is-transitioning { opacity: 0; }
+
+.t-dissolve-short.is-transitioning { opacity: 0.12; filter: blur(0.35px); }
+.t-dissolve-long.is-transitioning { opacity: 0; filter: blur(0.7px); }
 
 .vn-screen .message-box {
   padding: 42px 32px 28px;

@@ -1953,6 +1953,91 @@ const EVENT_MANIFEST = [
     "scriptStepCount": 5
   },
   {
+    "id": "hakima_char_crossfade_001",
+    "title": "演出確認・クロスフェード",
+    "heroineId": "HAKIMA",
+    "summary": "立ち絵の標準的な登場・退場をクロスフェードで確認するサンプルです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "hakima_char_expression_001",
+    "title": "演出確認・表情変化",
+    "heroineId": "HAKIMA",
+    "summary": "台詞送り中の表情変更が、待ち時間なしで軽く反応することを確認するサンプルです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 7
+  },
+  {
+    "id": "hakima_char_pop_001",
+    "title": "演出確認・ポップ",
+    "heroineId": "HAKIMA",
+    "summary": "軽い登場やコメディ寄りの反応に使うポップ演出を確認するサンプルです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 6
+  },
+  {
+    "id": "hakima_char_shadow_001",
+    "title": "演出確認・影落ち",
+    "heroineId": "HAKIMA",
+    "summary": "夜イベントや真面目な場面向けの影落ち演出を確認するサンプルです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "hakima_char_slide_001",
+    "title": "演出確認・スライド",
+    "heroineId": "HAKIMA",
+    "summary": "立ち絵が左右から入退場する演出を確認するサンプルです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
     "id": "hakima_normal_sample_001",
     "title": "サンプルイベント",
     "heroineId": "HAKIMA",
@@ -1968,6 +2053,23 @@ const EVENT_MANIFEST = [
       "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
     },
     "scriptStepCount": 32
+  },
+  {
+    "id": "hakima_sfx_sample_001",
+    "title": "演出確認・効果音",
+    "heroineId": "HAKIMA",
+    "summary": "イベント内でSEを少量だけ鳴らす確認用サンプルです。重要な動作・場面転換のみに使う前提です。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 14
   },
   {
     "id": "hakima_simple_001",
@@ -2176,6 +2278,257 @@ const EVENT_SCRIPTS = {
       "markSeen": true
     }
   ],
+  "hakima_char_crossfade_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "これはクロスフェードの確認ね。いちばん標準的な出入りに使えるはずよ。"
+    },
+    {
+      "type": "exit",
+      "characterId": "HAKIMA",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "wait",
+      "ms": 280
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "消えて、また出る。派手すぎないから普段使いに向いているわね。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_char_expression_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "表情変更は、台詞表示を待たせずに軽く見せるのが基本ね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "嬉しい時は、ぱっと明るく。けれど画面全体は止めない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "少し沈む時も、本文のテンポはそのまま。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "世界観担当には、lineにtransitionを書かなくていいと伝えれば十分よ。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_char_pop_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "position": "center",
+      "transition": "pop",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "これはポップ演出ね。軽い登場や、明るい反応に使うとよさそう。"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "ただし多用すると落ち着きがなくなるから、ここぞという時だけね。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_char_shadow_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "これは少し真面目な場面用の確認よ。"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "position": "center",
+      "transition": "shadowShift",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "影を一瞬落としてから、表情を変える。夜の会話や余韻のある場面に合うはず。"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "もちろん、最後は明るく戻しておきましょう。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_char_slide_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "slideInRight",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "店の入口から入ってきた、という時は右から滑らせると分かりやすいわ。"
+    },
+    {
+      "type": "exit",
+      "characterId": "HAKIMA",
+      "transition": "slideOutRight",
+      "speed": "short"
+    },
+    {
+      "type": "wait",
+      "ms": 300
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "slideInLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "逆側から戻る演出も確認しておきましょう。移動量は控えめでいいわね。"
+    },
+    {
+      "type": "exit",
+      "characterId": "HAKIMA",
+      "transition": "slideOutLeft",
+      "speed": "short"
+    },
+    {
+      "type": "wait",
+      "ms": 300
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "最後は標準表示に戻して完了よ。"
+    },
+    {
+      "type": "end"
+    }
+  ],
   "hakima_normal_sample_001": [
     {
       "type": "bg",
@@ -2297,8 +2650,8 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "いい天気！ 活気があって素敵な街よね。"
+      "expression": "normal",
+      "text": "いい天気。活気があって、悪くない街ね。"
     },
     {
       "type": "line",
@@ -2315,7 +2668,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "still",
       "id": "still_hakima_morning_visit_01",
-      "transition": "fadeScene",
+      "transition": "dissolve",
       "speed": "long"
     },
     {
@@ -2331,7 +2684,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "still",
       "id": null,
-      "transition": "fadeScene",
+      "transition": "dissolve",
       "speed": "long"
     },
     {
@@ -2354,6 +2707,87 @@ const EVENT_SCRIPTS = {
       "speakerId": "HAKIMA",
       "expression": "joy",
       "text": "お疲れ様！ またお店で会いましょうね。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_sfx_sample_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "効果音の確認ね。鳴らしすぎると会話の邪魔になるから、要所だけにするわ。"
+    },
+    {
+      "type": "sfx",
+      "id": "ui_tap_bottle_01_4"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "たとえば、小瓶を置いたり、棚に触れたりするくらいならこの軽い音で十分。"
+    },
+    {
+      "type": "sfx",
+      "id": "SE_UI_DECIDE"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "確認や決定の合図なら、短いチャイムを一度だけ。台詞のたびに鳴らす必要はないわ。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "characters": [
+        {
+          "id": "HAKIMA",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "still": null,
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "sfx",
+      "id": "workshop_day_end_01_4"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "場面転換や、少し印象を残したい区切りなら、こういう音を控えめに置くのがいいわね。"
+    },
+    {
+      "type": "sfx",
+      "id": "SE_QUIZ_CHOICE_PICK"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "これで確認は終わり。世界観担当には、重要な場面だけSEを申請してもらいましょう。"
     },
     {
       "type": "end"
@@ -2401,7 +2835,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "still",
       "id": "still_hakima_morning_visit_01",
-      "transition": "fadeScene",
+      "transition": "dissolve",
       "speed": "long"
     },
     {
@@ -2412,7 +2846,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "still",
       "id": null,
-      "transition": "fadeScene",
+      "transition": "dissolve",
       "speed": "long"
     },
     {
@@ -28701,6 +29135,111 @@ function getVisualImagePath(id, mode, expression = 'normal') {
   return getCharacterVisualImagePath(id, expression, profile.image);
 }
 
+function preloadImage(src) {
+  if (!src || typeof Image === 'undefined') return Promise.resolve();
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = src;
+  });
+}
+
+function uniquePaths(paths) {
+  return Array.from(new Set(paths.filter(Boolean)));
+}
+
+const CHARACTER_TRANSITIONS = new Set([
+  'crossfade',
+  'slideInRight',
+  'slideInLeft',
+  'slideOutRight',
+  'slideOutLeft',
+  'pop',
+  'shadowShift'
+]);
+
+const CHARACTER_MOTION_CLASSES = [
+  'char-motion-crossfade',
+  'char-motion-slideInRight',
+  'char-motion-slideInLeft',
+  'char-motion-slideOutRight',
+  'char-motion-slideOutLeft',
+  'char-motion-pop',
+  'char-motion-shadowShift',
+  'char-motion-short',
+  'char-motion-long',
+  'is-expression-flash',
+  'is-shadow-shifting'
+];
+
+function clearCharacterMotionClasses(charEl) {
+  if (!charEl) return;
+  charEl.classList.remove(...CHARACTER_MOTION_CLASSES);
+}
+
+function getCharacterMotionDuration(speed) {
+  return speed === 'long' ? 420 : 240;
+}
+
+function applyCharacterEnterMotion(charEl, type, speed) {
+  if (!charEl || !CHARACTER_TRANSITIONS.has(type)) return false;
+  const motionType = type === 'slideOutRight' || type === 'slideOutLeft' ? 'crossfade' : type;
+  clearCharacterMotionClasses(charEl);
+  charEl.classList.remove('is-visible');
+  charEl.classList.add(`char-motion-${motionType}`, `char-motion-${speed}`);
+  void charEl.offsetWidth;
+  requestAnimationFrame(() => {
+    charEl.classList.add('is-visible');
+  });
+  setTimeout(() => {
+    charEl.classList.remove(`char-motion-${motionType}`, `char-motion-${speed}`);
+  }, getCharacterMotionDuration(speed) + 80);
+  return true;
+}
+
+function applyCharacterExitMotion(charEl, type, speed) {
+  if (!charEl || !charEl.dataset.currentSrc) return false;
+  const motionType = type === 'slideOutLeft' || type === 'slideOutRight' ? type : 'crossfade';
+  clearCharacterMotionClasses(charEl);
+  charEl.style.display = 'block';
+  charEl.classList.add('is-visible', `char-motion-${motionType}`, `char-motion-${speed}`);
+  void charEl.offsetWidth;
+  requestAnimationFrame(() => {
+    charEl.classList.remove('is-visible');
+  });
+  setTimeout(() => {
+    if (!charEl.classList.contains('is-visible')) {
+      charEl.style.display = 'none';
+      charEl.removeAttribute('src');
+      charEl.dataset.currentSrc = '';
+      charEl.dataset.currentCharId = '';
+      charEl.dataset.currentExpression = '';
+    }
+    charEl.classList.remove(`char-motion-${motionType}`, `char-motion-${speed}`);
+  }, getCharacterMotionDuration(speed) + 90);
+  return true;
+}
+
+function applyExpressionHint(charEl, type, speed) {
+  if (!charEl) return;
+  if (type === 'shadowShift') {
+    charEl.classList.remove('is-shadow-shifting');
+    void charEl.offsetWidth;
+    charEl.classList.add('is-shadow-shifting', `char-motion-${speed}`);
+    setTimeout(() => {
+      charEl.classList.remove('is-shadow-shifting', `char-motion-${speed}`);
+    }, getCharacterMotionDuration(speed) + 120);
+    return;
+  }
+  charEl.classList.remove('is-expression-flash');
+  void charEl.offsetWidth;
+  charEl.classList.add('is-expression-flash');
+  setTimeout(() => {
+    charEl.classList.remove('is-expression-flash');
+  }, 280);
+}
+
 function renderVnShell(controller, view) {
   view.innerHTML = `
     <div class="vn-screen" data-screen="vn">
@@ -28736,6 +29275,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   const sceneContainerEl = controller.container.querySelector('[data-vn-scene-container]');
   const charLayerEl = controller.container.querySelector('[data-vn-char-layer]');
   const charEl = controller.container.querySelector('[data-vn-char]');
+  const stillLayerEl = controller.container.querySelector('[data-vn-still-layer]');
   const stillEl = controller.container.querySelector('[data-vn-still]');
   const speakerWrapEl = controller.container.querySelector('[data-vn-speaker-wrap]');
   const speakerEl = controller.container.querySelector('[data-vn-speaker]');
@@ -28744,21 +29284,73 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   const vnScreenEl = controller.container.querySelector('.vn-screen');
 
   // Transition Config
-  const tType = transition?.type || 'soft'; // soft, fadeScene, cut
+  const tType = transition?.type || 'soft'; // soft, fadeScene, dissolve, cut, character motions
   const tSpeed = transition?.speed || 'short'; // short, long
   const tTarget = transition?.target || 'background'; // background, character, scene, all
+  const isCharacterMotion = tTarget === 'character' && CHARACTER_TRANSITIONS.has(tType);
 
-  const applyTransitionClass = (el, type, speed, active) => {
+  const TRANSITION_CLASSES = [
+    't-soft-short',
+    't-soft-long',
+    't-fadeScene-short',
+    't-fadeScene-long',
+    't-dissolve-short',
+    't-dissolve-long',
+    't-crossfade-short',
+    't-crossfade-long',
+    't-slideInRight-short',
+    't-slideInRight-long',
+    't-slideInLeft-short',
+    't-slideInLeft-long',
+    't-slideOutRight-short',
+    't-slideOutRight-long',
+    't-slideOutLeft-short',
+    't-slideOutLeft-long',
+    't-pop-short',
+    't-pop-long',
+    't-shadowShift-short',
+    't-shadowShift-long'
+  ];
+
+  const clearTransitionClasses = (el) => {
     if (!el) return;
-    const className = `t-${type}-${speed}`;
-    if (active) {
-      el.classList.add(className, 'is-transitioning');
-    } else {
-      el.classList.remove(className, 'is-transitioning');
-    }
+    el.classList.remove('is-transitioning', ...TRANSITION_CLASSES);
   };
 
-  const getTransitionDuration = (speed) => (speed === 'long' ? 600 : 200);
+  const armTransition = (el, type, speed) => {
+    if (!el) return null;
+    const className = `t-${type}-${speed}`;
+    clearTransitionClasses(el);
+    el.classList.add(className);
+    // Force style flush so adding is-transitioning reliably animates out.
+    void el.offsetWidth;
+    el.classList.add('is-transitioning');
+    return className;
+  };
+
+  const beginFadeIn = (el, className) => {
+    if (!el || !className) return;
+    // Keep the duration class while removing only the active state.
+    // Removing both classes at once makes the fade-in snap instantly.
+    el.classList.remove('is-transitioning');
+  };
+
+  const finishTransition = (el, className) => {
+    if (!el || !className) return;
+    el.classList.remove(className);
+  };
+
+  const getTransitionDuration = (type, speed) => {
+    if (type === 'dissolve') return speed === 'long' ? 620 : 260;
+    return speed === 'long' ? 520 : 220;
+  };
+
+  const pathsToPreload = uniquePaths([
+    bgId ? getBackgroundPath(bgId) : null,
+    stillId ? getStillPath(stillId) : null,
+    charId && !stillId ? getVisualImagePath(charId, 'standing', expression || 'normal') : null,
+    (speakerId || charId) ? getVisualImagePath((speakerId || charId), 'speakerIcon', speakerExpression || expression || 'normal') : null
+  ]);
 
   const performUpdate = () => {
     // 1. Background
@@ -28773,15 +29365,21 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
     }
 
     // 2. Still
+    if (stillLayerEl) {
+      stillLayerEl.classList.toggle('is-active', Boolean(stillId));
+    }
+    if (charLayerEl) {
+      charLayerEl.classList.toggle('is-hidden-by-still', Boolean(stillId));
+    }
     if (stillEl) {
       if (stillId) {
         const stillPath = getStillPath(stillId);
         if (stillEl.dataset.currentStillId !== stillId) {
           stillEl.src = stillPath;
           stillEl.dataset.currentStillId = stillId;
-          stillEl.style.display = 'block';
-          stillEl.classList.add('is-visible');
         }
+        stillEl.style.display = 'block';
+        stillEl.classList.add('is-visible');
         if (controller.markImageSeen) controller.markImageSeen(stillId);
       } else {
         stillEl.style.display = 'none';
@@ -28793,15 +29391,20 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
     // 3. Character
     if (charEl) {
+      const charMotionType = isCharacterMotion ? tType : null;
       if (charId && !stillId) {
         const expr = expression || 'normal';
         const nextSrc = getVisualImagePath(charId, 'standing', expr);
         const isSameChar = charEl.dataset.currentCharId === charId;
+        const isSameSrc = charEl.dataset.currentSrc === nextSrc;
+        const prevExpression = charEl.dataset.currentExpression || '';
+        const expressionChanged = isSameChar && prevExpression && prevExpression !== expr;
         const skipIndividualFade = (tTarget === 'scene' || tTarget === 'all');
 
-        if (charEl.dataset.currentSrc !== nextSrc) {
+        if (!isSameSrc) {
+          const shouldRunCharacterMotion = Boolean(charMotionType) && !skipIndividualFade;
+          charEl.style.display = 'block';
           if (!isSameChar) {
-            charEl.style.display = 'block';
             applyCharacterVisualProfile(charEl, charId, 'standing');
           }
           charEl.src = nextSrc;
@@ -28812,25 +29415,41 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
             controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
           }
           charEl.onerror = () => { charEl.style.display = 'none'; };
-          
-          if (!isSameChar) {
+
+          if (shouldRunCharacterMotion) {
+            applyCharacterEnterMotion(charEl, charMotionType, tSpeed);
+          } else if (!isSameChar) {
             if (skipIndividualFade) {
+              clearCharacterMotionClasses(charEl);
               charEl.classList.add('is-visible');
             } else {
+              clearCharacterMotionClasses(charEl);
               charEl.classList.remove('is-visible');
               requestAnimationFrame(() => charEl.classList.add('is-visible'));
             }
+          } else {
+            charEl.classList.add('is-visible');
+            applyExpressionHint(charEl, charMotionType || 'expressionFlash', tSpeed);
           }
         } else {
           charEl.style.display = 'block';
           charEl.classList.add('is-visible');
+          if (expressionChanged) {
+            applyExpressionHint(charEl, charMotionType || 'expressionFlash', tSpeed);
+          }
         }
       } else {
-        charEl.classList.remove('is-visible');
-        charEl.removeAttribute('src');
-        charEl.dataset.currentSrc = '';
-        charEl.dataset.currentCharId = '';
-        charEl.style.display = 'none';
+        if (charMotionType && applyCharacterExitMotion(charEl, charMotionType, tSpeed)) {
+          // Exit animation owns cleanup after it fades out.
+        } else {
+          clearCharacterMotionClasses(charEl);
+          charEl.classList.remove('is-visible');
+          charEl.removeAttribute('src');
+          charEl.dataset.currentSrc = '';
+          charEl.dataset.currentCharId = '';
+          charEl.dataset.currentExpression = '';
+          charEl.style.display = 'none';
+        }
       }
     }
 
@@ -28865,10 +29484,21 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
     }
   };
 
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   // Transition Logic
+  // Character motions are controlled by the standing sprite itself. Do not fade
+  // the whole character layer, or the motion becomes a double transition.
+  if (isCharacterMotion) {
+    performUpdate();
+    return Promise.resolve();
+  }
+
+  // Return a promise so the event controller can wait for the visual transition
+  // instead of guessing with a fixed timer. Non-transition updates stay instant.
   if (!transition || tType === 'cut') {
     performUpdate();
-    return;
+    return Promise.resolve();
   }
 
   let targetEl = bgEl;
@@ -28876,14 +29506,27 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   if (tTarget === 'scene') targetEl = sceneContainerEl;
   if (tTarget === 'all') targetEl = vnScreenEl;
 
-  applyTransitionClass(targetEl, tType, tSpeed, true);
-  
-  setTimeout(() => {
-    performUpdate();
-    setTimeout(() => {
-      applyTransitionClass(targetEl, tType, tSpeed, false);
-    }, 50); // Small buffer
-  }, getTransitionDuration(tSpeed));
+  const durationMs = getTransitionDuration(tType, tSpeed);
+  const holdMs = ((tType === 'fadeScene' || tType === 'dissolve') && tSpeed === 'long') ? 140 : 0;
+  const transitionClass = armTransition(targetEl, tType, tSpeed);
+
+  return Promise.all([
+    delay(durationMs),
+    Promise.all(pathsToPreload.map(preloadImage))
+  ])
+    .then(() => {
+      performUpdate();
+      return delay(holdMs);
+    })
+    .then(() => new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        beginFadeIn(targetEl, transitionClass);
+        setTimeout(() => {
+          finishTransition(targetEl, transitionClass);
+          resolve();
+        }, durationMs);
+      });
+    }));
 }
 
 module.exports = {
@@ -31625,6 +32268,8 @@ module.exports = {
  *   unlocking on the first user gesture and by only playing from user actions.
  */
 
+const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
+
 const SELECTED_SFX = {
   uiTapBottle: {
     path: 'audio/se/ui_tap_bottle_01_3.mp3',
@@ -31694,8 +32339,30 @@ const SELECTED_SFX = {
   }
 };
 
+function collectManifestSfxConfig() {
+  const config = {};
+  const groups = AUDIO_MANIFEST?.se || {};
+  Object.values(groups).forEach((tracks) => {
+    if (!Array.isArray(tracks)) return;
+    tracks.forEach((track) => {
+      if (!track || !track.path) return;
+      const spec = {
+        path: track.path,
+        volume: typeof track.volume === 'number' ? track.volume : 0.42,
+        start: typeof track.start === 'number' ? track.start : 0,
+        end: typeof track.end === 'number' ? track.end : null
+      };
+      if (track.id) config[track.id] = spec;
+      if (track.key) config[track.key] = spec;
+    });
+  });
+  return config;
+}
+
+const EVENT_SFX_CONFIG = Object.assign({}, collectManifestSfxConfig(), SELECTED_SFX);
+
 class SfxEngine {
-  constructor(config = SELECTED_SFX) {
+  constructor(config = EVENT_SFX_CONFIG) {
     this.config = config;
     this.enabled = true;
     this.volume = 1;
@@ -31811,6 +32478,7 @@ function createSfxEngine() {
 
 module.exports = {
   SELECTED_SFX,
+  EVENT_SFX_CONFIG,
   SfxEngine,
   createSfxEngine
 };
@@ -32526,6 +33194,8 @@ class GameController {
       this.eventState.waitTimer = null;
     }
     this.eventState.isTransitioning = false;
+    this.eventState.transitionToken = null;
+    this.eventState.lastRenderPromise = null;
     this.bgm.stop();
     this.update();
   }
@@ -32557,46 +33227,88 @@ class GameController {
   processEventStep(step, isFirstStep = false) {
     if (!step) return;
 
-    const transition = step.transition ? {
-      type: step.transition,
-      speed: step.speed || 'short',
-      target: step.target || (step.type === 'scene' ? 'scene' : (step.type === 'bg' ? 'background' : 'character'))
-    } : null;
+    const normalizeTransition = () => {
+      // line/narration/choice are message commands. They must not delay text.
+      if (['line', 'narration', 'choice'].includes(step.type)) return null;
 
-    if ((step.type === 'bg' || step.type === 'scene') && step.transition === 'fadeScene') {
-      transition.target = 'scene';
-    }
+      let type = step.transition || null;
+      let speed = step.speed || null;
+      let target = step.target || null;
+
+      // Legacy authoring used "fade". Keep it valid, but map it to a visual
+      // dissolve so it does not become a no-op class.
+      if (type === 'fade') type = 'dissolve';
+
+      // Visual commands should have safe defaults. This prevents still/bg events
+      // from snapping instantly just because an author omitted transition fields.
+      if (!type) {
+        if (step.type === 'scene') type = 'fadeScene';
+        if (step.type === 'still') type = 'dissolve';
+      }
+      if (!speed) {
+        if (step.type === 'scene' || step.type === 'still') speed = 'long';
+        else speed = 'short';
+      }
+      if (!target) {
+        if (step.type === 'scene' || step.type === 'still') target = 'scene';
+        else if (step.type === 'bg' && type === 'fadeScene') target = 'scene';
+        else if (step.type === 'bg') target = 'background';
+        else target = 'character';
+      }
+
+      if (!type) return null;
+      return { type, speed, target };
+    };
+
+    const transition = normalizeTransition();
 
     const next = () => {
       this.eventState.isTransitioning = false;
       this.eventState.waitTimer = null;
+      this.eventState.transitionToken = null;
       if (this.eventState.active) this.nextEventStep();
     };
 
-    const isSceneCommand = step.type === 'scene';
-    const shouldWait = (step.speed === 'long' && !isFirstStep && isSceneCommand);
-    const waitTime = shouldWait ? 750 : 0;
+    const shouldWaitForVisual = () => {
+      if (isFirstStep || !transition) return false;
+      if (transition.speed !== 'long') return false;
+      return ['scene', 'still', 'bg'].includes(step.type);
+    };
 
-    if (shouldWait) {
+    const waitForRenderedTransition = () => {
+      const token = {};
+      this.eventState.transitionToken = token;
       this.eventState.isTransitioning = true;
-    }
+      const promise = this.eventState.lastRenderPromise || Promise.resolve();
+      promise.then(() => {
+        if (!this.eventState.active) return;
+        if (this.eventState.transitionToken !== token) return;
+        next();
+      }).catch(() => {
+        if (!this.eventState.active) return;
+        if (this.eventState.transitionToken !== token) return;
+        next();
+      });
+    };
+
+    const updateVisualAndMaybeWait = () => {
+      this.eventState.lastTransition = transition;
+      this.update();
+      if (shouldWaitForVisual()) {
+        waitForRenderedTransition();
+      } else {
+        next();
+      }
+    };
 
     switch (step.type) {
       case 'bg':
         this.eventState.background = step.id;
-        this.eventState.lastTransition = transition;
-        this.update();
-        if (waitTime > 0) {
-          this.eventState.waitTimer = setTimeout(next, waitTime);
-        } else {
-          next();
-        }
+        updateVisualAndMaybeWait();
         break;
       case 'still':
         this.eventState.still = step.id;
-        this.eventState.lastTransition = transition;
-        this.update();
-        next();
+        updateVisualAndMaybeWait();
         break;
       case 'bgm':
         if (step.id) {
@@ -32621,23 +33333,11 @@ class GameController {
           expression: step.expression || 'normal',
           position: step.position || 'center'
         };
-        this.eventState.lastTransition = transition;
-        this.update();
-        if (waitTime > 0) {
-          this.eventState.waitTimer = setTimeout(next, waitTime);
-        } else {
-          next();
-        }
+        updateVisualAndMaybeWait();
         break;
       case 'exit':
         delete this.eventState.characters[step.characterId];
-        this.eventState.lastTransition = transition;
-        this.update();
-        if (waitTime > 0) {
-          this.eventState.waitTimer = setTimeout(next, waitTime);
-        } else {
-          next();
-        }
+        updateVisualAndMaybeWait();
         break;
       case 'line':
       case 'narration':
@@ -32645,7 +33345,7 @@ class GameController {
           this.eventState.characters[step.speakerId].expression = step.expression;
         }
         this.eventState.currentDisplayStep = step;
-        this.eventState.lastTransition = transition;
+        this.eventState.lastTransition = null;
         this.update();
         break;
       case 'wait':
@@ -32654,6 +33354,7 @@ class GameController {
       case 'choice':
         this.eventState.currentDisplayStep = step;
         this.eventState.activeChoice = step.choices;
+        this.eventState.lastTransition = null;
         this.update();
         break;
       case 'label':
@@ -32678,13 +33379,7 @@ class GameController {
             };
           });
         }
-        this.eventState.lastTransition = transition;
-        this.update();
-        if (waitTime > 0) {
-          this.eventState.waitTimer = setTimeout(next, waitTime);
-        } else {
-          next();
-        }
+        updateVisualAndMaybeWait();
         break;
       case 'flag':
         const { setEventFlag } = require('./utils/playerProgress.js');
@@ -32770,7 +33465,7 @@ class GameController {
       messageBox.style.display = displayStep ? 'block' : 'none';
     }
 
-    updateVnContent(this, {
+    this.eventState.lastRenderPromise = updateVnContent(this, {
       speakerName: speakerName,
       text: displayStep?.text || '',
       charId: charId,
@@ -32780,7 +33475,7 @@ class GameController {
       expression: charData ? charData.expression : (displayStep?.type === 'line' ? displayStep.expression : 'normal'),
       speakerExpression: displayStep?.expression || 'normal',
       transition: this.eventState.lastTransition
-    });
+    }) || Promise.resolve();
     
     this.eventState.lastTransition = null;
     
