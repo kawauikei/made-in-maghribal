@@ -3047,6 +3047,230 @@ button.gallery-item-tile.is-seen:active {
   overflow: hidden;
 }
 
+/* Final gallery tuning: split image galleries by heroine and keep event cards readable. */
+.image-gallery-heroine-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: -6px;
+  padding-bottom: 2px;
+}
+
+.image-gallery-heroine-tab {
+  position: relative;
+  appearance: none;
+  border: 1px solid rgba(240, 199, 108, 0.32);
+  background: rgba(0, 0, 0, 0.20);
+  color: rgba(244, 230, 200, 0.78);
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 5px 12px 5px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.image-gallery-heroine-tab img {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(240, 199, 108, 0.28);
+}
+
+.image-gallery-heroine-tab small {
+  min-width: 19px;
+  height: 19px;
+  border-radius: 999px;
+  background: rgba(23, 34, 58, 0.92);
+  border: 1px solid rgba(240, 199, 108, 0.38);
+  color: rgba(244, 230, 200, 0.78);
+  font-size: 0.66rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+
+.image-gallery-heroine-tab.is-active {
+  border-color: rgba(240, 199, 108, 0.86);
+  background: rgba(240, 199, 108, 0.20);
+  color: var(--sand-1);
+}
+
+.image-gallery-container-still .image-gallery-thumbnails-wrapper,
+.image-gallery-container-character .image-gallery-thumbnails-wrapper {
+  height: 92px;
+}
+
+.image-gallery-container-still .image-gallery-thumb,
+.image-gallery-container-character .image-gallery-thumb {
+  flex-basis: 76px;
+  border-radius: 12px;
+}
+
+.image-gallery-container-character .image-gallery-thumb img {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.event-gallery-card {
+  grid-template-rows: 1fr;
+  min-height: 142px;
+  position: relative;
+}
+
+.event-gallery-thumb {
+  min-height: 142px;
+}
+
+.event-gallery-card-body {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 0;
+  gap: 4px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.event-gallery-card h4 {
+  align-self: flex-start;
+  display: inline;
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 8px 4px;
+  border-radius: 9px;
+  color: var(--sand-1);
+  background: rgba(16, 28, 50, 0.78);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.55);
+}
+
+.event-gallery-card p {
+  align-self: flex-start;
+  display: inline;
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 8px 4px;
+  border-radius: 8px;
+  color: rgba(244, 230, 200, 0.92);
+  background: rgba(16, 28, 50, 0.66);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.55);
+}
+
+.event-gallery-thumb::after {
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(9,18,35,0.28));
+}
+
+.event-gallery-card-icon {
+  position: absolute;
+  z-index: 3;
+  left: 8px;
+  top: 8px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 2px solid rgba(240, 199, 108, 0.70);
+  background: rgba(14, 24, 42, 0.86);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.36);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-gallery-card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Final gallery tab repair: keep category tabs and heroine tabs visually separate. */
+.image-gallery-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.image-gallery-tab-btn {
+  min-width: 112px;
+  text-align: center;
+}
+
+.image-gallery-heroine-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  margin-top: -2px;
+  padding: 0 0 4px;
+}
+
+.image-gallery-heroine-tab {
+  min-width: 118px;
+  justify-content: center;
+  padding: 6px 12px 6px 8px;
+}
+
+.image-gallery-heroine-name {
+  white-space: nowrap;
+}
+
+/* Event gallery compact cards: keep the requested 3-column layout. */
+.event-gallery-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.event-gallery-card,
+.event-gallery-thumb {
+  min-height: 118px;
+}
+
+.event-gallery-card-body {
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+}
+
+.event-gallery-card h4 {
+  font-size: 0.82rem;
+  line-height: 1.24;
+  padding: 3px 7px 4px;
+}
+
+.event-gallery-card p {
+  font-size: 0.68rem;
+  line-height: 1.34;
+  -webkit-line-clamp: 2;
+  padding: 3px 7px 4px;
+}
+
+.event-gallery-card-icon {
+  width: 34px;
+  height: 34px;
+  left: 7px;
+  top: 7px;
+}
+
 /* --- END: 10_title.css --- */
 
 /* --- START: 20_heroine.css --- */
@@ -4284,6 +4508,11 @@ button.gallery-item-tile.is-seen:active {
 .vn-screen.is-holding-message-hidden > .message-skip-btn {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Scenario text may intentionally contain newlines. Keep them inside one VN page. */
+.message-text {
+  white-space: pre-line;
 }
 
 /* --- END: 30_vn.css --- */
