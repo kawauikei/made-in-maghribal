@@ -3157,7 +3157,7 @@ const EVENT_MANIFEST = [
     "title": "星見台の対抗心",
     "heroineId": "MIRA",
     "routeGroup": "childhood",
-    "summary": "星見台でナディールの姉への対抗心と、幼馴染としての甘えが出る。",
+    "summary": "星見台でナーディルの姉への対抗心と、幼馴染としての甘えが出る。",
     "unlock": {
       "type": "story"
     },
@@ -3283,6 +3283,45 @@ const EVENT_MANIFEST = [
       "hiddenSummary": "物語を読み進めると解放"
     },
     "scriptStepCount": 11
+  },
+  {
+    "id": "common_staff_roll_all_good_001",
+    "title": "星瓶堂のあとがき",
+    "heroineId": "COMMON",
+    "routeGroup": "common",
+    "summary": "全ヒロインのGOODエンディング後に解放されるスタッフロール。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "common_staff_roll",
+    "galleryTab": "common_nadir_normal",
+    "eventType": "staff_roll",
+    "thumbnail": "bg_spot_star_view",
+    "trigger": {
+      "timing": "staff_roll",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100,
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_ending_good_001",
+        "hakima_childhood_ending_good_001",
+        "mira_normal_ending_good_001",
+        "mira_childhood_ending_good_001",
+        "dariya_normal_ending_good_001",
+        "dariya_childhood_ending_good_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": []
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_star_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "すべてのGOODエンディングを見ると解放"
+    },
+    "scriptStepCount": 13
   },
   {
     "id": "hakima_normal_date_05_fountain_errand",
@@ -5888,6 +5927,618 @@ const EVENT_MANIFEST = [
       "hiddenSummary": "物語を読み進めると解放"
     },
     "scriptStepCount": 25
+  },
+  {
+    "id": "hakima_normal_morning_11_ointment_scent_check",
+    "title": "軟膏壺の香り",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマが霊薬軟膏の香りから品質を見抜く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 66,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_normal_night_11_sand_bottle_after_sandstorm",
+    "title": "砂の薬瓶",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "砂嵐予報を受け、ハキマが保存性の高い薬瓶を棚へ出す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 58,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_normal_date_05_ruins_shield_errand",
+    "title": "遺跡帰りの丸盾",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "遺跡帰りの冒険者用に、ハキマと丸盾の仕入れを見に行く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_ruins",
+    "trigger": {
+      "once": true,
+      "weight": 42,
+      "requiresSeen": [
+        "hakima_normal_night_05_before_confession"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_ruins",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_morning_11_two_ointments_memory",
+    "title": "転んだ日の軟膏",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼い頃よく転んだハキマと、星瓶堂の軟膏壺の記憶。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 64,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_childhood_night_11_little_brother_earring",
+    "title": "弟への耳飾り",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが弟に贈る耳飾りを、ナーディルと選ぶ。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 54,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "hakima_childhood_date_05_market_sand_necklace",
+    "title": "砂の首飾りと裏道",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "市場の裏道で、ハキマが昔使っていた近道と砂の首飾りを見つける。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_market_central",
+    "trigger": {
+      "once": true,
+      "weight": 44,
+      "requiresSeen": [
+        "hakima_childhood_night_02_old_route"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 50,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "mira_normal_morning_11_star_earring_sales_note",
+    "title": "星霊の耳飾りと客層",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが星霊の耳飾りの売り方を、先輩相手に明るく提案する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 68,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "mira_normal_night_11_mage_staff_safety_margin",
+    "title": "魔導杖の安全余白",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが魔導杖の販路ではなく、安全設計の大切さを語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 56,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 30,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "mira_normal_date_05_port_preserved_bottles",
+    "title": "港の保存瓶",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "港で湿気に強い薬瓶を見ながら、ミラが流通と発明を語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_port_view",
+    "trigger": {
+      "once": true,
+      "weight": 44,
+      "requiresSeen": [
+        "mira_normal_night_04_ledger"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_port_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "mira_childhood_morning_11_secret_box_key",
+    "title": "秘密箱の鍵",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "星瓶堂で遊んでいた頃、ミラが隠した小さな鍵が見つかる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 66,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "mira_childhood_night_11_little_mage_staff",
+    "title": "小さな魔導杖",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラが昔作りかけた小型魔導杖を見つける。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 54,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "mira_childhood_date_05_palace_training_bracelet",
+    "title": "稽古用の腕輪",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "王宮近くで、ミラが稽古用の腕輪を選ぶ。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_palace_corridor",
+    "trigger": {
+      "once": true,
+      "weight": 43,
+      "requiresSeen": [
+        "mira_childhood_night_03_safiya_rivalry"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 50,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_palace_corridor",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_normal_morning_11_powder_for_silence",
+    "title": "声を守る粉薬",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "詩吟部の記憶と、沈黙を解く粉薬瓶をめぐるダリヤの会話。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 58,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_normal_night_11_life_necklace_research_note",
+    "title": "生命の首飾り",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "研究所で疲れたダリヤが、生命の首飾りの説明文に目を止める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 54,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_normal_date_05_palace_lab_star_powder",
+    "title": "研究室の星粉",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王宮研究室で、ダリヤが星霊の粉薬を見ながら研究所の本音を漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "date",
+    "thumbnail": "bg_palace_lab",
+    "trigger": {
+      "once": true,
+      "weight": 42,
+      "requiresSeen": [
+        "dariya_normal_night_05_limit"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_palace_lab",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_childhood_morning_11_two_colored_ointment",
+    "title": "二色の塗り薬",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "幼い日にナーディルが渡した二種類の塗り薬を、ダリヤが覚えている。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 68,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_childhood_night_11_safiya_ring_package",
+    "title": "姉からの指輪包み",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤから届いた指輪を、ダリヤと一緒に確認する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 52,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "dariya_childhood_date_05_star_view_life_charm",
+    "title": "星見台の生命留め具",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "星見台で、ダリヤが生命の留め具を手に昔の居場所を語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_spot_star_view",
+    "trigger": {
+      "once": true,
+      "weight": 42,
+      "requiresSeen": [
+        "dariya_childhood_night_03_safiya_letter_margin"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_star_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
   },
   {
     "id": "hakima_childhood_route_opening_001",
@@ -8745,11 +9396,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都の片隅に、星瓶堂という小さな錬金雑貨店がある。旅人の薬、夜道のランプ、暮らしを少し助ける品が並ぶ店だ。"
+      "textLines": [
+        "王都の片隅に、星瓶堂という小さな錬金雑貨店がある。",
+        "旅人の薬、夜道のランプ、暮らしを少し助ける品が並ぶ店だ。"
+      ],
+      "text": "王都の片隅に、星瓶堂という小さな錬金雑貨店がある。\n旅人の薬、夜道のランプ、暮らしを少し助ける品が並ぶ店だ。"
     },
     {
       "type": "narration",
-      "text": "店の看板は古く、扉の鈴も少しだけくたびれている。それでも朝になれば、常連はいつものようにこの戸口を探して歩いてくる。"
+      "textLines": [
+        "店の看板は古く、扉の鈴も少しだけくたびれている。",
+        "それでも朝になれば、常連はいつものようにこの戸口を探して歩いてくる。"
+      ],
+      "text": "店の看板は古く、扉の鈴も少しだけくたびれている。\nそれでも朝になれば、常連はいつものようにこの戸口を探して歩いてくる。"
     },
     {
       "type": "scene",
@@ -8767,11 +9426,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "店主のナーディルは二十二歳。王立錬金術大学を飛び級で出た秀才で、調合の腕も悪くない。"
+      "textLines": [
+        "店主のナーディルは二十二歳。",
+        "王立錬金術大学を飛び級で出た秀才で、調合の腕も悪くない。"
+      ],
+      "text": "店主のナーディルは二十二歳。\n王立錬金術大学を飛び級で出た秀才で、調合の腕も悪くない。"
     },
     {
       "type": "narration",
-      "text": "ただ、店を続けることは、良い薬を作ることだけでは済まなかった。値札、仕入れ、帳簿、客の顔色。薬瓶の外にも、見るべきものは多い。"
+      "textLines": [
+        "ただ、店を続けることは、良い薬を作ることだけでは済まなかった。",
+        "値札、仕入れ、帳簿、客の顔色。薬瓶の外にも、見るべきものは多い。"
+      ],
+      "text": "ただ、店を続けることは、良い薬を作ることだけでは済まなかった。\n値札、仕入れ、帳簿、客の顔色。薬瓶の外にも、見るべきものは多い。"
     },
     {
       "type": "line",
@@ -8781,11 +9448,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父は錬金カメラの発明で名を上げ、母と旅へ出た。姉は商社を立ち上げ、あっという間に大きな商いを動かしている。"
+      "textLines": [
+        "父は錬金カメラの発明で名を上げ、母と旅へ出た。",
+        "姉は商社を立ち上げ、あっという間に大きな商いを動かしている。"
+      ],
+      "text": "父は錬金カメラの発明で名を上げ、母と旅へ出た。\n姉は商社を立ち上げ、あっという間に大きな商いを動かしている。"
     },
     {
       "type": "narration",
-      "text": "無理に継がなくてもいい、と家族は言った。けれどナーディルには、祖父たちの薬瓶が残るこの店を、誰かに渡す気にはなれなかった。"
+      "textLines": [
+        "無理に継がなくてもいい、と家族は言った。",
+        "けれどナーディルには、祖父たちの薬瓶が残るこの店を、誰かに渡す気にはなれなかった。"
+      ],
+      "text": "無理に継がなくてもいい、と家族は言った。\nけれどナーディルには、祖父たちの薬瓶が残るこの店を、誰かに渡す気にはなれなかった。"
     },
     {
       "type": "line",
@@ -8804,7 +9479,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_store_morning_letter_from_family": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -8822,12 +9497,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、旅先からの封筒が届いた。中には、崖の上から撮ったらしい一枚の写真が入っている。"
+      "textLines": [
+        "開店前、旅先からの封筒が届いた。",
+        "中には、崖の上から撮ったらしい一枚の写真が入っている。"
+      ],
+      "text": "開店前、旅先からの封筒が届いた。\n中には、崖の上から撮ったらしい一枚の写真が入っている。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "surprise",
       "text": "……どこかな、ここ。母さん、笑っている場合じゃないよね。"
     },
     {
@@ -8853,7 +9532,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "分かりすぎるわ。私は怖くて上がれない。白狼族なら崖くらい平気、なんて思わないでよ。"
+      "textLines": [
+        "分かりすぎるわ。私は怖くて上がれない。",
+        "白狼族なら崖くらい平気、なんて思わないでよ。"
+      ],
+      "text": "分かりすぎるわ。私は怖くて上がれない。\n白狼族なら崖くらい平気、なんて思わないでよ。"
     },
     {
       "type": "line",
@@ -8865,11 +9548,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "余計な観察はしなくていい。……でも、写真は棚の奥にしまいなさい。客が見ると真似しかねないわ。"
+      "textLines": [
+        "余計な観察はしなくていい。……でも、写真は棚の奥にしまいなさい。",
+        "客が見ると真似しかねないわ。"
+      ],
+      "text": "余計な観察はしなくていい。……でも、写真は棚の奥にしまいなさい。\n客が見ると真似しかねないわ。"
     },
     {
       "type": "narration",
-      "text": "ハキマはそう言いながら、写真の端を丁寧に封筒へ戻した。叱り方はきついが、扱いは誰より慎重だった。"
+      "textLines": [
+        "ハキマはそう言いながら、写真の端を丁寧に封筒へ戻した。",
+        "叱り方はきついが、扱いは誰より慎重だった。"
+      ],
+      "text": "ハキマはそう言いながら、写真の端を丁寧に封筒へ戻した。\n叱り方はきついが、扱いは誰より慎重だった。"
     },
     {
       "type": "end"
@@ -8896,7 +9587,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -8906,13 +9601,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -8925,7 +9628,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -8943,7 +9646,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -8953,7 +9660,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "香料の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "香料の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "香料の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -8963,7 +9674,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -8990,7 +9705,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、カウンターの隅に旅人の護符が残っていた。砂除けの古い結び目がついた、使い込まれた品だ。"
+      "textLines": [
+        "閉店後、カウンターの隅に旅人の護符が残っていた。",
+        "砂除けの古い結び目がついた、使い込まれた品だ。"
+      ],
+      "text": "閉店後、カウンターの隅に旅人の護符が残っていた。\n砂除けの古い結び目がついた、使い込まれた品だ。"
     },
     {
       "type": "line",
@@ -9009,7 +9728,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "保管札をつけて、湿気の少ない箱へ。護符は飾りじゃないわ。旅人には命綱よ。"
+      "textLines": [
+        "保管札をつけて、湿気の少ない箱へ。護符は飾りじゃないわ。",
+        "旅人には命綱よ。"
+      ],
+      "text": "保管札をつけて、湿気の少ない箱へ。護符は飾りじゃないわ。\n旅人には命綱よ。"
     },
     {
       "type": "line",
@@ -9021,17 +9744,29 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "香料問屋にも護衛の客は来るの。……白狼族の親戚なら、忘れる方が悪いって言うでしょうけど。"
+      "textLines": [
+        "香料問屋にも護衛の客は来るの。",
+        "……白狼族の親戚なら、忘れる方が悪いって言うでしょうけど。"
+      ],
+      "text": "香料問屋にも護衛の客は来るの。\n……白狼族の親戚なら、忘れる方が悪いって言うでしょうけど。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "私は、戻ってきた客が安心できる方がいい。職人の店なら、そこまで面倒を見るべきよ。"
+      "textLines": [
+        "私は、戻ってきた客が安心できる方がいい。",
+        "職人の店なら、そこまで面倒を見るべきよ。"
+      ],
+      "text": "私は、戻ってきた客が安心できる方がいい。\n職人の店なら、そこまで面倒を見るべきよ。"
     },
     {
       "type": "narration",
-      "text": "きつい言い方の奥に、彼女が選んできた誇りが見えた。ナーディルは黙って、保管箱の蓋を閉じる。"
+      "textLines": [
+        "きつい言い方の奥に、彼女が選んできた誇りが見えた。",
+        "ナーディルは黙って、保管箱の蓋を閉じる。"
+      ],
+      "text": "きつい言い方の奥に、彼女が選んできた誇りが見えた。\nナーディルは黙って、保管箱の蓋を閉じる。"
     },
     {
       "type": "end"
@@ -9040,7 +9775,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_store_morning_letter_from_family": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -9058,7 +9793,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父母から届いた写真には、山脈の要塞を遠くに望む吊り橋が写っていた。昔なら、ナーディルはすぐにハキマへ見せに走っただろう。"
+      "textLines": [
+        "父母から届いた写真には、山脈の要塞を遠くに望む吊り橋が写っていた。",
+        "昔なら、ナーディルはすぐにハキマへ見せに走っただろう。"
+      ],
+      "text": "父母から届いた写真には、山脈の要塞を遠くに望む吊り橋が写っていた。\n昔なら、ナーディルはすぐにハキマへ見せに走っただろう。"
     },
     {
       "type": "line",
@@ -9077,7 +9816,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "今も文句を言うわよ。あなたのご両親は、どうして安全な地面で写真を撮れないの。"
+      "textLines": [
+        "今も文句を言うわよ。",
+        "あなたのご両親は、どうして安全な地面で写真を撮れないの。"
+      ],
+      "text": "今も文句を言うわよ。\nあなたのご両親は、どうして安全な地面で写真を撮れないの。"
     },
     {
       "type": "line",
@@ -9089,7 +9832,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "……私は昔、尻尾のせいで低い塀からでも落ちたのよ。あの橋は無理。絶対に無理。"
+      "textLines": [
+        "……私は昔、尻尾のせいで低い塀からでも落ちたのよ。あの橋は無理。",
+        "絶対に無理。"
+      ],
+      "text": "……私は昔、尻尾のせいで低い塀からでも落ちたのよ。あの橋は無理。\n絶対に無理。"
     },
     {
       "type": "line",
@@ -9132,7 +9879,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -9142,13 +9893,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -9161,7 +9920,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -9179,7 +9938,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -9189,7 +9952,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "昔なじみの棚の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "昔なじみの棚の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "昔なじみの棚の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -9199,7 +9966,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -9208,7 +9979,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_store_night_customer_left_item": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -9226,7 +9997,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+      "textLines": [
+        "閉店後のカウンターに、小さな護符が残っていた。",
+        "遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+      ],
+      "text": "閉店後のカウンターに、小さな護符が残っていた。\n遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
     },
     {
       "type": "line",
@@ -9257,7 +10032,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+      "textLines": [
+        "言ってほしいなら言うけど。",
+        "……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+      ],
+      "text": "言ってほしいなら言うけど。\n……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
     },
     {
       "type": "focus",
@@ -9277,7 +10056,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_store_morning_letter_from_family": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -9295,13 +10074,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父からの手紙には、新しいレンズで撮った港の遠景が入っていた。白い帆の縁まで、細い線でくっきり写っている。"
+      "textLines": [
+        "父からの手紙には、新しいレンズで撮った港の遠景が入っていた。",
+        "白い帆の縁まで、細い線でくっきり写っている。"
+      ],
+      "text": "父からの手紙には、新しいレンズで撮った港の遠景が入っていた。\n白い帆の縁まで、細い線でくっきり写っている。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "またすごい写真を送ってきましたね。これ、どうやって焦点を合わせたんだろう。"
+      "textLines": [
+        "またすごい写真を送ってきましたね。",
+        "これ、どうやって焦点を合わせたんだろう。"
+      ],
+      "text": "またすごい写真を送ってきましたね。\nこれ、どうやって焦点を合わせたんだろう。"
     },
     {
       "type": "focus",
@@ -9326,13 +10113,21 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "もちろんです。写真も素敵ですけど、発明品は中身まで見たいです。先輩のお父様、本当にすごい方ですから。"
+      "textLines": [
+        "もちろんです。写真も素敵ですけど、発明品は中身まで見たいです。",
+        "先輩のお父様、本当にすごい方ですから。"
+      ],
+      "text": "もちろんです。写真も素敵ですけど、発明品は中身まで見たいです。\n先輩のお父様、本当にすごい方ですから。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "……でも、星瓶堂の棚にこれを飾ったら、お客さんの目を引けますね。商談の導線にも使えます。"
+      "textLines": [
+        "……でも、星瓶堂の棚にこれを飾ったら、お客さんの目を引けますね。",
+        "商談の導線にも使えます。"
+      ],
+      "text": "……でも、星瓶堂の棚にこれを飾ったら、お客さんの目を引けますね。\n商談の導線にも使えます。"
     },
     {
       "type": "line",
@@ -9348,7 +10143,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは写真を光に透かし、目を輝かせた。その明るさに、朝の店が少し広く見えた。"
+      "textLines": [
+        "ミラは写真を光に透かし、目を輝かせた。",
+        "その明るさに、朝の店が少し広く見えた。"
+      ],
+      "text": "ミラは写真を光に透かし、目を輝かせた。\nその明るさに、朝の店が少し広く見えた。"
     },
     {
       "type": "end"
@@ -9375,7 +10174,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -9385,13 +10188,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -9404,7 +10215,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -9422,7 +10233,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -9432,7 +10247,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "商会の帳面の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "商会の帳面の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "商会の帳面の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -9442,7 +10261,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -9451,7 +10274,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_store_night_customer_left_item": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -9469,7 +10292,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+      "textLines": [
+        "閉店後のカウンターに、小さな護符が残っていた。",
+        "遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+      ],
+      "text": "閉店後のカウンターに、小さな護符が残っていた。\n遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
     },
     {
       "type": "line",
@@ -9517,7 +10344,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラの声は明るいのに、指摘は容赦がない。ナーディルは護符に札を結び、明日の棚へそっと置いた。"
+      "textLines": [
+        "ミラの声は明るいのに、指摘は容赦がない。",
+        "ナーディルは護符に札を結び、明日の棚へそっと置いた。"
+      ],
+      "text": "ミラの声は明るいのに、指摘は容赦がない。\nナーディルは護符に札を結び、明日の棚へそっと置いた。"
     },
     {
       "type": "end"
@@ -9526,7 +10357,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_store_morning_letter_from_family": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -9544,13 +10375,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父母からの写真は、異国の市場で撮られたものだった。写っている香炉の形を見て、ナーディルは昔の店の棚を思い出す。"
+      "textLines": [
+        "父母からの写真は、異国の市場で撮られたものだった。",
+        "写っている香炉の形を見て、ナーディルは昔の店の棚を思い出す。"
+      ],
+      "text": "父母からの写真は、異国の市場で撮られたものだった。\n写っている香炉の形を見て、ナーディルは昔の店の棚を思い出す。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "この香炉、昔うちにも似たものがありましたね。ミラが中に飴を隠していたものだよ。"
+      "textLines": [
+        "この香炉、昔うちにも似たものがありましたね。",
+        "ミラが中に飴を隠していたものだよ。"
+      ],
+      "text": "この香炉、昔うちにも似たものがありましたね。\nミラが中に飴を隠していたものだよ。"
     },
     {
       "type": "focus",
@@ -9562,26 +10401,30 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "surprise",
+      "expression": "anger",
       "text": "ナーディルお兄ちゃん、それは時効です！　あと、あれは研究用の糖分補給でした！"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "研究用なら、どうして姉さんに見つかった時に逃げたんだ？"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "fun",
+      "expression": "anger",
       "text": "サフィーヤお姉様の尋問は、王宮の検査官より鋭いからです。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "joy",
-      "text": "でも、この写真いいですね。お兄ちゃんのご両親らしいです。楽しそうで、ちょっとずるいくらい。"
+      "expression": "anger",
+      "textLines": [
+        "でも、この写真いいですね。お兄ちゃんのご両親らしいです。",
+        "楽しそうで、ちょっとずるいくらい。"
+      ],
+      "text": "でも、この写真いいですね。お兄ちゃんのご両親らしいです。\n楽しそうで、ちょっとずるいくらい。"
     },
     {
       "type": "line",
@@ -9593,11 +10436,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "自由にできる人がいるから、残ったお店も物語になるんですよ。私は、星瓶堂のそういうところ好きです。"
+      "textLines": [
+        "自由にできる人がいるから、残ったお店も物語になるんですよ。",
+        "私は、星瓶堂のそういうところ好きです。"
+      ],
+      "text": "自由にできる人がいるから、残ったお店も物語になるんですよ。\n私は、星瓶堂のそういうところ好きです。"
     },
     {
       "type": "narration",
-      "text": "昔の遊び場だった店で、ミラは今も当たり前のように笑う。その笑顔が、ナーディルには少し眩しかった。"
+      "textLines": [
+        "昔の遊び場だった店で、ミラは今も当たり前のように笑う。",
+        "その笑顔が、ナーディルには少し眩しかった。"
+      ],
+      "text": "昔の遊び場だった店で、ミラは今も当たり前のように笑う。\nその笑顔が、ナーディルには少し眩しかった。"
     },
     {
       "type": "end"
@@ -9624,7 +10475,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -9634,13 +10489,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -9653,7 +10516,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -9671,7 +10534,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -9681,7 +10548,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "遊び場だった店の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "遊び場だった店の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "遊び場だった店の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -9691,7 +10562,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -9700,7 +10575,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_store_night_customer_left_item": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -9718,7 +10593,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、客の忘れ物らしい小袋が出てきた。中には遺跡の砂と、小さな護符が入っている。"
+      "textLines": [
+        "閉店後、客の忘れ物らしい小袋が出てきた。",
+        "中には遺跡の砂と、小さな護符が入っている。"
+      ],
+      "text": "閉店後、客の忘れ物らしい小袋が出てきた。\n中には遺跡の砂と、小さな護符が入っている。"
     },
     {
       "type": "line",
@@ -9736,14 +10615,18 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "surprise",
+      "expression": "anger",
       "text": "お兄ちゃん、昔の私を便利な前科にしないでください！"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "……でも、預かり証は作りましょう。商会式なら、紐の色と棚番号で一発です。"
+      "textLines": [
+        "……でも、預かり証は作りましょう。",
+        "商会式なら、紐の色と棚番号で一発です。"
+      ],
+      "text": "……でも、預かり証は作りましょう。\n商会式なら、紐の色と棚番号で一発です。"
     },
     {
       "type": "line",
@@ -9754,12 +10637,20 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "joy",
-      "text": "中身を開けないだけ成長しました。褒めてください、ナーディルお兄ちゃん。"
+      "expression": "anger",
+      "textLines": [
+        "中身を開けないだけ成長しました。",
+        "褒めてください、ナーディルお兄ちゃん。"
+      ],
+      "text": "中身を開けないだけ成長しました。\n褒めてください、ナーディルお兄ちゃん。"
     },
     {
       "type": "narration",
-      "text": "ミラは得意げに札を結び、棚番号まで小さく書き添えた。昔の遊び場は、少しずつ彼女の仕事場にもなっている。"
+      "textLines": [
+        "ミラは得意げに札を結び、棚番号まで小さく書き添えた。",
+        "昔の遊び場は、少しずつ彼女の仕事場にもなっている。"
+      ],
+      "text": "ミラは得意げに札を結び、棚番号まで小さく書き添えた。\n昔の遊び場は、少しずつ彼女の仕事場にもなっている。"
     },
     {
       "type": "end"
@@ -9786,7 +10677,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "旅先から届いた写真には、地図にない滝と、その前で笑う母が写っていた。父の手紙には「道はなかったが景色はあった」とだけある。"
+      "textLines": [
+        "旅先から届いた写真には、地図にない滝と、その前で笑う母が写っていた。",
+        "父の手紙には「道はなかったが景色はあった」とだけある。"
+      ],
+      "text": "旅先から届いた写真には、地図にない滝と、その前で笑う母が写っていた。\n父の手紙には「道はなかったが景色はあった」とだけある。"
     },
     {
       "type": "line",
@@ -9816,8 +10711,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
-      "text": "怒られる前に、申請書が三枚増える。たぶん、滝を見る頃には心が乾いてる。"
+      "expression": "surprise",
+      "textLines": [
+        "怒られる前に、申請書が三枚増える。",
+        "たぶん、滝を見る頃には心が乾いてる。"
+      ],
+      "text": "怒られる前に、申請書が三枚増える。\nたぶん、滝を見る頃には心が乾いてる。"
     },
     {
       "type": "line",
@@ -9829,11 +10728,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "fun",
-      "text": "うん。だから、この写真は店に置こう。忙しい人が見たら、少しだけ遠くへ逃げた気になれる。"
+      "textLines": [
+        "うん。だから、この写真は店に置こう。",
+        "忙しい人が見たら、少しだけ遠くへ逃げた気になれる。"
+      ],
+      "text": "うん。だから、この写真は店に置こう。\n忙しい人が見たら、少しだけ遠くへ逃げた気になれる。"
     },
     {
       "type": "narration",
-      "text": "ダリヤは写真を見つめる目だけを、少し柔らかくした。星瓶堂の朝に、遠い水音が混ざった気がした。"
+      "textLines": [
+        "ダリヤは写真を見つめる目だけを、少し柔らかくした。",
+        "星瓶堂の朝に、遠い水音が混ざった気がした。"
+      ],
+      "text": "ダリヤは写真を見つめる目だけを、少し柔らかくした。\n星瓶堂の朝に、遠い水音が混ざった気がした。"
     },
     {
       "type": "end"
@@ -9860,7 +10767,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -9870,13 +10781,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -9889,7 +10808,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_DARIYA_1"
     },
     {
       "type": "scene",
@@ -9907,7 +10826,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -9917,7 +10840,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "研究所帰りの沈黙の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "研究所帰りの沈黙の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "研究所帰りの沈黙の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -9927,7 +10854,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -9954,7 +10885,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、椅子の下から小さな護符が見つかった。遺跡帰りの客が、疲れて落としていったのだろう。"
+      "textLines": [
+        "閉店後、椅子の下から小さな護符が見つかった。",
+        "遺跡帰りの客が、疲れて落としていったのだろう。"
+      ],
+      "text": "閉店後、椅子の下から小さな護符が見つかった。\n遺跡帰りの客が、疲れて落としていったのだろう。"
     },
     {
       "type": "line",
@@ -9978,14 +10913,18 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "そういう考え方もあるんだね。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
-      "text": "研究所だと、忘れ物は減点。ここだと、もう一度扉を開けるきっかけになる。"
+      "expression": "anger",
+      "textLines": [
+        "研究所だと、忘れ物は減点。",
+        "ここだと、もう一度扉を開けるきっかけになる。"
+      ],
+      "text": "研究所だと、忘れ物は減点。\nここだと、もう一度扉を開けるきっかけになる。"
     },
     {
       "type": "line",
@@ -9995,7 +10934,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤの言葉は静かだった。けれどその静けさが、夜の店にはよく合っていた。"
+      "textLines": [
+        "ダリヤの言葉は静かだった。",
+        "けれどその静けさが、夜の店にはよく合っていた。"
+      ],
+      "text": "ダリヤの言葉は静かだった。\nけれどその静けさが、夜の店にはよく合っていた。"
     },
     {
       "type": "end"
@@ -10022,7 +10965,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父母からの写真には、月の白い砂浜が写っていた。白い光を反射する砂は、どこかダリヤの横顔を思わせる。"
+      "textLines": [
+        "父母からの写真には、月の白い砂浜が写っていた。",
+        "白い光を反射する砂は、どこかダリヤの横顔を思わせる。"
+      ],
+      "text": "父母からの写真には、月の白い砂浜が写っていた。\n白い光を反射する砂は、どこかダリヤの横顔を思わせる。"
     },
     {
       "type": "line",
@@ -10040,7 +10987,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "呼んだ？　お姉ちゃん、写真を見る仕事ならいつでもできるよ。"
     },
     {
@@ -10065,7 +11012,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "……そういうことを、何でもない顔で言うから困る。昔から、ここは戻ってきたくなるんだよね。"
+      "textLines": [
+        "……そういうことを、何でもない顔で言うから困る。",
+        "昔から、ここは戻ってきたくなるんだよね。"
+      ],
+      "text": "……そういうことを、何でもない顔で言うから困る。\n昔から、ここは戻ってきたくなるんだよね。"
     },
     {
       "type": "line",
@@ -10102,7 +11053,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+      "textLines": [
+        "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。",
+        "紙の質も、筆圧も、商談の書類そのものだ。"
+      ],
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。\n紙の質も、筆圧も、商談の書類そのものだ。"
     },
     {
       "type": "line",
@@ -10112,13 +11067,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      "textLines": [
+        "最後には、粗利を見なさい、と一文だけ太く書かれている。",
+        "ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+      ],
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。\nナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。まずは、明日の値札から直すよ。"
+      "textLines": [
+        "ありがたいよ。でも、ここは俺の店として立たせたい。",
+        "まずは、明日の値札から直すよ。"
+      ],
+      "text": "ありがたいよ。でも、ここは俺の店として立たせたい。\nまずは、明日の値札から直すよ。"
     },
     {
       "type": "narration",
@@ -10131,7 +11094,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_store_morning_weather_stock": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_DARIYA_2"
     },
     {
       "type": "scene",
@@ -10149,7 +11112,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      "textLines": [
+        "王都新聞の端に、午後から砂嵐の兆しとあった。",
+        "ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+      ],
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。\nナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
     },
     {
       "type": "line",
@@ -10159,7 +11126,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰ってくる椅子の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      "textLines": [
+        "帰ってくる椅子の扱いを思い出しながら手を動かす。",
+        "店は小さいが、こういう備えひとつで客の信頼は変わる。"
+      ],
+      "text": "帰ってくる椅子の扱いを思い出しながら手を動かす。\n店は小さいが、こういう備えひとつで客の信頼は変わる。"
     },
     {
       "type": "line",
@@ -10169,7 +11140,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+      "textLines": [
+        "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。",
+        "星瓶堂の一日が始まる。"
+      ],
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。\n星瓶堂の一日が始まる。"
     },
     {
       "type": "end"
@@ -10196,7 +11171,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "客の忘れ物を片付けていると、ダリヤが懐かしそうに棚の隅を見た。そこは昔、彼女がよく居眠りしていた場所だった。"
+      "textLines": [
+        "客の忘れ物を片付けていると、ダリヤが懐かしそうに棚の隅を見た。",
+        "そこは昔、彼女がよく居眠りしていた場所だった。"
+      ],
+      "text": "客の忘れ物を片付けていると、ダリヤが懐かしそうに棚の隅を見た。\nそこは昔、彼女がよく居眠りしていた場所だった。"
     },
     {
       "type": "line",
@@ -10226,8 +11205,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
-      "text": "忘れたんじゃなくて、また来たかったの。……お姉ちゃん、昔から計画的だったから。"
+      "expression": "surprise",
+      "textLines": [
+        "忘れたんじゃなくて、また来たかったの。",
+        "……お姉ちゃん、昔から計画的だったから。"
+      ],
+      "text": "忘れたんじゃなくて、また来たかったの。\n……お姉ちゃん、昔から計画的だったから。"
     },
     {
       "type": "line",
@@ -10252,7 +11235,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_04_oasis_spice_delivery": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -10270,7 +11253,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "昼下がりのオアシス通りは、王都より少しだけ風が涼しい。ナーディルは香料箱を抱え、納品先の札を何度も確認していた。"
+      "textLines": [
+        "昼下がりのオアシス通りは、王都より少しだけ風が涼しい。",
+        "ナーディルは香料箱を抱え、納品先の札を何度も確認していた。"
+      ],
+      "text": "昼下がりのオアシス通りは、王都より少しだけ風が涼しい。\nナーディルは香料箱を抱え、納品先の札を何度も確認していた。"
     },
     {
       "type": "line",
@@ -10294,7 +11281,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "joy",
+      "expression": "surprise",
       "text": "すごく詳しいね。修行先で、かなり鍛えられているんだね。"
     },
     {
@@ -10305,7 +11292,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "言葉はきついのに、箱を持ち直す手つきは丁寧だった。ナーディルはその横顔に、努力で積み上げた時間を見た気がした。"
+      "textLines": [
+        "言葉はきついのに、箱を持ち直す手つきは丁寧だった。",
+        "ナーディルはその横顔に、努力で積み上げた時間を見た気がした。"
+      ],
+      "text": "言葉はきついのに、箱を持ち直す手つきは丁寧だった。\nナーディルはその横顔に、努力で積み上げた時間を見た気がした。"
     },
     {
       "type": "line",
@@ -10320,7 +11311,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_night_08_festival_street_afterwork": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -10338,13 +11329,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、納品帰りの二人は祭り通りを抜けていた。灯りの列と甘い菓子の匂いが、昼の疲れを少しだけ遠ざける。"
+      "textLines": [
+        "閉店後、納品帰りの二人は祭り通りを抜けていた。",
+        "灯りの列と甘い菓子の匂いが、昼の疲れを少しだけ遠ざける。"
+      ],
+      "text": "閉店後、納品帰りの二人は祭り通りを抜けていた。\n灯りの列と甘い菓子の匂いが、昼の疲れを少しだけ遠ざける。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "今日は客足が読めなかったな。祭り前は、もっと贈り物が動くと思ったんだけど。"
+      "textLines": [
+        "今日は客足が読めなかったな。",
+        "祭り前は、もっと贈り物が動くと思ったんだけど。"
+      ],
+      "text": "今日は客足が読めなかったな。\n祭り前は、もっと贈り物が動くと思ったんだけど。"
     },
     {
       "type": "focus",
@@ -10357,7 +11356,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "読みは悪くないわ。ただ、客は贈り物を買いに来る前に、誰に渡すかで迷うのよ。"
+      "textLines": [
+        "読みは悪くないわ。",
+        "ただ、客は贈り物を買いに来る前に、誰に渡すかで迷うのよ。"
+      ],
+      "text": "読みは悪くないわ。\nただ、客は贈り物を買いに来る前に、誰に渡すかで迷うのよ。"
     },
     {
       "type": "line",
@@ -10373,7 +11376,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは屋台の灯りに目を細めた。横顔はいつもより柔らかく、ナーディルは返事を少しだけ遅らせた。"
+      "textLines": [
+        "ハキマは屋台の灯りに目を細めた。",
+        "横顔はいつもより柔らかく、ナーディルは返事を少しだけ遅らせた。"
+      ],
+      "text": "ハキマは屋台の灯りに目を細めた。\n横顔はいつもより柔らかく、ナーディルは返事を少しだけ遅らせた。"
     },
     {
       "type": "line",
@@ -10388,7 +11395,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_09_port_delayed_cargo": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -10406,7 +11413,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港へ向かう通りは、朝から荷車の音で混み合っていた。ナーディルは届くはずの素材名を見て、少しだけ眉を寄せる。"
+      "textLines": [
+        "港へ向かう通りは、朝から荷車の音で混み合っていた。",
+        "ナーディルは届くはずの素材名を見て、少しだけ眉を寄せる。"
+      ],
+      "text": "港へ向かう通りは、朝から荷車の音で混み合っていた。\nナーディルは届くはずの素材名を見て、少しだけ眉を寄せる。"
     },
     {
       "type": "line",
@@ -10430,7 +11441,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "joy",
+      "expression": "fun",
       "text": "助かるよ。ハキマがいると、棚が急に頼もしくなるな。"
     },
     {
@@ -10441,7 +11452,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "言いながら、ハキマは迷わず別の瓶を選び出した。星瓶堂の朝は、少しずつ二人の手で整っていく。"
+      "textLines": [
+        "言いながら、ハキマは迷わず別の瓶を選び出した。",
+        "星瓶堂の朝は、少しずつ二人の手で整っていく。"
+      ],
+      "text": "言いながら、ハキマは迷わず別の瓶を選び出した。\n星瓶堂の朝は、少しずつ二人の手で整っていく。"
     },
     {
       "type": "end"
@@ -10450,7 +11465,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_03_fortress_caravan_story": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -10468,7 +11483,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "オアシスの停留所には、北西の要塞から戻った隊商が荷を下ろしていた。護衛たちの笑い声に、ハキマの耳がわずかに動く。"
+      "textLines": [
+        "オアシスの停留所には、北西の要塞から戻った隊商が荷を下ろしていた。",
+        "護衛たちの笑い声に、ハキマの耳がわずかに動く。"
+      ],
+      "text": "オアシスの停留所には、北西の要塞から戻った隊商が荷を下ろしていた。\n護衛たちの笑い声に、ハキマの耳がわずかに動く。"
     },
     {
       "type": "line",
@@ -10492,7 +11511,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "転んでも、いつも立ち上がってた。俺はそっちの方を覚えてる。"
     },
     {
@@ -10503,7 +11522,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "隊商の鈴が鳴る。幼い頃の砂埃は遠くなったはずなのに、二人の間にはまだ同じ道が続いているようだった。"
+      "textLines": [
+        "隊商の鈴が鳴る。",
+        "幼い頃の砂埃は遠くなったはずなのに、二人の間にはまだ同じ道が続いているようだった。"
+      ],
+      "text": "隊商の鈴が鳴る。\n幼い頃の砂埃は遠くなったはずなのに、二人の間にはまだ同じ道が続いているようだった。"
     },
     {
       "type": "end"
@@ -10512,7 +11535,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_03_port_invention_crates": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -10530,7 +11553,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の風は、王都の市場とは違う匂いがした。異国の木箱が並び、金具や硝子片が陽を受けてきらめいている。"
+      "textLines": [
+        "港の風は、王都の市場とは違う匂いがした。",
+        "異国の木箱が並び、金具や硝子片が陽を受けてきらめいている。"
+      ],
+      "text": "港の風は、王都の市場とは違う匂いがした。\n異国の木箱が並び、金具や硝子片が陽を受けてきらめいている。"
     },
     {
       "type": "line",
@@ -10561,11 +11588,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "でも、こういう箱を見るとわくわくします。誰かの発明の途中が、海を越えてここまで来たんですよ。"
+      "textLines": [
+        "でも、こういう箱を見るとわくわくします。",
+        "誰かの発明の途中が、海を越えてここまで来たんですよ。"
+      ],
+      "text": "でも、こういう箱を見るとわくわくします。\n誰かの発明の途中が、海を越えてここまで来たんですよ。"
     },
     {
       "type": "narration",
-      "text": "ミラは部品の一つを手に取り、宝石を見るように目を輝かせた。令嬢ではなく、発明家になりたい少女の顔だった。"
+      "textLines": [
+        "ミラは部品の一つを手に取り、宝石を見るように目を輝かせた。",
+        "令嬢ではなく、発明家になりたい少女の顔だった。"
+      ],
+      "text": "ミラは部品の一つを手に取り、宝石を見るように目を輝かせた。\n令嬢ではなく、発明家になりたい少女の顔だった。"
     },
     {
       "type": "line",
@@ -10580,7 +11615,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_09_palace_lab_delivery": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_1"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -10598,7 +11633,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の王宮研究室は、磨かれた器具の光まできちんと並んでいる。ナーディルは納品箱を抱え、入口で少し背筋を伸ばした。"
+      "textLines": [
+        "朝の王宮研究室は、磨かれた器具の光まできちんと並んでいる。",
+        "ナーディルは納品箱を抱え、入口で少し背筋を伸ばした。"
+      ],
+      "text": "朝の王宮研究室は、磨かれた器具の光まできちんと並んでいる。\nナーディルは納品箱を抱え、入口で少し背筋を伸ばした。"
     },
     {
       "type": "line",
@@ -10616,13 +11655,13 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "fun",
+      "expression": "anger",
       "text": "信用は便利です。でも、便利なものほど使い方を間違えると怒られます。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "joy",
+      "expression": "sorrow",
       "text": "前に危ない実験で叱られた人の言葉は重いな。"
     },
     {
@@ -10633,7 +11672,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "言い返す声は明るいが、納品書を握る指には少しだけ力が入っていた。ナーディルは箱の位置をそっと持ち直す。"
+      "textLines": [
+        "言い返す声は明るいが、納品書を握る指には少しだけ力が入っていた。",
+        "ナーディルは箱の位置をそっと持ち直す。"
+      ],
+      "text": "言い返す声は明るいが、納品書を握る指には少しだけ力が入っていた。\nナーディルは箱の位置をそっと持ち直す。"
     },
     {
       "type": "line",
@@ -10666,7 +11709,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台からは、王都の灯りと東の湖のきらめきが同じ夜の中に見えた。ミラは欄干に手を置き、珍しく静かにしている。"
+      "textLines": [
+        "星見台からは、王都の灯りと東の湖のきらめきが同じ夜の中に見えた。",
+        "ミラは欄干に手を置き、珍しく静かにしている。"
+      ],
+      "text": "星見台からは、王都の灯りと東の湖のきらめきが同じ夜の中に見えた。\nミラは欄干に手を置き、珍しく静かにしている。"
     },
     {
       "type": "line",
@@ -10684,8 +11731,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "sorrow",
-      "text": "ナーディルお兄ちゃんのお姉様って、すごい人ですよね。発明家を捕まえて、商社まで作って。"
+      "expression": "anger",
+      "textLines": [
+        "ナーディルお兄ちゃんのお姉様って、すごい人ですよね。",
+        "発明家を捕まえて、商社まで作って。"
+      ],
+      "text": "ナーディルお兄ちゃんのお姉様って、すごい人ですよね。\n発明家を捕まえて、商社まで作って。"
     },
     {
       "type": "line",
@@ -10701,7 +11752,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "強がる声の最後だけ、少し甘えた響きになった。ナーディルは笑わず、星の向こうを見たまま頷く。"
+      "textLines": [
+        "強がる声の最後だけ、少し甘えた響きになった。",
+        "ナーディルは笑わず、星の向こうを見たまま頷く。"
+      ],
+      "text": "強がる声の最後だけ、少し甘えた響きになった。\nナーディルは笑わず、星の向こうを見たまま頷く。"
     },
     {
       "type": "line",
@@ -10740,7 +11795,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の王宮廊下には、雨音だけが長く残っていた。納品を終えたナーディルは、柱の影で足を止めるダリヤに気づく。"
+      "textLines": [
+        "夜の王宮廊下には、雨音だけが長く残っていた。",
+        "納品を終えたナーディルは、柱の影で足を止めるダリヤに気づく。"
+      ],
+      "text": "夜の王宮廊下には、雨音だけが長く残っていた。\n納品を終えたナーディルは、柱の影で足を止めるダリヤに気づく。"
     },
     {
       "type": "line",
@@ -10758,7 +11817,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
+      "expression": "anger",
       "text": "帰る場所を選んでいるところ。研究所に戻るか、星瓶堂に寄るか。"
     },
     {
@@ -10775,12 +11834,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "冗談めいた声の奥に、疲れが沈んでいた。ナーディルは返事の代わりに、雨の弱い通路を選んで歩き出す。"
+      "textLines": [
+        "冗談めいた声の奥に、疲れが沈んでいた。",
+        "ナーディルは返事の代わりに、雨の弱い通路を選んで歩き出す。"
+      ],
+      "text": "冗談めいた声の奥に、疲れが沈んでいた。\nナーディルは返事の代わりに、雨の弱い通路を選んで歩き出す。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "anger",
       "text": "……そういうところ、真面目だよね。ずるいくらい。"
     },
     {
@@ -10808,7 +11871,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王都近郊の地下遺跡入口では、冒険者たちが保存薬や灯りを買い込んでいた。ナーディルは納品書を見ながら、品数を一つずつ確認する。"
+      "textLines": [
+        "王都近郊の地下遺跡入口では、冒険者たちが保存薬や灯りを買い込んでいた。",
+        "ナーディルは納品書を見ながら、品数を一つずつ確認する。"
+      ],
+      "text": "王都近郊の地下遺跡入口では、冒険者たちが保存薬や灯りを買い込んでいた。\nナーディルは納品書を見ながら、品数を一つずつ確認する。"
     },
     {
       "type": "line",
@@ -10826,7 +11893,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "そういうことを、普通に言えるのが君らしいね。"
     },
     {
@@ -10838,12 +11905,16 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
+      "expression": "anger",
       "text": "研究所だと、普通が一番難しい日もあるよ。"
     },
     {
       "type": "narration",
-      "text": "遺跡の奥から冷たい風が吹いた。ダリヤは白い頬を少しだけ伏せ、ナーディルの納品書を覗き込む。"
+      "textLines": [
+        "遺跡の奥から冷たい風が吹いた。",
+        "ダリヤは白い頬を少しだけ伏せ、ナーディルの納品書を覗き込む。"
+      ],
+      "text": "遺跡の奥から冷たい風が吹いた。\nダリヤは白い頬を少しだけ伏せ、ナーディルの納品書を覗き込む。"
     },
     {
       "type": "line",
@@ -10876,7 +11947,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "オアシスの水面は、月の光を拾って白く揺れていた。ダリヤはしばらく黙ったまま、その色を見ている。"
+      "textLines": [
+        "オアシスの水面は、月の光を拾って白く揺れていた。",
+        "ダリヤはしばらく黙ったまま、その色を見ている。"
+      ],
+      "text": "オアシスの水面は、月の光を拾って白く揺れていた。\nダリヤはしばらく黙ったまま、その色を見ている。"
     },
     {
       "type": "line",
@@ -10894,7 +11969,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "お姉ちゃんって呼んでくれたら、少し温かくなるかも。"
     },
     {
@@ -10906,18 +11981,126 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
+      "expression": "anger",
       "text": "昔、君は色の違う塗り薬を持ってきてくれたよね。効き目は同じだって。"
     },
     {
       "type": "narration",
-      "text": "月明かりの中で、ダリヤの白い頬は静かに見えた。けれど声は、幼い日の居場所を確かめるように柔らかかった。"
+      "textLines": [
+        "月明かりの中で、ダリヤの白い頬は静かに見えた。",
+        "けれど声は、幼い日の居場所を確かめるように柔らかかった。"
+      ],
+      "text": "月明かりの中で、ダリヤの白い頬は静かに見えた。\nけれど声は、幼い日の居場所を確かめるように柔らかかった。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "joy",
+      "expression": "anger",
       "text": "私はあれで、少しだけ自分の顔が嫌いじゃなくなったんだよ。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "common_staff_roll_all_good_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_star_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "星瓶堂の灯りは、今日も王都の片隅で揺れている。",
+        "これは、その小さな店をめぐる物語のあとがき。"
+      ],
+      "text": "星瓶堂の灯りは、今日も王都の片隅で揺れている。\nこれは、その小さな店をめぐる物語のあとがき。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "student",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "■コーディング１",
+        "AntiGravity Gemini 3 Flash",
+        "Codex cli gpt-5.5",
+        "Opencode qwen3.5Plus"
+      ],
+      "text": "■コーディング１\nAntiGravity Gemini 3 Flash\nCodex cli gpt-5.5\nOpencode qwen3.5Plus"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "student",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "■コーディング２",
+        "Chatgpt 5.5 チャット",
+        "Gemini 3.1 pro"
+      ],
+      "text": "■コーディング２\nChatgpt 5.5 チャット\nGemini 3.1 pro"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "student",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "■画像生成",
+        "Google Flow Nano Banana2",
+        "Chatgpt 5.5 チャット"
+      ],
+      "text": "■画像生成\nGoogle Flow Nano Banana2\nChatgpt 5.5 チャット"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "■楽曲生成",
+        "Gemini Lyria 3",
+        "ElevenLabs"
+      ],
+      "text": "■楽曲生成\nGemini Lyria 3\nElevenLabs"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "遊んでくれて、ありがとうございました。",
+        "またいつか、星瓶堂の扉の鈴が鳴りますように。"
+      ],
+      "text": "遊んでくれて、ありがとうございました。\nまたいつか、星瓶堂の扉の鈴が鳴りますように。"
     },
     {
       "type": "end"
@@ -10926,7 +12109,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_05_fountain_errand": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -10975,11 +12158,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "……頼もしくなりたいって書けばいいのよ。今のあなたなら、その方がずっと本当らしいわ。"
+      "textLines": [
+        "……頼もしくなりたいって書けばいいのよ。",
+        "今のあなたなら、その方がずっと本当らしいわ。"
+      ],
+      "text": "……頼もしくなりたいって書けばいいのよ。\n今のあなたなら、その方がずっと本当らしいわ。"
     },
     {
       "type": "narration",
-      "text": "ハキマは封筒を受け取り、角をきっちり揃えて返してくれた。叱られたはずなのに、少しだけ背中を押された気がした。"
+      "textLines": [
+        "ハキマは封筒を受け取り、角をきっちり揃えて返してくれた。",
+        "叱られたはずなのに、少しだけ背中を押された気がした。"
+      ],
+      "text": "ハキマは封筒を受け取り、角をきっちり揃えて返してくれた。\n叱られたはずなのに、少しだけ背中を押された気がした。"
     },
     {
       "type": "end"
@@ -10988,7 +12179,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_04_market_spice_walk": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -11006,7 +12197,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れのついでに、市場の香料通りへ出た。子どもの頃より店は増えたはずなのに、曲がり角の匂いだけはあまり変わらない。"
+      "textLines": [
+        "仕入れのついでに、市場の香料通りへ出た。",
+        "子どもの頃より店は増えたはずなのに、曲がり角の匂いだけはあまり変わらない。"
+      ],
+      "text": "仕入れのついでに、市場の香料通りへ出た。\n子どもの頃より店は増えたはずなのに、曲がり角の匂いだけはあまり変わらない。"
     },
     {
       "type": "line",
@@ -11024,7 +12219,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "覚えていたの？　あなた、昔は棚の瓶ばかり見ていたくせに。"
     },
     {
@@ -11036,12 +12231,16 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "anger",
+      "expression": "surprise",
       "text": "その話は禁止。……でも、見ていてくれたのは覚えてる。"
     },
     {
       "type": "narration",
-      "text": "最後の一言だけ、いつもの勢いより少し小さかった。香料の香りに紛れて、ナーディルは聞こえないふりをした。"
+      "textLines": [
+        "最後の一言だけ、いつもの勢いより少し小さかった。",
+        "香料の香りに紛れて、ナーディルは聞こえないふりをした。"
+      ],
+      "text": "最後の一言だけ、いつもの勢いより少し小さかった。\n香料の香りに紛れて、ナーディルは聞こえないふりをした。"
     },
     {
       "type": "end"
@@ -11050,7 +12249,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_10_carriage_countdown": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -11068,12 +12267,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前の星瓶堂に、馬車の鈴が遠く聞こえた。王都の大商会らしい、時間に正確な音だった。"
+      "textLines": [
+        "開店前の星瓶堂に、馬車の鈴が遠く聞こえた。",
+        "王都の大商会らしい、時間に正確な音だった。"
+      ],
+      "text": "開店前の星瓶堂に、馬車の鈴が遠く聞こえた。\n王都の大商会らしい、時間に正確な音だった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "この音、もしかして迎えか？"
     },
     {
@@ -11099,11 +12302,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "商会では十五分あれば会議がひとつ増えます。星瓶堂なら、もっと楽しいことができますよ。"
+      "textLines": [
+        "商会では十五分あれば会議がひとつ増えます。",
+        "星瓶堂なら、もっと楽しいことができますよ。"
+      ],
+      "text": "商会では十五分あれば会議がひとつ増えます。\n星瓶堂なら、もっと楽しいことができますよ。"
     },
     {
       "type": "narration",
-      "text": "ミラは明るく笑いながら、値札と瓶の向きを次々に揃えていく。門限に縛られているというより、限られた時間を遊び場に変えているようだった。"
+      "textLines": [
+        "ミラは明るく笑いながら、値札と瓶の向きを次々に揃えていく。",
+        "門限に縛られているというより、限られた時間を遊び場に変えているようだった。"
+      ],
+      "text": "ミラは明るく笑いながら、値札と瓶の向きを次々に揃えていく。\n門限に縛られているというより、限られた時間を遊び場に変えているようだった。"
     },
     {
       "type": "end"
@@ -11112,7 +12323,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_04_port_parts_shopping": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -11130,7 +12341,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の倉庫前には、異国製の真鍮部品が木箱ごと積まれていた。仕入れと言えば仕入れだが、ミラの目は完全に実験前の輝きになっている。"
+      "textLines": [
+        "港の倉庫前には、異国製の真鍮部品が木箱ごと積まれていた。",
+        "仕入れと言えば仕入れだが、ミラの目は完全に実験前の輝きになっている。"
+      ],
+      "text": "港の倉庫前には、異国製の真鍮部品が木箱ごと積まれていた。\n仕入れと言えば仕入れだが、ミラの目は完全に実験前の輝きになっている。"
     },
     {
       "type": "line",
@@ -11149,7 +12364,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "大丈夫です、先輩。買うのは必要な分だけです。必要の定義が少し広いだけで。"
+      "textLines": [
+        "大丈夫です、先輩。買うのは必要な分だけです。",
+        "必要の定義が少し広いだけで。"
+      ],
+      "text": "大丈夫です、先輩。買うのは必要な分だけです。\n必要の定義が少し広いだけで。"
     },
     {
       "type": "line",
@@ -11161,11 +12380,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "でもこの歯車、仕入れ値が相場より一割低いです。港税を入れてもまだ勝てます。"
+      "textLines": [
+        "でもこの歯車、仕入れ値が相場より一割低いです。",
+        "港税を入れてもまだ勝てます。"
+      ],
+      "text": "でもこの歯車、仕入れ値が相場より一割低いです。\n港税を入れてもまだ勝てます。"
     },
     {
       "type": "narration",
-      "text": "発明家の目と商人の目が、同じ顔の中で忙しく入れ替わる。ナーディルは呆れながらも、少し頼もしいと思ってしまった。"
+      "textLines": [
+        "発明家の目と商人の目が、同じ顔の中で忙しく入れ替わる。",
+        "ナーディルは呆れながらも、少し頼もしいと思ってしまった。"
+      ],
+      "text": "発明家の目と商人の目が、同じ顔の中で忙しく入れ替わる。\nナーディルは呆れながらも、少し頼もしいと思ってしまった。"
     },
     {
       "type": "end"
@@ -11174,7 +12401,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_04_market_after_school": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -11192,7 +12419,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "放課後の市場は、学院帰りの学生と夕方の仕入れ客で少し騒がしかった。ミラは当然のようにナーディルの隣を歩いている。"
+      "textLines": [
+        "放課後の市場は、学院帰りの学生と夕方の仕入れ客で少し騒がしかった。",
+        "ミラは当然のようにナーディルの隣を歩いている。"
+      ],
+      "text": "放課後の市場は、学院帰りの学生と夕方の仕入れ客で少し騒がしかった。\nミラは当然のようにナーディルの隣を歩いている。"
     },
     {
       "type": "focus",
@@ -11204,7 +12435,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "MIRA",
-      "expression": "joy",
+      "expression": "anger",
       "text": "ナーディルお兄ちゃん、この揚げ菓子、半分こしましょう。帳簿上は仕入れ調査です！"
     },
     {
@@ -11233,7 +12464,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "軽い冗談のはずなのに、最後だけ少し強く聞こえた。市場の喧騒が、その照れ隠しをうまく包んでくれた。"
+      "textLines": [
+        "軽い冗談のはずなのに、最後だけ少し強く聞こえた。",
+        "市場の喧騒が、その照れ隠しをうまく包んでくれた。"
+      ],
+      "text": "軽い冗談のはずなのに、最後だけ少し強く聞こえた。\n市場の喧騒が、その照れ隠しをうまく包んでくれた。"
     },
     {
       "type": "end"
@@ -11264,7 +12499,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、新聞の商業欄にナーディルの姉の名前が載っていた。錬金カメラの新しい販路についての記事だった。"
+      "textLines": [
+        "閉店後、新聞の商業欄にナーディルの姉の名前が載っていた。",
+        "錬金カメラの新しい販路についての記事だった。"
+      ],
+      "text": "閉店後、新聞の商業欄にナーディルの姉の名前が載っていた。\n錬金カメラの新しい販路についての記事だった。"
     },
     {
       "type": "line",
@@ -11305,7 +12544,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは笑っていたが、新聞をたたむ手つきは少し真剣だった。幼い日の遊び場は、いつの間にか彼女にとって勝負の場所にもなっている。"
+      "textLines": [
+        "ミラは笑っていたが、新聞をたたむ手つきは少し真剣だった。",
+        "幼い日の遊び場は、いつの間にか彼女にとって勝負の場所にもなっている。"
+      ],
+      "text": "ミラは笑っていたが、新聞をたたむ手つきは少し真剣だった。\n幼い日の遊び場は、いつの間にか彼女にとって勝負の場所にもなっている。"
     },
     {
       "type": "end"
@@ -11332,7 +12575,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮研究室へ納品に来たナーディルは、試薬棚の間で昼食の箱を抱えたダリヤを見つけた。周囲の研究員たちは忙しそうに行き来している。"
+      "textLines": [
+        "王宮研究室へ納品に来たナーディルは、試薬棚の間で昼食の箱を抱えたダリヤを見つけた。",
+        "周囲の研究員たちは忙しそうに行き来している。"
+      ],
+      "text": "王宮研究室へ納品に来たナーディルは、試薬棚の間で昼食の箱を抱えたダリヤを見つけた。\n周囲の研究員たちは忙しそうに行き来している。"
     },
     {
       "type": "line",
@@ -11351,7 +12598,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "食堂に行くと、今日の成果を聞かれるから。箱の中のパンは、私を評価しない。"
+      "textLines": [
+        "食堂に行くと、今日の成果を聞かれるから。",
+        "箱の中のパンは、私を評価しない。"
+      ],
+      "text": "食堂に行くと、今日の成果を聞かれるから。\n箱の中のパンは、私を評価しない。"
     },
     {
       "type": "line",
@@ -11367,7 +12618,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "冗談めかした声の奥に、薄い疲れが残っていた。ナーディルは納品書を閉じ、少しだけ長くそこにいることにした。"
+      "textLines": [
+        "冗談めかした声の奥に、薄い疲れが残っていた。",
+        "ナーディルは納品書を閉じ、少しだけ長くそこにいることにした。"
+      ],
+      "text": "冗談めかした声の奥に、薄い疲れが残っていた。\nナーディルは納品書を閉じ、少しだけ長くそこにいることにした。"
     },
     {
       "type": "end"
@@ -11394,7 +12649,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台の風は、王都の熱を少しだけ遠ざけてくれる。子どもの頃、ダリヤは家に帰りたくない日に、よくここまで歩いたという。"
+      "textLines": [
+        "星見台の風は、王都の熱を少しだけ遠ざけてくれる。",
+        "子どもの頃、ダリヤは家に帰りたくない日に、よくここまで歩いたという。"
+      ],
+      "text": "星見台の風は、王都の熱を少しだけ遠ざけてくれる。\n子どもの頃、ダリヤは家に帰りたくない日に、よくここまで歩いたという。"
     },
     {
       "type": "focus",
@@ -11406,7 +12665,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "ナーディル。ここ、お姉ちゃん席にしていい？"
     },
     {
@@ -11435,7 +12694,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "言い方はいつもの調子なのに、横顔は月明かりのように静かだった。ナーディルは返事の代わりに、少しだけ席を空けた。"
+      "textLines": [
+        "言い方はいつもの調子なのに、横顔は月明かりのように静かだった。",
+        "ナーディルは返事の代わりに、少しだけ席を空けた。"
+      ],
+      "text": "言い方はいつもの調子なのに、横顔は月明かりのように静かだった。\nナーディルは返事の代わりに、少しだけ席を空けた。"
     },
     {
       "type": "end"
@@ -11444,7 +12707,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_10_spice_delivery_to_port": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -11462,7 +12725,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前の床に、港行きの小箱が三つ並んでいた。香料を扱う箱だけ、紐の結び方が少し違う。"
+      "textLines": [
+        "開店前の床に、港行きの小箱が三つ並んでいた。",
+        "香料を扱う箱だけ、紐の結び方が少し違う。"
+      ],
+      "text": "開店前の床に、港行きの小箱が三つ並んでいた。\n香料を扱う箱だけ、紐の結び方が少し違う。"
     },
     {
       "type": "line",
@@ -11485,7 +12752,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマの手は迷わず紐を解き、きっちり結び直していく。言葉はきついが、品物への扱いは誰より丁寧だった。"
+      "textLines": [
+        "ハキマの手は迷わず紐を解き、きっちり結び直していく。",
+        "言葉はきついが、品物への扱いは誰より丁寧だった。"
+      ],
+      "text": "ハキマの手は迷わず紐を解き、きっちり結び直していく。\n言葉はきついが、品物への扱いは誰より丁寧だった。"
     },
     {
       "type": "line",
@@ -11496,7 +12767,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "店主が緩いからよ。……でも、少しは覚えてきたじゃない。"
     },
     {
@@ -11533,7 +12804,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "surprise",
       "text": "どこかな、ここ……。うちの近くの砂漠じゃないよね。"
     },
     {
@@ -11558,12 +12829,20 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
-      "text": "自由な人たちだね。少し羨ましい。私は、逃げるために遠くへ行ったのに、まだ研究所の中にいる気がする。"
+      "expression": "anger",
+      "textLines": [
+        "自由な人たちだね。少し羨ましい。",
+        "私は、逃げるために遠くへ行ったのに、まだ研究所の中にいる気がする。"
+      ],
+      "text": "自由な人たちだね。少し羨ましい。\n私は、逃げるために遠くへ行ったのに、まだ研究所の中にいる気がする。"
     },
     {
       "type": "narration",
-      "text": "ナーディルは写真を棚に立てかけた。遠い場所の明るさが、夜の店に少しだけ入り込んだ。"
+      "textLines": [
+        "ナーディルは写真を棚に立てかけた。",
+        "遠い場所の明るさが、夜の店に少しだけ入り込んだ。"
+      ],
+      "text": "ナーディルは写真を棚に立てかけた。\n遠い場所の明るさが、夜の店に少しだけ入り込んだ。"
     },
     {
       "type": "end"
@@ -11572,7 +12851,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_06_port_crates": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -11590,7 +12869,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の桟橋には、異国の箱と香料袋が積まれていた。仕入れの荷札を照合するだけのはずが、足元の板は思ったより頼りない。"
+      "textLines": [
+        "港の桟橋には、異国の箱と香料袋が積まれていた。",
+        "仕入れの荷札を照合するだけのはずが、足元の板は思ったより頼りない。"
+      ],
+      "text": "港の桟橋には、異国の箱と香料袋が積まれていた。\n仕入れの荷札を照合するだけのはずが、足元の板は思ったより頼りない。"
     },
     {
       "type": "line",
@@ -11631,7 +12914,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "少し青い顔をしながらも、ハキマの指摘は正確だった。港の風の中で、彼女の強さの形が少し分かった気がした。"
+      "textLines": [
+        "少し青い顔をしながらも、ハキマの指摘は正確だった。",
+        "港の風の中で、彼女の強さの形が少し分かった気がした。"
+      ],
+      "text": "少し青い顔をしながらも、ハキマの指摘は正確だった。\n港の風の中で、彼女の強さの形が少し分かった気がした。"
     },
     {
       "type": "end"
@@ -11640,7 +12927,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_06_port_lens": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -11658,7 +12945,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の輸入箱に、錬金ガラスの小さなレンズが混じっていた。ナーディルが品番を読む前に、ミラの目が輝く。"
+      "textLines": [
+        "港の輸入箱に、錬金ガラスの小さなレンズが混じっていた。",
+        "ナーディルが品番を読む前に、ミラの目が輝く。"
+      ],
+      "text": "港の輸入箱に、錬金ガラスの小さなレンズが混じっていた。\nナーディルが品番を読む前に、ミラの目が輝く。"
     },
     {
       "type": "focus",
@@ -11699,7 +12990,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラはレンズを光へかざした。海風の中で、彼女の夢は少しも軽く見えなかった。"
+      "textLines": [
+        "ミラはレンズを光へかざした。",
+        "海風の中で、彼女の夢は少しも軽く見えなかった。"
+      ],
+      "text": "ミラはレンズを光へかざした。\n海風の中で、彼女の夢は少しも軽く見えなかった。"
     },
     {
       "type": "end"
@@ -11726,7 +13021,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮の廊下は、磨かれすぎた床まで立派だった。研究所へ納品した帰り、ナーディルは柱の影でダリヤを待っていた。"
+      "textLines": [
+        "王宮の廊下は、磨かれすぎた床まで立派だった。",
+        "研究所へ納品した帰り、ナーディルは柱の影でダリヤを待っていた。"
+      ],
+      "text": "王宮の廊下は、磨かれすぎた床まで立派だった。\n研究所へ納品した帰り、ナーディルは柱の影でダリヤを待っていた。"
     },
     {
       "type": "focus",
@@ -11750,7 +13049,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "anger",
       "text": "うん。研究所に戻る方向じゃなければ、どこでもいい。"
     },
     {
@@ -11762,7 +13061,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "いい逃げ道だね。お姉さん、そういう道なら迷わない。"
     },
     {
@@ -11776,7 +13075,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_06_oasis_steps": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -11794,7 +13093,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "オアシス沿いの低い石段を、ハキマは妙に慎重に下りていた。水面は近く、風は穏やかだ。"
+      "textLines": [
+        "オアシス沿いの低い石段を、ハキマは妙に慎重に下りていた。",
+        "水面は近く、風は穏やかだ。"
+      ],
+      "text": "オアシス沿いの低い石段を、ハキマは妙に慎重に下りていた。\n水面は近く、風は穏やかだ。"
     },
     {
       "type": "focus",
@@ -11818,7 +13121,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "anger",
+      "expression": "surprise",
       "text": "あなたは本当に余計なことばかり覚えている。"
     },
     {
@@ -11835,7 +13138,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "差し出した手を、ハキマは少し乱暴に掴んだ。けれど離すまでの時間は、昔よりずっと長かった。"
+      "textLines": [
+        "差し出した手を、ハキマは少し乱暴に掴んだ。",
+        "けれど離すまでの時間は、昔よりずっと長かった。"
+      ],
+      "text": "差し出した手を、ハキマは少し乱暴に掴んだ。\nけれど離すまでの時間は、昔よりずっと長かった。"
     },
     {
       "type": "end"
@@ -11844,7 +13151,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_06_festival_allowance": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -11862,7 +13169,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "祭り通りの屋台には、見慣れない菓子と小さな発明玩具が並んでいた。ミラは完全に遊ぶ顔をしている。"
+      "textLines": [
+        "祭り通りの屋台には、見慣れない菓子と小さな発明玩具が並んでいた。",
+        "ミラは完全に遊ぶ顔をしている。"
+      ],
+      "text": "祭り通りの屋台には、見慣れない菓子と小さな発明玩具が並んでいた。\nミラは完全に遊ぶ顔をしている。"
     },
     {
       "type": "focus",
@@ -11875,7 +13186,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "ナーディルお兄ちゃん、今日は仕入れじゃなくて視察です。視察なので、あの飴も必要経費です。"
+      "textLines": [
+        "ナーディルお兄ちゃん、今日は仕入れじゃなくて視察です。",
+        "視察なので、あの飴も必要経費です。"
+      ],
+      "text": "ナーディルお兄ちゃん、今日は仕入れじゃなくて視察です。\n視察なので、あの飴も必要経費です。"
     },
     {
       "type": "line",
@@ -11903,7 +13218,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "抗議しながらも、ミラは一番小さな包みを選んだ。昔より少しだけ我慢を覚えた顔だった。"
+      "textLines": [
+        "抗議しながらも、ミラは一番小さな包みを選んだ。",
+        "昔より少しだけ我慢を覚えた顔だった。"
+      ],
+      "text": "抗議しながらも、ミラは一番小さな包みを選んだ。\n昔より少しだけ我慢を覚えた顔だった。"
     },
     {
       "type": "end"
@@ -11930,7 +13249,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台の風は、王都の灯りを少しだけ遠ざけてくれる。ダリヤは何も言わず、ナーディルの隣に腰を下ろした。"
+      "textLines": [
+        "星見台の風は、王都の灯りを少しだけ遠ざけてくれる。",
+        "ダリヤは何も言わず、ナーディルの隣に腰を下ろした。"
+      ],
+      "text": "星見台の風は、王都の灯りを少しだけ遠ざけてくれる。\nダリヤは何も言わず、ナーディルの隣に腰を下ろした。"
     },
     {
       "type": "focus",
@@ -11954,7 +13277,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "お姉ちゃんは成長したから、今は起きてる。たぶん。"
     },
     {
@@ -11967,7 +13290,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "でも、帰りたくない時に行く場所は変わってない。……ここにいると、息がしやすいんだよね。"
+      "textLines": [
+        "でも、帰りたくない時に行く場所は変わってない。",
+        "……ここにいると、息がしやすいんだよね。"
+      ],
+      "text": "でも、帰りたくない時に行く場所は変わってない。\n……ここにいると、息がしやすいんだよね。"
     },
     {
       "type": "narration",
@@ -11980,7 +13307,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_spice_family_errand_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -11998,7 +13325,12 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルはハキマに連れられて香料問屋の並ぶ通りへ出ていた。用件は仕入れの確認。けれどハキマの歩幅は、仕事だけにしては少しだけ早い。"
+      "textLines": [
+        "閉店後、ナーディルはハキマに連れられて香料問屋の並ぶ通りへ出ていた。",
+        "用件は仕入れの確認。",
+        "けれどハキマの歩幅は、仕事だけにしては少しだけ早い。"
+      ],
+      "text": "閉店後、ナーディルはハキマに連れられて香料問屋の並ぶ通りへ出ていた。\n用件は仕入れの確認。\nけれどハキマの歩幅は、仕事だけにしては少しだけ早い。"
     },
     {
       "type": "line",
@@ -12016,20 +13348,28 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "anger",
-      "text": "張り切ってない。叔父の店に顔を出すだけよ。あなたが変な挨拶をしないか見張ってるの。"
+      "expression": "surprise",
+      "textLines": [
+        "張り切ってない。叔父の店に顔を出すだけよ。",
+        "あなたが変な挨拶をしないか見張ってるの。"
+      ],
+      "text": "張り切ってない。叔父の店に顔を出すだけよ。\nあなたが変な挨拶をしないか見張ってるの。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "俺、そんなに変なこと言ったかな。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "子どもの頃、香料袋を枕にして昼寝した人が何を言ってるの。叔父が今でも覚えているわ。"
+      "expression": "surprise",
+      "textLines": [
+        "子どもの頃、香料袋を枕にして昼寝した人が何を言ってるの。",
+        "叔父が今でも覚えているわ。"
+      ],
+      "text": "子どもの頃、香料袋を枕にして昼寝した人が何を言ってるの。\n叔父が今でも覚えているわ。"
     },
     {
       "type": "line",
@@ -12040,12 +13380,16 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "無理ね。私も覚えてる。あの時、寝顔だけは妙に立派な店主みたいだった。"
     },
     {
       "type": "narration",
-      "text": "ハキマは言ってから、少しだけ視線をそらした。香料の匂いの中で、昔から続いている距離が急に近く感じられる。"
+      "textLines": [
+        "ハキマは言ってから、少しだけ視線をそらした。",
+        "香料の匂いの中で、昔から続いている距離が急に近く感じられる。"
+      ],
+      "text": "ハキマは言ってから、少しだけ視線をそらした。\n香料の匂いの中で、昔から続いている距離が急に近く感じられる。"
     },
     {
       "type": "line",
@@ -12056,7 +13400,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "joy",
+      "expression": "surprise",
       "text": "よろしい。……叔父に余計なことを言われても、慌てないこと。"
     },
     {
@@ -12066,7 +13410,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_night_groom_proposal_joke_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "bg",
@@ -12088,7 +13432,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、帳簿を閉じる音だけが店内に残った。ハキマは棚の鍵を確かめながら、何でもない声で言う。"
+      "textLines": [
+        "閉店後、帳簿を閉じる音だけが店内に残った。",
+        "ハキマは棚の鍵を確かめながら、何でもない声で言う。"
+      ],
+      "text": "閉店後、帳簿を閉じる音だけが店内に残った。\nハキマは棚の鍵を確かめながら、何でもない声で言う。"
     },
     {
       "type": "focus",
@@ -12124,7 +13472,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "たとえば……婿を取るとか。"
     },
     {
@@ -12146,7 +13494,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "急に言われると驚くけど、ハキマが先のことまで考えてくれるのは嬉しいよ。"
     },
     {
@@ -12166,7 +13514,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_big_sister_rivalry_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -12184,7 +13532,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の星瓶堂に、まだ開けていないはずの扉が軽く鳴った。合鍵ではない。昔からこの店に入り慣れた足音だ。"
+      "textLines": [
+        "朝の星瓶堂に、まだ開けていないはずの扉が軽く鳴った。合鍵ではない。",
+        "昔からこの店に入り慣れた足音だ。"
+      ],
+      "text": "朝の星瓶堂に、まだ開けていないはずの扉が軽く鳴った。合鍵ではない。\n昔からこの店に入り慣れた足音だ。"
     },
     {
       "type": "line",
@@ -12215,7 +13567,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "anger",
-      "text": "だめです。あの人、帳簿も商談も強すぎます。ここは私が先に、星瓶堂の成長計画を出します。"
+      "textLines": [
+        "だめです。あの人、帳簿も商談も強すぎます。",
+        "ここは私が先に、星瓶堂の成長計画を出します。"
+      ],
+      "text": "だめです。あの人、帳簿も商談も強すぎます。\nここは私が先に、星瓶堂の成長計画を出します。"
     },
     {
       "type": "line",
@@ -12227,11 +13583,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "はい！　では第一段階、朝いちばんに売れる棚を作ります。お兄ちゃんは札を書いてください。字が好きなので。"
+      "textLines": [
+        "はい！　では第一段階、朝いちばんに売れる棚を作ります。",
+        "お兄ちゃんは札を書いてください。字が好きなので。"
+      ],
+      "text": "はい！　では第一段階、朝いちばんに売れる棚を作ります。\nお兄ちゃんは札を書いてください。字が好きなので。"
     },
     {
       "type": "narration",
-      "text": "命令のようでいて、どこか甘えるような声だった。ナーディルは苦笑しながら筆を取る。"
+      "textLines": [
+        "命令のようでいて、どこか甘えるような声だった。",
+        "ナーディルは苦笑しながら筆を取る。"
+      ],
+      "text": "命令のようでいて、どこか甘えるような声だった。\nナーディルは苦笑しながら筆を取る。"
     },
     {
       "type": "end"
@@ -12240,7 +13604,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_port_camera_parts_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -12258,12 +13622,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の露店には、異国の工具や小さなレンズが所狭しと並んでいた。ミラは目を輝かせ、ナーディルの袖を自然に引く。"
+      "textLines": [
+        "港の露店には、異国の工具や小さなレンズが所狭しと並んでいた。",
+        "ミラは目を輝かせ、ナーディルの袖を自然に引く。"
+      ],
+      "text": "港の露店には、異国の工具や小さなレンズが所狭しと並んでいた。\nミラは目を輝かせ、ナーディルの袖を自然に引く。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "そんなに急がなくても、部品は逃げないよ。"
     },
     {
@@ -12289,23 +13657,35 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "令嬢ではなく、未来の発明家です。ナーディルお兄ちゃんのお父様みたいに、世界をびっくりさせるんです。"
+      "textLines": [
+        "令嬢ではなく、未来の発明家です。",
+        "ナーディルお兄ちゃんのお父様みたいに、世界をびっくりさせるんです。"
+      ],
+      "text": "令嬢ではなく、未来の発明家です。\nナーディルお兄ちゃんのお父様みたいに、世界をびっくりさせるんです。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "父さんはびっくりさせすぎるところがあるけどね。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "そこも尊敬しています。……でも、お兄ちゃんの店を置いていった分は、私が少し取り返します。"
+      "textLines": [
+        "そこも尊敬しています。",
+        "……でも、お兄ちゃんの店を置いていった分は、私が少し取り返します。"
+      ],
+      "text": "そこも尊敬しています。\n……でも、お兄ちゃんの店を置いていった分は、私が少し取り返します。"
     },
     {
       "type": "narration",
-      "text": "冗談めいた声の奥に、ミラらしい負けず嫌いが見えた。港風がレンズの箱を鳴らし、二人は並んで露店を覗き込む。"
+      "textLines": [
+        "冗談めいた声の奥に、ミラらしい負けず嫌いが見えた。",
+        "港風がレンズの箱を鳴らし、二人は並んで露店を覗き込む。"
+      ],
+      "text": "冗談めいた声の奥に、ミラらしい負けず嫌いが見えた。\n港風がレンズの箱を鳴らし、二人は並んで露店を覗き込む。"
     },
     {
       "type": "end"
@@ -12336,7 +13716,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の星瓶堂は、王立研究所よりずっと静かだった。ダリヤは椅子に沈み込み、棚の灯りをぼんやり眺めている。"
+      "textLines": [
+        "閉店後の星瓶堂は、王立研究所よりずっと静かだった。",
+        "ダリヤは椅子に沈み込み、棚の灯りをぼんやり眺めている。"
+      ],
+      "text": "閉店後の星瓶堂は、王立研究所よりずっと静かだった。\nダリヤは椅子に沈み込み、棚の灯りをぼんやり眺めている。"
     },
     {
       "type": "line",
@@ -12378,8 +13762,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "joy",
-      "text": "契約書は私が書く。勤務地は星瓶堂。福利厚生は、ナーディルがたまにお姉ちゃんって呼ぶこと。"
+      "expression": "surprise",
+      "textLines": [
+        "契約書は私が書く。勤務地は星瓶堂。",
+        "福利厚生は、ナーディルがたまにお姉ちゃんって呼ぶこと。"
+      ],
+      "text": "契約書は私が書く。勤務地は星瓶堂。\n福利厚生は、ナーディルがたまにお姉ちゃんって呼ぶこと。"
     },
     {
       "type": "line",
@@ -12389,7 +13777,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは小さく笑った。冗談の形をしているのに、その声はここが本当に帰る場所だと言っているようだった。"
+      "textLines": [
+        "ダリヤは小さく笑った。",
+        "冗談の形をしているのに、その声はここが本当に帰る場所だと言っているようだった。"
+      ],
+      "text": "ダリヤは小さく笑った。\n冗談の形をしているのに、その声はここが本当に帰る場所だと言っているようだった。"
     },
     {
       "type": "end"
@@ -12416,7 +13808,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台の風は、王都の熱を少しだけ遠ざけていた。ダリヤは欄干に肘を置き、白い頬に月明かりを受けている。"
+      "textLines": [
+        "星見台の風は、王都の熱を少しだけ遠ざけていた。",
+        "ダリヤは欄干に肘を置き、白い頬に月明かりを受けている。"
+      ],
+      "text": "星見台の風は、王都の熱を少しだけ遠ざけていた。\nダリヤは欄干に肘を置き、白い頬に月明かりを受けている。"
     },
     {
       "type": "line",
@@ -12434,36 +13830,44 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "私が白い顔を嫌いだって言った日？"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "surprise",
       "text": "うん。俺は、うまいことを言えたわけじゃないんだけど。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "joy",
-      "text": "二種類の塗り薬を持ってきて、色は違うけど効能は同じって言った。すごく変で、すごく救われた。"
+      "expression": "surprise",
+      "textLines": [
+        "二種類の塗り薬を持ってきて、色は違うけど効能は同じって言った。",
+        "すごく変で、すごく救われた。"
+      ],
+      "text": "二種類の塗り薬を持ってきて、色は違うけど効能は同じって言った。\nすごく変で、すごく救われた。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "今でもそう思うよ。色が違っても、ダリヤ姉さんはダリヤ姉さんだ。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
+      "expression": "surprise",
       "text": "……そういうことを、普通に言うから。お姉ちゃんは困る。"
     },
     {
       "type": "narration",
-      "text": "ダリヤは笑っているのに、少し泣きそうにも見えた。星見台の灯りが、二人の影を静かに並べる。"
+      "textLines": [
+        "ダリヤは笑っているのに、少し泣きそうにも見えた。",
+        "星見台の灯りが、二人の影を静かに並べる。"
+      ],
+      "text": "ダリヤは笑っているのに、少し泣きそうにも見えた。\n星見台の灯りが、二人の影を静かに並べる。"
     },
     {
       "type": "end"
@@ -12472,7 +13876,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_07_spice_delivery_check": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -12490,12 +13894,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前の星瓶堂に、香料問屋の焼印が入った小箱が届いていた。ナーディルは伝票を見比べながら、封を切るべきか少し迷う。"
+      "textLines": [
+        "開店前の星瓶堂に、香料問屋の焼印が入った小箱が届いていた。",
+        "ナーディルは伝票を見比べながら、封を切るべきか少し迷う。"
+      ],
+      "text": "開店前の星瓶堂に、香料問屋の焼印が入った小箱が届いていた。\nナーディルは伝票を見比べながら、封を切るべきか少し迷う。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "香りの強いものは、棚の奥でいいかな。いや、湿気も考えるなら別か。"
     },
     {
@@ -12509,7 +13917,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "待ちなさい。香料は開けた瞬間から店の空気を変えるわ。順番を間違えると、客が薬瓶の匂いまで混同する。"
+      "textLines": [
+        "待ちなさい。香料は開けた瞬間から店の空気を変えるわ。",
+        "順番を間違えると、客が薬瓶の匂いまで混同する。"
+      ],
+      "text": "待ちなさい。香料は開けた瞬間から店の空気を変えるわ。\n順番を間違えると、客が薬瓶の匂いまで混同する。"
     },
     {
       "type": "line",
@@ -12521,19 +13933,27 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "でしょうね。だから私が来ているの。……別に、あなたを信用してないわけじゃないけど。"
+      "textLines": [
+        "でしょうね。だから私が来ているの。",
+        "……別に、あなたを信用してないわけじゃないけど。"
+      ],
+      "text": "でしょうね。だから私が来ているの。\n……別に、あなたを信用してないわけじゃないけど。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "信用されるように、まずは並べ方から覚えるよ。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "なら、札の字も丁寧に。品物は棚に置いた時点で、もう接客を始めているの。"
+      "textLines": [
+        "なら、札の字も丁寧に。",
+        "品物は棚に置いた時点で、もう接客を始めているの。"
+      ],
+      "text": "なら、札の字も丁寧に。\n品物は棚に置いた時点で、もう接客を始めているの。"
     },
     {
       "type": "focus",
@@ -12544,7 +13964,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは小箱を抱え直した。香りが広がる前に、今日の棚を少しだけ賢くしておく必要がありそうだった。"
+      "textLines": [
+        "ナーディルは小箱を抱え直した。",
+        "香りが広がる前に、今日の棚を少しだけ賢くしておく必要がありそうだった。"
+      ],
+      "text": "ナーディルは小箱を抱え直した。\n香りが広がる前に、今日の棚を少しだけ賢くしておく必要がありそうだった。"
     },
     {
       "type": "end"
@@ -12575,7 +13999,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、帳簿の余白に残った数字は悪くない。けれど、ナーディルは最後の一行で筆を止めていた。"
+      "textLines": [
+        "閉店後、帳簿の余白に残った数字は悪くない。",
+        "けれど、ナーディルは最後の一行で筆を止めていた。"
+      ],
+      "text": "閉店後、帳簿の余白に残った数字は悪くない。\nけれど、ナーディルは最後の一行で筆を止めていた。"
     },
     {
       "type": "line",
@@ -12594,7 +14022,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "情で値を下げる癖があるわね。客に優しいのは悪くないけど、店が続かなければ意味がない。"
+      "textLines": [
+        "情で値を下げる癖があるわね。",
+        "客に優しいのは悪くないけど、店が続かなければ意味がない。"
+      ],
+      "text": "情で値を下げる癖があるわね。\n客に優しいのは悪くないけど、店が続かなければ意味がない。"
     },
     {
       "type": "line",
@@ -12618,7 +14050,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "少しならいいわ。残りは、手順と計算で支えられる。明日は私が値札を見る。"
+      "textLines": [
+        "少しならいいわ。残りは、手順と計算で支えられる。",
+        "明日は私が値札を見る。"
+      ],
+      "text": "少しならいいわ。残りは、手順と計算で支えられる。\n明日は私が値札を見る。"
     },
     {
       "type": "focus",
@@ -12629,7 +14065,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマが帰ったあと、帳簿の余白はただの空白ではなくなった。次に直せる場所として、そこに残っていた。"
+      "textLines": [
+        "ハキマが帰ったあと、帳簿の余白はただの空白ではなくなった。",
+        "次に直せる場所として、そこに残っていた。"
+      ],
+      "text": "ハキマが帰ったあと、帳簿の余白はただの空白ではなくなった。\n次に直せる場所として、そこに残っていた。"
     },
     {
       "type": "end"
@@ -12638,7 +14078,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_04_port_spice_sample": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -12656,7 +14096,12 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の倉庫街には、王都とは違う匂いが流れている。海風、木箱、異国の布、そして開封前の香料。ナーディルは仕入れの名目で、ハキマを待っていた。"
+      "textLines": [
+        "港の倉庫街には、王都とは違う匂いが流れている。",
+        "海風、木箱、異国の布、そして開封前の香料。",
+        "ナーディルは仕入れの名目で、ハキマを待っていた。"
+      ],
+      "text": "港の倉庫街には、王都とは違う匂いが流れている。\n海風、木箱、異国の布、そして開封前の香料。\nナーディルは仕入れの名目で、ハキマを待っていた。"
     },
     {
       "type": "line",
@@ -12691,7 +14136,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは小瓶を光に透かし、香りを確かめる。説明は厳しいのに、ナーディルが頷くたびに少しだけ声が柔らかくなった。"
+      "textLines": [
+        "ハキマは小瓶を光に透かし、香りを確かめる。",
+        "説明は厳しいのに、ナーディルが頷くたびに少しだけ声が柔らかくなった。"
+      ],
+      "text": "ハキマは小瓶を光に透かし、香りを確かめる。\n説明は厳しいのに、ナーディルが頷くたびに少しだけ声が柔らかくなった。"
     },
     {
       "type": "line",
@@ -12714,7 +14163,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰り道、ナーディルの鞄には小さな見本瓶が三つ増えていた。店の棚にも、二人で選んだ理由が少しだけ増えた。"
+      "textLines": [
+        "帰り道、ナーディルの鞄には小さな見本瓶が三つ増えていた。",
+        "店の棚にも、二人で選んだ理由が少しだけ増えた。"
+      ],
+      "text": "帰り道、ナーディルの鞄には小さな見本瓶が三つ増えていた。\n店の棚にも、二人で選んだ理由が少しだけ増えた。"
     },
     {
       "type": "end"
@@ -12723,7 +14176,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_07_uncle_note": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -12741,12 +14194,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、香料袋の間に小さな紙片が挟まっていた。見慣れた問屋の印と、どこか懐かしい癖のある字。"
+      "textLines": [
+        "開店前、香料袋の間に小さな紙片が挟まっていた。",
+        "見慣れた問屋の印と、どこか懐かしい癖のある字。"
+      ],
+      "text": "開店前、香料袋の間に小さな紙片が挟まっていた。\n見慣れた問屋の印と、どこか懐かしい癖のある字。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "ハキマの叔父さん、まだ俺の字を覚えてるんだな。追伸がやけに長い。"
     },
     {
@@ -12783,7 +14240,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "fun",
+      "expression": "surprise",
       "text": "あるわ。叔父が昔話を始めると、余計なことまで混ざるから。"
     },
     {
@@ -12807,7 +14264,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは紙片を帳簿に挟んだ。今日の棚には、香料の匂いに混じって、昔から続く気安さが少しだけ残った。"
+      "textLines": [
+        "ナーディルは紙片を帳簿に挟んだ。",
+        "今日の棚には、香料の匂いに混じって、昔から続く気安さが少しだけ残った。"
+      ],
+      "text": "ナーディルは紙片を帳簿に挟んだ。\n今日の棚には、香料の匂いに混じって、昔から続く気安さが少しだけ残った。"
     },
     {
       "type": "end"
@@ -12816,7 +14277,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_05_market_shortcut": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -12834,12 +14295,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れ籠を抱えたナーディルは、市場の人波に少しだけ足を止めた。そこへハキマが迷いなく横道を指す。"
+      "textLines": [
+        "仕入れ籠を抱えたナーディルは、市場の人波に少しだけ足を止めた。",
+        "そこへハキマが迷いなく横道を指す。"
+      ],
+      "text": "仕入れ籠を抱えたナーディルは、市場の人波に少しだけ足を止めた。\nそこへハキマが迷いなく横道を指す。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "その道、まだ使えるんだ。昔、二人で抜けようとして怒られたよね。"
     },
     {
@@ -12853,7 +14318,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "怒られたのは、あなたが干し果物の屋台に引っかかったからよ。私は正しい道を選んでいたわ。"
+      "textLines": [
+        "怒られたのは、あなたが干し果物の屋台に引っかかったからよ。",
+        "私は正しい道を選んでいたわ。"
+      ],
+      "text": "怒られたのは、あなたが干し果物の屋台に引っかかったからよ。\n私は正しい道を選んでいたわ。"
     },
     {
       "type": "line",
@@ -12869,7 +14338,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは少しだけ歩幅を速めた。尻尾の先が、昔の話を振り払うように揺れる。"
+      "textLines": [
+        "ハキマは少しだけ歩幅を速めた。",
+        "尻尾の先が、昔の話を振り払うように揺れる。"
+      ],
+      "text": "ハキマは少しだけ歩幅を速めた。\n尻尾の先が、昔の話を振り払うように揺れる。"
     },
     {
       "type": "line",
@@ -12880,8 +14353,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "sorrow",
-      "text": "当たり前よ。……でも、あの頃に笑わなかった人のことは、ちゃんと覚えてる。"
+      "expression": "surprise",
+      "textLines": [
+        "当たり前よ。",
+        "……でも、あの頃に笑わなかった人のことは、ちゃんと覚えてる。"
+      ],
+      "text": "当たり前よ。\n……でも、あの頃に笑わなかった人のことは、ちゃんと覚えてる。"
     },
     {
       "type": "line",
@@ -12904,7 +14381,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "近道を抜けると、目的の問屋はすぐそこだった。仕入れの用事は軽いはずなのに、籠は少しだけ温かく感じた。"
+      "textLines": [
+        "近道を抜けると、目的の問屋はすぐそこだった。",
+        "仕入れの用事は軽いはずなのに、籠は少しだけ温かく感じた。"
+      ],
+      "text": "近道を抜けると、目的の問屋はすぐそこだった。\n仕入れの用事は軽いはずなのに、籠は少しだけ温かく感じた。"
     },
     {
       "type": "end"
@@ -12913,7 +14394,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_07_window_display_experiment": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -12931,12 +14412,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の光が店先の硝子に当たり、薬瓶の影が床に並んでいた。ナーディルはその影を見ながら、今日の棚を少し動かすべきか迷う。"
+      "textLines": [
+        "朝の光が店先の硝子に当たり、薬瓶の影が床に並んでいた。",
+        "ナーディルはその影を見ながら、今日の棚を少し動かすべきか迷う。"
+      ],
+      "text": "朝の光が店先の硝子に当たり、薬瓶の影が床に並んでいた。\nナーディルはその影を見ながら、今日の棚を少し動かすべきか迷う。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "入口から見える品が、少し地味かな。"
     },
     {
@@ -12962,7 +14447,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "商会では決まってます。もちろん、星瓶堂らしさは残しましょう。派手にするだけなら、私の家の看板で十分ですから。"
+      "textLines": [
+        "商会では決まってます。もちろん、星瓶堂らしさは残しましょう。",
+        "派手にするだけなら、私の家の看板で十分ですから。"
+      ],
+      "text": "商会では決まってます。もちろん、星瓶堂らしさは残しましょう。\n派手にするだけなら、私の家の看板で十分ですから。"
     },
     {
       "type": "line",
@@ -12974,7 +14463,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "はい。そこに少しだけ発見を足すんです。先輩のお父様のカメラみたいに、見慣れたものを新しく見せる仕組みです。"
+      "textLines": [
+        "はい。そこに少しだけ発見を足すんです。",
+        "先輩のお父様のカメラみたいに、見慣れたものを新しく見せる仕組みです。"
+      ],
+      "text": "はい。そこに少しだけ発見を足すんです。\n先輩のお父様のカメラみたいに、見慣れたものを新しく見せる仕組みです。"
     },
     {
       "type": "focus",
@@ -12985,7 +14478,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは小さな瓶を一つだけ窓際へ移した。店先の光が変わると、いつもの棚が少しだけ実験台に見えた。"
+      "textLines": [
+        "ミラは小さな瓶を一つだけ窓際へ移した。",
+        "店先の光が変わると、いつもの棚が少しだけ実験台に見えた。"
+      ],
+      "text": "ミラは小さな瓶を一つだけ窓際へ移した。\n店先の光が変わると、いつもの棚が少しだけ実験台に見えた。"
     },
     {
       "type": "end"
@@ -12994,7 +14491,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_05_fountain_new_lens_talk": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -13012,7 +14509,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "講義終わりの噴水前で、ミラは小さなレンズを両手で包むように持っていた。待ち合わせというより、研究発表の前に近い顔だった。"
+      "textLines": [
+        "講義終わりの噴水前で、ミラは小さなレンズを両手で包むように持っていた。",
+        "待ち合わせというより、研究発表の前に近い顔だった。"
+      ],
+      "text": "講義終わりの噴水前で、ミラは小さなレンズを両手で包むように持っていた。\n待ち合わせというより、研究発表の前に近い顔だった。"
     },
     {
       "type": "line",
@@ -13049,12 +14550,17 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "でも、今日は安全です。このレンズで、素材の表面傷を見やすくしたいんです。店で使えたら、仕入れの失敗も減りますよね。"
+      "textLines": [
+        "でも、今日は安全です。",
+        "このレンズで、素材の表面傷を見やすくしたいんです。",
+        "店で使えたら、仕入れの失敗も減りますよね。"
+      ],
+      "text": "でも、今日は安全です。\nこのレンズで、素材の表面傷を見やすくしたいんです。\n店で使えたら、仕入れの失敗も減りますよね。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "joy",
+      "expression": "fun",
       "text": "それはすごく助かる。星瓶堂で試してみる？"
     },
     {
@@ -13072,7 +14578,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "噴水の水音に、ミラの弾んだ声が混じる。ナーディルは、その明るさの奥にある努力を少しだけ見た気がした。"
+      "textLines": [
+        "噴水の水音に、ミラの弾んだ声が混じる。",
+        "ナーディルは、その明るさの奥にある努力を少しだけ見た気がした。"
+      ],
+      "text": "噴水の水音に、ミラの弾んだ声が混じる。\nナーディルは、その明るさの奥にある努力を少しだけ見た気がした。"
     },
     {
       "type": "end"
@@ -13081,7 +14591,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_07_secret_display_plan": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -13099,7 +14609,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の星瓶堂で、ナーディルが鍵を開けるより早く、窓の外から軽い足音が近づいてきた。昔から、この店の開く音をよく知っている足音だ。"
+      "textLines": [
+        "朝の星瓶堂で、ナーディルが鍵を開けるより早く、窓の外から軽い足音が近づいてきた。",
+        "昔から、この店の開く音をよく知っている足音だ。"
+      ],
+      "text": "朝の星瓶堂で、ナーディルが鍵を開けるより早く、窓の外から軽い足音が近づいてきた。\n昔から、この店の開く音をよく知っている足音だ。"
     },
     {
       "type": "focus",
@@ -13136,7 +14650,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "anger",
-      "text": "なってます。お兄ちゃんの店を一番面白くできるのは誰か、重要な勝負ですから。"
+      "textLines": [
+        "なってます。",
+        "お兄ちゃんの店を一番面白くできるのは誰か、重要な勝負ですから。"
+      ],
+      "text": "なってます。\nお兄ちゃんの店を一番面白くできるのは誰か、重要な勝負ですから。"
     },
     {
       "type": "narration",
@@ -13172,7 +14690,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_06_port_parts_race": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -13190,7 +14708,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の部品市は、異国の機械片と見慣れない金具であふれていた。ミラは目を輝かせ、ナーディルの袖を引く。"
+      "textLines": [
+        "港の部品市は、異国の機械片と見慣れない金具であふれていた。",
+        "ミラは目を輝かせ、ナーディルの袖を引く。"
+      ],
+      "text": "港の部品市は、異国の機械片と見慣れない金具であふれていた。\nミラは目を輝かせ、ナーディルの袖を引く。"
     },
     {
       "type": "focus",
@@ -13227,16 +14749,24 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "はい！　でも部品もちゃんと選びます。子どもの頃より、私は成長しましたから。"
+      "textLines": [
+        "はい！　でも部品もちゃんと選びます。",
+        "子どもの頃より、私は成長しましたから。"
+      ],
+      "text": "はい！　でも部品もちゃんと選びます。\n子どもの頃より、私は成長しましたから。"
     },
     {
       "type": "narration",
-      "text": "小さな歯車、薄い金板、用途不明の硝子管。二人は宝探しのように箱を覗き込む。"
+      "textLines": [
+        "小さな歯車、薄い金板、用途不明の硝子管。",
+        "二人は宝探しのように箱を覗き込む。"
+      ],
+      "text": "小さな歯車、薄い金板、用途不明の硝子管。\n二人は宝探しのように箱を覗き込む。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "これは棚の引き出しに使えそうだ。"
     },
     {
@@ -13254,7 +14784,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "結局、勝負の結果は曖昧なまま、揚げ菓子は二人分になった。港風に当たりながら食べるそれは、少し懐かしい味がした。"
+      "textLines": [
+        "結局、勝負の結果は曖昧なまま、揚げ菓子は二人分になった。",
+        "港風に当たりながら食べるそれは、少し懐かしい味がした。"
+      ],
+      "text": "結局、勝負の結果は曖昧なまま、揚げ菓子は二人分になった。\n港風に当たりながら食べるそれは、少し懐かしい味がした。"
     },
     {
       "type": "end"
@@ -13281,7 +14815,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮研究室の一角で、ナーディルは小さな納品箱を受け取った。宛名には星瓶堂、差出人には王立研究所の印。"
+      "textLines": [
+        "王宮研究室の一角で、ナーディルは小さな納品箱を受け取った。",
+        "宛名には星瓶堂、差出人には王立研究所の印。"
+      ],
+      "text": "王宮研究室の一角で、ナーディルは小さな納品箱を受け取った。\n宛名には星瓶堂、差出人には王立研究所の印。"
     },
     {
       "type": "line",
@@ -13300,12 +14838,16 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "緊張しなくていいよ。中身は地味。研究所の地味な仕事は、だいたい大事だけどね。"
+      "textLines": [
+        "緊張しなくていいよ。中身は地味。",
+        "研究所の地味な仕事は、だいたい大事だけどね。"
+      ],
+      "text": "緊張しなくていいよ。中身は地味。\n研究所の地味な仕事は、だいたい大事だけどね。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "ダリヤさんが持ってくると、地味でも重く聞こえるね。"
     },
     {
@@ -13339,7 +14881,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "納品箱は軽い。けれどナーディルは、今日の開店前に預かったものが箱だけではない気がしていた。"
+      "textLines": [
+        "納品箱は軽い。",
+        "けれどナーディルは、今日の開店前に預かったものが箱だけではない気がしていた。"
+      ],
+      "text": "納品箱は軽い。\nけれどナーディルは、今日の開店前に預かったものが箱だけではない気がしていた。"
     },
     {
       "type": "end"
@@ -13348,7 +14894,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_date_05_poetry_fountain": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_3"
     },
     {
       "type": "scene",
@@ -13366,7 +14912,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夕方の大学噴水前には、講義を終えた学生の声が残っていた。ナーディルは待ち合わせ場所に立ち、昔の詩吟部の練習を思い出して少しだけ苦笑する。"
+      "textLines": [
+        "夕方の大学噴水前には、講義を終えた学生の声が残っていた。",
+        "ナーディルは待ち合わせ場所に立ち、昔の詩吟部の練習を思い出して少しだけ苦笑する。"
+      ],
+      "text": "夕方の大学噴水前には、講義を終えた学生の声が残っていた。\nナーディルは待ち合わせ場所に立ち、昔の詩吟部の練習を思い出して少しだけ苦笑する。"
     },
     {
       "type": "line",
@@ -13397,7 +14947,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "fun",
-      "text": "でも、下手なものを下手なまま一緒にやった人って、案外忘れない。研究所では、失敗を見せるのが少し怖いから。"
+      "textLines": [
+        "でも、下手なものを下手なまま一緒にやった人って、案外忘れない。",
+        "研究所では、失敗を見せるのが少し怖いから。"
+      ],
+      "text": "でも、下手なものを下手なまま一緒にやった人って、案外忘れない。\n研究所では、失敗を見せるのが少し怖いから。"
     },
     {
       "type": "line",
@@ -13420,7 +14974,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "噴水の音に、二人の短い笑い声が重なった。上手くない詩の記憶は、思ったより悪くないものだった。"
+      "textLines": [
+        "噴水の音に、二人の短い笑い声が重なった。",
+        "上手くない詩の記憶は、思ったより悪くないものだった。"
+      ],
+      "text": "噴水の音に、二人の短い笑い声が重なった。\n上手くない詩の記憶は、思ったより悪くないものだった。"
     },
     {
       "type": "end"
@@ -13429,7 +14987,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_07_sleepy_tea_seat": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_4"
     },
     {
       "type": "scene",
@@ -13447,7 +15005,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の星瓶堂に、ゆっくりした足音が近づく。約束の時間からは少し遅れているが、ナーディルにはだいたい予想できていた。"
+      "textLines": [
+        "朝の星瓶堂に、ゆっくりした足音が近づく。",
+        "約束の時間からは少し遅れているが、ナーディルにはだいたい予想できていた。"
+      ],
+      "text": "朝の星瓶堂に、ゆっくりした足音が近づく。\n約束の時間からは少し遅れているが、ナーディルにはだいたい予想できていた。"
     },
     {
       "type": "line",
@@ -13465,7 +15027,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
+      "expression": "surprise",
       "text": "おはよう。お姉ちゃん、朝に負けた。"
     },
     {
@@ -13482,7 +15044,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは昔から座っていた奥の椅子に、当然のように腰を下ろした。長身なのに、眠そうに丸まると少しだけ子どもっぽい。"
+      "textLines": [
+        "ダリヤは昔から座っていた奥の椅子に、当然のように腰を下ろした。",
+        "長身なのに、眠そうに丸まると少しだけ子どもっぽい。"
+      ],
+      "text": "ダリヤは昔から座っていた奥の椅子に、当然のように腰を下ろした。\n長身なのに、眠そうに丸まると少しだけ子どもっぽい。"
     },
     {
       "type": "line",
@@ -13538,7 +15104,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夕暮れのオアシスは、王都の熱を遠くに置いていた。水面に映る月の色を見て、ダリヤは少しだけ目を細める。"
+      "textLines": [
+        "夕暮れのオアシスは、王都の熱を遠くに置いていた。",
+        "水面に映る月の色を見て、ダリヤは少しだけ目を細める。"
+      ],
+      "text": "夕暮れのオアシスは、王都の熱を遠くに置いていた。\n水面に映る月の色を見て、ダリヤは少しだけ目を細める。"
     },
     {
       "type": "focus",
@@ -13550,7 +15120,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "normal",
+      "expression": "surprise",
       "text": "ここ、白いものが綺麗に見えるね。少しずるい。"
     },
     {
@@ -13562,8 +15132,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "DARIYA",
-      "expression": "sorrow",
-      "text": "その昔から、が私には効く。君が塗り薬を二つ持ってきた日のこと、まだ覚えてるから。"
+      "expression": "surprise",
+      "textLines": [
+        "その昔から、が私には効く。",
+        "君が塗り薬を二つ持ってきた日のこと、まだ覚えてるから。"
+      ],
+      "text": "その昔から、が私には効く。\n君が塗り薬を二つ持ってきた日のこと、まだ覚えてるから。"
     },
     {
       "type": "line",
@@ -13610,7 +15184,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰り道、オアシスの水面には月が揺れていた。白い光は、もう隠すものではないように見えた。"
+      "textLines": [
+        "帰り道、オアシスの水面には月が揺れていた。",
+        "白い光は、もう隠すものではないように見えた。"
+      ],
+      "text": "帰り道、オアシスの水面には月が揺れていた。\n白い光は、もう隠すものではないように見えた。"
     },
     {
       "type": "end"
@@ -13619,7 +15197,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_12_little_brother_parcel": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -13637,7 +15215,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ナーディルが帳簿を開いていると、店の扉が控えめに鳴った。まだ客が来る時間ではない。"
+      "textLines": [
+        "開店前、ナーディルが帳簿を開いていると、店の扉が控えめに鳴った。",
+        "まだ客が来る時間ではない。"
+      ],
+      "text": "開店前、ナーディルが帳簿を開いていると、店の扉が控えめに鳴った。\nまだ客が来る時間ではない。"
     },
     {
       "type": "line",
@@ -13668,11 +15250,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "……同じことで嫌な思いをしているから。私が知っていることくらい、先に教えておきたいだけ。"
+      "textLines": [
+        "……同じことで嫌な思いをしているから。",
+        "私が知っていることくらい、先に教えておきたいだけ。"
+      ],
+      "text": "……同じことで嫌な思いをしているから。\n私が知っていることくらい、先に教えておきたいだけ。"
     },
     {
       "type": "narration",
-      "text": "包みの中には、転びにくい靴紐と、小さな香り袋が入っていた。どちらも、戦うためではなく毎日を少し楽にするための品だ。"
+      "textLines": [
+        "包みの中には、転びにくい靴紐と、小さな香り袋が入っていた。",
+        "どちらも、戦うためではなく毎日を少し楽にするための品だ。"
+      ],
+      "text": "包みの中には、転びにくい靴紐と、小さな香り袋が入っていた。\nどちらも、戦うためではなく毎日を少し楽にするための品だ。"
     },
     {
       "type": "line",
@@ -13695,7 +15285,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "小包は開店前の棚に、一時だけ置かれた。今日の星瓶堂は、少しだけ家族の匂いがした。"
+      "textLines": [
+        "小包は開店前の棚に、一時だけ置かれた。",
+        "今日の星瓶堂は、少しだけ家族の匂いがした。"
+      ],
+      "text": "小包は開店前の棚に、一時だけ置かれた。\n今日の星瓶堂は、少しだけ家族の匂いがした。"
     },
     {
       "type": "end"
@@ -13726,7 +15320,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルは店先に貼られていた古い掲示を剥がした。白狼族の護衛募集。紙の端には砂がこびりついている。"
+      "textLines": [
+        "閉店後、ナーディルは店先に貼られていた古い掲示を剥がした。",
+        "白狼族の護衛募集。紙の端には砂がこびりついている。"
+      ],
+      "text": "閉店後、ナーディルは店先に貼られていた古い掲示を剥がした。\n白狼族の護衛募集。紙の端には砂がこびりついている。"
     },
     {
       "type": "line",
@@ -13757,16 +15355,24 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "少し、じゃないわね。走れない、跳べない、転ぶ。職人仕事が好き。笑う理由はいくらでもあったみたい。"
+      "textLines": [
+        "少し、じゃないわね。走れない、跳べない、転ぶ。職人仕事が好き。",
+        "笑う理由はいくらでもあったみたい。"
+      ],
+      "text": "少し、じゃないわね。走れない、跳べない、転ぶ。職人仕事が好き。\n笑う理由はいくらでもあったみたい。"
     },
     {
       "type": "narration",
-      "text": "ハキマは掲示をたたみ、香料の空箱に入れた。捨てるというより、もう店先に置かないと決めた手つきだった。"
+      "textLines": [
+        "ハキマは掲示をたたみ、香料の空箱に入れた。",
+        "捨てるというより、もう店先に置かないと決めた手つきだった。"
+      ],
+      "text": "ハキマは掲示をたたみ、香料の空箱に入れた。\n捨てるというより、もう店先に置かないと決めた手つきだった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "ここでは、何を作れるかで見たい。俺も、そう見てもらえると助かるから。"
     },
     {
@@ -13784,7 +15390,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の棚には、戦いのためではない品が並んでいる。ハキマはそれを、少し誇らしそうに見ていた。"
+      "textLines": [
+        "夜の棚には、戦いのためではない品が並んでいる。",
+        "ハキマはそれを、少し誇らしそうに見ていた。"
+      ],
+      "text": "夜の棚には、戦いのためではない品が並んでいる。\nハキマはそれを、少し誇らしそうに見ていた。"
     },
     {
       "type": "end"
@@ -13793,7 +15403,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_04_ruins_safety_lesson": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -13811,7 +15421,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れのついでに、ナーディルは王都近郊の遺跡口へ出ていた。冒険者向けの露店には、妙に強そうな名前の道具が並んでいる。"
+      "textLines": [
+        "仕入れのついでに、ナーディルは王都近郊の遺跡口へ出ていた。",
+        "冒険者向けの露店には、妙に強そうな名前の道具が並んでいる。"
+      ],
+      "text": "仕入れのついでに、ナーディルは王都近郊の遺跡口へ出ていた。\n冒険者向けの露店には、妙に強そうな名前の道具が並んでいる。"
     },
     {
       "type": "line",
@@ -13830,7 +15444,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "それ、普通の杭よ。名前に負けて仕入れないで。あと遺跡道具は、派手な飾りより留め具を見るの。"
+      "textLines": [
+        "それ、普通の杭よ。名前に負けて仕入れないで。",
+        "あと遺跡道具は、派手な飾りより留め具を見るの。"
+      ],
+      "text": "それ、普通の杭よ。名前に負けて仕入れないで。\nあと遺跡道具は、派手な飾りより留め具を見るの。"
     },
     {
       "type": "line",
@@ -13842,11 +15460,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "先生より実地寄りよ。香料箱も旅具も、壊れる場所はだいたい似ているもの。"
+      "textLines": [
+        "先生より実地寄りよ。",
+        "香料箱も旅具も、壊れる場所はだいたい似ているもの。"
+      ],
+      "text": "先生より実地寄りよ。\n香料箱も旅具も、壊れる場所はだいたい似ているもの。"
     },
     {
       "type": "narration",
-      "text": "ハキマは品をひとつずつ裏返し、縫い目や留め具を確かめていく。言葉はきついが、手つきは驚くほど丁寧だった。"
+      "textLines": [
+        "ハキマは品をひとつずつ裏返し、縫い目や留め具を確かめていく。",
+        "言葉はきついが、手つきは驚くほど丁寧だった。"
+      ],
+      "text": "ハキマは品をひとつずつ裏返し、縫い目や留め具を確かめていく。\n言葉はきついが、手つきは驚くほど丁寧だった。"
     },
     {
       "type": "line",
@@ -13858,7 +15484,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "そう。覚えて帰りなさい。……せっかく一緒に来たんだから、収穫くらいないと困るでしょ。"
+      "textLines": [
+        "そう。覚えて帰りなさい。",
+        "……せっかく一緒に来たんだから、収穫くらいないと困るでしょ。"
+      ],
+      "text": "そう。覚えて帰りなさい。\n……せっかく一緒に来たんだから、収穫くらいないと困るでしょ。"
     },
     {
       "type": "focus",
@@ -13869,7 +15499,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰り道、ナーディルの鞄には小さな道具がいくつか増えていた。選び方の理由まで、ちゃんと一緒に。"
+      "textLines": [
+        "帰り道、ナーディルの鞄には小さな道具がいくつか増えていた。",
+        "選び方の理由まで、ちゃんと一緒に。"
+      ],
+      "text": "帰り道、ナーディルの鞄には小さな道具がいくつか増えていた。\n選び方の理由まで、ちゃんと一緒に。"
     },
     {
       "type": "end"
@@ -13878,7 +15512,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_12_uncle_receipt": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -13896,7 +15530,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ナーディルは香料問屋から届いた伝票を見て、思わず苦笑した。余白に見慣れた癖字の追伸がある。"
+      "textLines": [
+        "開店前、ナーディルは香料問屋から届いた伝票を見て、思わず苦笑した。",
+        "余白に見慣れた癖字の追伸がある。"
+      ],
+      "text": "開店前、ナーディルは香料問屋から届いた伝票を見て、思わず苦笑した。\n余白に見慣れた癖字の追伸がある。"
     },
     {
       "type": "line",
@@ -13915,7 +15553,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "読まなくていいわ。どうせ「うちの姪をよろしく」みたいな余計なことが書いてあるんでしょう。"
+      "textLines": [
+        "読まなくていいわ。",
+        "どうせ「うちの姪をよろしく」みたいな余計なことが書いてあるんでしょう。"
+      ],
+      "text": "読まなくていいわ。\nどうせ「うちの姪をよろしく」みたいな余計なことが書いてあるんでしょう。"
     },
     {
       "type": "line",
@@ -13927,11 +15569,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "なぜそこであなたの心配まで入るのよ。昔からそうだけど、あの人は距離が近すぎるの。"
+      "textLines": [
+        "なぜそこであなたの心配まで入るのよ。",
+        "昔からそうだけど、あの人は距離が近すぎるの。"
+      ],
+      "text": "なぜそこであなたの心配まで入るのよ。\n昔からそうだけど、あの人は距離が近すぎるの。"
     },
     {
       "type": "narration",
-      "text": "怒っているわりに、ハキマは伝票を破ろうとはしなかった。幼い頃から見慣れた大人たちの騒がしさが、星瓶堂の朝に混ざっていく。"
+      "textLines": [
+        "怒っているわりに、ハキマは伝票を破ろうとはしなかった。",
+        "幼い頃から見慣れた大人たちの騒がしさが、星瓶堂の朝に混ざっていく。"
+      ],
+      "text": "怒っているわりに、ハキマは伝票を破ろうとはしなかった。\n幼い頃から見慣れた大人たちの騒がしさが、星瓶堂の朝に混ざっていく。"
     },
     {
       "type": "line",
@@ -13954,7 +15604,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "伝票は帳簿に挟まれた。今日の開店準備は、昔から続く店同士の挨拶のようだった。"
+      "textLines": [
+        "伝票は帳簿に挟まれた。",
+        "今日の開店準備は、昔から続く店同士の挨拶のようだった。"
+      ],
+      "text": "伝票は帳簿に挟まれた。\n今日の開店準備は、昔から続く店同士の挨拶のようだった。"
     },
     {
       "type": "end"
@@ -13963,7 +15617,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_05_old_alley_shortcut": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -13981,7 +15635,12 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れ帰り、ハキマは当然のように表通りを外れた。布屋の裏、井戸の横、香辛料倉庫の細い影。ナーディルも足が覚えている道だった。"
+      "textLines": [
+        "仕入れ帰り、ハキマは当然のように表通りを外れた。",
+        "布屋の裏、井戸の横、香辛料倉庫の細い影。",
+        "ナーディルも足が覚えている道だった。"
+      ],
+      "text": "仕入れ帰り、ハキマは当然のように表通りを外れた。\n布屋の裏、井戸の横、香辛料倉庫の細い影。\nナーディルも足が覚えている道だった。"
     },
     {
       "type": "line",
@@ -14005,8 +15664,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
-      "text": "ごめん。言い方を変えるよ。ここで俺が荷物を持ちすぎて、二人で派手に転んだ。"
+      "expression": "sorrow",
+      "textLines": [
+        "ごめん。言い方を変えるよ。",
+        "ここで俺が荷物を持ちすぎて、二人で派手に転んだ。"
+      ],
+      "text": "ごめん。言い方を変えるよ。\nここで俺が荷物を持ちすぎて、二人で派手に転んだ。"
     },
     {
       "type": "line",
@@ -14016,13 +15679,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "細い路地の向こうには、今の市場のざわめきがある。昔より背は伸びたのに、並んで歩く距離だけはあまり変わっていない。"
+      "textLines": [
+        "細い路地の向こうには、今の市場のざわめきがある。",
+        "昔より背は伸びたのに、並んで歩く距離だけはあまり変わっていない。"
+      ],
+      "text": "細い路地の向こうには、今の市場のざわめきがある。\n昔より背は伸びたのに、並んで歩く距離だけはあまり変わっていない。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "変わったことも多いけど、こういう道が残っていると少し腹が立つわ。懐かしくなるから。"
+      "textLines": [
+        "変わったことも多いけど、こういう道が残っていると少し腹が立つわ。",
+        "懐かしくなるから。"
+      ],
+      "text": "変わったことも多いけど、こういう道が残っていると少し腹が立つわ。\n懐かしくなるから。"
     },
     {
       "type": "line",
@@ -14045,7 +15716,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "二人は市場の表通りへ戻った。買った品より、戻ってきた時間の方が少し重かった。"
+      "textLines": [
+        "二人は市場の表通りへ戻った。",
+        "買った品より、戻ってきた時間の方が少し重かった。"
+      ],
+      "text": "二人は市場の表通りへ戻った。\n買った品より、戻ってきた時間の方が少し重かった。"
     },
     {
       "type": "end"
@@ -14054,7 +15729,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_12_gate_time_blueprint": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -14072,7 +15747,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の星瓶堂に、巻物を抱えたミラが駆け込んできた。店の扉が開くより先に、設計図の端がカウンターへ広がる。"
+      "textLines": [
+        "朝の星瓶堂に、巻物を抱えたミラが駆け込んできた。",
+        "店の扉が開くより先に、設計図の端がカウンターへ広がる。"
+      ],
+      "text": "朝の星瓶堂に、巻物を抱えたミラが駆け込んできた。\n店の扉が開くより先に、設計図の端がカウンターへ広がる。"
     },
     {
       "type": "focus",
@@ -14097,7 +15776,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "はい。旅人向けです。水を冷たく保つだけじゃなくて、夜は薬湯も温められたら便利かなって。"
+      "textLines": [
+        "はい。旅人向けです。",
+        "水を冷たく保つだけじゃなくて、夜は薬湯も温められたら便利かなって。"
+      ],
+      "text": "はい。旅人向けです。\n水を冷たく保つだけじゃなくて、夜は薬湯も温められたら便利かなって。"
     },
     {
       "type": "narration",
@@ -14107,7 +15790,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "面白いね。でもこの弁は熱で歪むかも。ここは素材を変えた方が安全だと思う。"
+      "textLines": [
+        "面白いね。でもこの弁は熱で歪むかも。",
+        "ここは素材を変えた方が安全だと思う。"
+      ],
+      "text": "面白いね。でもこの弁は熱で歪むかも。\nここは素材を変えた方が安全だと思う。"
     },
     {
       "type": "line",
@@ -14136,7 +15823,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラの設計図は、今日の営業前に小さな嵐を起こした。だがその嵐には、不思議と店を明るくする力があった。"
+      "textLines": [
+        "ミラの設計図は、今日の営業前に小さな嵐を起こした。",
+        "だがその嵐には、不思議と店を明るくする力があった。"
+      ],
+      "text": "ミラの設計図は、今日の営業前に小さな嵐を起こした。\nだがその嵐には、不思議と店を明るくする力があった。"
     },
     {
       "type": "end"
@@ -14192,7 +15883,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "大丈夫です。槍を受け損ねただけですから。師匠には「令嬢の腕ではなく戦士の腕だな」って褒められました。"
+      "textLines": [
+        "大丈夫です。槍を受け損ねただけですから。",
+        "師匠には「令嬢の腕ではなく戦士の腕だな」って褒められました。"
+      ],
+      "text": "大丈夫です。槍を受け損ねただけですから。\n師匠には「令嬢の腕ではなく戦士の腕だな」って褒められました。"
     },
     {
       "type": "line",
@@ -14202,13 +15897,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは笑っているが、指先には疲れが残っている。天才と呼ばれる裏で、彼女はかなり泥臭く体を動かしているらしい。"
+      "textLines": [
+        "ミラは笑っているが、指先には疲れが残っている。",
+        "天才と呼ばれる裏で、彼女はかなり泥臭く体を動かしているらしい。"
+      ],
+      "text": "ミラは笑っているが、指先には疲れが残っている。\n天才と呼ばれる裏で、彼女はかなり泥臭く体を動かしているらしい。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "本物になりたいんです。生まれや名前で許されるだけじゃなくて、ちゃんと役に立つものを作れる人に。"
+      "textLines": [
+        "本物になりたいんです。",
+        "生まれや名前で許されるだけじゃなくて、ちゃんと役に立つものを作れる人に。"
+      ],
+      "text": "本物になりたいんです。\n生まれや名前で許されるだけじゃなくて、ちゃんと役に立つものを作れる人に。"
     },
     {
       "type": "line",
@@ -14231,7 +15934,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "包帯と冷却薬を渡すと、ミラは元気よく手を振った。夜の店に、彼女の足音だけが明るく残った。"
+      "textLines": [
+        "包帯と冷却薬を渡すと、ミラは元気よく手を振った。",
+        "夜の店に、彼女の足音だけが明るく残った。"
+      ],
+      "text": "包帯と冷却薬を渡すと、ミラは元気よく手を振った。\n夜の店に、彼女の足音だけが明るく残った。"
     },
     {
       "type": "end"
@@ -14240,7 +15947,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_05_port_lens_case": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -14258,7 +15965,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の倉庫街には、王都では見かけない金具やガラス片が並んでいた。ミラは目を輝かせ、行商人の説明を次々に聞いていく。"
+      "textLines": [
+        "港の倉庫街には、王都では見かけない金具やガラス片が並んでいた。",
+        "ミラは目を輝かせ、行商人の説明を次々に聞いていく。"
+      ],
+      "text": "港の倉庫街には、王都では見かけない金具やガラス片が並んでいた。\nミラは目を輝かせ、行商人の説明を次々に聞いていく。"
     },
     {
       "type": "focus",
@@ -14271,7 +15982,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "先輩、見てください。このレンズケース、湿気止めの刻印が二重です。旅先のカメラ用品にも応用できますよ。"
+      "textLines": [
+        "先輩、見てください。このレンズケース、湿気止めの刻印が二重です。",
+        "旅先のカメラ用品にも応用できますよ。"
+      ],
+      "text": "先輩、見てください。このレンズケース、湿気止めの刻印が二重です。\n旅先のカメラ用品にも応用できますよ。"
     },
     {
       "type": "line",
@@ -14283,11 +15998,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "私も張り付きたいです。でも門限があるので、発明家は時間管理も必要なんです。"
+      "textLines": [
+        "私も張り付きたいです。",
+        "でも門限があるので、発明家は時間管理も必要なんです。"
+      ],
+      "text": "私も張り付きたいです。\nでも門限があるので、発明家は時間管理も必要なんです。"
     },
     {
       "type": "narration",
-      "text": "彼女は楽しそうに笑いながら、商人の値付けと部品の癖を同時に見ている。軽やかだが、見ている場所はかなり鋭い。"
+      "textLines": [
+        "彼女は楽しそうに笑いながら、商人の値付けと部品の癖を同時に見ている。",
+        "軽やかだが、見ている場所はかなり鋭い。"
+      ],
+      "text": "彼女は楽しそうに笑いながら、商人の値付けと部品の癖を同時に見ている。\n軽やかだが、見ている場所はかなり鋭い。"
     },
     {
       "type": "line",
@@ -14299,7 +16022,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "もちろんです。いつか先輩のお父様に、私の発明も見てもらいたいので。まずは先輩に驚いてもらいます。"
+      "textLines": [
+        "もちろんです。いつか先輩のお父様に、私の発明も見てもらいたいので。",
+        "まずは先輩に驚いてもらいます。"
+      ],
+      "text": "もちろんです。いつか先輩のお父様に、私の発明も見てもらいたいので。\nまずは先輩に驚いてもらいます。"
     },
     {
       "type": "line",
@@ -14316,7 +16043,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰りの馬車まで、ミラは小さな部品を宝物のように抱えていた。港の風は、発明の匂いがした。"
+      "textLines": [
+        "帰りの馬車まで、ミラは小さな部品を宝物のように抱えていた。",
+        "港の風は、発明の匂いがした。"
+      ],
+      "text": "帰りの馬車まで、ミラは小さな部品を宝物のように抱えていた。\n港の風は、発明の匂いがした。"
     },
     {
       "type": "end"
@@ -14325,7 +16056,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_12_old_counter_hideout": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -14343,7 +16074,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ナーディルが古いカウンターを拭いていると、下の棚から小さな木札が出てきた。子どもの字で「みらの基地」と書かれている。"
+      "textLines": [
+        "開店前、ナーディルが古いカウンターを拭いていると、下の棚から小さな木札が出てきた。",
+        "子どもの字で「みらの基地」と書かれている。"
+      ],
+      "text": "開店前、ナーディルが古いカウンターを拭いていると、下の棚から小さな木札が出てきた。\n子どもの字で「みらの基地」と書かれている。"
     },
     {
       "type": "line",
@@ -14374,17 +16109,29 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "あの頃は小さかったので入れました。今は……たぶん、槍を持ってなければいけます。"
+      "textLines": [
+        "あの頃は小さかったので入れました。",
+        "今は……たぶん、槍を持ってなければいけます。"
+      ],
+      "text": "あの頃は小さかったので入れました。\n今は……たぶん、槍を持ってなければいけます。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "試さなくていいよ。店が開く前に、令嬢がカウンター下にはまる事件は避けたい。"
+      "textLines": [
+        "試さなくていいよ。",
+        "店が開く前に、令嬢がカウンター下にはまる事件は避けたい。"
+      ],
+      "text": "試さなくていいよ。\n店が開く前に、令嬢がカウンター下にはまる事件は避けたい。"
     },
     {
       "type": "narration",
-      "text": "ミラは木札を胸に当てて笑った。星瓶堂は彼女にとって、取引先でも憧れの店でもなく、昔から入り込める場所だった。"
+      "textLines": [
+        "ミラは木札を胸に当てて笑った。",
+        "星瓶堂は彼女にとって、取引先でも憧れの店でもなく、昔から入り込める場所だった。"
+      ],
+      "text": "ミラは木札を胸に当てて笑った。\n星瓶堂は彼女にとって、取引先でも憧れの店でもなく、昔から入り込める場所だった。"
     },
     {
       "type": "line",
@@ -14407,7 +16154,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "木札は捨てずに棚へ戻した。今日の星瓶堂には、小さな秘密基地の名残がある。"
+      "textLines": [
+        "木札は捨てずに棚へ戻した。",
+        "今日の星瓶堂には、小さな秘密基地の名残がある。"
+      ],
+      "text": "木札は捨てずに棚へ戻した。\n今日の星瓶堂には、小さな秘密基地の名残がある。"
     },
     {
       "type": "end"
@@ -14416,7 +16167,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_05_palace_corridor_race": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -14447,7 +16198,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "ナーディルお兄ちゃん、この廊下、走ると叱られます。でも早歩きならぎりぎり許されます。"
+      "textLines": [
+        "ナーディルお兄ちゃん、この廊下、走ると叱られます。",
+        "でも早歩きならぎりぎり許されます。"
+      ],
+      "text": "ナーディルお兄ちゃん、この廊下、走ると叱られます。\nでも早歩きならぎりぎり許されます。"
     },
     {
       "type": "line",
@@ -14459,11 +16214,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "王宮です。だからこそ、礼儀正しく速く移動します。師匠にも足運びを褒められました。"
+      "textLines": [
+        "王宮です。だからこそ、礼儀正しく速く移動します。",
+        "師匠にも足運びを褒められました。"
+      ],
+      "text": "王宮です。だからこそ、礼儀正しく速く移動します。\n師匠にも足運びを褒められました。"
     },
     {
       "type": "narration",
-      "text": "ミラは本当に礼儀正しい姿勢で、しかし妙に速く歩き出した。ドレスの裾を乱さず、戦士の足さばきだけが見え隠れする。"
+      "textLines": [
+        "ミラは本当に礼儀正しい姿勢で、しかし妙に速く歩き出した。",
+        "ドレスの裾を乱さず、戦士の足さばきだけが見え隠れする。"
+      ],
+      "text": "ミラは本当に礼儀正しい姿勢で、しかし妙に速く歩き出した。\nドレスの裾を乱さず、戦士の足さばきだけが見え隠れする。"
     },
     {
       "type": "line",
@@ -14498,7 +16261,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "早歩きの勝負は、廊下の角で自然に終わった。ミラは満足そうで、ナーディルは少し息を切らしていた。"
+      "textLines": [
+        "早歩きの勝負は、廊下の角で自然に終わった。",
+        "ミラは満足そうで、ナーディルは少し息を切らしていた。"
+      ],
+      "text": "早歩きの勝負は、廊下の角で自然に終わった。\nミラは満足そうで、ナーディルは少し息を切らしていた。"
     },
     {
       "type": "end"
@@ -14507,7 +16274,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_morning_12_poetry_club_bad_rhyme": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_1"
     },
     {
       "type": "scene",
@@ -14525,7 +16292,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れ前、ナーディルは大学の噴水前で古い掲示板を眺めていた。そこには詩吟部の小さな募集紙が、まだ律儀に貼られている。"
+      "textLines": [
+        "仕入れ前、ナーディルは大学の噴水前で古い掲示板を眺めていた。",
+        "そこには詩吟部の小さな募集紙が、まだ律儀に貼られている。"
+      ],
+      "text": "仕入れ前、ナーディルは大学の噴水前で古い掲示板を眺めていた。\nそこには詩吟部の小さな募集紙が、まだ律儀に貼られている。"
     },
     {
       "type": "line",
@@ -14544,7 +16315,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "うん。先生に「心はあるが、韻が逃げている」って言われた。韻、逃げ足が速かったね。"
+      "textLines": [
+        "うん。先生に「心はあるが、韻が逃げている」って言われた。",
+        "韻、逃げ足が速かったね。"
+      ],
+      "text": "うん。先生に「心はあるが、韻が逃げている」って言われた。\n韻、逃げ足が速かったね。"
     },
     {
       "type": "line",
@@ -14560,19 +16335,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは噴水の縁に腰を下ろし、少しだけ目を細めた。研究所の白い壁ではなく、大学のざわめきの中にいると、彼女の肩は少し軽く見える。"
+      "textLines": [
+        "ダリヤは噴水の縁に腰を下ろし、少しだけ目を細めた。",
+        "研究所の白い壁ではなく、大学のざわめきの中にいると、彼女の肩は少し軽く見える。"
+      ],
+      "text": "ダリヤは噴水の縁に腰を下ろし、少しだけ目を細めた。\n研究所の白い壁ではなく、大学のざわめきの中にいると、彼女の肩は少し軽く見える。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "でも、下手でも続けてたのは嫌いじゃなかった。結果で殴られない場所って、案外少ないから。"
+      "textLines": [
+        "でも、下手でも続けてたのは嫌いじゃなかった。",
+        "結果で殴られない場所って、案外少ないから。"
+      ],
+      "text": "でも、下手でも続けてたのは嫌いじゃなかった。\n結果で殴られない場所って、案外少ないから。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "星瓶堂も、そういう場所にできるといいな。少なくとも、逃げた韻くらいは待てる店に。"
+      "textLines": [
+        "星瓶堂も、そういう場所にできるといいな。",
+        "少なくとも、逃げた韻くらいは待てる店に。"
+      ],
+      "text": "星瓶堂も、そういう場所にできるといいな。\n少なくとも、逃げた韻くらいは待てる店に。"
     },
     {
       "type": "line",
@@ -14589,7 +16376,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "二人は笑って、掲示板を後にした。今日の仕入れには、少しだけ昔の声が混ざっていた。"
+      "textLines": [
+        "二人は笑って、掲示板を後にした。",
+        "今日の仕入れには、少しだけ昔の声が混ざっていた。"
+      ],
+      "text": "二人は笑って、掲示板を後にした。\n今日の仕入れには、少しだけ昔の声が混ざっていた。"
     },
     {
       "type": "end"
@@ -14616,19 +16407,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王立研究所の隅で、ダリヤは訂正印の押された紙を見つめていた。閉店後の仕入れ相談のはずが、話はまだ始まっていない。"
+      "textLines": [
+        "王立研究所の隅で、ダリヤは訂正印の押された紙を見つめていた。",
+        "閉店後の仕入れ相談のはずが、話はまだ始まっていない。"
+      ],
+      "text": "王立研究所の隅で、ダリヤは訂正印の押された紙を見つめていた。\n閉店後の仕入れ相談のはずが、話はまだ始まっていない。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "見て。ひとつ数字を間違えた。大事故じゃないけど、私のメッキにひびが入る音がした。"
+      "textLines": [
+        "見て。ひとつ数字を間違えた。",
+        "大事故じゃないけど、私のメッキにひびが入る音がした。"
+      ],
+      "text": "見て。ひとつ数字を間違えた。\n大事故じゃないけど、私のメッキにひびが入る音がした。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "訂正できたなら、ちゃんと仕事をしてるってことだと思う。俺も帳簿でよく直すよ。"
+      "textLines": [
+        "訂正できたなら、ちゃんと仕事をしてるってことだと思う。",
+        "俺も帳簿でよく直すよ。"
+      ],
+      "text": "訂正できたなら、ちゃんと仕事をしてるってことだと思う。\n俺も帳簿でよく直すよ。"
     },
     {
       "type": "line",
@@ -14644,7 +16447,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは紙を折り、胸元にしまった。逃げるために選んだはずの道で、彼女はまだ逃げ方を探している。"
+      "textLines": [
+        "ダリヤは紙を折り、胸元にしまった。",
+        "逃げるために選んだはずの道で、彼女はまだ逃げ方を探している。"
+      ],
+      "text": "ダリヤは紙を折り、胸元にしまった。\n逃げるために選んだはずの道で、彼女はまだ逃げ方を探している。"
     },
     {
       "type": "line",
@@ -14700,7 +16507,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れの帰り、二人はオアシスを見下ろす道で足を止めた。王都の喧騒も、研究所の時計も、ここまでは追ってこない。"
+      "textLines": [
+        "仕入れの帰り、二人はオアシスを見下ろす道で足を止めた。",
+        "王都の喧騒も、研究所の時計も、ここまでは追ってこない。"
+      ],
+      "text": "仕入れの帰り、二人はオアシスを見下ろす道で足を止めた。\n王都の喧騒も、研究所の時計も、ここまでは追ってこない。"
     },
     {
       "type": "focus",
@@ -14723,19 +16534,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは少し笑い、石段を一段だけ下りた。長身の彼女が、子どものようにつま先で小石を避ける。"
+      "textLines": [
+        "ダリヤは少し笑い、石段を一段だけ下りた。",
+        "長身の彼女が、子どものようにつま先で小石を避ける。"
+      ],
+      "text": "ダリヤは少し笑い、石段を一段だけ下りた。\n長身の彼女が、子どものようにつま先で小石を避ける。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "鬼族は強い、って言われるけどさ。強い体に弱い気分が入ってると、扱いに困るよね。"
+      "textLines": [
+        "鬼族は強い、って言われるけどさ。",
+        "強い体に弱い気分が入ってると、扱いに困るよね。"
+      ],
+      "text": "鬼族は強い、って言われるけどさ。\n強い体に弱い気分が入ってると、扱いに困るよね。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "困っても、扱い方を一緒に探せばいいんじゃないかな。錬金術も、だいたいそうだし。"
+      "textLines": [
+        "困っても、扱い方を一緒に探せばいいんじゃないかな。",
+        "錬金術も、だいたいそうだし。"
+      ],
+      "text": "困っても、扱い方を一緒に探せばいいんじゃないかな。\n錬金術も、だいたいそうだし。"
     },
     {
       "type": "line",
@@ -14752,7 +16575,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "オアシスの水面は、ゆっくりと夕方の色を映していた。急がない時間は、それだけで少し薬のようだった。"
+      "textLines": [
+        "オアシスの水面は、ゆっくりと夕方の色を映していた。",
+        "急がない時間は、それだけで少し薬のようだった。"
+      ],
+      "text": "オアシスの水面は、ゆっくりと夕方の色を映していた。\n急がない時間は、それだけで少し薬のようだった。"
     },
     {
       "type": "end"
@@ -14761,7 +16588,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_12_sister_claim_tag": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_2"
     },
     {
       "type": "scene",
@@ -14779,7 +16606,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ナーディルはカウンターの端に見慣れない札を見つけた。丸い字で「お姉ちゃん席」と書かれている。"
+      "textLines": [
+        "開店前、ナーディルはカウンターの端に見慣れない札を見つけた。",
+        "丸い字で「お姉ちゃん席」と書かれている。"
+      ],
+      "text": "開店前、ナーディルはカウンターの端に見慣れない札を見つけた。\n丸い字で「お姉ちゃん席」と書かれている。"
     },
     {
       "type": "line",
@@ -14814,19 +16645,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは札を指でつつき、少しだけ昔の顔をした。親と合わずに逃げ込んでいた頃、この店は本当に彼女の避難所だった。"
+      "textLines": [
+        "ダリヤは札を指でつつき、少しだけ昔の顔をした。",
+        "親と合わずに逃げ込んでいた頃、この店は本当に彼女の避難所だった。"
+      ],
+      "text": "ダリヤは札を指でつつき、少しだけ昔の顔をした。\n親と合わずに逃げ込んでいた頃、この店は本当に彼女の避難所だった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "席の名前はともかく、座る場所はあるよ。無理に外で立っていなくてもいい。"
+      "textLines": [
+        "席の名前はともかく、座る場所はあるよ。",
+        "無理に外で立っていなくてもいい。"
+      ],
+      "text": "席の名前はともかく、座る場所はあるよ。\n無理に外で立っていなくてもいい。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "そういうところがさ、昔から危ないんだよね。帰ってきたくなる人が増える。"
+      "textLines": [
+        "そういうところがさ、昔から危ないんだよね。",
+        "帰ってきたくなる人が増える。"
+      ],
+      "text": "そういうところがさ、昔から危ないんだよね。\n帰ってきたくなる人が増える。"
     },
     {
       "type": "line",
@@ -14849,7 +16692,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "札はひとまず引き出しにしまわれた。だがダリヤは、椅子の位置だけはちゃっかり覚えて帰った。"
+      "textLines": [
+        "札はひとまず引き出しにしまわれた。",
+        "だがダリヤは、椅子の位置だけはちゃっかり覚えて帰った。"
+      ],
+      "text": "札はひとまず引き出しにしまわれた。\nだがダリヤは、椅子の位置だけはちゃっかり覚えて帰った。"
     },
     {
       "type": "end"
@@ -14876,7 +16723,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、二人は星見台まで歩いた。夜風は涼しく、王都の灯りが遠くににじんでいる。"
+      "textLines": [
+        "閉店後、二人は星見台まで歩いた。",
+        "夜風は涼しく、王都の灯りが遠くににじんでいる。"
+      ],
+      "text": "閉店後、二人は星見台まで歩いた。\n夜風は涼しく、王都の灯りが遠くににじんでいる。"
     },
     {
       "type": "focus",
@@ -14895,7 +16746,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "sorrow",
-      "text": "うん。俺が変な塗り薬を二つ持ってきた日だよね。色は違うけど効能は同じ、って。"
+      "textLines": [
+        "うん。俺が変な塗り薬を二つ持ってきた日だよね。",
+        "色は違うけど効能は同じ、って。"
+      ],
+      "text": "うん。俺が変な塗り薬を二つ持ってきた日だよね。\n色は違うけど効能は同じ、って。"
     },
     {
       "type": "line",
@@ -14905,12 +16760,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは白い頬に触れた。月光神の加護と呼ばれる色は、彼女にとって長い間、家に居づらい理由でもあった。"
+      "textLines": [
+        "ダリヤは白い頬に触れた。",
+        "月光神の加護と呼ばれる色は、彼女にとって長い間、家に居づらい理由でもあった。"
+      ],
+      "text": "ダリヤは白い頬に触れた。\n月光神の加護と呼ばれる色は、彼女にとって長い間、家に居づらい理由でもあった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "sorrow",
       "text": "あの時の俺は、難しいことは何も考えてなかったと思う。"
     },
     {
@@ -14940,7 +16799,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台からの帰り道、ダリヤはいつもより少しだけ近くを歩いた。古い約束は、まだ効いている。"
+      "textLines": [
+        "星見台からの帰り道、ダリヤはいつもより少しだけ近くを歩いた。",
+        "古い約束は、まだ効いている。"
+      ],
+      "text": "星見台からの帰り道、ダリヤはいつもより少しだけ近くを歩いた。\n古い約束は、まだ効いている。"
     },
     {
       "type": "end"
@@ -14949,7 +16812,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_night_13_father_mother_cliff_photo": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "bg",
@@ -14971,7 +16834,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルは父母から届いた写真を広げた。写っているのは、地図に載っていないらしい崖の上で笑う母の姿だった。"
+      "textLines": [
+        "閉店後、ナーディルは父母から届いた写真を広げた。",
+        "写っているのは、地図に載っていないらしい崖の上で笑う母の姿だった。"
+      ],
+      "text": "閉店後、ナーディルは父母から届いた写真を広げた。\n写っているのは、地図に載っていないらしい崖の上で笑う母の姿だった。"
     },
     {
       "type": "line",
@@ -14990,7 +16857,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "……怖くて上がれないわね。足場が細すぎる。荷物を持っていたら絶対に無理。"
+      "textLines": [
+        "……怖くて上がれないわね。足場が細すぎる。",
+        "荷物を持っていたら絶対に無理。"
+      ],
+      "text": "……怖くて上がれないわね。足場が細すぎる。\n荷物を持っていたら絶対に無理。"
     },
     {
       "type": "line",
@@ -15002,19 +16873,27 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "当たり前でしょう。綺麗な景色も、落ちたら終わりよ。旅具を扱う店なら、そういう目も必要。"
+      "textLines": [
+        "当たり前でしょう。綺麗な景色も、落ちたら終わりよ。",
+        "旅具を扱う店なら、そういう目も必要。"
+      ],
+      "text": "当たり前でしょう。綺麗な景色も、落ちたら終わりよ。\n旅具を扱う店なら、そういう目も必要。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "なるほど。父さんには、次から足場の情報も書いてもらおうかな。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "ついでに命綱の有無もね。自由な家族に、店主が振り回されすぎないように。"
+      "textLines": [
+        "ついでに命綱の有無もね。",
+        "自由な家族に、店主が振り回されすぎないように。"
+      ],
+      "text": "ついでに命綱の有無もね。\n自由な家族に、店主が振り回されすぎないように。"
     },
     {
       "type": "focus",
@@ -15025,7 +16904,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "写真は帳簿の横に置かれた。笑顔の向こうに、ハキマの実務的な注意書きが増えそうだった。"
+      "textLines": [
+        "写真は帳簿の横に置かれた。",
+        "笑顔の向こうに、ハキマの実務的な注意書きが増えそうだった。"
+      ],
+      "text": "写真は帳簿の横に置かれた。\n笑顔の向こうに、ハキマの実務的な注意書きが増えそうだった。"
     },
     {
       "type": "end"
@@ -15034,7 +16917,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_night_13_father_mother_camera_photo": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "bg",
@@ -15056,7 +16939,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父母から届いた写真には、見たことのない遠景が鮮やかに写っていた。ナーディルが首をかしげていると、ミラが目を輝かせた。"
+      "textLines": [
+        "父母から届いた写真には、見たことのない遠景が鮮やかに写っていた。",
+        "ナーディルが首をかしげていると、ミラが目を輝かせた。"
+      ],
+      "text": "父母から届いた写真には、見たことのない遠景が鮮やかに写っていた。\nナーディルが首をかしげていると、ミラが目を輝かせた。"
     },
     {
       "type": "focus",
@@ -15081,11 +16968,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "それも大事です。でもこれは発明史的にも大事です。お父様、旅先でまた改良してますよ。"
+      "textLines": [
+        "それも大事です。でもこれは発明史的にも大事です。",
+        "お父様、旅先でまた改良してますよ。"
+      ],
+      "text": "それも大事です。でもこれは発明史的にも大事です。\nお父様、旅先でまた改良してますよ。"
     },
     {
       "type": "narration",
-      "text": "ミラは写真を光に透かす勢いで観察している。憧れの発明家を見る目と、商会令嬢として商品価値を測る目が同時に働いていた。"
+      "textLines": [
+        "ミラは写真を光に透かす勢いで観察している。",
+        "憧れの発明家を見る目と、商会令嬢として商品価値を測る目が同時に働いていた。"
+      ],
+      "text": "ミラは写真を光に透かす勢いで観察している。\n憧れの発明家を見る目と、商会令嬢として商品価値を測る目が同時に働いていた。"
     },
     {
       "type": "line",
@@ -15097,7 +16992,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "はい。でも、いつかは尊敬するだけじゃなくて、隣に自分の発明を置きたいです。"
+      "textLines": [
+        "はい。",
+        "でも、いつかは尊敬するだけじゃなくて、隣に自分の発明を置きたいです。"
+      ],
+      "text": "はい。\nでも、いつかは尊敬するだけじゃなくて、隣に自分の発明を置きたいです。"
     },
     {
       "type": "line",
@@ -15151,7 +17050,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルは父母から届いた写真を見て、また小さくため息をついた。追伸には「地図をなくしました」とある。"
+      "textLines": [
+        "閉店後、ナーディルは父母から届いた写真を見て、また小さくため息をついた。",
+        "追伸には「地図をなくしました」とある。"
+      ],
+      "text": "閉店後、ナーディルは父母から届いた写真を見て、また小さくため息をついた。\n追伸には「地図をなくしました」とある。"
     },
     {
       "type": "line",
@@ -15170,7 +17073,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "地図がなくても笑ってるなら、強いね。私は地図があっても迷うのに。主に気分が。"
+      "textLines": [
+        "地図がなくても笑ってるなら、強いね。私は地図があっても迷うのに。",
+        "主に気分が。"
+      ],
+      "text": "地図がなくても笑ってるなら、強いね。私は地図があっても迷うのに。\n主に気分が。"
     },
     {
       "type": "line",
@@ -15182,17 +17089,29 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "うん。研究所から帰る道は覚えてる。でも、気持ちだけ別の方へ逃げたがる。"
+      "textLines": [
+        "うん。研究所から帰る道は覚えてる。",
+        "でも、気持ちだけ別の方へ逃げたがる。"
+      ],
+      "text": "うん。研究所から帰る道は覚えてる。\nでも、気持ちだけ別の方へ逃げたがる。"
     },
     {
       "type": "narration",
-      "text": "ダリヤは写真の中の遠い空を見た。自由な旅に憧れるというより、帰れる場所があるから遠くへ行けるのだと考えている顔だった。"
+      "textLines": [
+        "ダリヤは写真の中の遠い空を見た。",
+        "自由な旅に憧れるというより、帰れる場所があるから遠くへ行けるのだと考えている顔だった。"
+      ],
+      "text": "ダリヤは写真の中の遠い空を見た。\n自由な旅に憧れるというより、帰れる場所があるから遠くへ行けるのだと考えている顔だった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "もし迷ったら、星瓶堂には戻ってきていいよ。地図に書かなくても覚えてる場所だと思うから。"
+      "textLines": [
+        "もし迷ったら、星瓶堂には戻ってきていいよ。",
+        "地図に書かなくても覚えてる場所だと思うから。"
+      ],
+      "text": "もし迷ったら、星瓶堂には戻ってきていいよ。\n地図に書かなくても覚えてる場所だと思うから。"
     },
     {
       "type": "line",
@@ -15209,7 +17128,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "写真は机の上に残った。地図にない場所より、帰ってこられる店の方が、今夜のダリヤには眩しかった。"
+      "textLines": [
+        "写真は机の上に残った。",
+        "地図にない場所より、帰ってこられる店の方が、今夜のダリヤには眩しかった。"
+      ],
+      "text": "写真は机の上に残った。\n地図にない場所より、帰ってこられる店の方が、今夜のダリヤには眩しかった。"
     },
     {
       "type": "end"
@@ -15236,7 +17159,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝刊の一面に、女帝オルタンシアの名が大きく載っていた。辺境の無法者を自ら叱りつけ、護衛より先に場を収めたらしい。"
+      "textLines": [
+        "朝刊の一面に、女帝オルタンシアの名が大きく載っていた。",
+        "辺境の無法者を自ら叱りつけ、護衛より先に場を収めたらしい。"
+      ],
+      "text": "朝刊の一面に、女帝オルタンシアの名が大きく載っていた。\n辺境の無法者を自ら叱りつけ、護衛より先に場を収めたらしい。"
     },
     {
       "type": "line",
@@ -15246,7 +17173,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "記事の端には、女帝と著名な冒険者の婚姻予定にも触れられている。ナーディルは少しだけ紙面を遠ざけた。"
+      "textLines": [
+        "記事の端には、女帝と著名な冒険者の婚姻予定にも触れられている。",
+        "ナーディルは少しだけ紙面を遠ざけた。"
+      ],
+      "text": "記事の端には、女帝と著名な冒険者の婚姻予定にも触れられている。\nナーディルは少しだけ紙面を遠ざけた。"
     },
     {
       "type": "line",
@@ -15256,7 +17187,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "彼は新聞を畳み、棚の埃を払った。王国の大きな話題も、星瓶堂では開店前の小さな景気づけになる。"
+      "textLines": [
+        "彼は新聞を畳み、棚の埃を払った。",
+        "王国の大きな話題も、星瓶堂では開店前の小さな景気づけになる。"
+      ],
+      "text": "彼は新聞を畳み、棚の埃を払った。\n王国の大きな話題も、星瓶堂では開店前の小さな景気づけになる。"
     },
     {
       "type": "line",
@@ -15271,7 +17206,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_11_shortcut_stone_steps": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -15289,7 +17224,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の市場は、表通りよりも裏の石段の方が早い。ナーディルは荷箱を抱え、古い壁沿いの細い道を見上げた。"
+      "textLines": [
+        "朝の市場は、表通りよりも裏の石段の方が早い。",
+        "ナーディルは荷箱を抱え、古い壁沿いの細い道を見上げた。"
+      ],
+      "text": "朝の市場は、表通りよりも裏の石段の方が早い。\nナーディルは荷箱を抱え、古い壁沿いの細い道を見上げた。"
     },
     {
       "type": "line",
@@ -15308,7 +17247,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "広く見えたんじゃなくて、あんたが小さかったのよ。私はここで三回転んだ。"
+      "textLines": [
+        "広く見えたんじゃなくて、あんたが小さかったのよ。",
+        "私はここで三回転んだ。"
+      ],
+      "text": "広く見えたんじゃなくて、あんたが小さかったのよ。\n私はここで三回転んだ。"
     },
     {
       "type": "line",
@@ -15324,7 +17267,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは先に石段を上がり、振り返って手を伸ばした。強がる声とは違って、その手は昔から変わらず丁寧だった。"
+      "textLines": [
+        "ハキマは先に石段を上がり、振り返って手を伸ばした。",
+        "強がる声とは違って、その手は昔から変わらず丁寧だった。"
+      ],
+      "text": "ハキマは先に石段を上がり、振り返って手を伸ばした。\n強がる声とは違って、その手は昔から変わらず丁寧だった。"
     },
     {
       "type": "line",
@@ -15336,7 +17283,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "任せなさい。まずは荷箱を傾けない。店主が朝から香料を撒いたら、商売にならないわ。"
+      "textLines": [
+        "任せなさい。まずは荷箱を傾けない。",
+        "店主が朝から香料を撒いたら、商売にならないわ。"
+      ],
+      "text": "任せなさい。まずは荷箱を傾けない。\n店主が朝から香料を撒いたら、商売にならないわ。"
     },
     {
       "type": "focus",
@@ -15347,7 +17298,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "石段を抜ける頃には、仕入れ籠の中で香料瓶が静かに鳴っていた。今日の営業に間に合いそうだ。"
+      "textLines": [
+        "石段を抜ける頃には、仕入れ籠の中で香料瓶が静かに鳴っていた。",
+        "今日の営業に間に合いそうだ。"
+      ],
+      "text": "石段を抜ける頃には、仕入れ籠の中で香料瓶が静かに鳴っていた。\n今日の営業に間に合いそうだ。"
     },
     {
       "type": "end"
@@ -15374,7 +17329,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の棚卸しで、古い領収書の束が出てきた。紙の端には、ハキマの叔父が若い頃に使っていた商印が薄く残っている。"
+      "textLines": [
+        "閉店後の棚卸しで、古い領収書の束が出てきた。",
+        "紙の端には、ハキマの叔父が若い頃に使っていた商印が薄く残っている。"
+      ],
+      "text": "閉店後の棚卸しで、古い領収書の束が出てきた。\n紙の端には、ハキマの叔父が若い頃に使っていた商印が薄く残っている。"
     },
     {
       "type": "line",
@@ -15409,13 +17368,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは領収書を指で押さえ、古い数字の並びを眺めた。仕事の話をしているのに、声の奥に少しだけ家族の温度が混じる。"
+      "textLines": [
+        "ハキマは領収書を指で押さえ、古い数字の並びを眺めた。",
+        "仕事の話をしているのに、声の奥に少しだけ家族の温度が混じる。"
+      ],
+      "text": "ハキマは領収書を指で押さえ、古い数字の並びを眺めた。\n仕事の話をしているのに、声の奥に少しだけ家族の温度が混じる。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "私がここを手伝うって言った時、叔父は渋い顔をしたけど……反対はしなかった。昔の付き合いがあったからよ。"
+      "textLines": [
+        "私がここを手伝うって言った時、叔父は渋い顔をしたけど……反対はしなかった。",
+        "昔の付き合いがあったからよ。"
+      ],
+      "text": "私がここを手伝うって言った時、叔父は渋い顔をしたけど……反対はしなかった。\n昔の付き合いがあったからよ。"
     },
     {
       "type": "line",
@@ -15438,7 +17405,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "古い領収書は、帳簿の間へ戻された。紙一枚分の昔が、今の店を少し支えてくれている。"
+      "textLines": [
+        "古い領収書は、帳簿の間へ戻された。",
+        "紙一枚分の昔が、今の店を少し支えてくれている。"
+      ],
+      "text": "古い領収書は、帳簿の間へ戻された。\n紙一枚分の昔が、今の店を少し支えてくれている。"
     },
     {
       "type": "end"
@@ -15447,7 +17418,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_06_fountain_wet_tail": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -15465,7 +17436,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れの帰り、二人は湖畔学院の噴水前で足を止めた。水音が涼しく、夕方の石畳に淡い光が揺れている。"
+      "textLines": [
+        "仕入れの帰り、二人は湖畔学院の噴水前で足を止めた。",
+        "水音が涼しく、夕方の石畳に淡い光が揺れている。"
+      ],
+      "text": "仕入れの帰り、二人は湖畔学院の噴水前で足を止めた。\n水音が涼しく、夕方の石畳に淡い光が揺れている。"
     },
     {
       "type": "line",
@@ -15512,18 +17487,26 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "責める声は軽かった。昔の失敗を、今なら笑い話にできる。そのこと自体が、ハキマには少し不思議だった。"
+      "textLines": [
+        "責める声は軽かった。昔の失敗を、今なら笑い話にできる。",
+        "そのこと自体が、ハキマには少し不思議だった。"
+      ],
+      "text": "責める声は軽かった。昔の失敗を、今なら笑い話にできる。\nそのこと自体が、ハキマには少し不思議だった。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "でも、あの頃の私に言ってやりたいわ。転んでも、案外ここまで来られるって。"
+      "textLines": [
+        "でも、あの頃の私に言ってやりたいわ。",
+        "転んでも、案外ここまで来られるって。"
+      ],
+      "text": "でも、あの頃の私に言ってやりたいわ。\n転んでも、案外ここまで来られるって。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "joy",
+      "expression": "fun",
       "text": "うん。俺もそう思う。"
     },
     {
@@ -15535,7 +17518,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "噴水の水音を背に、二人は星瓶堂へ戻った。昔の足跡は、今日の帰り道にちゃんと重なっていた。"
+      "textLines": [
+        "噴水の水音を背に、二人は星瓶堂へ戻った。",
+        "昔の足跡は、今日の帰り道にちゃんと重なっていた。"
+      ],
+      "text": "噴水の水音を背に、二人は星瓶堂へ戻った。\n昔の足跡は、今日の帰り道にちゃんと重なっていた。"
     },
     {
       "type": "end"
@@ -15544,7 +17531,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_11_secret_workbench": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -15562,7 +17549,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ナーディルは奥の棚を動かしていた。壁際の小さな作業台に、子どもの手で付けたような細い傷が残っている。"
+      "textLines": [
+        "開店前、ナーディルは奥の棚を動かしていた。",
+        "壁際の小さな作業台に、子どもの手で付けたような細い傷が残っている。"
+      ],
+      "text": "開店前、ナーディルは奥の棚を動かしていた。\n壁際の小さな作業台に、子どもの手で付けたような細い傷が残っている。"
     },
     {
       "type": "line",
@@ -15603,13 +17594,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラはむっとしたが、すぐに笑った。大商会の令嬢でも、王宮に出入りする天才でもない、星瓶堂を遊び場にしていた頃の顔だった。"
+      "textLines": [
+        "ミラはむっとしたが、すぐに笑った。",
+        "大商会の令嬢でも、王宮に出入りする天才でもない、星瓶堂を遊び場にしていた頃の顔だった。"
+      ],
+      "text": "ミラはむっとしたが、すぐに笑った。\n大商会の令嬢でも、王宮に出入りする天才でもない、星瓶堂を遊び場にしていた頃の顔だった。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "ナーディルお兄ちゃん、ここを小さな試作台に戻しませんか。今度は煙だけで終わらせません。"
+      "textLines": [
+        "ナーディルお兄ちゃん、ここを小さな試作台に戻しませんか。",
+        "今度は煙だけで終わらせません。"
+      ],
+      "text": "ナーディルお兄ちゃん、ここを小さな試作台に戻しませんか。\n今度は煙だけで終わらせません。"
     },
     {
       "type": "line",
@@ -15632,7 +17631,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "古い傷の横に、新しい紙が置かれた。星瓶堂の朝に、少しだけ発明家の匂いが混じる。"
+      "textLines": [
+        "古い傷の横に、新しい紙が置かれた。",
+        "星瓶堂の朝に、少しだけ発明家の匂いが混じる。"
+      ],
+      "text": "古い傷の横に、新しい紙が置かれた。\n星瓶堂の朝に、少しだけ発明家の匂いが混じる。"
     },
     {
       "type": "end"
@@ -15641,7 +17644,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_06_port_clockwork_parts": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -15659,7 +17662,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の露店には、異国の小さな歯車や曲がった真鍮板が並んでいた。ミラは宝石を見るより真剣な顔で箱を覗き込む。"
+      "textLines": [
+        "港の露店には、異国の小さな歯車や曲がった真鍮板が並んでいた。",
+        "ミラは宝石を見るより真剣な顔で箱を覗き込む。"
+      ],
+      "text": "港の露店には、異国の小さな歯車や曲がった真鍮板が並んでいた。\nミラは宝石を見るより真剣な顔で箱を覗き込む。"
     },
     {
       "type": "focus",
@@ -15684,11 +17691,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "では私は一つだけ買って、三倍使い倒します。発明家は倹約も必要ですから。"
+      "textLines": [
+        "では私は一つだけ買って、三倍使い倒します。",
+        "発明家は倹約も必要ですから。"
+      ],
+      "text": "では私は一つだけ買って、三倍使い倒します。\n発明家は倹約も必要ですから。"
     },
     {
       "type": "narration",
-      "text": "ミラは姉の商社の話をしなかった。競争心ではなく、自分の手で何かを作りたいという目で、港の部品を選んでいる。"
+      "textLines": [
+        "ミラは姉の商社の話をしなかった。",
+        "競争心ではなく、自分の手で何かを作りたいという目で、港の部品を選んでいる。"
+      ],
+      "text": "ミラは姉の商社の話をしなかった。\n競争心ではなく、自分の手で何かを作りたいという目で、港の部品を選んでいる。"
     },
     {
       "type": "line",
@@ -15723,7 +17738,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰り道、ミラの紙袋から歯車がかすかに鳴った。昔の遊びの続きが、少しだけ未来の音に変わっていた。"
+      "textLines": [
+        "帰り道、ミラの紙袋から歯車がかすかに鳴った。",
+        "昔の遊びの続きが、少しだけ未来の音に変わっていた。"
+      ],
+      "text": "帰り道、ミラの紙袋から歯車がかすかに鳴った。\n昔の遊びの続きが、少しだけ未来の音に変わっていた。"
     },
     {
       "type": "end"
@@ -15750,7 +17769,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、星瓶堂の前に商会の小さな馬車が止まった。昔から変わらない迎えの鈴が、夜道に控えめに鳴る。"
+      "textLines": [
+        "閉店後、星瓶堂の前に商会の小さな馬車が止まった。",
+        "昔から変わらない迎えの鈴が、夜道に控えめに鳴る。"
+      ],
+      "text": "閉店後、星瓶堂の前に商会の小さな馬車が止まった。\n昔から変わらない迎えの鈴が、夜道に控えめに鳴る。"
     },
     {
       "type": "focus",
@@ -15763,7 +17786,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "この鈴、昔は敵の合図みたいに聞こえました。帰らなきゃいけない時間ですから。"
+      "textLines": [
+        "この鈴、昔は敵の合図みたいに聞こえました。",
+        "帰らなきゃいけない時間ですから。"
+      ],
+      "text": "この鈴、昔は敵の合図みたいに聞こえました。\n帰らなきゃいけない時間ですから。"
     },
     {
       "type": "line",
@@ -15779,7 +17806,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは笑っているが、視線は店の灯りからなかなか離れない。星瓶堂が遊び場だった頃と、気持ちはあまり変わっていないのかもしれない。"
+      "textLines": [
+        "ミラは笑っているが、視線は店の灯りからなかなか離れない。",
+        "星瓶堂が遊び場だった頃と、気持ちはあまり変わっていないのかもしれない。"
+      ],
+      "text": "ミラは笑っているが、視線は店の灯りからなかなか離れない。\n星瓶堂が遊び場だった頃と、気持ちはあまり変わっていないのかもしれない。"
     },
     {
       "type": "line",
@@ -15802,7 +17833,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "馬車の鈴がもう一度鳴る。ミラは名残惜しそうに手を振り、夜の通りへ戻っていった。"
+      "textLines": [
+        "馬車の鈴がもう一度鳴る。",
+        "ミラは名残惜しそうに手を振り、夜の通りへ戻っていった。"
+      ],
+      "text": "馬車の鈴がもう一度鳴る。\nミラは名残惜しそうに手を振り、夜の通りへ戻っていった。"
     },
     {
       "type": "end"
@@ -15811,7 +17846,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_11_safiya_margin_note": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_3"
     },
     {
       "type": "scene",
@@ -15829,7 +17864,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "姉からの手紙には、いつものように余白いっぱいの追伸があった。宛先はナーディルではなく、店に来ると分かっているダリヤだ。"
+      "textLines": [
+        "姉からの手紙には、いつものように余白いっぱいの追伸があった。",
+        "宛先はナーディルではなく、店に来ると分かっているダリヤだ。"
+      ],
+      "text": "姉からの手紙には、いつものように余白いっぱいの追伸があった。\n宛先はナーディルではなく、店に来ると分かっているダリヤだ。"
     },
     {
       "type": "line",
@@ -15864,7 +17903,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルにとって、姉とダリヤが親友なのは特別な説明を要することではない。星瓶堂の昔話には、二人の声が当たり前に混じっている。"
+      "textLines": [
+        "ナーディルにとって、姉とダリヤが親友なのは特別な説明を要することではない。",
+        "星瓶堂の昔話には、二人の声が当たり前に混じっている。"
+      ],
+      "text": "ナーディルにとって、姉とダリヤが親友なのは特別な説明を要することではない。\n星瓶堂の昔話には、二人の声が当たり前に混じっている。"
     },
     {
       "type": "line",
@@ -15893,7 +17936,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは苦笑しながら、朝食代わりの焼き菓子を半分に割った。店の朝は、昔からこうして少し賑やかになる。"
+      "textLines": [
+        "ナーディルは苦笑しながら、朝食代わりの焼き菓子を半分に割った。",
+        "店の朝は、昔からこうして少し賑やかになる。"
+      ],
+      "text": "ナーディルは苦笑しながら、朝食代わりの焼き菓子を半分に割った。\n店の朝は、昔からこうして少し賑やかになる。"
     },
     {
       "type": "end"
@@ -15920,7 +17967,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "棚の奥から、祖父の字で書かれた古い商品ラベルが二枚出てきた。効能は同じ、色だけが違う塗り薬のものだった。"
+      "textLines": [
+        "棚の奥から、祖父の字で書かれた古い商品ラベルが二枚出てきた。",
+        "効能は同じ、色だけが違う塗り薬のものだった。"
+      ],
+      "text": "棚の奥から、祖父の字で書かれた古い商品ラベルが二枚出てきた。\n効能は同じ、色だけが違う塗り薬のものだった。"
     },
     {
       "type": "line",
@@ -15949,7 +18000,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "その「ただ」が、幼いダリヤには救いだった。白い顔を珍しがられるたびに固くなっていた息が、あの日だけ少し緩んだ。"
+      "textLines": [
+        "その「ただ」が、幼いダリヤには救いだった。",
+        "白い顔を珍しがられるたびに固くなっていた息が、あの日だけ少し緩んだ。"
+      ],
+      "text": "その「ただ」が、幼いダリヤには救いだった。\n白い顔を珍しがられるたびに固くなっていた息が、あの日だけ少し緩んだ。"
     },
     {
       "type": "line",
@@ -15978,7 +18033,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ラベルは新しい箱に入れ直された。古い薬瓶の記憶は、閉店後の灯りの中で静かに息をしていた。"
+      "textLines": [
+        "ラベルは新しい箱に入れ直された。",
+        "古い薬瓶の記憶は、閉店後の灯りの中で静かに息をしていた。"
+      ],
+      "text": "ラベルは新しい箱に入れ直された。\n古い薬瓶の記憶は、閉店後の灯りの中で静かに息をしていた。"
     },
     {
       "type": "end"
@@ -15987,7 +18046,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_date_06_bad_poetry_fountain": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_4"
     },
     {
       "type": "scene",
@@ -16005,7 +18064,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "大学の噴水前に立つと、ダリヤは珍しく足を止めた。詩吟部の発表会で、二人が同時に沈黙した場所だ。"
+      "textLines": [
+        "大学の噴水前に立つと、ダリヤは珍しく足を止めた。",
+        "詩吟部の発表会で、二人が同時に沈黙した場所だ。"
+      ],
+      "text": "大学の噴水前に立つと、ダリヤは珍しく足を止めた。\n詩吟部の発表会で、二人が同時に沈黙した場所だ。"
     },
     {
       "type": "focus",
@@ -16034,19 +18097,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "二人はしばらく黙ってから、同時に小さく笑った。失敗の記憶が、今は同じ方向を向いている。"
+      "textLines": [
+        "二人はしばらく黙ってから、同時に小さく笑った。",
+        "失敗の記憶が、今は同じ方向を向いている。"
+      ],
+      "text": "二人はしばらく黙ってから、同時に小さく笑った。\n失敗の記憶が、今は同じ方向を向いている。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "でも、あの部に入ってよかった。鬼族があまり選ばないことを選びたかっただけなのに、君がいた。"
+      "textLines": [
+        "でも、あの部に入ってよかった。",
+        "鬼族があまり選ばないことを選びたかっただけなのに、君がいた。"
+      ],
+      "text": "でも、あの部に入ってよかった。\n鬼族があまり選ばないことを選びたかっただけなのに、君がいた。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "俺も、ダリヤ先輩がいてくれて助かったよ。下手な詩を一人で抱えなくて済んだ。"
+      "textLines": [
+        "俺も、ダリヤ先輩がいてくれて助かったよ。",
+        "下手な詩を一人で抱えなくて済んだ。"
+      ],
+      "text": "俺も、ダリヤ先輩がいてくれて助かったよ。\n下手な詩を一人で抱えなくて済んだ。"
     },
     {
       "type": "line",
@@ -16069,7 +18144,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "噴水の水音に、二人の笑い声が混じる。昔の失敗は、今の距離を測る目印になっていた。"
+      "textLines": [
+        "噴水の水音に、二人の笑い声が混じる。",
+        "昔の失敗は、今の距離を測る目印になっていた。"
+      ],
+      "text": "噴水の水音に、二人の笑い声が混じる。\n昔の失敗は、今の距離を測る目印になっていた。"
     },
     {
       "type": "end"
@@ -16078,7 +18157,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_route_opening_001": [
     {
       "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -16096,7 +18175,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王立錬金術大学の噴水前は、講義の合間になると急に人の流れが増える。ナーディルはその端で、恩師から預かった紹介状を読み返していた。"
+      "textLines": [
+        "王立錬金術大学の噴水前は、講義の合間になると急に人の流れが増える。",
+        "ナーディルはその端で、恩師から預かった紹介状を読み返していた。"
+      ],
+      "text": "王立錬金術大学の噴水前は、講義の合間になると急に人の流れが増える。\nナーディルはその端で、恩師から預かった紹介状を読み返していた。"
     },
     {
       "type": "narration",
@@ -16114,7 +18197,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "家族は皆、それぞれの道でうまくやっている。だからこそ、自分だけが祖父たちの店で足踏みしているように思える日があった。"
+      "textLines": [
+        "家族は皆、それぞれの道でうまくやっている。",
+        "だからこそ、自分だけが祖父たちの店で足踏みしているように思える日があった。"
+      ],
+      "text": "家族は皆、それぞれの道でうまくやっている。\nだからこそ、自分だけが祖父たちの店で足踏みしているように思える日があった。"
     },
     {
       "type": "line",
@@ -16124,11 +18211,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "紹介状の端には、香料問屋の名も添えられていた。白狼族の血を引く彼女が、今は叔父の店で香料と流通を学んでいるらしい。"
+      "textLines": [
+        "紹介状の端には、香料問屋の名も添えられていた。",
+        "白狼族の血を引く彼女が、今は叔父の店で香料と流通を学んでいるらしい。"
+      ],
+      "text": "紹介状の端には、香料問屋の名も添えられていた。\n白狼族の血を引く彼女が、今は叔父の店で香料と流通を学んでいるらしい。"
     },
     {
       "type": "narration",
-      "text": "ナーディルは、大学の実習で何度か見た横顔を思い出す。誰よりも早く来て、誰よりも遅くまで手順を確認していた人だった。"
+      "textLines": [
+        "ナーディルは、大学の実習で何度か見た横顔を思い出す。",
+        "誰よりも早く来て、誰よりも遅くまで手順を確認していた人だった。"
+      ],
+      "text": "ナーディルは、大学の実習で何度か見た横顔を思い出す。\n誰よりも早く来て、誰よりも遅くまで手順を確認していた人だった。"
     },
     {
       "type": "focus",
@@ -16146,14 +18241,22 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
-      "text": "ハキマさん、だよね。来てくださって助かるよ。星瓶堂は、少し手が足りなくて。"
+      "expression": "fun",
+      "textLines": [
+        "ハキマさん、だよね。来てくださって助かるよ。",
+        "星瓶堂は、少し手が足りなくて。"
+      ],
+      "text": "ハキマさん、だよね。来てくださって助かるよ。\n星瓶堂は、少し手が足りなくて。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "少しで済むならいいけど。紹介状には、値付けと棚の運用も危なっかしいと書いてあったわ。"
+      "textLines": [
+        "少しで済むならいいけど。",
+        "紹介状には、値付けと棚の運用も危なっかしいと書いてあったわ。"
+      ],
+      "text": "少しで済むならいいけど。\n紹介状には、値付けと棚の運用も危なっかしいと書いてあったわ。"
     },
     {
       "type": "line",
@@ -16165,7 +18268,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "恩師が心配する程度には、あなたは真面目に困っているということでしょう。そこは悪くないわ。"
+      "textLines": [
+        "恩師が心配する程度には、あなたは真面目に困っているということでしょう。",
+        "そこは悪くないわ。"
+      ],
+      "text": "恩師が心配する程度には、あなたは真面目に困っているということでしょう。\nそこは悪くないわ。"
     },
     {
       "type": "line",
@@ -16177,12 +18284,16 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "両方よ。明日の朝、まず棚から見る。甘い値札をつけていたら、容赦なく直すから。"
+      "textLines": [
+        "両方よ。明日の朝、まず棚から見る。",
+        "甘い値札をつけていたら、容赦なく直すから。"
+      ],
+      "text": "両方よ。明日の朝、まず棚から見る。\n甘い値札をつけていたら、容赦なく直すから。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "よろしくお願いするよ。店主としては情けないけど、今は本当に助かるよ。"
     },
     {
@@ -16200,7 +18311,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは短く会釈して、人の流れの中へ戻っていった。ナーディルの手元には、紹介状と、少しだけ現実味を増した明日の朝が残った。"
+      "textLines": [
+        "ハキマは短く会釈して、人の流れの中へ戻っていった。",
+        "ナーディルの手元には、紹介状と、少しだけ現実味を増した明日の朝が残った。"
+      ],
+      "text": "ハキマは短く会釈して、人の流れの中へ戻っていった。\nナーディルの手元には、紹介状と、少しだけ現実味を増した明日の朝が残った。"
     },
     {
       "type": "end"
@@ -16209,7 +18324,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_01_shelves_and_sandalwood": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -16227,7 +18342,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前の星瓶堂で、ナーディルは香料瓶の札を並べ直していた。白檀、乳香、乾いた花の粉。香りの強い瓶ほど、つい入口に寄せたくなる。"
+      "textLines": [
+        "開店前の星瓶堂で、ナーディルは香料瓶の札を並べ直していた。",
+        "白檀、乳香、乾いた花の粉。香りの強い瓶ほど、つい入口に寄せたくなる。"
+      ],
+      "text": "開店前の星瓶堂で、ナーディルは香料瓶の札を並べ直していた。\n白檀、乳香、乾いた花の粉。香りの強い瓶ほど、つい入口に寄せたくなる。"
     },
     {
       "type": "line",
@@ -16237,7 +18356,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "入口の鈴が鳴る。朝の光と一緒に、予定より少し早い足音が店へ入ってきた。"
+      "textLines": [
+        "入口の鈴が鳴る。",
+        "朝の光と一緒に、予定より少し早い足音が店へ入ってきた。"
+      ],
+      "text": "入口の鈴が鳴る。\n朝の光と一緒に、予定より少し早い足音が店へ入ってきた。"
     },
     {
       "type": "focus",
@@ -16262,24 +18385,32 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "売りたいなら、まず息をさせなさい。香りで圧をかける店は、長居してもらえない。"
+      "textLines": [
+        "売りたいなら、まず息をさせなさい。",
+        "香りで圧をかける店は、長居してもらえない。"
+      ],
+      "text": "売りたいなら、まず息をさせなさい。\n香りで圧をかける店は、長居してもらえない。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "fun",
       "text": "なるほど……いきなり核心を突かれた。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "白檀は奥。入口には軽いもの。客の目線が動く順番を作るの。錬金術よりは単純でしょう。"
+      "textLines": [
+        "白檀は奥。入口には軽いもの。客の目線が動く順番を作るの。",
+        "錬金術よりは単純でしょう。"
+      ],
+      "text": "白檀は奥。入口には軽いもの。客の目線が動く順番を作るの。\n錬金術よりは単純でしょう。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "sorrow",
       "text": "いや、これはこれで難しいよ。けど、確かに息はしやすい。"
     },
     {
@@ -16297,7 +18428,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは手早く瓶の向きを整え、開店前の静けさへ戻っていった。ナーディルは入口の空気を確かめてから、扉の札を表へ返した。"
+      "textLines": [
+        "ハキマは手早く瓶の向きを整え、開店前の静けさへ戻っていった。",
+        "ナーディルは入口の空気を確かめてから、扉の札を表へ返した。"
+      ],
+      "text": "ハキマは手早く瓶の向きを整え、開店前の静けさへ戻っていった。\nナーディルは入口の空気を確かめてから、扉の札を表へ返した。"
     },
     {
       "type": "end"
@@ -16306,7 +18441,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_02_ledger_margin": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -16324,7 +18459,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは新しい値札を並べ、ひとつずつ数字を確認していた。安くすれば喜ばれる。そう考えるたび、姉の怖い字が頭をよぎる。"
+      "textLines": [
+        "ナーディルは新しい値札を並べ、ひとつずつ数字を確認していた。",
+        "安くすれば喜ばれる。そう考えるたび、姉の怖い字が頭をよぎる。"
+      ],
+      "text": "ナーディルは新しい値札を並べ、ひとつずつ数字を確認していた。\n安くすれば喜ばれる。そう考えるたび、姉の怖い字が頭をよぎる。"
     },
     {
       "type": "line",
@@ -16359,7 +18498,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "善人と商売下手は違うの。良い品を続けて売りたいなら、続けられる値段にしなさい。"
+      "textLines": [
+        "善人と商売下手は違うの。",
+        "良い品を続けて売りたいなら、続けられる値段にしなさい。"
+      ],
+      "text": "善人と商売下手は違うの。\n良い品を続けて売りたいなら、続けられる値段にしなさい。"
     },
     {
       "type": "line",
@@ -16394,7 +18537,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "赤鉛筆の跡は厳しかったが、数字の並びはさっきよりずっと落ち着いて見えた。ナーディルは値札を差し替え、今日の営業に備えた。"
+      "textLines": [
+        "赤鉛筆の跡は厳しかったが、数字の並びはさっきよりずっと落ち着いて見えた。",
+        "ナーディルは値札を差し替え、今日の営業に備えた。"
+      ],
+      "text": "赤鉛筆の跡は厳しかったが、数字の並びはさっきよりずっと落ち着いて見えた。\nナーディルは値札を差し替え、今日の営業に備えた。"
     },
     {
       "type": "end"
@@ -16403,7 +18550,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_03_mothers_letter": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -16421,7 +18568,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝一番の郵便から、見知らぬ断崖の写真が滑り落ちた。写真の端には、母の笑顔と、父の妙に誇らしげな走り書きがある。"
+      "textLines": [
+        "朝一番の郵便から、見知らぬ断崖の写真が滑り落ちた。",
+        "写真の端には、母の笑顔と、父の妙に誇らしげな走り書きがある。"
+      ],
+      "text": "朝一番の郵便から、見知らぬ断崖の写真が滑り落ちた。\n写真の端には、母の笑顔と、父の妙に誇らしげな走り書きがある。"
     },
     {
       "type": "line",
@@ -16431,7 +18582,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "父の錬金カメラは、どんな遠い景色も小さな紙に閉じ込める。便利な発明だが、こうして送られてくるたびに心臓には悪い。"
+      "textLines": [
+        "父の錬金カメラは、どんな遠い景色も小さな紙に閉じ込める。",
+        "便利な発明だが、こうして送られてくるたびに心臓には悪い。"
+      ],
+      "text": "父の錬金カメラは、どんな遠い景色も小さな紙に閉じ込める。\n便利な発明だが、こうして送られてくるたびに心臓には悪い。"
     },
     {
       "type": "focus",
@@ -16450,13 +18605,21 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "うん。元気そうで何よりなんだけど、場所がまったく分からないよ。たぶん地図にも載ってない。"
+      "textLines": [
+        "うん。元気そうで何よりなんだけど、場所がまったく分からないよ。",
+        "たぶん地図にも載ってない。"
+      ],
+      "text": "うん。元気そうで何よりなんだけど、場所がまったく分からないよ。\nたぶん地図にも載ってない。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "それで捨てられずに飾るんでしょう。呆れながら、ちゃんと額に入れる顔をしているわ。"
+      "textLines": [
+        "それで捨てられずに飾るんでしょう。",
+        "呆れながら、ちゃんと額に入れる顔をしているわ。"
+      ],
+      "text": "それで捨てられずに飾るんでしょう。\n呆れながら、ちゃんと額に入れる顔をしているわ。"
     },
     {
       "type": "line",
@@ -16468,7 +18631,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "なら額は棚の奥。入口に飾ると客が写真に気を取られる。開店前に済ませなさい。"
+      "textLines": [
+        "なら額は棚の奥。入口に飾ると客が写真に気を取られる。",
+        "開店前に済ませなさい。"
+      ],
+      "text": "なら額は棚の奥。入口に飾ると客が写真に気を取られる。\n開店前に済ませなさい。"
     },
     {
       "type": "line",
@@ -16485,7 +18652,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは写真を古い額に入れ、祖父の帳簿が眠る棚の近くへ置いた。遠い旅の景色が、店の片隅に少しだけ増えた。"
+      "textLines": [
+        "ナーディルは写真を古い額に入れ、祖父の帳簿が眠る棚の近くへ置いた。",
+        "遠い旅の景色が、店の片隅に少しだけ増えた。"
+      ],
+      "text": "ナーディルは写真を古い額に入れ、祖父の帳簿が眠る棚の近くへ置いた。\n遠い旅の景色が、店の片隅に少しだけ増えた。"
     },
     {
       "type": "end"
@@ -16512,7 +18683,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "床に落ちた薬草を拾おうとして、ナーディルは小さな物音を聞いた。入口のそばで、ハキマがわずかに足を止めている。"
+      "textLines": [
+        "床に落ちた薬草を拾おうとして、ナーディルは小さな物音を聞いた。",
+        "入口のそばで、ハキマがわずかに足を止めている。"
+      ],
+      "text": "床に落ちた薬草を拾おうとして、ナーディルは小さな物音を聞いた。\n入口のそばで、ハキマがわずかに足を止めている。"
     },
     {
       "type": "line",
@@ -16543,7 +18718,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "よく転んだの。親戚には、土好きのハキマなんて呼ばれていたわ。白狼の血があるくせに、走るのも跳ぶのも下手だって。"
+      "textLines": [
+        "よく転んだの。親戚には、土好きのハキマなんて呼ばれていたわ。",
+        "白狼の血があるくせに、走るのも跳ぶのも下手だって。"
+      ],
+      "text": "よく転んだの。親戚には、土好きのハキマなんて呼ばれていたわ。\n白狼の血があるくせに、走るのも跳ぶのも下手だって。"
     },
     {
       "type": "line",
@@ -16555,13 +18734,21 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "本当のことでもあったわ。尻尾でうまく均衡が取れなくて、何度も転んだ。今さら同情はいらないけど。"
+      "textLines": [
+        "本当のことでもあったわ。尻尾でうまく均衡が取れなくて、何度も転んだ。",
+        "今さら同情はいらないけど。"
+      ],
+      "text": "本当のことでもあったわ。尻尾でうまく均衡が取れなくて、何度も転んだ。\n今さら同情はいらないけど。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "同情じゃないよ。今、ハキマはこの店の棚をまっすぐにしてくれている。俺には、そちらの方がずっと大事だよ。"
+      "textLines": [
+        "同情じゃないよ。今、ハキマはこの店の棚をまっすぐにしてくれている。",
+        "俺には、そちらの方がずっと大事だよ。"
+      ],
+      "text": "同情じゃないよ。今、ハキマはこの店の棚をまっすぐにしてくれている。\n俺には、そちらの方がずっと大事だよ。"
     },
     {
       "type": "focus",
@@ -16586,7 +18773,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "分かっているから余計に困るの。ほら、開店するわよ。床の薬草は私が戻す。"
+      "textLines": [
+        "分かっているから余計に困るの。ほら、開店するわよ。",
+        "床の薬草は私が戻す。"
+      ],
+      "text": "分かっているから余計に困るの。ほら、開店するわよ。\n床の薬草は私が戻す。"
     },
     {
       "type": "focus",
@@ -16597,7 +18788,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマの手つきはいつも通り正確だった。ナーディルは扉の鈴を確かめ、朝の客を迎える準備に戻った。"
+      "textLines": [
+        "ハキマの手つきはいつも通り正確だった。",
+        "ナーディルは扉の鈴を確かめ、朝の客を迎える準備に戻った。"
+      ],
+      "text": "ハキマの手つきはいつも通り正確だった。\nナーディルは扉の鈴を確かめ、朝の客を迎える準備に戻った。"
     },
     {
       "type": "end"
@@ -16606,7 +18801,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_05_shopkeepers_face": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -16624,13 +18819,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の棚は静かに整い、香料瓶の札もまっすぐ並んでいた。以前なら迷っていた場所に、今は理由のある空白がある。"
+      "textLines": [
+        "朝の棚は静かに整い、香料瓶の札もまっすぐ並んでいた。",
+        "以前なら迷っていた場所に、今は理由のある空白がある。"
+      ],
+      "text": "朝の棚は静かに整い、香料瓶の札もまっすぐ並んでいた。\n以前なら迷っていた場所に、今は理由のある空白がある。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "入口は軽い香り、奥に強い香り。値札は手間賃込み。昨日よりは、店に見えるかな。"
+      "textLines": [
+        "入口は軽い香り、奥に強い香り。値札は手間賃込み。",
+        "昨日よりは、店に見えるかな。"
+      ],
+      "text": "入口は軽い香り、奥に強い香り。値札は手間賃込み。\n昨日よりは、店に見えるかな。"
     },
     {
       "type": "focus",
@@ -16655,7 +18858,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "その前向きさは嫌いじゃないわ。けれど、褒めたからといって油断しないこと。"
+      "textLines": [
+        "その前向きさは嫌いじゃないわ。",
+        "けれど、褒めたからといって油断しないこと。"
+      ],
+      "text": "その前向きさは嫌いじゃないわ。\nけれど、褒めたからといって油断しないこと。"
     },
     {
       "type": "line",
@@ -16690,7 +18897,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは深く息を吸い、扉の札を表へ返した。星瓶堂の一日が、少しだけ確かな足取りで始まる。"
+      "textLines": [
+        "ナーディルは深く息を吸い、扉の札を表へ返した。",
+        "星瓶堂の一日が、少しだけ確かな足取りで始まる。"
+      ],
+      "text": "ナーディルは深く息を吸い、扉の札を表へ返した。\n星瓶堂の一日が、少しだけ確かな足取りで始まる。"
     },
     {
       "type": "end"
@@ -16721,12 +18932,16 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の星瓶堂は、昼間より瓶の影が長く見える。ナーディルは帳簿を開き、薬瓶より小さな数字に目を細めた。"
+      "textLines": [
+        "閉店後の星瓶堂は、昼間より瓶の影が長く見える。",
+        "ナーディルは帳簿を開き、薬瓶より小さな数字に目を細めた。"
+      ],
+      "text": "閉店後の星瓶堂は、昼間より瓶の影が長く見える。\nナーディルは帳簿を開き、薬瓶より小さな数字に目を細めた。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "fun",
       "text": "売れた品は悪くない。けど、利益を見ると……思ったより薄いな。"
     },
     {
@@ -16740,7 +18955,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "売れた品だけ見て安心しないこと。残った品と、残らなかった利益も見なさい。"
+      "textLines": [
+        "売れた品だけ見て安心しないこと。",
+        "残った品と、残らなかった利益も見なさい。"
+      ],
+      "text": "売れた品だけ見て安心しないこと。\n残った品と、残らなかった利益も見なさい。"
     },
     {
       "type": "line",
@@ -16764,7 +18983,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "優しさじゃなくて実務。今日はここまで直して、明日に備えなさい。眠い頭で帳簿を触ると、ろくなことにならないわ。"
+      "textLines": [
+        "優しさじゃなくて実務。今日はここまで直して、明日に備えなさい。",
+        "眠い頭で帳簿を触ると、ろくなことにならないわ。"
+      ],
+      "text": "優しさじゃなくて実務。今日はここまで直して、明日に備えなさい。\n眠い頭で帳簿を触ると、ろくなことにならないわ。"
     },
     {
       "type": "focus",
@@ -16775,7 +18998,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは赤鉛筆を置き、夜の通りへ戻っていった。帳簿の数字は厳しいままだが、直す場所だけははっきり見えている。"
+      "textLines": [
+        "ハキマは赤鉛筆を置き、夜の通りへ戻っていった。",
+        "帳簿の数字は厳しいままだが、直す場所だけははっきり見えている。"
+      ],
+      "text": "ハキマは赤鉛筆を置き、夜の通りへ戻っていった。\n帳簿の数字は厳しいままだが、直す場所だけははっきり見えている。"
     },
     {
       "type": "end"
@@ -16784,7 +19011,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_night_02_teacher_postcard": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "bg",
@@ -16806,7 +19033,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは暑中見舞いの書き出しで筆を止めていた。順調です、と書くにはまだ少しだけ胸を張れない。"
+      "textLines": [
+        "ナーディルは暑中見舞いの書き出しで筆を止めていた。",
+        "順調です、と書くにはまだ少しだけ胸を張れない。"
+      ],
+      "text": "ナーディルは暑中見舞いの書き出しで筆を止めていた。\n順調です、と書くにはまだ少しだけ胸を張れない。"
     },
     {
       "type": "line",
@@ -16816,7 +19047,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "便箋の横には、今日の帳簿と、ハキマが直した値札の控えが置いてある。情けないだけではない。けれど自慢できるほどでもない。"
+      "textLines": [
+        "便箋の横には、今日の帳簿と、ハキマが直した値札の控えが置いてある。",
+        "情けないだけではない。けれど自慢できるほどでもない。"
+      ],
+      "text": "便箋の横には、今日の帳簿と、ハキマが直した値札の控えが置いてある。\n情けないだけではない。けれど自慢できるほどでもない。"
     },
     {
       "type": "focus",
@@ -16841,7 +19076,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "なら見抜かせればいいわ。あの先生なら、格好をつけた文章より喜ぶでしょう。"
+      "textLines": [
+        "なら見抜かせればいいわ。",
+        "あの先生なら、格好をつけた文章より喜ぶでしょう。"
+      ],
+      "text": "なら見抜かせればいいわ。\nあの先生なら、格好をつけた文章より喜ぶでしょう。"
     },
     {
       "type": "line",
@@ -16883,7 +19122,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "便箋には、まだ頼りないが続けています、と書いた。最後に小さく、良い助け手に恵まれました、とだけ添えておいた。"
+      "textLines": [
+        "便箋には、まだ頼りないが続けています、と書いた。",
+        "最後に小さく、良い助け手に恵まれました、とだけ添えておいた。"
+      ],
+      "text": "便箋には、まだ頼りないが続けています、と書いた。\n最後に小さく、良い助け手に恵まれました、とだけ添えておいた。"
     },
     {
       "type": "end"
@@ -16910,7 +19153,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "戸締まりの途中、通りの向こうで護衛の一団が笑い声を上げた。鎧の金具が夜風に鳴り、白い毛並みの旗印がちらりと見える。"
+      "textLines": [
+        "戸締まりの途中、通りの向こうで護衛の一団が笑い声を上げた。",
+        "鎧の金具が夜風に鳴り、白い毛並みの旗印がちらりと見える。"
+      ],
+      "text": "戸締まりの途中、通りの向こうで護衛の一団が笑い声を上げた。\n鎧の金具が夜風に鳴り、白い毛並みの旗印がちらりと見える。"
     },
     {
       "type": "line",
@@ -16929,7 +19176,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "白狼族は、強い護衛や討伐者を誇るの。職人は、少し下に見られることがあるわ。"
+      "textLines": [
+        "白狼族は、強い護衛や討伐者を誇るの。",
+        "職人は、少し下に見られることがあるわ。"
+      ],
+      "text": "白狼族は、強い護衛や討伐者を誇るの。\n職人は、少し下に見られることがあるわ。"
     },
     {
       "type": "line",
@@ -16941,7 +19192,12 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "言われたわ。私は走るのも跳ぶのも得意じゃないし、香料や薬瓶の方が性に合っていたから。母方の親戚には、分かりやすく不評だった。"
+      "textLines": [
+        "言われたわ。",
+        "私は走るのも跳ぶのも得意じゃないし、香料や薬瓶の方が性に合っていたから。",
+        "母方の親戚には、分かりやすく不評だった。"
+      ],
+      "text": "言われたわ。\n私は走るのも跳ぶのも得意じゃないし、香料や薬瓶の方が性に合っていたから。\n母方の親戚には、分かりやすく不評だった。"
     },
     {
       "type": "line",
@@ -16972,7 +19228,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "少しね。けれど、悪い気はしない。ほら、鍵を閉めるわよ。夜風で瓶が冷える。"
+      "textLines": [
+        "少しね。けれど、悪い気はしない。ほら、鍵を閉めるわよ。",
+        "夜風で瓶が冷える。"
+      ],
+      "text": "少しね。けれど、悪い気はしない。ほら、鍵を閉めるわよ。\n夜風で瓶が冷える。"
     },
     {
       "type": "focus",
@@ -16983,7 +19243,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは通りの笑い声を背に、店の戸締まりを確かめた。星瓶堂の小さな扉は、夜の街の中で静かに閉じられた。"
+      "textLines": [
+        "ハキマは通りの笑い声を背に、店の戸締まりを確かめた。",
+        "星瓶堂の小さな扉は、夜の街の中で静かに閉じられた。"
+      ],
+      "text": "ハキマは通りの笑い声を背に、店の戸締まりを確かめた。\n星瓶堂の小さな扉は、夜の街の中で静かに閉じられた。"
     },
     {
       "type": "end"
@@ -16992,7 +19256,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_night_04_almost_invitation": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "bg",
@@ -17014,13 +19278,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の店内に、夜市の灯りが窓越しに揺れていた。香料問屋の方から、甘く乾いた匂いが流れてくる。"
+      "textLines": [
+        "閉店後の店内に、夜市の灯りが窓越しに揺れていた。",
+        "香料問屋の方から、甘く乾いた匂いが流れてくる。"
+      ],
+      "text": "閉店後の店内に、夜市の灯りが窓越しに揺れていた。\n香料問屋の方から、甘く乾いた匂いが流れてくる。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "この時間でも、香料通りは賑やかなんだね。仕入れの人たちは朝が早いと思っていたよ。"
+      "textLines": [
+        "この時間でも、香料通りは賑やかなんだね。",
+        "仕入れの人たちは朝が早いと思っていたよ。"
+      ],
+      "text": "この時間でも、香料通りは賑やかなんだね。\n仕入れの人たちは朝が早いと思っていたよ。"
     },
     {
       "type": "focus",
@@ -17094,7 +19366,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは先に扉の外へ出た。ナーディルは急いでランプを落とし、夜市の灯りに向かう準備をした。"
+      "textLines": [
+        "ハキマは先に扉の外へ出た。",
+        "ナーディルは急いでランプを落とし、夜市の灯りに向かう準備をした。"
+      ],
+      "text": "ハキマは先に扉の外へ出た。\nナーディルは急いでランプを落とし、夜市の灯りに向かう準備をした。"
     },
     {
       "type": "end"
@@ -17125,7 +19401,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後のランプを落とす前に、ナーディルは整った棚を見上げた。以前より、店の息がしやすい。"
+      "textLines": [
+        "最後のランプを落とす前に、ナーディルは整った棚を見上げた。",
+        "以前より、店の息がしやすい。"
+      ],
+      "text": "最後のランプを落とす前に、ナーディルは整った棚を見上げた。\n以前より、店の息がしやすい。"
     },
     {
       "type": "line",
@@ -17135,7 +19415,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "値札の並び、香料瓶の位置、客を待たせない段取り。ひとつひとつは小さいが、店の一日は確かに変わっている。"
+      "textLines": [
+        "値札の並び、香料瓶の位置、客を待たせない段取り。",
+        "ひとつひとつは小さいが、店の一日は確かに変わっている。"
+      ],
+      "text": "値札の並び、香料瓶の位置、客を待たせない段取り。\nひとつひとつは小さいが、店の一日は確かに変わっている。"
     },
     {
       "type": "focus",
@@ -17148,7 +19432,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "ただの手伝いよ。叔父の店に戻れば、また香料の帳簿と荷捌きが待っている。"
+      "textLines": [
+        "ただの手伝いよ。",
+        "叔父の店に戻れば、また香料の帳簿と荷捌きが待っている。"
+      ],
+      "text": "ただの手伝いよ。\n叔父の店に戻れば、また香料の帳簿と荷捌きが待っている。"
     },
     {
       "type": "line",
@@ -17179,13 +19467,21 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "あなたは、偏見なく人を見るでしょう。昔からそういう人だったのかもしれないけど、近くで見ると少し困る。"
+      "textLines": [
+        "あなたは、偏見なく人を見るでしょう。",
+        "昔からそういう人だったのかもしれないけど、近くで見ると少し困る。"
+      ],
+      "text": "あなたは、偏見なく人を見るでしょう。\n昔からそういう人だったのかもしれないけど、近くで見ると少し困る。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "俺は、そんな立派なものじゃないよ。ただ、助けてもらった分をちゃんと覚えていたいだけだよ。"
+      "textLines": [
+        "俺は、そんな立派なものじゃないよ。",
+        "ただ、助けてもらった分をちゃんと覚えていたいだけだよ。"
+      ],
+      "text": "俺は、そんな立派なものじゃないよ。\nただ、助けてもらった分をちゃんと覚えていたいだけだよ。"
     },
     {
       "type": "focus",
@@ -17209,7 +19505,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマはいつもより少し急いで店を出た。夜の星瓶堂には、言いかけた言葉の温度だけが残っていた。"
+      "textLines": [
+        "ハキマはいつもより少し急いで店を出た。",
+        "夜の星瓶堂には、言いかけた言葉の温度だけが残っていた。"
+      ],
+      "text": "ハキマはいつもより少し急いで店を出た。\n夜の星瓶堂には、言いかけた言葉の温度だけが残っていた。"
     },
     {
       "type": "end"
@@ -17218,7 +19518,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_01_festival_spice_street": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -17236,17 +19536,29 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルは香料通りの入口でハキマを待っていた。夜市の灯りは昼の市場より柔らかく、瓶や布の色まで違って見える。"
+      "textLines": [
+        "閉店後、ナーディルは香料通りの入口でハキマを待っていた。",
+        "夜市の灯りは昼の市場より柔らかく、瓶や布の色まで違って見える。"
+      ],
+      "text": "閉店後、ナーディルは香料通りの入口でハキマを待っていた。\n夜市の灯りは昼の市場より柔らかく、瓶や布の色まで違って見える。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "仕入れの勉強、だったよね。……少しだけ、待ち合わせみたいに見えるけど。"
+      "textLines": [
+        "仕入れの勉強、だったよね。",
+        "……少しだけ、待ち合わせみたいに見えるけど。"
+      ],
+      "text": "仕入れの勉強、だったよね。\n……少しだけ、待ち合わせみたいに見えるけど。"
     },
     {
       "type": "narration",
-      "text": "人波の向こうに、いつもの仕事着とは違う色が見えた。ナーディルは声をかける前に、ほんの少しだけ息を止める。"
+      "textLines": [
+        "人波の向こうに、いつもの仕事着とは違う色が見えた。",
+        "ナーディルは声をかける前に、ほんの少しだけ息を止める。"
+      ],
+      "text": "人波の向こうに、いつもの仕事着とは違う色が見えた。\nナーディルは声をかける前に、ほんの少しだけ息を止める。"
     },
     {
       "type": "still",
@@ -17274,7 +19586,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "灯りの下で、ハキマは少しだけ落ち着かない顔をしていた。けれど、並んで歩く足取りは、店で棚を直す時よりずっとゆっくりだった。"
+      "textLines": [
+        "灯りの下で、ハキマは少しだけ落ち着かない顔をしていた。",
+        "けれど、並んで歩く足取りは、店で棚を直す時よりずっとゆっくりだった。"
+      ],
+      "text": "灯りの下で、ハキマは少しだけ落ち着かない顔をしていた。\nけれど、並んで歩く足取りは、店で棚を直す時よりずっとゆっくりだった。"
     },
     {
       "type": "line",
@@ -17303,7 +19619,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "それは嬉しいな。ハキマに言われると、ちゃんと効く。"
     },
     {
@@ -17328,7 +19644,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "店の前で別れたあと、ナーディルの服には夜市の香りが残っていた。ハキマの歩いていった方角には、まだ小さな灯りが揺れている。"
+      "textLines": [
+        "店の前で別れたあと、ナーディルの服には夜市の香りが残っていた。",
+        "ハキマの歩いていった方角には、まだ小さな灯りが揺れている。"
+      ],
+      "text": "店の前で別れたあと、ナーディルの服には夜市の香りが残っていた。\nハキマの歩いていった方角には、まだ小さな灯りが揺れている。"
     },
     {
       "type": "line",
@@ -17361,17 +19681,29 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "風の匂いが変わっても、星瓶堂の問題がすべて消えたわけではなかった。けれど、扉の前に立つナーディルの背筋は、以前より確かに伸びている。"
+      "textLines": [
+        "風の匂いが変わっても、星瓶堂の問題がすべて消えたわけではなかった。",
+        "けれど、扉の前に立つナーディルの背筋は、以前より確かに伸びている。"
+      ],
+      "text": "風の匂いが変わっても、星瓶堂の問題がすべて消えたわけではなかった。\nけれど、扉の前に立つナーディルの背筋は、以前より確かに伸びている。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "まだ迷うことは多い。でも、店を開けるのが怖いだけの日は減った気がする。"
+      "textLines": [
+        "まだ迷うことは多い。",
+        "でも、店を開けるのが怖いだけの日は減った気がする。"
+      ],
+      "text": "まだ迷うことは多い。\nでも、店を開けるのが怖いだけの日は減った気がする。"
     },
     {
       "type": "narration",
-      "text": "棚の並べ方、仕入れの考え方、客への勧め方。うまくいった日も、反省ばかり残る日も、すぐに忘れてしまえるほど軽くはなかった。"
+      "textLines": [
+        "棚の並べ方、仕入れの考え方、客への勧め方。",
+        "うまくいった日も、反省ばかり残る日も、すぐに忘れてしまえるほど軽くはなかった。"
+      ],
+      "text": "棚の並べ方、仕入れの考え方、客への勧め方。\nうまくいった日も、反省ばかり残る日も、すぐに忘れてしまえるほど軽くはなかった。"
     },
     {
       "type": "focus",
@@ -17408,11 +19740,19 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "怖いくらいでちょうどいいの。あなたは放っておくと、客にも品にも遠慮しすぎるから。"
+      "textLines": [
+        "怖いくらいでちょうどいいの。",
+        "あなたは放っておくと、客にも品にも遠慮しすぎるから。"
+      ],
+      "text": "怖いくらいでちょうどいいの。\nあなたは放っておくと、客にも品にも遠慮しすぎるから。"
     },
     {
       "type": "narration",
-      "text": "ハキマはそう言って、香料問屋の方へ視線を向けた。彼女にも彼女の仕事があり、星瓶堂だけにいられるわけではない。"
+      "textLines": [
+        "ハキマはそう言って、香料問屋の方へ視線を向けた。",
+        "彼女にも彼女の仕事があり、星瓶堂だけにいられるわけではない。"
+      ],
+      "text": "ハキマはそう言って、香料問屋の方へ視線を向けた。\n彼女にも彼女の仕事があり、星瓶堂だけにいられるわけではない。"
     },
     {
       "type": "line",
@@ -17424,7 +19764,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "それなら、怒られないようにしておくよ。できれば、褒められる方を目指したいけど。"
+      "textLines": [
+        "それなら、怒られないようにしておくよ。",
+        "できれば、褒められる方を目指したいけど。"
+      ],
+      "text": "それなら、怒られないようにしておくよ。\nできれば、褒められる方を目指したいけど。"
     },
     {
       "type": "line",
@@ -17441,7 +19785,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは通りの人波へ戻っていった。扉の札が表へ返る。まだ答えは出ていない。それでも星瓶堂の一日は、これからも続いていく。"
+      "textLines": [
+        "ハキマは通りの人波へ戻っていった。扉の札が表へ返る。",
+        "まだ答えは出ていない。それでも星瓶堂の一日は、これからも続いていく。"
+      ],
+      "text": "ハキマは通りの人波へ戻っていった。扉の札が表へ返る。\nまだ答えは出ていない。それでも星瓶堂の一日は、これからも続いていく。"
     },
     {
       "type": "end"
@@ -17468,11 +19816,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の星瓶堂には、白檀と乾いた薬草の香りが静かに残っていた。ナーディルは帳簿を閉じ、棚に並ぶ薬瓶を一つずつ見渡す。"
+      "textLines": [
+        "閉店後の星瓶堂には、白檀と乾いた薬草の香りが静かに残っていた。",
+        "ナーディルは帳簿を閉じ、棚に並ぶ薬瓶を一つずつ見渡す。"
+      ],
+      "text": "閉店後の星瓶堂には、白檀と乾いた薬草の香りが静かに残っていた。\nナーディルは帳簿を閉じ、棚に並ぶ薬瓶を一つずつ見渡す。"
     },
     {
       "type": "narration",
-      "text": "値札を直した日も、雨で客足が鈍った夜も、香料の扱いを叱られた朝もあった。どれも大事件ではない。それでも、店を続ける手触りは確かに増えていた。"
+      "textLines": [
+        "値札を直した日も、雨で客足が鈍った夜も、香料の扱いを叱られた朝もあった。",
+        "どれも大事件ではない。それでも、店を続ける手触りは確かに増えていた。"
+      ],
+      "text": "値札を直した日も、雨で客足が鈍った夜も、香料の扱いを叱られた朝もあった。\nどれも大事件ではない。それでも、店を続ける手触りは確かに増えていた。"
     },
     {
       "type": "line",
@@ -17497,7 +19853,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "fun",
-      "text": "ハキマが横にいてくれたからだよ。棚のことも、客のことも、俺一人なら気づけなかった。"
+      "textLines": [
+        "ハキマが横にいてくれたからだよ。",
+        "棚のことも、客のことも、俺一人なら気づけなかった。"
+      ],
+      "text": "ハキマが横にいてくれたからだよ。\n棚のことも、客のことも、俺一人なら気づけなかった。"
     },
     {
       "type": "focus",
@@ -17510,7 +19870,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "そういう言い方、ずるいわ。私は仕事で手伝っていただけ……の、つもりだったのに。"
+      "textLines": [
+        "そういう言い方、ずるいわ。",
+        "私は仕事で手伝っていただけ……の、つもりだったのに。"
+      ],
+      "text": "そういう言い方、ずるいわ。\n私は仕事で手伝っていただけ……の、つもりだったのに。"
     },
     {
       "type": "line",
@@ -17522,23 +19886,39 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "最初は先生に頼まれたから。あなたが困っていると聞いたから。それで十分な理由だと思っていた。"
+      "textLines": [
+        "最初は先生に頼まれたから。あなたが困っていると聞いたから。",
+        "それで十分な理由だと思っていた。"
+      ],
+      "text": "最初は先生に頼まれたから。あなたが困っていると聞いたから。\nそれで十分な理由だと思っていた。"
     },
     {
       "type": "narration",
-      "text": "ハキマは棚へ視線を移した。何度も直したはずの香料瓶の列を、もう一度確かめるように見つめる。"
+      "textLines": [
+        "ハキマは棚へ視線を移した。",
+        "何度も直したはずの香料瓶の列を、もう一度確かめるように見つめる。"
+      ],
+      "text": "ハキマは棚へ視線を移した。\n何度も直したはずの香料瓶の列を、もう一度確かめるように見つめる。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "でも、あなたは祖父たちの店を言い訳にしなかった。家族の名前にも、父親の発明にも逃げなかった。"
+      "textLines": [
+        "でも、あなたは祖父たちの店を言い訳にしなかった。",
+        "家族の名前にも、父親の発明にも逃げなかった。"
+      ],
+      "text": "でも、あなたは祖父たちの店を言い訳にしなかった。\n家族の名前にも、父親の発明にも逃げなかった。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "格好悪いところはたくさん見たわ。値付けで悩みすぎるところも、客に遠慮しすぎるところも。"
+      "textLines": [
+        "格好悪いところはたくさん見たわ。",
+        "値付けで悩みすぎるところも、客に遠慮しすぎるところも。"
+      ],
+      "text": "格好悪いところはたくさん見たわ。\n値付けで悩みすぎるところも、客に遠慮しすぎるところも。"
     },
     {
       "type": "line",
@@ -17556,7 +19936,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ハキマ。これからも、隣にいてほしい。店のことも、俺のことも、見ていてほしい。"
+      "textLines": [
+        "ハキマ。これからも、隣にいてほしい。",
+        "店のことも、俺のことも、見ていてほしい。"
+      ],
+      "text": "ハキマ。これからも、隣にいてほしい。\n店のことも、俺のことも、見ていてほしい。"
     },
     {
       "type": "focus",
@@ -17569,7 +19953,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "見るわ。値札も、棚も、あなたのことも。だから、ただの手伝い扱いはしないで。"
+      "textLines": [
+        "見るわ。値札も、棚も、あなたのことも。",
+        "だから、ただの手伝い扱いはしないで。"
+      ],
+      "text": "見るわ。値札も、棚も、あなたのことも。\nだから、ただの手伝い扱いはしないで。"
     },
     {
       "type": "line",
@@ -17579,7 +19967,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "扉の外では夜の市場へ向かう人の声が遠く流れている。店の中では、二人が少し近い距離で同じ棚を見ていた。"
+      "textLines": [
+        "扉の外では夜の市場へ向かう人の声が遠く流れている。",
+        "店の中では、二人が少し近い距離で同じ棚を見ていた。"
+      ],
+      "text": "扉の外では夜の市場へ向かう人の声が遠く流れている。\n店の中では、二人が少し近い距離で同じ棚を見ていた。"
     },
     {
       "type": "focus",
@@ -17590,16 +19982,523 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "白い香りの中で、星瓶堂はまた明日へ続いていく。隣にいる人の気配を、もう偶然とは呼ばないまま。"
+      "textLines": [
+        "白い香りの中で、星瓶堂はまた明日へ続いていく。",
+        "隣にいる人の気配を、もう偶然とは呼ばないまま。"
+      ],
+      "text": "白い香りの中で、星瓶堂はまた明日へ続いていく。\n隣にいる人の気配を、もう偶然とは呼ばないまま。"
     },
     {
       "type": "end"
     }
   ],
-  "hakima_childhood_route_opening_001": [
+  "hakima_normal_morning_11_ointment_scent_check": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_4"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "開店前の棚には、青緑の軟膏壺が三つ並んでいた。",
+        "どれも同じように見えるが、蓋を開ける前から少しずつ香りが違う。"
+      ],
+      "text": "開店前の棚には、青緑の軟膏壺が三つ並んでいた。\nどれも同じように見えるが、蓋を開ける前から少しずつ香りが違う。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "textLines": [
+        "火傷用と裂傷用、札を逆にしないようにしないとね。",
+        "こういうのは、見た目だけだと迷うな。"
+      ],
+      "text": "火傷用と裂傷用、札を逆にしないようにしないとね。\nこういうのは、見た目だけだと迷うな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "見た目だけで判断するから迷うのよ。霊薬の軟膏は、先に香りを見る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "香りだけで分かるの？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "textLines": [
+        "分かるようになるまで嗅いだの。",
+        "清涼感が先に立つなら火傷、金属粉の重さが残るなら裂傷。"
+      ],
+      "text": "分かるようになるまで嗅いだの。\n清涼感が先に立つなら火傷、金属粉の重さが残るなら裂傷。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "なるほど。ハキマに任せると、棚そのものが先生みたいになるね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "……変な褒め方をしないで。札を書くなら、早くして。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは壺の札を一枚ずつ書き直した。",
+        "今日の客には、間違いなく必要な薬を渡せそうだった。"
+      ],
+      "text": "ナーディルは壺の札を一枚ずつ書き直した。\n今日の客には、間違いなく必要な薬を渡せそうだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_11_sand_bottle_after_sandstorm": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "sorrow",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後、窓の外で乾いた風が鳴った。",
+        "明日は砂が強い、と市場の客が何度も口にしていた。"
+      ],
+      "text": "閉店後、窓の外で乾いた風が鳴った。\n明日は砂が強い、と市場の客が何度も口にしていた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "保存薬と水除けの札は、前に出しておいた方がいいかな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "砂の薬瓶も並べて。高温で中身が駄目になると、旅人には命取りになる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "実用一点だね。ハキマらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "命がかかる品に、飾り気はいらないわ。……でも、見やすい札はいる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それはたしかに。俺も、祖父さんの古い札を参考にしてみるよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "いい判断ね。古い店は、派手な新商品より信頼で残ることもあるから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "棚の端に、琥珀色の薬瓶が増えた。",
+        "夜の灯りを受けて、砂粒のように静かに光っていた。"
+      ],
+      "text": "棚の端に、琥珀色の薬瓶が増えた。\n夜の灯りを受けて、砂粒のように静かに光っていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_05_ruins_shield_errand": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_HAKIMA_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_ruins",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "仕入れの帰り道、二人は王都近郊の地下遺跡へ続く広場に立ち寄った。",
+        "冒険者たちの荷には、傷だらけの丸盾がいくつも括りつけられている。"
+      ],
+      "text": "仕入れの帰り道、二人は王都近郊の地下遺跡へ続く広場に立ち寄った。\n冒険者たちの荷には、傷だらけの丸盾がいくつも括りつけられている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "textLines": [
+        "最近、盾の注文が増えているね。",
+        "短剣よりも、まず守りを固めたい客が多いのかな。"
+      ],
+      "text": "最近、盾の注文が増えているね。\n短剣よりも、まず守りを固めたい客が多いのかな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "textLines": [
+        "遺跡では一歩目が怖いのよ。罠も、魔物も、仲間の失敗もある。",
+        "丸盾は臆病者の品じゃない。生きて帰るための品。"
+      ],
+      "text": "遺跡では一歩目が怖いのよ。罠も、魔物も、仲間の失敗もある。\n丸盾は臆病者の品じゃない。生きて帰るための品。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "……その言い方、いいね。店でもそう説明したい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "あなたが言うと、少し柔らかすぎるけど。悪くはないわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "じゃあ、ハキマ監修で札を書こう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "監修料は高いわよ。香料問屋の休憩時間を削っているんだから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは笑いながら頷いた。",
+        "帰ったら、盾の棚には「怖くても進む人へ」と書いてみようと思った。"
+      ],
+      "text": "ナーディルは笑いながら頷いた。\n帰ったら、盾の棚には「怖くても進む人へ」と書いてみようと思った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_11_two_ointments_memory": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_HAKIMA_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "古い棚の奥から、小さな軟膏壺が出てきた。",
+        "中身はもう使えないが、蓋には祖父の丸い字が残っている。"
+      ],
+      "text": "古い棚の奥から、小さな軟膏壺が出てきた。\n中身はもう使えないが、蓋には祖父の丸い字が残っている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "懐かしいな。これ、子どもの頃によく使ってたやつだ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "……よく使っていたのは、主に私でしょ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "あ、そうだ。市場の坂で転んだ時も、店の前で派手に滑った時も。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "全部言わなくていい！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "textLines": [
+        "でも、あの時の軟膏はよく効いたよね。",
+        "祖父さんが、傷跡が残らないようにって調合してくれてた。"
+      ],
+      "text": "でも、あの時の軟膏はよく効いたよね。\n祖父さんが、傷跡が残らないようにって調合してくれてた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "textLines": [
+        "……それは覚えている。",
+        "あなたの家の薬は、痛いって言っても笑わなかったから。"
+      ],
+      "text": "……それは覚えている。\nあなたの家の薬は、痛いって言っても笑わなかったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "今もそういう店でいたいな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "textLines": [
+        "なら、壺の名前を変えなさい。",
+        "「転んでも大丈夫」くらいなら、許してあげる。"
+      ],
+      "text": "なら、壺の名前を変えなさい。\n「転んでも大丈夫」くらいなら、許してあげる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは古い壺を磨いて、棚の隅に置いた。",
+        "売り物ではなく、この店が忘れないための目印として。"
+      ],
+      "text": "ナーディルは古い壺を磨いて、棚の隅に置いた。\n売り物ではなく、この店が忘れないための目印として。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_11_little_brother_earring": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_HAKIMA_3"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後の帳簿の横に、星霊の耳飾りと生命の耳飾りが並んでいた。",
+        "どちらも小さく、子どもの耳にも重くなさそうだ。"
+      ],
+      "text": "閉店後の帳簿の横に、星霊の耳飾りと生命の耳飾りが並んでいた。\nどちらも小さく、子どもの耳にも重くなさそうだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "弟さんへの贈り物なら、壊れにくい金属系もありだと思うけど。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "textLines": [
+        "あの子は、すぐ無理をするから。",
+        "強くなる品より、疲れに気づける品がいい。"
+      ],
+      "text": "あの子は、すぐ無理をするから。\n強くなる品より、疲れに気づける品がいい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "textLines": [
+        "じゃあ、生命の耳飾りかな。",
+        "眠気を払うより、ちゃんと休ませる方に寄せたい。"
+      ],
+      "text": "じゃあ、生命の耳飾りかな。\n眠気を払うより、ちゃんと休ませる方に寄せたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "……あなた、そういうところは昔から変わらないわね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマが大事にしている相手なら、俺も雑には選べないよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "textLines": [
+        "当然よ。",
+        "変な品を選んだら、父に婿入りの話をする前に追い出すところだった。"
+      ],
+      "text": "当然よ。\n変な品を選んだら、父に婿入りの話をする前に追い出すところだった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "その話、今ここで出す？"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ハキマは耳飾りを包みながら、何でもない顔をしていた。",
+        "耳の先だけが、少し機嫌よく揺れていた。"
+      ],
+      "text": "ハキマは耳飾りを包みながら、何でもない顔をしていた。\n耳の先だけが、少し機嫌よく揺れていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_date_05_market_sand_necklace": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -17617,7 +20516,1370 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "市場の喧騒の中で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。人の流れは速いのに、自分だけが祖父の店の前に取り残されている気がした。"
+      "textLines": [
+        "買い出しの途中、ハキマは迷いなく細い裏道へ入っていった。",
+        "ナーディルが追うと、古い露店に砂の首飾りが並んでいる。"
+      ],
+      "text": "買い出しの途中、ハキマは迷いなく細い裏道へ入っていった。\nナーディルが追うと、古い露店に砂の首飾りが並んでいる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "この道、まだ覚えてたんだね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "textLines": [
+        "当然。",
+        "あなたの家に逃げ込む時、ここを使うと大人に見つかりにくかったの。"
+      ],
+      "text": "当然。\nあなたの家に逃げ込む時、ここを使うと大人に見つかりにくかったの。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "俺の家、避難所扱いだったんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "違うわ。……半分くらいは、あなたに会いに行く道よ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "半分でも、かなり嬉しいかな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "そういう返しは、昔はできなかったくせに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "少しは成長したよ。たぶん。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "二人は砂の首飾りをひとつ選んだ。",
+        "裏道の記憶は、思ったよりも長く光を失っていなかった。"
+      ],
+      "text": "二人は砂の首飾りをひとつ選んだ。\n裏道の記憶は、思ったよりも長く光を失っていなかった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_11_star_earring_sales_note": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_MIRA_3"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "朝の棚に、星霊の耳飾りがいくつか並んでいた。",
+        "夜道を歩く客に向けた品だが、札の説明は少し堅い。"
+      ],
+      "text": "朝の棚に、星霊の耳飾りがいくつか並んでいた。\n夜道を歩く客に向けた品だが、札の説明は少し堅い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "「夜間の視界範囲が少し広がる」……正確だけど、ちょっと味気ないかな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩、それだと冒険者さんしか手に取りませんよ。夜市帰りの女の子にも売れます！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "夜市帰り？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "textLines": [
+        "はい。暗い道を少し安心して歩ける耳飾り。",
+        "贈り物にもできますし、見た目も可愛いです。"
+      ],
+      "text": "はい。暗い道を少し安心して歩ける耳飾り。\n贈り物にもできますし、見た目も可愛いです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "なるほど。効能じゃなくて、使う場面を見せるんだね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "そうです！発明も商品も、使う人の顔が浮かぶ方が強いんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラの札、今日は一枚お願いしてもいいかな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "surprise",
+      "textLines": [
+        "任されました！ただし、先輩の字で清書してください。",
+        "私の字だと商会の広告みたいになりますから。"
+      ],
+      "text": "任されました！ただし、先輩の字で清書してください。\n私の字だと商会の広告みたいになりますから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは耳飾りの札を裏返した。",
+        "新しい文句は、朝の店内を少し明るく見せた。"
+      ],
+      "text": "ナーディルは耳飾りの札を裏返した。\n新しい文句は、朝の店内を少し明るく見せた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_11_mage_staff_safety_margin": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_MIRA_4"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後、ナーディルは魔導杖の検品表を見直していた。",
+        "金属部品の研磨は美しいが、握りの重さが少し気にかかる。"
+      ],
+      "text": "閉店後、ナーディルは魔導杖の検品表を見直していた。\n金属部品の研磨は美しいが、握りの重さが少し気にかかる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "高性能だけど、初心者には扱いづらいかもしれないね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "textLines": [
+        "そこ、すごく大事です。",
+        "強い道具って、使う人を置いていくことがありますから。"
+      ],
+      "text": "そこ、すごく大事です。\n強い道具って、使う人を置いていくことがありますから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "textLines": [
+        "ミラがそれを言うの、少し意外かも。",
+        "危ない実験が好きな印象があったから。"
+      ],
+      "text": "ミラがそれを言うの、少し意外かも。\n危ない実験が好きな印象があったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "anger",
+      "text": "先輩、そこはもう反省してます！叱られたこと、ちゃんと覚えてますから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ごめん。俺も言い方が悪かった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "textLines": [
+        "でも、あの時叱ってもらえたから分かったんです。",
+        "発明は、自分だけ面白くても駄目なんだって。"
+      ],
+      "text": "でも、あの時叱ってもらえたから分かったんです。\n発明は、自分だけ面白くても駄目なんだって。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "じゃあ、この杖は「上級者向け」札をつけよう。練習用は別に置く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "はい！先輩、今日はかなり発明家っぽい判断です。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "魔導杖の棚は、少しだけ親切になった。",
+        "強い品ほど、扱う人に寄り添う必要がある。"
+      ],
+      "text": "魔導杖の棚は、少しだけ親切になった。\n強い品ほど、扱う人に寄り添う必要がある。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_date_05_port_preserved_bottles": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_MIRA_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_port_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "仕入れを兼ねて訪れた港には、海風に強い保存瓶が積まれていた。",
+        "王都の乾いた風とは違い、ここでは湿気そのものが品物の敵になる。"
+      ],
+      "text": "仕入れを兼ねて訪れた港には、海風に強い保存瓶が積まれていた。\n王都の乾いた風とは違い、ここでは湿気そのものが品物の敵になる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "同じ薬瓶でも、港と砂漠じゃ求められる性能が違うね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "そこが面白いんです！発明は一つでも、土地が変わると使い方が変わります。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ミラは、本当にそういう話をしている時が楽しそうだね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "surprise",
+      "text": "え、そんなに顔に出てます？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "かなり。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "textLines": [
+        "じゃあ隠しません。",
+        "いつか、港でも砂漠でも学院でも使える瓶を作りたいんです。"
+      ],
+      "text": "じゃあ隠しません。\nいつか、港でも砂漠でも学院でも使える瓶を作りたいんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "その時は、星瓶堂でも一番いい棚に置くよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "約束ですよ、先輩。商会価格で卸してあげます！"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "冗談めかした約束は、潮の匂いの中で思ったよりもはっきり残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_11_secret_box_key": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_MIRA_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "古い引き出しの奥から、小さな星霊の鍵が出てきた。",
+        "鍵としては頼りないが、子どもの宝箱にはちょうどよさそうだ。"
+      ],
+      "text": "古い引き出しの奥から、小さな星霊の鍵が出てきた。\n鍵としては頼りないが、子どもの宝箱にはちょうどよさそうだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "これ、ミラが昔使っていた秘密箱の鍵じゃないかな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "surprise",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "surprise",
+      "text": "わっ、まだ残ってたんですか！ナーディルお兄ちゃん、開けちゃ駄目ですからね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "もう箱の方がないと思うけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "anger",
+      "text": "そういう問題じゃありません。秘密は、箱がなくなっても秘密です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "分かった。じゃあ、これはミラに返すよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "textLines": [
+        "ありがとうございます。……でも、少しだけ懐かしいです。",
+        "ここ、私の発明基地でしたから。"
+      ],
+      "text": "ありがとうございます。……でも、少しだけ懐かしいです。\nここ、私の発明基地でしたから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "うん。棚の裏に歯車を隠されて、祖父さんが笑ってた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "今ならもっと上手に隠せます！"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは鍵を小袋に入れた。",
+        "朝の星瓶堂に、子どもの頃の秘密が少しだけ戻ってきた。"
+      ],
+      "text": "ナーディルは鍵を小袋に入れた。\n朝の星瓶堂に、子どもの頃の秘密が少しだけ戻ってきた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_11_little_mage_staff": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後の棚卸しで、細い魔導杖の試作品が見つかった。",
+        "金属の輪は歪み、先端の石も少し欠けている。"
+      ],
+      "text": "閉店後の棚卸しで、細い魔導杖の試作品が見つかった。\n金属の輪は歪み、先端の石も少し欠けている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "これ、ミラが「王都最小の魔導杖を作る」って言ってたやつだね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "うわあ……完成してないのに、捨ててなかったんですね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "完成してなくても、頑張った跡は残していいと思ったんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "surprise",
+      "text": "ナーディルお兄ちゃん、そういうところがずるいです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ずるい？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "textLines": [
+        "はい。",
+        "失敗まで宝物みたいに扱われると、また作りたくなるじゃないですか。"
+      ],
+      "text": "はい。\n失敗まで宝物みたいに扱われると、また作りたくなるじゃないですか。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それなら、残しておいて正解だったかな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "textLines": [
+        "正解です。今度は、本当に使える小型杖にします。",
+        "姉さんの商社にも負けないくらい！"
+      ],
+      "text": "正解です。今度は、本当に使える小型杖にします。\n姉さんの商社にも負けないくらい！"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "小さな魔導杖は、まだ未完成だった。",
+        "けれどミラの目には、もう次の設計図が見えているようだった。"
+      ],
+      "text": "小さな魔導杖は、まだ未完成だった。\nけれどミラの目には、もう次の設計図が見えているようだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_date_05_palace_training_bracelet": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_MIRA_3"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_corridor",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "王宮近くの廊下には、稽古帰りの武人たちの足音が響いていた。",
+        "ミラは露店で、生命の腕輪を真剣に見比べている。"
+      ],
+      "text": "王宮近くの廊下には、稽古帰りの武人たちの足音が響いていた。\nミラは露店で、生命の腕輪を真剣に見比べている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今日は発明の部品じゃなくて、稽古用？"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "textLines": [
+        "はい。槍術の先生に、腕が先に疲れるって言われたので。",
+        "生命の腕輪なら、動きが安定するはずです。"
+      ],
+      "text": "はい。槍術の先生に、腕が先に疲れるって言われたので。\n生命の腕輪なら、動きが安定するはずです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "本当に肉体派だよね、ミラは。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "ナーディルお兄ちゃんが店で倒れた時、運ぶ係が必要ですから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "できれば倒れない方向で頑張るよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "anger",
+      "text": "だめです。頑張りすぎる前提がもうだめです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "じゃあ、俺も疲労に効く品を見直しておく。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "それなら許します。先輩店主、少しずつ賢くなってますね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "廊下の奥から、また稽古の掛け声が聞こえた。",
+        "ミラの横顔は、令嬢というより挑戦者のそれだった。"
+      ],
+      "text": "廊下の奥から、また稽古の掛け声が聞こえた。\nミラの横顔は、令嬢というより挑戦者のそれだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_11_powder_for_silence": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "朝の棚に、青緑の粉薬瓶が置かれていた。",
+        "喉の荒れや沈黙の術を解くための品で、詩人や講師にもよく売れる。"
+      ],
+      "text": "朝の棚に、青緑の粉薬瓶が置かれていた。\n喉の荒れや沈黙の術を解くための品で、詩人や講師にもよく売れる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "これ、詩吟部の頃にあったら助かったかもね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "textLines": [
+        "あっても、私たちの詩の出来は変わらなかったと思う。",
+        "声が出るだけじゃ、詩は救えない。"
+      ],
+      "text": "あっても、私たちの詩の出来は変わらなかったと思う。\n声が出るだけじゃ、詩は救えない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そこまで言う？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "言う。あの頃の私たちは、勢いだけで月を褒めていた。月にも失礼だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "でも、声が出なくなった後輩に渡すなら悪くないよね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "うん。言いたいことがある人には、声が戻るだけで少し救いになる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "じゃあ、札はそう書こう。喉だけじゃなくて、言葉を守る粉薬。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "surprise",
+      "text": "……そういう言い方、少しずるいね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "粉薬瓶の札は、少しだけ柔らかい言葉になった。",
+        "ダリヤはそれを見て、小さく息をついた。"
+      ],
+      "text": "粉薬瓶の札は、少しだけ柔らかい言葉になった。\nダリヤはそれを見て、小さく息をついた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_11_life_necklace_research_note": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後の星瓶堂に、遅い足音が近づいてきた。",
+        "棚の灯りは落としたはずなのに、生命の首飾りだけが淡く光って見える。"
+      ],
+      "text": "閉店後の星瓶堂に、遅い足音が近づいてきた。\n棚の灯りは落としたはずなのに、生命の首飾りだけが淡く光って見える。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ダリヤさん、今日は研究所が長かったんだね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "長かった。長いだけで、進んだ気はしないけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この首飾り、疲労の蓄積を和らげる説明に変えようと思って。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "いいと思う。強くなる品より、崩れないための品が必要な人もいる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ダリヤさんも？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "surprise",
+      "text": "……聞き方がまっすぐすぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ごめん。でも、ここでは無理に強そうにしなくていいと思う。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "そういう店なら、少し危ないね。帰りたくなくなる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは笑わず、首飾りの札を書き直した。",
+        "疲れた人が立ち止まるための品も、この店には必要だった。"
+      ],
+      "text": "ナーディルは笑わず、首飾りの札を書き直した。\n疲れた人が立ち止まるための品も、この店には必要だった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_date_05_palace_lab_star_powder": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_lab",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "王宮研究室の机には、星霊の粉を使った試薬が広げられていた。",
+        "夜空の予兆を読むための薬だという。"
+      ],
+      "text": "王宮研究室の机には、星霊の粉を使った試薬が広げられていた。\n夜空の予兆を読むための薬だという。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "研究所の品は、やっぱり精度がすごいね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "精度はすごい。人の気持ちを置き去りにしても、結果は出る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それが、少し苦しい？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "うん。未来の予兆より、明日の自分が席に座れるかの方が難しい日もある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "星瓶堂なら、座れない日は棚の札だけでもいいよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "surprise",
+      "text": "仕事を減らす提案をする店主、珍しいね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "続けるための調整も、店の仕事だと思う。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "……その考え方、研究所に少し分けてほしい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "星粉の青い光は、机の上で静かに揺れていた。",
+        "ダリヤの声も、その光に合わせるように少しだけ穏やかになった。"
+      ],
+      "text": "星粉の青い光は、机の上で静かに揺れていた。\nダリヤの声も、その光に合わせるように少しだけ穏やかになった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_11_two_colored_ointment": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "朝の棚に、色の違う二つの軟膏壺が並んでいた。",
+        "片方は淡い青、もう片方は月明かりのように白い。"
+      ],
+      "text": "朝の棚に、色の違う二つの軟膏壺が並んでいた。\n片方は淡い青、もう片方は月明かりのように白い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "効能はほとんど同じだけど、色が違うだけで印象が変わるね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "昔、同じことを言ったよ。あなた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "あの時のこと？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "textLines": [
+        "うん。",
+        "私が白い顔を嫌がったら、二種類の塗り薬を持ってきて、色は違うけど効能は同じって。"
+      ],
+      "text": "うん。\n私が白い顔を嫌がったら、二種類の塗り薬を持ってきて、色は違うけど効能は同じって。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "子どもの言い方だったけど、覚えていてくれたんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "忘れないよ。あれ、私にとってはかなり大きな発明だったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "なら、今日の札は丁寧に書きたいな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "うん。色が違っても、ちゃんと効くって。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "二つの軟膏壺は、朝の光の中で違う色に光っていた。",
+        "それでも、どちらも誰かを癒やすための品だった。"
+      ],
+      "text": "二つの軟膏壺は、朝の光の中で違う色に光っていた。\nそれでも、どちらも誰かを癒やすための品だった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_11_safiya_ring_package": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_DARIYA_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "閉店後、サフィーヤからの小包が届いた。",
+        "中には金属の術理で補強された指輪がいくつか、整然と並んでいる。"
+      ],
+      "text": "閉店後、サフィーヤからの小包が届いた。\n中には金属の術理で補強された指輪がいくつか、整然と並んでいる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "姉さんらしい梱包だね。角度まで揃ってる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "fun",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "サフィーヤは昔からこう。手紙の余白まで支配する女。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "親友の評価が辛い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "褒めてる。あの子の計算は、たいてい人を守るためにあるから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助の話も、たぶんそうなんだよね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "知ってるなら、意地を張りすぎないこと。お姉ちゃんからの助言。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ダリヤさんまでお姉ちゃん側につくのは強いな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "anger",
+      "text": "当然。私はサフィーヤの親友で、あなたのお姉ちゃん候補だから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "ナーディルは指輪を検品しながら苦笑した。",
+        "店の棚には、家族と幼馴染の圧が少しだけ増えていた。"
+      ],
+      "text": "ナーディルは指輪を検品しながら苦笑した。\n店の棚には、家族と幼馴染の圧が少しだけ増えていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_date_05_star_view_life_charm": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_star_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "星見台の夜風は、王都の熱を少しだけ遠ざけてくれた。",
+        "ダリヤは生命の留め具を指先で転がしている。"
+      ],
+      "text": "星見台の夜風は、王都の熱を少しだけ遠ざけてくれた。\nダリヤは生命の留め具を指先で転がしている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "その留め具、気に入った？"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "うん。疲れを少し吸ってくれるって説明、今の私には魅力的すぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "研究所、まだきつい？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "textLines": [
+        "きつい。でも、昔ほど逃げ場がないわけじゃない。",
+        "あなたの家があった時みたいに。"
+      ],
+      "text": "きつい。でも、昔ほど逃げ場がないわけじゃない。\nあなたの家があった時みたいに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "星瓶堂なら、今も逃げてきていいよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "surprise",
+      "text": "簡単に言うね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "簡単じゃないけど、言っておきたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "……そういうところ、昔からずっと困る。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "星見台の下で、王都の灯りが瞬いていた。",
+        "生命の留め具は、ダリヤの掌で小さく温かかった。"
+      ],
+      "text": "星見台の下で、王都の灯りが瞬いていた。\n生命の留め具は、ダリヤの掌で小さく温かかった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_GAME_HAKIMA_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "textLines": [
+        "市場の喧騒の中で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。",
+        "人の流れは速いのに、自分だけが祖父の店の前に取り残されている気がした。"
+      ],
+      "text": "市場の喧騒の中で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。\n人の流れは速いのに、自分だけが祖父の店の前に取り残されている気がした。"
     },
     {
       "type": "line",
@@ -17627,15 +21889,27 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "背後から、聞き慣れた足音が近づく。気づかれていないと思っていた顔で、ハキマが視線をそらした。"
+      "textLines": [
+        "背後から、聞き慣れた足音が近づく。",
+        "気づかれていないと思っていた顔で、ハキマが視線をそらした。"
+      ],
+      "text": "背後から、聞き慣れた足音が近づく。\n気づかれていないと思っていた顔で、ハキマが視線をそらした。"
     },
     {
       "type": "narration",
-      "text": "小さい頃、ハキマはよく転んだ。本人は絶対に認めないが、そのたびに土埃を払って立ち上がる顔だけは、ナーディルの記憶に残っている。"
+      "textLines": [
+        "小さい頃、ハキマはよく転んだ。",
+        "本人は絶対に認めないが、そのたびに土埃を払って立ち上がる顔だけは、ナーディルの記憶に残っている。"
+      ],
+      "text": "小さい頃、ハキマはよく転んだ。\n本人は絶対に認めないが、そのたびに土埃を払って立ち上がる顔だけは、ナーディルの記憶に残っている。"
     },
     {
       "type": "narration",
-      "text": "あれから彼女は、努力で飛び級まで追いついてきた。だからこそ今の刺々しさには、ただの不機嫌ではない何かが混ざっている。"
+      "textLines": [
+        "あれから彼女は、努力で飛び級まで追いついてきた。",
+        "だからこそ今の刺々しさには、ただの不機嫌ではない何かが混ざっている。"
+      ],
+      "text": "あれから彼女は、努力で飛び級まで追いついてきた。\nだからこそ今の刺々しさには、ただの不機嫌ではない何かが混ざっている。"
     },
     {
       "type": "focus",
@@ -17672,7 +21946,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "昔の話をするなら、私だって言いたいことはあるわ。あなたは簡単に先へ行くから、追いつくのに必死だった。"
+      "textLines": [
+        "昔の話をするなら、私だって言いたいことはあるわ。",
+        "あなたは簡単に先へ行くから、追いつくのに必死だった。"
+      ],
+      "text": "昔の話をするなら、私だって言いたいことはあるわ。\nあなたは簡単に先へ行くから、追いつくのに必死だった。"
     },
     {
       "type": "line",
@@ -17691,7 +21969,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "今から気づきなさい。店を手伝う。断るなら、父に頼んで正式に話を通すわ。"
+      "textLines": [
+        "今から気づきなさい。店を手伝う。",
+        "断るなら、父に頼んで正式に話を通すわ。"
+      ],
+      "text": "今から気づきなさい。店を手伝う。\n断るなら、父に頼んで正式に話を通すわ。"
     },
     {
       "type": "line",
@@ -17701,7 +21983,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマは勝ったように顎を上げた。市場の声は相変わらず大きいのに、ナーディルの足元だけは少し軽くなっていた。"
+      "textLines": [
+        "ハキマは勝ったように顎を上げた。",
+        "市場の声は相変わらず大きいのに、ナーディルの足元だけは少し軽くなっていた。"
+      ],
+      "text": "ハキマは勝ったように顎を上げた。\n市場の声は相変わらず大きいのに、ナーディルの足元だけは少し軽くなっていた。"
     },
     {
       "type": "end"
@@ -17710,7 +21996,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -17728,7 +22014,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店札の紐は、昔から少しだけ擦り切れていた。ナーディルが結び直そうとすると、ハキマが横から手を出す。"
+      "textLines": [
+        "開店札の紐は、昔から少しだけ擦り切れていた。",
+        "ナーディルが結び直そうとすると、ハキマが横から手を出す。"
+      ],
+      "text": "開店札の紐は、昔から少しだけ擦り切れていた。\nナーディルが結び直そうとすると、ハキマが横から手を出す。"
     },
     {
       "type": "focus",
@@ -17741,7 +22031,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "それ、昔もあなたが結んでほどけたわ。祖父さんが笑って直していたのを覚えてる。"
+      "textLines": [
+        "それ、昔もあなたが結んでほどけたわ。",
+        "祖父さんが笑って直していたのを覚えてる。"
+      ],
+      "text": "それ、昔もあなたが結んでほどけたわ。\n祖父さんが笑って直していたのを覚えてる。"
     },
     {
       "type": "line",
@@ -17779,7 +22073,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_02": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -17797,7 +22091,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルが薬瓶を並べていると、ハキマは一つずつ光に透かしていた。遠慮のない手つきは、昔からこの店を知っている人のものだった。"
+      "textLines": [
+        "ナーディルが薬瓶を並べていると、ハキマは一つずつ光に透かしていた。",
+        "遠慮のない手つきは、昔からこの店を知っている人のものだった。"
+      ],
+      "text": "ナーディルが薬瓶を並べていると、ハキマは一つずつ光に透かしていた。\n遠慮のない手つきは、昔からこの店を知っている人のものだった。"
     },
     {
       "type": "focus",
@@ -17854,7 +22152,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "scene",
@@ -17872,7 +22170,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "姉からの手紙には、資金援助ではなく監査だと強い筆圧で書いてあった。ナーディルは封筒を畳み、深く息をつく。"
+      "textLines": [
+        "姉からの手紙には、資金援助ではなく監査だと強い筆圧で書いてあった。",
+        "ナーディルは封筒を畳み、深く息をつく。"
+      ],
+      "text": "姉からの手紙には、資金援助ではなく監査だと強い筆圧で書いてあった。\nナーディルは封筒を畳み、深く息をつく。"
     },
     {
       "type": "focus",
@@ -17891,7 +22193,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "サフィーヤさんらしいわ。あの人が家を継いでいたら、色々と話は早かったのに。"
+      "textLines": [
+        "サフィーヤさんらしいわ。",
+        "あの人が家を継いでいたら、色々と話は早かったのに。"
+      ],
+      "text": "サフィーヤさんらしいわ。\nあの人が家を継いでいたら、色々と話は早かったのに。"
     },
     {
       "type": "line",
@@ -17903,7 +22209,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "何でもない。……ただ、あなたを婿に欲しいと父に頼む予定が、少し狂っただけよ。"
+      "textLines": [
+        "何でもない。",
+        "……ただ、あなたを婿に欲しいと父に頼む予定が、少し狂っただけよ。"
+      ],
+      "text": "何でもない。\n……ただ、あなたを婿に欲しいと父に頼む予定が、少し狂っただけよ。"
     },
     {
       "type": "line",
@@ -17935,7 +22245,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_04": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -17953,7 +22263,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の大学新聞に、飛び級候補の記事が載っていた。ナーディルが何気なく広げると、ハキマの指が紙面を押さえる。"
+      "textLines": [
+        "朝の大学新聞に、飛び級候補の記事が載っていた。",
+        "ナーディルが何気なく広げると、ハキマの指が紙面を押さえる。"
+      ],
+      "text": "朝の大学新聞に、飛び級候補の記事が載っていた。\nナーディルが何気なく広げると、ハキマの指が紙面を押さえる。"
     },
     {
       "type": "focus",
@@ -17971,7 +22285,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "sorrow",
       "text": "……ごめん。俺はそこまで考えてなかった。"
     },
     {
@@ -18010,7 +22324,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_morning_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -18028,7 +22342,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前の店に、古い茶器が出ていた。ナーディルの母がよく使っていたもので、ハキマも幼い頃に何度も見ている。"
+      "textLines": [
+        "開店前の店に、古い茶器が出ていた。",
+        "ナーディルの母がよく使っていたもので、ハキマも幼い頃に何度も見ている。"
+      ],
+      "text": "開店前の店に、古い茶器が出ていた。\nナーディルの母がよく使っていたもので、ハキマも幼い頃に何度も見ている。"
     },
     {
       "type": "focus",
@@ -18041,7 +22359,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "この茶器、まだあったのね。あなたのお母様が、私に甘いお茶を出してくれた。"
+      "textLines": [
+        "この茶器、まだあったのね。",
+        "あなたのお母様が、私に甘いお茶を出してくれた。"
+      ],
+      "text": "この茶器、まだあったのね。\nあなたのお母様が、私に甘いお茶を出してくれた。"
     },
     {
       "type": "line",
@@ -18065,7 +22387,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "今は……居座る口実を探しているくらいには、落ち着くわ。ほら、店を開けなさい。"
+      "textLines": [
+        "今は……居座る口実を探しているくらいには、落ち着くわ。",
+        "ほら、店を開けなさい。"
+      ],
+      "text": "今は……居座る口実を探しているくらいには、落ち着くわ。\nほら、店を開けなさい。"
     },
     {
       "type": "focus",
@@ -18107,7 +22433,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の星瓶堂は、昔より静かに見えた。ハキマは戸締まりを手伝いながら、棚の奥を懐かしそうに見る。"
+      "textLines": [
+        "夜の星瓶堂は、昔より静かに見えた。",
+        "ハキマは戸締まりを手伝いながら、棚の奥を懐かしそうに見る。"
+      ],
+      "text": "夜の星瓶堂は、昔より静かに見えた。\nハキマは戸締まりを手伝いながら、棚の奥を懐かしそうに見る。"
     },
     {
       "type": "focus",
@@ -18164,7 +22494,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_night_02": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "bg",
@@ -18186,7 +22516,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ナーディルは帳簿の端に不自然な市場のメモを見つけた。ハキマの字で、彼の行き先が細かく書かれている。"
+      "textLines": [
+        "閉店後、ナーディルは帳簿の端に不自然な市場のメモを見つけた。",
+        "ハキマの字で、彼の行き先が細かく書かれている。"
+      ],
+      "text": "閉店後、ナーディルは帳簿の端に不自然な市場のメモを見つけた。\nハキマの字で、彼の行き先が細かく書かれている。"
     },
     {
       "type": "focus",
@@ -18271,7 +22605,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜風が少し強く、店のランプが揺れていた。ハキマは弟への土産だという小さな菓子包みを鞄にしまう。"
+      "textLines": [
+        "夜風が少し強く、店のランプが揺れていた。",
+        "ハキマは弟への土産だという小さな菓子包みを鞄にしまう。"
+      ],
+      "text": "夜風が少し強く、店のランプが揺れていた。\nハキマは弟への土産だという小さな菓子包みを鞄にしまう。"
     },
     {
       "type": "focus",
@@ -18350,7 +22688,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帳簿を閉じたあと、ハキマはなかなか帰ろうとしなかった。白檀の香りが、夜の店に薄く残っている。"
+      "textLines": [
+        "帳簿を閉じたあと、ハキマはなかなか帰ろうとしなかった。",
+        "白檀の香りが、夜の店に薄く残っている。"
+      ],
+      "text": "帳簿を閉じたあと、ハキマはなかなか帰ろうとしなかった。\n白檀の香りが、夜の店に薄く残っている。"
     },
     {
       "type": "focus",
@@ -18387,7 +22729,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
-      "text": "……今は、あなたの店を奪いたいわけじゃない。隣に立つ方法を考えているだけ。"
+      "textLines": [
+        "……今は、あなたの店を奪いたいわけじゃない。",
+        "隣に立つ方法を考えているだけ。"
+      ],
+      "text": "……今は、あなたの店を奪いたいわけじゃない。\n隣に立つ方法を考えているだけ。"
     },
     {
       "type": "focus",
@@ -18407,7 +22753,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_night_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_HAKIMA_4"
     },
     {
       "type": "bg",
@@ -18429,7 +22775,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "戸締まりの音が静かに響く。ハキマは鍵の確認を終えると、いつものように店の前で振り返った。"
+      "textLines": [
+        "戸締まりの音が静かに響く。",
+        "ハキマは鍵の確認を終えると、いつものように店の前で振り返った。"
+      ],
+      "text": "戸締まりの音が静かに響く。\nハキマは鍵の確認を終えると、いつものように店の前で振り返った。"
     },
     {
       "type": "focus",
@@ -18486,7 +22836,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_01_festival_promise": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_1"
     },
     {
       "type": "scene",
@@ -18504,7 +22854,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜市の入口で、ナーディルは昔と同じ場所に立っていた。幼い頃、ハキマを待ったことのある石段だ。"
+      "textLines": [
+        "夜市の入口で、ナーディルは昔と同じ場所に立っていた。",
+        "幼い頃、ハキマを待ったことのある石段だ。"
+      ],
+      "text": "夜市の入口で、ナーディルは昔と同じ場所に立っていた。\n幼い頃、ハキマを待ったことのある石段だ。"
     },
     {
       "type": "line",
@@ -18542,13 +22896,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "香料の灯りの下で、ハキマは少しだけ手を伸ばし、すぐに引っ込めた。ナーディルはその手に気づいて、何も言わず隣を歩いた。"
+      "textLines": [
+        "香料の灯りの下で、ハキマは少しだけ手を伸ばし、すぐに引っ込めた。",
+        "ナーディルはその手に気づいて、何も言わず隣を歩いた。"
+      ],
+      "text": "香料の灯りの下で、ハキマは少しだけ手を伸ばし、すぐに引っ込めた。\nナーディルはその手に気づいて、何も言わず隣を歩いた。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "いつか、ちゃんと話すわ。父に頼もうとしていたことも、今の私が望んでいることも。"
+      "textLines": [
+        "いつか、ちゃんと話すわ。",
+        "父に頼もうとしていたことも、今の私が望んでいることも。"
+      ],
+      "text": "いつか、ちゃんと話すわ。\n父に頼もうとしていたことも、今の私が望んでいることも。"
     },
     {
       "type": "line",
@@ -18572,7 +22934,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜市から戻っても、白檀と灯油の匂いは残っていた。ナーディルは閉じた扉の前で、幼馴染という言葉の重さを考えていた。"
+      "textLines": [
+        "夜市から戻っても、白檀と灯油の匂いは残っていた。",
+        "ナーディルは閉じた扉の前で、幼馴染という言葉の重さを考えていた。"
+      ],
+      "text": "夜市から戻っても、白檀と灯油の匂いは残っていた。\nナーディルは閉じた扉の前で、幼馴染という言葉の重さを考えていた。"
     },
     {
       "type": "end"
@@ -18595,7 +22961,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "市場の朝は、昔から変わらず賑やかだった。ナーディルは香料の袋を抱え、幼い頃に何度も通った路地を振り返る。"
+      "textLines": [
+        "市場の朝は、昔から変わらず賑やかだった。",
+        "ナーディルは香料の袋を抱え、幼い頃に何度も通った路地を振り返る。"
+      ],
+      "text": "市場の朝は、昔から変わらず賑やかだった。\nナーディルは香料の袋を抱え、幼い頃に何度も通った路地を振り返る。"
     },
     {
       "type": "focus",
@@ -18624,7 +22994,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "昔話は自然に出る。けれど、昔のままではいられないことも、二人とも分かっていた。"
+      "textLines": [
+        "昔話は自然に出る。",
+        "けれど、昔のままではいられないことも、二人とも分かっていた。"
+      ],
+      "text": "昔話は自然に出る。\nけれど、昔のままではいられないことも、二人とも分かっていた。"
     },
     {
       "type": "line",
@@ -18658,7 +23032,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "言葉は昔より少し遠い。それでも、遠回りをしながら同じ路地に戻ってくるような安心があった。"
+      "textLines": [
+        "言葉は昔より少し遠い。",
+        "それでも、遠回りをしながら同じ路地に戻ってくるような安心があった。"
+      ],
+      "text": "言葉は昔より少し遠い。\nそれでも、遠回りをしながら同じ路地に戻ってくるような安心があった。"
     },
     {
       "type": "line",
@@ -18687,7 +23065,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "市場の喧騒の中で、二人は並んで歩き出した。答えはまだ出ていない。それでも、次に話す約束だけは自然に残っていた。"
+      "textLines": [
+        "市場の喧騒の中で、二人は並んで歩き出した。答えはまだ出ていない。",
+        "それでも、次に話す約束だけは自然に残っていた。"
+      ],
+      "text": "市場の喧騒の中で、二人は並んで歩き出した。答えはまだ出ていない。\nそれでも、次に話す約束だけは自然に残っていた。"
     },
     {
       "type": "end"
@@ -18714,13 +23096,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、古い棚の影がランプの光で長く伸びていた。ナーディルは、子どもの頃に背比べをした柱の傷を指でなぞる。"
+      "textLines": [
+        "閉店後、古い棚の影がランプの光で長く伸びていた。",
+        "ナーディルは、子どもの頃に背比べをした柱の傷を指でなぞる。"
+      ],
+      "text": "閉店後、古い棚の影がランプの光で長く伸びていた。\nナーディルは、子どもの頃に背比べをした柱の傷を指でなぞる。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ここ、まだ残ってるんだね。ハキマが転んで怒ってた日の傷も、たぶんこの辺かな。"
+      "textLines": [
+        "ここ、まだ残ってるんだね。",
+        "ハキマが転んで怒ってた日の傷も、たぶんこの辺かな。"
+      ],
+      "text": "ここ、まだ残ってるんだね。\nハキマが転んで怒ってた日の傷も、たぶんこの辺かな。"
     },
     {
       "type": "focus",
@@ -18749,13 +23139,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "その言い方があまりに昔のままで、ナーディルは少し笑った。疎遠だった時間も、互いに言い出せなかった意地も、急に消えるわけではない。"
+      "textLines": [
+        "その言い方があまりに昔のままで、ナーディルは少し笑った。",
+        "疎遠だった時間も、互いに言い出せなかった意地も、急に消えるわけではない。"
+      ],
+      "text": "その言い方があまりに昔のままで、ナーディルは少し笑った。\n疎遠だった時間も、互いに言い出せなかった意地も、急に消えるわけではない。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "あなたが店を継ぐと聞いた時、安心したのと同じくらい腹が立った。ひとりで決めた顔をしていたから。"
+      "textLines": [
+        "あなたが店を継ぐと聞いた時、安心したのと同じくらい腹が立った。",
+        "ひとりで決めた顔をしていたから。"
+      ],
+      "text": "あなたが店を継ぐと聞いた時、安心したのと同じくらい腹が立った。\nひとりで決めた顔をしていたから。"
     },
     {
       "type": "line",
@@ -18767,7 +23165,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "私には迷ってほしかった。置いていかれたまま、また追いかけるのは嫌だったから。"
+      "textLines": [
+        "私には迷ってほしかった。",
+        "置いていかれたまま、また追いかけるのは嫌だったから。"
+      ],
+      "text": "私には迷ってほしかった。\n置いていかれたまま、また追いかけるのは嫌だったから。"
     },
     {
       "type": "line",
@@ -18786,7 +23188,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "なら、最初に相談する相手を間違えないことね。香料の仕入れも、婿入りの相談も。"
+      "textLines": [
+        "なら、最初に相談する相手を間違えないことね。",
+        "香料の仕入れも、婿入りの相談も。"
+      ],
+      "text": "なら、最初に相談する相手を間違えないことね。\n香料の仕入れも、婿入りの相談も。"
     },
     {
       "type": "line",
@@ -18802,13 +23208,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "冗談めかした声の奥に、ずっと前から決めていた本音が見えた。ナーディルは逃げずに、その目を見返す。"
+      "textLines": [
+        "冗談めかした声の奥に、ずっと前から決めていた本音が見えた。",
+        "ナーディルは逃げずに、その目を見返す。"
+      ],
+      "text": "冗談めかした声の奥に、ずっと前から決めていた本音が見えた。\nナーディルは逃げずに、その目を見返す。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ハキマ。これからは、ちゃんと隣にいてほしい。昔みたいにじゃなくて、これからの形で。"
+      "textLines": [
+        "ハキマ。これからは、ちゃんと隣にいてほしい。",
+        "昔みたいにじゃなくて、これからの形で。"
+      ],
+      "text": "ハキマ。これからは、ちゃんと隣にいてほしい。\n昔みたいにじゃなくて、これからの形で。"
     },
     {
       "type": "line",
@@ -18825,7 +23239,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "柱の古い傷のそばに、今夜の記憶が重なる。星瓶堂は、思い出の場所から、二人で未来を置く場所へ変わっていった。"
+      "textLines": [
+        "柱の古い傷のそばに、今夜の記憶が重なる。",
+        "星瓶堂は、思い出の場所から、二人で未来を置く場所へ変わっていった。"
+      ],
+      "text": "柱の古い傷のそばに、今夜の記憶が重なる。\n星瓶堂は、思い出の場所から、二人で未来を置く場所へ変わっていった。"
     },
     {
       "type": "end"
@@ -18852,7 +23270,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夕方の市場で、乾いた石畳に珍しい雨の匂いが落ちてきた。ナーディルは仕入れの包みを抱え、軒先へ駆け込む。"
+      "textLines": [
+        "夕方の市場で、乾いた石畳に珍しい雨の匂いが落ちてきた。",
+        "ナーディルは仕入れの包みを抱え、軒先へ駆け込む。"
+      ],
+      "text": "夕方の市場で、乾いた石畳に珍しい雨の匂いが落ちてきた。\nナーディルは仕入れの包みを抱え、軒先へ駆け込む。"
     },
     {
       "type": "line",
@@ -18862,7 +23284,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "通りの向こうで、白い髪が雨粒を払う。いつもの仕事着とは違う外出の装いに、ナーディルは声をかけるのを一拍だけ遅らせた。"
+      "textLines": [
+        "通りの向こうで、白い髪が雨粒を払う。",
+        "いつもの仕事着とは違う外出の装いに、ナーディルは声をかけるのを一拍だけ遅らせた。"
+      ],
+      "text": "通りの向こうで、白い髪が雨粒を払う。\nいつもの仕事着とは違う外出の装いに、ナーディルは声をかけるのを一拍だけ遅らせた。"
     },
     {
       "type": "still",
@@ -18879,7 +23305,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "fun",
+      "expression": "sorrow",
       "text": "ごめん。雨より、ハキマに驚いてた。"
     },
     {
@@ -18890,13 +23316,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "狭い軒先で、雨音だけが二人の間を満たす。ハキマは横を向いたまま、包みの紐を直してくれた。"
+      "textLines": [
+        "狭い軒先で、雨音だけが二人の間を満たす。",
+        "ハキマは横を向いたまま、包みの紐を直してくれた。"
+      ],
+      "text": "狭い軒先で、雨音だけが二人の間を満たす。\nハキマは横を向いたまま、包みの紐を直してくれた。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "sorrow",
-      "text": "……昔は、雨の日に転ぶと余計に笑われたわ。今でも少し、足元を見る癖が抜けない。"
+      "textLines": [
+        "……昔は、雨の日に転ぶと余計に笑われたわ。",
+        "今でも少し、足元を見る癖が抜けない。"
+      ],
+      "text": "……昔は、雨の日に転ぶと余計に笑われたわ。\n今でも少し、足元を見る癖が抜けない。"
     },
     {
       "type": "line",
@@ -18926,7 +23360,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "雨が弱まった頃、ハキマは先に通りへ戻っていった。残った香料の包みは、雨に濡れず、ほんの少しだけ温かかった。"
+      "textLines": [
+        "雨が弱まった頃、ハキマは先に通りへ戻っていった。",
+        "残った香料の包みは、雨に濡れず、ほんの少しだけ温かかった。"
+      ],
+      "text": "雨が弱まった頃、ハキマは先に通りへ戻っていった。\n残った香料の包みは、雨に濡れず、ほんの少しだけ温かかった。"
     },
     {
       "type": "end"
@@ -18953,7 +23391,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "仕入れの日の市場は、声も匂いも強い。ナーディルは珍しい薬草の束を前に、値札と効能書きを何度も見比べていた。"
+      "textLines": [
+        "仕入れの日の市場は、声も匂いも強い。",
+        "ナーディルは珍しい薬草の束を前に、値札と効能書きを何度も見比べていた。"
+      ],
+      "text": "仕入れの日の市場は、声も匂いも強い。\nナーディルは珍しい薬草の束を前に、値札と効能書きを何度も見比べていた。"
     },
     {
       "type": "line",
@@ -18987,7 +23429,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "客の願いに寄り添うのは悪くない。けれど、悪い品を優しく売るのはもっと悪い。"
+      "textLines": [
+        "客の願いに寄り添うのは悪くない。",
+        "けれど、悪い品を優しく売るのはもっと悪い。"
+      ],
+      "text": "客の願いに寄り添うのは悪くない。\nけれど、悪い品を優しく売るのはもっと悪い。"
     },
     {
       "type": "line",
@@ -18999,7 +23445,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "分かればいいの。代わりに奥の店へ行くわ。少し高いけど、あっちは乾燥が上手い。"
+      "textLines": [
+        "分かればいいの。代わりに奥の店へ行くわ。",
+        "少し高いけど、あっちは乾燥が上手い。"
+      ],
+      "text": "分かればいいの。代わりに奥の店へ行くわ。\n少し高いけど、あっちは乾燥が上手い。"
     },
     {
       "type": "line",
@@ -19029,7 +23479,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "結局、仕入れはハキマの言う通りになった。悔しさより先に、ナーディルは頼もしさを感じていた。"
+      "textLines": [
+        "結局、仕入れはハキマの言う通りになった。",
+        "悔しさより先に、ナーディルは頼もしさを感じていた。"
+      ],
+      "text": "結局、仕入れはハキマの言う通りになった。\n悔しさより先に、ナーディルは頼もしさを感じていた。"
     },
     {
       "type": "end"
@@ -19038,7 +23492,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_morning_06_morning_visit_still": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_HAKIMA_2"
     },
     {
       "type": "scene",
@@ -19104,7 +23558,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ハキマが帰ったわけではない。ただ、絵の中の余韻を崩さないように、ナーディルは彼女の声だけを思い出しながら棚を直した。"
+      "textLines": [
+        "ハキマが帰ったわけではない。",
+        "ただ、絵の中の余韻を崩さないように、ナーディルは彼女の声だけを思い出しながら棚を直した。"
+      ],
+      "text": "ハキマが帰ったわけではない。\nただ、絵の中の余韻を崩さないように、ナーディルは彼女の声だけを思い出しながら棚を直した。"
     },
     {
       "type": "end"
@@ -19135,7 +23593,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ハキマは香料問屋の伝票を見ながら、小さくため息をついた。いつもの強い声ではなく、少しだけ疲れた音だった。"
+      "textLines": [
+        "閉店後、ハキマは香料問屋の伝票を見ながら、小さくため息をついた。",
+        "いつもの強い声ではなく、少しだけ疲れた音だった。"
+      ],
+      "text": "閉店後、ハキマは香料問屋の伝票を見ながら、小さくため息をついた。\nいつもの強い声ではなく、少しだけ疲れた音だった。"
     },
     {
       "type": "focus",
@@ -19154,7 +23616,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "大変よ。従業員の手前、特別扱いはできないもの。だから、かなり頭を下げたわ。叔父だからって甘くはないの。"
+      "textLines": [
+        "大変よ。従業員の手前、特別扱いはできないもの。",
+        "だから、かなり頭を下げたわ。叔父だからって甘くはないの。"
+      ],
+      "text": "大変よ。従業員の手前、特別扱いはできないもの。\nだから、かなり頭を下げたわ。叔父だからって甘くはないの。"
     },
     {
       "type": "line",
@@ -19166,7 +23632,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "anger",
-      "text": "感謝するなら、店を良くしなさい。私が無理を通した理由を、無駄にしないで。"
+      "textLines": [
+        "感謝するなら、店を良くしなさい。",
+        "私が無理を通した理由を、無駄にしないで。"
+      ],
+      "text": "感謝するなら、店を良くしなさい。\n私が無理を通した理由を、無駄にしないで。"
     },
     {
       "type": "line",
@@ -19205,7 +23675,7 @@ const EVENT_SCRIPTS = {
   "hakima_childhood_date_02_festival_old_promise": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_HAKIMA_3"
     },
     {
       "type": "scene",
@@ -19223,7 +23693,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、通りの向こうから祭りの音が聞こえていた。ナーディルが戸締まりを終える頃、ハキマは少し離れた場所で待っていた。"
+      "textLines": [
+        "閉店後、通りの向こうから祭りの音が聞こえていた。",
+        "ナーディルが戸締まりを終える頃、ハキマは少し離れた場所で待っていた。"
+      ],
+      "text": "閉店後、通りの向こうから祭りの音が聞こえていた。\nナーディルが戸締まりを終える頃、ハキマは少し離れた場所で待っていた。"
     },
     {
       "type": "line",
@@ -19259,7 +23733,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "fun",
-      "text": "泣きそうだったから怒っていたの。今なら、もう少し素直に言えるわ。……見つけてくれて、ありがとう。"
+      "textLines": [
+        "泣きそうだったから怒っていたの。今なら、もう少し素直に言えるわ。",
+        "……見つけてくれて、ありがとう。"
+      ],
+      "text": "泣きそうだったから怒っていたの。今なら、もう少し素直に言えるわ。\n……見つけてくれて、ありがとう。"
     },
     {
       "type": "scene",
@@ -19277,7 +23755,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "解散したあとも、祭りの灯りはしばらく瞼に残った。昔の約束が、今夜は少しだけ別の意味を持っていた。"
+      "textLines": [
+        "解散したあとも、祭りの灯りはしばらく瞼に残った。",
+        "昔の約束が、今夜は少しだけ別の意味を持っていた。"
+      ],
+      "text": "解散したあとも、祭りの灯りはしばらく瞼に残った。\n昔の約束が、今夜は少しだけ別の意味を持っていた。"
     },
     {
       "type": "end"
@@ -19308,7 +23790,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の帳簿を閉じても、ハキマはしばらく帰らなかった。言いづらいことを、言わずに済ませる顔ではなかった。"
+      "textLines": [
+        "夜の帳簿を閉じても、ハキマはしばらく帰らなかった。",
+        "言いづらいことを、言わずに済ませる顔ではなかった。"
+      ],
+      "text": "夜の帳簿を閉じても、ハキマはしばらく帰らなかった。\n言いづらいことを、言わずに済ませる顔ではなかった。"
     },
     {
       "type": "focus",
@@ -19333,7 +23819,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "でも今は、店ごと欲しいわけじゃない。あなたが守りたいものの隣に、私の場所を作りたい。"
+      "textLines": [
+        "でも今は、店ごと欲しいわけじゃない。",
+        "あなたが守りたいものの隣に、私の場所を作りたい。"
+      ],
+      "text": "でも今は、店ごと欲しいわけじゃない。\nあなたが守りたいものの隣に、私の場所を作りたい。"
     },
     {
       "type": "line",
@@ -19363,7 +23853,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "逃げない、とナーディルは小さく呟いた。古い店の壁が、その約束を静かに聞いていた。"
+      "textLines": [
+        "逃げない、とナーディルは小さく呟いた。",
+        "古い店の壁が、その約束を静かに聞いていた。"
+      ],
+      "text": "逃げない、とナーディルは小さく呟いた。\n古い店の壁が、その約束を静かに聞いていた。"
     },
     {
       "type": "end"
@@ -19372,7 +23866,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_route_opening_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -19390,7 +23884,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "大学の実験棟前で、ナーディルは姉の商会から預かった紹介状を手にしていた。差出人の名前を見た学生たちが、少し距離を置いて囁く。"
+      "textLines": [
+        "大学の実験棟前で、ナーディルは姉の商会から預かった紹介状を手にしていた。",
+        "差出人の名前を見た学生たちが、少し距離を置いて囁く。"
+      ],
+      "text": "大学の実験棟前で、ナーディルは姉の商会から預かった紹介状を手にしていた。\n差出人の名前を見た学生たちが、少し距離を置いて囁く。"
     },
     {
       "type": "line",
@@ -19404,11 +23902,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王家とも取引する大商会の令嬢で、大学では三年飛び級すら噂されている。そんな肩書きだけなら、ナーディルは少し距離を置いたかもしれない。"
+      "textLines": [
+        "王家とも取引する大商会の令嬢で、大学では三年飛び級すら噂されている。",
+        "そんな肩書きだけなら、ナーディルは少し距離を置いたかもしれない。"
+      ],
+      "text": "王家とも取引する大商会の令嬢で、大学では三年飛び級すら噂されている。\nそんな肩書きだけなら、ナーディルは少し距離を置いたかもしれない。"
     },
     {
       "type": "narration",
-      "text": "けれど彼の記憶に残っているのは、身分より先に危険な試薬へ手を伸ばした少女の目だった。叱られてなお、悔しそうに輝いていた目。"
+      "textLines": [
+        "けれど彼の記憶に残っているのは、身分より先に危険な試薬へ手を伸ばした少女の目だった。",
+        "叱られてなお、悔しそうに輝いていた目。"
+      ],
+      "text": "けれど彼の記憶に残っているのは、身分より先に危険な試薬へ手を伸ばした少女の目だった。\n叱られてなお、悔しそうに輝いていた目。"
     },
     {
       "type": "focus",
@@ -19433,7 +23939,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "分かってます。今日は商売の実験です。まずはお客さんの動きと棚の回転から見ましょう！"
+      "textLines": [
+        "分かってます。今日は商売の実験です。",
+        "まずはお客さんの動きと棚の回転から見ましょう！"
+      ],
+      "text": "分かってます。今日は商売の実験です。\nまずはお客さんの動きと棚の回転から見ましょう！"
     },
     {
       "type": "line",
@@ -19445,7 +23955,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "大丈夫です。先輩の店、ちゃんと面白くしてみせます。もちろん、赤字にしない範囲で！"
+      "textLines": [
+        "大丈夫です。先輩の店、ちゃんと面白くしてみせます。",
+        "もちろん、赤字にしない範囲で！"
+      ],
+      "text": "大丈夫です。先輩の店、ちゃんと面白くしてみせます。\nもちろん、赤字にしない範囲で！"
     },
     {
       "type": "end"
@@ -19454,7 +23968,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -19472,7 +23986,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の店先に、馬車の車輪が止まる音がした。開店前にしては立派すぎる迎えだ。"
+      "textLines": [
+        "朝の店先に、馬車の車輪が止まる音がした。",
+        "開店前にしては立派すぎる迎えだ。"
+      ],
+      "text": "朝の店先に、馬車の車輪が止まる音がした。\n開店前にしては立派すぎる迎えだ。"
     },
     {
       "type": "focus",
@@ -19497,7 +24015,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "課題は馬車の中で終わらせました。では棚を見ます。この値札、先輩らしく優しすぎません？"
+      "textLines": [
+        "課題は馬車の中で終わらせました。では棚を見ます。",
+        "この値札、先輩らしく優しすぎません？"
+      ],
+      "text": "課題は馬車の中で終わらせました。では棚を見ます。\nこの値札、先輩らしく優しすぎません？"
     },
     {
       "type": "line",
@@ -19523,7 +24045,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_02": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -19541,7 +24063,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは新商品の札を書いていた。そこへミラが、帳簿を見る前から明るく首を傾げる。"
+      "textLines": [
+        "ナーディルは新商品の札を書いていた。",
+        "そこへミラが、帳簿を見る前から明るく首を傾げる。"
+      ],
+      "text": "ナーディルは新商品の札を書いていた。\nそこへミラが、帳簿を見る前から明るく首を傾げる。"
     },
     {
       "type": "focus",
@@ -19566,7 +24092,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "たぶんで商会は動きません。瓶代も時間も、ちゃんと先輩の仕事の価値です。"
+      "textLines": [
+        "たぶんで商会は動きません。",
+        "瓶代も時間も、ちゃんと先輩の仕事の価値です。"
+      ],
+      "text": "たぶんで商会は動きません。\n瓶代も時間も、ちゃんと先輩の仕事の価値です。"
     },
     {
       "type": "line",
@@ -19592,7 +24122,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -19610,7 +24140,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の光の中で、ミラは錬金カメラの記事を切り抜いて持ってきた。何度も読んだ跡がある。"
+      "textLines": [
+        "朝の光の中で、ミラは錬金カメラの記事を切り抜いて持ってきた。",
+        "何度も読んだ跡がある。"
+      ],
+      "text": "朝の光の中で、ミラは錬金カメラの記事を切り抜いて持ってきた。\n何度も読んだ跡がある。"
     },
     {
       "type": "focus",
@@ -19623,7 +24157,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "先輩のお父様は、本当にすごいです。私も、名前だけじゃなく発明で残りたい。"
+      "textLines": [
+        "先輩のお父様は、本当にすごいです。",
+        "私も、名前だけじゃなく発明で残りたい。"
+      ],
+      "text": "先輩のお父様は、本当にすごいです。\n私も、名前だけじゃなく発明で残りたい。"
     },
     {
       "type": "line",
@@ -19661,7 +24199,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_04": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -19679,7 +24217,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ミラは大きな槍袋を抱えて現れた。細い腕に見えるのに、息ひとつ乱れていない。"
+      "textLines": [
+        "開店前、ミラは大きな槍袋を抱えて現れた。",
+        "細い腕に見えるのに、息ひとつ乱れていない。"
+      ],
+      "text": "開店前、ミラは大きな槍袋を抱えて現れた。\n細い腕に見えるのに、息ひとつ乱れていない。"
     },
     {
       "type": "focus",
@@ -19730,7 +24272,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -19748,7 +24290,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の星瓶堂に、ミラが小さな花を持ってきた。高価なものではなく、市場の端で売っていた素朴な花だ。"
+      "textLines": [
+        "朝の星瓶堂に、ミラが小さな花を持ってきた。",
+        "高価なものではなく、市場の端で売っていた素朴な花だ。"
+      ],
+      "text": "朝の星瓶堂に、ミラが小さな花を持ってきた。\n高価なものではなく、市場の端で売っていた素朴な花だ。"
     },
     {
       "type": "focus",
@@ -19766,14 +24312,18 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "ありがとう。星瓶堂が、ミラにはどう見えてる？"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "不器用だけど、ちゃんと誰かの役に立ちたい店です。……そういうところ、先輩に似てます。"
+      "textLines": [
+        "不器用だけど、ちゃんと誰かの役に立ちたい店です。",
+        "……そういうところ、先輩に似てます。"
+      ],
+      "text": "不器用だけど、ちゃんと誰かの役に立ちたい店です。\n……そういうところ、先輩に似てます。"
     },
     {
       "type": "line",
@@ -19799,7 +24349,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_night_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "bg",
@@ -19821,7 +24371,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、店の外に商会の馬車が待っていた。ミラは時計を見て、少しだけ頬を膨らませる。"
+      "textLines": [
+        "閉店後、店の外に商会の馬車が待っていた。",
+        "ミラは時計を見て、少しだけ頬を膨らませる。"
+      ],
+      "text": "閉店後、店の外に商会の馬車が待っていた。\nミラは時計を見て、少しだけ頬を膨らませる。"
     },
     {
       "type": "focus",
@@ -19863,7 +24417,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -19894,7 +24452,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帳簿の端に、ナーディルの姉からの助言が挟まっていた。ミラはそれを見て、少しだけ目を細める。"
+      "textLines": [
+        "帳簿の端に、ナーディルの姉からの助言が挟まっていた。",
+        "ミラはそれを見て、少しだけ目を細める。"
+      ],
+      "text": "帳簿の端に、ナーディルの姉からの助言が挟まっていた。\nミラはそれを見て、少しだけ目を細める。"
     },
     {
       "type": "focus",
@@ -19936,7 +24498,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -19945,7 +24511,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_night_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_1"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "bg",
@@ -19998,7 +24564,12 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "先輩、あの時と同じ顔です。危ないものは危ないって、ちゃんと叱ってくれる顔。……そういうところ、ずるいです。"
+      "textLines": [
+        "先輩、あの時と同じ顔です。",
+        "危ないものは危ないって、ちゃんと叱ってくれる顔。",
+        "……そういうところ、ずるいです。"
+      ],
+      "text": "先輩、あの時と同じ顔です。\n危ないものは危ないって、ちゃんと叱ってくれる顔。\n……そういうところ、ずるいです。"
     },
     {
       "type": "focus",
@@ -20009,7 +24580,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -20040,7 +24615,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "営業後の帳簿を見ながら、ミラは珍しく静かだった。明るい声の奥で、焦りが少しだけ見える。"
+      "textLines": [
+        "営業後の帳簿を見ながら、ミラは珍しく静かだった。",
+        "明るい声の奥で、焦りが少しだけ見える。"
+      ],
+      "text": "営業後の帳簿を見ながら、ミラは珍しく静かだった。\n明るい声の奥で、焦りが少しだけ見える。"
     },
     {
       "type": "focus",
@@ -20053,7 +24632,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "天才って言われるの、嫌いじゃないです。でも、それだけで終わりたくないんです。"
+      "textLines": [
+        "天才って言われるの、嫌いじゃないです。",
+        "でも、それだけで終わりたくないんです。"
+      ],
+      "text": "天才って言われるの、嫌いじゃないです。\nでも、それだけで終わりたくないんです。"
     },
     {
       "type": "line",
@@ -20082,7 +24665,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -20091,7 +24678,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_night_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "bg",
@@ -20138,7 +24725,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "はい。朝の仕込みから見ないと、先輩の店の計算は合いませんから。……それに、最初から見たいんです。"
+      "textLines": [
+        "はい。朝の仕込みから見ないと、先輩の店の計算は合いませんから。",
+        "……それに、最初から見たいんです。"
+      ],
+      "text": "はい。朝の仕込みから見ないと、先輩の店の計算は合いませんから。\n……それに、最初から見たいんです。"
     },
     {
       "type": "line",
@@ -20155,7 +24746,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -20164,7 +24759,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_01_starry_rooftop": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -20182,7 +24777,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "学院の課題を口実に、ナーディルはミラと星見台へ上がった。夜に長く出歩けない彼女にとって、これは少しだけ特別な時間だった。"
+      "textLines": [
+        "学院の課題を口実に、ナーディルはミラと星見台へ上がった。",
+        "夜に長く出歩けない彼女にとって、これは少しだけ特別な時間だった。"
+      ],
+      "text": "学院の課題を口実に、ナーディルはミラと星見台へ上がった。\n夜に長く出歩けない彼女にとって、これは少しだけ特別な時間だった。"
     },
     {
       "type": "line",
@@ -20206,12 +24805,16 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "先輩。私、すごい家の子じゃなくて、すごいものを作る人になりたいんです。"
+      "textLines": [
+        "先輩。",
+        "私、すごい家の子じゃなくて、すごいものを作る人になりたいんです。"
+      ],
+      "text": "先輩。\n私、すごい家の子じゃなくて、すごいものを作る人になりたいんです。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "もう、そのために動いているとそう思う。"
     },
     {
@@ -20236,7 +24839,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台から戻る頃には、夜風が少し冷えていた。ミラの馬車が角を曲がるまで、ナーディルは店先で見送った。"
+      "textLines": [
+        "星見台から戻る頃には、夜風が少し冷えていた。",
+        "ミラの馬車が角を曲がるまで、ナーディルは店先で見送った。"
+      ],
+      "text": "星見台から戻る頃には、夜風が少し冷えていた。\nミラの馬車が角を曲がるまで、ナーディルは店先で見送った。"
     },
     {
       "type": "end"
@@ -20259,7 +24866,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "大学の噴水前で、ナーディルはミラから返された設計図を受け取った。赤い印がいくつも付いているが、どれも乱暴な否定ではなく、次へ進むための目印だった。"
+      "textLines": [
+        "大学の噴水前で、ナーディルはミラから返された設計図を受け取った。",
+        "赤い印がいくつも付いているが、どれも乱暴な否定ではなく、次へ進むための目印だった。"
+      ],
+      "text": "大学の噴水前で、ナーディルはミラから返された設計図を受け取った。\n赤い印がいくつも付いているが、どれも乱暴な否定ではなく、次へ進むための目印だった。"
     },
     {
       "type": "focus",
@@ -20288,19 +24899,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "彼女の明るさに何度も助けられた。勢いに押されて困る日もあったが、その勢いが店の空気を変えてくれたことも確かだった。"
+      "textLines": [
+        "彼女の明るさに何度も助けられた。",
+        "勢いに押されて困る日もあったが、その勢いが店の空気を変えてくれたことも確かだった。"
+      ],
+      "text": "彼女の明るさに何度も助けられた。\n勢いに押されて困る日もあったが、その勢いが店の空気を変えてくれたことも確かだった。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
-      "text": "ありがとう、ミラ。俺だけなら、同じ棚の前でずっと考え込んでいたと思う。"
+      "expression": "fun",
+      "textLines": [
+        "ありがとう、ミラ。",
+        "俺だけなら、同じ棚の前でずっと考え込んでいたと思う。"
+      ],
+      "text": "ありがとう、ミラ。\n俺だけなら、同じ棚の前でずっと考え込んでいたと思う。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "私は、先輩のそういうところも悪くないと思っています。急がないから見えるものもありますし。"
+      "textLines": [
+        "私は、先輩のそういうところも悪くないと思っています。",
+        "急がないから見えるものもありますし。"
+      ],
+      "text": "私は、先輩のそういうところも悪くないと思っています。\n急がないから見えるものもありますし。"
     },
     {
       "type": "line",
@@ -20312,13 +24935,21 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "そうだね。次に相談する時も、先輩として恥ずかしくないくらいには準備しておくよ。"
+      "textLines": [
+        "そうだね。",
+        "次に相談する時も、先輩として恥ずかしくないくらいには準備しておくよ。"
+      ],
+      "text": "そうだね。\n次に相談する時も、先輩として恥ずかしくないくらいには準備しておくよ。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "期待しています！あ、でも無理は禁物です。倒れたら看病で予定が全部ずれますから。"
+      "textLines": [
+        "期待しています！あ、でも無理は禁物です。",
+        "倒れたら看病で予定が全部ずれますから。"
+      ],
+      "text": "期待しています！あ、でも無理は禁物です。\n倒れたら看病で予定が全部ずれますから。"
     },
     {
       "type": "line",
@@ -20335,7 +24966,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "噴水の水音が、次の講義へ向かう学生たちの声に重なった。恋にはまだ少し届かない。それでも、星瓶堂を変える約束は確かに残った。"
+      "textLines": [
+        "噴水の水音が、次の講義へ向かう学生たちの声に重なった。",
+        "恋にはまだ少し届かない。それでも、星瓶堂を変える約束は確かに残った。"
+      ],
+      "text": "噴水の水音が、次の講義へ向かう学生たちの声に重なった。\n恋にはまだ少し届かない。それでも、星瓶堂を変える約束は確かに残った。"
     },
     {
       "type": "end"
@@ -20362,13 +24997,22 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の星瓶堂で、ナーディルはミラが残していった小さな設計図を広げていた。棚の動線、客の視線、薬瓶の高さ。余白には彼女らしい勢いのある文字が並んでいる。"
+      "textLines": [
+        "夜の星瓶堂で、ナーディルはミラが残していった小さな設計図を広げていた。",
+        "棚の動線、客の視線、薬瓶の高さ。",
+        "余白には彼女らしい勢いのある文字が並んでいる。"
+      ],
+      "text": "夜の星瓶堂で、ナーディルはミラが残していった小さな設計図を広げていた。\n棚の動線、客の視線、薬瓶の高さ。\n余白には彼女らしい勢いのある文字が並んでいる。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "すごいな。最初はただ元気な後輩だと思ってたけど、ちゃんと店の未来まで見てくれてる。"
+      "textLines": [
+        "すごいな。",
+        "最初はただ元気な後輩だと思ってたけど、ちゃんと店の未来まで見てくれてる。"
+      ],
+      "text": "すごいな。\n最初はただ元気な後輩だと思ってたけど、ちゃんと店の未来まで見てくれてる。"
     },
     {
       "type": "focus",
@@ -20393,17 +25037,29 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "発明家志望は、聞き逃しませんから。あと商会の娘なので、店の伸びしろにも敏感です。"
+      "textLines": [
+        "発明家志望は、聞き逃しませんから。",
+        "あと商会の娘なので、店の伸びしろにも敏感です。"
+      ],
+      "text": "発明家志望は、聞き逃しませんから。\nあと商会の娘なので、店の伸びしろにも敏感です。"
     },
     {
       "type": "narration",
-      "text": "ミラは胸を張る。けれど、その目はいつもの悪戯っぽさだけではなく、少し真剣だった。"
+      "textLines": [
+        "ミラは胸を張る。",
+        "けれど、その目はいつもの悪戯っぽさだけではなく、少し真剣だった。"
+      ],
+      "text": "ミラは胸を張る。\nけれど、その目はいつもの悪戯っぽさだけではなく、少し真剣だった。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "先輩は、星瓶堂を古い店として守ろうとしていました。でも、ここは古いだけじゃありません。新しいこともできます。"
+      "textLines": [
+        "先輩は、星瓶堂を古い店として守ろうとしていました。",
+        "でも、ここは古いだけじゃありません。新しいこともできます。"
+      ],
+      "text": "先輩は、星瓶堂を古い店として守ろうとしていました。\nでも、ここは古いだけじゃありません。新しいこともできます。"
     },
     {
       "type": "line",
@@ -20415,7 +25071,12 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "できそう、じゃなくて、やるんです。私、ナーディル先輩のお父様みたいな発明家に憧れています。でも最近は、少し違うんです。"
+      "textLines": [
+        "できそう、じゃなくて、やるんです。",
+        "私、ナーディル先輩のお父様みたいな発明家に憧れています。",
+        "でも最近は、少し違うんです。"
+      ],
+      "text": "できそう、じゃなくて、やるんです。\n私、ナーディル先輩のお父様みたいな発明家に憧れています。\nでも最近は、少し違うんです。"
     },
     {
       "type": "line",
@@ -20431,13 +25092,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "危ない実験で叱られた少女は、今は目の前で未来の棚を描いている。ナーディルはその変化を、眩しく感じた。"
+      "textLines": [
+        "危ない実験で叱られた少女は、今は目の前で未来の棚を描いている。",
+        "ナーディルはその変化を、眩しく感じた。"
+      ],
+      "text": "危ない実験で叱られた少女は、今は目の前で未来の棚を描いている。\nナーディルはその変化を、眩しく感じた。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ミラ。これからも、俺に意見を言ってほしい。遠慮なく。店のことも、俺のことも。"
+      "textLines": [
+        "ミラ。これからも、俺に意見を言ってほしい。遠慮なく。",
+        "店のことも、俺のことも。"
+      ],
+      "text": "ミラ。これからも、俺に意見を言ってほしい。遠慮なく。\n店のことも、俺のことも。"
     },
     {
       "type": "focus",
@@ -20456,7 +25125,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "でも、ただの後輩扱いはそろそろ困ります。商会の目でも、発明家の目でもなく、私自身として隣に立ちたいです。"
+      "textLines": [
+        "でも、ただの後輩扱いはそろそろ困ります。",
+        "商会の目でも、発明家の目でもなく、私自身として隣に立ちたいです。"
+      ],
+      "text": "でも、ただの後輩扱いはそろそろ困ります。\n商会の目でも、発明家の目でもなく、私自身として隣に立ちたいです。"
     },
     {
       "type": "line",
@@ -20489,7 +25162,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "設計図の端に、二人の明日が書き足されていく。星瓶堂の灯りは、少しだけ新しい色で夜を照らしていた。"
+      "textLines": [
+        "設計図の端に、二人の明日が書き足されていく。",
+        "星瓶堂の灯りは、少しだけ新しい色で夜を照らしていた。"
+      ],
+      "text": "設計図の端に、二人の明日が書き足されていく。\n星瓶堂の灯りは、少しだけ新しい色で夜を照らしていた。"
     },
     {
       "type": "end"
@@ -20498,7 +25175,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_route_opening_001": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -20516,7 +25193,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星瓶堂の扉は、ミラにとって昔から少し特別だった。大商会の令嬢としてではなく、近所の子どもとして入り込めた場所だからだ。"
+      "textLines": [
+        "星瓶堂の扉は、ミラにとって昔から少し特別だった。",
+        "大商会の令嬢としてではなく、近所の子どもとして入り込めた場所だからだ。"
+      ],
+      "text": "星瓶堂の扉は、ミラにとって昔から少し特別だった。\n大商会の令嬢としてではなく、近所の子どもとして入り込めた場所だからだ。"
     },
     {
       "type": "line",
@@ -20526,11 +25207,19 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラにとって星瓶堂は、昔から少し特別な場所だった。高価な玩具より、棚の奥にある古い試薬瓶の方が、彼女にはずっと面白かった。"
+      "textLines": [
+        "ミラにとって星瓶堂は、昔から少し特別な場所だった。",
+        "高価な玩具より、棚の奥にある古い試薬瓶の方が、彼女にはずっと面白かった。"
+      ],
+      "text": "ミラにとって星瓶堂は、昔から少し特別な場所だった。\n高価な玩具より、棚の奥にある古い試薬瓶の方が、彼女にはずっと面白かった。"
     },
     {
       "type": "narration",
-      "text": "今では大商会の令嬢で、大学の天才として扱われる。それでも彼女は、ここに来ると少しだけ昔の顔に戻る。"
+      "textLines": [
+        "今では大商会の令嬢で、大学の天才として扱われる。",
+        "それでも彼女は、ここに来ると少しだけ昔の顔に戻る。"
+      ],
+      "text": "今では大商会の令嬢で、大学の天才として扱われる。\nそれでも彼女は、ここに来ると少しだけ昔の顔に戻る。"
     },
     {
       "type": "focus",
@@ -20543,7 +25232,7 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "失礼ですね、ナディールお兄ちゃん。今は正式なお手伝いです！"
+      "text": "失礼ですね、ナーディルお兄ちゃん。今は正式なお手伝いです！"
     },
     {
       "type": "line",
@@ -20576,7 +25265,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -20594,7 +25283,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の店に、ミラは迷いなく入ってきた。昔からこの扉の軋む音を知っている。"
+      "textLines": [
+        "朝の店に、ミラは迷いなく入ってきた。",
+        "昔からこの扉の軋む音を知っている。"
+      ],
+      "text": "朝の店に、ミラは迷いなく入ってきた。\n昔からこの扉の軋む音を知っている。"
     },
     {
       "type": "focus",
@@ -20645,7 +25338,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_02": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -20714,7 +25407,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -20783,7 +25476,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_04": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_SURPRISE_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "scene",
@@ -20852,7 +25545,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_morning_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -20870,7 +25563,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の仕込みが終わっても、ミラはなかなか帰らなかった。馬車の迎えも、今日は少し遅い。"
+      "textLines": [
+        "朝の仕込みが終わっても、ミラはなかなか帰らなかった。",
+        "馬車の迎えも、今日は少し遅い。"
+      ],
+      "text": "朝の仕込みが終わっても、ミラはなかなか帰らなかった。\n馬車の迎えも、今日は少し遅い。"
     },
     {
       "type": "focus",
@@ -20921,7 +25618,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_night_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "bg",
@@ -20943,7 +25640,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、外で商会の馬車が待っている。ミラは聞こえないふりをして、棚の埃を払っていた。"
+      "textLines": [
+        "閉店後、外で商会の馬車が待っている。",
+        "ミラは聞こえないふりをして、棚の埃を払っていた。"
+      ],
+      "text": "閉店後、外で商会の馬車が待っている。\nミラは聞こえないふりをして、棚の埃を払っていた。"
     },
     {
       "type": "focus",
@@ -20985,7 +25686,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -21016,7 +25721,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帳簿に残ったミラの字は、思ったより丁寧だった。遊びの延長ではないことが、数字から伝わってくる。"
+      "textLines": [
+        "帳簿に残ったミラの字は、思ったより丁寧だった。",
+        "遊びの延長ではないことが、数字から伝わってくる。"
+      ],
+      "text": "帳簿に残ったミラの字は、思ったより丁寧だった。\n遊びの延長ではないことが、数字から伝わってくる。"
     },
     {
       "type": "focus",
@@ -21040,7 +25749,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "fun",
       "text": "ありがとう。"
     },
     {
@@ -21058,7 +25767,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -21067,7 +25780,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_night_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "bg",
@@ -21089,7 +25802,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の試作品を前に、ミラは悪びれず笑っていた。ナーディルは安全確認の紙を三枚重ねる。"
+      "textLines": [
+        "閉店後の試作品を前に、ミラは悪びれず笑っていた。",
+        "ナーディルは安全確認の紙を三枚重ねる。"
+      ],
+      "text": "閉店後の試作品を前に、ミラは悪びれず笑っていた。\nナーディルは安全確認の紙を三枚重ねる。"
     },
     {
       "type": "focus",
@@ -21131,7 +25848,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -21193,7 +25914,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "じゃあ、少しずつ考えます。少しずつ考えます。子どもの頃とは違う呼び方を。"
+      "textLines": [
+        "じゃあ、少しずつ考えます。少しずつ考えます。",
+        "子どもの頃とは違う呼び方を。"
+      ],
+      "text": "じゃあ、少しずつ考えます。少しずつ考えます。\n子どもの頃とは違う呼び方を。"
     },
     {
       "type": "focus",
@@ -21204,7 +25929,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -21213,7 +25942,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_night_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "bg",
@@ -21235,7 +25964,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラは帰り際、店の扉を名残惜しそうに見上げた。昔より少し大きくなった背でも、星瓶堂の看板は高い。"
+      "textLines": [
+        "ミラは帰り際、店の扉を名残惜しそうに見上げた。",
+        "昔より少し大きくなった背でも、星瓶堂の看板は高い。"
+      ],
+      "text": "ミラは帰り際、店の扉を名残惜しそうに見上げた。\n昔より少し大きくなった背でも、星瓶堂の看板は高い。"
     },
     {
       "type": "focus",
@@ -21271,7 +26004,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -21298,7 +26035,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "珍しくナーディルが熱を出し、星瓶堂は半日だけ札を裏返した。午後、遠慮のないノックが店の奥へ響く。"
+      "textLines": [
+        "珍しくナーディルが熱を出し、星瓶堂は半日だけ札を裏返した。",
+        "午後、遠慮のないノックが店の奥へ響く。"
+      ],
+      "text": "珍しくナーディルが熱を出し、星瓶堂は半日だけ札を裏返した。\n午後、遠慮のないノックが店の奥へ響く。"
     },
     {
       "type": "line",
@@ -21316,7 +26057,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "昔から、お兄ちゃんはそうやって一人で大丈夫にしようとします。今日は聞きません。"
+      "textLines": [
+        "昔から、お兄ちゃんはそうやって一人で大丈夫にしようとします。",
+        "今日は聞きません。"
+      ],
+      "text": "昔から、お兄ちゃんはそうやって一人で大丈夫にしようとします。\n今日は聞きません。"
     },
     {
       "type": "line",
@@ -21346,7 +26091,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夕方には熱も少し下がった。枕元に残った薬湯は甘く、ミラらしい強引な優しさの味がした。"
+      "textLines": [
+        "夕方には熱も少し下がった。",
+        "枕元に残った薬湯は甘く、ミラらしい強引な優しさの味がした。"
+      ],
+      "text": "夕方には熱も少し下がった。\n枕元に残った薬湯は甘く、ミラらしい強引な優しさの味がした。"
     },
     {
       "type": "end"
@@ -21369,7 +26118,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の風は、昔より少し大人びた匂いがした。ナーディルは荷札の束を抱え、隣で部品箱を覗き込むミラを見る。"
+      "textLines": [
+        "港の風は、昔より少し大人びた匂いがした。",
+        "ナーディルは荷札の束を抱え、隣で部品箱を覗き込むミラを見る。"
+      ],
+      "text": "港の風は、昔より少し大人びた匂いがした。\nナーディルは荷札の束を抱え、隣で部品箱を覗き込むミラを見る。"
     },
     {
       "type": "focus",
@@ -21382,7 +26135,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "ナーディルお兄ちゃん、この金具は星瓶堂の棚にも使えそうです。たぶん、古い棚でも傷を隠せます。"
+      "textLines": [
+        "ナーディルお兄ちゃん、この金具は星瓶堂の棚にも使えそうです。",
+        "たぶん、古い棚でも傷を隠せます。"
+      ],
+      "text": "ナーディルお兄ちゃん、この金具は星瓶堂の棚にも使えそうです。\nたぶん、古い棚でも傷を隠せます。"
     },
     {
       "type": "line",
@@ -21398,25 +26155,37 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "幼い頃の距離は近い。だからこそ、今の距離を決めるのは簡単ではなかった。"
+      "textLines": [
+        "幼い頃の距離は近い。",
+        "だからこそ、今の距離を決めるのは簡単ではなかった。"
+      ],
+      "text": "幼い頃の距離は近い。\nだからこそ、今の距離を決めるのは簡単ではなかった。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "私は、星瓶堂が好きです。お兄ちゃんの店だからというだけじゃなくて、ここから何か新しいものが始まりそうだから。"
+      "textLines": [
+        "私は、星瓶堂が好きです。",
+        "お兄ちゃんの店だからというだけじゃなくて、ここから何か新しいものが始まりそうだから。"
+      ],
+      "text": "私は、星瓶堂が好きです。\nお兄ちゃんの店だからというだけじゃなくて、ここから何か新しいものが始まりそうだから。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "その言葉だけで、かなり助かるよ。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "なら、もっと助けます。まだ恋人とか、そういう名前を急がなくても、私は勝手に改良案を持っていきますから。"
+      "textLines": [
+        "なら、もっと助けます。",
+        "まだ恋人とか、そういう名前を急がなくても、私は勝手に改良案を持っていきますから。"
+      ],
+      "text": "なら、もっと助けます。\nまだ恋人とか、そういう名前を急がなくても、私は勝手に改良案を持っていきますから。"
     },
     {
       "type": "line",
@@ -21432,7 +26201,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "港の向こうに、父母が旅しているかもしれない海が広がっている。けれどナーディルの足元には、戻る店と、そこへ走ってくる幼馴染の気配があった。"
+      "textLines": [
+        "港の向こうに、父母が旅しているかもしれない海が広がっている。",
+        "けれどナーディルの足元には、戻る店と、そこへ走ってくる幼馴染の気配があった。"
+      ],
+      "text": "港の向こうに、父母が旅しているかもしれない海が広がっている。\nけれどナーディルの足元には、戻る店と、そこへ走ってくる幼馴染の気配があった。"
     },
     {
       "type": "focus",
@@ -21443,7 +26216,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "答えはまだ保留でも、約束は増えていく。星瓶堂の棚には、近いうちにまたミラの設計図が挟まるだろう。"
+      "textLines": [
+        "答えはまだ保留でも、約束は増えていく。",
+        "星瓶堂の棚には、近いうちにまたミラの設計図が挟まるだろう。"
+      ],
+      "text": "答えはまだ保留でも、約束は増えていく。\n星瓶堂の棚には、近いうちにまたミラの設計図が挟まるだろう。"
     },
     {
       "type": "end"
@@ -21466,13 +26243,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の星瓶堂の前で、ナーディルは鍵を手にしたまま立ち止まっていた。昔、ミラが勝手に持ち込んだ部品箱の跡は、もう見えない。"
+      "textLines": [
+        "夜の星瓶堂の前で、ナーディルは鍵を手にしたまま立ち止まっていた。",
+        "昔、ミラが勝手に持ち込んだ部品箱の跡は、もう見えない。"
+      ],
+      "text": "夜の星瓶堂の前で、ナーディルは鍵を手にしたまま立ち止まっていた。\n昔、ミラが勝手に持ち込んだ部品箱の跡は、もう見えない。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "この店、ミラにとっては遊び場だったんだよね。俺にとっては、ずっと祖父たちの店だったけど。"
+      "textLines": [
+        "この店、ミラにとっては遊び場だったんだよね。",
+        "俺にとっては、ずっと祖父たちの店だったけど。"
+      ],
+      "text": "この店、ミラにとっては遊び場だったんだよね。\n俺にとっては、ずっと祖父たちの店だったけど。"
     },
     {
       "type": "focus",
@@ -21497,17 +26282,29 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "不安になるくらいがちょうどいいんです、ナーディルお兄ちゃん。退屈な店は発明家の敵ですから。"
+      "textLines": [
+        "不安になるくらいがちょうどいいんです、ナーディルお兄ちゃん。",
+        "退屈な店は発明家の敵ですから。"
+      ],
+      "text": "不安になるくらいがちょうどいいんです、ナーディルお兄ちゃん。\n退屈な店は発明家の敵ですから。"
     },
     {
       "type": "narration",
-      "text": "彼女が「お兄ちゃん」と呼ぶたび、昔の距離が簡単に戻ってくる。けれど、今夜のミラはその懐かしさだけでは終わらせない目をしていた。"
+      "textLines": [
+        "彼女が「お兄ちゃん」と呼ぶたび、昔の距離が簡単に戻ってくる。",
+        "けれど、今夜のミラはその懐かしさだけでは終わらせない目をしていた。"
+      ],
+      "text": "彼女が「お兄ちゃん」と呼ぶたび、昔の距離が簡単に戻ってくる。\nけれど、今夜のミラはその懐かしさだけでは終わらせない目をしていた。"
     },
     {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "normal",
-      "text": "私、ずっとこの店に出入りしていました。姉さんがすごいことも、ナーディルお兄ちゃんが置いていかれたみたいな顔をすることも、見ていました。"
+      "textLines": [
+        "私、ずっとこの店に出入りしていました。",
+        "姉さんがすごいことも、ナーディルお兄ちゃんが置いていかれたみたいな顔をすることも、見ていました。"
+      ],
+      "text": "私、ずっとこの店に出入りしていました。\n姉さんがすごいことも、ナーディルお兄ちゃんが置いていかれたみたいな顔をすることも、見ていました。"
     },
     {
       "type": "line",
@@ -21519,7 +26316,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "してました。だから腹が立ったんです。私がこんなに面白いと思っている場所を、本人が一番信じていないみたいで。"
+      "textLines": [
+        "してました。だから腹が立ったんです。",
+        "私がこんなに面白いと思っている場所を、本人が一番信じていないみたいで。"
+      ],
+      "text": "してました。だから腹が立ったんです。\n私がこんなに面白いと思っている場所を、本人が一番信じていないみたいで。"
     },
     {
       "type": "line",
@@ -21538,7 +26339,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "はい。だから、これからは私も正式に関わります。遊び場としても、発明の現場としても、それから……好きな人の店としても。"
+      "textLines": [
+        "はい。だから、これからは私も正式に関わります。",
+        "遊び場としても、発明の現場としても、それから……好きな人の店としても。"
+      ],
+      "text": "はい。だから、これからは私も正式に関わります。\n遊び場としても、発明の現場としても、それから……好きな人の店としても。"
     },
     {
       "type": "line",
@@ -21556,7 +26361,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "俺も、ミラにいてほしい。昔みたいに遊びに来るだけじゃなくて、これからの星瓶堂を一緒に作る人として。"
+      "textLines": [
+        "俺も、ミラにいてほしい。",
+        "昔みたいに遊びに来るだけじゃなくて、これからの星瓶堂を一緒に作る人として。"
+      ],
+      "text": "俺も、ミラにいてほしい。\n昔みたいに遊びに来るだけじゃなくて、これからの星瓶堂を一緒に作る人として。"
     },
     {
       "type": "line",
@@ -21585,7 +26394,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の看板が揺れる。星瓶堂は、懐かしい遊び場から、二人で発明していく未来の場所になっていった。"
+      "textLines": [
+        "夜の看板が揺れる。",
+        "星瓶堂は、懐かしい遊び場から、二人で発明していく未来の場所になっていった。"
+      ],
+      "text": "夜の看板が揺れる。\n星瓶堂は、懐かしい遊び場から、二人で発明していく未来の場所になっていった。"
     },
     {
       "type": "end"
@@ -21594,7 +26407,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_morning_06_curfew_carriage": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_3"
     },
     {
       "type": "scene",
@@ -21612,7 +26425,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、店先に立派な馬車が停まった。従者が困った顔をしている横で、ミラは当然のように星瓶堂へ入ってくる。"
+      "textLines": [
+        "開店前、店先に立派な馬車が停まった。",
+        "従者が困った顔をしている横で、ミラは当然のように星瓶堂へ入ってくる。"
+      ],
+      "text": "開店前、店先に立派な馬車が停まった。\n従者が困った顔をしている横で、ミラは当然のように星瓶堂へ入ってくる。"
     },
     {
       "type": "focus",
@@ -21637,7 +26454,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "短いから濃く使うんです。ほら、今日いちばん動かしたい棚を教えてください。"
+      "textLines": [
+        "短いから濃く使うんです。",
+        "ほら、今日いちばん動かしたい棚を教えてください。"
+      ],
+      "text": "短いから濃く使うんです。\nほら、今日いちばん動かしたい棚を教えてください。"
     },
     {
       "type": "line",
@@ -21660,7 +26481,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "馬車の鈴が鳴るまで、ミラは店の値札を三枚直した。ナーディルは少しだけ怖くなりながら、営業の準備を進めた。"
+      "textLines": [
+        "馬車の鈴が鳴るまで、ミラは店の値札を三枚直した。",
+        "ナーディルは少しだけ怖くなりながら、営業の準備を進めた。"
+      ],
+      "text": "馬車の鈴が鳴るまで、ミラは店の値札を三枚直した。\nナーディルは少しだけ怖くなりながら、営業の準備を進めた。"
     },
     {
       "type": "end"
@@ -21669,7 +26494,7 @@ const EVENT_SCRIPTS = {
   "mira_normal_date_02_assignment_consult": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_MIRA_4"
     },
     {
       "type": "scene",
@@ -21687,7 +26512,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "学院の噴水前で、ナーディルはミラに呼び止められた。手には課題用紙、顔には明らかに課題以外の期待が浮かんでいる。"
+      "textLines": [
+        "学院の噴水前で、ナーディルはミラに呼び止められた。",
+        "手には課題用紙、顔には明らかに課題以外の期待が浮かんでいる。"
+      ],
+      "text": "学院の噴水前で、ナーディルはミラに呼び止められた。\n手には課題用紙、顔には明らかに課題以外の期待が浮かんでいる。"
     },
     {
       "type": "line",
@@ -21705,7 +26534,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "先輩に見てもらうなら、ちゃんと準備します。あと少しだけ、店の話も聞きたいです。"
+      "textLines": [
+        "先輩に見てもらうなら、ちゃんと準備します。",
+        "あと少しだけ、店の話も聞きたいです。"
+      ],
+      "text": "先輩に見てもらうなら、ちゃんと準備します。\nあと少しだけ、店の話も聞きたいです。"
     },
     {
       "type": "line",
@@ -21717,7 +26550,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "どっちもです。私は本物の発明家になりたいので、店で使われる発明の話も大事なんです。"
+      "textLines": [
+        "どっちもです。",
+        "私は本物の発明家になりたいので、店で使われる発明の話も大事なんです。"
+      ],
+      "text": "どっちもです。\n私は本物の発明家になりたいので、店で使われる発明の話も大事なんです。"
     },
     {
       "type": "line",
@@ -21747,7 +26584,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帰り道、ミラは課題用紙を胸に抱えていた。相談という名目は、次も使えそうだと顔に書いてあった。"
+      "textLines": [
+        "帰り道、ミラは課題用紙を胸に抱えていた。",
+        "相談という名目は、次も使えそうだと顔に書いてあった。"
+      ],
+      "text": "帰り道、ミラは課題用紙を胸に抱えていた。\n相談という名目は、次も使えそうだと顔に書いてあった。"
     },
     {
       "type": "end"
@@ -21778,7 +26619,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ミラは危険物用の棚に貼られた注意書きをじっと見ていた。昔の記憶を、いたずらに触るような目だった。"
+      "textLines": [
+        "閉店後、ミラは危険物用の棚に貼られた注意書きをじっと見ていた。",
+        "昔の記憶を、いたずらに触るような目だった。"
+      ],
+      "text": "閉店後、ミラは危険物用の棚に貼られた注意書きをじっと見ていた。\n昔の記憶を、いたずらに触るような目だった。"
     },
     {
       "type": "focus",
@@ -21791,7 +26636,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "sorrow",
-      "text": "私、先輩に叱られた時、ちょっと悔しかったんです。家の名前を知っても手加減してくれなかったから。"
+      "textLines": [
+        "私、先輩に叱られた時、ちょっと悔しかったんです。",
+        "家の名前を知っても手加減してくれなかったから。"
+      ],
+      "text": "私、先輩に叱られた時、ちょっと悔しかったんです。\n家の名前を知っても手加減してくれなかったから。"
     },
     {
       "type": "line",
@@ -21803,7 +26652,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "分かってます。だから気になったんです。私を商会の娘じゃなく、危ないことをした学生として見てくれた。"
+      "textLines": [
+        "分かってます。だから気になったんです。",
+        "私を商会の娘じゃなく、危ないことをした学生として見てくれた。"
+      ],
+      "text": "分かってます。だから気になったんです。\n私を商会の娘じゃなく、危ないことをした学生として見てくれた。"
     },
     {
       "type": "line",
@@ -21842,7 +26695,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_date_02_after_school_shop": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_MIRA_1"
     },
     {
       "type": "scene",
@@ -21860,7 +26713,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "学院帰りのミラは、昔と同じように星瓶堂の前で足を止めた。立派な商会の令嬢には見えない、少し得意げな顔だ。"
+      "textLines": [
+        "学院帰りのミラは、昔と同じように星瓶堂の前で足を止めた。",
+        "立派な商会の令嬢には見えない、少し得意げな顔だ。"
+      ],
+      "text": "学院帰りのミラは、昔と同じように星瓶堂の前で足を止めた。\n立派な商会の令嬢には見えない、少し得意げな顔だ。"
     },
     {
       "type": "line",
@@ -21890,7 +26747,7 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "昔のナーディルお兄ちゃんは許してくれました。今のナディールお兄ちゃんは？"
+      "text": "昔のナーディルお兄ちゃんは許してくれました。今のナーディルお兄ちゃんは？"
     },
     {
       "type": "line",
@@ -21929,7 +26786,7 @@ const EVENT_SCRIPTS = {
   "mira_childhood_night_06_sister_rivalry": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_MIRA_2"
     },
     {
       "type": "bg",
@@ -21976,7 +26833,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "fun",
-      "text": "あります。だって、ナーディルお兄ちゃんの隣に一番自然に立っていた人ですから。"
+      "textLines": [
+        "あります。",
+        "だって、ナーディルお兄ちゃんの隣に一番自然に立っていた人ですから。"
+      ],
+      "text": "あります。\nだって、ナーディルお兄ちゃんの隣に一番自然に立っていた人ですから。"
     },
     {
       "type": "line",
@@ -21995,7 +26856,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "MIRA",
       "expression": "joy",
-      "text": "分かってます。でも私は、別の形で隣に立ちます。発明家としても、女の子としても。"
+      "textLines": [
+        "分かってます。でも私は、別の形で隣に立ちます。",
+        "発明家としても、女の子としても。"
+      ],
+      "text": "分かってます。でも私は、別の形で隣に立ちます。\n発明家としても、女の子としても。"
     },
     {
       "type": "focus",
@@ -22006,7 +26871,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ミラの宣言は明るいのに、冗談には聞こえなかった。ナーディルは広告を畳み、少しだけ背筋を伸ばした。"
+      "textLines": [
+        "ミラの宣言は明るいのに、冗談には聞こえなかった。",
+        "ナーディルは広告を畳み、少しだけ背筋を伸ばした。"
+      ],
+      "text": "ミラの宣言は明るいのに、冗談には聞こえなかった。\nナーディルは広告を畳み、少しだけ背筋を伸ばした。"
     },
     {
       "type": "end"
@@ -22033,7 +26902,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "大学の噴水前で、ナーディルは恩師の研究室へ向かう途中だった。そこへ、王立研究所の制服を少し着崩したダリヤが、疲れた顔で手を振る。"
+      "textLines": [
+        "大学の噴水前で、ナーディルは恩師の研究室へ向かう途中だった。",
+        "そこへ、王立研究所の制服を少し着崩したダリヤが、疲れた顔で手を振る。"
+      ],
+      "text": "大学の噴水前で、ナーディルは恩師の研究室へ向かう途中だった。\nそこへ、王立研究所の制服を少し着崩したダリヤが、疲れた顔で手を振る。"
     },
     {
       "type": "line",
@@ -22043,7 +26916,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "白面の鬼族。王立研究所の若い錬金術師。肩書きだけなら、ダリヤはどこに出しても恥ずかしくない人だった。"
+      "textLines": [
+        "白面の鬼族。王立研究所の若い錬金術師。",
+        "肩書きだけなら、ダリヤはどこに出しても恥ずかしくない人だった。"
+      ],
+      "text": "白面の鬼族。王立研究所の若い錬金術師。\n肩書きだけなら、ダリヤはどこに出しても恥ずかしくない人だった。"
     },
     {
       "type": "narration",
@@ -22084,7 +26961,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "fun",
-      "text": "こっちの話。先生に言われたら、少し手伝うよ。研究所にいる時間が減るなら助かるし。"
+      "textLines": [
+        "こっちの話。先生に言われたら、少し手伝うよ。",
+        "研究所にいる時間が減るなら助かるし。"
+      ],
+      "text": "こっちの話。先生に言われたら、少し手伝うよ。\n研究所にいる時間が減るなら助かるし。"
     },
     {
       "type": "end"
@@ -22093,7 +26974,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_morning_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_2"
     },
     {
       "type": "scene",
@@ -22111,7 +26992,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、扉の鈴が鳴った。入ってきたダリヤは、朝そのものに納得していない顔をしている。"
+      "textLines": [
+        "開店前、扉の鈴が鳴った。",
+        "入ってきたダリヤは、朝そのものに納得していない顔をしている。"
+      ],
+      "text": "開店前、扉の鈴が鳴った。\n入ってきたダリヤは、朝そのものに納得していない顔をしている。"
     },
     {
       "type": "focus",
@@ -22180,7 +27065,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ナーディルは研究所向けの納品書を広げていた。品名は難しく、注文数は妙に細かい。"
+      "textLines": [
+        "ナーディルは研究所向けの納品書を広げていた。",
+        "品名は難しく、注文数は妙に細かい。"
+      ],
+      "text": "ナーディルは研究所向けの納品書を広げていた。\n品名は難しく、注文数は妙に細かい。"
     },
     {
       "type": "focus",
@@ -22198,7 +27087,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "助かるよ。全部急ぎに見えてました。"
     },
     {
@@ -22249,7 +27138,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の光が店に差し込み、ダリヤの白い肌をいっそう明るく見せた。彼女は視線に気づいて、少し肩をすくめる。"
+      "textLines": [
+        "朝の光が店に差し込み、ダリヤの白い肌をいっそう明るく見せた。",
+        "彼女は視線に気づいて、少し肩をすくめる。"
+      ],
+      "text": "朝の光が店に差し込み、ダリヤの白い肌をいっそう明るく見せた。\n彼女は視線に気づいて、少し肩をすくめる。"
     },
     {
       "type": "focus",
@@ -22306,7 +27199,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_morning_04": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_3"
     },
     {
       "type": "scene",
@@ -22324,7 +27217,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "古い大学新聞から、詩吟部の記事が出てきた。ナーディルは思わず目を逸らす。"
+      "textLines": [
+        "古い大学新聞から、詩吟部の記事が出てきた。",
+        "ナーディルは思わず目を逸らす。"
+      ],
+      "text": "古い大学新聞から、詩吟部の記事が出てきた。\nナーディルは思わず目を逸らす。"
     },
     {
       "type": "focus",
@@ -22381,7 +27278,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_morning_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_DARIYA_4"
     },
     {
       "type": "scene",
@@ -22399,7 +27296,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "約束の時間を少し過ぎて、ダリヤが息を切らして入ってきた。長身の彼女が小さく頭を下げる。"
+      "textLines": [
+        "約束の時間を少し過ぎて、ダリヤが息を切らして入ってきた。",
+        "長身の彼女が小さく頭を下げる。"
+      ],
+      "text": "約束の時間を少し過ぎて、ダリヤが息を切らして入ってきた。\n長身の彼女が小さく頭を下げる。"
     },
     {
       "type": "focus",
@@ -22472,7 +27373,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の店に、控えめな鈴の音がした。ダリヤは研究所の上着を脱ぎ、深く息を吐く。"
+      "textLines": [
+        "閉店後の店に、控えめな鈴の音がした。",
+        "ダリヤは研究所の上着を脱ぎ、深く息を吐く。"
+      ],
+      "text": "閉店後の店に、控えめな鈴の音がした。\nダリヤは研究所の上着を脱ぎ、深く息を吐く。"
     },
     {
       "type": "focus",
@@ -22514,7 +27419,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -22545,7 +27454,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "帳簿を閉じたあとも、ダリヤは帰ろうとしなかった。ランプの光が、白い横顔に薄くかかる。"
+      "textLines": [
+        "帳簿を閉じたあとも、ダリヤは帰ろうとしなかった。",
+        "ランプの光が、白い横顔に薄くかかる。"
+      ],
+      "text": "帳簿を閉じたあとも、ダリヤは帰ろうとしなかった。\nランプの光が、白い横顔に薄くかかる。"
     },
     {
       "type": "focus",
@@ -22587,7 +27500,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -22596,7 +27513,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_night_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_1"
     },
     {
       "type": "bg",
@@ -22618,7 +27535,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "棚の高い瓶を見上げて、ダリヤは少しだけ眉を寄せた。ナーディルが脚立を引き寄せるより早く、彼女はつま先で床を蹴る。"
+      "textLines": [
+        "棚の高い瓶を見上げて、ダリヤは少しだけ眉を寄せた。",
+        "ナーディルが脚立を引き寄せるより早く、彼女はつま先で床を蹴る。"
+      ],
+      "text": "棚の高い瓶を見上げて、ダリヤは少しだけ眉を寄せた。\nナーディルが脚立を引き寄せるより早く、彼女はつま先で床を蹴る。"
     },
     {
       "type": "focus",
@@ -22666,7 +27587,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -22697,7 +27622,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の帳簿には、細かい修正がびっしり入っていた。ダリヤはそれを見て、少しだけ目を伏せる。"
+      "textLines": [
+        "夜の帳簿には、細かい修正がびっしり入っていた。",
+        "ダリヤはそれを見て、少しだけ目を伏せる。"
+      ],
+      "text": "夜の帳簿には、細かい修正がびっしり入っていた。\nダリヤはそれを見て、少しだけ目を伏せる。"
     },
     {
       "type": "focus",
@@ -22722,7 +27651,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "そういうの、眩しい。私は反発だけで走って、止まり方が分からなくなった。"
+      "textLines": [
+        "そういうの、眩しい。",
+        "私は反発だけで走って、止まり方が分からなくなった。"
+      ],
+      "text": "そういうの、眩しい。\n私は反発だけで走って、止まり方が分からなくなった。"
     },
     {
       "type": "line",
@@ -22739,7 +27672,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -22748,7 +27685,7 @@ const EVENT_SCRIPTS = {
   "dariya_normal_night_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_DARIYA_2"
     },
     {
       "type": "bg",
@@ -22770,7 +27707,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "最後のランプを消す時間になっても、ダリヤは椅子から立たなかった。珍しく、言い訳もない。"
+      "textLines": [
+        "最後のランプを消す時間になっても、ダリヤは椅子から立たなかった。",
+        "珍しく、言い訳もない。"
+      ],
+      "text": "最後のランプを消す時間になっても、ダリヤは椅子から立たなかった。\n珍しく、言い訳もない。"
     },
     {
       "type": "focus",
@@ -22812,7 +27753,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -22839,7 +27784,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "研究所への納品帰り、急な雨で王宮の回廊に足止めされた。石の床に、雨音だけが静かに響く。"
+      "textLines": [
+        "研究所への納品帰り、急な雨で王宮の回廊に足止めされた。",
+        "石の床に、雨音だけが静かに響く。"
+      ],
+      "text": "研究所への納品帰り、急な雨で王宮の回廊に足止めされた。\n石の床に、雨音だけが静かに響く。"
     },
     {
       "type": "line",
@@ -22893,7 +27842,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "雨が止む頃、ダリヤの足取りは少し軽くなっていた。ナーディルは店に戻り、濡れた納品書を丁寧に乾かした。"
+      "textLines": [
+        "雨が止む頃、ダリヤの足取りは少し軽くなっていた。",
+        "ナーディルは店に戻り、濡れた納品書を丁寧に乾かした。"
+      ],
+      "text": "雨が止む頃、ダリヤの足取りは少し軽くなっていた。\nナーディルは店に戻り、濡れた納品書を丁寧に乾かした。"
     },
     {
       "type": "end"
@@ -22916,7 +27869,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮の廊下は、店の夜よりずっと冷たい光をしていた。ナーディルは納品の控えを抱え、少し遅れて歩くダリヤを待つ。"
+      "textLines": [
+        "王宮の廊下は、店の夜よりずっと冷たい光をしていた。",
+        "ナーディルは納品の控えを抱え、少し遅れて歩くダリヤを待つ。"
+      ],
+      "text": "王宮の廊下は、店の夜よりずっと冷たい光をしていた。\nナーディルは納品の控えを抱え、少し遅れて歩くダリヤを待つ。"
     },
     {
       "type": "focus",
@@ -22929,7 +27886,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "ごめん。廊下って、長いね。研究所も王宮も、歩いているだけで少し疲れる。"
+      "textLines": [
+        "ごめん。廊下って、長いね。",
+        "研究所も王宮も、歩いているだけで少し疲れる。"
+      ],
+      "text": "ごめん。廊下って、長いね。\n研究所も王宮も、歩いているだけで少し疲れる。"
     },
     {
       "type": "line",
@@ -22939,7 +27900,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤは小さく笑った。何度か店に来るうちに、その笑い方が少しだけ分かるようになっていた。"
+      "textLines": [
+        "ダリヤは小さく笑った。",
+        "何度か店に来るうちに、その笑い方が少しだけ分かるようになっていた。"
+      ],
+      "text": "ダリヤは小さく笑った。\n何度か店に来るうちに、その笑い方が少しだけ分かるようになっていた。"
     },
     {
       "type": "line",
@@ -22961,19 +27926,31 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "彼女の悩みをすべて解けたわけではない。ナーディルの店も、まだ胸を張って誰かを救えるほど大きくはない。"
+      "textLines": [
+        "彼女の悩みをすべて解けたわけではない。",
+        "ナーディルの店も、まだ胸を張って誰かを救えるほど大きくはない。"
+      ],
+      "text": "彼女の悩みをすべて解けたわけではない。\nナーディルの店も、まだ胸を張って誰かを救えるほど大きくはない。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "でも、少し息がしやすくなった。あなたの店に行く理由があるだけで、帰り道が変わる。"
+      "textLines": [
+        "でも、少し息がしやすくなった。",
+        "あなたの店に行く理由があるだけで、帰り道が変わる。"
+      ],
+      "text": "でも、少し息がしやすくなった。\nあなたの店に行く理由があるだけで、帰り道が変わる。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "それなら、いつでも来てほしい。夜でも、朝でも……朝は少し大変そうだけど。"
+      "textLines": [
+        "それなら、いつでも来てほしい。",
+        "夜でも、朝でも……朝は少し大変そうだけど。"
+      ],
+      "text": "それなら、いつでも来てほしい。\n夜でも、朝でも……朝は少し大変そうだけど。"
     },
     {
       "type": "line",
@@ -22996,7 +27973,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮の廊下を抜けると、外の空気が少し柔らかかった。恋にはまだ届かない。それでも、星瓶堂へ向かう道は一つ増えていた。"
+      "textLines": [
+        "王宮の廊下を抜けると、外の空気が少し柔らかかった。",
+        "恋にはまだ届かない。それでも、星瓶堂へ向かう道は一つ増えていた。"
+      ],
+      "text": "王宮の廊下を抜けると、外の空気が少し柔らかかった。\n恋にはまだ届かない。それでも、星瓶堂へ向かう道は一つ増えていた。"
     },
     {
       "type": "end"
@@ -23023,13 +28004,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の星瓶堂で、ナーディルは王立研究所から届いた納品控えを畳んだ。訂正の赤字は減り、代わりに小さな礼の言葉が添えられている。"
+      "textLines": [
+        "閉店後の星瓶堂で、ナーディルは王立研究所から届いた納品控えを畳んだ。",
+        "訂正の赤字は減り、代わりに小さな礼の言葉が添えられている。"
+      ],
+      "text": "閉店後の星瓶堂で、ナーディルは王立研究所から届いた納品控えを畳んだ。\n訂正の赤字は減り、代わりに小さな礼の言葉が添えられている。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ダリヤさんが間に入ってくれたおかげだね。俺だけなら、研究所って聞いただけで身構えていたと思う。"
+      "textLines": [
+        "ダリヤさんが間に入ってくれたおかげだね。",
+        "俺だけなら、研究所って聞いただけで身構えていたと思う。"
+      ],
+      "text": "ダリヤさんが間に入ってくれたおかげだね。\n俺だけなら、研究所って聞いただけで身構えていたと思う。"
     },
     {
       "type": "focus",
@@ -23054,17 +28043,30 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "つらい日もある。自分で選んだ道なのに、選んだ理由が空っぽだったって気づく日もある。"
+      "textLines": [
+        "つらい日もある。",
+        "自分で選んだ道なのに、選んだ理由が空っぽだったって気づく日もある。"
+      ],
+      "text": "つらい日もある。\n自分で選んだ道なのに、選んだ理由が空っぽだったって気づく日もある。"
     },
     {
       "type": "narration",
-      "text": "ダリヤは棚の影に手を伸ばし、古い薬瓶を一つだけ直した。力のある指先なのに、その仕草はどこか遠慮がちだった。"
+      "textLines": [
+        "ダリヤは棚の影に手を伸ばし、古い薬瓶を一つだけ直した。",
+        "力のある指先なのに、その仕草はどこか遠慮がちだった。"
+      ],
+      "text": "ダリヤは棚の影に手を伸ばし、古い薬瓶を一つだけ直した。\n力のある指先なのに、その仕草はどこか遠慮がちだった。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "でも、ここに来ると少し違う。ナーディルは、店を守る理由を毎日作り直してる。見ていると、私も逃げるだけじゃなくていいのかもって思う。"
+      "textLines": [
+        "でも、ここに来ると少し違う。",
+        "ナーディルは、店を守る理由を毎日作り直してる。",
+        "見ていると、私も逃げるだけじゃなくていいのかもって思う。"
+      ],
+      "text": "でも、ここに来ると少し違う。\nナーディルは、店を守る理由を毎日作り直してる。\n見ていると、私も逃げるだけじゃなくていいのかもって思う。"
     },
     {
       "type": "line",
@@ -23095,7 +28097,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "私はね、ずっと誰かに見返したかった。両親とか、研究所の人とか、昔の自分とか。"
+      "textLines": [
+        "私はね、ずっと誰かに見返したかった。",
+        "両親とか、研究所の人とか、昔の自分とか。"
+      ],
+      "text": "私はね、ずっと誰かに見返したかった。\n両親とか、研究所の人とか、昔の自分とか。"
     },
     {
       "type": "line",
@@ -23106,8 +28112,12 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
-      "text": "この店が、そういう場所になれるなら嬉しいよ。俺にとっても、ダリヤさんが来てくれる夜は大事だから。"
+      "expression": "fun",
+      "textLines": [
+        "この店が、そういう場所になれるなら嬉しいよ。",
+        "俺にとっても、ダリヤさんが来てくれる夜は大事だから。"
+      ],
+      "text": "この店が、そういう場所になれるなら嬉しいよ。\n俺にとっても、ダリヤさんが来てくれる夜は大事だから。"
     },
     {
       "type": "focus",
@@ -23136,7 +28146,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "窓の外で星が瞬く。白い顔を月明かりが照らし、ダリヤは初めて肩の力を抜いて笑った。"
+      "textLines": [
+        "窓の外で星が瞬く。",
+        "白い顔を月明かりが照らし、ダリヤは初めて肩の力を抜いて笑った。"
+      ],
+      "text": "窓の外で星が瞬く。\n白い顔を月明かりが照らし、ダリヤは初めて肩の力を抜いて笑った。"
     },
     {
       "type": "focus",
@@ -23147,7 +28161,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星瓶堂の夜は静かだった。けれどその静けさは、空っぽではなく、二人が戻ってこられる余白として残っていた。"
+      "textLines": [
+        "星瓶堂の夜は静かだった。",
+        "けれどその静けさは、空っぽではなく、二人が戻ってこられる余白として残っていた。"
+      ],
+      "text": "星瓶堂の夜は静かだった。\nけれどその静けさは、空っぽではなく、二人が戻ってこられる余白として残っていた。"
     },
     {
       "type": "end"
@@ -23174,15 +28192,27 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "市場の端で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。そこへ、昔から知る低い声がのんびり落ちてくる。"
+      "textLines": [
+        "市場の端で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。",
+        "そこへ、昔から知る低い声がのんびり落ちてくる。"
+      ],
+      "text": "市場の端で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。\nそこへ、昔から知る低い声がのんびり落ちてくる。"
     },
     {
       "type": "narration",
-      "text": "昔のダリヤは、ナーディルの家にいる時だけ少し息を抜いた。白い顔をからかわれることも、家のことを聞かれることも、そこではなかったからだ。"
+      "textLines": [
+        "昔のダリヤは、ナーディルの家にいる時だけ少し息を抜いた。",
+        "白い顔をからかわれることも、家のことを聞かれることも、そこではなかったからだ。"
+      ],
+      "text": "昔のダリヤは、ナーディルの家にいる時だけ少し息を抜いた。\n白い顔をからかわれることも、家のことを聞かれることも、そこではなかったからだ。"
     },
     {
       "type": "narration",
-      "text": "ナーディルが何気なく言った一言を、彼女がどれほど大事に抱えていたのか。当時の彼は、まだ知らない。"
+      "textLines": [
+        "ナーディルが何気なく言った一言を、彼女がどれほど大事に抱えていたのか。",
+        "当時の彼は、まだ知らない。"
+      ],
+      "text": "ナーディルが何気なく言った一言を、彼女がどれほど大事に抱えていたのか。\n当時の彼は、まだ知らない。"
     },
     {
       "type": "focus",
@@ -23224,7 +28254,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "sorrow",
+      "expression": "fun",
       "text": "情報量が多いだね……でも、助かるよ。"
     },
     {
@@ -23234,7 +28264,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_01": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_3"
     },
     {
       "type": "scene",
@@ -23252,7 +28282,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "約束の時間を過ぎて、ダリヤがゆっくり店に入ってきた。髪は少し乱れ、顔には反省が半分だけある。"
+      "textLines": [
+        "約束の時間を過ぎて、ダリヤがゆっくり店に入ってきた。",
+        "髪は少し乱れ、顔には反省が半分だけある。"
+      ],
+      "text": "約束の時間を過ぎて、ダリヤがゆっくり店に入ってきた。\n髪は少し乱れ、顔には反省が半分だけある。"
     },
     {
       "type": "focus",
@@ -23321,7 +28355,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "古い薬箱から、色違いの塗り薬が出てきた。ナーディルは懐かしそうに瓶を並べる。"
+      "textLines": [
+        "古い薬箱から、色違いの塗り薬が出てきた。",
+        "ナーディルは懐かしそうに瓶を並べる。"
+      ],
+      "text": "古い薬箱から、色違いの塗り薬が出てきた。\nナーディルは懐かしそうに瓶を並べる。"
     },
     {
       "type": "focus",
@@ -23372,7 +28410,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_4"
     },
     {
       "type": "scene",
@@ -23390,7 +28428,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "姉からの手紙には、いつものようにダリヤ宛ての追伸が混じっていた。ナーディルは封筒を分けながら、小さく苦笑する。"
+      "textLines": [
+        "姉からの手紙には、いつものようにダリヤ宛ての追伸が混じっていた。",
+        "ナーディルは封筒を分けながら、小さく苦笑する。"
+      ],
+      "text": "姉からの手紙には、いつものようにダリヤ宛ての追伸が混じっていた。\nナーディルは封筒を分けながら、小さく苦笑する。"
     },
     {
       "type": "focus",
@@ -23459,7 +28501,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "朝の新聞に王立研究所の記事が載っていた。ダリヤはそれを見て、少し気まずそうに目をそらす。"
+      "textLines": [
+        "朝の新聞に王立研究所の記事が載っていた。",
+        "ダリヤはそれを見て、少し気まずそうに目をそらす。"
+      ],
+      "text": "朝の新聞に王立研究所の記事が載っていた。\nダリヤはそれを見て、少し気まずそうに目をそらす。"
     },
     {
       "type": "focus",
@@ -23477,7 +28523,7 @@ const EVENT_SCRIPTS = {
     {
       "type": "line",
       "speakerId": "NADER",
-      "expression": "normal",
+      "expression": "fun",
       "text": "十分かっこいいとそう思う。"
     },
     {
@@ -23516,7 +28562,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_05": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_JOY_1"
+      "id": "BGM_GAME_DARIYA_1"
     },
     {
       "type": "scene",
@@ -23534,7 +28580,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "開店前、ダリヤはいつの間にか奥で茶を淹れていた。昔からこの家に入り浸っていた人の自然さだった。"
+      "textLines": [
+        "開店前、ダリヤはいつの間にか奥で茶を淹れていた。",
+        "昔からこの家に入り浸っていた人の自然さだった。"
+      ],
+      "text": "開店前、ダリヤはいつの間にか奥で茶を淹れていた。\n昔からこの家に入り浸っていた人の自然さだった。"
     },
     {
       "type": "focus",
@@ -23607,7 +28657,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ダリヤは店の奥の椅子に深く座っていた。昔も、彼女はよくここで時間を潰していた。"
+      "textLines": [
+        "閉店後、ダリヤは店の奥の椅子に深く座っていた。",
+        "昔も、彼女はよくここで時間を潰していた。"
+      ],
+      "text": "閉店後、ダリヤは店の奥の椅子に深く座っていた。\n昔も、彼女はよくここで時間を潰していた。"
     },
     {
       "type": "focus",
@@ -23649,7 +28703,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -23658,7 +28716,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_night_02": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_2"
     },
     {
       "type": "bg",
@@ -23680,7 +28738,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "脚立から降りる時、ナーディルが少しよろけた。次の瞬間、ダリヤの腕が当然のように支える。"
+      "textLines": [
+        "脚立から降りる時、ナーディルが少しよろけた。",
+        "次の瞬間、ダリヤの腕が当然のように支える。"
+      ],
+      "text": "脚立から降りる時、ナーディルが少しよろけた。\n次の瞬間、ダリヤの腕が当然のように支える。"
     },
     {
       "type": "focus",
@@ -23722,7 +28784,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -23731,7 +28797,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_night_03": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_1"
+      "id": "BGM_GAME_DARIYA_3"
     },
     {
       "type": "bg",
@@ -23795,7 +28861,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -23826,7 +28896,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさの中で、ダリヤは空の椅子を見つめていた。そこは昔、彼女がよく座っていた場所だった。"
+      "textLines": [
+        "閉店後の静けさの中で、ダリヤは空の椅子を見つめていた。",
+        "そこは昔、彼女がよく座っていた場所だった。"
+      ],
+      "text": "閉店後の静けさの中で、ダリヤは空の椅子を見つめていた。\nそこは昔、彼女がよく座っていた場所だった。"
     },
     {
       "type": "focus",
@@ -23839,7 +28913,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "王立研究所に、未練がないと言ったら嘘になる。でも、ここにいる方が呼吸が楽。"
+      "textLines": [
+        "王立研究所に、未練がないと言ったら嘘になる。",
+        "でも、ここにいる方が呼吸が楽。"
+      ],
+      "text": "王立研究所に、未練がないと言ったら嘘になる。\nでも、ここにいる方が呼吸が楽。"
     },
     {
       "type": "line",
@@ -23868,7 +28946,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -23899,7 +28981,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の店で、ダリヤは珍しく背筋を丸めていた。長身の影が、ランプの下で少し小さく見える。"
+      "textLines": [
+        "夜の店で、ダリヤは珍しく背筋を丸めていた。",
+        "長身の影が、ランプの下で少し小さく見える。"
+      ],
+      "text": "夜の店で、ダリヤは珍しく背筋を丸めていた。\n長身の影が、ランプの下で少し小さく見える。"
     },
     {
       "type": "focus",
@@ -23941,7 +29027,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      "textLines": [
+        "閉店後の静けさが戻る。",
+        "窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+      ],
+      "text": "閉店後の静けさが戻る。\n窓の外では、王都の灯りがゆっくり夜に溶けていた。"
     },
     {
       "type": "end"
@@ -23968,7 +29058,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ダリヤは帰る気配もなく店の奥に座っていた。ナーディルが茶を置くと、彼女はゆっくり顔を上げる。"
+      "textLines": [
+        "閉店後、ダリヤは帰る気配もなく店の奥に座っていた。",
+        "ナーディルが茶を置くと、彼女はゆっくり顔を上げる。"
+      ],
+      "text": "閉店後、ダリヤは帰る気配もなく店の奥に座っていた。\nナーディルが茶を置くと、彼女はゆっくり顔を上げる。"
     },
     {
       "type": "still",
@@ -24022,7 +29116,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "ダリヤを見送ったあと、ナーディルは古い薬箱をそっと閉じた。色の違う瓶が、今も同じ棚に並んでいる。"
+      "textLines": [
+        "ダリヤを見送ったあと、ナーディルは古い薬箱をそっと閉じた。",
+        "色の違う瓶が、今も同じ棚に並んでいる。"
+      ],
+      "text": "ダリヤを見送ったあと、ナーディルは古い薬箱をそっと閉じた。\n色の違う瓶が、今も同じ棚に並んでいる。"
     },
     {
       "type": "end"
@@ -24045,7 +29143,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台の風は静かだった。ナーディルは欄干に手を置き、隣で空を見上げるダリヤを待つ。"
+      "textLines": [
+        "星見台の風は静かだった。",
+        "ナーディルは欄干に手を置き、隣で空を見上げるダリヤを待つ。"
+      ],
+      "text": "星見台の風は静かだった。\nナーディルは欄干に手を置き、隣で空を見上げるダリヤを待つ。"
     },
     {
       "type": "focus",
@@ -24064,23 +29166,35 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "NADER",
       "expression": "fun",
-      "text": "それは覚えてないな。でも、ダリヤさんが何か言おうとして黙るのは、昔からだった気がする。"
+      "textLines": [
+        "それは覚えてないな。",
+        "でも、ダリヤさんが何か言おうとして黙るのは、昔からだった気がする。"
+      ],
+      "text": "それは覚えてないな。\nでも、ダリヤさんが何か言おうとして黙るのは、昔からだった気がする。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "fun",
-      "text": "手厳しいね、ナディール。"
+      "text": "手厳しいね、ナーディル。"
     },
     {
       "type": "narration",
-      "text": "幼い頃の距離は、簡単に戻るようで戻らない。けれど、それを無理に取り戻さなくてもいいと思えるくらいには、二人は言葉を重ねてきた。"
+      "textLines": [
+        "幼い頃の距離は、簡単に戻るようで戻らない。",
+        "けれど、それを無理に取り戻さなくてもいいと思えるくらいには、二人は言葉を重ねてきた。"
+      ],
+      "text": "幼い頃の距離は、簡単に戻るようで戻らない。\nけれど、それを無理に取り戻さなくてもいいと思えるくらいには、二人は言葉を重ねてきた。"
     },
     {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "私は、ここに戻ってきてもいいのかなって、ずっと試してた。かっこいいお姉ちゃんじゃなくても、白い顔を気にする私でも。"
+      "textLines": [
+        "私は、ここに戻ってきてもいいのかなって、ずっと試してた。",
+        "かっこいいお姉ちゃんじゃなくても、白い顔を気にする私でも。"
+      ],
+      "text": "私は、ここに戻ってきてもいいのかなって、ずっと試してた。\nかっこいいお姉ちゃんじゃなくても、白い顔を気にする私でも。"
     },
     {
       "type": "line",
@@ -24108,7 +29222,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星の下で、二人は笑った。恋にはまだ形がつかない。それでも、帰る場所を確かめるには十分な夜だった。"
+      "textLines": [
+        "星の下で、二人は笑った。恋にはまだ形がつかない。",
+        "それでも、帰る場所を確かめるには十分な夜だった。"
+      ],
+      "text": "星の下で、二人は笑った。恋にはまだ形がつかない。\nそれでも、帰る場所を確かめるには十分な夜だった。"
     },
     {
       "type": "focus",
@@ -24119,7 +29237,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星見台から見える王都の灯りの中に、星瓶堂の小さな光もある。ダリヤはその場所を、もう遠慮せずに目印にできる。"
+      "textLines": [
+        "星見台から見える王都の灯りの中に、星瓶堂の小さな光もある。",
+        "ダリヤはその場所を、もう遠慮せずに目印にできる。"
+      ],
+      "text": "星見台から見える王都の灯りの中に、星瓶堂の小さな光もある。\nダリヤはその場所を、もう遠慮せずに目印にできる。"
     },
     {
       "type": "end"
@@ -24146,7 +29268,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "夜の星瓶堂で、ナーディルは古い薬箱を開けていた。底の方から出てきた二種類の塗り薬に、幼い頃の記憶がふっと戻る。"
+      "textLines": [
+        "夜の星瓶堂で、ナーディルは古い薬箱を開けていた。",
+        "底の方から出てきた二種類の塗り薬に、幼い頃の記憶がふっと戻る。"
+      ],
+      "text": "夜の星瓶堂で、ナーディルは古い薬箱を開けていた。\n底の方から出てきた二種類の塗り薬に、幼い頃の記憶がふっと戻る。"
     },
     {
       "type": "line",
@@ -24177,7 +29303,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "覚えていなくてもいいよ。ナディールがそういう子だったことは、私が覚えてるから。"
+      "textLines": [
+        "覚えていなくてもいいよ。",
+        "ナーディルがそういう子だったことは、私が覚えてるから。"
+      ],
+      "text": "覚えていなくてもいいよ。\nナーディルがそういう子だったことは、私が覚えてるから。"
     },
     {
       "type": "narration",
@@ -24187,7 +29317,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "normal",
-      "text": "かっこいいお姉ちゃんでいようと思って、研究所まで行った。両親を見返して、白い顔でもすごいって言わせたかった。"
+      "textLines": [
+        "かっこいいお姉ちゃんでいようと思って、研究所まで行った。",
+        "両親を見返して、白い顔でもすごいって言わせたかった。"
+      ],
+      "text": "かっこいいお姉ちゃんでいようと思って、研究所まで行った。\n両親を見返して、白い顔でもすごいって言わせたかった。"
     },
     {
       "type": "line",
@@ -24228,13 +29362,21 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "冗談の形をしているのに、声は震えていなかった。ダリヤはもう、逃げ場所としてだけ星瓶堂を見ていない。"
+      "textLines": [
+        "冗談の形をしているのに、声は震えていなかった。",
+        "ダリヤはもう、逃げ場所としてだけ星瓶堂を見ていない。"
+      ],
+      "text": "冗談の形をしているのに、声は震えていなかった。\nダリヤはもう、逃げ場所としてだけ星瓶堂を見ていない。"
     },
     {
       "type": "line",
       "speakerId": "NADER",
       "expression": "normal",
-      "text": "ダリヤさん。帰る場所としてだけじゃなくて、これから一緒にいる場所として、ここにいてほしい。"
+      "textLines": [
+        "ダリヤさん。",
+        "帰る場所としてだけじゃなくて、これから一緒にいる場所として、ここにいてほしい。"
+      ],
+      "text": "ダリヤさん。\n帰る場所としてだけじゃなくて、これから一緒にいる場所として、ここにいてほしい。"
     },
     {
       "type": "line",
@@ -24274,7 +29416,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "星瓶堂の夜に、ダリヤの居場所が増えた。昔の逃げ道は、これから二人で帰る道になっていく。"
+      "textLines": [
+        "星瓶堂の夜に、ダリヤの居場所が増えた。",
+        "昔の逃げ道は、これから二人で帰る道になっていく。"
+      ],
+      "text": "星瓶堂の夜に、ダリヤの居場所が増えた。\n昔の逃げ道は、これから二人で帰る道になっていく。"
     },
     {
       "type": "end"
@@ -24301,7 +29447,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "王宮の研究室は、器具の光まで整って見えた。ナーディルは納品書を抱え、隣のダリヤの横顔をうかがう。"
+      "textLines": [
+        "王宮の研究室は、器具の光まで整って見えた。",
+        "ナーディルは納品書を抱え、隣のダリヤの横顔をうかがう。"
+      ],
+      "text": "王宮の研究室は、器具の光まで整って見えた。\nナーディルは納品書を抱え、隣のダリヤの横顔をうかがう。"
     },
     {
       "type": "line",
@@ -24355,7 +29505,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "研究室を出る頃、ダリヤは少しだけ肩の力を抜いていた。立派な部屋より、隣の足音の方が頼りになる日もある。"
+      "textLines": [
+        "研究室を出る頃、ダリヤは少しだけ肩の力を抜いていた。",
+        "立派な部屋より、隣の足音の方が頼りになる日もある。"
+      ],
+      "text": "研究室を出る頃、ダリヤは少しだけ肩の力を抜いていた。\n立派な部屋より、隣の足音の方が頼りになる日もある。"
     },
     {
       "type": "end"
@@ -24386,7 +29540,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、扉の鈴が一度だけ鳴った。そこに立っていたダリヤは、いつもの冗談を忘れたような顔をしていた。"
+      "textLines": [
+        "閉店後、扉の鈴が一度だけ鳴った。",
+        "そこに立っていたダリヤは、いつもの冗談を忘れたような顔をしていた。"
+      ],
+      "text": "閉店後、扉の鈴が一度だけ鳴った。\nそこに立っていたダリヤは、いつもの冗談を忘れたような顔をしていた。"
     },
     {
       "type": "line",
@@ -24404,7 +29562,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "今日は、研究所に戻りたくない。何も壊してないのに、ずっと壊れそうな気がする。"
+      "textLines": [
+        "今日は、研究所に戻りたくない。",
+        "何も壊してないのに、ずっと壊れそうな気がする。"
+      ],
+      "text": "今日は、研究所に戻りたくない。\n何も壊してないのに、ずっと壊れそうな気がする。"
     },
     {
       "type": "line",
@@ -24440,7 +29602,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "湯気が上がるまで、二人は何も話さなかった。その沈黙が、今夜は一番必要な薬だった。"
+      "textLines": [
+        "湯気が上がるまで、二人は何も話さなかった。",
+        "その沈黙が、今夜は一番必要な薬だった。"
+      ],
+      "text": "湯気が上がるまで、二人は何も話さなかった。\nその沈黙が、今夜は一番必要な薬だった。"
     },
     {
       "type": "end"
@@ -24467,7 +29633,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "閉店後、ダリヤはいつもの椅子ではなく、店の奥の床に近い場所で膝を抱えていた。かっこいいお姉ちゃん、という冗談は今夜だけ出てこない。"
+      "textLines": [
+        "閉店後、ダリヤはいつもの椅子ではなく、店の奥の床に近い場所で膝を抱えていた。",
+        "かっこいいお姉ちゃん、という冗談は今夜だけ出てこない。"
+      ],
+      "text": "閉店後、ダリヤはいつもの椅子ではなく、店の奥の床に近い場所で膝を抱えていた。\nかっこいいお姉ちゃん、という冗談は今夜だけ出てこない。"
     },
     {
       "type": "line",
@@ -24485,7 +29655,11 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "DARIYA",
       "expression": "sorrow",
-      "text": "今日は、かっこよくない。君に見せたくなかったけど、他に行く場所がなかった。"
+      "textLines": [
+        "今日は、かっこよくない。",
+        "君に見せたくなかったけど、他に行く場所がなかった。"
+      ],
+      "text": "今日は、かっこよくない。\n君に見せたくなかったけど、他に行く場所がなかった。"
     },
     {
       "type": "line",
@@ -24530,7 +29704,7 @@ const EVENT_SCRIPTS = {
   "dariya_childhood_morning_06_sleepover_almost": [
     {
       "type": "bgm",
-      "id": "BGM_EXTRA_FUN_2"
+      "id": "BGM_GAME_DARIYA_4"
     },
     {
       "type": "scene",
@@ -24548,7 +29722,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "約束の時間を過ぎても、ダリヤは来なかった。ナーディルが棚を一列整え終えた頃、扉が静かに開く。"
+      "textLines": [
+        "約束の時間を過ぎても、ダリヤは来なかった。",
+        "ナーディルが棚を一列整え終えた頃、扉が静かに開く。"
+      ],
+      "text": "約束の時間を過ぎても、ダリヤは来なかった。\nナーディルが棚を一列整え終えた頃、扉が静かに開く。"
     },
     {
       "type": "focus",
@@ -24603,7 +29781,11 @@ const EVENT_SCRIPTS = {
     },
     {
       "type": "narration",
-      "text": "少し遅れた朝だったが、店の空気は悪くなかった。ナーディルは笑いをこらえながら、開店札を表へ返した。"
+      "textLines": [
+        "少し遅れた朝だったが、店の空気は悪くなかった。",
+        "ナーディルは笑いをこらえながら、開店札を表へ返した。"
+      ],
+      "text": "少し遅れた朝だったが、店の空気は悪くなかった。\nナーディルは笑いをこらえながら、開店札を表へ返した。"
     },
     {
       "type": "end"
@@ -48705,7 +53887,7 @@ const RESULT_COMMENTS = {
   DARIYA: {
     encourage: '……今日は、少し噛み合わなかったね。\nでも大丈夫。閉店まで立っていられたなら、それだけで次につながるよ。',
     evaluate: 'うん、悪くなかった。無理に背伸びしてない感じがして、私は好き。\nその調子なら、この店はちゃんと明日も開けられるよ。',
-    surprise: '……すごいね、ナディール。今の、ちょっと眩しかった。\n私なら途中で逃げたくなるところまで、ちゃんと向き合ってた。偉い。'
+    surprise: '……すごいね、ナーディル。今の、ちょっと眩しかった。\n私なら途中で逃げたくなるところまで、ちゃんと向き合ってた。偉い。'
   }
 };
 
@@ -48723,7 +53905,7 @@ const RESULT_GENRE_COMMENTS = {
   DARIYA: {
     encourage: '{genre}が多かったね。少し迷いが出たのかも。\n急がなくていいよ。必要なものを一つずつ見れば、たぶん大丈夫。',
     evaluate: '{genre}の選び方、落ち着いてたと思う。\n派手じゃないけど、ちゃんと客の方を見てた。そういうの、私は好き。',
-    surprise: '{genre}が綺麗に決まってたね。\n……ナディールが真面目に店を守ろうとしてるの、こういう時に分かる。'
+    surprise: '{genre}が綺麗に決まってたね。\n……ナーディルが真面目に店を守ろうとしてるの、こういう時に分かる。'
   }
 };
 
@@ -53486,8 +58668,8 @@ function getHeroineDisplayName(id) {
     CH_HAKIMA: 'ハキマ',
     CH_MIRA: 'ミラ',
     CH_DARIYA: 'ダリヤ',
-    CH_NADIR: 'ナディール',
-    NADER: 'ナディール'
+    CH_NADIR: 'ナーディル',
+    NADER: 'ナーディル'
   };
   return names[id] || id;
 }
