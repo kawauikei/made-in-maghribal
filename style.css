@@ -3355,6 +3355,13 @@ button.gallery-item-tile.is-seen:active {
   opacity: 0.75;
 }
 
+.route-mode-copy .route-carryover-score {
+  margin-top: 3px;
+  font-size: 0.72rem;
+  color: rgba(255, 236, 178, 0.92);
+  opacity: 0.92;
+}
+
 /* ROUTE SELECTED STATE */
 .route-mode-btn.is-route-selected {
   border: 1px solid var(--heroine-theme-primary, #f6d36b);
@@ -3451,8 +3458,8 @@ button.gallery-item-tile.is-seen:active {
   max-height: 92%;
   width: auto;
   object-fit: contain;
-  --char-motion-ms: 240ms;
-  transition: opacity var(--char-motion-ms) ease-out, transform var(--char-motion-ms) ease-out, filter var(--char-motion-ms) ease-out;
+  --char-motion-ms: 300ms;
+  transition: opacity var(--char-motion-ms) ease-out, transform var(--char-motion-ms) cubic-bezier(0.16, 0.84, 0.24, 1), filter var(--char-motion-ms) ease-out;
   opacity: 0;
 }
 
@@ -3502,8 +3509,31 @@ button.gallery-item-tile.is-seen:active {
   transform: translateX(-50%);
 }
 
+
+.standing-char.is-character-swap-initial {
+  opacity: 0 !important;
+  transform: translateX(-50%) !important;
+  transition: none !important;
+}
+
+.standing-char-outgoing {
+  z-index: 1;
+  opacity: 1;
+  transform: translateX(-50%);
+  transition: opacity var(--char-motion-ms) ease-out, filter var(--char-motion-ms) ease-out;
+}
+
+.standing-char-outgoing.is-fading-out {
+  opacity: 0;
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.45)) blur(0.24px) brightness(0.92);
+}
+
+[data-vn-char] {
+  z-index: 2;
+}
+
 .standing-char.char-motion-long {
-  --char-motion-ms: 420ms;
+  --char-motion-ms: 460ms;
 }
 
 .standing-char.char-motion-crossfade {
@@ -3513,13 +3543,13 @@ button.gallery-item-tile.is-seen:active {
 .standing-char.char-motion-slideInRight,
 .standing-char.char-motion-slideOutRight {
   opacity: 0;
-  transform: translateX(calc(-50% + 42px));
+  transform: translateX(calc(-50% + 150px));
 }
 
 .standing-char.char-motion-slideInLeft,
 .standing-char.char-motion-slideOutLeft {
   opacity: 0;
-  transform: translateX(calc(-50% - 42px));
+  transform: translateX(calc(-50% - 150px));
 }
 
 .standing-char.char-motion-pop {
@@ -4221,6 +4251,39 @@ button.gallery-item-tile.is-seen:active {
   0% { opacity: 1; filter: blur(0); }
   18% { opacity: 1; filter: blur(0); }
   100% { opacity: 0; filter: blur(0); }
+}
+
+
+/* EVENT-SKIP-HITBOX-FIX-2
+ * Keep the skip control out of the VNBox click target, but preserve the old
+ * visual position from the message-box-local layout: top -18px / right 24px.
+ * It must also stay below cutin / black handoff veils so boundary scenes never
+ * show a floating skip button above the subtitle card.
+ */
+.vn-screen > .message-skip-btn {
+  position: absolute;
+  right: 24px;
+  bottom: calc(2.5% + 224px);
+  top: auto;
+  z-index: 33;
+  min-width: 116px;
+  min-height: 58px;
+  padding: 8px 24px;
+  pointer-events: auto;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.vn-screen > .message-skip-btn::before {
+  content: "";
+  position: absolute;
+  inset: -14px -18px;
+  border-radius: 999px;
+}
+
+.vn-screen.is-holding-message-hidden > .message-skip-btn {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* --- END: 30_vn.css --- */

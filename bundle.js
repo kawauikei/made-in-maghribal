@@ -38,26 +38,59 @@
  * Affection Model logic for MadeInMaghribal project.
  */
 
+const AFFECTION_DIVISOR = 6;
+const AFFECTION_MAX = 100;
+const CARRYOVER_MAX = 200;
+
+function toNumber(value) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
 /**
- * Calculates affection based on current score and historical peaks.
+ * Returns the carryover score used for affection.
+ * Only historical satisfaction + reputation are carried over.
+ * @param {object} history - { maxSatisfaction, maxReputation } or { satisfaction, reputation }
+ * @returns {{ satisfaction: number, reputation: number, total: number }}
+ */
+function calculateCarryoverScore(history = {}) {
+  const satisfaction = clamp(toNumber(history.maxSatisfaction ?? history.satisfaction), 0, 100);
+  const reputation = clamp(toNumber(history.maxReputation ?? history.reputation), 0, 100);
+  const total = clamp(satisfaction + reputation, 0, CARRYOVER_MAX);
+  return { satisfaction, reputation, total };
+}
+
+/**
+ * Calculates affection based on current score and route carryover.
+ *
+ * Formula:
+ *   (revenue + satisfaction + reputation + carryoverSatisfaction + carryoverReputation) / 6
+ *
+ * Current run max: 500 + 100 + 100 = 700 -> 700 / 6 = 116.6 -> capped at 100
+ * With carryover max: 700 + 200 = 900 -> 900 / 6 = 150 -> capped at 100
+ *
  * @param {object} score - { revenue, satisfaction, reputation }
- * @param {object} history - { maxSatisfaction, maxReputation }
+ * @param {object} history - { maxSatisfaction, maxReputation } or { satisfaction, reputation }
  * @returns {number} affection (0-100)
  */
 function calculateAffection(score, history = {}) {
-  const { revenue = 0, satisfaction = 0, reputation = 0 } = score;
-  
-  // MVP Formula: 好感度 = (売上 + 満足度 + 評判) / 5
-  let val = (revenue + satisfaction + reputation) / 5;
-  
-  // Clip at 0-100
-  if (val > 100) val = 100;
-  if (val < 0) val = 0;
-  
-  return val;
+  const { revenue = 0, satisfaction = 0, reputation = 0 } = score || {};
+  const carryover = calculateCarryoverScore(history);
+  const total = toNumber(revenue) + toNumber(satisfaction) + toNumber(reputation) + carryover.total;
+  return clamp(total / AFFECTION_DIVISOR, 0, AFFECTION_MAX);
 }
 
-module.exports = { calculateAffection };
+module.exports = {
+  AFFECTION_DIVISOR,
+  AFFECTION_MAX,
+  CARRYOVER_MAX,
+  calculateAffection,
+  calculateCarryoverScore
+};
 
     };
 
@@ -198,24 +231,23 @@ module.exports = { validateCharacters };
  * Ending Branch logic for MadeInMaghribal project.
  */
 
+const GOOD_ENDING_THRESHOLD = 80;
+
 /**
  * Evaluates the ending type based on final affection.
- * @param {number} affection 
- * @param {boolean} isExtraRoute 
+ * @param {number} affection
+ * @param {boolean} isExtraRoute - kept for backward compatibility; threshold is shared.
  * @returns {string} 'GOOD' | 'NORMAL'
  */
 function evaluateEnding(affection, isExtraRoute) {
-  // Acceptance: 通常ルートは好感度60以上でGood Ending
-  // Acceptance: 追加ルートは好感度80以上でGood Ending
-  const threshold = isExtraRoute ? 80 : 60;
-  
-  if (affection >= threshold) {
+  // Current balance: all routes require affection 80+ for GOOD.
+  if (affection >= GOOD_ENDING_THRESHOLD) {
     return 'GOOD';
   }
   return 'NORMAL';
 }
 
-module.exports = { evaluateEnding };
+module.exports = { evaluateEnding, GOOD_ENDING_THRESHOLD };
 
     };
 
@@ -2038,2304 +2070,501 @@ if (typeof module !== 'undefined') {
  */
 const EVENT_MANIFEST = [
   {
-    "id": "EV_DARIYA_01",
-    "title": "夜の帳と計算",
-    "heroineId": "DARIYA",
-    "summary": "ダリヤが夜遅くまで帳簿をつけている。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": null,
-    "eventType": null,
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ダリヤと仲良くなると解放"
-    },
-    "scriptStepCount": 7
-  },
-  {
-    "id": "EV_HAKIMA_01",
-    "title": "朝の訪問者",
-    "heroineId": "HAKIMA",
-    "summary": "開店前、ハキマが店に顔を出す。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": null,
-    "eventType": null,
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマと仲良くなると解放"
-    },
-    "scriptStepCount": 14
-  },
-  {
-    "id": "EV_MIRA_01",
-    "title": "放課後の研究",
-    "heroineId": "MIRA",
-    "summary": "ミラが熱心に古文書を読み耽っている。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": null,
-    "eventType": null,
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_mira_after_school_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ミラと仲良くなると解放"
-    },
-    "scriptStepCount": 7
-  },
-  {
-    "id": "EV_OP_01",
-    "title": "砂丘の向こう側",
+    "id": "common_opening_nadir_star_bottle_shop_001",
+    "title": "星瓶堂の若い店主",
     "heroineId": "COMMON",
-    "summary": "物語の始まり。マグレブの空は今日も青い。",
+    "routeGroup": "common",
+    "summary": "ナーディルが星瓶堂を継いだ理由と、店の現在を紹介する共通導入。",
     "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "always",
-    "galleryTab": null,
-    "eventType": null,
-    "thumbnail": null,
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_market_central",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を開始すると解放"
-    },
-    "scriptStepCount": 5
-  },
-  {
-    "id": "hakima_char_crossfade_001",
-    "title": "演出確認・クロスフェード",
-    "heroineId": "HAKIMA",
-    "summary": "立ち絵の標準的な登場・退場をクロスフェードで確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 9
-  },
-  {
-    "id": "hakima_char_expression_001",
-    "title": "演出確認・表情変化",
-    "heroineId": "HAKIMA",
-    "summary": "台詞送り中の表情変更が、待ち時間なしで軽く反応することを確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 7
-  },
-  {
-    "id": "hakima_char_pop_001",
-    "title": "演出確認・ポップ",
-    "heroineId": "HAKIMA",
-    "summary": "軽い登場やコメディ寄りの反応に使うポップ演出を確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_char_shadow_001",
-    "title": "演出確認・影落ち",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベントや真面目な場面向けの影落ち演出を確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 8
-  },
-  {
-    "id": "hakima_char_slide_001",
-    "title": "演出確認・スライド",
-    "heroineId": "HAKIMA",
-    "summary": "立ち絵が左右から入退場する演出を確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 12
-  },
-  {
-    "id": "hakima_normal_sample_001",
-    "title": "サンプルイベント",
-    "heroineId": "HAKIMA",
-    "summary": "執筆用の標準サンプル。背景・BGM・SE・選択肢・場面転換・スチルを自然な流れで確認します。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 23
-  },
-  {
-    "id": "hakima_sfx_sample_001",
-    "title": "演出確認・効果音",
-    "heroineId": "HAKIMA",
-    "summary": "イベント内でSEを少量だけ鳴らす確認用サンプルです。重要な動作・場面転換のみに使う前提です。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 14
-  },
-  {
-    "id": "hakima_simple_001",
-    "title": "演出確認用（シンプル）",
-    "heroineId": "HAKIMA",
-    "summary": "選択肢なし。背景・立ち絵・スチル・ページ送りを素直な流れで確認するサンプルです。",
-    "unlock": {
-      "type": "always"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "sample",
-    "thumbnail": null,
-    "gallery": {
-      "category": "heroine",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
-    },
-    "scriptStepCount": 15
-  },
-  {
-    "id": "common_opening_nadir_profile_001",
-    "title": "OP：ナーディル紹介サンプル",
-    "heroineId": "COMMON",
-    "summary": "ナーディルと星瓶堂を紹介する共通OPの発動サンプル。",
-    "unlock": {
-      "type": "authoring_sample"
+      "type": "story"
     },
     "unlockGroup": "common",
     "galleryTab": "common_nadir_normal",
     "eventType": "opening",
     "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "timing": "opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100,
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": []
+    },
     "gallery": {
       "category": "event",
       "thumbnail": "bg_shop_exterior_day",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 5
+    "scriptStepCount": 12
   },
   {
     "id": "hakima_normal_route_opening_001",
-    "title": "ハキマ通常ルート紹介サンプル",
+    "title": "噴水前の紹介状",
     "heroineId": "HAKIMA",
-    "summary": "ハキマ通常ルート開始時に固定発生する紹介イベント。",
+    "routeGroup": "normal",
+    "summary": "大学の恩師を通じて、ハキマが星瓶堂を手伝うことになる。",
     "unlock": {
-      "type": "authoring_sample"
+      "type": "story"
     },
     "unlockGroup": "hakima_normal",
     "galleryTab": "hakima_normal",
     "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff10_01",
-    "title": "ハキマ通常・朝・好感度10・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_night_aff10_01",
-    "title": "ハキマ通常・夜・好感度10・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff10_02",
-    "title": "ハキマ通常・朝・好感度10・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_normal_night_aff10_02",
-    "title": "ハキマ通常・夜・好感度10・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff30_01",
-    "title": "ハキマ通常・朝・好感度30・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_night_aff30_01",
-    "title": "ハキマ通常・夜・好感度30・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff30_02",
-    "title": "ハキマ通常・朝・好感度30・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_normal_night_aff30_02",
-    "title": "ハキマ通常・夜・好感度30・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff50_01",
-    "title": "ハキマ通常・朝・好感度50・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_night_aff50_01",
-    "title": "ハキマ通常・夜・好感度50・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_morning_aff50_02",
-    "title": "ハキマ通常・朝・好感度50・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_normal_night_aff50_02",
-    "title": "ハキマ通常・夜・好感度50・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_normal_date_aff40_01",
-    "title": "ハキマ通常・デート・好感度40",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_normal",
-    "galleryTab": "hakima_normal",
-    "eventType": "date",
     "thumbnail": "bg_spot_fountain",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
     "gallery": {
       "category": "event",
       "thumbnail": "bg_spot_fountain",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 3
+    "scriptStepCount": 21
   },
   {
-    "id": "hakima_normal_date_aff60_01",
-    "title": "ハキマ通常・デート・好感度60",
+    "id": "hakima_normal_morning_01_shelves_and_sandalwood",
+    "title": "白檀の棚",
     "heroineId": "HAKIMA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
+    "routeGroup": "normal",
+    "summary": "ハキマが開店前の棚の並びを実務的に見直す。",
     "unlock": {
-      "type": "authoring_sample"
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_normal_morning_02_ledger_margin",
+    "title": "甘い値札",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマがナーディルの値付けの甘さを指摘する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_morning_01_shelves_and_sandalwood"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_normal_morning_03_mothers_letter",
+    "title": "旅先の写真",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "父母から届いた写真を見て、ナーディルが家族の自由さに呆れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_morning_02_ledger_margin"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "hakima_normal_morning_04_soil_nickname",
+    "title": "土の名残",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマが昔のあだ名を少しだけ漏らし、ナーディルが悪意なく受け止める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_morning_03_mothers_letter"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 17
+  },
+  {
+    "id": "hakima_normal_morning_05_shopkeepers_face",
+    "title": "店主らしい顔",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマがナーディルの成長を認め、営業へ送り出す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_morning_04_soil_nickname"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "hakima_normal_night_01_after_first_business",
+    "title": "閉店後の赤鉛筆",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "営業後、ハキマが帳簿を見ながら実務的に助言する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_normal_night_02_teacher_postcard",
+    "title": "先生への暑中見舞い",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ナーディルが恩師への手紙に迷い、ハキマが不器用に励ます。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_night_01_after_first_business"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 25
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 17
+  },
+  {
+    "id": "hakima_normal_night_03_white_wolf_shadow",
+    "title": "白狼の影",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマが白狼族側の偏見を少しだけ語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_exterior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_night_02_teacher_postcard"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_exterior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_normal_night_04_almost_invitation",
+    "title": "香料通りの灯り",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "閉店後、ハキマが香料問屋通りへ誘うきっかけを作る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_night_03_white_wolf_shadow"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 17
+  },
+  {
+    "id": "hakima_normal_night_05_before_confession",
+    "title": "ただの手伝い",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマの好意が少しだけ漏れる夜。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_night_04_almost_invitation"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 19
+  },
+  {
+    "id": "hakima_normal_date_01_festival_spice_street",
+    "title": "夜市の香り",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "夜市で香料を見ながら、ハキマとの距離が近づく。",
+    "unlock": {
+      "type": "story"
     },
     "unlockGroup": "hakima_normal",
     "galleryTab": "hakima_normal",
     "eventType": "date",
     "thumbnail": "still_hakima_festival_night_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "hakima_normal_night_04_almost_invitation",
+        "hakima_normal_night_05_before_confession"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
     "gallery": {
       "category": "event",
       "thumbnail": "still_hakima_festival_night_01",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 6
+    "scriptStepCount": 22
   },
   {
-    "id": "hakima_normal_ending_normal_end_001",
-    "title": "ハキマ通常・通常ED帯サンプル",
+    "id": "hakima_normal_ending_normal_001",
+    "title": "続いていく店",
     "heroineId": "HAKIMA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
+    "routeGroup": "normal",
+    "summary": "GOOD未満の通常エンディング。恋人にはならないが、関係は続く。",
     "unlock": {
-      "type": "authoring_sample"
+      "type": "story"
     },
     "unlockGroup": "hakima_normal",
     "galleryTab": "hakima_normal",
     "eventType": "ending",
     "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
     "gallery": {
       "category": "event",
       "thumbnail": "bg_shop_exterior_day",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 3
+    "scriptStepCount": 12
   },
   {
-    "id": "hakima_normal_ending_good_end_001",
-    "title": "ハキマ通常・GOOD ED帯サンプル",
+    "id": "hakima_normal_ending_good_001",
+    "title": "白い香りの隣",
     "heroineId": "HAKIMA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
+    "routeGroup": "normal",
+    "summary": "ハキマ通常ルートGOODエンディング。仕事仲間から恋人へ一歩進む。",
     "unlock": {
-      "type": "authoring_sample"
+      "type": "story"
     },
     "unlockGroup": "hakima_normal",
     "galleryTab": "hakima_normal",
     "eventType": "ending",
-    "thumbnail": "still_hakima_festival_night_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_festival_night_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_route_opening_001",
-    "title": "ハキマ幼馴染ルート紹介サンプル",
-    "heroineId": "HAKIMA",
-    "summary": "ハキマ幼馴染ルート開始時に固定発生する紹介イベント。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff10_01",
-    "title": "ハキマ幼馴染・朝・好感度10・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_night_aff10_01",
-    "title": "ハキマ幼馴染・夜・好感度10・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff10_02",
-    "title": "ハキマ幼馴染・朝・好感度10・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_childhood_night_aff10_02",
-    "title": "ハキマ幼馴染・夜・好感度10・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff30_01",
-    "title": "ハキマ幼馴染・朝・好感度30・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_night_aff30_01",
-    "title": "ハキマ幼馴染・夜・好感度30・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff30_02",
-    "title": "ハキマ幼馴染・朝・好感度30・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_childhood_night_aff30_02",
-    "title": "ハキマ幼馴染・夜・好感度30・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff50_01",
-    "title": "ハキマ幼馴染・朝・好感度50・1",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_night_aff50_01",
-    "title": "ハキマ幼馴染・夜・好感度50・1",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_morning_aff50_02",
-    "title": "ハキマ幼馴染・朝・好感度50・2",
-    "heroineId": "HAKIMA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "morning",
-    "thumbnail": "still_hakima_morning_visit_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_morning_visit_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_childhood_night_aff50_02",
-    "title": "ハキマ幼馴染・夜・好感度50・2",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_date_aff40_01",
-    "title": "ハキマ幼馴染・デート・好感度40",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "date",
-    "thumbnail": "bg_spot_fountain",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_fountain",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_date_aff60_01",
-    "title": "ハキマ幼馴染・デート・好感度60",
-    "heroineId": "HAKIMA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "date",
-    "thumbnail": "still_hakima_festival_night_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_festival_night_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "hakima_childhood_ending_normal_end_001",
-    "title": "ハキマ幼馴染・通常ED帯サンプル",
-    "heroineId": "HAKIMA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "ending",
-    "thumbnail": "bg_shop_exterior_day",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_day",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "hakima_childhood_ending_good_end_001",
-    "title": "ハキマ幼馴染・GOOD ED帯サンプル",
-    "heroineId": "HAKIMA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "hakima_childhood",
-    "galleryTab": "hakima_maid",
-    "eventType": "ending",
-    "thumbnail": "still_hakima_festival_night_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_hakima_festival_night_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_route_opening_001",
-    "title": "ミラ通常ルート紹介サンプル",
-    "heroineId": "MIRA",
-    "summary": "ミラ通常ルート開始時に固定発生する紹介イベント。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff10_01",
-    "title": "ミラ通常・朝・好感度10・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_night_aff10_01",
-    "title": "ミラ通常・夜・好感度10・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff10_02",
-    "title": "ミラ通常・朝・好感度10・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_normal_night_aff10_02",
-    "title": "ミラ通常・夜・好感度10・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff30_01",
-    "title": "ミラ通常・朝・好感度30・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_night_aff30_01",
-    "title": "ミラ通常・夜・好感度30・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff30_02",
-    "title": "ミラ通常・朝・好感度30・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_normal_night_aff30_02",
-    "title": "ミラ通常・夜・好感度30・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff50_01",
-    "title": "ミラ通常・朝・好感度50・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_night_aff50_01",
-    "title": "ミラ通常・夜・好感度50・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_morning_aff50_02",
-    "title": "ミラ通常・朝・好感度50・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_normal_night_aff50_02",
-    "title": "ミラ通常・夜・好感度50・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_date_aff40_01",
-    "title": "ミラ通常・デート・好感度40",
-    "heroineId": "MIRA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "date",
-    "thumbnail": "bg_spot_fountain",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_fountain",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_date_aff60_01",
-    "title": "ミラ通常・デート・好感度60",
-    "heroineId": "MIRA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "date",
-    "thumbnail": "still_mira_starry_rooftop_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_starry_rooftop_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_normal_ending_normal_end_001",
-    "title": "ミラ通常・通常ED帯サンプル",
-    "heroineId": "MIRA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "ending",
-    "thumbnail": "bg_shop_exterior_day",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_day",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_normal_ending_good_end_001",
-    "title": "ミラ通常・GOOD ED帯サンプル",
-    "heroineId": "MIRA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_normal",
-    "galleryTab": "mira_normal",
-    "eventType": "ending",
-    "thumbnail": "still_mira_starry_rooftop_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_starry_rooftop_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_route_opening_001",
-    "title": "ミラ幼馴染ルート紹介サンプル",
-    "heroineId": "MIRA",
-    "summary": "ミラ幼馴染ルート開始時に固定発生する紹介イベント。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff10_01",
-    "title": "ミラ幼馴染・朝・好感度10・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_night_aff10_01",
-    "title": "ミラ幼馴染・夜・好感度10・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff10_02",
-    "title": "ミラ幼馴染・朝・好感度10・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_childhood_night_aff10_02",
-    "title": "ミラ幼馴染・夜・好感度10・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff30_01",
-    "title": "ミラ幼馴染・朝・好感度30・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_night_aff30_01",
-    "title": "ミラ幼馴染・夜・好感度30・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff30_02",
-    "title": "ミラ幼馴染・朝・好感度30・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_childhood_night_aff30_02",
-    "title": "ミラ幼馴染・夜・好感度30・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff50_01",
-    "title": "ミラ幼馴染・朝・好感度50・1",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_night_aff50_01",
-    "title": "ミラ幼馴染・夜・好感度50・1",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_morning_aff50_02",
-    "title": "ミラ幼馴染・朝・好感度50・2",
-    "heroineId": "MIRA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "morning",
-    "thumbnail": "still_mira_assignment_consult_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_assignment_consult_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_childhood_night_aff50_02",
-    "title": "ミラ幼馴染・夜・好感度50・2",
-    "heroineId": "MIRA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_date_aff40_01",
-    "title": "ミラ幼馴染・デート・好感度40",
-    "heroineId": "MIRA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "date",
-    "thumbnail": "bg_spot_fountain",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_fountain",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_date_aff60_01",
-    "title": "ミラ幼馴染・デート・好感度60",
-    "heroineId": "MIRA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "date",
-    "thumbnail": "still_mira_starry_rooftop_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_starry_rooftop_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "mira_childhood_ending_normal_end_001",
-    "title": "ミラ幼馴染・通常ED帯サンプル",
-    "heroineId": "MIRA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "ending",
-    "thumbnail": "bg_shop_exterior_day",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_day",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "mira_childhood_ending_good_end_001",
-    "title": "ミラ幼馴染・GOOD ED帯サンプル",
-    "heroineId": "MIRA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "mira_childhood",
-    "galleryTab": "mira_maid",
-    "eventType": "ending",
-    "thumbnail": "still_mira_starry_rooftop_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_mira_starry_rooftop_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_route_opening_001",
-    "title": "ダリヤ通常ルート紹介サンプル",
-    "heroineId": "DARIYA",
-    "summary": "ダリヤ通常ルート開始時に固定発生する紹介イベント。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff10_01",
-    "title": "ダリヤ通常・朝・好感度10・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_night_aff10_01",
-    "title": "ダリヤ通常・夜・好感度10・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff10_02",
-    "title": "ダリヤ通常・朝・好感度10・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_normal_night_aff10_02",
-    "title": "ダリヤ通常・夜・好感度10・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff30_01",
-    "title": "ダリヤ通常・朝・好感度30・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_night_aff30_01",
-    "title": "ダリヤ通常・夜・好感度30・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff30_02",
-    "title": "ダリヤ通常・朝・好感度30・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_normal_night_aff30_02",
-    "title": "ダリヤ通常・夜・好感度30・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff50_01",
-    "title": "ダリヤ通常・朝・好感度50・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_night_aff50_01",
-    "title": "ダリヤ通常・夜・好感度50・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_morning_aff50_02",
-    "title": "ダリヤ通常・朝・好感度50・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_normal_night_aff50_02",
-    "title": "ダリヤ通常・夜・好感度50・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_date_aff40_01",
-    "title": "ダリヤ通常・デート・好感度40",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "date",
-    "thumbnail": "bg_spot_fountain",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_fountain",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_date_aff60_01",
-    "title": "ダリヤ通常・デート・好感度60",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "date",
-    "thumbnail": "still_dariya_palace_collaboration_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_palace_collaboration_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_normal_ending_normal_end_001",
-    "title": "ダリヤ通常・通常ED帯サンプル",
-    "heroineId": "DARIYA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "ending",
-    "thumbnail": "bg_shop_exterior_day",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_day",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_normal_ending_good_end_001",
-    "title": "ダリヤ通常・GOOD ED帯サンプル",
-    "heroineId": "DARIYA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_normal",
-    "galleryTab": "dariya_normal",
-    "eventType": "ending",
-    "thumbnail": "still_dariya_palace_collaboration_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_palace_collaboration_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_route_opening_001",
-    "title": "ダリヤ幼馴染ルート紹介サンプル",
-    "heroineId": "DARIYA",
-    "summary": "ダリヤ幼馴染ルート開始時に固定発生する紹介イベント。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "route_opening",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff10_01",
-    "title": "ダリヤ幼馴染・朝・好感度10・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_night_aff10_01",
-    "title": "ダリヤ幼馴染・夜・好感度10・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff10_02",
-    "title": "ダリヤ幼馴染・朝・好感度10・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度10帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_childhood_night_aff10_02",
-    "title": "ダリヤ幼馴染・夜・好感度10・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度10帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff30_01",
-    "title": "ダリヤ幼馴染・朝・好感度30・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_night_aff30_01",
-    "title": "ダリヤ幼馴染・夜・好感度30・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff30_02",
-    "title": "ダリヤ幼馴染・朝・好感度30・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度30帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_childhood_night_aff30_02",
-    "title": "ダリヤ幼馴染・夜・好感度30・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度30帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff50_01",
-    "title": "ダリヤ幼馴染・朝・好感度50・1",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "bg_shop_interior_service",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_interior_service",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_night_aff50_01",
-    "title": "ダリヤ幼馴染・夜・好感度50・1",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_shop_exterior_night",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_night",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_morning_aff50_02",
-    "title": "ダリヤ幼馴染・朝・好感度50・2",
-    "heroineId": "DARIYA",
-    "summary": "朝イベント抽選サンプル。好感度50帯、複数パターン用。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "morning",
-    "thumbnail": "still_dariya_after_hours_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_after_hours_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_childhood_night_aff50_02",
-    "title": "ダリヤ幼馴染・夜・好感度50・2",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント抽選サンプル。好感度50帯、デート前提にも使える。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "night",
-    "thumbnail": "bg_spot_star_view",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_star_view",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_date_aff40_01",
-    "title": "ダリヤ幼馴染・デート・好感度40",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度40以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "date",
-    "thumbnail": "bg_spot_fountain",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_spot_fountain",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_date_aff60_01",
-    "title": "ダリヤ幼馴染・デート・好感度60",
-    "heroineId": "DARIYA",
-    "summary": "夜イベント後に抽選されるデートサンプル。好感度60以上。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "date",
-    "thumbnail": "still_dariya_palace_collaboration_01",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "still_dariya_palace_collaboration_01",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 6
-  },
-  {
-    "id": "dariya_childhood_ending_normal_end_001",
-    "title": "ダリヤ幼馴染・通常ED帯サンプル",
-    "heroineId": "DARIYA",
-    "summary": "エンディング分岐サンプル。通常ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
-    },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "ending",
-    "thumbnail": "bg_shop_exterior_day",
-    "gallery": {
-      "category": "event",
-      "thumbnail": "bg_shop_exterior_day",
-      "hiddenTitle": "？？？？",
-      "hiddenSummary": "物語を読み進めると解放"
-    },
-    "scriptStepCount": 3
-  },
-  {
-    "id": "dariya_childhood_ending_good_end_001",
-    "title": "ダリヤ幼馴染・GOOD ED帯サンプル",
-    "heroineId": "DARIYA",
-    "summary": "エンディング分岐サンプル。GOOD ED帯で固定候補になります。",
-    "unlock": {
-      "type": "authoring_sample"
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "hakima_normal_night_05_before_confession",
+        "hakima_normal_date_01_festival_spice_street"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
     },
-    "unlockGroup": "dariya_childhood",
-    "galleryTab": "dariya_maid",
-    "eventType": "ending",
-    "thumbnail": "still_dariya_palace_collaboration_01",
     "gallery": {
       "category": "event",
-      "thumbnail": "still_dariya_palace_collaboration_01",
+      "thumbnail": "bg_shop_interior_night",
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 3
+    "scriptStepCount": 24
   }
 ];
 
@@ -4352,776 +2581,74 @@ if (typeof module !== 'undefined') {
  * Do not edit manually. Use tools/sync-events.cjs
  */
 const EVENT_SCRIPTS = {
-  "EV_DARIYA_01": [
-    {
-      "type": "bg",
-      "id": "bg_shop_exterior_night",
-      "transition": "fade"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_DARIYA",
-      "fadeMs": 800
-    },
-    {
-      "type": "enter",
-      "characterId": "CH_DARIYA",
-      "expression": "normal",
-      "position": "left"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_DARIYA",
-      "expression": "social",
-      "text": "あら、まだ起きていたの？仕事の邪魔はしないで頂戴。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_NADIR",
-      "text": "無理は禁物だぞ、お嬢様。"
-    },
-    {
-      "type": "end",
-      "markSeen": true
-    }
-  ],
-  "EV_HAKIMA_01": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service",
-      "transition": "fade"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA",
-      "fadeMs": 800
-    },
-    {
-      "type": "enter",
-      "characterId": "CH_HAKIMA",
-      "expression": "normal",
-      "position": "right"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_HAKIMA",
-      "expression": "joy",
-      "text": "おはよう。今日もぼんやりしてないでしょうね。"
-    },
-    {
-      "type": "choice",
-      "choices": [
-        {
-          "label": "しっかりしてるさ",
-          "jump": "L_REPLY_A"
-        },
-        {
-          "label": "少し眠いかもな",
-          "jump": "L_REPLY_B"
-        }
-      ]
-    },
-    {
-      "type": "label",
-      "id": "L_REPLY_A"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_HAKIMA",
-      "text": "ならいいけど。さっさと準備しなさい。"
-    },
-    {
-      "type": "jump",
-      "id": "L_STILL"
-    },
-    {
-      "type": "label",
-      "id": "L_REPLY_B"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_HAKIMA",
-      "expression": "anger",
-      "text": "呆れた。顔を洗ってきなさい！"
-    },
-    {
-      "type": "label",
-      "id": "L_STILL"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_NADIR",
-      "text": "朝から手厳しいな。助かるけど。"
-    },
-    {
-      "type": "end",
-      "markSeen": true
-    }
-  ],
-  "EV_MIRA_01": [
-    {
-      "type": "bg",
-      "id": "bg_palace_lab",
-      "transition": "fade"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_MIRA",
-      "fadeMs": 800
-    },
-    {
-      "type": "enter",
-      "characterId": "CH_MIRA",
-      "expression": "normal",
-      "position": "center"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_MIRA",
-      "expression": "fun",
-      "text": "見てください！この記述、新発見かもしれません！"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_after_school_01"
-    },
-    {
-      "type": "line",
-      "speakerId": "CH_NADIR",
-      "text": "根を詰めすぎるなよ、ミラ。"
-    },
-    {
-      "type": "end",
-      "markSeen": true
-    }
-  ],
-  "EV_OP_01": [
-    {
-      "type": "bg",
-      "id": "bg_market_central",
-      "transition": "fade"
-    },
-    {
-      "type": "bgm",
-      "id": "main01_title",
-      "fadeMs": 1000
-    },
-    {
-      "type": "narration",
-      "text": "かつて、この砂丘の向こうには無限の緑があったという。"
-    },
-    {
-      "type": "narration",
-      "text": "今では語り草に過ぎないが、それでも人々は空を見上げる。"
-    },
-    {
-      "type": "end",
-      "markSeen": true
-    }
-  ],
-  "hakima_char_crossfade_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "これはクロスフェードの確認ね。いちばん標準的な出入りに使えるはずよ。"
-    },
-    {
-      "type": "exit",
-      "characterId": "HAKIMA",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "wait",
-      "ms": 280
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "joy",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "消えて、また出る。派手すぎないから普段使いに向いているわね。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_char_expression_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "表情変更は、台詞表示を待たせずに軽く見せるのが基本ね。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "嬉しい時は、ぱっと明るく。けれど画面全体は止めない。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "sorrow",
-      "text": "少し沈む時も、本文のテンポはそのまま。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "世界観担当には、lineにtransitionを書かなくていいと伝えれば十分よ。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_char_pop_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "joy",
-      "position": "center",
-      "transition": "pop",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "これはポップ演出ね。軽い登場や、明るい反応に使うとよさそう。"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "ただし多用すると落ち着きがなくなるから、ここぞという時だけね。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_char_shadow_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "これは少し真面目な場面用の確認よ。"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "sorrow",
-      "position": "center",
-      "transition": "shadowShift",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "sorrow",
-      "text": "影を一瞬落としてから、表情を変える。夜の会話や余韻のある場面に合うはず。"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "joy",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "もちろん、最後は明るく戻しておきましょう。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_char_slide_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "slideInRight",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "店の入口から入ってきた、という時は右から滑らせると分かりやすいわ。"
-    },
-    {
-      "type": "exit",
-      "characterId": "HAKIMA",
-      "transition": "slideOutRight",
-      "speed": "short"
-    },
-    {
-      "type": "wait",
-      "ms": 300
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "slideInLeft",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "逆側から戻る演出も確認しておきましょう。移動量は控えめでいいわね。"
-    },
-    {
-      "type": "exit",
-      "characterId": "HAKIMA",
-      "transition": "slideOutLeft",
-      "speed": "short"
-    },
-    {
-      "type": "wait",
-      "ms": 300
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "joy",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "最後は標準表示に戻して完了よ。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_sample_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "開店前に顔を出しておいたわ。今日は少し暑くなりそうね。"
-    },
-    {
-      "type": "sfx",
-      "id": "ui_tap_bottle_01_4"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "小瓶の在庫も見ておいた方がいいわ。氷系の素材、足りてる？"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "……ふふ、慌てた顔。ちゃんと準備しているなら、それでいいの。"
-    },
-    {
-      "type": "choice",
-      "choices": [
-        {
-          "label": "市場を見に行く",
-          "jump": "L_MARKET"
-        },
-        {
-          "label": "店で確認を続ける",
-          "jump": "L_SHOP"
-        }
-      ]
-    },
-    {
-      "type": "label",
-      "id": "L_SHOP"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "慎重なのは悪くないわね。でも、外の空気を見るのも大事よ。"
-    },
-    {
-      "type": "jump",
-      "id": "L_MARKET"
-    },
-    {
-      "type": "label",
-      "id": "L_MARKET"
-    },
-    {
-      "type": "sfx",
-      "id": "SE_UI_DECIDE"
-    },
-    {
-      "type": "bgm",
-      "id": "main02_shop"
-    },
-    {
-      "type": "scene",
-      "bg": "bg_market_central",
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "still": null,
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "市場はもう動き始めているわね。香辛料も果物も、朝の方が品がいいの。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "掘り出し物があったら、あとで一緒に見に行きましょう。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "text": "こういう一枚絵は、重要な場面だけで使う。立ち絵は重ねない方が自然ね。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "確認はこのくらいで十分。あとは、実際のイベント本文を増やしていくだけね。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "まずは数本ずつ、きれいに仕上げていきましょう。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_sfx_sample_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "効果音の確認ね。鳴らしすぎると会話の邪魔になるから、要所だけにするわ。"
-    },
-    {
-      "type": "sfx",
-      "id": "ui_tap_bottle_01_4"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "たとえば、小瓶を置いたり、棚に触れたりするくらいならこの軽い音で十分。"
-    },
-    {
-      "type": "sfx",
-      "id": "SE_UI_DECIDE"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "確認や決定の合図なら、短いチャイムを一度だけ。台詞のたびに鳴らす必要はないわ。"
-    },
-    {
-      "type": "scene",
-      "bg": "bg_market_central",
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "still": null,
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "sfx",
-      "id": "workshop_day_end_01_4"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "場面転換や、少し印象を残したい区切りなら、こういう音を控えめに置くのがいいわね。"
-    },
-    {
-      "type": "sfx",
-      "id": "SE_QUIZ_CHOICE_PICK"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "これで確認は終わり。世界観担当には、重要な場面だけSEを申請してもらいましょう。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_simple_001": [
-    {
-      "type": "bg",
-      "id": "bg_shop_interior_service"
-    },
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
-    },
-    {
-      "type": "enter",
-      "characterId": "HAKIMA",
-      "expression": "normal",
-      "position": "center",
-      "transition": "crossfade",
-      "speed": "short"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "まずは店内。背景と立ち絵が落ち着いて見えるか確認しましょう。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "台詞送りの音も、このタイミングで控えめに鳴るはずよ。"
-    },
-    {
-      "type": "scene",
-      "bg": "bg_market_central",
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "still": null,
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "場面転換後。背景と立ち絵が同時に切り替わっているかを見る場面ね。"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "表情はここでは変えない。場面転換そのものを確認しやすくするためよ。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "text": "スチル表示中は立ち絵を消して、一枚絵だけを見せる。ここも重要ね。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "スチルを解除すると、さっきの背景と立ち絵に戻る。これで基本確認は終わり。"
-    },
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "joy",
-          "position": "center"
-        }
-      ],
-      "still": null,
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "joy",
-      "text": "最後に店内へ戻して完了。基本演出の基準はこの流れで見ればいいわ。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "common_opening_nadir_profile_001": [
+  "common_opening_nadir_star_bottle_shop_001": [
     {
       "type": "scene",
       "bg": "bg_shop_exterior_day",
       "still": null,
-      "characters": [],
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
       "transition": "fadeScene",
       "speed": "long"
     },
     {
       "type": "narration",
-      "text": "【P1/2】ダミー：ナーディルは星瓶堂を営む若い錬金術師です。ここで主人公紹介を行います。"
+      "text": "王都の片隅に、星瓶堂という小さな錬金雑貨店がある。旅人の薬、夜道のランプ、暮らしを少し助ける品が並ぶ店だ。"
+    },
+    {
+      "type": "narration",
+      "text": "店の看板は古く、扉の鈴も少しだけくたびれている。それでも朝になれば、常連はいつものようにこの戸口を探して歩いてくる。"
     },
     {
       "type": "scene",
       "bg": "bg_shop_interior_service",
       "still": null,
-      "characters": [],
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
       "transition": "fadeScene",
       "speed": "long"
     },
     {
       "type": "narration",
-      "text": "【P2/2】ダミー：店、錬金術、家族への気後れなど、共通導入の要点を整理します。"
+      "text": "店主のナーディルは二十二歳。王立錬金術大学を飛び級で出た秀才で、調合の腕も悪くない。"
+    },
+    {
+      "type": "narration",
+      "text": "ただ、店を続けることは、良い薬を作ることだけでは済まなかった。値札、仕入れ、帳簿、客の顔色。薬瓶の外にも、見るべきものは多い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "……父さんも姉さんも、よくこれを平気な顔で回してたな。"
+    },
+    {
+      "type": "narration",
+      "text": "父は錬金カメラの発明で名を上げ、母と旅へ出た。姉は商社を立ち上げ、あっという間に大きな商いを動かしている。"
+    },
+    {
+      "type": "narration",
+      "text": "無理に継がなくてもいい、と家族は言った。けれどナーディルには、祖父たちの薬瓶が残るこの店を、誰かに渡す気にはなれなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "強がりで始めたとしても、続けるならちゃんとやらないとな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは扉の札を手に取り、まだ少しだけ頼りない店主の顔で、今日の星瓶堂を開ける準備を始めた。"
     },
     {
       "type": "end"
@@ -5129,391 +2656,16 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_route_opening_001": [
     {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
     },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルートの紹介です。関係性と距離感をここで提示します。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ハキマ通常ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ハキマ通常ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ハキマ通常ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_date_aff40_01": [
     {
       "type": "scene",
       "bg": "bg_spot_fountain",
       "still": null,
       "characters": [
         {
-          "id": "HAKIMA",
+          "id": "NADER",
           "expression": "normal",
           "position": "center"
         }
@@ -5522,23 +2674,117 @@ const EVENT_SCRIPTS = {
       "speed": "long"
     },
     {
+      "type": "narration",
+      "text": "王立錬金術大学の噴水前は、講義の合間になると急に人の流れが増える。ナーディルはその端で、恩師から預かった紹介状を読み返していた。"
+    },
+    {
+      "type": "narration",
+      "text": "近くを通った学生たちが、声をひそめて振り返る。"
+    },
+    {
+      "type": "narration",
+      "text": "「あれ、ナーディル先輩だ」「錬金カメラの生みの親の御子息だろ」「けっこう格好いいよね」そんな断片が、水音に混じって届いた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "御子息、か。父さんの名前は便利だけど、背中に貼られると少し重いな。"
+    },
+    {
+      "type": "narration",
+      "text": "家族は皆、それぞれの道でうまくやっている。だからこそ、自分だけが祖父たちの店で足踏みしているように思える日があった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "先生の紹介なら間違いない。まずは、ちゃんと挨拶しないと。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
+      "text": "ナーディル・アル＝カーミルね。先生から話は聞いたわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマさん、だよね。来てくれて助かる。星瓶堂は、少し手が足りなくて。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "少しで済むならいいけど。紹介状には、値付けと棚の運用も危なっかしいと書いてあったわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "先生、そこまで書いたのか……。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "恩師が心配する程度には、あなたは真面目に困っているということでしょう。そこは悪くないわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "褒められてるのか、叱られてるのか分からないな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "両方よ。明日の朝、まず棚から見る。甘い値札をつけていたら、容赦なく直すから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "よろしくお願いします。店主としては情けないけど、今は本当に助かる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "腰が低すぎ。……でも、そのくらいなら教え甲斐はありそうね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは短く会釈して、人の流れの中へ戻っていった。ナーディルの手元には、紹介状と、少しだけ現実味を増した明日の朝が残った。"
     },
     {
       "type": "end"
     }
   ],
-  "hakima_normal_date_aff60_01": [
+  "hakima_normal_morning_01_shelves_and_sandalwood": [
     {
       "type": "scene",
-      "bg": "bg_spot_star_view",
+      "bg": "bg_shop_interior_service",
       "still": null,
       "characters": [
         {
-          "id": "HAKIMA",
+          "id": "NADER",
           "expression": "normal",
           "position": "center"
         }
@@ -5547,10 +2793,995 @@ const EVENT_SCRIPTS = {
       "speed": "long"
     },
     {
+      "type": "narration",
+      "text": "開店前の星瓶堂で、ナーディルは香料瓶の札を並べ直していた。白檀、乳香、乾いた花の粉。香りの強い瓶ほど、つい入口に寄せたくなる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "目立つ場所に置けば、手に取ってもらいやすい……はずなんだけど。"
+    },
+    {
+      "type": "narration",
+      "text": "入口の鈴が鳴る。朝の光と一緒に、予定より少し早い足音が店へ入ってきた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "【P1/2】ダミー：ハキマ通常ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
+      "text": "香りの強いものを入口に寄せすぎ。客が入った瞬間に迷うわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "おはよう、ハキマ。売りたいものほど前に、と思ってた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "売りたいなら、まず息をさせなさい。香りで圧をかける店は、長居してもらえない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "なるほど……いきなり核心を突かれた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "白檀は奥。入口には軽いもの。客の目線が動く順番を作るの。錬金術よりは単純でしょう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "いや、これはこれで難しいよ。けど、確かに息はしやすい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "分かればいいわ。ほら、札を返す時間よ。今日は棚の前で固まらないこと。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは手早く瓶の向きを整え、開店前の静けさへ戻っていった。ナーディルは入口の空気を確かめてから、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_02_ledger_margin": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは新しい値札を並べ、ひとつずつ数字を確認していた。安くすれば喜ばれる。そう考えるたび、姉の怖い字が頭をよぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "原価、手間賃、瓶代……。うん、ぎりぎり残る。たぶん。"
+    },
+    {
+      "type": "narration",
+      "text": "その「たぶん」を見透かしたように、横から赤鉛筆が伸びてきた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "anger",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "これ、手間賃を入れたらほとんど残らないわよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "少し安い方が、初めての客も入りやすいかと思って。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "善人と商売下手は違うの。良い品を続けて売りたいなら、続けられる値段にしなさい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "続けられる値段、か。そう言われると、店のための数字に見えてくる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "ようやく店主らしいことを言ったわね。そこだけは評価してあげる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そこだけでもありがたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "直してから開店。客に遠慮するより、品に失礼のない値段をつけなさい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "赤鉛筆の跡は厳しかったが、数字の並びはさっきよりずっと落ち着いて見えた。ナーディルは値札を差し替え、今日の営業に備えた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_03_mothers_letter": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "sorrow",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝一番の郵便から、見知らぬ断崖の写真が滑り落ちた。写真の端には、母の笑顔と、父の妙に誇らしげな走り書きがある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "……どこだよ、ここ。母さん、崖の上で笑ってる場合じゃないだろ。"
+    },
+    {
+      "type": "narration",
+      "text": "父の錬金カメラは、どんな遠い景色も小さな紙に閉じ込める。便利な発明だが、こうして送られてくるたびに心臓には悪い。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "またご両親から？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "うん。元気そうで何よりなんだけど、場所がまったく分からない。たぶん地図にも載ってない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "それで捨てられずに飾るんでしょう。呆れながら、ちゃんと額に入れる顔をしているわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "家族だからね。自由すぎるけど、嫌いにはなれない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "なら額は棚の奥。入口に飾ると客が写真に気を取られる。開店前に済ませなさい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "了解。星瓶堂の新名所になる前に片付けるよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは写真を古い額に入れ、祖父の帳簿が眠る棚の近くへ置いた。遠い旅の景色が、店の片隅に少しだけ増えた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_04_soil_nickname": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "床に落ちた薬草を拾おうとして、ナーディルは小さな物音を聞いた。入口のそばで、ハキマがわずかに足を止めている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "大丈夫？　今の音、棚に当たった？"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "平気。昔から、少し足元が悪いだけで笑われたのを思い出しただけよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "笑われた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "よく転んだの。親戚には、土好きのハキマなんて呼ばれていたわ。白狼の血があるくせに、走るのも跳ぶのも下手だって。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "嫌な呼び方だな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "本当のことでもあったわ。尻尾でうまく均衡が取れなくて、何度も転んだ。今さら同情はいらないけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "同情じゃないよ。今、ハキマはこの店の棚をまっすぐにしてくれてる。俺にはそっちの方がずっと大事だ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "さらっと言うのね。そういうところ、少し困るわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "困らせたつもりはないんだけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "分かっているから余計に困るの。ほら、開店するわよ。床の薬草は私が戻す。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマの手つきはいつも通り正確だった。ナーディルは扉の鈴を確かめ、朝の客を迎える準備に戻った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_05_shopkeepers_face": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の棚は静かに整い、香料瓶の札もまっすぐ並んでいた。以前なら迷っていた場所に、今は理由のある空白がある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "入口は軽い香り、奥に強い香り。値札は手間賃込み。昨日よりは、店に見えるかな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "今日は、少し店主らしい顔をしているわ。少しだけね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "少しでも前進なら十分だ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "その前向きさは嫌いじゃないわ。けれど、褒めたからといって油断しないこと。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "了解。客を待たせない、理由を説明する、値段で怯まない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "よくできました。……今のは、店主への評価よ。勘違いしないで。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "じゃあ店主として受け取っておくよ。ありがとう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "扉の札を返して。今日の星瓶堂を、ちゃんと始めなさい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは深く息を吸い、扉の札を表へ返した。星瓶堂の一日が、少しだけ確かな足取りで始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_01_after_first_business": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の星瓶堂は、昼間より瓶の影が長く見える。ナーディルは帳簿を開き、薬瓶より小さな数字に目を細めた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "売れた品は悪くない。けど、利益を見ると……思ったより薄いな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "売れた品だけ見て安心しないこと。残った品と、残らなかった利益も見なさい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "姉さんにも同じことを言われそうだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "なら、私が先に言っておくわ。叱られる回数を減らしてあげているの。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それは助かる。かなり現実的な優しさだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "優しさじゃなくて実務。今日はここまで直して、明日に備えなさい。眠い頭で帳簿を触ると、ろくなことにならないわ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは赤鉛筆を置き、夜の通りへ戻っていった。帳簿の数字は厳しいままだが、直す場所だけははっきり見えている。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_02_teacher_postcard": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "sorrow",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは暑中見舞いの書き出しで筆を止めていた。順調です、と書くにはまだ少しだけ胸を張れない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "先生に何て書こうかな。困っています、だけだと情けないし。"
+    },
+    {
+      "type": "narration",
+      "text": "便箋の横には、今日の帳簿と、ハキマが直した値札の控えが置いてある。情けないだけではない。けれど自慢できるほどでもない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "困っているけど続けている。それで十分じゃない？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "先生は、そういう曖昧な報告ほど見抜くんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "なら見抜かせればいいわ。あの先生なら、格好をつけた文章より喜ぶでしょう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ハキマが来てくれて助かっている、とも書いていい？"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "anger",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "余計なことは書かなくていい。……事実だけにしなさい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "事実なら、書いてもいいんじゃないかな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "そういう返し方をするなと言っているの。ほら、筆が乾くわよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "便箋には、まだ頼りないが続けています、と書いた。最後に小さく、良い助け手に恵まれました、とだけ添えておいた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_03_white_wolf_shadow": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "戸締まりの途中、通りの向こうで護衛の一団が笑い声を上げた。鎧の金具が夜風に鳴り、白い毛並みの旗印がちらりと見える。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "北西の隊かな。今日は要塞方面の商隊が戻ってきてたらしい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "白狼族は、強い護衛や討伐者を誇るの。職人は、少し下に見られることがあるわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ハキマも、そう言われた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "言われたわ。私は走るのも跳ぶのも得意じゃないし、香料や薬瓶の方が性に合っていたから。母方の親戚には、分かりやすく不評だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "棚を守る人も、旅を守る人も、同じくらい必要だと思う。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "……そういうところよ。まったく。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "また困らせた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "少しね。けれど、悪い気はしない。ほら、鍵を閉めるわよ。夜風で瓶が冷える。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは通りの笑い声を背に、店の戸締まりを確かめた。星瓶堂の小さな扉は、夜の街の中で静かに閉じられた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_04_almost_invitation": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の店内に、夜市の灯りが窓越しに揺れていた。香料問屋の方から、甘く乾いた匂いが流れてくる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この時間でも、香料通りは賑やかなんだな。仕入れの人たちは朝が早いと思ってた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "夜にしか見えない品もあるわ。灯りの下で香り方が変わるものもある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それは勉強になりそうだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "……このあと少し、香料通りを見に行くけど。仕入れの勉強にはなるわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それは、誘ってくれてる？"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "anger",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "勉強だと言っているでしょう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "うん。勉強の誘いとして受け取るよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "……来るなら、さっさと戸締まりして。置いていくわよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは先に扉の外へ出た。ナーディルは急いでランプを落とし、夜市の灯りに向かう準備をした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_05_before_confession": [
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "最後のランプを落とす前に、ナーディルは整った棚を見上げた。以前より、店の息がしやすい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマが来てくれてから、星瓶堂はずいぶん変わった。"
+    },
+    {
+      "type": "narration",
+      "text": "値札の並び、香料瓶の位置、客を待たせない段取り。ひとつひとつは小さいが、店の一日は確かに変わっている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "ただの手伝いよ。叔父の店に戻れば、また香料の帳簿と荷捌きが待っている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それでも、ここに来てくれてる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "……そう言い切れたら、楽だったんだけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ハキマ？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "あなたは、偏見なく人を見るでしょう。昔からそういう人だったのかもしれないけど、近くで見ると少し困る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "俺は、そんな立派なものじゃないよ。ただ、助けてもらった分をちゃんと覚えていたいだけだ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "その返事がもう困るの。何でもない。扉の札、裏返しておくわ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマはいつもより少し急いで店を出た。夜の星瓶堂には、言いかけた言葉の温度だけが残っていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_01_festival_spice_street": [
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_festival_street",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ナーディルは香料通りの入口でハキマを待っていた。夜市の灯りは昼の市場より柔らかく、瓶や布の色まで違って見える。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "仕入れの勉強、だったよな。……少しだけ、待ち合わせみたいに見えるけど。"
+    },
+    {
+      "type": "narration",
+      "text": "人波の向こうに、いつもの仕事着とは違う色が見えた。ナーディルは声をかける前に、ほんの少しだけ息を止める。"
     },
     {
       "type": "still",
@@ -5562,7 +3793,59 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "【P2/2】ハキマ：ダミースチル確認。高好感度デートの重要スチル例。"
+      "text": "待たせた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "いや。少し驚いてただけ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "見物に来たんじゃないでしょう。仕入れの勉強よ。"
+    },
+    {
+      "type": "narration",
+      "text": "灯りの下で、ハキマは少しだけ落ち着かない顔をしていた。けれど、並んで歩く足取りは、店で棚を直す時よりずっとゆっくりだった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この時間の香料は、確かに違う匂いがする。昼より甘い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "湿度と灯油の匂いが混じるからよ。……よく気づいたわね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "先生に報告したら、少しは店主らしくなったと言ってもらえるかな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "先生より先に、私が言っているでしょう。少しは店主らしくなったって。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それは嬉しいな。ハキマに言われると、ちゃんと効く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "……本当に、そういう言い方はずるい。"
     },
     {
       "type": "still",
@@ -5571,2539 +3854,255 @@ const EVENT_SCRIPTS = {
       "speed": "long"
     },
     {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "店の前で別れたあと、ナーディルの服には夜市の香りが残っていた。ハキマの歩いていった方角には、まだ小さな灯りが揺れている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "仕入れの勉強、か。……うん、かなり勉強になった。"
+    },
+    {
+      "type": "narration",
+      "text": "明日の棚に、少しだけ新しい色が加わりそうだった。"
+    },
+    {
       "type": "end"
     }
   ],
-  "hakima_normal_ending_normal_end_001": [
+  "hakima_normal_ending_normal_001": [
     {
       "type": "scene",
       "bg": "bg_shop_exterior_day",
       "still": null,
       "characters": [
         {
-          "id": "HAKIMA",
+          "id": "NADER",
           "expression": "normal",
           "position": "center"
         }
       ],
       "transition": "fadeScene",
       "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "風の匂いが少し変わっても、星瓶堂の問題がすべて消えたわけではなかった。けれど、扉の前に立つナーディルの背筋は、以前より確かに伸びている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "まだ迷うことは多い。でも、店を開けるのが怖いだけの日は減った気がする。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
+      "text": "まだ甘いところは多いわ。でも、店を続ける覚悟は見えた。"
     },
     {
-      "type": "end"
-    }
-  ],
-  "hakima_normal_ending_good_end_001": [
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマがいてくれたからだよ。これからも、たまに見に来てくれるかな。"
+    },
     {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "たまに、ね。変な値札を見つけたら、その場で直すから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それは心強いような、少し怖いような。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
-      "text": "【P1/1】ダミー：ハキマ通常ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
+      "text": "怖いくらいでちょうどいいの。あなたは放っておくと、客にも品にも遠慮しすぎるから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは通りの人波へ戻っていった。扉の札が表へ返る。星瓶堂の一日は、これからも続いていく。"
     },
     {
       "type": "end"
     }
   ],
-  "hakima_childhood_route_opening_001": [
+  "hakima_normal_ending_good_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
     {
       "type": "scene",
-      "bg": "bg_shop_interior_service",
+      "bg": "bg_shop_interior_night",
       "still": null,
       "characters": [
         {
-          "id": "HAKIMA",
-          "expression": "maid",
+          "id": "NADER",
+          "expression": "normal",
           "position": "center"
         }
       ],
       "transition": "fadeScene",
       "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の星瓶堂には、白檀の香りが静かに残っていた。ナーディルは帳簿を閉じ、整った棚を見る。"
+    },
+    {
+      "type": "narration",
+      "text": "祖父たちの薬瓶は相変わらず古い。看板も、扉の鈴も、磨けばまだ傷が見える。それでもこの店は、もう置き去りの思い出だけではなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この店を続けられる気がしてきた。強がりじゃなくて、少しだけ本当に。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルートの紹介です。関係性と距離感をここで提示します。"
+      "expression": "normal",
+      "text": "少しだけなら、認めてあげる。あなたは、ちゃんと向き合ったもの。"
     },
     {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff10_01": [
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ハキマが横にいてくれたからだ。"
+    },
     {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "crossfade",
+      "speed": "short"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
+      "expression": "sorrow",
+      "text": "そういう言い方、ずるいわ。私は仕事で手伝っていただけ……の、つもりだったのに。"
     },
     {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "つもりだった？"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "expression": "sorrow",
+      "text": "最初は、先生に頼まれたから。あなたが困っていると聞いたから。それで十分な理由だと思っていた。"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ハキマ幼馴染ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
+      "expression": "normal",
+      "text": "でも、棚を直すたびに、あなたがこの店を本気で続けたいのが分かった。値札ひとつで悩むくらい、真面目に。"
     },
     {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "格好悪いところばかり見せた気がする。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
+      "expression": "fun",
+      "text": "ええ。かなり見たわ。だから信用できるの。"
     },
     {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマ。これからも、隣にいてほしい。店のことも、俺のことも、見ていてほしい。"
     },
     {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "transition": "crossfade",
+      "speed": "short"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
+      "expression": "joy",
+      "text": "見るわ。値札も、棚も、あなたのことも。だから、ただの手伝い扱いはしないで。"
     },
     {
       "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "分かった。もう、ただの手伝いとは言わない。"
     },
     {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ハキマ幼馴染ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ハキマ幼馴染ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P2/2】ハキマ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_date_aff40_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_fountain",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_date_aff60_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ハキマ幼馴染ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "still",
-      "id": "still_hakima_festival_night_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P2/2】ハキマ：ダミースチル確認。高好感度デートの重要スチル例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_ending_normal_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_day",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "hakima_childhood_ending_good_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "HAKIMA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "HAKIMA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ハキマ幼馴染ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_route_opening_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
+      "type": "focus",
+      "characterId": "NADER",
       "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルートの紹介です。関係性と距離感をここで提示します。"
+      "transition": "slideRight",
+      "speed": "short"
     },
     {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ミラ通常ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ミラ通常ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ミラ通常ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_date_aff40_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_fountain",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_date_aff60_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ミラ通常ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_starry_rooftop_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P2/2】ミラ：ダミースチル確認。高好感度デートの重要スチル例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_ending_normal_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_day",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_normal_ending_good_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ミラ通常ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_route_opening_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルートの紹介です。関係性と距離感をここで提示します。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ミラ幼馴染ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ミラ幼馴染ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ミラ幼馴染ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_assignment_consult_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P2/2】ミラ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_date_aff40_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_fountain",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_date_aff60_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ミラ幼馴染ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "still",
-      "id": "still_mira_starry_rooftop_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P2/2】ミラ：ダミースチル確認。高好感度デートの重要スチル例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_ending_normal_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_day",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "mira_childhood_ending_good_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "MIRA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "MIRA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ミラ幼馴染ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_route_opening_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルートの紹介です。関係性と距離感をここで提示します。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ダリヤ通常ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ダリヤ通常ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ダリヤ通常ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_date_aff40_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_fountain",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_date_aff60_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/2】ダミー：ダリヤ通常ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_palace_collaboration_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。高好感度デートの重要スチル例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_ending_normal_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_day",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_normal_ending_good_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "normal",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "normal",
-      "text": "【P1/1】ダミー：ダリヤ通常ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_route_opening_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルートの紹介です。関係性と距離感をここで提示します。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、朝、好感度10、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff10_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度10、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ダリヤ幼馴染ルート、朝、好感度10、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff10_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度10、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、朝、好感度30、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff30_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度30、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ダリヤ幼馴染ルート、朝、好感度30、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff30_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度30、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、朝、好感度50、パターン1です。複数候補から抽選されます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff50_01": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_night",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度50、パターン1です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_morning_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_interior_service",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ダリヤ幼馴染ルート、朝、好感度50、パターン2です。複数候補から抽選されます。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_after_hours_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。朝イベントでスチルを使う場合の例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_night_aff50_02": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、夜、好感度50、パターン2です。この閲覧後にデート抽選条件を満たせます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_date_aff40_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_fountain",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、好感度40のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_date_aff60_01": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_star_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/2】ダミー：ダリヤ幼馴染ルート、好感度60のデートです。夜イベント閲覧後だけ候補に入ります。"
-    },
-    {
-      "type": "still",
-      "id": "still_dariya_palace_collaboration_01",
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P2/2】ダリヤ：ダミースチル確認。高好感度デートの重要スチル例。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_ending_normal_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_shop_exterior_day",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、通常ED帯です。最終好感度とED種別で選ばれます。"
-    },
-    {
-      "type": "end"
-    }
-  ],
-  "dariya_childhood_ending_good_end_001": [
-    {
-      "type": "scene",
-      "bg": "bg_spot_oasis_view",
-      "still": null,
-      "characters": [
-        {
-          "id": "DARIYA",
-          "expression": "maid",
-          "position": "center"
-        }
-      ],
-      "transition": "fadeScene",
-      "speed": "long"
-    },
-    {
-      "type": "line",
-      "speakerId": "DARIYA",
-      "expression": "maid",
-      "text": "【P1/1】ダミー：ダリヤ幼馴染ルート、GOOD ED帯です。最終好感度とED種別で選ばれます。"
+      "type": "narration",
+      "text": "店の灯りがひとつ残る。白い香りの中で、二人の距離だけが昨日より近かった。星瓶堂の夜は、静かに明日へ続いていく。"
     },
     {
       "type": "end"
@@ -30259,6 +26258,97 @@ function bindInputHandlers(controller) {
       controller.debugSkipQuiz?.();
       return;
     }
+    // Global UI and modal controls must not be blocked by quiz/event input locks.
+    // The log button is an inspection/review tool, not a gameplay advance.
+    // Keeping it below inputLocked made the past-log UI feel dead during
+    // transitions and other short locked windows.
+    const handleGlobalUiOrModalAction = () => {
+      if (target.closest('[data-action="open-log"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.openModal('log');
+        return true;
+      }
+      const logTabBtn = target.closest('[data-action="set-log-tab"]');
+      if (logTabBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.uiState.logTab = logTabBtn.getAttribute('data-tab');
+        controller.uiState.logQuizPage = 0;
+        controller.renderModal();
+        return true;
+      }
+      const logPagerBtn = target.closest('[data-action="set-log-quiz-page"]');
+      if (logPagerBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.uiState.logQuizPage = parseInt(logPagerBtn.getAttribute('data-page'), 10);
+        controller.renderModal();
+        return true;
+      }
+      if (target.closest('[data-action="open-options"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.openModal('options');
+        return true;
+      }
+      if (target.closest('[data-action="open-help"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.openModal('help');
+        return true;
+      }
+      if (target.closest('[data-action="close-modal"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.closeModal();
+        return true;
+      }
+      if (target.closest('[data-action="toggle-fullscreen"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.toggleFullscreen();
+        return true;
+      }
+      const speedBtn = target.closest('[data-action="set-text-speed"]');
+      if (speedBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.setTextSpeed(speedBtn.getAttribute('data-speed'));
+        return true;
+      }
+      const motionBtn = target.closest('[data-action="set-motion-quality"]');
+      if (motionBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.setMotionQuality(motionBtn.getAttribute('data-motion-quality'));
+        return true;
+      }
+      const audioToggleBtn = target.closest('[data-action="set-audio-enabled"]');
+      if (audioToggleBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.setAudioEnabled(audioToggleBtn.getAttribute('data-audio-kind'), audioToggleBtn.getAttribute('data-enabled') === 'true');
+        return true;
+      }
+      const audioVolumeBtn = target.closest('[data-action="adjust-audio-volume"]');
+      if (audioVolumeBtn) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.adjustAudioVolume(audioVolumeBtn.getAttribute('data-audio-kind'), Number(audioVolumeBtn.getAttribute('data-delta')) || 0);
+        return true;
+      }
+      if (target.closest('[data-action="clear-all-save-data"]')) {
+        event.stopPropagation();
+        controller.playSfx('uiTapBottle');
+        controller.resetAllGameProgress();
+        return true;
+      }
+      return false;
+    };
+
+    if (handleGlobalUiOrModalAction()) return;
+
     if (controller.quizState.inputLocked) return;
 
     if (target.closest('[data-action="title-start"]')) {
@@ -31030,6 +27120,16 @@ const GALLERY_MANIFEST = [
     "id": "bg_shop_exterior_night",
     "path": "images/background/bg_shop_exterior_night.webp",
     "title": "bg shop exterior night",
+    "category": "背景",
+    "sourceType": "background",
+    "imageKind": "background",
+    "heroineId": null,
+    "expression": null
+  },
+  {
+    "id": "bg_shop_interior_night",
+    "path": "images/background/bg_shop_interior_night.webp",
+    "title": "bg shop interior night",
     "category": "背景",
     "sourceType": "background",
     "imageKind": "background",
@@ -32028,37 +28128,37 @@ function getResultStage(rank) {
 
 const RESULT_COMMENTS = {
   HAKIMA: {
-    encourage: '棚の流れはまだ揺れているわ。焦らず、注文の意味をひとつずつ掴み直しましょう。\n今回は守りを固める営業ね。次は品の理由まで見えてくるはずよ。',
-    evaluate: '悪くないわ。棚の流れも、だいぶ読めてきたみたいね。\nこの手応えを次の接客に繋げれば、もっと安定した営業になるわ。',
-    surprise: '完璧ね。ここまで綺麗に噛み合うなら、次も任せられるわ。\n品の選び方にも迷いがなかった。今の感覚、忘れないで。'
+    encourage: '……反省点は多いわね。けど、店が潰れたわけじゃない。\n注文の芯を見直しましょう。次は私も横で見てるから。',
+    evaluate: '悪くないわ。少なくとも、客を困らせるような選び方じゃなかった。\nその調子でいきなさい。……少しは店主らしく見えたわよ。',
+    surprise: '上出来ね。悔しいけど、今の接客はかなり良かったわ。\n迷いも少なかったし、品の理由も通っていた。……ちゃんと見直した。'
   },
   MIRA: {
-    encourage: '大丈夫、店の空気はまだ暗くなってないよ。次でぱっと取り返そう。\nお客さんの目線をもう少し追えば、きっと流れが見えてくるから。',
-    evaluate: 'いい感じ！店の空気も明るくなってきたね。\nこの調子で品物の並びを覚えていけば、次はもっと声をかけやすくなるよ。',
-    surprise: 'すごいすごい！今の流れなら、次のお客さんも呼び込めるよ。\n棚も接客もぴったり噛み合ってた。これは噂になるかもね！'
+    encourage: '先輩、今のはちょっと原価以前の問題かもです。\nでも大丈夫です。失敗の原因が見えるなら、次はちゃんと直せますから！',
+    evaluate: 'いい感じです、先輩！お客さんの反応も悪くありませんでした。\nあとは値付けと手間賃ですね。それじゃ利益、残ってます？',
+    surprise: 'すごいです、先輩！今の接客、かなり綺麗に決まりました！\n品選びも説明もばっちりです。これは商会でも通用しますよ！'
   },
   DARIYA: {
-    encourage: '少し星が曇ったみたい。けれど、品の声はまだ消えていないわ。\n次は急がず、気配の強いものから順に見ていきましょう。',
-    evaluate: '静かだけれど、良い手応え。次の品も見えてきたわ。\nこの流れなら、星の巡りを読み違えることは少なくなるでしょう。',
-    surprise: '星の巡りも味方しているわ。この流れは逃さないで。\n品物の気配とお客の願いが重なっていた。とても美しい営業だったわ。'
+    encourage: '……今日は、少し噛み合わなかったね。\nでも大丈夫。閉店まで立っていられたなら、それだけで次につながるよ。',
+    evaluate: 'うん、悪くなかった。無理に背伸びしてない感じがして、私は好き。\nその調子なら、この店はちゃんと明日も開けられるよ。',
+    surprise: '……すごいね、ナディール。今の、ちょっと眩しかった。\n私なら途中で逃げたくなるところまで、ちゃんと向き合ってた。偉い。'
   }
 };
 
 const RESULT_GENRE_COMMENTS = {
   HAKIMA: {
-    encourage: '{genre}が目立っていたわ。けれど、棚全体の意味はまだ少し散っている。\n焦らなくていい。次は注文の芯を見て、品を絞り込みましょう。',
-    evaluate: '{genre}の流れが見えてきたわ。次の棚にも繋げられそうね。\n評価としては十分。あとは迷いを減らせば、もっと綺麗にまとまるわ。',
-    surprise: '{genre}が綺麗に噛み合ったわ。この感覚、覚えておいて。\nここまで読めるなら、次の営業でも十分に勝負できるわね。'
+    encourage: '{genre}の選び方が少し甘かったわね。\n客が欲しいものと、実際に必要なものは違う。そこを間違えないこと。',
+    evaluate: '{genre}はよく見えていたわ。判断もそこまで悪くない。\nあとは説明ね。理由まで言えれば、客ももっと納得するわ。',
+    surprise: '{genre}の扱い、かなり良かったわ。\n……正直、少し驚いた。今の感覚は忘れないで。次も使えるから。'
   },
   MIRA: {
-    encourage: '{genre}が多かったね。まだ流れを掴みきれてないけど、大丈夫。\n次はお客さんの声と品物の雰囲気を、もう少し近づけてみよう。',
-    evaluate: '{genre}がよく動いたね！店の流れも掴めてきたよ。\nこの調子なら、次の接客ではもっと自然におすすめできそう。',
-    surprise: '{genre}がばっちり当たったね！この調子なら噂も広がるよ。\n品物もお客さんも明るく見えてた。今の営業、かなり良かった！'
+    encourage: '{genre}が多かったですね。先輩、ちょっと雰囲気で選びました？\n次はお客さんの条件を一つずつ計算してみましょう。私も見ます！',
+    evaluate: '{genre}の流れ、掴めてましたね！\nこの調子なら、次はもっと早く選べそうです。あ、でも利益計算は忘れずに。',
+    surprise: '{genre}、ばっちりでした！今の品選びなら宣伝文句にもできます！\n先輩、やっぱりちゃんとすごいんですね。……ちょっと悔しいです。'
   },
   DARIYA: {
-    encourage: '{genre}が多く巡ったわ。けれど、星はまだ揺れている。\n次は品の気配を急がず聞いて。そうすれば道は見えてくるわ。',
-    evaluate: '{genre}の気配が強かったわ。次の品選びにも響きそうね。\n悪くない流れよ。静かに積み重ねれば、もっと深く読めるはず。',
-    surprise: '{genre}が星の巡りに重なったわ。とても良い流れよ。\nここまで品物が応えてくれるなら、次の営業にも期待できるわ。'
+    encourage: '{genre}が多かったね。少し迷いが出たのかも。\n急がなくていいよ。必要なものを一つずつ見れば、たぶん大丈夫。',
+    evaluate: '{genre}の選び方、落ち着いてたと思う。\n派手じゃないけど、ちゃんと客の方を見てた。そういうの、私は好き。',
+    surprise: '{genre}が綺麗に決まってたね。\n……ナディールが真面目に店を守ろうとしてるの、こういう時に分かる。'
   }
 };
 
@@ -32346,7 +28446,8 @@ function formatAverage(value, count) {
 function renderEnding(controller, view) {
   const scores = controller.session.scores;
   const turnCount = TOTAL_TURNS;
-  const affection = calculateAffection(scores);
+  const carryover = controller.getCurrentCarryoverScore ? controller.getCurrentCarryoverScore() : { satisfaction: 0, reputation: 0, total: 0 };
+  const affection = calculateAffection(scores, carryover);
   const endingType = evaluateEnding(affection, controller.session.routeMode === 'long_history');
   const typeLabel = endingType === 'GOOD' ? 'GOOD ENDING' : 'NORMAL ENDING';
   const partnerName = controller.getHeroineDisplayName(controller.session.selectedHeroineId);
@@ -32364,6 +28465,8 @@ function renderEnding(controller, view) {
         <div class="score-row"><span>売上通算</span> <span>${scores.revenue}</span></div>
         <div class="score-row"><span>満足度通算</span> <span>${scores.satisfaction}</span></div>
         <div class="score-row"><span>評判通算</span> <span>${scores.reputation}</span></div>
+        <div class="score-row score-row-muted"><span>持ち越し満足度</span> <span>${carryover.satisfaction || 0}</span></div>
+        <div class="score-row score-row-muted"><span>持ち越し評判</span> <span>${carryover.reputation || 0}</span></div>
         <div class="ending-score-heading ending-score-heading-sub">1営業あたり</div>
         <div class="score-row score-row-muted"><span>平均売上</span> <span>${formatAverage(scores.revenue, turnCount)}</span></div>
         <div class="score-row score-row-muted"><span>平均満足度</span> <span>${formatAverage(scores.satisfaction, turnCount)}</span></div>
@@ -32696,11 +28799,27 @@ function getRouteStatusText(progress, heroineId, routeMode) {
   return '通常ルートクリア後に解放';
 }
 
+
+function getCarryoverDisplay(progress, heroineId, routeMode) {
+  const score = progress?.carryoverScores?.[heroineId]?.[routeMode]
+    || progress?.bestRecords?.[heroineId]?.[routeMode]
+    || { satisfaction: 0, reputation: 0, total: 0 };
+  const satisfaction = Number(score.satisfaction || 0);
+  const reputation = Number(score.reputation || 0);
+  const total = Number(score.total ?? (satisfaction + reputation));
+  return {
+    satisfaction: Math.max(0, Math.min(100, satisfaction)),
+    reputation: Math.max(0, Math.min(100, reputation)),
+    total: Math.max(0, Math.min(200, total))
+  };
+}
+
 function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
   return ['normal', 'long_history'].map((routeMode) => {
     const unlocked = isRouteUnlocked(progress, heroineId, routeMode);
     const isSelected = selectedRoute === routeMode && unlocked;
     const iconExpression = ROUTE_ICON_EXPRESSIONS[routeMode] || 'normal';
+    const carryover = getCarryoverDisplay(progress, heroineId, routeMode);
     return `
       <button
         class="route-mode-btn${isSelected ? ' is-route-selected' : ''}${unlocked ? '' : ' is-locked'}"
@@ -32712,6 +28831,7 @@ function renderRouteButtons(progress, heroineId, selectedRoute = 'normal') {
         <span class="route-mode-copy">
           <strong>${ROUTE_LABELS[routeMode]}</strong>
           <span>${getRouteStatusText(progress, heroineId, routeMode)}</span>
+          <span class="route-carryover-score">持ち越し 満足${carryover.satisfaction} / 評判${carryover.reputation}（計${carryover.total}）</span>
         </span>
       </button>
     `;
@@ -34688,6 +30808,31 @@ const CHARACTER_TRANSITIONS = new Set([
   'shadowShift'
 ]);
 
+const CHARACTER_TRANSITION_ALIASES = {
+  slideLeft: 'slideInLeft',
+  slideRight: 'slideInRight',
+  'slide-left': 'slideInLeft',
+  'slide-right': 'slideInRight',
+  left: 'slideInLeft',
+  right: 'slideInRight',
+  inLeft: 'slideInLeft',
+  inRight: 'slideInRight',
+  outLeft: 'slideOutLeft',
+  outRight: 'slideOutRight',
+  slideOut: 'slideOutLeft',
+  slideIn: 'slideInLeft',
+  slide_left: 'slideInLeft',
+  slide_right: 'slideInRight',
+  slideinleft: 'slideInLeft',
+  slideinright: 'slideInRight'
+};
+
+function normalizeCharacterTransitionName(type) {
+  const key = String(type || '').trim();
+  if (!key) return 'crossfade';
+  return CHARACTER_TRANSITION_ALIASES[key] || key;
+}
+
 const CHARACTER_MOTION_CLASSES = [
   'char-motion-crossfade',
   'char-motion-slideInRight',
@@ -34699,7 +30844,8 @@ const CHARACTER_MOTION_CLASSES = [
   'char-motion-short',
   'char-motion-long',
   'is-expression-flash',
-  'is-shadow-shifting'
+  'is-shadow-shifting',
+  'is-character-swap-initial'
 ];
 
 function clearCharacterMotionClasses(charEl) {
@@ -34708,22 +30854,50 @@ function clearCharacterMotionClasses(charEl) {
 }
 
 function getCharacterMotionDuration(speed) {
-  return speed === 'long' ? 420 : 240;
+  return speed === 'long' ? 460 : 300;
+}
+
+
+function createOutgoingCharacterGhost(charEl, speed) {
+  if (!charEl || !charEl.dataset.currentSrc || !charEl.parentElement) return null;
+  const ghost = charEl.cloneNode(false);
+  ghost.removeAttribute('data-vn-char');
+  ghost.classList.add('standing-char-outgoing', speed === 'long' ? 'char-motion-long' : 'char-motion-short');
+  ghost.classList.remove('char-motion-crossfade', 'char-motion-slideInRight', 'char-motion-slideInLeft', 'char-motion-slideOutRight', 'char-motion-slideOutLeft', 'char-motion-pop', 'char-motion-shadowShift', 'is-expression-flash', 'is-shadow-shifting');
+  ghost.classList.add('is-visible');
+  ghost.style.display = 'block';
+  ghost.style.pointerEvents = 'none';
+  ghost.setAttribute('aria-hidden', 'true');
+  charEl.parentElement.insertBefore(ghost, charEl);
+  void ghost.offsetWidth;
+  requestAnimationFrame(() => {
+    ghost.classList.remove('is-visible');
+    ghost.classList.add('is-fading-out');
+  });
+  setTimeout(() => ghost.remove(), getCharacterMotionDuration(speed) + 180);
+  return ghost;
 }
 
 function applyCharacterEnterMotion(charEl, type, speed) {
   if (!charEl || !CHARACTER_TRANSITIONS.has(type)) return false;
   const motionType = type === 'slideOutRight' || type === 'slideOutLeft' ? 'crossfade' : type;
   clearCharacterMotionClasses(charEl);
+
+  // Re-arming on the next two frames prevents a later render in the same event
+  // tick from collapsing slideLeft/slideRight into an instant sprite swap.
   charEl.classList.remove('is-visible');
   charEl.classList.add(`char-motion-${motionType}`, `char-motion-${speed}`);
   void charEl.offsetWidth;
   requestAnimationFrame(() => {
-    charEl.classList.add('is-visible');
+    charEl.classList.remove('is-visible');
+    void charEl.offsetWidth;
+    requestAnimationFrame(() => {
+      charEl.classList.add('is-visible');
+    });
   });
   setTimeout(() => {
     charEl.classList.remove(`char-motion-${motionType}`, `char-motion-${speed}`);
-  }, getCharacterMotionDuration(speed) + 80);
+  }, getCharacterMotionDuration(speed) + 140);
   return true;
 }
 
@@ -34790,11 +30964,11 @@ function renderVnShell(controller, view) {
           <img class="speaker-icon" data-vn-speaker-icon src="" style="display: none;" alt="" />
           <span data-vn-speaker></span>
         </div>
-        <button class="message-skip-btn" data-action="skip-text">スキップ</button>
         <div class="message-text-wrap">
           <div class="message-text" data-vn-text></div>
         </div>
       </div>
+      <button type="button" class="message-skip-btn" data-action="skip-text" aria-label="イベントをスキップ">スキップ</button>
     </div>
   `;
 }
@@ -34813,10 +30987,14 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   const vnScreenEl = controller.container.querySelector('.vn-screen');
 
   // Transition Config
-  const tType = transition?.type || 'soft'; // soft, fadeScene, dissolve, cut, character motions
-  const tSpeed = transition?.speed || 'short'; // short, long
   const tTarget = transition?.target || 'background'; // background, character, scene, all
-  const isCharacterMotion = tTarget === 'character' && CHARACTER_TRANSITIONS.has(tType);
+  const rawTransitionType = transition?.type || 'soft';
+  const tType = tTarget === 'character' ? normalizeCharacterTransitionName(rawTransitionType) : rawTransitionType; // soft, fadeScene, dissolve, cut, character motions
+  const tSpeed = transition?.speed || 'short'; // short, long
+  const prevRenderedCharId = charEl?.dataset?.currentCharId || '';
+  const implicitCharacterChange = Boolean(charId && prevRenderedCharId && prevRenderedCharId !== charId && !stillId);
+  const isCharacterMotion = (tTarget === 'character' && CHARACTER_TRANSITIONS.has(tType)) || (implicitCharacterChange && !transition);
+  const effectiveCharacterMotionType = (tTarget === 'character' && CHARACTER_TRANSITIONS.has(tType)) ? tType : (implicitCharacterChange ? 'crossfade' : tType);
   const shouldDeferTypewriter = Boolean(transition?.deferTypewriter);
   const shouldUseBlackHandoff = Boolean(transition && tType === 'fadeScene');
   const shouldCoverBeforeUpdate = Boolean(transition?.coverBeforeUpdate);
@@ -34883,7 +31061,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
     bgId ? getBackgroundPath(bgId) : null,
     stillId ? getStillPath(stillId) : null,
     charId && !stillId ? getVisualImagePath(charId, 'standing', expression || 'normal') : null,
-    (speakerId || charId) ? getVisualImagePath((speakerId || charId), 'speakerIcon', speakerExpression || expression || 'normal') : null
+    speakerId ? getVisualImagePath(speakerId, 'speakerIcon', speakerExpression || expression || 'normal') : null
   ]);
 
   const performUpdate = () => {
@@ -34925,7 +31103,7 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
     // 3. Character
     if (charEl) {
-      const charMotionType = isCharacterMotion ? tType : null;
+      const charMotionType = isCharacterMotion ? effectiveCharacterMotionType : null;
       if (charId && !stillId) {
         const expr = expression || 'normal';
         const nextSrc = getVisualImagePath(charId, 'standing', expr);
@@ -34937,6 +31115,20 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
 
         if (!isSameSrc) {
           const shouldRunCharacterMotion = Boolean(charMotionType) && !skipIndividualFade;
+          const shouldCrossCharacterFocus = Boolean(shouldRunCharacterMotion && !isSameChar && charEl.dataset.currentSrc);
+          if (shouldCrossCharacterFocus) {
+            // focus() is a one-person handoff. The outgoing standing sprite must
+            // only fade out; it must never inherit the incoming slide. Because
+            // the real <img> is reused for the incoming character, hide and
+            // flush it before swapping src. Otherwise the browser can paint the
+            // old character on the moving element for one frame, making NADER
+            // appear to slide when HAKIMA should be the one sliding in.
+            createOutgoingCharacterGhost(charEl, tSpeed);
+            clearCharacterMotionClasses(charEl);
+            charEl.classList.remove('is-visible');
+            charEl.classList.add('is-character-swap-initial');
+            void charEl.offsetWidth;
+          }
           charEl.style.display = 'block';
           if (!isSameChar) {
             applyCharacterVisualProfile(charEl, charId, 'standing');
@@ -34988,8 +31180,8 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
     }
 
     // 4. Speaker & Text
-    const iconId = speakerId || charId;
-    const hasSpeaker = Boolean(speakerName || iconId);
+    const iconId = speakerId || null;
+    const hasSpeaker = Boolean(speakerId && (speakerName || iconId));
     if (speakerWrapEl) speakerWrapEl.style.display = hasSpeaker ? 'inline-flex' : 'none';
     if (speakerIconEl) {
       if (iconId) {
@@ -35041,7 +31233,11 @@ function updateVnContent(controller, { speakerName, text, charId, speakerId, bgI
   // the whole character layer, or the motion becomes a double transition.
   if (isCharacterMotion) {
     performUpdate();
-    return Promise.resolve();
+    // Keep the event controller in transition state until the character motion
+    // has had at least one full frame and its CSS duration. Otherwise the
+    // immediate post-render update can add .is-visible before requestAnimationFrame
+    // runs, collapsing slideLeft/slideRight into an instant swap.
+    return delay(getCharacterMotionDuration(tSpeed) + 100);
   }
 
   // Return a promise so the event controller can wait for the visual transition
@@ -35764,6 +31960,7 @@ module.exports = {
 const { AUDIO_MANIFEST } = require('../data/audioManifest.cjs');
 const { calculateAffection } = require('../core/affectionModel.cjs');
 const { evaluateEnding } = require('../core/endingBranch.cjs');
+const { getSessionCarryoverScore } = require('./playerProgress.js');
 const { loadRhythmNoteMaps, getRhythmMapForPath: getLoadedRhythmMapForPath } = require('./rhythmNoteMaps.js');
 
 const DEFAULT_BGM_VOLUME = 0.22;
@@ -35841,7 +32038,8 @@ function getGameTrack(heroineId, turn = 1, routeMode = 'normal') {
 
 function getEndingTrack(session) {
   const heroine = getHeroineBgm(session?.selectedHeroineId);
-  const affection = calculateAffection(session?.scores || {});
+  const carryover = getSessionCarryoverScore ? getSessionCarryoverScore(session) : {};
+  const affection = calculateAffection(session?.scores || {}, carryover);
   const endingType = evaluateEnding(affection, session?.routeMode === 'long_history');
   return endingType === 'GOOD' ? heroine?.ending?.good : heroine?.ending?.normal;
 }
@@ -36074,13 +32272,49 @@ function createBgmEngine(options = {}) {
     }
   }
 
+  function resumeCurrentAudioIfNeeded(audio, token) {
+    if (!audio || !audio.paused) return;
+    try {
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise
+          .then(() => {
+            if (token !== requestSerial || currentAudio !== audio) return;
+            if (audio.volume <= 0.001) fadeIn(audio, token);
+            else audio.volume = baseVolume;
+          })
+          .catch((error) => console.warn('BGM resume deferred:', error));
+      } else if (audio.volume <= 0.001) {
+        fadeIn(audio, token);
+      } else {
+        audio.volume = baseVolume;
+      }
+    } catch (error) {
+      console.warn('Failed to resume BGM audio:', error);
+    }
+  }
+
   function startTrack(track) {
     if (!track?.path) return;
 
     const nextPath = track.path;
+    const currentRequestIsSameTrack = currentPath === nextPath;
+    const pendingRequestIsSameTrack = pendingTrack?.path === nextPath;
     pendingTrack = track;
 
-    if (currentPath === nextPath && currentAudio && !currentAudio.paused) return;
+    // Do not reload or fade/restart the same BGM. Event cutins, event scripts,
+    // ending events, and final result screens may all ask for the same ending
+    // track in sequence; those requests must preserve the currently playing or
+    // already scheduled audio so the music continues naturally.
+    if (currentRequestIsSameTrack) {
+      if (currentAudio) {
+        resumeCurrentAudioIfNeeded(currentAudio, requestSerial);
+        return;
+      }
+      if (pendingStartTimer || pendingRequestIsSameTrack) return;
+    }
+
+    if (!currentRequestIsSameTrack && pendingRequestIsSameTrack && pendingStartTimer) return;
 
     requestSerial += 1;
     const token = requestSerial;
@@ -36924,6 +33158,36 @@ function schedulePlayerProgressSave(progress) {
   return true;
 }
 
+
+function getRouteBestRecord(progress, heroineId, routeMode) {
+  const normalizedRoute = normalizeRouteMode(routeMode);
+  const normalizedProgress = progress && progress.bestRecords ? progress : loadPlayerProgress();
+  return normalizedProgress?.bestRecords?.[heroineId]?.[normalizedRoute] || {
+    satisfaction: 0,
+    reputation: 0,
+    revenue: 0,
+    affection: 0,
+    endingType: null,
+    clearedAt: null
+  };
+}
+
+function getRouteCarryoverScore(progress, heroineId, routeMode) {
+  const record = getRouteBestRecord(progress, heroineId, routeMode);
+  const satisfaction = Math.max(0, Math.min(100, Number(record.satisfaction || 0)));
+  const reputation = Math.max(0, Math.min(100, Number(record.reputation || 0)));
+  return {
+    satisfaction,
+    reputation,
+    total: Math.max(0, Math.min(200, satisfaction + reputation))
+  };
+}
+
+function getSessionCarryoverScore(session) {
+  if (!session?.selectedHeroineId) return { satisfaction: 0, reputation: 0, total: 0 };
+  return getRouteCarryoverScore(loadPlayerProgress(), session.selectedHeroineId, session.routeMode || 'normal');
+}
+
 function recordEndingProgress(session, endingType, affection) {
   if (!session?.selectedHeroineId) return null;
   const heroineId = session.selectedHeroineId;
@@ -36981,6 +33245,7 @@ function getPlayerProgressSummary() {
     updatedAt: progress.updatedAt,
     heroineModeUnlocks: cloneJson(progress.heroineModeUnlocks),
     bestRecords: cloneJson(progress.bestRecords),
+    carryoverScores: createRouteMap((heroineId, routeMode) => getRouteCarryoverScore(progress, heroineId, routeMode)),
     endings: cloneJson(progress.endings),
     imageSeen: cloneJson(progress.imageSeen),
     galleryUnlockGroups: cloneJson(progress.galleryUnlockGroups),
@@ -37094,6 +33359,9 @@ module.exports = {
   savePlayerProgress,
   clearPlayerProgress,
   recordEndingProgress,
+  getRouteBestRecord,
+  getRouteCarryoverScore,
+  getSessionCarryoverScore,
   unlockAllGalleryGroups,
   getPlayerProgressSummary,
   markImageSeen,
@@ -39225,6 +35493,8 @@ class GameController {
     // blackout when the shop background is already visible.
     const baseVisual = this.captureCurrentEventBaseVisual();
 
+    this._loggedVnLineKeys = new Set();
+
     this.eventState = {
       active: true,
       eventId,
@@ -39263,7 +35533,8 @@ class GameController {
       currentLineKey: null,
       isAdvancing: false,
       holdHideMessageBox: false,
-      holdHideCharacter: false
+      holdHideCharacter: false,
+      loggedLineKeys: new Set()
     };
 
     this.eventState.playbackPlan = this.buildEventPlaybackPlan(script, baseVisual);
@@ -39281,6 +35552,14 @@ class GameController {
     // appears as a cheap one-frame pop when the cut-in is skipped or released.
     this.warmupEventPlaybackPage(firstEventPage);
 
+    // Gallery / event-collection playback has no ornate runtime cut-in, but it
+    // still enters from a completely different UI surface. Hold a short black
+    // screen veil before the first event page so the collection screen never
+    // exposes a naked VN visual swap.
+    if (!useRuntimeBoundary && playbackMode === 'gallery') {
+      this.queueRuntimeScreenFade(520);
+    }
+
     this.update();
     if (useRuntimeBoundary) {
       this.eventState.inputState = boundaryClickToStart ? 'boundary' : 'waiting';
@@ -39290,7 +35569,7 @@ class GameController {
         }, this.eventState.boundaryAutoMs);
       }
     } else {
-      this.nextEventStep();
+      this.nextEventStep({ coverFromGallery: playbackMode === 'gallery' });
     }
   }
 
@@ -39408,6 +35687,45 @@ class GameController {
     this.handleRuntimeEventFinished(eventId);
   }
 
+
+  appendSkippedEventPagesToLog() {
+    if (!this.eventState?.active) return;
+    const pages = this.eventState.playbackPlan?.pages || [];
+    if (!pages.length) return;
+    const currentIndex = Number.isInteger(this.eventState.pageIndex) ? this.eventState.pageIndex : -1;
+    // If the skip happens during a page transition, the current page may not
+    // have finished rendering/logging yet. Start from currentIndex and rely on
+    // appendConversationLogOnce() de-duplication. If no page has been entered
+    // yet, log from the first authored page.
+    const startIndex = Math.max(0, currentIndex);
+    for (let i = startIndex; i < pages.length; i += 1) {
+      const page = pages[i];
+      const step = page?.step;
+      if (!step || !['line', 'narration', 'choice'].includes(step.type)) continue;
+      const speakerId = step.type === 'line' ? step.speakerId : null;
+      const speakerName = speakerId ? getHeroineDisplayName(speakerId) : '';
+      const charIds = Object.keys(page.visual?.characters || {});
+      const charId = charIds[0] || speakerId || null;
+      let text = step.text || '';
+      if (step.type === 'choice') {
+        const choices = Array.isArray(step.choices) ? step.choices : [];
+        const choiceText = choices
+          .map((choice) => choice?.text || choice?.label || '')
+          .filter(Boolean)
+          .join(' / ');
+        if (choiceText) text = `${text}${text ? '\n' : ''}選択肢: ${choiceText}`;
+      }
+      if (!text) continue;
+      this.appendConversationLogOnce({
+        lineKey: page.lineKey,
+        speakerName,
+        speakerId,
+        charId,
+        text
+      });
+    }
+  }
+
   skipCurrentEventScene() {
     if (!this.eventState?.active) return false;
     // The skip button means "cut this authored event scene", not "advance one
@@ -39431,6 +35749,7 @@ class GameController {
     this.eventState.inputState = 'skipping';
     this.eventState.isAdvancing = false;
     this.eventState.isTransitioning = false;
+    this.appendSkippedEventPagesToLog();
     this.queueRuntimeScreenFade(720);
     this.completeCurrentEvent();
     return true;
@@ -39565,6 +35884,7 @@ class GameController {
     const pages = [];
     const labels = {};
     let visualDirty = false;
+    let pendingCharacterTransition = null;
     let preActions = [];
 
     const pushAction = (action) => {
@@ -39580,9 +35900,11 @@ class GameController {
         lineKey: `${this.eventState?.eventId || 'event'}:${pageNumber}:${index}`,
         visual: this.cloneEventVisualState(visual),
         preActions,
+        characterTransition: visualDirty ? null : pendingCharacterTransition,
         needsVisualHandoff: visualDirty
       });
       preActions = [];
+      pendingCharacterTransition = null;
       visualDirty = false;
     };
 
@@ -39597,6 +35919,7 @@ class GameController {
           visual.background = step.id || null;
           if (visual.still) visual.still = null;
           visualDirty = true;
+          pendingCharacterTransition = null;
         }
         return;
       }
@@ -39604,6 +35927,7 @@ class GameController {
         if (visual.still !== step.id) {
           visual.still = step.id || null;
           visualDirty = true;
+          pendingCharacterTransition = null;
         }
         return;
       }
@@ -39633,7 +35957,10 @@ class GameController {
             changed = true;
           }
         }
-        if (changed) visualDirty = true;
+        if (changed) {
+          visualDirty = true;
+          pendingCharacterTransition = null;
+        }
         return;
       }
       if (step.type === 'enter' && step.characterId) {
@@ -39645,6 +35972,7 @@ class GameController {
         if (!current || current.expression !== next.expression || current.position !== next.position) {
           visual.characters[step.characterId] = next;
           visualDirty = true;
+          pendingCharacterTransition = null;
         }
         return;
       }
@@ -39652,6 +35980,33 @@ class GameController {
         if (visual.characters?.[step.characterId]) {
           delete visual.characters[step.characterId];
           visualDirty = true;
+          pendingCharacterTransition = null;
+        }
+        return;
+      }
+      if ((step.type === 'focus' || step.type === 'focusCharacter' || step.type === 'setCharacter' || step.type === 'character') && (step.characterId || step.id)) {
+        const characterId = step.characterId || step.id;
+        const existing = visual.characters?.[characterId];
+        const currentCharId = Object.keys(visual.characters || {})[0];
+        const current = currentCharId ? visual.characters[currentCharId] : null;
+        const next = {
+          expression: step.expression || existing?.expression || 'normal',
+          position: step.position || existing?.position || current?.position || 'center'
+        };
+        const before = JSON.stringify(visual.characters || {});
+        visual.characters = { [characterId]: next };
+        const after = JSON.stringify(visual.characters || {});
+        if (before !== after) {
+          // focus is a lightweight standing-character change.  It must not be
+          // promoted to a full black visual handoff; otherwise authors cannot
+          // use it for conversational slide/crossfade motion.
+          if (!visualDirty) {
+            pendingCharacterTransition = {
+              target: 'character',
+              type: step.transition || 'crossfade',
+              speed: step.speed || 'short'
+            };
+          }
         }
         return;
       }
@@ -39721,11 +36076,12 @@ class GameController {
     this.eventState.activeChoice = page.step.type === 'choice' ? page.step.choices : null;
 
     const shouldHandoff = Boolean(page.needsVisualHandoff);
-    const coverBeforeUpdate = Boolean(options.coverFromBoundary || this.eventState.boundaryStage === 'entry-release');
+    const coverBeforeUpdate = Boolean(options.coverFromBoundary || options.coverFromGallery || this.eventState.boundaryStage === 'entry-release');
     if (coverBeforeUpdate) {
       this.eventState.boundaryStage = 'none';
       this.eventState.boundaryClickToStart = false;
     }
+    const pageCharacterTransition = page.characterTransition || null;
     this.eventState.lastTransition = shouldHandoff
       ? {
           type: 'fadeScene',
@@ -39741,13 +36097,15 @@ class GameController {
           revealMs: coverBeforeUpdate ? 260 : undefined,
           holdMs: coverBeforeUpdate ? 24 : undefined
         }
-      : null;
-    this.eventState.isTransitioning = shouldHandoff;
-    this.eventState.inputState = shouldHandoff ? 'transitioning' : (this.eventState.activeChoice ? 'choice' : 'typing');
+      : pageCharacterTransition;
+    const hasPageTransition = Boolean(shouldHandoff || pageCharacterTransition);
+    this.eventState.isTransitioning = hasPageTransition;
+    this.eventState.inputState = hasPageTransition ? 'transitioning' : (this.eventState.activeChoice ? 'choice' : 'typing');
     this.auditEventPresentation('show-page', {
       pageNumber: page.pageNumber,
-      visualChanged: Boolean(page.needsVisualHandoff),
+      visualChanged: Boolean(page.needsVisualHandoff || page.characterTransition),
       hasVisualHandoff: shouldHandoff,
+      hasCharacterTransition: Boolean(page.characterTransition),
       coverBeforeUpdate
     });
     this.update();
@@ -40012,9 +36370,18 @@ class GameController {
     const speakerId = displayStep?.type === 'line' ? displayStep.speakerId : null;
     const speakerName = speakerId ? getHeroineDisplayName(speakerId) : '';
     
-    // Determine which character to show
+    // Determine which character to show.  Standing character and speaker are
+    // separate: speakerId drives the name/icon, focus/scene drives the one
+    // standing sprite.  If they are the same character, a line expression may
+    // update the standing sprite as a lightweight expression change.
     const charIds = Object.keys(this.eventState.characters);
     const charId = charIds[0];
+    if (charId && speakerId === charId && displayStep?.expression && this.eventState.characters?.[charId]) {
+      this.eventState.characters[charId] = {
+        ...this.eventState.characters[charId],
+        expression: displayStep.expression
+      };
+    }
     const charData = charId ? this.eventState.characters[charId] : null;
 
     // Visibility of the message box. During exit boundary, the final VNBox must
@@ -40028,6 +36395,16 @@ class GameController {
     this.auditEventPresentation('render-event', {
       messageBoxDisplay: keepMessageForBoundary ? 'block' : 'none'
     });
+
+    if (displayStep && (displayStep.type === 'line' || displayStep.type === 'narration')) {
+      this.appendConversationLogOnce({
+        lineKey: this.eventState.currentLineKey,
+        speakerName,
+        speakerId,
+        charId,
+        text: displayStep.text || ''
+      });
+    }
 
     this.eventState.lastRenderPromise = updateVnContent(this, {
       speakerName: speakerName,
@@ -40095,6 +36472,25 @@ class GameController {
 
   renderGlobalUi() { renderGlobalUi(this); }
   renderModal() { renderModal(this); }
+
+  appendConversationLogOnce({ lineKey, speakerName, speakerId, charId, text }) {
+    if (!text) return;
+    const key = lineKey || `${speakerId || 'narration'}:${text}`;
+    if (!this._loggedVnLineKeys) this._loggedVnLineKeys = new Set();
+    if (this._loggedVnLineKeys.has(key)) return;
+    this._loggedVnLineKeys.add(key);
+    if (this._loggedVnLineKeys.size > 240) {
+      const first = this._loggedVnLineKeys.values().next().value;
+      this._loggedVnLineKeys.delete(first);
+    }
+    this.uiState.convoLog.push({
+      speaker: speakerName || (speakerId ? getHeroineDisplayName(speakerId) : '地の文'),
+      text,
+      charId: charId || speakerId || null
+    });
+    if (this.uiState.convoLog.length > 120) this.uiState.convoLog.shift();
+  }
+
   updateVnContent(payload) {
     if (payload && payload.text && payload.speakerName) {
       this.uiState.convoLog.push({
