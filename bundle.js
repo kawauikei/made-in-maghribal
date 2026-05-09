@@ -2099,7 +2099,1421 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_normal_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "hakima_normal_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "hakima_normal_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "hakima_normal_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_childhood_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "hakima_childhood_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "hakima_childhood_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "hakima_childhood_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "mira_normal_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "mira_normal_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "mira_normal_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "mira_childhood_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "mira_childhood_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "mira_childhood_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_normal_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "dariya_normal_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "dariya_normal_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "dariya_normal_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_store_morning_letter_from_family",
+    "title": "旅先写真の朝",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "父母から届いた写真つきの手紙で、ナーディルの家族が少しだけ見える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "dariya_childhood_store_night_sister_audit",
+    "title": "姉からの監査便",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤからの手紙が届き、帳簿と意地が少しだけ揺れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "dariya_childhood_store_morning_weather_stock",
+    "title": "砂嵐前の棚",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "砂嵐の予報を受け、湿気と砂に弱い素材を守る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "dariya_childhood_store_night_customer_left_item",
+    "title": "忘れ物の護符",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "客の忘れ物をきっかけに、ヒロインが店の信頼を言葉にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_date_04_oasis_spice_delivery",
+    "title": "オアシス通りの香料箱",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "香料箱の納品でオアシス通りへ出かけ、ハキマの実務力と優しさを見る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_oasis_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_oasis_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_night_08_festival_street_afterwork",
+    "title": "祭り通りの帰り道",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "閉店後、祭り通りを抜けながら二人が今日の営業を振り返る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_spot_festival_street",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 35
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_festival_street",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_morning_09_port_delayed_cargo",
+    "title": "港荷の遅れ",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "港からの荷が遅れ、ハキマと代替品を考える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_spot_port_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 25
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_port_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "hakima_childhood_date_03_fortress_caravan_story",
+    "title": "要塞帰りの隊商",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "要塞方面から来た隊商の話を聞き、幼馴染の過去と今を重ねる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_spot_oasis_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 50
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_oasis_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "mira_normal_date_03_port_invention_crates",
+    "title": "港の発明箱",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "港で届いた異国の部品を見ながら、ミラが発明家への憧れを語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_port_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_port_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_09_palace_lab_delivery",
+    "title": "王宮研究室への納品",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "王宮研究室への納品前、ミラが緊張を明るさで隠す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_palace_lab",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 55
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_palace_lab",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_date_03_star_view_rivalry",
+    "title": "星見台の対抗心",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "星見台でナディールの姉への対抗心と、幼馴染としての甘えが出る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_spot_star_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_star_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
     "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_night_08_palace_corridor_rain",
+    "title": "雨の王宮廊下",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王宮廊下で雨音を聞き、ダリヤが研究所の息苦しさをこぼす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_palace_corridor",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_palace_corridor",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_normal_date_04_ruins_quiet_inventory",
+    "title": "地下遺跡の納品書",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "遺跡入口で探索者向けの品を確認し、ダリヤがナーディルの誠実さに触れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_ruins",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_ruins",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_date_03_oasis_old_promise",
+    "title": "オアシスの古い約束",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "オアシスで幼い頃の薬の話を思い出し、ダリヤが甘える。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_spot_oasis_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_oasis_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_date_05_fountain_errand",
+    "title": "噴水前の暑中見舞い",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "恩師への手紙を出しに行く軽い寄り道。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_fountain",
+    "trigger": {
+      "once": true,
+      "weight": 60,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 25,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_fountain",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "hakima_childhood_date_04_market_spice_walk",
+    "title": "昔の香料通り",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "仕入れついでに昔話がこぼれる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_market_central",
+    "trigger": {
+      "once": true,
+      "weight": 60,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 30,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "mira_normal_morning_10_carriage_countdown",
+    "title": "迎えまでの十五分",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "門限ならぬ朝の迎えまで、ミラが棚を点検する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 70,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "mira_normal_date_04_port_parts_shopping",
+    "title": "港の部品箱",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "仕入れに同行したミラが商会令嬢らしく値を読む。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "date",
+    "thumbnail": "bg_spot_port_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_port_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "mira_childhood_date_04_market_after_school",
+    "title": "放課後の買い食い計算",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染ミラと市場で軽い買い出し。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_market_central",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 25,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_night_07_camera_sister_rivalry",
+    "title": "姉さんのカメラ記事",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ナーディルの姉への対抗心と憧れが見える夜。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 60,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 45,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_date_05_palace_lab_lunchbox",
+    "title": "研究室の昼食箱",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王宮研究室への納品ついでに、ダリヤの職場の息苦しさを見る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "date",
+    "thumbnail": "bg_palace_lab",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_palace_lab",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "dariya_childhood_date_04_star_view_sister_claim",
+    "title": "星見台のお姉ちゃん席",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "星見台で昔の居場所を取り戻そうとするダリヤ。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "date",
+    "thumbnail": "bg_spot_star_view",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 35,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_star_view",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_morning_10_spice_delivery_to_port",
+    "title": "港へ出す香料箱",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "朝の出荷準備でハキマの実務力を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 65,
+      "requiresSeen": [
+        "hakima_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "dariya_normal_night_09_oasis_postcard",
+    "title": "オアシスの写真",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "父母の写真をきっかけにダリヤと遠い場所の話をする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 60,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
   },
   {
     "id": "hakima_normal_route_opening_001",
@@ -2131,7 +3545,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 21
+    "scriptStepCount": 23
   },
   {
     "id": "hakima_normal_morning_01_shelves_and_sandalwood",
@@ -2164,7 +3578,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 15
+    "scriptStepCount": 16
   },
   {
     "id": "hakima_normal_morning_02_ledger_margin",
@@ -2197,7 +3611,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 15
+    "scriptStepCount": 16
   },
   {
     "id": "hakima_normal_morning_03_mothers_letter",
@@ -2230,7 +3644,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 14
+    "scriptStepCount": 15
   },
   {
     "id": "hakima_normal_morning_04_soil_nickname",
@@ -2263,7 +3677,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 17
+    "scriptStepCount": 18
   },
   {
     "id": "hakima_normal_morning_05_shopkeepers_face",
@@ -2296,7 +3710,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 14
+    "scriptStepCount": 15
   },
   {
     "id": "hakima_normal_night_01_after_first_business",
@@ -2329,7 +3743,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 13
+    "scriptStepCount": 14
   },
   {
     "id": "hakima_normal_night_02_teacher_postcard",
@@ -2362,7 +3776,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 17
+    "scriptStepCount": 18
   },
   {
     "id": "hakima_normal_night_03_white_wolf_shadow",
@@ -2395,7 +3809,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 15
+    "scriptStepCount": 16
   },
   {
     "id": "hakima_normal_night_04_almost_invitation",
@@ -2428,7 +3842,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 17
+    "scriptStepCount": 18
   },
   {
     "id": "hakima_normal_night_05_before_confession",
@@ -2495,7 +3909,7 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 22
+    "scriptStepCount": 21
   },
   {
     "id": "hakima_normal_ending_normal_001",
@@ -2564,7 +3978,2827 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "物語を読み進めると解放"
     },
-    "scriptStepCount": 24
+    "scriptStepCount": 23
+  },
+  {
+    "id": "hakima_childhood_route_opening_001",
+    "title": "市場で見つけた背中",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染のハキマが、沈んだナーディルに声をかける。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "route_opening",
+    "thumbnail": "bg_market_central",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 19
+  },
+  {
+    "id": "hakima_childhood_morning_01",
+    "title": "昔の開店札",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼い頃から知る店の記憶を、ハキマがさりげなく直す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_childhood_morning_02",
+    "title": "幼馴染の検品",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが遠慮なく在庫を見て、昔の距離感で叱る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "hakima_childhood_morning_03",
+    "title": "姉の手紙と婿入り話",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "姉からの手紙をきっかけに、ハキマが昔の予定を少し漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_morning_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_morning_04",
+    "title": "追いついた朝",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが飛び級への本音を短く語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "hakima_childhood_morning_05",
+    "title": "家族ぐるみの朝",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが昔の家族付き合いを思い出しながら営業へ送る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_morning_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "hakima_childhood_night_01",
+    "title": "閉店後の昔話",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "閉店後、二人が店に入り浸っていた頃を思い出す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_night_02",
+    "title": "ストーカー未遂",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマがナーディルを心配して見守っていたことを認める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_night_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "hakima_childhood_night_03",
+    "title": "白狼の家の話",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが家族と弟の話をする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_night_04",
+    "title": "結婚の冗談ではない",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが婿入り話を冗談にしきれなくなる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_night_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_night_05",
+    "title": "明日の約束",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが未来の手伝いを当然のように約束する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_childhood_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "hakima_childhood_date_01_festival_promise",
+    "title": "夜市と約束",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染としてではなく、未来を考える相手として夜市を歩く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "date",
+    "thumbnail": "still_hakima_festival_night_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "hakima_childhood_night_04",
+        "hakima_childhood_night_05"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_hakima_festival_night_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_childhood_ending_normal_001",
+    "title": "幼馴染のまま",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染として近くにいる関係が続く通常エンド。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_exterior_day",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "hakima_childhood_ending_good_001",
+    "title": "白狼の家へ出す手紙",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染ルートGOOD。将来を具体的に考え始める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "hakima_childhood_night_04",
+        "hakima_childhood_date_01_festival_promise"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "hakima_normal_date_02_rain_shelter",
+    "title": "雨宿りの軒先",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "雨の市場で足を止め、ハキマが少しだけ素直になる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "date",
+    "thumbnail": "still_hakima_rain_shelter_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_night_03_white_wolf_shadow"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 55
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_hakima_rain_shelter_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 16
+  },
+  {
+    "id": "hakima_normal_date_03_market_argument",
+    "title": "市場の言い合い",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "市場で仕入れをめぐり口論するが、互いの見方を認め合う。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "date",
+    "thumbnail": "still_hakima_market_argument_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "hakima_normal_morning_02_ledger_margin"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_hakima_market_argument_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 16
+  },
+  {
+    "id": "hakima_normal_morning_06_morning_visit_still",
+    "title": "いつもの足音",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマが朝の開店準備に自然と混ざる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "morning",
+    "thumbnail": "still_hakima_morning_visit_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "hakima_normal_morning_03_spice_shelf"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 35
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "hakima_normal_night_06_uncle_permission",
+    "title": "叔父へのお願い",
+    "heroineId": "HAKIMA",
+    "routeGroup": "normal",
+    "summary": "ハキマが手伝いの裏で叔父に頭を下げていたことが分かる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_normal",
+    "galleryTab": "hakima_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "hakima_normal_night_02_afterwork_tea"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 50
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 15
+  },
+  {
+    "id": "hakima_childhood_date_02_festival_old_promise",
+    "title": "祭りの古い約束",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "夜市で昔の約束と、今の距離が重なる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "date",
+    "thumbnail": "still_hakima_festival_night_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "hakima_childhood_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_hakima_festival_night_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "hakima_childhood_night_06_father_request",
+    "title": "父に頼む前に",
+    "heroineId": "HAKIMA",
+    "routeGroup": "childhood",
+    "summary": "ハキマが本気だった婿入り話を、今の言葉で言い直す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "hakima_childhood",
+    "galleryTab": "hakima_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "hakima_childhood_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 75
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "mira_normal_route_opening_001",
+    "title": "危ない実験の後輩",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが星瓶堂を手伝う通常ルート開始。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "route_opening",
+    "thumbnail": "bg_spot_fountain",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_fountain",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "mira_normal_morning_01",
+    "title": "門限前の朝",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "門限があるミラが朝から勢いよく店へ来る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_02",
+    "title": "商会令嬢の値札",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが明るく値付けを指摘する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_03",
+    "title": "発明家志望",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラがナーディルの父への尊敬と、自分の夢を話す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_morning_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_04",
+    "title": "槍の稽古帰り",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "見た目によらない肉体派の一面を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_05",
+    "title": "先輩の店",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが星瓶堂への愛着を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_morning_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_night_01",
+    "title": "迎えの馬車",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "夜に長居できないミラが、短い時間で励ます。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_night_02",
+    "title": "姉への対抗心",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラがナーディルの姉を意識する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_night_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_night_03",
+    "title": "危ない試作品",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラの突飛さをナーディルが止める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_night_04",
+    "title": "本物になりたい",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "天才扱いの裏で努力するミラを描く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_night_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_night_05",
+    "title": "朝の約束",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラが翌朝の再訪を約束する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_normal_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_date_01_starry_rooftop",
+    "title": "星見台の課題",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "星見台で課題と夢について話す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "date",
+    "thumbnail": "still_mira_starry_rooftop_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "mira_normal_night_04",
+        "mira_normal_night_05"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_mira_starry_rooftop_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_ending_normal_001",
+    "title": "朝に続く約束",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラ通常ルートNORMAL。先輩後輩として関係が続く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_exterior_day",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 9
+  },
+  {
+    "id": "mira_normal_ending_good_001",
+    "title": "先輩の隣で発明を",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "ミラ通常ルートGOOD。憧れから一歩踏み込む。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "mira_normal_night_05",
+        "mira_normal_date_01_starry_rooftop"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "mira_childhood_route_opening_001",
+    "title": "近所のお兄ちゃん",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラが幼馴染として星瓶堂に入り浸るルート開始。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "route_opening",
+    "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_exterior_day",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "mira_childhood_morning_01",
+    "title": "遊び場だった店",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "幼い頃の記憶と今の手伝いが重なる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_morning_02",
+    "title": "お兄ちゃん禁止令",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "呼び方でナーディルが動揺する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_morning_03",
+    "title": "姉への対抗意識",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラがサフィーヤへの対抗心を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_morning_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_morning_04",
+    "title": "朝の槍袋",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "やんちゃなミラが稽古帰りに現れる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_morning_05",
+    "title": "朝を独占",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラが店に入り浸る理由を少し甘く話す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_morning_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_night_01",
+    "title": "閉店後の迎え",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "迎えの馬車が来てもミラが帰りたがらない。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_childhood_night_02",
+    "title": "遊びではない手伝い",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ナーディルがミラの本気を見る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_night_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_childhood_night_03",
+    "title": "危ない甘え方",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラが甘えつつも本音を隠す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_childhood_night_04",
+    "title": "近所のお兄ちゃん以上",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "呼び方の奥にある気持ちを匂わせる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_night_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_childhood_night_05",
+    "title": "明日の朝も一番に",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "朝にまた来る約束。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "mira_childhood_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_date_01_visit_sick",
+    "title": "看病の午後",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "少し体調を崩したナーディルをミラが見舞う。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "date",
+    "thumbnail": "still_mira_visit_sick_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "mira_childhood_night_04",
+        "mira_childhood_night_05"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_mira_visit_sick_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_childhood_ending_normal_001",
+    "title": "遊び場の続き",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラ幼馴染NORMAL。近い距離のまま関係が続く。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_exterior_day",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_exterior_day",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 8
+  },
+  {
+    "id": "mira_childhood_ending_good_001",
+    "title": "お兄ちゃんの先へ",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラ幼馴染GOOD。幼馴染の呼び方から一歩進む。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "mira_childhood_night_05",
+        "mira_childhood_date_01_visit_sick"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "mira_normal_morning_06_curfew_carriage",
+    "title": "迎えの馬車まで",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "門限つきの朝、ミラが強引に店を手伝う。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "mira_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "mira_normal_date_02_assignment_consult",
+    "title": "課題相談の名目",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "学院の課題相談を口実に、ミラが先輩との時間を作る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "date",
+    "thumbnail": "still_mira_assignment_consult_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "mira_normal_morning_03_commerce_math"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_mira_assignment_consult_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "mira_normal_night_06_senpai_scolded_me",
+    "title": "叱られた日の続き",
+    "heroineId": "MIRA",
+    "routeGroup": "normal",
+    "summary": "昔ナーディルに叱られたことを、ミラが今の気持ちで語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_normal",
+    "galleryTab": "mira_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "mira_normal_date_02_assignment_consult"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "mira_childhood_date_02_after_school_shop",
+    "title": "放課後の遊び場",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染のミラが、昔の遊び場だった星瓶堂で素直になる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "date",
+    "thumbnail": "still_mira_after_school_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "mira_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_mira_after_school_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "mira_childhood_night_06_sister_rivalry",
+    "title": "姉さんには負けません",
+    "heroineId": "MIRA",
+    "routeGroup": "childhood",
+    "summary": "ミラがナーディルの姉への対抗意識を口にする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "mira_childhood",
+    "galleryTab": "mira_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "mira_childhood_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 55
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 14
+  },
+  {
+    "id": "dariya_normal_route_opening_001",
+    "title": "噴水前の逃げ場",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤがナーディルの真面目さに触れる通常ルート開始。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "route_opening",
+    "thumbnail": "bg_spot_fountain",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_spot_fountain",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "dariya_normal_morning_01",
+    "title": "眠そうな来訪",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤが朝に弱い様子で来る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_normal_morning_02",
+    "title": "研究所の納品書",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "研究所向けの仕入れを確認する。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_normal_morning_03",
+    "title": "白面の話題",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤが白面への視線を軽く流す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_morning_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_morning_04",
+    "title": "詩吟部の記憶",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "二人の詩のセンスのなさを思い出す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_morning_05",
+    "title": "朝のすっぽかし未遂",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤが寝坊しかけて謝る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_morning_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_normal_night_01",
+    "title": "研究所帰り",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "閉店後、疲れたダリヤがふらりと来る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_night_02",
+    "title": "メッキの不安",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王立研究所での不安を漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_night_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_night_03",
+    "title": "お姫様抱っこ未遂",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "長身と筋力を軽く見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "dariya_normal_night_04",
+    "title": "真面目さが眩しい",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ナーディルの家業への姿勢がダリヤに刺さる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_night_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_night_05",
+    "title": "帰りたくない夜",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤが店にいたいと本音を漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_normal_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_date_01_rain_corridor",
+    "title": "雨の回廊",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王宮回廊で雨を眺め、ダリヤが本音を漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "date",
+    "thumbnail": "still_dariya_rain_corridor_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "dariya_normal_night_04",
+        "dariya_normal_night_05"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_dariya_rain_corridor_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_ending_normal_001",
+    "title": "夜に残る椅子",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤ通常NORMAL。星瓶堂が休める場所になる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "dariya_normal_ending_good_001",
+    "title": "月白の居場所",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤ通常GOOD。互いの居場所として一歩踏み込む。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "dariya_normal_night_05",
+        "dariya_normal_date_01_rain_corridor"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_route_opening_001",
+    "title": "お姉ちゃんの帰り道",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤが幼馴染として星瓶堂へ戻るルート開始。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "route_opening",
+    "thumbnail": "bg_market_central",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "route_opening",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 100
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_market_central",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "dariya_childhood_morning_01",
+    "title": "寝坊のお姉ちゃん",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "朝の約束を寝過ごしかける。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_morning_02",
+    "title": "白い塗り薬",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "幼い日の塗り薬の記憶。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 15
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_morning_03",
+    "title": "姉の親友",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤとの親友関係を語る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_morning_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 30
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_morning_04",
+    "title": "かっこいいお姉ちゃん",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "研究所就職の理由を冗談交じりに話す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_morning_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_morning_05",
+    "title": "朝のお茶",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤが店に馴染み始める。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_morning_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 11
+  },
+  {
+    "id": "dariya_childhood_night_01",
+    "title": "帰りたくない家",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "親との折り合いが悪かった頃を思い出す。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_route_opening_001"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 0
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_night_02",
+    "title": "お姫様抱っこ",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤがナーディルを軽々支えようとする。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_night_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 20
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_night_03",
+    "title": "姉への報告",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "サフィーヤへ報告するかでからかう。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 40
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_night_04",
+    "title": "永久就職希望",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "冗談めかした本音が強くなる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_night_03"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_night_05",
+    "title": "お姉ちゃんの弱音",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤがかっこよくない自分を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "night",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [
+        "dariya_childhood_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_date_01_after_hours",
+    "title": "閉店後のお姉ちゃん",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "閉店後の店で、幼馴染としての甘えと本音が重なる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "date",
+    "thumbnail": "still_dariya_after_hours_01",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "dariya_childhood_night_04",
+        "dariya_childhood_night_05"
+      ],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 60
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_dariya_after_hours_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_ending_normal_001",
+    "title": "帰れる店",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤ幼馴染NORMAL。星瓶堂が帰れる場所として残る。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 0,
+      "maxAffection": 79,
+      "endingType": "NORMAL"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 10
+  },
+  {
+    "id": "dariya_childhood_ending_good_001",
+    "title": "永久就職の願い",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤ幼馴染GOOD。冗談だった永久就職が本音になる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "ending",
+    "thumbnail": "bg_shop_interior_night",
+    "trigger": {
+      "once": true,
+      "weight": 100,
+      "requiresSeen": [],
+      "requiresAnySeen": [
+        "dariya_childhood_night_05",
+        "dariya_childhood_date_01_after_hours"
+      ],
+      "requiresNotSeen": [],
+      "timing": "ending",
+      "mode": "fixed",
+      "minAffection": 80,
+      "maxAffection": 100,
+      "endingType": "GOOD"
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_night",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "dariya_normal_date_02_palace_collaboration",
+    "title": "王宮研究室の息継ぎ",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "王宮研究室で共同作業し、ダリヤが自信のなさを漏らす。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "date",
+    "thumbnail": "still_dariya_palace_collaboration_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "dariya_normal_night_02"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 50
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_dariya_palace_collaboration_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_normal_night_06_limit_night",
+    "title": "限界の夜",
+    "heroineId": "DARIYA",
+    "routeGroup": "normal",
+    "summary": "ダリヤが研究所での限界を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_normal",
+    "galleryTab": "dariya_normal",
+    "eventType": "night",
+    "thumbnail": "still_dariya_limit_night_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "dariya_normal_night_04"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "night",
+      "mode": "random",
+      "minAffection": 70
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_dariya_limit_night_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
+  },
+  {
+    "id": "dariya_childhood_date_02_limit_big_sister",
+    "title": "かっこよくないお姉ちゃん",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "幼馴染の前で、ダリヤが弱い自分を見せる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "date",
+    "thumbnail": "still_dariya_limit_night_01",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "dariya_childhood_night_05"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "date",
+      "mode": "random",
+      "minAffection": 65
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "still_dariya_limit_night_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 12
+  },
+  {
+    "id": "dariya_childhood_morning_06_sleepover_almost",
+    "title": "寝過ごした朝",
+    "heroineId": "DARIYA",
+    "routeGroup": "childhood",
+    "summary": "ダリヤが朝の約束をすっぽかしかけ、店で笑いになる。",
+    "unlock": {
+      "type": "story"
+    },
+    "unlockGroup": "dariya_childhood",
+    "galleryTab": "dariya_childhood",
+    "eventType": "morning",
+    "thumbnail": "bg_shop_interior_service",
+    "trigger": {
+      "once": true,
+      "weight": 80,
+      "requiresSeen": [
+        "dariya_childhood_morning_01"
+      ],
+      "requiresAnySeen": [],
+      "requiresNotSeen": [],
+      "timing": "morning",
+      "mode": "random",
+      "minAffection": 45
+    },
+    "gallery": {
+      "category": "event",
+      "thumbnail": "bg_shop_interior_service",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "物語を読み進めると解放"
+    },
+    "scriptStepCount": 13
   }
 ];
 
@@ -2582,6 +6816,10 @@ if (typeof module !== 'undefined') {
  */
 const EVENT_SCRIPTS = {
   "common_opening_nadir_star_bottle_shop_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
     {
       "type": "scene",
       "bg": "bg_shop_exterior_day",
@@ -2654,6 +6892,2610 @@ const EVENT_SCRIPTS = {
       "type": "end"
     }
   ],
+  "hakima_normal_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "香料の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "昔なじみの棚の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "商会の帳面の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "遊び場だった店の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "研究所帰りの沈黙の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_store_morning_letter_from_family": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ナーディルは一通の封筒を裏返した。砂の粒が少しだけ落ち、見慣れた父の字が朝の光に浮かぶ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "また父さんからだ。……今度はどこだろう。"
+    },
+    {
+      "type": "narration",
+      "text": "同封された写真には、母が見知らぬ崖の上で笑っていた。背景は海なのか湖なのか、地図だけでは判別できない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "母さんは楽しそうだけど、ここ、本当に道がある場所なのか？"
+    },
+    {
+      "type": "narration",
+      "text": "手紙の追伸には「あなたも無理をしないように」と母の丸い字が添えられていた。ナーディルは苦笑して、写真を帳簿の脇に挟む。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_store_night_sister_audit": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉から届いた手紙は、封を切る前から妙な迫力があった。紙の質も、筆圧も、商談の書類そのものだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "資金援助じゃなくて、家族内の低利融資……言い方が強いな。"
+    },
+    {
+      "type": "narration",
+      "text": "最後には、粗利を見なさい、と一文だけ太く書かれている。ナーディルは帳簿を開き直し、今日の数字をもう一度追った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがたい。でも、ここは俺の店として立たせたい。まずは、明日の値札から直そう。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_store_morning_weather_stock": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都新聞の端に、午後から砂嵐の兆しとあった。ナーディルは紙面を畳み、湿気と砂に弱い瓶を棚から下ろす。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "銀砂糖と夜光塩は奥へ。香りの強いものは、栓を二重にしておこう。"
+    },
+    {
+      "type": "narration",
+      "text": "帰ってくる椅子の扱いを思い出しながら手を動かす。店は小さいが、こういう備えひとつで客の信頼は変わる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "今日は派手に売るより、ちゃんと守る営業だな。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは棚の位置をもう一度確かめ、扉の札を表へ返した。星瓶堂の一日が始まる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_store_night_customer_left_item": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後のカウンターに、小さな護符が残っていた。遺跡帰りの客が、支払いの時に外したまま忘れたらしい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "明日、取りに来るかな。保管札をつけておこう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "そういうところは、きっちりしてるのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "そういうところだけ、って言われるかと思った。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "言ってほしいなら言うけど。……でも、客が戻ってくる店って、そういう小さなことからでしょう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "最後の灯りが落ちると、星瓶堂には明日へ持ち越す匂いだけが静かに残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_04_oasis_spice_delivery": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_oasis_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "昼下がりのオアシス通りは、王都より少しだけ風が涼しい。ナーディルは香料箱を抱え、納品先の札を何度も確認していた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この通りまで来ると、王都の中でも旅先みたいに感じるな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "ぼんやりしない。香料は日差しに弱いの。納品が遅れると香りが落ちるわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "すごく詳しいな。叔父さんの店で鍛えられてるんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "……覚えないと、置いていかれるだけだったから。"
+    },
+    {
+      "type": "narration",
+      "text": "言葉はきついのに、箱を持ち直す手つきは丁寧だった。ナーディルはその横顔に、努力で積み上げた時間を見た気がした。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "何を見てるの。褒めるなら、納品が終わってからにして。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_08_festival_street_afterwork": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_festival_street",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、納品帰りの二人は祭り通りを抜けていた。灯りの列と甘い菓子の匂いが、昼の疲れを少しだけ遠ざける。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今日は客足が読めなかったな。祭り前は、もっと贈り物が動くと思ったんだけど。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "読みは悪くないわ。ただ、客は贈り物を買いに来る前に、誰に渡すかで迷うのよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "品物より、人の方を見ろってことか。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "やっと店主らしい顔になってきたじゃない。"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは屋台の灯りに目を細めた。横顔はいつもより柔らかく、ナーディルは返事を少しだけ遅らせた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "……帰るわよ。明日も店を開けるんでしょう。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_09_port_delayed_cargo": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_port_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "港へ向かう通りは、朝から荷車の音で混み合っていた。ナーディルは届くはずの素材名を見て、少しだけ眉を寄せる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "保存薬の材料が遅れると、今日の注文に響くな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "代わりはあるわ。香りは落ちるけど、効き目を優先するならこっち。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "助かる。ハキマがいると、棚が急に頼もしくなるな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "……調子に乗らない。礼は営業が終わってからでいい。"
+    },
+    {
+      "type": "narration",
+      "text": "言いながら、ハキマは迷わず別の瓶を選び出した。星瓶堂の朝は、少しずつ二人の手で整っていく。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_date_03_fortress_caravan_story": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_oasis_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "オアシスの停留所には、北西の要塞から戻った隊商が荷を下ろしていた。護衛たちの笑い声に、ハキマの耳がわずかに動く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "白狼族の人たちも、ああいう仕事が多いんだっけ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "誇り高い仕事よ。私は、よく転ぶ子だったけど。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "転んでも、いつも立ち上がってた。俺はそっちの方を覚えてる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "surprise",
+      "text": "……あんた、そういうことを急に言うの、ずるいわ。"
+    },
+    {
+      "type": "narration",
+      "text": "隊商の鈴が鳴る。幼い頃の砂埃は遠くなったはずなのに、二人の間にはまだ同じ道が続いているようだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_date_03_port_invention_crates": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_port_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "港の風は、王都の市場とは違う匂いがした。異国の木箱が並び、金具や硝子片が陽を受けてきらめいている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラ、足元に気をつけて。荷下ろしの途中だから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "大丈夫です、先輩！　このくらいなら槍の踏み込みより簡単です！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "比較対象が強すぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "でも、こういう箱を見るとわくわくします。誰かの発明の途中が、海を越えてここまで来たんですよ。"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは部品の一つを手に取り、宝石を見るように目を輝かせた。令嬢ではなく、発明家になりたい少女の顔だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "先輩のお父様みたいに、私もいつか誰かの生活を変えるものを作ります。まずは原価計算からですけど！"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_09_palace_lab_delivery": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_lab",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の王宮研究室は、磨かれた器具の光まできちんと並んでいる。ナーディルは納品箱を抱え、入口で少し背筋を伸ばした。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここに出入りできる時点で、ミラの家の信用ってすごいな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "信用は便利です。でも、便利なものほど使い方を間違えると怒られます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "前に危ない実験で叱られた人の言葉は重いな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "surprise",
+      "text": "先輩、それは今言います！？"
+    },
+    {
+      "type": "narration",
+      "text": "言い返す声は明るいが、納品書を握る指には少しだけ力が入っていた。ナーディルは箱の位置をそっと持ち直す。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "一緒に確認しよう。今日は店の名前で来てるから。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_date_03_star_view_rivalry": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_star_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星見台からは、王都の灯りと東の湖のきらめきが同じ夜の中に見えた。ミラは欄干に手を置き、珍しく静かにしている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今日はずいぶん大人しいな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "ナーディルお兄ちゃんのお姉様って、すごい人ですよね。発明家を捕まえて、商社まで作って。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さんは、昔から決めたら速かったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "私だって速いです。卒業も、発明も、店に来るのも。"
+    },
+    {
+      "type": "narration",
+      "text": "強がる声の最後だけ、少し甘えた響きになった。ナーディルは笑わず、星の向こうを見たまま頷く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "知ってる。ミラは昔から、走り出したらなかなか止まらない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "じゃあ、置いていかれないでくださいね。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_08_palace_corridor_rain": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_corridor",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の王宮廊下には、雨音だけが長く残っていた。納品を終えたナーディルは、柱の影で足を止めるダリヤに気づく。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ダリヤ先輩、帰らないんですか。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "帰る場所を選んでいるところ。研究所に戻るか、星瓶堂に寄るか。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "店なら、お茶くらいは出せます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "じゃあ、そっち。君の店は、失敗しても怒鳴られなさそうだから。"
+    },
+    {
+      "type": "narration",
+      "text": "冗談めいた声の奥に、疲れが沈んでいた。ナーディルは返事の代わりに、雨の弱い通路を選んで歩き出す。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "……そういうところ、真面目だよね。ずるいくらい。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_date_04_ruins_quiet_inventory": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_ruins",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王都近郊の地下遺跡入口では、冒険者たちが保存薬や灯りを買い込んでいた。ナーディルは納品書を見ながら、品数を一つずつ確認する。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "命に関わる品は、売れればいいってものじゃないですから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "そういうことを、普通に言えるのが君らしいね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "普通ですか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "研究所だと、普通が一番難しい日もあるよ。"
+    },
+    {
+      "type": "narration",
+      "text": "遺跡の奥から冷たい風が吹いた。ダリヤは白い頬を少しだけ伏せ、ナーディルの納品書を覗き込む。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "手伝う。逃げ場にするには、君の店がちゃんと続いてくれないと困るから。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_date_03_oasis_old_promise": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_oasis_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "オアシスの水面は、月の光を拾って白く揺れていた。ダリヤはしばらく黙ったまま、その色を見ている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "寒くないですか、ダリヤ先輩。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "お姉ちゃんって呼んでくれたら、少し温かくなるかも。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "その効能は保証できません。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "昔、君は色の違う塗り薬を持ってきてくれたよね。効き目は同じだって。"
+    },
+    {
+      "type": "narration",
+      "text": "月明かりの中で、ダリヤの白い頬は静かに見えた。けれど声は、幼い日の居場所を確かめるように柔らかかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "私はあれで、少しだけ自分の顔が嫌いじゃなくなったんだよ。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_05_fountain_errand": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_fountain",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "大学の噴水前で、ナーディルは恩師宛ての暑中見舞いを何度も読み返していた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "「店は順調です」って書くと、先生に見抜かれそうなんだよな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "なら、見栄を張らずに書きなさい。先生相手に格好つけても無駄よ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それはそうだけど、少しくらい頼もしい弟子でいたいだろ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "……頼もしくなりたいって書けばいいのよ。今のあなたなら、その方がずっと本当らしいわ。"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは封筒を受け取り、角をきっちり揃えて返してくれた。叱られたはずなのに、少しだけ背中を押された気がした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_date_04_market_spice_walk": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "仕入れのついでに、市場の香料通りへ出た。子どもの頃より店は増えたはずなのに、曲がり角の匂いだけはあまり変わらない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここ、昔もハキマの家がよく使ってた店だよな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "覚えていたの？　あなた、昔は棚の瓶ばかり見ていたくせに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "転びそうな君を見張ってたからな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "その話は禁止。……でも、見ていてくれたのは覚えてる。"
+    },
+    {
+      "type": "narration",
+      "text": "最後の一言だけ、いつもの勢いより少し小さかった。香料の香りに紛れて、ナーディルは聞こえないふりをした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_10_carriage_countdown": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前の星瓶堂に、馬車の鈴が遠く聞こえた。王都の大商会らしい、時間に正確な音だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "この音、もしかして迎えか？"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "はい！　なので十五分だけください、先輩。十五分あれば棚札を三列直せます！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "朝からそんなに？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "商会では十五分あれば会議がひとつ増えます。星瓶堂なら、もっと楽しいことができますよ。"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは明るく笑いながら、値札と瓶の向きを次々に揃えていく。門限に縛られているというより、限られた時間を遊び場に変えているようだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_date_04_port_parts_shopping": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_port_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "港の倉庫前には、異国製の真鍮部品が木箱ごと積まれていた。仕入れと言えば仕入れだが、ミラの目は完全に実験前の輝きになっている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "買いすぎるなよ。店に置ける量には限りがある。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "大丈夫です、先輩。買うのは必要な分だけです。必要の定義が少し広いだけで。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それを世間では買いすぎって言うんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "でもこの歯車、仕入れ値が相場より一割低いです。港税を入れてもまだ勝てます。"
+    },
+    {
+      "type": "narration",
+      "text": "発明家の目と商人の目が、同じ顔の中で忙しく入れ替わる。ナーディルは呆れながらも、少し頼もしいと思ってしまった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_date_04_market_after_school": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "放課後の市場は、学院帰りの学生と夕方の仕入れ客で少し騒がしかった。ミラは当然のようにナーディルの隣を歩いている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "ナーディルお兄ちゃん、この揚げ菓子、半分こしましょう。帳簿上は仕入れ調査です！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "食べ歩きに帳簿を巻き込むな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "味の確認は重要です。星瓶堂で出すお茶請け候補かもしれません。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "昔から言い訳だけは上手いな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "昔からここで遊んでましたから。お兄ちゃんの横は、だいたい私の席です。"
+    },
+    {
+      "type": "narration",
+      "text": "軽い冗談のはずなのに、最後だけ少し強く聞こえた。市場の喧騒が、その照れ隠しをうまく包んでくれた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_07_camera_sister_rivalry": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、新聞の商業欄にナーディルの姉の名前が載っていた。錬金カメラの新しい販路についての記事だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さん、また大きな契約を取ったのか。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "……やっぱりすごい人ですね。私、あの人にだけは少し負けたくないです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "ミラが？　姉さんに？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "はい。ナーディルお兄ちゃんの隣で一番役に立つ商人枠、空いてますか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "その枠、いつできたんだ。"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは笑っていたが、新聞をたたむ手つきは少し真剣だった。幼い日の遊び場は、いつの間にか彼女にとって勝負の場所にもなっている。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_date_05_palace_lab_lunchbox": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_lab",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王宮研究室へ納品に来たナーディルは、試薬棚の間で昼食の箱を抱えたダリヤを見つけた。周囲の研究員たちは忙しそうに行き来している。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "昼休み、ここで取るのか？"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "食堂に行くと、今日の成果を聞かれるから。箱の中のパンは、私を評価しない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それは……パンの長所かな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "うん。とても優秀。君の店の菓子なら、もっと優秀。"
+    },
+    {
+      "type": "narration",
+      "text": "冗談めかした声の奥に、薄い疲れが残っていた。ナーディルは納品書を閉じ、少しだけ長くそこにいることにした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_date_04_star_view_sister_claim": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_star_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星見台の風は、王都の熱を少しだけ遠ざけてくれる。子どもの頃、ダリヤは家に帰りたくない日に、よくここまで歩いたという。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "ナーディル。ここ、お姉ちゃん席にしていい？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "surprise",
+      "text": "何だ、その席。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "君が弱った時、私が隣に座るための席。永久予約。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それ、俺が断れる余地ある？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "ないよ。昔から、君は私に逃げ場所をくれたから。今度は私の番。"
+    },
+    {
+      "type": "narration",
+      "text": "言い方はいつもの調子なのに、横顔は月明かりのように静かだった。ナーディルは返事の代わりに、少しだけ席を空けた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_10_spice_delivery_to_port": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前の床に、港行きの小箱が三つ並んでいた。香料を扱う箱だけ、紐の結び方が少し違う。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "香料問屋の荷は、これで合ってるか？"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "結びが甘い。潮風を吸ったら中で香りが混ざるわ。貸して。"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマの手は迷わず紐を解き、きっちり結び直していく。言葉はきついが、品物への扱いは誰より丁寧だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "君がいると、朝の店が締まるな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "店主が緩いからよ。……でも、少しは覚えてきたじゃない。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_09_oasis_postcard": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、父から届いた写真には、見覚えのないオアシスと、楽しそうに笑う母の姿が写っていた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "どこだよ、ここ……。うちの近くの砂漠じゃないよな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "いい写真。地図をなくした人の顔をしてる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "よく分かったな。たぶん父さんだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "自由な人たちだね。少し羨ましい。私は、逃げるために遠くへ行ったのに、まだ研究所の中にいる気がする。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは写真を棚に立てかけた。遠い場所の明るさが、夜の店に少しだけ入り込んだ。"
+    },
+    {
+      "type": "end"
+    }
+  ],
   "hakima_normal_route_opening_001": [
     {
       "type": "bgm",
@@ -2700,6 +9542,14 @@ const EVENT_SCRIPTS = {
       "speakerId": "NADER",
       "expression": "normal",
       "text": "先生の紹介なら間違いない。まずは、ちゃんと挨拶しないと。"
+    },
+    {
+      "type": "narration",
+      "text": "紹介状の端には、香料問屋の名も添えられていた。白狼族の血を引く彼女が、今は叔父の店で香料と流通を学んでいるらしい。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは、大学の実習で何度か見た横顔を思い出す。誰よりも早く来て、誰よりも遅くまで手順を確認していた人だった。"
     },
     {
       "type": "focus",
@@ -2778,6 +9628,10 @@ const EVENT_SCRIPTS = {
     }
   ],
   "hakima_normal_morning_01_shelves_and_sandalwood": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
     {
       "type": "scene",
       "bg": "bg_shop_interior_service",
@@ -2872,6 +9726,10 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_morning_02_ledger_margin": [
     {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
       "type": "scene",
       "bg": "bg_shop_interior_service",
       "still": null,
@@ -2965,6 +9823,10 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_morning_03_mothers_letter": [
     {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
       "type": "scene",
       "bg": "bg_shop_interior_service",
       "still": null,
@@ -3051,6 +9913,10 @@ const EVENT_SCRIPTS = {
     }
   ],
   "hakima_normal_morning_04_soil_nickname": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
     {
       "type": "scene",
       "bg": "bg_shop_interior_service",
@@ -3160,6 +10026,10 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_morning_05_shopkeepers_face": [
     {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
       "type": "scene",
       "bg": "bg_shop_interior_service",
       "still": null,
@@ -3249,6 +10119,10 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_night_01_after_first_business": [
     {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
       "type": "bg",
       "id": "bg_shop_interior_night"
     },
@@ -3329,6 +10203,10 @@ const EVENT_SCRIPTS = {
     }
   ],
   "hakima_normal_night_02_teacher_postcard": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
     {
       "type": "bg",
       "id": "bg_shop_interior_night"
@@ -3434,6 +10312,10 @@ const EVENT_SCRIPTS = {
   ],
   "hakima_normal_night_03_white_wolf_shadow": [
     {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
       "type": "scene",
       "bg": "bg_shop_exterior_night",
       "still": null,
@@ -3529,6 +10411,10 @@ const EVENT_SCRIPTS = {
     }
   ],
   "hakima_normal_night_04_almost_invitation": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
     {
       "type": "bg",
       "id": "bg_shop_interior_night"
@@ -3638,7 +10524,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_night_05_before_confession": [
     {
       "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
+      "id": "BGM_EXTRA_SORROW_1"
     },
     {
       "type": "bg",
@@ -3753,7 +10639,7 @@ const EVENT_SCRIPTS = {
   "hakima_normal_date_01_festival_spice_street": [
     {
       "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
+      "id": "BGM_EXTRA_JOY_2"
     },
     {
       "type": "scene",
@@ -3846,12 +10732,6 @@ const EVENT_SCRIPTS = {
       "speakerId": "HAKIMA",
       "expression": "joy",
       "text": "……本当に、そういう言い方はずるい。"
-    },
-    {
-      "type": "still",
-      "id": null,
-      "transition": "dissolve",
-      "speed": "long"
     },
     {
       "type": "scene",
@@ -3963,10 +10843,6 @@ const EVENT_SCRIPTS = {
     }
   ],
   "hakima_normal_ending_good_001": [
-    {
-      "type": "bgm",
-      "id": "BGM_THEME_HAKIMA"
-    },
     {
       "type": "bg",
       "id": "bg_shop_interior_night"
@@ -4103,6 +10979,6436 @@ const EVENT_SCRIPTS = {
     {
       "type": "narration",
       "text": "店の灯りがひとつ残る。白い香りの中で、二人の距離だけが昨日より近かった。星瓶堂の夜は、静かに明日へ続いていく。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "市場の喧騒の中で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。人の流れは速いのに、自分だけが祖父の店の前に取り残されている気がした。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "店を続けるって決めたのに、何を買えばいいかで足が止まるのは情けないな。"
+    },
+    {
+      "type": "narration",
+      "text": "背後から、聞き慣れた足音が近づく。気づかれていないと思っていた顔で、ハキマが視線をそらした。"
+    },
+    {
+      "type": "narration",
+      "text": "小さい頃、ハキマはよく転んだ。本人は絶対に認めないが、そのたびに土埃を払って立ち上がる顔だけは、ナーディルの記憶に残っている。"
+    },
+    {
+      "type": "narration",
+      "text": "あれから彼女は、努力で飛び級まで追いついてきた。だからこそ今の刺々しさには、ただの不機嫌ではない何かが混ざっている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "暗い顔で市場の真ん中に立たないで。邪魔よ、ナーディル。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマ？　偶然？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "偶然に決まっているでしょう。……少しだけ、心配だっただけ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "昔から、そういう時だけは分かりやすいな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "昔の話をするなら、私だって言いたいことはあるわ。あなたは簡単に先へ行くから、追いつくのに必死だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "俺は、ハキマが必死だったことに気づけてなかったんだな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "今から気づきなさい。店を手伝う。断るなら、父に頼んで正式に話を通すわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それは断れないやつだ。助かるよ。"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマは勝ったように顎を上げた。市場の声は相変わらず大きいのに、ナーディルの足元だけは少し軽くなっていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店札の紐は、昔から少しだけ擦り切れていた。ナーディルが結び直そうとすると、ハキマが横から手を出す。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "それ、昔もあなたが結んでほどけたわ。祖父さんが笑って直していたのを覚えてる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "覚えてるのか。俺より詳しいかもしれない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "当然よ。ここは私の逃げ場所でもあったもの。……余計な意味じゃないわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "なら、今日は二人でちゃんと結ぼう。昔よりは上手くできるはずだ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルはハキマの言葉を胸の奥で転がしながら、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルが薬瓶を並べていると、ハキマは一つずつ光に透かしていた。遠慮のない手つきは、昔からこの店を知っている人のものだった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "この瓶、栓が甘い。昔ならお祖父様に叱られていたわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "懐かしい名前を出すと、反論しにくいな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "反論する前に直しなさい。あなたは優秀だけど、身近なことほど雑になる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それ、昔から言われてた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "ええ。だから私が見るの。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルはハキマの言葉を胸の奥で転がしながら、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "姉からの手紙には、資金援助ではなく監査だと強い筆圧で書いてあった。ナーディルは封筒を畳み、深く息をつく。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "相変わらず、姉さんの字は説得力がある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "サフィーヤさんらしいわ。あの人が家を継いでいたら、色々と話は早かったのに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "話？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "何でもない。……ただ、あなたを婿に欲しいと父に頼む予定が、少し狂っただけよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "今、かなり大事なことを言わなかった？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "開店前よ。仕事をしなさい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルはハキマの言葉を胸の奥で転がしながら、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の大学新聞に、飛び級候補の記事が載っていた。ナーディルが何気なく広げると、ハキマの指が紙面を押さえる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "あなたと一緒に卒業するために、私は死ぬほど勉強したの。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "……ごめん。俺はそこまで考えてなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "分かっているわ。だから少し腹が立つの。あなたは悪くないのに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今は、同じ店の棚を見てる。追いつくとか、先に行くとかじゃなくて。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "そうね。今日はそれで許してあげる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルはハキマの言葉を胸の奥で転がしながら、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_morning_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前の店に、古い茶器が出ていた。ナーディルの母がよく使っていたもので、ハキマも幼い頃に何度も見ている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "この茶器、まだあったのね。あなたのお母様が、私に甘いお茶を出してくれた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ハキマはいつも緊張してたな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "あなたの家が、私には少し眩しかったのよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今も？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "今は……居座る口実を探しているくらいには、落ち着くわ。ほら、店を開けなさい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルはハキマの言葉を胸の奥で転がしながら、扉の札を表へ返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の星瓶堂は、昔より静かに見えた。ハキマは戸締まりを手伝いながら、棚の奥を懐かしそうに見る。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "ここでよく隠れていたわ。親と喧嘩した日は特に。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "俺は遊びに来てるだけだと思ってた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "あなたがそう思っていたから、楽だったのよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今も、逃げ場所になるなら使っていい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "そういうことを言うから、私は本気にするの。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店に、言い切れなかった言葉だけが少し残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ナーディルは帳簿の端に不自然な市場のメモを見つけた。ハキマの字で、彼の行き先が細かく書かれている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "これは……俺の仕入れ予定？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "偶然よ。たまたま、あなたが暗い顔で歩いていたから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "それを何日分も？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "半ば見張っていたわ。悪い？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "心配してくれてたんだな。ありがとう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "joy",
+      "text": "責めないのが一番ずるいのよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店に、言い切れなかった言葉だけが少し残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜風が少し強く、店のランプが揺れていた。ハキマは弟への土産だという小さな菓子包みを鞄にしまう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "弟は、私と似ているの。白狼の家では少し居心地が悪い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ハキマが甘やかす理由が分かった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "甘やかしてない。守っているだけ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "同じことかもしれない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "あなたも昔、そうしてくれたのよ。覚えていないでしょうけど。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店に、言い切れなかった言葉だけが少し残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "帳簿を閉じたあと、ハキマはなかなか帰ろうとしなかった。白檀の香りが、夜の店に薄く残っている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "昔、本当に考えていたの。あなたをうちに迎えること。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "婿入りの話？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "笑わないのね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマが真面目に言うなら、笑えないよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "……今は、あなたの店を奪いたいわけじゃない。隣に立つ方法を考えているだけ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店に、言い切れなかった言葉だけが少し残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "戸締まりの音が静かに響く。ハキマは鍵の確認を終えると、いつものように店の前で振り返った。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "明日も来るわ。叔父には話を通してある。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "毎日来ると、大変じゃないか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "大変よ。でも、来たいから来る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それは、仕事として？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "……今夜はまだ答えない。明日も店を開けなさい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店に、言い切れなかった言葉だけが少し残った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_date_01_festival_promise": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_festival_street",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜市の入口で、ナーディルは昔と同じ場所に立っていた。幼い頃、ハキマを待ったことのある石段だ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "昔は、ここで待ってると怒られたな。遅いって。"
+    },
+    {
+      "type": "narration",
+      "text": "人波の向こうから、いつもより整えられた白い髪が近づく。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_festival_night_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "今日は怒らないわ。待っていてくれたから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それだけで許されるなら、いくらでも待つよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "そういうところが、昔からずるいの。"
+    },
+    {
+      "type": "narration",
+      "text": "香料の灯りの下で、ハキマは少しだけ手を伸ばし、すぐに引っ込めた。ナーディルはその手に気づいて、何も言わず隣を歩いた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "いつか、ちゃんと話すわ。父に頼もうとしていたことも、今の私が望んでいることも。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "その時は、俺もちゃんと聞く。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜市から戻っても、白檀と灯油の匂いは残っていた。ナーディルは閉じた扉の前で、幼馴染という言葉の重さを考えていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_ending_normal_001": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星瓶堂は、少しずつ昔の呼吸を取り戻していた。ハキマは相変わらず厳しく、ナーディルは相変わらず少し腰が低い。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "まだ足りないところは多いわ。でも、逃げずに続けているのは認める。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ハキマが昔みたいに来てくれるからだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "昔みたいに、ね。今はそれでいいわ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "幼馴染の距離は、まだ名前を変えない。けれど、店の扉が開くたびに、次の約束は自然に増えていった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_ending_good_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ハキマは一通の封筒を机に置いた。宛名は、彼女の父の名だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "これは？"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "昔、出せなかった相談の続き。あなたをどう扱いたいか、家に話すための手紙よ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ハキマ。俺は、店を捨てるつもりはない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "知っているわ。だから婿入りだけが答えじゃない。私は、あなたの隣に立つ方法を選び直す。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "俺も選びたい。ハキマと、この店を続ける方法を。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "joy",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "なら、一緒に考えなさい。逃げたら、白狼よりしつこく追うから。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "fun",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "封筒はまだ閉じられていない。二人は同じ机で、未来の宛名を少しずつ書き直していった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_02_rain_shelter": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夕方の市場で、乾いた石畳に珍しい雨の匂いが落ちてきた。ナーディルは仕入れの包みを抱え、軒先へ駆け込む。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "マグリバルで雨に降られるとは思わなかったな。"
+    },
+    {
+      "type": "narration",
+      "text": "通りの向こうで、白い髪が雨粒を払う。いつもの仕事着とは違う外出の装いに、ナーディルは声をかけるのを一拍だけ遅らせた。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_rain_shelter_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "見てないで、少し詰めなさい。濡れるでしょう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "ごめん。雨より、ハキマに驚いてた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "そういうことを平気で言うから、あなたは危ないのよ。"
+    },
+    {
+      "type": "narration",
+      "text": "狭い軒先で、雨音だけが二人の間を満たす。ハキマは横を向いたまま、包みの紐を直してくれた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "……昔は、雨の日に転ぶと余計に笑われたわ。今でも少し、足元を見る癖が抜けない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "なら今日は、俺が足元を見るよ。荷物も持つ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "頼りない護衛ね。でも、悪くないわ。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "雨が弱まった頃、ハキマは先に通りへ戻っていった。残った香料の包みは、雨に濡れず、ほんの少しだけ温かかった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_date_03_market_argument": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_ANGER_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "仕入れの日の市場は、声も匂いも強い。ナーディルは珍しい薬草の束を前に、値札と効能書きを何度も見比べていた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "少し高いけど、品質は良い。試しに仕入れてみる価値はあるかな。"
+    },
+    {
+      "type": "narration",
+      "text": "横から伸びた手が、薬草の根元を軽く弾いた。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_market_argument_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "高いだけ。乾燥が甘いわ。今買えば、店に戻る頃には香りが落ちる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "でも、客が探していた種類に近い。逃すのは惜しい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "客の願いに寄り添うのは悪くない。けれど、悪い品を優しく売るのはもっと悪い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "……それは確かに、店に失礼だ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "分かればいいの。代わりに奥の店へ行くわ。少し高いけど、あっちは乾燥が上手い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "結局、高い品は買うんだな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "良いものならね。値切りは私がやる。あなたは余計なことを言わない。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "結局、仕入れはハキマの言う通りになった。悔しさより先に、ナーディルは頼もしさを感じていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_morning_06_morning_visit_still": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の星瓶堂で、ナーディルが開店札を探していると、扉の外で聞き慣れた足音が止まった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "……この足音、完全に開店前の常連だな。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_morning_visit_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "鍵が開いていたから入っただけよ。棚の右側、香料瓶が一本ずれている。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "入って最初にそこを見るのか。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "あなたが見落とすからでしょう。ほら、今日の客が来る前に整えるわよ。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマが帰ったわけではない。ただ、絵の中の余韻を崩さないように、ナーディルは彼女の声だけを思い出しながら棚を直した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_normal_night_06_uncle_permission": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ハキマは香料問屋の伝票を見ながら、小さくため息をついた。いつもの強い声ではなく、少しだけ疲れた音だった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "叔父さんの店、大丈夫なのか？　星瓶堂に来る時間を作るの、大変だろ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "大変よ。従業員の手前、特別扱いはできないもの。だから、かなり頭を下げたわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "そこまでしてくれてたんだな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "anger",
+      "text": "感謝するなら、店を良くしなさい。私が無理を通した理由を、無駄にしないで。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "分かった。ハキマが胸を張れる店にする。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "……今の言い方は、少しだけ合格。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ハキマを見送ったあと、ナーディルは伝票の端に、明日見直す仕入れ先を一つ書き足した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_date_02_festival_old_promise": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、通りの向こうから祭りの音が聞こえていた。ナーディルが戸締まりを終える頃、ハキマは少し離れた場所で待っていた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "待たせた？"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "少しだけ。昔も、あなたは準備が遅かった。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_festival_night_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "子どもの頃、祭りで迷子になった私を、あなたが手を引いて帰してくれたのを覚えてる？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ぼんやりとは。ハキマは怒ってた気がする。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "泣きそうだったから怒っていたの。今なら、もう少し素直に言えるわ。……見つけてくれて、ありがとう。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "解散したあとも、祭りの灯りはしばらく瞼に残った。昔の約束が、今夜は少しだけ別の意味を持っていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_childhood_night_06_father_request": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の帳簿を閉じても、ハキマはしばらく帰らなかった。言いづらいことを、言わずに済ませる顔ではなかった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "sorrow",
+      "text": "昔、あなたを婿に欲しいと父に頼むつもりだった。あれは冗談じゃないわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ハキマ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "でも今は、店ごと欲しいわけじゃない。あなたが守りたいものの隣に、私の場所を作りたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それなら、俺も考えたい。ちゃんと。"
+    },
+    {
+      "type": "focus",
+      "characterId": "HAKIMA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "fun",
+      "text": "今すぐ答えなくていい。ただ、逃げないで。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "逃げない、とナーディルは小さく呟いた。古い店の壁が、その約束を静かに聞いていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_fountain",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "大学の実験棟前で、ナーディルは姉の商会から預かった紹介状を手にしていた。差出人の名前を見た学生たちが、少し距離を置いて囁く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラ・アルハーズ商会の令嬢……。あの危ない実験の子、だよな。"
+    },
+    {
+      "type": "narration",
+      "text": "かつて爆発寸前の試薬に手を出していた少女を、ナーディルは身分も知らず本気で叱ったことがある。"
+    },
+    {
+      "type": "narration",
+      "text": "王家とも取引する大商会の令嬢で、大学では三年飛び級すら噂されている。そんな肩書きだけなら、ナーディルは少し距離を置いたかもしれない。"
+    },
+    {
+      "type": "narration",
+      "text": "けれど彼の記憶に残っているのは、身分より先に危険な試薬へ手を伸ばした少女の目だった。叱られてなお、悔しそうに輝いていた目。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩！　やっぱり先輩ですよね。星瓶堂のお手伝い、私に任せてください！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "元気だな。危ない実験は、店では禁止だよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "分かってます。今日は商売の実験です。まずは原価と回転率から見ましょう！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "いきなり心強いけど、少し怖いな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "大丈夫です。先輩の店、ちゃんと面白くしてみせます。もちろん、赤字にしない範囲で！"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の店先に、馬車の車輪が止まる音がした。開店前にしては立派すぎる迎えだ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩、おはようございます！　夜は門限があるので、朝のうちに来ました！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "勢いがすごいな。学院は？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "課題は馬車の中で終わらせました。では棚を見ます。これ、原価割れしてません？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "初手が鋭い。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは新商品の札を書いていた。そこへミラが、帳簿を見る前から明るく首を傾げる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "先輩、それじゃ原価割れですよ。計算しました？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "一応した。たぶん、少し残る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "たぶんで商会は動きません。手間賃も瓶代も、ちゃんと先輩の仕事の価値です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "厳しいけど、言い方が明るいな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の光の中で、ミラは錬金カメラの記事を切り抜いて持ってきた。何度も読んだ跡がある。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩のお父様は、本当にすごいです。私も、名前だけじゃなく発明で残りたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラならできそうだ。無茶をしなければ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "そこは先輩が止めてくれるんですよね？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "店の前提に危険実験を入れないでくれ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ミラは大きな槍袋を抱えて現れた。細い腕に見えるのに、息ひとつ乱れていない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "それ、重くないのか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "稽古帰りなので軽いです。王宮の先生には、もっと振れって言われます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "商会令嬢の朝としては強すぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "ふふん。戦闘系魔術も得意なんですよ。そこはちょっと自慢です。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の星瓶堂に、ミラが小さな花を持ってきた。高価なものではなく、市場の端で売っていた素朴な花だ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "店先に置いてもいいですか？　通りから見た印象、もう少し明るくできます。商会式の提案です！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ありがとう。星瓶堂が、ミラにはどう見えてる？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "不器用だけど、ちゃんと誰かの役に立ちたい店です。……そういうところ、先輩に似てます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それは褒め言葉として受け取るよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、店の外に商会の馬車が待っていた。ミラは時計を見て、少しだけ頬を膨らませる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "もう帰らないと。門限、意外と厳しいんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "無理して来なくてもいいんだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "無理じゃありません。先輩の店を見るの、勉強になりますから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "それなら、明日は朝にしよう。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "帳簿の端に、ナーディルの姉からの助言が挟まっていた。ミラはそれを見て、少しだけ目を細める。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "サフィーヤさん、やっぱり鋭いですね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さんには商売で勝てる気がしない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "私も、少し悔しいです。いつか商会の人間として、ちゃんと並びたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラなら並べるよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ミラが小さな試作器を取り出した瞬間、ナーディルは反射的に棚から遠ざけた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "店内で爆発しない？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "しません。たぶん。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "anger",
+      "text": "たぶんは禁止。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩、あの時と同じ顔です。危ないものは危ないって、ちゃんと叱ってくれる顔。……そういうところ、ずるいです。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "営業後の帳簿を見ながら、ミラは珍しく静かだった。明るい声の奥で、焦りが少しだけ見える。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "天才って言われるの、嫌いじゃないです。でも、それだけで終わりたくないんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "だから朝から来て、店の数字まで見てくれるんだな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "はい。本物の発明家になるには、暮らしの中で使われるものを知らないと。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "星瓶堂は良い実験場だ。安全な範囲で。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "店の灯りを落とす頃、ミラは迎えの馬車へ向かいながら何度も振り返った。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "明日の朝も来ます。門限に負けない方法、見つけました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "早起きで勝つつもりか。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "はい。朝の仕込みから見ないと、先輩の店の計算は合いませんから。……それに、最初から見たいんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "じゃあ、朝の棚を整えて待ってる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_date_01_starry_rooftop": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_star_view",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "学院の課題を口実に、ナーディルはミラと星見台へ上がった。夜に長く出歩けない彼女にとって、これは少しだけ特別な時間だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "門限、大丈夫？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "今日は許可を取りました。研究です、研究。"
+    },
+    {
+      "type": "still",
+      "id": "still_mira_starry_rooftop_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "先輩。私、すごい家の子じゃなくて、すごいものを作る人になりたいんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "もう、そのために動いてると思う。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩にそう言われると、ずるいくらい嬉しいです。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星見台から戻る頃には、夜風が少し冷えていた。ミラの馬車が角を曲がるまで、ナーディルは店先で見送った。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_ending_normal_001": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星瓶堂の朝は、以前より少し明るくなった。店先の花も、値札の数字も、ミラが残した工夫がそこにある。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "先輩、まだ直せるところはいっぱいあります。だからまた朝に来ますね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "頼もしい後輩だ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "後輩です。今は、ですけど。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは笑って馬車へ戻った。彼女の朝は、星瓶堂の一日を少しだけ急がせてくれる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_ending_good_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ミラは小さな設計図を机に広げた。星瓶堂で使うための、客の注文を整理する道具だった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "先輩の役に立つ発明を、最初に作りたいんです。家の名前じゃなく、私の手で。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "一緒に使って、一緒に直そう。星瓶堂で。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "はい。先輩の隣でなら、私、ちゃんと本物を目指せます。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "fun",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "設計図の上に、二人分の影が重なる。まだ未完成の線は、明日の店へまっすぐ伸びていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星瓶堂の扉は、ミラにとって昔から少し特別だった。大商会の令嬢としてではなく、近所の子どもとして入り込めた場所だからだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラ、また店を遊び場にする気じゃないよな。"
+    },
+    {
+      "type": "narration",
+      "text": "ミラにとって星瓶堂は、昔から少し特別な場所だった。高価な玩具より、棚の奥にある古い試薬瓶の方が、彼女にはずっと面白かった。"
+    },
+    {
+      "type": "narration",
+      "text": "今では大商会の令嬢で、大学の天才として扱われる。それでも彼女は、ここに来ると少しだけ昔の顔に戻る。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "失礼ですね、ナディールお兄ちゃん。今は正式なお手伝いです！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "その呼び方、久しぶりに聞くと破壊力があるな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "じゃあ慣れてください。卒業も余裕なので、朝から通えます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "余裕という言葉が似合いすぎて怖い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "お姉さんの商社に負けないくらい、星瓶堂を面白くしましょう。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の店に、ミラは迷いなく入ってきた。昔からこの扉の軋む音を知っている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "この棚、昔はもっと高く見えました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラが小さかったからだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "今は届きます。だから手伝えます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "成長を棚で感じるのは新しいな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルが値札を書いていると、ミラがにこにこしながら覗き込んできた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "ナーディールお兄ちゃん、その数字だと安すぎます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "その呼び方で叱られると、すごくやりづらい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "効いてますね。商談にも使えそうです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "anger",
+      "text": "使わないで。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "姉の商社の印がついた伝票を見て、ミラはむっと唇を尖らせた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "サフィーヤさん、また先に良い取引を取ってますね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さんは昔から早いから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "私も、いつか並びます。星瓶堂で成果を出してから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "うちで対抗心を燃やすのか。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SURPRISE_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは稽古帰りの槍袋を店の隅に置き、何事もなかったように帳簿を開いた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "店に槍袋がある朝、慣れないな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "護衛もできますよ。お兄ちゃんの店ですから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "頼もしいけど、接客中は振らないでね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "分かってます。たぶん。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_morning_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の仕込みが終わっても、ミラはなかなか帰らなかった。馬車の迎えも、今日は少し遅い。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "学院は本当に大丈夫？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "大丈夫です。少しだけ、昔みたいにここにいたいだけで。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここはミラの遊び場でもあったからな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "今は、もっと大事な場所です。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、外で商会の馬車が待っている。ミラは聞こえないふりをして、棚の埃を払っていた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "もう少しだけ、だめですか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "昔から帰り際に粘るよな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "昔より理由は立派です。店のためです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "その半分くらいは信じるよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "帳簿に残ったミラの字は、思ったより丁寧だった。遊びの延長ではないことが、数字から伝わってくる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "本気で見てくれてるんだな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "当たり前です。お兄ちゃんの店を、ただ懐かしむだけでは嫌です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ありがとう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "もっと褒めてもいいですよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の試作品を前に、ミラは悪びれず笑っていた。ナーディルは安全確認の紙を三枚重ねる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "anger",
+      "text": "安全確認が先。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "はい、お兄ちゃん。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それで誤魔化そうとしてるだろ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "少しだけ。叱ってくれる人がいるの、嫌いじゃないので。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店で、ミラはお兄ちゃんと呼びかけて、途中で言葉を止めた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "どうした？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "ずっとその呼び方でいいのかなって、思っただけです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "変えたいなら、好きに呼んでいいよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "じゃあ、少しずつ考えます。少しずつ考えます。子どもの頃とは違う呼び方を。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは帰り際、店の扉を名残惜しそうに見上げた。昔より少し大きくなった背でも、星瓶堂の看板は高い。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "明日の朝、一番に来ます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "本当に入り浸るつもりだ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "はい。今度は遊びじゃなくて、ちゃんと隣にいるために。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_date_01_visit_sick": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "珍しくナーディルが熱を出し、星瓶堂は半日だけ札を裏返した。午後、遠慮のないノックが店の奥へ響く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ミラ？　今日は来なくていいって言ったのに。"
+    },
+    {
+      "type": "still",
+      "id": "still_mira_visit_sick_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "昔から、お兄ちゃんはそうやって一人で大丈夫にしようとします。今日は聞きません。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "怒られてるのに、少し安心するな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "安心してください。商会仕込みの看病です。高いですよ？"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夕方には熱も少し下がった。枕元に残った薬湯は甘く、ミラらしい強引な優しさの味がした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_ending_normal_001": [
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星瓶堂は、ミラにとって今も入りやすい場所だった。遊び場だった頃とは違うが、扉の音は変わらない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "また朝に来ます。お兄ちゃんの店、まだまだ面白くできますから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "頼りにしてるよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ミラは手を振り、馬車へ駆けていった。近い距離はそのままに、明日の約束だけが増えていく。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_ending_good_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ミラは古い棚の前で足を止めた。幼い頃に背伸びしても届かなかった棚だ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "お兄ちゃんって呼ぶと、安心します。でも、それだけだと少し足りなくなりました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ミラが望む呼び方を、俺もちゃんと聞きたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "じゃあ、今はナーディルさんって呼びます。少し大人っぽく。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "少し照れるな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "昔の遊び場だった店に、新しい呼び方が落ち着く。星瓶堂の明日は、少しだけ眩しく見えた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_morning_06_curfew_carriage": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、店先に立派な馬車が停まった。従者が困った顔をしている横で、ミラは当然のように星瓶堂へ入ってくる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "先輩、朝の一時間だけください！　門限ならぬ出発限界までなら、私、自由です！"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "自由の単位が短いな。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "短いから濃く使うんです。ほら、値札の計算を見せてください。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "商会の令嬢に朝から監査されるとは思わなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "令嬢じゃなくて後輩です。ついでに、原価割れを見逃さない後輩です。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "馬車の鈴が鳴るまで、ミラは店の値札を三枚直した。ナーディルは少しだけ怖くなりながら、営業の準備を進めた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_date_02_assignment_consult": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_fountain",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "学院の噴水前で、ナーディルはミラに呼び止められた。手には課題用紙、顔には明らかに課題以外の期待が浮かんでいる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "課題相談って聞いたけど、量が多くないか？"
+    },
+    {
+      "type": "still",
+      "id": "still_mira_assignment_consult_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "先輩に見てもらうなら、ちゃんと準備します。あと少しだけ、店の話も聞きたいです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "どっちが本題？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "どっちもです。私は本物の発明家になりたいので、店で使われる発明の話も大事なんです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "じゃあ、危ない実験はなしで。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "……それ、まだ覚えてるんですね。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_fountain",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "帰り道、ミラは課題用紙を胸に抱えていた。相談という名目は、次も使えそうだと顔に書いてあった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_normal_night_06_senpai_scolded_me": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ミラは危険物用の棚に貼られた注意書きをじっと見ていた。昔の記憶を、いたずらに触るような目だった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "sorrow",
+      "text": "私、先輩に叱られた時、ちょっと悔しかったんです。家の名前を知っても手加減してくれなかったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "あれは、危なかったから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "分かってます。だから気になったんです。私を商会の娘じゃなく、危ないことをした学生として見てくれた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今も、ミラはミラだよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "……そういうところ、本当にずるいです、先輩。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ミラが帰ったあと、注意書きの文字は以前より少し優しく見えた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_date_02_after_school_shop": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "学院帰りのミラは、昔と同じように星瓶堂の前で足を止めた。立派な商会の令嬢には見えない、少し得意げな顔だ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "また寄り道？"
+    },
+    {
+      "type": "still",
+      "id": "still_mira_after_school_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "寄り道じゃありません。ここは私の第二研究室で、昔の遊び場です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "店主の許可は？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "昔のナーディルお兄ちゃんは許してくれました。今のナディールお兄ちゃんは？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "掃除を手伝うなら許可。"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "やった。じゃあ、ついでに新商品の相談もします！"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_day",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ミラが店へ駆け込む背中は、昔より少し大人びて、それでも十分にやんちゃだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "mira_childhood_night_06_sister_rivalry": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、姉サフィーヤから届いた商社の広告を、ミラは妙に真剣な顔で読んでいた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "normal",
+      "text": "やっぱりすごいですね、サフィーヤさん。悔しいくらい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さんに対抗意識があるのか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "fun",
+      "text": "あります。だって、ナーディルお兄ちゃんの隣に一番自然に立っていた人ですから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "姉さんは姉さんだよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "MIRA",
+      "expression": "joy",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "MIRA",
+      "expression": "joy",
+      "text": "分かってます。でも私は、別の形で隣に立ちます。発明家としても、女の子としても。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ミラの宣言は明るいのに、冗談には聞こえなかった。ナーディルは広告を畳み、少しだけ背筋を伸ばした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_spot_fountain",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "大学の噴水前で、ナーディルは恩師の研究室へ向かう途中だった。そこへ、王立研究所の制服を少し着崩したダリヤが、疲れた顔で手を振る。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ダリヤ先輩。研究所の用事ですか？"
+    },
+    {
+      "type": "narration",
+      "text": "白面の鬼族。王立研究所の若い錬金術師。肩書きだけなら、ダリヤはどこに出しても恥ずかしくない人だった。"
+    },
+    {
+      "type": "narration",
+      "text": "けれど詩吟部で並んでいた頃の彼女は、詩の出来に肩を落としながら、誰よりも真面目に下手な発声練習をしていた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "うん。仕事のふりをした避難、かな。君は？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "店のことで相談に。思ったより、経営が難しくて。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "他人の不幸を見に来たつもりだったのに、真面目すぎて刺さるね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "え？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "こっちの話。先生に言われたら、少し手伝うよ。研究所にいる時間が減るなら助かるし。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、扉の鈴が鳴った。入ってきたダリヤは、朝そのものに納得していない顔をしている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "朝って、どうして来るんだろうね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "来てくれたのは助かります。寝てません？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "少しだけ寝た。王立研究所基準では十分。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "基準を疑った方がいいです。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは研究所向けの納品書を広げていた。品名は難しく、注文数は妙に細かい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "これは急ぎじゃない。研究所の人間は、急ぎって書くのが趣味なんだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "助かります。全部急ぎに見えてました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "全部急ぎなら、世界はもう少し早く終わってる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "妙に説得力がありますね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の光が店に差し込み、ダリヤの白い肌をいっそう明るく見せた。彼女は視線に気づいて、少し肩をすくめる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "珍しいでしょ。鬼族でこの白さは、月光神の加護とか言われる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "綺麗だと思いました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "そういうまっすぐな感想、逃げ場がないね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "すみません。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "謝られるほど嫌じゃないよ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "古い大学新聞から、詩吟部の記事が出てきた。ナーディルは思わず目を逸らす。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "懐かしい。君も私も、詩の才能は壊滅的だった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "思い出させないでください。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "でも、声を出す場所があったのは悪くなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ダリヤ先輩にとっても？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "うん。鬼があまりやらないから、選んだだけだったけどね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_morning_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "約束の時間を少し過ぎて、ダリヤが息を切らして入ってきた。長身の彼女が小さく頭を下げる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "ごめん。寝坊した。夢の中では到着してた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "夢の中の納品は助かりませんね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "手厳しい。君、店主らしくなってきたね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ダリヤ先輩が来てくれるなら、少し遅れても大丈夫です。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の店に、控えめな鈴の音がした。ダリヤは研究所の上着を脱ぎ、深く息を吐く。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "ここ、静かで助かる。研究所は、天才の音が多すぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "天才の音？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "自信満々の足音とか、失敗しても楽しそうな声とか。眩しいんだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここで休んでいってください。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "帳簿を閉じたあとも、ダリヤは帰ろうとしなかった。ランプの光が、白い横顔に薄くかかる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "研究所にいると、いつメッキが剥がれるかって考える。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "飛び級して、研究所に入った人が？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "目的が、親を見返すことだったからね。叶った後の燃料がない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "燃料は、ここで少し補給していってください。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "棚の高い瓶を取ろうとして、ナーディルが脚立を引き寄せるより早く、ダリヤがひょいと手を伸ばした。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "これ？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "届くんですね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "必要なら君ごと持ち上げるよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "それは遠慮します。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "残念。少しやってみたかった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の帳簿には、細かい修正がびっしり入っていた。ダリヤはそれを見て、少しだけ目を伏せる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "君は、ちゃんと向き合ってるね。逃げ道があるのに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "逃げ道はありました。でも、祖父たちの店を置いていけなくて。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "そういうの、眩しい。私は反発だけで走って、止まり方が分からなくなった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "一緒にゆっくり止まるのは、だめですか？"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "最後のランプを消す時間になっても、ダリヤは椅子から立たなかった。珍しく、言い訳もない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "今日は、もう少しここにいたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "いいですよ。お茶を淹れます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "甘やかすと、居つくよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "研究所より息がしやすいなら、少しくらい。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_date_01_rain_corridor": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_corridor",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "研究所への納品帰り、急な雨で王宮の回廊に足止めされた。石の床に、雨音だけが静かに響く。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "雨宿りとしては、ずいぶん立派な場所ですね。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_rain_corridor_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "立派な場所ほど、居場所じゃない感じがする。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "星瓶堂は？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "あそこは、少し散らかってるから楽。君も、完璧じゃないし。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "褒め言葉として受け取ります。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "雨が止む頃、ダリヤの足取りは少し軽くなっていた。ナーディルは店に戻り、濡れた納品書を丁寧に乾かした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_ending_normal_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の椅子に、ダリヤが座っていた跡が残っている。店は静かで、研究所の遠い音はここまで届かない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "また来るよ。ここは、少し呼吸がしやすい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "いつでもどうぞ。店としても、俺としても助かってます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "そう言われると、逃げ場じゃなくなってしまうね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ダリヤは小さく笑って夜へ戻った。星瓶堂には、彼女が休むための椅子がひとつ増えたようだった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_ending_good_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ダリヤは白い手でランプの火を小さくした。月明かりが窓から入り、店の瓶を淡く光らせる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "私は、親を見返すために走ってきた。止まったら空っぽだと思ってた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "空っぽなら、ここで少しずつ入れ直しましょう。急がなくていい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "君は真面目で、少し無茶なことを言うね。……でも、信じたくなる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "俺も、ダリヤ先輩にいてほしいです。逃げ場所としてだけじゃなく。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "fun",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "月白の光の中で、二人は明日の仕入れ表を見直した。居場所は、案外そんな小さな作業から始まるのかもしれなかった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_route_opening_001": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "市場の端で、ナーディルは仕入れ籠を抱えたまま立ち止まっていた。そこへ、昔から知る低い声がのんびり落ちてくる。"
+    },
+    {
+      "type": "narration",
+      "text": "昔のダリヤは、ナーディルの家にいる時だけ少し息を抜いた。白い顔をからかわれることも、家のことを聞かれることも、そこではなかったからだ。"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルが何気なく言った一言を、彼女がどれほど大事に抱えていたのか。当時の彼は、まだ知らない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "ナーディル。暗い顔をしているね。お姉ちゃんに相談する？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ダリヤ先輩、その呼び方は外だと目立ちます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "昔は呼んでくれたのに。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "呼ばされた、の方が近いです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "じゃあまた練習しよう。永久就職希望のお姉ちゃんとして、店を手伝うよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "情報量が多いな……でも、助かります。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "約束の時間を過ぎて、ダリヤがゆっくり店に入ってきた。髪は少し乱れ、顔には反省が半分だけある。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "ごめん。お姉ちゃん、朝に弱い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "知ってます。昔からです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "理解のある弟分で助かる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "弟分扱いは保留で。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "古い薬箱から、色違いの塗り薬が出てきた。ナーディルは懐かしそうに瓶を並べる。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "それ、覚えてる。私が白い顔を嫌だって言った時、君が持ってきた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "色は違うけど効能は同じ、って言った気がします。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "うん。あれで、私はかなり救われた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "そんな大事なことだったんですね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "姉からの手紙に、ダリヤ宛ての追伸が混じっていた。ナーディルは不思議そうに封筒を見直す。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "サフィーヤとは同い年だからね。親友だよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "姉さんが親友に何を書いたか、少し怖いです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "君の生活態度の報告を求められた。お姉ちゃんとして厳しく見るね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "監査が二重になった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "朝の新聞に王立研究所の記事が載っていた。ダリヤはそれを見て、少し気まずそうに目をそらす。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "かっこいいお姉ちゃんでいたくて、研究所に入ったんだけどね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "十分かっこいいと思います。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "君は昔から採点が甘い。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "効能は同じ、ですから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "それ、まだ効くね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_JOY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "開店前、ダリヤはいつの間にか奥で茶を淹れていた。昔からこの家に入り浸っていた人の自然さだった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "お茶、薄めにした。朝だから。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "完全に家の動きですね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "永久就職希望だから、予行練習。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "その言い方、毎回強いな。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "ナーディルは残った言葉を胸にしまい、今日の営業へ向けて扉の札を表に返した。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_01": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ダリヤは店の奥の椅子に深く座っていた。昔も、彼女はよくここで時間を潰していた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "昔、家に帰りたくなくてここに来てた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "俺は、遊びに来てるんだと思ってました。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "君がそう思ってくれてたから、救われたんだよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "今も、帰りたくない日はいてください。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_02": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "脚立から降りる時、ナーディルが少しよろけた。次の瞬間、ダリヤの腕が当然のように支える。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "抱える？"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "大丈夫です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "遠慮しなくていいのに。お姉ちゃん、力あるよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "知ってるから遠慮してます。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_03": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の帳簿を見たダリヤは、わざとらしく真面目な顔で頷いた。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "サフィーヤに報告しよう。ナーディルは今日も真面目でした、と。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "姉さんへの報告網が強すぎる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "親友だからね。君を甘やかす権利も共有してる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "そこは共有しないでください。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_04": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさの中で、ダリヤは空の椅子を見つめていた。そこは昔、彼女がよく座っていた場所だった。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "王立研究所に、未練がないと言ったら嘘になる。でも、ここにいる方が呼吸が楽。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここで働くのは、逃げですか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "逃げでもいい。君の隣へ逃げられるなら、悪くない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "まっすぐ言いますね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_night_05": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_1"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "夜の店で、ダリヤは珍しく背筋を丸めていた。長身の影が、ランプの下で少し小さく見える。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "かっこいいお姉ちゃんでいたかったけど、今日は無理。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "無理な日は、無理って言っていいです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "君にそう言われると、甘えたくなる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "少しなら。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後の静けさが戻る。窓の外では、王都の灯りがゆっくり夜に溶けていた。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_date_01_after_hours": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ダリヤは帰る気配もなく店の奥に座っていた。ナーディルが茶を置くと、彼女はゆっくり顔を上げる。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_after_hours_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "ここにいると、昔の私が少し静かになる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "昔から、ここにいましたもんね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "うん。君が色違いの薬を持ってきた日から、ずっと好きな場所。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "場所だけですか？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "いじわるになったね。お姉ちゃん、嬉しい。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_exterior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ダリヤを見送ったあと、ナーディルは古い薬箱をそっと閉じた。色の違う瓶が、今も同じ棚に並んでいる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_ending_normal_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "星瓶堂の奥には、ダリヤがよく座る椅子ができていた。正式な席ではないが、誰もそこに別の荷物を置かない。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "normal",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "normal",
+      "text": "また来るね。お姉ちゃんの席、空けておいて。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "予約席にしておきます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "いい弟分だ。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "関係の名前はまだ昔のままでも、帰る場所は確かにここにあった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_ending_good_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ダリヤは古い薬箱を開けて、色違いの塗り薬を並べた。効能は同じ。幼いナーディルが言った言葉が、今も残っている。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "永久就職希望って、冗談みたいに言ってた。でも本当は、君の隣にいる理由が欲しかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "理由なら、一緒に作りましょう。仕事でも、暮らしでも。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "……お姉ちゃん、かなり本気にするよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "その呼び方は、少しずつ相談で。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "fun",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "そこも含めて、長期契約だね。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "二つの薬瓶は、同じ棚に並んだ。色は違っても、効能は同じ。星瓶堂の夜に、昔の約束が新しい形で息をした。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_date_02_palace_collaboration": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_SORROW_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_lab",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "王宮の研究室は、器具の光まで整って見えた。ナーディルは納品書を抱え、隣のダリヤの横顔をうかがう。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "ここで働いているの、やっぱりすごいですね。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_palace_collaboration_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "すごい場所にいるだけで、私まで本物になるわけじゃないよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "でも、今の調合手順を直したのはダリヤ先輩です。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "君、褒め方がまっすぐで逃げにくいね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "逃がさないように言いました。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_palace_lab",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "研究室を出る頃、ダリヤは少しだけ肩の力を抜いていた。立派な部屋より、隣の足音の方が頼りになる日もある。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_normal_night_06_limit_night": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_2"
+    },
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_night"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、扉の鈴が一度だけ鳴った。そこに立っていたダリヤは、いつもの冗談を忘れたような顔をしていた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ダリヤ先輩。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_limit_night_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "今日は、研究所に戻りたくない。何も壊してないのに、ずっと壊れそうな気がする。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "戻らなくていい時間まで、ここにいてください。お茶を淹れます。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "甘やかすと、私は本当に居つくよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "居ついてから考えましょう。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "湯気が上がるまで、二人は何も話さなかった。その沈黙が、今夜は一番必要な薬だった。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_date_02_limit_big_sister": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_CRY_1"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "閉店後、ダリヤはいつもの椅子ではなく、店の奥の床に近い場所で膝を抱えていた。かっこいいお姉ちゃん、という冗談は今夜だけ出てこない。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "sorrow",
+      "text": "ダリヤ先輩。無理しなくていいです。"
+    },
+    {
+      "type": "still",
+      "id": "still_dariya_limit_night_01",
+      "transition": "dissolve",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "今日は、かっこよくない。君に見せたくなかったけど、他に行く場所がなかった。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "昔、ここに来てくれてよかったと思ってます。今も同じです。"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "……本当に、君は効能が変わらないね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "色は少し変わったかもしれません。"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_night",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "ダリヤが小さく笑った。古い薬箱の中で、色違いの瓶が静かに並んでいる。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "dariya_childhood_morning_06_sleepover_almost": [
+    {
+      "type": "bgm",
+      "id": "BGM_EXTRA_FUN_2"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_shop_interior_service",
+      "still": null,
+      "characters": [
+        {
+          "id": "NADER",
+          "expression": "normal",
+          "position": "center"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "narration",
+      "text": "約束の時間を過ぎても、ダリヤは来なかった。ナーディルが棚を一列整え終えた頃、扉が静かに開く。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "sorrow",
+      "transition": "slideLeft",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "sorrow",
+      "text": "……おはよう。夢の中では手伝ってた。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "fun",
+      "text": "夢の中の棚は綺麗でした？"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "fun",
+      "text": "完璧。だから現実の棚も、たぶん少しは良くなる。"
+    },
+    {
+      "type": "line",
+      "speakerId": "NADER",
+      "expression": "normal",
+      "text": "じゃあ現実のお姉ちゃんにも働いてもらいます。"
+    },
+    {
+      "type": "focus",
+      "characterId": "DARIYA",
+      "expression": "joy",
+      "transition": "crossfade",
+      "speed": "short"
+    },
+    {
+      "type": "line",
+      "speakerId": "DARIYA",
+      "expression": "joy",
+      "text": "その呼び方、今のは減点なし。"
+    },
+    {
+      "type": "focus",
+      "characterId": "NADER",
+      "expression": "normal",
+      "transition": "slideRight",
+      "speed": "short"
+    },
+    {
+      "type": "narration",
+      "text": "少し遅れた朝だったが、店の空気は悪くなかった。ナーディルは笑いをこらえながら、開店札を表へ返した。"
     },
     {
       "type": "end"
@@ -21479,7 +34785,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "宵星の護り指輪",
     great_success: "黎明星の名工指輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "AS",
     principleName: "星",
     itemType: "ADN_01",
@@ -21491,7 +34797,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "星灯りの耳飾り",
     great_success: "星王の王家耳飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "AS",
     principleName: "星",
     itemType: "ADN_02",
@@ -21503,7 +34809,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "星導の守り首飾り",
     great_success: "天穹の秘宝首飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "AS",
     principleName: "星",
     itemType: "ADN_03",
@@ -21515,7 +34821,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "星霊の旅腕輪",
     great_success: "星詠みの名工腕輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "AS",
     principleName: "星",
     itemType: "ADN_04",
@@ -21527,7 +34833,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "天図の留め具",
     great_success: "運命星の王家留め具",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "AS",
     principleName: "星",
     itemType: "ADN_05",
@@ -21539,7 +34845,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "泡霊薬の旅指輪",
     great_success: "天露の王家指輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "EL",
     principleName: "霊薬",
     itemType: "ADN_01",
@@ -21551,7 +34857,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "清泉の揺れ耳飾り",
     great_success: "聖滴の秘宝耳飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "EL",
     principleName: "霊薬",
     itemType: "ADN_02",
@@ -21563,7 +34869,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "蒼露の旅首飾り",
     great_success: "玻璃霊薬の名工首飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "EL",
     principleName: "霊薬",
     itemType: "ADN_03",
@@ -21575,7 +34881,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "浄霧の腕輪",
     great_success: "癒しの雫の王家腕輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "EL",
     principleName: "霊薬",
     itemType: "ADN_04",
@@ -21587,7 +34893,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "澄み雫の装飾留め具",
     great_success: "神泉の秘宝留め具",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "EL",
     principleName: "霊薬",
     itemType: "ADN_05",
@@ -21599,7 +34905,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "花芽の旅指輪",
     great_success: "生命奔流の王家指輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "LI",
     principleName: "生命",
     itemType: "ADN_01",
@@ -21611,7 +34917,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "瑞葉の揺れ耳飾り",
     great_success: "生命樹の秘宝耳飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "LI",
     principleName: "生命",
     itemType: "ADN_02",
@@ -21623,7 +34929,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "再生の旅首飾り",
     great_success: "豊穣の名工首飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "LI",
     principleName: "生命",
     itemType: "ADN_03",
@@ -21635,7 +34941,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "緑脈の腕輪",
     great_success: "不死芽の王家腕輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "LI",
     principleName: "生命",
     itemType: "ADN_04",
@@ -21647,7 +34953,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "活力の装飾留め具",
     great_success: "大地脈の秘宝留め具",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "LI",
     principleName: "生命",
     itemType: "ADN_05",
@@ -21659,7 +34965,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "白鋼の護り指輪",
     great_success: "星鍛えの名工指輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "ME",
     principleName: "金属",
     itemType: "ADN_01",
@@ -21671,7 +34977,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "銀磨きの耳飾り",
     great_success: "月白銀の王家耳飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "ME",
     principleName: "金属",
     itemType: "ADN_02",
@@ -21683,7 +34989,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "金銀細工の守り首飾り",
     great_success: "王工房の秘宝首飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "ME",
     principleName: "金属",
     itemType: "ADN_03",
@@ -21695,7 +35001,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "鋼芯の旅腕輪",
     great_success: "金剛の名工腕輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "ME",
     principleName: "金属",
     itemType: "ADN_04",
@@ -21707,7 +35013,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "鏡銀の留め具",
     great_success: "太陽鋼の王家留め具",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "ME",
     principleName: "金属",
     itemType: "ADN_05",
@@ -21719,7 +35025,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "琥珀磨きの細工指輪",
     great_success: "蜃気楼の秘宝指輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "SA",
     principleName: "砂",
     itemType: "ADN_01",
@@ -21731,7 +35037,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "流砂の細工耳飾り",
     great_success: "黄金砂の名工耳飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "SA",
     principleName: "砂",
     itemType: "ADN_02",
@@ -21743,7 +35049,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "乾き守りの首飾り",
     great_success: "不朽砂の王家首飾り",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "SA",
     principleName: "砂",
     itemType: "ADN_03",
@@ -21755,7 +35061,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "風紋の護腕輪",
     great_success: "悠久砂丘の秘宝腕輪",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "SA",
     principleName: "砂",
     itemType: "ADN_04",
@@ -21767,7 +35073,7 @@ const ITEM_DISPLAY_NAMES = {
     success: "砂丘の旅留め具",
     great_success: "砂王の名工留め具",
     genre: "ADN",
-    genreName: "アクセサリー",
+    genreName: "装飾品",
     principle: "SA",
     principleName: "砂",
     itemType: "ADN_05",
@@ -29599,7 +42905,7 @@ const PANEL_TITLES = {
 };
 
 const GENRE_LABELS = {
-  ADN: 'アクセサリー',
+  ADN: '装飾品',
   ARM: '防具',
   CLT: '衣服',
   DAY: '日用品',
@@ -36520,6 +49826,12 @@ class GameController {
   syncBgm() {
     if (!this.bgm) return;
     if (this.session.phase === 'TITLE') return;
+    // Runtime authored events can request their own BGM via bgm(...) steps.
+    // The main update loop calls syncBgm() after rendering, so without this
+    // guard MAIN_GAME/ENDING phase BGM immediately overwrites event BGM during
+    // normal play.  Gallery playback does not hit that session BGM path, which
+    // is why event BGM seemed correct only from the event collection.
+    if (this.eventState?.active) return;
     this.bgm.playForSession(this.session);
   }
   getBgmState() { return this.bgm?.getState ? this.bgm.getState() : null; }
