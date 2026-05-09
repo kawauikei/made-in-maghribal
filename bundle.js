@@ -1956,7 +1956,7 @@ const EVENT_MANIFEST = [
     "id": "hakima_normal_sample_001",
     "title": "サンプルイベント",
     "heroineId": "HAKIMA",
-    "summary": "執筆演出の動作確認用サンプル。ハキマとの会話をテストします。",
+    "summary": "執筆演出の動作確認用サンプル。背景・BGM切り替え・SE・スチル・選択肢をテストします。",
     "unlock": {
       "type": "always"
     },
@@ -1967,7 +1967,24 @@ const EVENT_MANIFEST = [
       "hiddenTitle": "？？？？",
       "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
     },
-    "scriptStepCount": 15
+    "scriptStepCount": 32
+  },
+  {
+    "id": "hakima_simple_001",
+    "title": "演出確認用（シンプル）",
+    "heroineId": "HAKIMA",
+    "summary": "選択肢なし。演出と立ち絵の接地感を確認するためのスクリプトです。",
+    "unlock": {
+      "type": "always"
+    },
+    "unlockGroup": "hakima_normal",
+    "gallery": {
+      "category": "heroine",
+      "thumbnail": "still_hakima_morning_visit_01",
+      "hiddenTitle": "？？？？",
+      "hiddenSummary": "ハキマ通常ルートをクリアすると解放"
+    },
+    "scriptStepCount": 11
   }
 ];
 
@@ -2184,6 +2201,12 @@ const EVENT_SCRIPTS = {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "normal",
+      "text": "今日はいい風が吹いているわ。街も賑わっているみたい。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
       "text": "あなたも一杯、どうかしら？"
     },
     {
@@ -2204,14 +2227,34 @@ const EVENT_SCRIPTS = {
       "id": "L_YES"
     },
     {
+      "type": "sfx",
+      "id": "SE_UI_DECIDE"
+    },
+    {
+      "type": "bgm",
+      "id": "main02_shop"
+    },
+    {
       "type": "line",
       "speakerId": "HAKIMA",
       "expression": "joy",
       "text": "ふふっ、いい返事ね。最高の一杯を淹れてあげるわ。"
     },
     {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "この茶葉はね、西の山で採れた特別なものなの。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "香りがとてもいいでしょう？"
+    },
+    {
       "type": "jump",
-      "id": "L_STILL"
+      "id": "L_DIRECTION"
     },
     {
       "type": "label",
@@ -2224,21 +2267,162 @@ const EVENT_SCRIPTS = {
       "text": "あら、残念。せっかく用意したのに。"
     },
     {
-      "type": "label",
-      "id": "L_STILL"
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "でも、無理にとは言わないわ。気分じゃない時もあるものね。"
     },
     {
-      "type": "still",
-      "id": "still_hakima_morning_visit_01"
+      "type": "label",
+      "id": "L_DIRECTION"
     },
     {
       "type": "line",
       "speakerId": "HAKIMA",
-      "text": "（こうして、静かな時間が流れていく……）"
+      "expression": "normal",
+      "text": "さて、少し外の様子を見てきましょうか。"
     },
     {
-      "type": "end",
-      "markSeen": true
+      "type": "scene",
+      "bg": "bg_market_central",
+      "characters": [
+        {
+          "id": "HAKIMA",
+          "expression": "normal"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "いい天気！ 活気があって素敵な街よね。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "ほら、あっちの露店を見て。新しい果物が並んでいるわ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "後で寄ってみようかしら。掘り出し物があるかもしれないわよ。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_morning_visit_01",
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "text": "（こうして、ハキマとの穏やかな時間は流れていく……）"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "text": "（彼女の横顔を見ていると、不思議と心が落ち着くのを感じた。）"
+    },
+    {
+      "type": "still",
+      "id": null,
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "あ、そうだ。最後にBGMを止める演出を確認しましょう。"
+    },
+    {
+      "type": "stopBgm"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "静かになったかしら？ 演出確認はこれで終わりよ。"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "お疲れ様！ またお店で会いましょうね。"
+    },
+    {
+      "type": "end"
+    }
+  ],
+  "hakima_simple_001": [
+    {
+      "type": "bg",
+      "id": "bg_shop_interior_service"
+    },
+    {
+      "type": "bgm",
+      "id": "BGM_THEME_HAKIMA"
+    },
+    {
+      "type": "enter",
+      "characterId": "HAKIMA",
+      "expression": "normal",
+      "position": "center"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "いらっしゃい！ 立ち絵の接地感はどうかしら？"
+    },
+    {
+      "type": "scene",
+      "bg": "bg_market_central",
+      "characters": [
+        {
+          "id": "HAKIMA",
+          "expression": "normal"
+        }
+      ],
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "normal",
+      "text": "場所を変えても、ちゃんと足元が接地しているはずだわ。"
+    },
+    {
+      "type": "still",
+      "id": "still_hakima_morning_visit_01",
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "text": "スチル表示中は、立ち絵が消えて一枚絵が全画面で見えるはずよ。"
+    },
+    {
+      "type": "still",
+      "id": null,
+      "transition": "fadeScene",
+      "speed": "long"
+    },
+    {
+      "type": "line",
+      "speakerId": "HAKIMA",
+      "expression": "joy",
+      "text": "スチルを解除すると、元の背景と立ち絵に戻るわね。成功よ！"
+    },
+    {
+      "type": "end"
     }
   ]
 };
@@ -28508,7 +28692,7 @@ module.exports = {
  * VN / ADV Screen for MadeInMaghribal.
  */
 
-const { getCharacterVisualImagePath, getBackgroundPath } = require('../utils/assetPaths.js');
+const { getCharacterVisualImagePath, getBackgroundPath, getStillPath } = require('../utils/assetPaths.js');
 const { applyCharacterVisualProfile, getCharacterVisualProfile } = require('../utils/characterVisualProfiles.js');
 
 
@@ -28520,9 +28704,14 @@ function getVisualImagePath(id, mode, expression = 'normal') {
 function renderVnShell(controller, view) {
   view.innerHTML = `
     <div class="vn-screen" data-screen="vn">
-      <div class="vn-bg" data-vn-bg></div>
-      <div class="vn-character-layer" data-vn-char-layer>
-        <img class="standing-char" data-vn-char src="" style="display: none;" alt="" />
+      <div class="vn-scene-container" data-vn-scene-container>
+        <div class="vn-bg" data-vn-bg></div>
+        <div class="vn-character-layer" data-vn-char-layer>
+          <img class="standing-char" data-vn-char src="" style="display: none;" alt="" />
+        </div>
+        <div class="vn-still-layer" data-vn-still-layer>
+          <img class="still-img" data-vn-still src="" style="display: none;" alt="" />
+        </div>
       </div>
       
       <div class="stats" data-hud></div>
@@ -28542,88 +28731,159 @@ function renderVnShell(controller, view) {
   `;
 }
 
-function updateVnContent(controller, { speakerName, text, charId, speakerId, bgId, expression, speakerExpression }) {
+function updateVnContent(controller, { speakerName, text, charId, speakerId, bgId, stillId, expression, speakerExpression, transition }) {
   const bgEl = controller.container.querySelector('[data-vn-bg]');
+  const sceneContainerEl = controller.container.querySelector('[data-vn-scene-container]');
+  const charLayerEl = controller.container.querySelector('[data-vn-char-layer]');
   const charEl = controller.container.querySelector('[data-vn-char]');
+  const stillEl = controller.container.querySelector('[data-vn-still]');
   const speakerWrapEl = controller.container.querySelector('[data-vn-speaker-wrap]');
   const speakerEl = controller.container.querySelector('[data-vn-speaker]');
   const speakerIconEl = controller.container.querySelector('[data-vn-speaker-icon]');
   const textEl = controller.container.querySelector('[data-vn-text]');
+  const vnScreenEl = controller.container.querySelector('.vn-screen');
 
-  if (bgEl && bgId) {
-    const bgPath = getBackgroundPath(bgId);
-    if (bgEl.dataset.currentBgId !== bgId) {
-      bgEl.style.backgroundImage = `url(${bgPath})`;
-      bgEl.dataset.currentBgId = bgId;
+  // Transition Config
+  const tType = transition?.type || 'soft'; // soft, fadeScene, cut
+  const tSpeed = transition?.speed || 'short'; // short, long
+  const tTarget = transition?.target || 'background'; // background, character, scene, all
+
+  const applyTransitionClass = (el, type, speed, active) => {
+    if (!el) return;
+    const className = `t-${type}-${speed}`;
+    if (active) {
+      el.classList.add(className, 'is-transitioning');
+    } else {
+      el.classList.remove(className, 'is-transitioning');
     }
-    if (controller.markImageSeen) controller.markImageSeen(bgId);
-  }
+  };
 
-  if (charEl) {
-    if (charId) {
-      const expr = expression || 'normal';
-      const nextSrc = getVisualImagePath(charId, 'standing', expr);
-      
-      if (charEl.dataset.currentSrc !== nextSrc) {
-        charEl.classList.remove('is-visible');
-        charEl.style.display = 'block';
-        applyCharacterVisualProfile(charEl, charId, 'standing');
-        charEl.src = nextSrc;
-        charEl.dataset.currentSrc = nextSrc;
-        if (controller.markImageSeen) {
-          controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
+  const getTransitionDuration = (speed) => (speed === 'long' ? 600 : 200);
+
+  const performUpdate = () => {
+    // 1. Background
+    if (bgEl && bgId) {
+      const bgPath = getBackgroundPath(bgId);
+      if (bgEl.dataset.currentBgId !== bgId) {
+        bgEl.style.backgroundImage = `url(${bgPath})`;
+        bgEl.dataset.currentBgId = bgId;
+      }
+      bgEl.style.display = stillId ? 'none' : 'block';
+      if (controller.markImageSeen) controller.markImageSeen(bgId);
+    }
+
+    // 2. Still
+    if (stillEl) {
+      if (stillId) {
+        const stillPath = getStillPath(stillId);
+        if (stillEl.dataset.currentStillId !== stillId) {
+          stillEl.src = stillPath;
+          stillEl.dataset.currentStillId = stillId;
+          stillEl.style.display = 'block';
+          stillEl.classList.add('is-visible');
         }
-        charEl.onerror = () => { charEl.style.display = 'none'; };
-        requestAnimationFrame(() => {
+        if (controller.markImageSeen) controller.markImageSeen(stillId);
+      } else {
+        stillEl.style.display = 'none';
+        stillEl.classList.remove('is-visible');
+        stillEl.dataset.currentStillId = '';
+        stillEl.removeAttribute('src');
+      }
+    }
+
+    // 3. Character
+    if (charEl) {
+      if (charId && !stillId) {
+        const expr = expression || 'normal';
+        const nextSrc = getVisualImagePath(charId, 'standing', expr);
+        const isSameChar = charEl.dataset.currentCharId === charId;
+        const skipIndividualFade = (tTarget === 'scene' || tTarget === 'all');
+
+        if (charEl.dataset.currentSrc !== nextSrc) {
+          if (!isSameChar) {
+            charEl.style.display = 'block';
+            applyCharacterVisualProfile(charEl, charId, 'standing');
+          }
+          charEl.src = nextSrc;
+          charEl.dataset.currentSrc = nextSrc;
+          charEl.dataset.currentCharId = charId;
+          charEl.dataset.currentExpression = expr;
+          if (controller.markImageSeen) {
+            controller.markImageSeen(`${charId.toLowerCase()}_${expr.toLowerCase()}`);
+          }
+          charEl.onerror = () => { charEl.style.display = 'none'; };
+          
+          if (!isSameChar) {
+            if (skipIndividualFade) {
+              charEl.classList.add('is-visible');
+            } else {
+              charEl.classList.remove('is-visible');
+              requestAnimationFrame(() => charEl.classList.add('is-visible'));
+            }
+          }
+        } else {
+          charEl.style.display = 'block';
           charEl.classList.add('is-visible');
-        });
+        }
       } else {
-        // Same image, just ensure it's visible and displayed
-        charEl.style.display = 'block';
-        charEl.classList.add('is-visible');
+        charEl.classList.remove('is-visible');
+        charEl.removeAttribute('src');
+        charEl.dataset.currentSrc = '';
+        charEl.dataset.currentCharId = '';
+        charEl.style.display = 'none';
       }
-    } else {
-      charEl.classList.remove('is-visible');
-      charEl.removeAttribute('src');
-      charEl.dataset.currentSrc = '';
-      charEl.style.display = 'none';
     }
-  }
 
-  const iconId = speakerId || charId;
-  const hasSpeaker = Boolean(speakerName || iconId);
-
-  if (speakerWrapEl) {
-    speakerWrapEl.style.display = hasSpeaker ? 'inline-flex' : 'none';
-  }
-
-  if (speakerIconEl) {
-    if (iconId) {
-      const expr = speakerExpression || expression || 'normal';
-      const nextIconSrc = getVisualImagePath(iconId, 'speakerIcon', expr);
-      if (speakerIconEl.dataset.currentSrc !== nextIconSrc) {
-        speakerIconEl.src = nextIconSrc;
-        speakerIconEl.dataset.currentSrc = nextIconSrc;
-        speakerIconEl.style.display = 'block';
-        applyCharacterVisualProfile(speakerIconEl, iconId, 'speakerIcon');
-        speakerIconEl.onerror = () => { speakerIconEl.style.display = 'none'; };
+    // 4. Speaker & Text
+    const iconId = speakerId || charId;
+    const hasSpeaker = Boolean(speakerName || iconId);
+    if (speakerWrapEl) speakerWrapEl.style.display = hasSpeaker ? 'inline-flex' : 'none';
+    if (speakerIconEl) {
+      if (iconId) {
+        const expr = speakerExpression || expression || 'normal';
+        const nextIconSrc = getVisualImagePath(iconId, 'speakerIcon', expr);
+        if (speakerIconEl.dataset.currentSrc !== nextIconSrc) {
+          speakerIconEl.src = nextIconSrc;
+          speakerIconEl.dataset.currentSrc = nextIconSrc;
+          speakerIconEl.style.display = 'block';
+          applyCharacterVisualProfile(speakerIconEl, iconId, 'speakerIcon');
+          speakerIconEl.onerror = () => { speakerIconEl.style.display = 'none'; };
+        } else {
+          speakerIconEl.style.display = 'block';
+        }
       } else {
-        speakerIconEl.style.display = 'block';
+        speakerIconEl.removeAttribute('src');
+        speakerIconEl.dataset.currentSrc = '';
+        speakerIconEl.style.display = 'none';
       }
-    } else {
-      speakerIconEl.removeAttribute('src');
-      speakerIconEl.dataset.currentSrc = '';
-      speakerIconEl.style.display = 'none';
     }
+    if (speakerEl) speakerEl.textContent = speakerName || '';
+    if (textEl && text) {
+      if (controller.typewriter.fullText !== text) {
+        controller.startTypewriter(text, textEl);
+      }
+    }
+  };
+
+  // Transition Logic
+  if (!transition || tType === 'cut') {
+    performUpdate();
+    return;
   }
 
-  if (speakerEl) speakerEl.textContent = speakerName || '';
+  let targetEl = bgEl;
+  if (tTarget === 'character') targetEl = charLayerEl;
+  if (tTarget === 'scene') targetEl = sceneContainerEl;
+  if (tTarget === 'all') targetEl = vnScreenEl;
+
+  applyTransitionClass(targetEl, tType, tSpeed, true);
   
-  if (textEl && text) {
-    if (controller.typewriter.fullText !== text) {
-      controller.startTypewriter(text, textEl);
-    }
-  }
+  setTimeout(() => {
+    performUpdate();
+    setTimeout(() => {
+      applyTransitionClass(targetEl, tType, tSpeed, false);
+    }, 50); // Small buffer
+  }, getTransitionDuration(tSpeed));
 }
 
 module.exports = {
@@ -29115,6 +29375,9 @@ function getCharacterVisualImagePath(id, expression = 'normal', imageKind = 'sta
 }
 
 function getBackgroundPath(sceneId) {
+  if (sceneId && sceneId.startsWith('bg_')) {
+    return `images/background/${sceneId}.webp`;
+  }
   const backgrounds = {
     MARKET: 'images/background/bg_market_central.webp',
     TEA_ROOM: 'images/background/bg_shop_interior_service.webp',
@@ -32247,6 +32510,7 @@ class GameController {
       still: null,
       characters: {},
       activeChoice: null,
+      currentDisplayStep: null,
       waitTimer: null,
       returnScreen
     };
@@ -32261,6 +32525,8 @@ class GameController {
       clearTimeout(this.eventState.waitTimer);
       this.eventState.waitTimer = null;
     }
+    this.eventState.isTransitioning = false;
+    this.bgm.stop();
     this.update();
   }
 
@@ -32268,7 +32534,6 @@ class GameController {
     if (!this.eventState.active) return;
     const eventId = this.eventState.eventId;
     if (eventId) {
-      // Mark both seen (replayability/history) and viewed (clears NEW badge)
       markEventSeen(eventId);
       markEventViewed(eventId);
     }
@@ -32284,90 +32549,166 @@ class GameController {
     }
 
     const step = this.eventState.script[this.eventState.stepIndex];
+    const isFirstStep = this.eventState.stepIndex === 0;
     this.eventState.stepIndex++;
-    this.processEventStep(step);
+    this.processEventStep(step, isFirstStep);
   }
 
-  processEventStep(step) {
+  processEventStep(step, isFirstStep = false) {
     if (!step) return;
+
+    const transition = step.transition ? {
+      type: step.transition,
+      speed: step.speed || 'short',
+      target: step.target || (step.type === 'scene' ? 'scene' : (step.type === 'bg' ? 'background' : 'character'))
+    } : null;
+
+    if ((step.type === 'bg' || step.type === 'scene') && step.transition === 'fadeScene') {
+      transition.target = 'scene';
+    }
+
+    const next = () => {
+      this.eventState.isTransitioning = false;
+      this.eventState.waitTimer = null;
+      if (this.eventState.active) this.nextEventStep();
+    };
+
+    const isSceneCommand = step.type === 'scene';
+    const shouldWait = (step.speed === 'long' && !isFirstStep && isSceneCommand);
+    const waitTime = shouldWait ? 750 : 0;
+
+    if (shouldWait) {
+      this.eventState.isTransitioning = true;
+    }
 
     switch (step.type) {
       case 'bg':
         this.eventState.background = step.id;
-        this.nextEventStep();
+        this.eventState.lastTransition = transition;
+        this.update();
+        if (waitTime > 0) {
+          this.eventState.waitTimer = setTimeout(next, waitTime);
+        } else {
+          next();
+        }
         break;
       case 'still':
         this.eventState.still = step.id;
-        this.nextEventStep();
+        this.eventState.lastTransition = transition;
+        this.update();
+        next();
         break;
       case 'bgm':
-        this.bgm.play(step.id);
-        this.nextEventStep();
+        if (step.id) {
+          this.bgm.play(step.id);
+        } else {
+          this.bgm.stop();
+        }
+        next();
+        break;
+      case 'stopBgm':
+        this.bgm.stop();
+        next();
         break;
       case 'sfx':
-        this.sfx.play(step.id);
-        this.nextEventStep();
+        if (step.id) {
+          this.sfx.play(step.id);
+        }
+        next();
         break;
       case 'enter':
         this.eventState.characters[step.characterId] = {
           expression: step.expression || 'normal',
           position: step.position || 'center'
         };
-        this.nextEventStep();
+        this.eventState.lastTransition = transition;
+        this.update();
+        if (waitTime > 0) {
+          this.eventState.waitTimer = setTimeout(next, waitTime);
+        } else {
+          next();
+        }
         break;
       case 'exit':
         delete this.eventState.characters[step.characterId];
-        this.nextEventStep();
+        this.eventState.lastTransition = transition;
+        this.update();
+        if (waitTime > 0) {
+          this.eventState.waitTimer = setTimeout(next, waitTime);
+        } else {
+          next();
+        }
         break;
       case 'line':
+      case 'narration':
         if (step.speakerId && step.expression && this.eventState.characters[step.speakerId]) {
           this.eventState.characters[step.speakerId].expression = step.expression;
         }
-      case 'narration':
-        this.update(); // Trigger re-render to show text
+        this.eventState.currentDisplayStep = step;
+        this.eventState.lastTransition = transition;
+        this.update();
         break;
       case 'wait':
-        this.eventState.waitTimer = setTimeout(() => {
-          this.eventState.waitTimer = null;
-          this.nextEventStep();
-        }, step.ms || 1000);
+        this.eventState.waitTimer = setTimeout(next, step.ms || 1000);
         break;
       case 'choice':
+        this.eventState.currentDisplayStep = step;
         this.eventState.activeChoice = step.choices;
         this.update();
         break;
       case 'label':
-        this.nextEventStep();
+        next();
         break;
       case 'jump':
         const targetIndex = this.eventState.labels[step.id];
         if (targetIndex !== undefined) {
           this.eventState.stepIndex = targetIndex;
         }
-        this.nextEventStep();
+        next();
+        break;
+      case 'scene':
+        if (step.bg) this.eventState.background = step.bg;
+        if (step.still !== undefined) this.eventState.still = step.still;
+        if (step.characters) {
+          this.eventState.characters = {};
+          step.characters.forEach(c => {
+            this.eventState.characters[c.id] = {
+              expression: c.expression || 'normal',
+              position: c.position || 'center'
+            };
+          });
+        }
+        this.eventState.lastTransition = transition;
+        this.update();
+        if (waitTime > 0) {
+          this.eventState.waitTimer = setTimeout(next, waitTime);
+        } else {
+          next();
+        }
         break;
       case 'flag':
         const { setEventFlag } = require('./utils/playerProgress.js');
         setEventFlag(step.id, step.value);
-        this.nextEventStep();
+        next();
         break;
       case 'end':
         this.finishCurrentEvent();
         break;
       default:
         console.warn(`Unknown event command: ${step.type}`);
-        this.nextEventStep();
+        next();
         break;
     }
   }
 
   handleEventClick() {
     if (this.eventState.activeChoice) return;
+    if (this.eventState.isTransitioning || this.eventState.waitTimer) return;
+    
     if (this.isTypewriterActive()) {
       this.finishTypewriter();
       return;
     }
-    if (this.eventState.waitTimer) return;
     
     this.nextEventStep();
   }
@@ -32389,8 +32730,8 @@ class GameController {
   }
 
   renderEventPlayer(view) {
-    const step = this.eventState.script[this.eventState.stepIndex - 1];
-    if (!step) return;
+    if (!this.eventState.active) return;
+    const displayStep = this.eventState.currentDisplayStep;
 
     if (!view.querySelector('.vn-screen')) {
       renderVnShell(this, view);
@@ -32415,24 +32756,33 @@ class GameController {
       }
     }
 
-    const speakerId = step.type === 'line' ? step.speakerId : null;
+    const speakerId = displayStep?.type === 'line' ? displayStep.speakerId : null;
     const speakerName = speakerId ? getHeroineDisplayName(speakerId) : '';
     
     // Determine which character to show
-    // Simple logic for now: show the first character in state
     const charIds = Object.keys(this.eventState.characters);
     const charId = charIds[0];
     const charData = charId ? this.eventState.characters[charId] : null;
 
+    // Visibility of the message box
+    const messageBox = view.querySelector('.message-box');
+    if (messageBox) {
+      messageBox.style.display = displayStep ? 'block' : 'none';
+    }
+
     updateVnContent(this, {
       speakerName: speakerName,
-      text: step.text || '',
+      text: displayStep?.text || '',
       charId: charId,
       speakerId: speakerId,
-      bgId: this.eventState.still || this.eventState.background,
-      expression: charData ? charData.expression : (step.type === 'line' ? step.expression : 'normal'),
-      speakerExpression: step.expression || 'normal'
+      bgId: this.eventState.background,
+      stillId: this.eventState.still,
+      expression: charData ? charData.expression : (displayStep?.type === 'line' ? displayStep.expression : 'normal'),
+      speakerExpression: displayStep?.expression || 'normal',
+      transition: this.eventState.lastTransition
     });
+    
+    this.eventState.lastTransition = null;
     
     // Override click behavior for event player
     if (vnScreen) {

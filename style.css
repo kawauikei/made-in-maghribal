@@ -3132,9 +3132,51 @@ button.gallery-item-tile.is-seen:active {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 20px;
   background: var(--night-2);
   overflow: hidden;
+}
+
+.vn-character-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.vn-still-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+}
+
+.standing-char {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  max-height: 92%;
+  width: auto;
+  object-fit: contain;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  opacity: 0;
+}
+
+.still-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.standing-char.is-visible, .still-img.is-visible {
+  opacity: 1;
 }
 
 .vn-bg {
@@ -3149,42 +3191,41 @@ button.gallery-item-tile.is-seen:active {
   z-index: 1;
 }
 
+/* Transitions */
+.is-transitioning {
+  transition: opacity 0.2s ease;
+}
+.t-soft-short.is-transitioning { opacity: 0.6; transition-duration: 0.2s; }
+.t-soft-long.is-transitioning { opacity: 0.4; transition-duration: 0.6s; }
+
+.t-fadeScene-short.is-transitioning { opacity: 0; transition-duration: 0.2s; }
+.t-fadeScene-long.is-transitioning { opacity: 0; transition-duration: 0.6s; }
+
 .vn-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 60%, var(--night-2) 95%);
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 35, 64, 0) 0%,
+    rgba(16, 35, 64, 0) 68%,
+    rgba(16, 35, 64, 0.72) 100%
+  );
   pointer-events: none;
 }
 
-.vn-character-layer {
+.vn-still-layer::after {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 5;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 35, 64, 0) 0%,
+    rgba(16, 35, 64, 0) 68%,
+    rgba(16, 35, 64, 0.72) 100%
+  );
   pointer-events: none;
-  overflow: hidden;
-}
-
-.standing-char {
-  position: absolute;
-  left: 50%;
-  bottom: var(--char-bottom, 0px);
-  height: var(--char-height, 980px);
-  width: auto;
-  max-height: none;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-  animation: charFadeIn 0.3s ease-out;
-  transform:
-    translateX(-50%)
-    translate(var(--char-x, 0px), var(--char-y, 0px))
-    scale(var(--char-scale, 1));
-  transform-origin: bottom center;
-}
-
-@keyframes charFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  z-index: 9;
 }
 
 .vn-screen .message-box {
@@ -3342,17 +3383,7 @@ button.gallery-item-tile.is-seen:active {
 }
 
 .standing-char {
-  opacity: 0;
-  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.18px);
-  transition: opacity 0.28s ease-out, transform 0.34s ease-out;
-}
-
-.standing-char.is-visible {
-  opacity: 1;
-}
-
-.standing-char {
-  animation: none;
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.50)) blur(0.32px);
 }
 
 /* ARABIAN-BUTTON-SHARED-1: VN skip button matches title luxury controls. */
