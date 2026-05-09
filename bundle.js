@@ -51988,6 +51988,10 @@ function bindInputHandlers(controller) {
     if (controller.eventState?.active && target.closest('[data-action="skip-text"]')) {
       event.preventDefault();
       event.stopPropagation();
+      const boundaryStage = controller.eventState.boundaryStage || 'none';
+      if (boundaryStage !== 'none') {
+        return;
+      }
       controller.playSfx('uiTapBottle');
       controller.skipCurrentEventScene?.();
       return;
@@ -52343,7 +52347,12 @@ function bindInputHandlers(controller) {
     }
 
     if (target.closest('[data-action="skip-text"]')) {
+      event.preventDefault();
       event.stopPropagation();
+      const boundaryStage = controller.eventState?.boundaryStage || 'none';
+      if (boundaryStage !== 'none') {
+        return;
+      }
       controller.playSfx('uiTapBottle');
       controller.skipTextToNextScene();
       return;
@@ -60543,6 +60552,7 @@ const TEXT_SPEED_MS = {
 };
 
 const SETTINGS_KEY = 'madeinmaghribal.settings';
+const INITIAL_HELP_SEEN_KEY = 'madeinmaghribal.initialHelpSeen.v1';
 
 
 
@@ -60644,6 +60654,7 @@ class GameController {
 
     await hideLoading(this.container);
 
+    this.openInitialHelpIfNeeded();
     this.update();
   }
 
@@ -60719,6 +60730,25 @@ class GameController {
     }
     this.applyAudioSettings();
     this.applyMotionSettings();
+  }
+
+  shouldShowInitialHelp() {
+    if (this._initialHelpHandled) return false;
+    this._initialHelpHandled = true;
+    try {
+      if (localStorage.getItem(INITIAL_HELP_SEEN_KEY) === '1') return false;
+      localStorage.setItem(INITIAL_HELP_SEEN_KEY, '1');
+      return true;
+    } catch (e) {
+      return !this._initialHelpShownInMemory;
+    }
+  }
+
+  openInitialHelpIfNeeded() {
+    if (!this.shouldShowInitialHelp()) return false;
+    this._initialHelpShownInMemory = true;
+    this.uiState.modal = 'help';
+    return true;
   }
 
   applyAudioSettings() {
@@ -62264,6 +62294,9 @@ class GameController {
     const vnScreen = view.querySelector('.vn-screen');
     if (vnScreen) {
       vnScreen.classList.add('is-event-player');
+      const boundaryStageForInput = this.eventState.boundaryStage || 'none';
+      const skipBlockedByBoundary = boundaryStageForInput !== 'none';
+      vnScreen.classList.toggle('is-event-boundary-active', skipBlockedByBoundary);
       vnScreen.classList.toggle('is-holding-message-hidden', Boolean(this.eventState.holdHideMessageBox));
       vnScreen.classList.toggle('is-holding-character-hidden', Boolean(this.eventState.holdHideCharacter));
       let holdControls = vnScreen.querySelector('[data-event-hold-controls]');

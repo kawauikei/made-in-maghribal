@@ -4515,6 +4515,17 @@ button.gallery-item-tile.is-seen:active {
   white-space: pre-line;
 }
 
+
+/* INITIAL-HELP-AND-CUTIN-SKIP-GUARD-1
+ * During event cut-ins / black boundary covers, the visual skip button stays
+ * behind the veil and must not receive pointer input. The cut-in itself owns
+ * clicks in this state.
+ */
+.vn-screen.is-event-boundary-active > .message-skip-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* --- END: 30_vn.css --- */
 
 /* --- START: 40_quiz.css --- */
